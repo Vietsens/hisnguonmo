@@ -1,0 +1,974 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmAssignAuthorized.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+    <comment>Tools</comment>
+  </data>
+  <data name="frmAssignAuthorized.btnRCFind.Caption" xml:space="preserve">
+    <value>Find (Ctrl + F)</value>
+    <comment>Tìm (Ctrl F)</comment>
+  </data>
+  <data name="frmAssignAuthorized.btnRCSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+    <comment>Lưu (Ctrl S)</comment>
+  </data>
+  <data name="frmAssignAuthorized.btnSaveAssignAuthorized.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+    <comment>Lưu (Ctrl S)</comment>
+  </data>
+  <data name="frmAssignAuthorized.btnSearch.Text" xml:space="preserve">
+    <value>Search (Ctrl + F)</value>
+    <comment>Tìm kiếm (Ctrl F)</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn1.Caption" xml:space="preserve">
+    <value>STT</value>
+    <comment>STT</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn10.Caption" xml:space="preserve">
+    <value>Authorized</value>
+    <comment>Gán quyền</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn11.Caption" xml:space="preserve">
+    <value>Cancel authorization</value>
+    <comment>Hủy gán quyền</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn12.Caption" xml:space="preserve">
+    <value>STT</value>
+    <comment>STT</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn13.Caption" xml:space="preserve">
+    <value>user name</value>
+    <comment>Tên đăng nhập</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn14.Caption" xml:space="preserve">
+    <value>Full name</value>
+    <comment>Họ tên</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn15.Caption" xml:space="preserve">
+    <value>Phone</value>
+    <comment>Điện thoại</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn16.Caption" xml:space="preserve">
+    <value>Email</value>
+    <comment>Email</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn17.Caption" xml:space="preserve">
+    <value>creators</value>
+    <comment>Người tạo</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn18.Caption" xml:space="preserve">
+    <value>Time created</value>
+    <comment>Thời gian tạo</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn19.Caption" xml:space="preserve">
+    <value>Repairer</value>
+    <comment>Người sửa</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn2.Caption" xml:space="preserve">
+    <value>user name</value>
+    <comment>Tên đăng nhập</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn20.Caption" xml:space="preserve">
+    <value>Time correction</value>
+    <comment>Thời gian sửa</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn3.Caption" xml:space="preserve">
+    <value>Full name</value>
+    <comment>Họ tên</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn4.Caption" xml:space="preserve">
+    <value>Phone</value>
+    <comment>Điện thoại</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn5.Caption" xml:space="preserve">
+    <value>Email</value>
+    <comment>Email</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn6.Caption" xml:space="preserve">
+    <value>creators</value>
+    <comment>Người tạo</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn7.Caption" xml:space="preserve">
+    <value>Time created</value>
+    <comment>Thời gian tạo</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn8.Caption" xml:space="preserve">
+    <value>Repairer</value>
+    <comment>Người sửa</comment>
+  </data>
+  <data name="frmAssignAuthorized.gridColumn9.Caption" xml:space="preserve">
+    <value>Time correction</value>
+    <comment>Thời gian sửa</comment>
+  </data>
+  <data name="frmAssignAuthorized.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+    <comment>layoutControl1</comment>
+  </data>
+  <data name="frmAssignAuthorized.layoutControlItem1.Text" xml:space="preserve">
+    <value>Invoice name:</value>
+    <comment>Tên hóa đơn:</comment>
+  </data>
+  <data name="frmAssignAuthorized.layoutControlItem2.Text" xml:space="preserve">
+    <value>Symbol:</value>
+    <comment>Ký hiệu:</comment>
+  </data>
+  <data name="frmAssignAuthorized.layoutControlItem6.Text" xml:space="preserve">
+    <value>Search</value>
+    <comment>Tìm kiếm</comment>
+  </data>
+  <data name="frmAssignAuthorized.layoutControlItem8.Text" xml:space="preserve">
+    <value>Sample bill:</value>
+    <comment>Mẫu hóa đơn:</comment>
+  </data>
+  <data name="frmAssignAuthorized.layoutControlItem9.Text" xml:space="preserve">
+    <value>Some bills:</value>
+    <comment>Số hóa đơn:</comment>
+  </data>
+  <data name="frmAssignAuthorized.Text" xml:space="preserve">
+    <value>Authorization bill book</value>
+    <comment>Gán quyền sổ hóa đơn</comment>
+  </data>
+  <data name="frmAssignAuthorized.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Keyword search</value>
+    <comment>Từ khóa tìm kiếm</comment>
+  </data>
+  <data name="frmCancelInvoice.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+    <comment>Tools</comment>
+  </data>
+  <data name="frmCancelInvoice.bar1.Text1" xml:space="preserve">
+    <value>Tools</value>
+    <comment>Tools</comment>
+  </data>
+  <data name="frmCancelInvoice.barbtnSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+    <comment>Lưu (Ctrl S)</comment>
+  </data>
+  <data name="frmCancelInvoice.barbtnSave.Caption1" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+    <comment>Lưu (Ctrl S)</comment>
+  </data>
+  <data name="frmCancelInvoice.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+    <comment>Lưu (Ctrl S)</comment>
+  </data>
+  <data name="frmCancelInvoice.btnSave.Text1" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+    <comment>Lưu (Ctrl S)</comment>
+  </data>
+  <data name="frmCancelInvoice.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+    <comment>layoutControl1</comment>
+  </data>
+  <data name="frmCancelInvoice.layoutControl1.Text1" xml:space="preserve">
+    <value>layoutControl1</value>
+    <comment>layoutControl1</comment>
+  </data>
+  <data name="frmCancelInvoice.layoutControlItem1.Text" xml:space="preserve">
+    <value>Some bills:</value>
+    <comment>Số hóa đơn:</comment>
+  </data>
+  <data name="frmCancelInvoice.layoutControlItem1.Text1" xml:space="preserve">
+    <value>Some bills:</value>
+    <comment>Số hóa đơn:</comment>
+  </data>
+  <data name="frmCancelInvoice.layoutControlItem3.Text" xml:space="preserve">
+    <value>Symbol:</value>
+    <comment>Ký hiệu:</comment>
+  </data>
+  <data name="frmCancelInvoice.layoutControlItem3.Text1" xml:space="preserve">
+    <value>Symbol:</value>
+    <comment>Ký hiệu:</comment>
+  </data>
+  <data name="frmCancelInvoice.layoutControlItem4.Text" xml:space="preserve">
+    <value>Sample bill:</value>
+    <comment>Mẫu hóa đơn:</comment>
+  </data>
+  <data name="frmCancelInvoice.layoutControlItem4.Text1" xml:space="preserve">
+    <value>Sample bill:</value>
+    <comment>Mẫu hóa đơn:</comment>
+  </data>
+  <data name="frmCancelInvoice.layoutControlItem5.Text" xml:space="preserve">
+    <value>Seller:</value>
+    <comment>Người bán:</comment>
+  </data>
+  <data name="frmCancelInvoice.layoutControlItem5.Text1" xml:space="preserve">
+    <value>Seller:</value>
+    <comment>Người bán:</comment>
+  </data>
+  <data name="frmCancelInvoice.layoutControlItem6.Text" xml:space="preserve">
+    <value>Buyer:</value>
+    <comment>Người mua:</comment>
+  </data>
+  <data name="frmCancelInvoice.layoutControlItem6.Text1" xml:space="preserve">
+    <value>Buyer:</value>
+    <comment>Người mua:</comment>
+  </data>
+  <data name="frmCancelInvoice.layoutControlItem7.Text" xml:space="preserve">
+    <value>Publication date:</value>
+    <comment>Ngày xuất:</comment>
+  </data>
+  <data name="frmCancelInvoice.layoutControlItem7.Text1" xml:space="preserve">
+    <value>Publication date:</value>
+    <comment>Ngày xuất:</comment>
+  </data>
+  <data name="frmCancelInvoice.layoutControlItem9.Text" xml:space="preserve">
+    <value>Cancellation reason:</value>
+    <comment>Lý do hủy:</comment>
+  </data>
+  <data name="frmCancelInvoice.layoutControlItem9.Text1" xml:space="preserve">
+    <value>Cancellation reason:</value>
+    <comment>Lý do hủy:</comment>
+  </data>
+  <data name="frmCancelInvoice.Text" xml:space="preserve">
+    <value>Cancelling invoice</value>
+    <comment>Hủy hóa đơn</comment>
+  </data>
+  <data name="frmCancelInvoice.Text1" xml:space="preserve">
+    <value>Cancelling invoice</value>
+    <comment>Hủy hóa đơn</comment>
+  </data>
+  <data name="frmCreateInvoice.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+    <comment>Tools</comment>
+  </data>
+  <data name="frmCreateInvoice.bar1.Text1" xml:space="preserve">
+    <value>Tools</value>
+    <comment>Tools</comment>
+  </data>
+  <data name="frmCreateInvoice.barButtonItem1.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+    <comment>Lưu (Ctrl S)</comment>
+  </data>
+  <data name="frmCreateInvoice.barButtonItem1.Caption1" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+    <comment>Lưu (Ctrl S)</comment>
+  </data>
+  <data name="frmCreateInvoice.barButtonItem2.Caption" xml:space="preserve">
+    <value>Redo (Ctrl N)</value>
+    <comment>Làm lại (Ctrl N)</comment>
+  </data>
+  <data name="frmCreateInvoice.barButtonItem2.Caption1" xml:space="preserve">
+    <value>Redo (Ctrl N)</value>
+    <comment>Làm lại (Ctrl N)</comment>
+  </data>
+  <data name="frmCreateInvoice.btnPrint.Text" xml:space="preserve">
+    <value>Print invoice</value>
+    <comment>In hóa đơn</comment>
+  </data>
+  <data name="frmCreateInvoice.btnRefreshControl.Text" xml:space="preserve">
+    <value>Redo (Ctrl N)</value>
+    <comment>Làm lại (Ctrl N)</comment>
+  </data>
+  <data name="frmCreateInvoice.btnRefreshControl.Text1" xml:space="preserve">
+    <value>Redo (Ctrl N)</value>
+    <comment>Làm lại (Ctrl N)</comment>
+  </data>
+  <data name="frmCreateInvoice.btnSaveInvoiceBook.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+    <comment>Lưu (Ctrl S)</comment>
+  </data>
+  <data name="frmCreateInvoice.btnSaveInvoiceBook.Text1" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+    <comment>Lưu (Ctrl S)</comment>
+  </data>
+  <data name="frmCreateInvoice.cboPayForm.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmCreateInvoice.cboPayForm.Properties.NullText1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmCreateInvoice.cboPrint.Text" xml:space="preserve">
+    <value>Print invoice</value>
+    <comment>In hóa đơn</comment>
+  </data>
+  <data name="frmCreateInvoice.gridColumn1.Caption" xml:space="preserve">
+    <value>Add goods</value>
+    <comment>Thêm hàng hóa</comment>
+  </data>
+  <data name="frmCreateInvoice.gridColumn1.Caption1" xml:space="preserve">
+    <value>Add goods</value>
+    <comment>Thêm hàng hóa</comment>
+  </data>
+  <data name="frmCreateInvoice.gridColumn2.Caption" xml:space="preserve">
+    <value>Goods name</value>
+    <comment>Tên hàng hóa</comment>
+  </data>
+  <data name="frmCreateInvoice.gridColumn2.Caption1" xml:space="preserve">
+    <value>Goods name</value>
+    <comment>Tên hàng hóa</comment>
+  </data>
+  <data name="frmCreateInvoice.gridColumn3.Caption" xml:space="preserve">
+    <value>Unit</value>
+    <comment>Đơn vị</comment>
+  </data>
+  <data name="frmCreateInvoice.gridColumn3.Caption1" xml:space="preserve">
+    <value>Unit</value>
+    <comment>Đơn vị</comment>
+  </data>
+  <data name="frmCreateInvoice.gridColumn4.Caption" xml:space="preserve">
+    <value>Unit price</value>
+    <comment>Đơn giá</comment>
+  </data>
+  <data name="frmCreateInvoice.gridColumn4.Caption1" xml:space="preserve">
+    <value>Unit price</value>
+    <comment>Đơn giá</comment>
+  </data>
+  <data name="frmCreateInvoice.gridColumn5.Caption" xml:space="preserve">
+    <value>Amount</value>
+    <comment>Số lượng</comment>
+  </data>
+  <data name="frmCreateInvoice.gridColumn5.Caption1" xml:space="preserve">
+    <value>Amount</value>
+    <comment>Số lượng</comment>
+  </data>
+  <data name="frmCreateInvoice.gridColumn6.Caption" xml:space="preserve">
+    <value>Discount</value>
+    <comment>Chiết khấu</comment>
+  </data>
+  <data name="frmCreateInvoice.gridColumn6.Caption1" xml:space="preserve">
+    <value>Discount</value>
+    <comment>Chiết khấu</comment>
+  </data>
+  <data name="frmCreateInvoice.gridColumn7.Caption" xml:space="preserve">
+    <value>into money</value>
+    <comment>Thành tiền</comment>
+  </data>
+  <data name="frmCreateInvoice.gridColumn7.Caption1" xml:space="preserve">
+    <value>into money</value>
+    <comment>Thành tiền</comment>
+  </data>
+  <data name="frmCreateInvoice.gridColumn8.Caption" xml:space="preserve">
+    <value>STT</value>
+    <comment>STT</comment>
+  </data>
+  <data name="frmCreateInvoice.gridColumn8.Caption1" xml:space="preserve">
+    <value>STT</value>
+    <comment>STT</comment>
+  </data>
+  <data name="frmCreateInvoice.labelControl1.Text" xml:space="preserve">
+    <value>BUYER INFORMATION</value>
+    <comment>THÔNG TIN NGƯỜI MUA</comment>
+  </data>
+  <data name="frmCreateInvoice.labelControl1.Text1" xml:space="preserve">
+    <value>BUYER INFORMATION</value>
+    <comment>THÔNG TIN NGƯỜI MUA</comment>
+  </data>
+  <data name="frmCreateInvoice.labelControl2.Text" xml:space="preserve">
+    <value>SELLER INFORMATION</value>
+    <comment>THÔNG TIN NGƯỜI BÁN</comment>
+  </data>
+  <data name="frmCreateInvoice.labelControl2.Text1" xml:space="preserve">
+    <value>SELLER INFORMATION</value>
+    <comment>THÔNG TIN NGƯỜI BÁN</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+    <comment>layoutControl1</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControl1.Text1" xml:space="preserve">
+    <value>layoutControl1</value>
+    <comment>layoutControl1</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem1.Text" xml:space="preserve">
+    <value>Form:</value>
+    <comment>Hình thức:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem1.Text1" xml:space="preserve">
+    <value>Form:</value>
+    <comment>Hình thức:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem10.Text" xml:space="preserve">
+    <value>Account number:</value>
+    <comment>Số tài khoản:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem10.Text1" xml:space="preserve">
+    <value>Account number:</value>
+    <comment>Số tài khoản:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem11.Text" xml:space="preserve">
+    <value>Organization:</value>
+    <comment>Tổ chức:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem11.Text1" xml:space="preserve">
+    <value>Organization:</value>
+    <comment>Tổ chức:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem12.Text" xml:space="preserve">
+    <value>Address:</value>
+    <comment>Địa chỉ:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem12.Text1" xml:space="preserve">
+    <value>Address:</value>
+    <comment>Địa chỉ:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem13.Text" xml:space="preserve">
+    <value>Describe:</value>
+    <comment>Mô tả:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem13.Text1" xml:space="preserve">
+    <value>Describe:</value>
+    <comment>Mô tả:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem14.Text" xml:space="preserve">
+    <value>Full name:</value>
+    <comment>Họ tên:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem14.Text1" xml:space="preserve">
+    <value>Full name:</value>
+    <comment>Họ tên:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem15.Text" xml:space="preserve">
+    <value>Tax code:</value>
+    <comment>Mã số thuế:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem15.Text1" xml:space="preserve">
+    <value>Tax code:</value>
+    <comment>Mã số thuế:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem16.Text" xml:space="preserve">
+    <value>Account number:</value>
+    <comment>Số tài khoản:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem16.Text1" xml:space="preserve">
+    <value>Account number:</value>
+    <comment>Số tài khoản:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem17.Text" xml:space="preserve">
+    <value>Phone:</value>
+    <comment>Điện thoại:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem17.Text1" xml:space="preserve">
+    <value>Phone:</value>
+    <comment>Điện thoại:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem18.Text" xml:space="preserve">
+    <value>Address:</value>
+    <comment>Địa chỉ:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem18.Text1" xml:space="preserve">
+    <value>Address:</value>
+    <comment>Địa chỉ:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem2.Text" xml:space="preserve">
+    <value>Some bills:</value>
+    <comment>Số hóa đơn:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem2.Text1" xml:space="preserve">
+    <value>Some bills:</value>
+    <comment>Số hóa đơn:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem23.Text" xml:space="preserve">
+    <value>General / From / HT:</value>
+    <comment>Tổng/Từ/HT:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem23.Text1" xml:space="preserve">
+    <value>General / From / HT:</value>
+    <comment>Tổng/Từ/HT:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem24.Text" xml:space="preserve">
+    <value>VAT (%):</value>
+    <comment>VAT (%):</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem24.Text1" xml:space="preserve">
+    <value>VAT (%):</value>
+    <comment>VAT (%):</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem25.Text" xml:space="preserve">
+    <value>Time out:</value>
+    <comment>Thời gian xuất:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem25.Text1" xml:space="preserve">
+    <value>Time out:</value>
+    <comment>Thời gian xuất:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem4.Text" xml:space="preserve">
+    <value>Discount:</value>
+    <comment>Chiết khấu:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem4.Text1" xml:space="preserve">
+    <value>Discount:</value>
+    <comment>Chiết khấu:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem5.Text" xml:space="preserve">
+    <value>Full name:</value>
+    <comment>Họ tên:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem5.Text1" xml:space="preserve">
+    <value>Full name:</value>
+    <comment>Họ tên:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem6.Text" xml:space="preserve">
+    <value>Tax code:</value>
+    <comment>Mã số thuế:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem6.Text1" xml:space="preserve">
+    <value>Tax code:</value>
+    <comment>Mã số thuế:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem7.Text" xml:space="preserve">
+    <value>Total:</value>
+    <comment>Tổng tiền:</comment>
+  </data>
+  <data name="frmCreateInvoice.layoutControlItem7.Text1" xml:space="preserve">
+    <value>Total:</value>
+    <comment>Tổng tiền:</comment>
+  </data>
+  <data name="frmCreateInvoice.Text" xml:space="preserve">
+    <value>Create a new invoice</value>
+    <comment>Tạo hóa đơn mới</comment>
+  </data>
+  <data name="frmCreateInvoice.Text1" xml:space="preserve">
+    <value>Create a new invoice</value>
+    <comment>Tạo hóa đơn mới</comment>
+  </data>
+  <data name="LogPrint.gridColumn1.Caption" xml:space="preserve">
+    <value>STT</value>
+    <comment>STT</comment>
+  </data>
+  <data name="LogPrint.gridColumn1.Caption1" xml:space="preserve">
+    <value>STT</value>
+    <comment>STT</comment>
+  </data>
+  <data name="LogPrint.gridColumn2.Caption" xml:space="preserve">
+    <value>Time in</value>
+    <comment>Thời gian in</comment>
+  </data>
+  <data name="LogPrint.gridColumn2.Caption1" xml:space="preserve">
+    <value>Time in</value>
+    <comment>Thời gian in</comment>
+  </data>
+  <data name="LogPrint.gridColumn3.Caption" xml:space="preserve">
+    <value>Time created</value>
+    <comment>Thời gian tạo</comment>
+  </data>
+  <data name="LogPrint.gridColumn3.Caption1" xml:space="preserve">
+    <value>Time created</value>
+    <comment>Thời gian tạo</comment>
+  </data>
+  <data name="LogPrint.gridColumn4.Caption" xml:space="preserve">
+    <value>creators</value>
+    <comment>Người tạo</comment>
+  </data>
+  <data name="LogPrint.gridColumn4.Caption1" xml:space="preserve">
+    <value>creators</value>
+    <comment>Người tạo</comment>
+  </data>
+  <data name="LogPrint.gridColumn5.Caption" xml:space="preserve">
+    <value>Time correction</value>
+    <comment>Thời gian sửa</comment>
+  </data>
+  <data name="LogPrint.gridColumn5.Caption1" xml:space="preserve">
+    <value>Time correction</value>
+    <comment>Thời gian sửa</comment>
+  </data>
+  <data name="LogPrint.gridColumn6.Caption" xml:space="preserve">
+    <value>Repairer</value>
+    <comment>Người sửa</comment>
+  </data>
+  <data name="LogPrint.gridColumn6.Caption1" xml:space="preserve">
+    <value>Repairer</value>
+    <comment>Người sửa</comment>
+  </data>
+  <data name="LogPrint.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+    <comment>layoutControl1</comment>
+  </data>
+  <data name="LogPrint.layoutControl1.Text1" xml:space="preserve">
+    <value>layoutControl1</value>
+    <comment>layoutControl1</comment>
+  </data>
+  <data name="LogPrint.Text" xml:space="preserve">
+    <value>History print</value>
+    <comment>Lịch sử in</comment>
+  </data>
+  <data name="LogPrint.Text1" xml:space="preserve">
+    <value>History print</value>
+    <comment>Lịch sử in</comment>
+  </data>
+  <data name="UCInvoiceBook.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+    <comment>Tools</comment>
+  </data>
+  <data name="UCInvoiceBook.btnbarNew.Caption" xml:space="preserve">
+    <value>Create New (Ctrl N)</value>
+    <comment>Tạo mới (Ctrl N)</comment>
+  </data>
+  <data name="UCInvoiceBook.btnbarSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+    <comment>Lưu (Ctrl S)</comment>
+  </data>
+  <data name="UCInvoiceBook.btnRefreshInvoiceBook.Text" xml:space="preserve">
+    <value>Create New (Ctrl N)</value>
+    <comment>Tạo mới (Ctrl N)</comment>
+  </data>
+  <data name="UCInvoiceBook.btnSaveInvoiceBook.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+    <comment>Lưu (Ctrl S)</comment>
+  </data>
+  <data name="UCInvoiceBook.btnSearchInvoice.Text" xml:space="preserve">
+    <value>Search</value>
+    <comment>Tìm kiếm</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn1.Caption" xml:space="preserve">
+    <value>STT</value>
+    <comment>STT</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn10.Caption" xml:space="preserve">
+    <value>from the</value>
+    <comment>Từ số</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn11.Caption" xml:space="preserve">
+    <value>Describe</value>
+    <comment>Mô tả</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn12.Caption" xml:space="preserve">
+    <value>creators</value>
+    <comment>Người tạo</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn13.Caption" xml:space="preserve">
+    <value>Time created</value>
+    <comment>Thời gian tạo</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn14.Caption" xml:space="preserve">
+    <value>Repairer</value>
+    <comment>Người sửa</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn15.Caption" xml:space="preserve">
+    <value>Time correction</value>
+    <comment>Thời gian sửa</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn16.Caption" xml:space="preserve">
+    <value>Print invoice</value>
+    <comment>In hóa đơn</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn17.Caption" xml:space="preserve">
+    <value>previous window</value>
+    <comment>Sổ trước</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn18.Caption" xml:space="preserve">
+    <value>History print</value>
+    <comment>Lịch sử in</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn19.Caption" xml:space="preserve">
+    <value>Some bills</value>
+    <comment>Số hóa đơn</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn2.Caption" xml:space="preserve">
+    <value>Authorization bill book</value>
+    <comment>Gán quyền sổ hóa đơn</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn20.Caption" xml:space="preserve">
+    <value>Verification codes</value>
+    <comment>Mã xác thực</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn21.Caption" xml:space="preserve">
+    <value>date</value>
+    <comment>Ngày xuất</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn22.Caption" xml:space="preserve">
+    <value>Discount</value>
+    <comment>Chiết khấu</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn23.Caption" xml:space="preserve">
+    <value>The name of seller</value>
+    <comment>Tên người bán</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn24.Caption" xml:space="preserve">
+    <value>Merchant account number</value>
+    <comment>Số tài khoản người bán</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn25.Caption" xml:space="preserve">
+    <value>Tax code seller</value>
+    <comment>Mã số thuế người bán</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn26.Caption" xml:space="preserve">
+    <value>Phone Seller</value>
+    <comment>Điện thoại người bán</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn27.Caption" xml:space="preserve">
+    <value>Address seller</value>
+    <comment>Địa chỉ người bán</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn28.Caption" xml:space="preserve">
+    <value>Buyer</value>
+    <comment>Người mua</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn29.Caption" xml:space="preserve">
+    <value>Buyer account number</value>
+    <comment>Số tài khoản người mua</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn3.Caption" xml:space="preserve">
+    <value>Wiped out bill</value>
+    <comment>Xóa sổ hóa đơn</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn30.Caption" xml:space="preserve">
+    <value>Buyer tax code</value>
+    <comment>Mã số thuế người mua</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn31.Caption" xml:space="preserve">
+    <value>Phone Buyers</value>
+    <comment>Điện thoại người mua</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn32.Caption" xml:space="preserve">
+    <value>Address creator</value>
+    <comment>Địa chỉ người tạo</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn33.Caption" xml:space="preserve">
+    <value>creators</value>
+    <comment>Người tạo</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn34.Caption" xml:space="preserve">
+    <value>Time created</value>
+    <comment>Thời gian tạo</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn35.Caption" xml:space="preserve">
+    <value>Repairer</value>
+    <comment>Người sửa</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn36.Caption" xml:space="preserve">
+    <value>Time correction</value>
+    <comment>Thời gian sửa</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn37.Caption" xml:space="preserve">
+    <value>STT</value>
+    <comment>STT</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn38.Caption" xml:space="preserve">
+    <value>Goods name</value>
+    <comment>Tên hàng hóa</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn39.Caption" xml:space="preserve">
+    <value>Unit</value>
+    <comment>Đơn vị</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn4.Caption" xml:space="preserve">
+    <value>STT</value>
+    <comment>STT</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn40.Caption" xml:space="preserve">
+    <value>Unit price</value>
+    <comment>Đơn giá</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn41.Caption" xml:space="preserve">
+    <value>Amount</value>
+    <comment>Số lượng</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn42.Caption" xml:space="preserve">
+    <value>Discount</value>
+    <comment>Chiết khấu</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn43.Caption" xml:space="preserve">
+    <value>into money</value>
+    <comment>Thành tiền</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn44.Caption" xml:space="preserve">
+    <value>Release date</value>
+    <comment>Ngày phát hành</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn45.Caption" xml:space="preserve">
+    <value>Form</value>
+    <comment>Hình thức</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn46.Caption" xml:space="preserve">
+    <value>window name</value>
+    <comment>Tên sổ</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn47.Caption" xml:space="preserve">
+    <value>Present</value>
+    <comment>Hiện tại</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn5.Caption" xml:space="preserve">
+    <value>Delete bill</value>
+    <comment>Xóa hóa đơn</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn6.Caption" xml:space="preserve">
+    <value>Create Invoice window</value>
+    <comment>Tạo sổ hóa đơn</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn7.Caption" xml:space="preserve">
+    <value>Bill form</value>
+    <comment>Mẫu hóa đơn</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn8.Caption" xml:space="preserve">
+    <value>Symbol</value>
+    <comment>Ký hiệu</comment>
+  </data>
+  <data name="UCInvoiceBook.gridColumn9.Caption" xml:space="preserve">
+    <value>Some bills</value>
+    <comment>Số hóa đơn</comment>
+  </data>
+  <data name="UCInvoiceBook.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+    <comment>layoutControl1</comment>
+  </data>
+  <data name="UCInvoiceBook.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+    <comment>layoutControl2</comment>
+  </data>
+  <data name="UCInvoiceBook.layoutControlItem20.Text" xml:space="preserve">
+    <value>Search</value>
+    <comment>Tìm kiếm</comment>
+  </data>
+  <data name="UCInvoiceBook.layoutControlItem3.Text" xml:space="preserve">
+    <value>Sample bill:</value>
+    <comment>Mẫu hóa đơn:</comment>
+  </data>
+  <data name="UCInvoiceBook.layoutControlItem4.Text" xml:space="preserve">
+    <value>Describe:</value>
+    <comment>Mô tả:</comment>
+  </data>
+  <data name="UCInvoiceBook.layoutControlItem5.Text" xml:space="preserve">
+    <value>Symbol:</value>
+    <comment>Ký hiệu:</comment>
+  </data>
+  <data name="UCInvoiceBook.layoutControlItem6.Text" xml:space="preserve">
+    <value>Release date:</value>
+    <comment>Ngày phát hành:</comment>
+  </data>
+  <data name="UCInvoiceBook.layoutControlItem7.Text" xml:space="preserve">
+    <value>Window name:</value>
+    <comment>Tên sổ:</comment>
+  </data>
+  <data name="UCInvoiceBook.layoutControlItem8.Text" xml:space="preserve">
+    <value>Amount:</value>
+    <comment>Số lượng:</comment>
+  </data>
+  <data name="UCInvoiceBook.layoutControlItem9.Text" xml:space="preserve">
+    <value>From number:</value>
+    <comment>Từ số:</comment>
+  </data>
+  <data name="UCInvoiceBook.layout_Ct_Main.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+    <comment>layoutControl1</comment>
+  </data>
+  <data name="UCInvoiceBook.lo_Ct_Left.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+    <comment>layoutControl1</comment>
+  </data>
+  <data name="UCInvoiceBook.lo_Ct_Right.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+    <comment>layoutControl1</comment>
+  </data>
+  <data name="UCInvoiceBook.txtSearchInvoice.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Keyword search</value>
+    <comment>Từ khóa tìm kiếm</comment>
+  </data>
+</root>

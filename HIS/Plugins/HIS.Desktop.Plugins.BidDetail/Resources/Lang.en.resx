@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FormBidDetail.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+    <comment>Tools</comment>
+  </data>
+  <data name="FormBidDetail.bbtnRCPrint.Caption" xml:space="preserve">
+    <value>Print (Ctrl + P)</value>
+    <comment>In (Ctrl P)</comment>
+  </data>
+  <data name="FormBidDetail.cboPrint.Text" xml:space="preserve">
+    <value>Print</value>
+    <comment>In</comment>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcAmount.Caption" xml:space="preserve">
+    <value>Number</value>
+    <comment>Số lượng</comment>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcBidNumber.Caption" xml:space="preserve">
+    <value>number of bids</value>
+    <comment>Số thầu</comment>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcBidNumOrder.Caption" xml:space="preserve">
+    <value>No bid</value>
+    <comment>STT thầu</comment>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcBloodTypeCode.Caption" xml:space="preserve">
+    <value>blood stocks</value>
+    <comment>Mã máu</comment>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcBloodTypeName.Caption" xml:space="preserve">
+    <value>Form name</value>
+    <comment>Tên máu</comment>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcCreateTime.Caption" xml:space="preserve">
+    <value>Time created</value>
+    <comment>Thời gian tạo</comment>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcCreator.Caption" xml:space="preserve">
+    <value>creators</value>
+    <comment>Người tạo</comment>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcImpPrice.Caption" xml:space="preserve">
+    <value>Accede</value>
+    <comment>Giá nhập</comment>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcImpVatRatio.Caption" xml:space="preserve">
+    <value>SQUEEZE</value>
+    <comment>VAT</comment>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcModifier.Caption" xml:space="preserve">
+    <value>Repairer</value>
+    <comment>Người sửa</comment>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcModifyTime.Caption" xml:space="preserve">
+    <value>Time correction</value>
+    <comment>Thời gian sửa</comment>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcServiceUnitName.Caption" xml:space="preserve">
+    <value>Unit</value>
+    <comment>Đơn vị</comment>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+    <comment>STT</comment>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcSupplierName.Caption" xml:space="preserve">
+    <value>Supplier</value>
+    <comment>Nhà cung cấp</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcAmount.Caption" xml:space="preserve">
+    <value>Number</value>
+    <comment>Số lượng</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcBidNumber.Caption" xml:space="preserve">
+    <value>number of bids</value>
+    <comment>Số thầu</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcBidNumOrder.Caption" xml:space="preserve">
+    <value>No bid</value>
+    <comment>STT thầu</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcCreateTime.Caption" xml:space="preserve">
+    <value>Time created</value>
+    <comment>Thời gian tạo</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcCreator.Caption" xml:space="preserve">
+    <value>creators</value>
+    <comment>Người tạo</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcImpPrice.Caption" xml:space="preserve">
+    <value>Accede</value>
+    <comment>Giá nhập</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcImpVatRatio.Caption" xml:space="preserve">
+    <value>SQUEEZE</value>
+    <comment>VAT</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcMaterialTypeCode.Caption" xml:space="preserve">
+    <value>Material code</value>
+    <comment>Mã vật tư</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcMaterialTypeName.Caption" xml:space="preserve">
+    <value>Name supplies</value>
+    <comment>Tên vật tư</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcModifier.Caption" xml:space="preserve">
+    <value>Repairer</value>
+    <comment>Người sửa</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcModifyTime.Caption" xml:space="preserve">
+    <value>Time correction</value>
+    <comment>Thời gian sửa</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcSerViceUnitName.Caption" xml:space="preserve">
+    <value>Unit</value>
+    <comment>Đơn vị</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcStt.Caption" xml:space="preserve">
+    <value>STT</value>
+    <comment>STT</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcSupplierName.Caption" xml:space="preserve">
+    <value>Supplier</value>
+    <comment>Nhà cung cấp</comment>
+  </data>
+  <data name="FormBidDetail.GvMedicine_GcAmount.Caption" xml:space="preserve">
+    <value>Number</value>
+    <comment>Số lượng</comment>
+  </data>
+  <data name="FormBidDetail.GvMedicine_GcBidNumber.Caption" xml:space="preserve">
+    <value>number of bids</value>
+    <comment>Số thầu</comment>
+  </data>
+  <data name="FormBidDetail.GvMedicine_GcBidNumOrder.Caption" xml:space="preserve">
+    <value>No bid</value>
+    <comment>STT thầu</comment>
+  </data>
+  <data name="FormBidDetail.GvMedicine_GcCreateTime.Caption" xml:space="preserve">
+    <value>Time created</value>
+    <comment>Thời gian tạo</comment>
+  </data>
+  <data name="FormBidDetail.GvMedicine_GcCreator.Caption" xml:space="preserve">
+    <value>creators</value>
+    <comment>Người tạo</comment>
+  </data>
+  <data name="FormBidDetail.GvMedicine_GcImpPrice.Caption" xml:space="preserve">
+    <value>Accede</value>
+    <comment>Giá nhập</comment>
+  </data>
+  <data name="FormBidDetail.GvMedicine_GcImpVatRatio.Caption" xml:space="preserve">
+    <value>SQUEEZE</value>
+    <comment>VAT</comment>
+  </data>
+  <data name="FormBidDetail.GvMedicine_GcMedicineTypeCode.Caption" xml:space="preserve">
+    <value>drug code</value>
+    <comment>Mã thuốc</comment>
+  </data>
+  <data name="FormBidDetail.GvMedicine_GcMedicineTypeName.Caption" xml:space="preserve">
+    <value>drug name</value>
+    <comment>Tên thuốc</comment>
+  </data>
+  <data name="FormBidDetail.GvMedicine_GcModifier.Caption" xml:space="preserve">
+    <value>Repairer</value>
+    <comment>Người sửa</comment>
+  </data>
+  <data name="FormBidDetail.GvMedicine_GcModifyTime.Caption" xml:space="preserve">
+    <value>Time correction</value>
+    <comment>Thời gian sửa</comment>
+  </data>
+  <data name="FormBidDetail.GvMedicine_GcServiceUnitName.Caption" xml:space="preserve">
+    <value>Unit</value>
+    <comment>Đơn vị</comment>
+  </data>
+  <data name="FormBidDetail.GvMedicine_GcStt.Caption" xml:space="preserve">
+    <value>STT</value>
+    <comment>STT</comment>
+  </data>
+  <data name="FormBidDetail.GvMedicine_GcSupplierName.Caption" xml:space="preserve">
+    <value>Supplier</value>
+    <comment>Nhà cung cấp</comment>
+  </data>
+  <data name="FormBidDetail.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+    <comment>layoutControl1</comment>
+  </data>
+  <data name="FormBidDetail.Text" xml:space="preserve">
+    <value>Package Details</value>
+    <comment>Chi tiết gói thầu</comment>
+  </data>
+  <data name="FormBidDetail.xtraTabPageBlood.Text" xml:space="preserve">
+    <value>Blood</value>
+    <comment>Máu</comment>
+  </data>
+  <data name="FormBidDetail.xtraTabPageMaterial.Text" xml:space="preserve">
+    <value>Supplies</value>
+    <comment>Vật tư</comment>
+  </data>
+  <data name="FormBidDetail.xtraTabPageMedicine.Text" xml:space="preserve">
+    <value>Drug</value>
+    <comment>Thuốc</comment>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_BID_DETAIL__TYPE_NAME_BLOOD" xml:space="preserve">
+    <value>Blood</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_BID_DETAIL__TYPE_NAME_MATERIAL" xml:space="preserve">
+    <value>Material</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_BID_DETAIL__TYPE_NAME_MEDICINE" xml:space="preserve">
+    <value>Medicine</value>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcActiveIngrBhytCode.Caption" xml:space="preserve">
+    <value />
+    <comment>Mã hoạt chất</comment>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcActiveIngrBhytName.Caption" xml:space="preserve">
+    <value />
+    <comment>Tên hoạt chất</comment>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcConcentra.Caption" xml:space="preserve">
+    <value>Concentra</value>
+    <comment>Hàm lượng/Nồng độ</comment>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcManufacturerName.Caption" xml:space="preserve">
+    <value>Manufacturer</value>
+    <comment>Hãng sản xuất</comment>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcNationalName.Caption" xml:space="preserve">
+    <value>National</value>
+    <comment>Nước sản xuất</comment>
+  </data>
+  <data name="FormBidDetail.GvBlood_GcRegisterNumber.Caption" xml:space="preserve">
+    <value>Register Number</value>
+    <comment>Số đăng ký</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcActiveIngrBhytCode.Caption" xml:space="preserve">
+    <value />
+    <comment>Mã hoạt chất</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcActiveIngrBhytName.Caption" xml:space="preserve">
+    <value />
+    <comment>Tên hoạt chất</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcConcentra.Caption" xml:space="preserve">
+    <value>Concentra</value>
+    <comment>Hàm lượng/ Nồng độ</comment>
+  </data>
+  <data name="FormBidDetail.GvMedicine_GcMedicineUseFormID.Caption" xml:space="preserve">
+    <value>Medicine use form</value>
+    <comment>Mã đường dùng</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcManufacturerName.Caption" xml:space="preserve">
+    <value>Manufacturer</value>
+    <comment>Hãng sản xuất</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcNationalName.Caption" xml:space="preserve">
+    <value>National </value>
+    <comment>Nước sản xuất</comment>
+  </data>
+  <data name="FormBidDetail.GvMaterial_GcRegisterNumber.Caption" xml:space="preserve">
+    <value>number Register</value>
+    <comment>Số đăng ký</comment>
+  </data>
+</root>

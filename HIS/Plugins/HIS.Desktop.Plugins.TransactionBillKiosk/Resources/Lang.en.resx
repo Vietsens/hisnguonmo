@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__BTN_DROP_DOWN__ITEM_BIEN_LAI_PHI_LE_PHI" xml:space="preserve">
+    <value>Print Fee Fee Charges</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__BTN_DROP_DOWN__ITEM_IN_PHIEU_CHI_DINH" xml:space="preserve">
+    <value>Print assign vote</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__BTN_DROP_DOWN__ITEM_PHIEU_THU_THANH_TOAN" xml:space="preserve">
+    <value>Print bill receipt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__BTN_DROP_DOWN__ITEM_PHIEU_THU_TT_CHI_TIET_DICH_VU" xml:space="preserve">
+    <value>Print bill receipt detail</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__BTN_DROP_DOWN__ITEM_PHIEU_THU_TT_THEO_YEU_CAU" xml:space="preserve">
+    <value>Print bill receipt service request</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__BTN_NEW" xml:space="preserve">
+    <value>New (Ctrl N)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__BTN_PRINT" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__BTN_SAVE" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__BTN_SAVE_INVOICE_SIGN" xml:space="preserve">
+    <value>Save and sign (Ctrl A)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__BTN_SEARCH" xml:space="preserve">
+    <value>Search(Ctrl F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__CAPTION" xml:space="preserve">
+    <value>Bill</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__GRID_BILL_FUND__VALID_AMOUNT_GREAT_THAN_ZERO" xml:space="preserve">
+    <value>Amount money must be greater than 0</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__GRID_BILL_FUND__VALID_FUND_NOT_FOUND" xml:space="preserve">
+    <value>Must be choice bill fund!</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__GRID_CONTROL__COLUMN_STT" xml:space="preserve">
+    <value>Number order</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__GRID_FUND__COLUMN_AMOUNT" xml:space="preserve">
+    <value>Amount money</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__GRID_FUND__COLUMN_FUND_CODE" xml:space="preserve">
+    <value>Fund code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__GRID_FUND__COLUMN_FUND_NAME" xml:space="preserve">
+    <value>Fund name</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__layoutControlItem13" xml:space="preserve">
+    <value>Patient Code:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__layoutControlItem14" xml:space="preserve">
+    <value>Patient Type Alter:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__layoutControlItem15" xml:space="preserve">
+    <value>Patient Name:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__layoutControlItem16" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__layoutControlItem20" xml:space="preserve">
+    <value>DOB:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__layoutControlItem21" xml:space="preserve">
+    <value>Gender:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__layoutControlItem22" xml:space="preserve">
+    <value>MediOrgName:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__layoutControlItem23" xml:space="preserve">
+    <value>Hein Card:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__layoutControlItem25" xml:space="preserve">
+    <value>Hein Card From:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__layoutControlItem26" xml:space="preserve">
+    <value>Hein Card To;</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__LAYOUT_ACCOUNT_BOOK" xml:space="preserve">
+    <value>Account book:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__LAYOUT_CREATOR" xml:space="preserve">
+    <value>Creator:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__LAYOUT_DESCRIPTION" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__LAYOUT_DISCOUNT" xml:space="preserve">
+    <value>Discount:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__LAYOUT_DISCOUNT_RATIO" xml:space="preserve">
+    <value>Discount (%):</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__LAYOUT_DISCOUNT_REASON" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__LAYOUT_HIEN_DU" xml:space="preserve">
+    <value>Surplus:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__LAYOUT_NUM_ORDER" xml:space="preserve">
+    <value>Number order:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__LAYOUT_PAY_FORM" xml:space="preserve">
+    <value>Pay form:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__LAYOUT_SERE_SERV_EXPEND" xml:space="preserve">
+    <value>Expend</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__LAYOUT_TONG_TU_DEN" xml:space="preserve">
+    <value>Document number:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__LAYOUT_TOTAL_AMOUNT" xml:space="preserve">
+    <value>Amount money:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__LAYOUT_TOTAL_RECEIVE" xml:space="preserve">
+    <value>Receivable:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__LAYOUT_TRANSACTION_CODE" xml:space="preserve">
+    <value>Transaction code:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__PRINT_MENU__ITEM_BARCODE" xml:space="preserve">
+    <value>Print barcode</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__PRINT_MENU__ITEM_BIEN_BAN_KIEM_NHAP_TU_NCC" xml:space="preserve">
+    <value>Print coupon import from supplier</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__REPOSITORY__BTN_DELETE_BILL_FUND" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__TRANSACTION_TIME" xml:space="preserve">
+    <value>Transaction time:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__btnSearch" xml:space="preserve">
+    <value>Search(Ctrl F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__LAYOUT_PIN" xml:space="preserve">
+    <value>4 PIN numbers:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__CHK_CO_KET_CHUYEN" xml:space="preserve">
+    <value>Is tranfer</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__LAYOUT_DISCOUNT_RATIO_TOOLTIP" xml:space="preserve">
+    <value>discount %</value>
+    <comment>Chiết khấu %</comment>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__LAYOUT_TRANSFER_AMOUNT_TEXT" xml:space="preserve">
+    <value>Ck amount:</value>
+    <comment>Số tiền CK:</comment>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__LAYOUT_TRANSFER_AMOUNT_TOOLTIP" xml:space="preserve">
+    <value>tranfer amount:</value>
+    <comment>Số tiền chuyển khoản</comment>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__GRID_COLUMN_SERE_SERV_DEBT_AMOUNT" xml:space="preserve">
+    <value>Amount</value>
+    <comment>Số tiền</comment>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__GRID_COLUMN_SERE_SERV_DEBT_CASHIER_USERNAME" xml:space="preserve">
+    <value>Cashier username</value>
+    <comment>Người chốt công nợ</comment>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__GRID_COLUMN_SERE_SERV_DEBT_EXEMPTION" xml:space="preserve">
+    <value>Exemption</value>
+    <comment>Số tiền miễn giảm</comment>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__GRID_COLUMN_SERE_SERV_DEBT_STT" xml:space="preserve">
+    <value>STT</value>
+    <comment>STT</comment>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__GRID_COLUMN_SERE_SERV_DEBT_TRANSACTION_CODE" xml:space="preserve">
+    <value>Transaction code</value>
+    <comment>Mã công nợ</comment>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT_COLLECT__GRID_COLUMN_SERE_SERV_DEBT_TRANSACTION_TIME" xml:space="preserve">
+    <value>Transaction time</value>
+    <comment>Thời gian chốt nợ</comment>
+  </data>
+</root>

@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmPatientUpdate.Text" xml:space="preserve">
+    <value>Edit patient information</value>
+  </data>
+  <data name="Plugin_Update_Patient__NgaySinhKhongDuocNhoHon7" xml:space="preserve">
+    <value>Birth date can not be less than 7</value>
+  </data>
+  <data name="Plugin_Update_Patient__NhapGioSinhKhongDung" xml:space="preserve">
+    <value>Incorrect birth time input</value>
+  </data>
+  <data name="Plugin_Update_Patient__NhapNgaySinhKhongDungDinhDang" xml:space="preserve">
+    <value>Incorrectly entered date of birth</value>
+  </data>
+  <data name="Plugin_Update_Patient__ThongTinNgaySinhPhaiNhoHonNgayHienTai" xml:space="preserve">
+    <value>Birthday information is smaller than the current date</value>
+  </data>
+  <data name="frmPatientUpdate.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmPatientUpdate.btnUploadChanDung.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmPatientUpdate.btnUploadTheBHYT.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmPatientUpdate.chkInPhieuYCKham.Text" xml:space="preserve">
+    <value>In phiếu YC khám</value>
+  </data>
+  <data name="frmPatientUpdate.chkinTemBarcode.Text" xml:space="preserve">
+    <value>In tem barcode</value>
+  </data>
+  <data name="frmPatientUpdate.groupBox1.Text" xml:space="preserve">
+    <value>Administrative information</value>
+  </data>
+  <data name="frmPatientUpdate.groupBox2.Text" xml:space="preserve">
+    <value>Information relatives</value>
+  </data>
+  <data name="frmPatientUpdate.groupBox3.Text" xml:space="preserve">
+    <value>Disease information:</value>
+  </data>
+  <data name="frmPatientUpdate.layoutControlItem61.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmPatientUpdate.lcAccountNumber.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Account number</value>
+  </data>
+  <data name="frmPatientUpdate.lcAccountNumber.Text" xml:space="preserve">
+    <value>STK:</value>
+  </data>
+  <data name="frmPatientUpdate.lcBloodABOCode.Text" xml:space="preserve">
+    <value>Blood group:</value>
+  </data>
+  <data name="frmPatientUpdate.lcBloodRHCode.Text" xml:space="preserve">
+    <value>RH:</value>
+  </data>
+  <data name="frmPatientUpdate.lcBNManTinh.Text" xml:space="preserve">
+    <value>Patient chronic:</value>
+  </data>
+  <data name="frmPatientUpdate.lcCCCD_CMTDate.Text" xml:space="preserve">
+    <value>CMND date:</value>
+  </data>
+  <data name="frmPatientUpdate.lcCCCD_CMTNumber.Text" xml:space="preserve">
+    <value>CMND/CCCD/HC:</value>
+  </data>
+  <data name="frmPatientUpdate.lcCCCD_CMTPlace.Text" xml:space="preserve">
+    <value>CMND place:</value>
+  </data>
+  <data name="frmPatientUpdate.lcEmail.Text" xml:space="preserve">
+    <value>Email:</value>
+  </data>
+  <data name="frmPatientUpdate.lcFatherName.Text" xml:space="preserve">
+    <value>Father name:</value>
+  </data>
+  <data name="frmPatientUpdate.lcHtAddress.Text" xml:space="preserve">
+    <value>Current address:</value>
+  </data>
+  <data name="frmPatientUpdate.lcHTCommune.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Current commune</value>
+  </data>
+  <data name="frmPatientUpdate.lcHTCommune.Text" xml:space="preserve">
+    <value>Current commune:</value>
+  </data>
+  <data name="frmPatientUpdate.lcHTDistrict.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Current district</value>
+  </data>
+  <data name="frmPatientUpdate.lciAdress.Text" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="frmPatientUpdate.lciCareer.Text" xml:space="preserve">
+    <value>Job:</value>
+  </data>
+  <data name="frmPatientUpdate.lciCMNDRelative.Text" xml:space="preserve">
+    <value>CMND:</value>
+  </data>
+  <data name="frmPatientUpdate.lciCommune.Text" xml:space="preserve">
+    <value>Commune:</value>
+  </data>
+  <data name="frmPatientUpdate.lciDistricts.Text" xml:space="preserve">
+    <value>District:</value>
+  </data>
+  <data name="frmPatientUpdate.lciDOB.Text" xml:space="preserve">
+    <value>Birthday:</value>
+  </data>
+  <data name="frmPatientUpdate.lciEthnic.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmPatientUpdate.lciGender.Text" xml:space="preserve">
+    <value>Gender:</value>
+  </data>
+  <data name="frmPatientUpdate.lciMilitaryRank.Text" xml:space="preserve">
+    <value>Rank:</value>
+  </data>
+  <data name="frmPatientUpdate.lciNation.Text" xml:space="preserve">
+    <value>Nation:</value>
+  </data>
+  <data name="frmPatientUpdate.lciPatientName.Text" xml:space="preserve">
+    <value>Full name:</value>
+  </data>
+  <data name="frmPatientUpdate.lciPhone.Text" xml:space="preserve">
+    <value>Phone number:</value>
+  </data>
+  <data name="frmPatientUpdate.lciProvince.Text" xml:space="preserve">
+    <value>Province:</value>
+  </data>
+  <data name="frmPatientUpdate.lciRelation.Text" xml:space="preserve">
+    <value>Relative:</value>
+  </data>
+  <data name="frmPatientUpdate.lcMotherName.Text" xml:space="preserve">
+    <value>Mother name:</value>
+  </data>
+  <data name="frmPatientUpdate.lcPatientCode.Text" xml:space="preserve">
+    <value>Code:</value>
+  </data>
+  <data name="frmPatientUpdate.lcPatientStoreCode.Text" xml:space="preserve">
+    <value>Storage code:</value>
+  </data>
+  <data name="frmPatientUpdate.lcPersonFamily.Text" xml:space="preserve">
+    <value>Homie:</value>
+  </data>
+  <data name="frmPatientUpdate.lcProvince.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Current province</value>
+  </data>
+  <data name="frmPatientUpdate.lcProvince.Text" xml:space="preserve">
+    <value>Current province:</value>
+  </data>
+  <data name="frmPatientUpdate.lcRelativeMobile.Text" xml:space="preserve">
+    <value>Mobile phone:</value>
+  </data>
+  <data name="frmPatientUpdate.lcRelativePhone.Text" xml:space="preserve">
+    <value>Phone:</value>
+  </data>
+  <data name="frmPatientUpdate.lcTaxCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tax code:</value>
+  </data>
+  <data name="frmPatientUpdate.lcTaxCode.Text" xml:space="preserve">
+    <value>MST:</value>
+  </data>
+  <data name="frmPatientUpdate.lctContact.Text" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="frmPatientUpdate.lcTheBHYT.Text" xml:space="preserve">
+    <value>Card BHYT:</value>
+  </data>
+  <data name="frmPatientUpdate.lcTienSuBenh.Text" xml:space="preserve">
+    <value>The patient's medical history:</value>
+  </data>
+  <data name="frmPatientUpdate.lcTienSuGiaDinh.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmPatientUpdate.lcTonGiao.Text" xml:space="preserve">
+    <value>Religion:</value>
+  </data>
+  <data name="frmPatientUpdate.lcUUID.Text" xml:space="preserve">
+    <value>UUID:</value>
+  </data>
+  <data name="frmPatientUpdate.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>CMND/CCCD/HC</value>
+  </data>
+  <data name="frmPatientUpdate.lcHTDistrict.Text" xml:space="preserve">
+    <value>Current district:</value>
+  </data>
+  <data name="frmPatientUpdate.lciEmrUpdate.Text" xml:space="preserve">
+    <value>Emr Update</value>
+  </data>
+  <data name="frmPatientUpdate.IciCardCode.Text" xml:space="preserve">
+    <value>Card code:</value>
+  </data>
+  <data name="frmPatientUpdate.lciChucVu.Text" xml:space="preserve">
+    <value>Position:</value>
+  </data>
+</root>

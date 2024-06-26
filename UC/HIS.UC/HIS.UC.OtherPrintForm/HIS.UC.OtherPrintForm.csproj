@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{428319FD-D7E4-4119-9D14-22764239EC63}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HIS.UC.OtherPrintForm</RootNamespace>
+    <AssemblyName>HIS.UC.OtherPrintForm</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ACS.EFMODEL">
+      <HintPath>..\..\..\..\..\RELEASE\ACS\ACS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\FSD.Desktop\FSD.Desktop\FSD.Desktop\ReferencedAssemblies\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Images.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\FSD.Desktop\FSD.Desktop\FSD.Desktop\ReferencedAssemblies\DevLib\DevExpress.Images.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\FSD.Desktop\FSD.Desktop\FSD.Desktop\ReferencedAssemblies\DevLib\DevExpress.XtraBars.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraNavBar.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\FSD.Desktop\FSD.Desktop\FSD.Desktop\ReferencedAssemblies\DevLib\DevExpress.XtraTreeList.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="FIN.EFMODEL">
+      <HintPath>..\..\..\..\..\RELEASE\FIN\FIN.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="FIN.Filter">
+      <HintPath>..\..\..\..\..\RELEASE\FIN\FIN.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="FIN.SDO">
+      <HintPath>..\..\..\..\..\RELEASE\FIN\FIN.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="FSD.Desktop.ApiConsumer">
+      <HintPath>..\..\FSD.Desktop\FSD.Desktop\FSD.Desktop\ReferencedAssemblies\FSD.Desktop\FSD.Desktop.ApiConsumer\FSD.Desktop.ApiConsumer.dll</HintPath>
+    </Reference>
+    <Reference Include="His.UC.LibraryMessage">
+      <HintPath>..\..\..\..\..\RELEASE\HIS\His.UC.LibraryMessage\His.UC.LibraryMessage.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.FIN_RS">
+      <HintPath>..\..\..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.FIN_RS\IMSys.DbConfig.FIN_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Adapter">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.DateTime">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Mapper">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Number">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Number\Inventec.Common.Number.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Resource">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.RichEditor">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.RichEditor\Inventec.Common.RichEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.TypeConvert">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.WebApiClient">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Paging">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL">
+      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.Filter">
+      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.SDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.EFMODEL">
+      <HintPath>..\..\..\..\..\..\RELEASE\SAR\SAR.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.Filter">
+      <HintPath>..\..\..\..\..\..\RELEASE\SAR\SAR.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.SDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\SAR\SAR.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\Delegate.cs" />
+    <Compile Include="Base\LanguageManager.cs" />
+    <Compile Include="Base\MessageBoxManager.cs" />
+    <Compile Include="Base\NewLocalizerDX.cs" />
+    <Compile Include="Base\RegistryConstant.cs" />
+    <Compile Include="Base\ResouceManager.cs" />
+    <Compile Include="Data\InitData.cs" />
+    <Compile Include="Delegate\DelegateUC.cs" />
+    <Compile Include="Design\Template1\UCOtherPrintForm___SereServ___Process.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\UCOtherPrintForm___ServiceReq___Process.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\UCOtherPrintForm___Treatment___Process.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\UCOtherPrintForm___Process.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\UCOtherPrintForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\UCOtherPrintForm.Designer.cs">
+      <DependentUpon>UCOtherPrintForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Init\IInitUC.cs" />
+    <Compile Include="Init\InitUC.cs" />
+    <Compile Include="Init\InitUCFactory.cs" />
+    <Compile Include="MainOtherPrintForm.cs" />
+    <Compile Include="MessageUtil.cs" />
+    <Compile Include="Resources\ResourceLanguageManager.cs" />
+    <Compile Include="Store\GlobalStore.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Design\Template1\UCOtherPrintForm.resx">
+      <DependentUpon>UCOtherPrintForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.en..resx" />
+    <EmbeddedResource Include="Resources\Lang.vi.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\FRONTEND\HIS4\EXE\EXE.DAL\EXE.DAL.csproj">
+      <Project>{8c6600b7-3661-400f-bd01-6cb25b7f7209}</Project>
+      <Name>EXE.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\FRONTEND\HIS4\EXE\EXE.LibraryMessage\EXE.LibraryMessage.csproj">
+      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
+      <Name>EXE.LibraryMessage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\FRONTEND\HIS4\EXE\EXE.LOGIC\EXE.LOGIC.csproj">
+      <Project>{b0780692-05f2-4d65-85d5-338aea7aad08}</Project>
+      <Name>EXE.LOGIC</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

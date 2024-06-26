@@ -1,0 +1,986 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BenhNhanChuaKhoaVienPhi" xml:space="preserve">
+    <value>Patient not locked for hospital fee</value>
+  </data>
+  <data name="FormAppointment.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormAppointment.barButtonItemSave.Caption" xml:space="preserve">
+    <value>Ctrl S</value>
+  </data>
+  <data name="FormAppointment.bbtnChonKhungGio.ToolTip" xml:space="preserve">
+    <value>Choose an examination time frame</value>
+  </data>
+  <data name="FormAppointment.btnAppointmentService.Text" xml:space="preserve">
+    <value>Appointment service</value>
+  </data>
+  <data name="FormAppointment.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="FormAppointment.gridColumn2.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="FormAppointment.gridColumn3.Caption" xml:space="preserve">
+    <value>Clinic name</value>
+  </data>
+  <data name="FormAppointment.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem1.Text" xml:space="preserve">
+    <value>Number of days:</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem10.Text" xml:space="preserve">
+    <value>No.:</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem4.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Next clinic</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem4.Text" xml:space="preserve">
+    <value>PK next time:</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem5.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormAppointment.layoutControlItem8.Text" xml:space="preserve">
+    <value>Room:</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem9.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormAppointment.lblStt.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="FormAppointment.lciAdvise.Text" xml:space="preserve">
+    <value>Doctor's advice:</value>
+  </data>
+  <data name="FormAppointment.lciTimeAppointments.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Appointment time</value>
+  </data>
+  <data name="FormAppointment.lciTimeAppointments.Text" xml:space="preserve">
+    <value>TG makes an appointment:</value>
+  </data>
+  <data name="FormAppointment.lciTimeFrame.Text" xml:space="preserve">
+    <value>Time slot:</value>
+  </data>
+  <data name="FormAppointment.Text" xml:space="preserve">
+    <value>See you again</value>
+  </data>
+  <data name="FormAppointment.txtAdvise.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Doctor's advice</value>
+  </data>
+  <data name="FormAppointment.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keywords</value>
+  </data>
+  <data name="FormDeath.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormDeath.barButtonItem__Edit.Caption" xml:space="preserve">
+    <value>Edit (Ctrl E)</value>
+  </data>
+  <data name="FormDeath.barButtonItem__Save.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="FormDeath.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="FormDeath.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormDeath.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="FormDeath.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="FormDeath.Text" xml:space="preserve">
+    <value>Death information</value>
+  </data>
+  <data name="FormDeath.xtraTabPage1.Text" xml:space="preserve">
+    <value>General information</value>
+  </data>
+  <data name="FormDeath.xtraTabPage2.Text" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="FormTransfer.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormTransfer.barButtonItemSave.Caption" xml:space="preserve">
+    <value>Ctrl S</value>
+  </data>
+  <data name="FormTransfer.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="FormTransfer.btnSaveTranPatiTemp.Text" xml:space="preserve">
+    <value>Save the template</value>
+  </data>
+  <data name="FormTransfer.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem1.Text" xml:space="preserve">
+    <value>Used medicine</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem2.Text" xml:space="preserve">
+    <value>Professional reasons:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem3.Text" xml:space="preserve">
+    <value>Professional reasons:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem8.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Choose the person with authority to sign the hospital transfer form</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem8.Text" xml:space="preserve">
+    <value>Signed by:</value>
+  </data>
+  <data name="FormTransfer.lciHuongDieuTri.Text" xml:space="preserve">
+    <value>Treatment direction</value>
+  </data>
+  <data name="FormTransfer.lciMediOrg.Text" xml:space="preserve">
+    <value>Destination:</value>
+  </data>
+  <data name="FormTransfer.lciMediOrgAddress.Text" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="FormTransfer.lciNguoiHoTong.Text" xml:space="preserve">
+    <value>Full name, title, and professional qualifications of the escort</value>
+  </data>
+  <data name="FormTransfer.lciPhuongPhapSuDung.Text" xml:space="preserve">
+    <value>Treatments</value>
+  </data>
+  <data name="FormTransfer.lciPhuongTienVanChuyen.Text" xml:space="preserve">
+    <value>Transportation</value>
+  </data>
+  <data name="FormTransfer.lciTinhTrangNguoiBenh.Text" xml:space="preserve">
+    <value>Patient's condition</value>
+  </data>
+  <data name="FormTransfer.lciTranPatiForm.Text" xml:space="preserve">
+    <value>Form:</value>
+  </data>
+  <data name="FormTransfer.lciTranPatiReason.Text" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
+  <data name="FormTransfer.lciTranPatiTemp.Text" xml:space="preserve">
+    <value>Sample:</value>
+  </data>
+  <data name="FormTransfer.Text" xml:space="preserve">
+    <value>Hospital transfer information</value>
+  </data>
+  <data name="FormTreatmentFinish.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormTreatmentFinish.barButtonItemSave.Caption" xml:space="preserve">
+    <value>Ctrl S</value>
+  </data>
+  <data name="FormTreatmentFinish.btnAppointInfo.Text" xml:space="preserve">
+    <value>TT makes an appointment</value>
+  </data>
+  <data name="FormTreatmentFinish.btnAppointInfo.ToolTip" xml:space="preserve">
+    <value>Appointment information</value>
+  </data>
+  <data name="FormTreatmentFinish.btnBedHistory.Text" xml:space="preserve">
+    <value>Bed history</value>
+  </data>
+  <data name="FormTreatmentFinish.btnCD.ToolTip" xml:space="preserve">
+    <value>Additional diagnostic information displayed on hospital discharge papers</value>
+  </data>
+  <data name="FormTreatmentFinish.btnCheckIcd.ToolTip" xml:space="preserve">
+    <value>Summarize from the secondary diagnoses, the main diagnosis of all medical orders and do not contain the main diagnosis of the treatment record into the secondary diagnosis</value>
+  </data>
+  <data name="FormTreatmentFinish.btnChoiceResult.Text" xml:space="preserve">
+    <value>Select results</value>
+  </data>
+  <data name="FormTreatmentFinish.btnDeleteEndInfo.Text" xml:space="preserve">
+    <value>Delete TT and leave the hospital</value>
+  </data>
+  <data name="FormTreatmentFinish.btnDeleteEndInfo.ToolTip" xml:space="preserve">
+    <value>Delete hospital discharge information including discharge time, results, discharge type and other discharge information</value>
+  </data>
+  <data name="FormTreatmentFinish.btnDHST.Text" xml:space="preserve">
+    <value>Signs of vitality</value>
+  </data>
+  <data name="FormTreatmentFinish.BtnEndCode.Text" xml:space="preserve">
+    <value>Hospital discharge number issued</value>
+  </data>
+  <data name="FormTreatmentFinish.btnGetPT.Text" xml:space="preserve">
+    <value>Get surgical information</value>
+  </data>
+  <data name="FormTreatmentFinish.btnGetQT.Text" xml:space="preserve">
+    <value>Get information</value>
+  </data>
+  <data name="FormTreatmentFinish.btnKiemTraHoSo.Text" xml:space="preserve">
+    <value>Check records</value>
+  </data>
+  <data name="FormTreatmentFinish.btnListTextLib.Text" xml:space="preserve">
+    <value>Sample list</value>
+  </data>
+  <data name="FormTreatmentFinish.btnPrint.Text" xml:space="preserve">
+    <value>Printing</value>
+  </data>
+  <data name="FormTreatmentFinish.btnPrintConfig.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormTreatmentFinish.btnPrintConfig.ToolTip" xml:space="preserve">
+    <value>Configure print templates to automatically print when the Save button is pressed</value>
+  </data>
+  <data name="FormTreatmentFinish.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="FormTreatmentFinish.btnSaveTemp.Text" xml:space="preserve">
+    <value>Save temporarily</value>
+  </data>
+  <data name="FormTreatmentFinish.btnSaveTextLib.Text" xml:space="preserve">
+    <value>Save as template</value>
+  </data>
+  <data name="FormTreatmentFinish.cboEndDeptSubsHead.ToolTip" xml:space="preserve">
+    <value>Choose a person to sign for the dean</value>
+  </data>
+  <data name="FormTreatmentFinish.cboHospSubsDirector.ToolTip" xml:space="preserve">
+    <value>Choose someone to sign for the hospital director</value>
+  </data>
+  <data name="FormTreatmentFinish.chkSinhLaiSoChuyenVien.Properties.Caption" xml:space="preserve">
+    <value>Rebirth of hospital transfer number</value>
+  </data>
+  <data name="FormTreatmentFinish.chkSinhLaiSoRaVien.Properties.Caption" xml:space="preserve">
+    <value>Rebirth of hospital discharge number</value>
+  </data>
+  <data name="FormTreatmentFinish.chKTaoHoSoMoi.ToolTip" xml:space="preserve">
+    <value>Create new treatment records for outpatients</value>
+  </data>
+  <data name="FormTreatmentFinish.dtNewTreatmentTime.ToolTip" xml:space="preserve">
+    <value>Hospital admission time of new record</value>
+  </data>
+  <data name="FormTreatmentFinish.emptyPhuongPhapDieuTri.Text" xml:space="preserve">
+    <value>Treatments</value>
+  </data>
+  <data name="FormTreatmentFinish.layoutControlItem11.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Additional termination type information.</value>
+  </data>
+  <data name="FormTreatmentFinish.layoutControlItem11.Text" xml:space="preserve">
+    <value>Additional information:</value>
+  </data>
+  <data name="FormTreatmentFinish.layoutControlItem2.Text" xml:space="preserve">
+    <value>Social insurance code:</value>
+  </data>
+  <data name="FormTreatmentFinish.layoutControlItem25.Text" xml:space="preserve">
+    <value>Pathological process and clinical evolution</value>
+  </data>
+  <data name="FormTreatmentFinish.layoutControlItem27.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Create new treatment records for outpatients</value>
+  </data>
+  <data name="FormTreatmentFinish.layoutControlItem27.Text" xml:space="preserve">
+    <value>Create new profile:</value>
+  </data>
+  <data name="FormTreatmentFinish.layoutControlItem28.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Additional diagnostic information displayed on hospital discharge papers</value>
+  </data>
+  <data name="FormTreatmentFinish.layoutControlItem34.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Employee health check code</value>
+  </data>
+  <data name="FormTreatmentFinish.layoutControlItem34.Text" xml:space="preserve">
+    <value>KSK batch code:</value>
+  </data>
+  <data name="FormTreatmentFinish.layoutControlItem37.Text" xml:space="preserve">
+    <value>Doctor's advice</value>
+  </data>
+  <data name="FormTreatmentFinish.layoutControlItem40.Text" xml:space="preserve">
+    <value>Dean:</value>
+  </data>
+  <data name="FormTreatmentFinish.layoutControlItem41.Text" xml:space="preserve">
+    <value>Institute Director:</value>
+  </data>
+  <data name="FormTreatmentFinish.layoutControlItem43.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Choose someone to sign for the hospital director</value>
+  </data>
+  <data name="FormTreatmentFinish.layoutControlItem43.Text" xml:space="preserve">
+    <value>Substitute signer:</value>
+  </data>
+  <data name="FormTreatmentFinish.layoutControlItem46.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Choose a person to sign for the dean</value>
+  </data>
+  <data name="FormTreatmentFinish.layoutControlItem46.Text" xml:space="preserve">
+    <value>Substitute signer:</value>
+  </data>
+  <data name="FormTreatmentFinish.layoutControlItem5.Text" xml:space="preserve">
+    <value>Hospital transfer number:</value>
+  </data>
+  <data name="FormTreatmentFinish.layoutControlItem9.Text" xml:space="preserve">
+    <value>Result:</value>
+  </data>
+  <data name="FormTreatmentFinish.layoutControlMain.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormTreatmentFinish.lblEyesightGlassLeft.Text" xml:space="preserve">
+    <value>/ten</value>
+  </data>
+  <data name="FormTreatmentFinish.lblEyesightGlassRight.Text" xml:space="preserve">
+    <value>/ten</value>
+  </data>
+  <data name="FormTreatmentFinish.lblEyesightLeft.Text" xml:space="preserve">
+    <value>/ten</value>
+  </data>
+  <data name="FormTreatmentFinish.lblEyesightRight.Text" xml:space="preserve">
+    <value>/ten</value>
+  </data>
+  <data name="FormTreatmentFinish.lblEyeTensionLeft.Text" xml:space="preserve">
+    <value>mmHg</value>
+  </data>
+  <data name="FormTreatmentFinish.lblEyeTensionRight.Text" xml:space="preserve">
+    <value>mmHg</value>
+  </data>
+  <data name="FormTreatmentFinish.lblKetQuaXetNghiem.Text" xml:space="preserve">
+    <value>Laboratory and paraclinical results</value>
+  </data>
+  <data name="FormTreatmentFinish.lcDepartmentOut.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Faculty discharged from the hospital</value>
+  </data>
+  <data name="FormTreatmentFinish.lcDepartmentOut.Text" xml:space="preserve">
+    <value>RV Department:</value>
+  </data>
+  <data name="FormTreatmentFinish.lcgEyeInfoGroup.Text" xml:space="preserve">
+    <value>Eye information</value>
+  </data>
+  <data name="FormTreatmentFinish.lciAdvised.Text" xml:space="preserve">
+    <value>Doctor's advice</value>
+  </data>
+  <data name="FormTreatmentFinish.lciChkCapSoLuuTruBA.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Create outpatient medical records</value>
+  </data>
+  <data name="FormTreatmentFinish.lciChkCapSoLuuTruBA.Text" xml:space="preserve">
+    <value>Create an outpatient BA:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciChkChronic.Text" xml:space="preserve">
+    <value>Chronic patients:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciChkEmergency.Text" xml:space="preserve">
+    <value>Emergency:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciChkOutHopitalCondition.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mark the file as eligible for discharge from the hospital in case of \</value>
+  </data>
+  <data name="FormTreatmentFinish.lciChkOutHopitalCondition.Text" xml:space="preserve">
+    <value>Eligible for discharge from hospital:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciClinical.Text" xml:space="preserve">
+    <value>Pathological process and clinical evolution</value>
+  </data>
+  <data name="FormTreatmentFinish.lciDaysBedTreatment.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>The maximum number of bed days allowed according to regulations is based on exit time, entry time and treatment results</value>
+  </data>
+  <data name="FormTreatmentFinish.lciDaysBedTreatment.Text" xml:space="preserve">
+    <value>Bed days:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciDeleteEndInfo.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Delete hospital discharge information including discharge time, results, discharge type and other discharge information</value>
+  </data>
+  <data name="FormTreatmentFinish.lciDeleteEndInfo.Text" xml:space="preserve">
+    <value>Delete TT and leave the hospital</value>
+  </data>
+  <data name="FormTreatmentFinish.lciDoctorName.Text" xml:space="preserve">
+    <value>Doctor:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciEndDepartment.Text" xml:space="preserve">
+    <value>Ending department:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciEndOrder.Text" xml:space="preserve">
+    <value>Hospital discharge number:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciEndTime.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>End time</value>
+  </data>
+  <data name="FormTreatmentFinish.lciEndTime.Text" xml:space="preserve">
+    <value>Time out:</value>
+  </data>
+  <data name="FormTreatmentFinish.LciExpXml4210.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Export XML online</value>
+  </data>
+  <data name="FormTreatmentFinish.LciExpXml4210.Text" xml:space="preserve">
+    <value>Export XML throughline:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciExtraEndCode.Text" xml:space="preserve">
+    <value>Additional code:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciEyesightGlassLeft.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Visual acuity with left lens</value>
+  </data>
+  <data name="FormTreatmentFinish.lciEyesightGlassLeft.Text" xml:space="preserve">
+    <value>Left visual acuity:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciEyesightGlassRight.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Eyesight with right glasses</value>
+  </data>
+  <data name="FormTreatmentFinish.lciEyesightGlassRight.Text" xml:space="preserve">
+    <value>Right visual acuity:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciEyesightLeft.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Left uncorrected vision</value>
+  </data>
+  <data name="FormTreatmentFinish.lciEyesightLeft.Text" xml:space="preserve">
+    <value>Left KK visual acuity:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciEyesightRight.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Right uncorrected vision</value>
+  </data>
+  <data name="FormTreatmentFinish.lciEyesightRight.Text" xml:space="preserve">
+    <value>Right vision:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciEyeTensionLeft.Text" xml:space="preserve">
+    <value>Left intraocular pressure:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciEyeTensionRight.Text" xml:space="preserve">
+    <value>Right intraocular pressure:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciKetQuaXetNghiem.Text" xml:space="preserve">
+    <value>Laboratory and paraclinical results</value>
+  </data>
+  <data name="FormTreatmentFinish.lciMethod.Text" xml:space="preserve">
+    <value>Treatments</value>
+  </data>
+  <data name="FormTreatmentFinish.lciNewTreatmentTime.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hospital admission time of new record</value>
+  </data>
+  <data name="FormTreatmentFinish.lciNewTreatmentTime.Text" xml:space="preserve">
+    <value>Time:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciNumberOfDays.Text" xml:space="preserve">
+    <value>Number of days of treatment:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciOutPatientDateFrom.Text" xml:space="preserve">
+    <value>Outpatient from:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciOutPatientDateTo.Text" xml:space="preserve">
+    <value>Outpatient arrival:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciPatientProgram.Text" xml:space="preserve">
+    <value>Programme:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciStoreCode.Text" xml:space="preserve">
+    <value>Storage number:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciSurgery.Text" xml:space="preserve">
+    <value>Pathology</value>
+  </data>
+  <data name="FormTreatmentFinish.lciTimeIn.Text" xml:space="preserve">
+    <value>Time in:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciTypeOfDischarge.Text" xml:space="preserve">
+    <value>Hospital discharge type:</value>
+  </data>
+  <data name="FormTreatmentFinish.Text" xml:space="preserve">
+    <value>End of treatment</value>
+  </data>
+  <data name="FormTreatmentFinish.txtAdvised.Properties.NullValuePrompt" xml:space="preserve">
+    <value>F5 to select the content library</value>
+  </data>
+  <data name="FormTreatmentFinish.txtEndDeptSubsHead.ToolTip" xml:space="preserve">
+    <value>Choose a person to sign for the dean</value>
+  </data>
+  <data name="FormTreatmentFinish.txtHospSubsDirector.ToolTip" xml:space="preserve">
+    <value>Choose someone to sign for the hospital director</value>
+  </data>
+  <data name="FormTreatmentFinish.txtMethod.Properties.NullValuePrompt" xml:space="preserve">
+    <value>F5 to select the content library</value>
+  </data>
+  <data name="FormTTCDHienThiTrenGiayRaVien.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormTTCDHienThiTrenGiayRaVien.barButtonItem1.Caption" xml:space="preserve">
+    <value>BarSave</value>
+  </data>
+  <data name="FormTTCDHienThiTrenGiayRaVien.btnSave.Text" xml:space="preserve">
+    <value>Save(Ctrl S)</value>
+  </data>
+  <data name="FormTTCDHienThiTrenGiayRaVien.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormTTCDHienThiTrenGiayRaVien.Text" xml:space="preserve">
+    <value>Diagnostic information is displayed on hospital discharge papers</value>
+  </data>
+  <data name="frmCheckBedRoom.gridColumn1.Caption" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="frmCheckBedRoom.gridColumn2.Caption" xml:space="preserve">
+    <value>Room name</value>
+  </data>
+  <data name="frmCheckBedRoom.gridColumn3.Caption" xml:space="preserve">
+    <value>The person let him into the room</value>
+  </data>
+  <data name="frmCheckBedRoom.gridColumn4.Caption" xml:space="preserve">
+    <value>Time to enter the chamber</value>
+  </data>
+  <data name="frmCheckBedRoom.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmCheckBedRoom.Text" xml:space="preserve">
+    <value>Select data into chamber</value>
+  </data>
+  <data name="frmDHST.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmDHST.barButtonItem1.Caption" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="frmDHST.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmDHST.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmDHST.Text" xml:space="preserve">
+    <value>Signs of vitality</value>
+  </data>
+  <data name="frmDienBienCLS.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmDienBienCLS.barButtonItem1.Caption" xml:space="preserve">
+    <value>Select (Ctrl S)</value>
+  </data>
+  <data name="frmDienBienCLS.btnSave.Text" xml:space="preserve">
+    <value>Select (Ctrl S)</value>
+  </data>
+  <data name="frmDienBienCLS.gridColumn1.Caption" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="frmDienBienCLS.gridColumn2.Caption" xml:space="preserve">
+    <value>Clinic</value>
+  </data>
+  <data name="frmDienBienCLS.gridColumn3.Caption" xml:space="preserve">
+    <value>Command code</value>
+  </data>
+  <data name="frmDienBienCLS.gridColumn4.Caption" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="frmDienBienCLS.gridColumn5.Caption" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="frmDienBienCLS.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmDienBienCLS.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmDienBienCLS.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmDienBienCLS.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmDienBienCLS.Text" xml:space="preserve">
+    <value>Select CLS evolution</value>
+  </data>
+  <data name="frmDienBienCLS.xtraTabPage1.Text" xml:space="preserve">
+    <value>Public examination</value>
+  </data>
+  <data name="frmDienBienCLS.xtraTabPage2.Text" xml:space="preserve">
+    <value>Treatment sheet</value>
+  </data>
+  <data name="frmHisDeathInfo.lciDeathDocumentDate.Text" xml:space="preserve">
+    <value>Document date:</value>
+  </data>
+  <data name="frmHisDeathInfo.lciDeathDocumentNumber.Text" xml:space="preserve">
+    <value>Number:</value>
+  </data>
+  <data name="frmHisDeathInfo.lciDeathDocumentPlace.Text" xml:space="preserve">
+    <value>Doc place:</value>
+  </data>
+  <data name="frmHisDeathInfo.lciDeathDocumentType.Text" xml:space="preserve">
+    <value>Doc type:</value>
+  </data>
+  <data name="frmHisDeathInfo.lciDeathDocumentType.Tooltip" xml:space="preserve">
+    <value>Loại giấy tờ chứng minh nhân thân (CMND hoặc giấy tờ tương đương)</value>
+  </data>
+  <data name="frmHisDeathInfo.lciDeathPlace.Text" xml:space="preserve">
+    <value>Place:</value>
+  </data>
+  <data name="frmWarning.chkSkip.Properties.Caption" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="frmWarning.gridColumnDescription.Caption" xml:space="preserve">
+    <value>Describe</value>
+  </data>
+  <data name="frmWarning.layoutControlRoot.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmWarning.Text" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_APPOINTMENT__LCI_APPOINTMENT_TIME" xml:space="preserve">
+    <value>Appointment time:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_APPOINTMENT__TEXT" xml:space="preserve">
+    <value>Appointment</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEATH__CHK_AUPOPSY" xml:space="preserve">
+    <value>Has atopsy</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEATH__LCI_DEATH_ANATOMIZE" xml:space="preserve">
+    <value>Surgical results</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEATH__LCI_DEATH_CAUSE" xml:space="preserve">
+    <value>Cause:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEATH__LCI_DEATH_CAUSE_DETAIL" xml:space="preserve">
+    <value>Cause Detail</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEATH__LCI_DEATH_TIME" xml:space="preserve">
+    <value>Time of death:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEATH__LCI_DEATH_WITHIN" xml:space="preserve">
+    <value>Within:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEATH__TEXT" xml:space="preserve">
+    <value>Death information</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SICK__CBO_WORK_PALCE" xml:space="preserve">
+    <value>Patient's workplace:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SICK__CBO_WORK_PALCE__TOOL_TIP" xml:space="preserve">
+    <value>Patient's workplace</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SICK__LCI_DOCUMENT_BOOK" xml:space="preserve">
+    <value>Document book:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SICK__LCI_RELATIVE_NAME" xml:space="preserve">
+    <value>Relatives:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SICK__LCI_RELATIVE_TYPE" xml:space="preserve">
+    <value>Chat with relatives:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SICK__LCI_RELATIVE_TYPE__TOOL_TIP" xml:space="preserve">
+    <value>Relationships with relatives</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SICK__LCI_SICK_HEIN_CARD_NUMBER" xml:space="preserve">
+    <value>Health insurance card number:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SICK__LCI_SICK_LEAVE_DAY" xml:space="preserve">
+    <value>Number of days:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SICK__LCI_SICK_LEAVE_FROM_TIME" xml:space="preserve">
+    <value>Time off from:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SICK__LCI_SICK_LEAVE_TO_TIME" xml:space="preserve">
+    <value>arrive:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SICK__LCI_SICK_USER" xml:space="preserve">
+    <value>Provider:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SICK__LCI_WORK_PLACE_NAME" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SICK__TEXT" xml:space="preserve">
+    <value>Sick leave</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SICK__TXT_WORK_PALCE__NULL_VALUE_PROMPT" xml:space="preserve">
+    <value>Workplace (other information)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TRANSFER__LCI_DAU_HIEU_LAM_SANG" xml:space="preserve">
+    <value>Clinical signs</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TRANSFER__LCI_HUONG_DIEU_TRI" xml:space="preserve">
+    <value>Direction of treatment</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TRANSFER__LCI_KET_QUA_XET_NGHIEM" xml:space="preserve">
+    <value>Test results, subclinical</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TRANSFER__LCI_MEDI_ORG" xml:space="preserve">
+    <value>Hospital:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TRANSFER__LCI_MEDI_ORG_ADDRESS" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TRANSFER__LCI_NGUOI_HO_TONG" xml:space="preserve">
+    <value>They name the title, professional qualification of the escort</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TRANSFER__LCI_PHUONG_PHAP_SU_DUNG" xml:space="preserve">
+    <value>Methods used</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TRANSFER__LCI_PHUONG_TIEN_VAN_CHUYEN" xml:space="preserve">
+    <value>Transportation</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TRANSFER__LCI_TINH_TRANG_NGUOI_BENH" xml:space="preserve">
+    <value>Patient status</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TRANSFER__LCI_TRAN_PATI_FORM" xml:space="preserve">
+    <value>Form:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TRANSFER__LCI_TRAN_PATI_REASON" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TRANSFER__TEXT" xml:space="preserve">
+    <value>Information transferred</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FIMISH_MA" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FIMISH_TEN" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__BTN_PATIENT_PROGRAM" xml:space="preserve">
+    <value>Patient program</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__BTN_PRINT" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__BTN_PRINT_FIRST" xml:space="preserve">
+    <value>Save temporarily</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__BTN_SAVE" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__CLOSE_TREATMENT_SAVE" xml:space="preserve">
+    <value>Agree (Ctrl S)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_ADVISED" xml:space="preserve">
+    <value>Advised:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_CHECK_EDIT_ICD" xml:space="preserve">
+    <value>Edit:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_CHK_CAP_SO_LUU_TRU_BA" xml:space="preserve">
+    <value>Create an outpatient BA:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_DOCTOR_NAME" xml:space="preserve">
+    <value>Doctor:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_END_DEPARTMENT" xml:space="preserve">
+    <value>End department:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_END_ORDER" xml:space="preserve">
+    <value>Number out hospital:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_END_TIME" xml:space="preserve">
+    <value>End time:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_EXPXML4210" xml:space="preserve">
+    <value>Export XML throughline:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_EXPXML4210_TOOLTIP" xml:space="preserve">
+    <value>Export XML online</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_ICD_MAIN" xml:space="preserve">
+    <value>Primary diagnosis:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_ICD_TEXT" xml:space="preserve">
+    <value>Secondary diagnosis:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_IS_CHRONIC" xml:space="preserve">
+    <value>Chronic patients:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_METHOD" xml:space="preserve">
+    <value>Method:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_MUNBER_OF_DAY" xml:space="preserve">
+    <value>Number of day:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_PROGRAM" xml:space="preserve">
+    <value>Programme:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_RESULT" xml:space="preserve">
+    <value>Result:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_SO_LUU_TRU_BA" xml:space="preserve">
+    <value>Storage number:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_SURGERY" xml:space="preserve">
+    <value>Surgery</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_TIME_IN" xml:space="preserve">
+    <value>Time in:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__LCI_TYPE_OF_DISCHARGE" xml:space="preserve">
+    <value>Type of discharge</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_BANG_KE_THANH_TOAN" xml:space="preserve">
+    <value>Payment list</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_BIEU_MAU_KHAC" xml:space="preserve">
+    <value>Medical records</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_GIAY_BAO_TU" xml:space="preserve">
+    <value>Death document</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_GIAY_CHUNG_NHAN_PTTT" xml:space="preserve">
+    <value>Certificate of surgical procedure</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_GIAY_CHUNG_NHAN_TT" xml:space="preserve">
+    <value>Certificate of procedure</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_GIAY_CHUYEN_VIEN" xml:space="preserve">
+    <value>Giấy chuyển viện</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_GIAY_HEN_KHAM_LAI" xml:space="preserve">
+    <value>Giấy hẹn khám lại</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_GIAY_NGHI_OM" xml:space="preserve">
+    <value>Vacation leave for social insurance</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_GIAY_RA_VIEN" xml:space="preserve">
+    <value>Giấy ra viện</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_GIAY_XAC_NHAN_DIEU_TRI_NOI_TRU" xml:space="preserve">
+    <value>Certificate of inpatient treatment</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_PHIEU_BAN_GIAO_NGUOI_BENH_CV" xml:space="preserve">
+    <value>Handover form for patient transfer to hospital</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_TOM_TAT_BENH_AN" xml:space="preserve">
+    <value>Summary of medical history</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_TOM_TAT_KET_QUA_CLS" xml:space="preserve">
+    <value>Tóm tắt CLS(Giấy tổng hợp kết quả xét nghiệm)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_TOM_TAT_Y_LENH_PTTT_VA_DON_THUOC" xml:space="preserve">
+    <value>Tóm tắt y lệnh phẫu thuật thủ thuật và đơn thuốc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__TXT_ICD_TEXT__NULL_VALUE" xml:space="preserve">
+    <value>Press F1 to select the disease</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__TXT_METHOD_NULL_VAUE" xml:space="preserve">
+    <value>F5 to select content library</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__TXT_NNN" xml:space="preserve">
+    <value>External NN:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__TXT_NNN__TOOL_TIP" xml:space="preserve">
+    <value>External cause</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__TXT_YHCT" xml:space="preserve">
+    <value>College of Traditional Medicine:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__TXT_YHCT__TOOL_TIP" xml:space="preserve">
+    <value>Diagnosis of traditional medicine</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__TXT_YHCT_SEC" xml:space="preserve">
+    <value>Secondary College of Traditional Medicine:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__TXT_YHCT_SEC__TOOL_TIP" xml:space="preserve">
+    <value>Accompanying traditional medicine diagnosis</value>
+  </data>
+  <data name="TruongThongTinCoDoDaiVuotQuaGioiHan" xml:space="preserve">
+    <value>The length of the data field does not exceed 2000 characters</value>
+  </data>
+  <data name="FormAppointment.lblKhongCanhBaoNgayNghi.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Do not display appointment notices on Saturdays and Sundays</value>
+    <comment>Không hiển thị thông báo hẹn khám vào thứ 7, chủ nhật</comment>
+  </data>
+  <data name="FormAppointment.lblKhongCanhBaoNgayNghi.Text" xml:space="preserve">
+    <value>No holiday warning:</value>
+    <comment>Không cảnh báo ngày nghỉ:</comment>
+  </data>
+</root>

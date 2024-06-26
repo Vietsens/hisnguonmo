@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="HIS_UC_UCPatientRaw_BenhNhanDaTuVong" xml:space="preserve">
+    <value>Patient {0} has died</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_DotDieuTriGanNhatCuaBenhNhanCoNgayRaLaHomNay" xml:space="preserve">
+    <value>Patient with treatment record: {0} discharged today.</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_DotKhamTruocCuaBenhNhanConNoTienVienPhi" xml:space="preserve">
+    <value>The patient's previous examination/treatment still owes hospital fees.</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_DotKhamTruocCuaBenhNhanCoThuocChuaUongHet" xml:space="preserve">
+    <value>The patient's previous examination/treatment had {1} {2} {3} not yet taken</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_HoDemBNVuotQuaMaxLength" xml:space="preserve">
+    <value>Padding family exceeds maximum length ({0} characters)</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_MaBenhNhanKhongTontai" xml:space="preserve">
+    <value>Couldn't find patient information with corresponding code</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_MaChuongTrinhKhongTontai" xml:space="preserve">
+    <value>Patient information not found with program code</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_MaCmndCccdKhongTontai" xml:space="preserve">
+    <value>Patient information not found with ID/CCCD</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_MaDieuTriKhongTontai" xml:space="preserve">
+    <value>Couldn't find patient information with treatment code</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_MaHenKhamKhongTontai" xml:space="preserve">
+    <value>Couldn't find patient information with appointment code</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_NhapNgaySinhKhongDungDinhDang" xml:space="preserve">
+    <value>Enter the date of birth in the wrong format</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_SaiDinhDangGioAge" xml:space="preserve">
+    <value>Wrong format (Value 0 \u003d\u003e 23)</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_SaiDinhDangGioAgeVuotGiaTri23" xml:space="preserve">
+    <value>Value cannot be greater than 23 (Value 0 \u003d\u003e 23)</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_SoTheKhongTontai" xml:space="preserve">
+    <value>Patient information with card number not found</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_SoTuoiKhongDuocNhoHon7" xml:space="preserve">
+    <value>Age number should not be less than 7</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_TenBNVuotQuaMaxLength" xml:space="preserve">
+    <value>Name exceeds maximum length ({0} characters)</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_ThieuTruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Missing required fields.</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_ThongTinNgaySinhPhaiNhoHonNgayHienTai" xml:space="preserve">
+    <value>Date of birth information must be less than current date</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_ThuocCoThoiSuDungDen" xml:space="preserve">
+    <value>{0} has a prescription for up to {1}</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_TieuDeCuaSoThongBaoLaCanhBao" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_TieuDeCuaSoThongBaoLaThongBao" xml:space="preserve">
+    <value>Notify</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Required field.</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaBN" xml:space="preserve">
+    <value>BN. code</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaBN_ToolTip" xml:space="preserve">
+    <value>Patient code</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaCMCC" xml:space="preserve">
+    <value>ID/CCCD</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaCMCC_ToolTip" xml:space="preserve">
+    <value>Identity card/Citizen identity card</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaCT" xml:space="preserve">
+    <value>Code CT</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaCT_ToolTip" xml:space="preserve">
+    <value>Program code</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaDT" xml:space="preserve">
+    <value>Phone Code</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaDT_ToolTip" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaHK" xml:space="preserve">
+    <value>Code HK</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaHK_ToolTip" xml:space="preserve">
+    <value>Appointment code</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaNV" xml:space="preserve">
+    <value>NV code</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaNV_ToolTip" xml:space="preserve">
+    <value>Employee code</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__SoDT" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__SoDT_ToolTip" xml:space="preserve">
+    <value>Phone number</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__SoThe" xml:space="preserve">
+    <value>Card number</value>
+  </data>
+	<data name="HIS_UC_UCPatientRaw_typeCodeFind__MaTuVan" xml:space="preserve">
+    <value>Consulting code</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__SoThe_ToolTip" xml:space="preserve">
+    <value>Smart card number</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_XuLyThatBai" xml:space="preserve">
+    <value>Handling failure.</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_YeuCauNhapDayDuNgayThangNamSinhVoiBNDuoi6Tuoi" xml:space="preserve">
+    <value>Full date/month/year of birth is required for patients under 6 years old</value>
+  </data>
+</root>

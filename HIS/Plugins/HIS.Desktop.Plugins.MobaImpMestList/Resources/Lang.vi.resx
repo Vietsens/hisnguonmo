@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="UCHisImportMestMedicine.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="UCHisImportMestMedicine.groupBoxInfo.Text" xml:space="preserve">
+    <value>Thông tin chi tiết</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem35.Text" xml:space="preserve">
+    <value>Nhà cung cấp:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem36.Text" xml:space="preserve">
+    <value>Người giao:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem37.Text" xml:space="preserve">
+    <value>Chiết khấu (%):</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem38.Text" xml:space="preserve">
+    <value>Số chứng từ:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem39.Text" xml:space="preserve">
+    <value>Ngày chứng từ:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem40.Text" xml:space="preserve">
+    <value>Số tiền chứng từ:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem41.Text" xml:space="preserve">
+    <value>Mã điều trị:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem42.Text" xml:space="preserve">
+    <value>Tên bệnh nhân:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem44.Text" xml:space="preserve">
+    <value>Ngày sinh:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem45.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem46.Text" xml:space="preserve">
+    <value>Địa chỉ:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem43.Text" xml:space="preserve">
+    <value>Gói thầu:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.btnExport.Text" xml:space="preserve">
+    <value>Xuất mã phiếu</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="UCHisImportMestMedicine.checkEditMediStock.Properties.Caption" xml:space="preserve">
+    <value>Trong kho</value>
+  </data>
+  <data name="UCHisImportMestMedicine.cboType.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn9.Caption" xml:space="preserve">
+    <value>Loại nhập</value>
+  </data>
+  <data name="UCHisImportMestMedicine.cboStatus.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn5.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControl6.Text" xml:space="preserve">
+    <value>layoutControl6</value>
+  </data>
+  <data name="UCHisImportMestMedicine.groupBoxSoChungTu.Text" xml:space="preserve">
+    <value>Số chứng từ</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControl7.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="UCHisImportMestMedicine.checkEditNoDocumentNumber.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="UCHisImportMestMedicine.checkEditHasDocumentNumber.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem24.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem25.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCHisImportMestMedicine.groupBoxNgayChungTu.Text" xml:space="preserve">
+    <value>Ngày chứng từ</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControl8.Text" xml:space="preserve">
+    <value>layoutControl8</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem22.Text" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem23.Text" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.txtImpCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã nhập (F2)</value>
+  </data>
+  <data name="UCHisImportMestMedicine.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="UCHisImportMestMedicine.btnRefresh.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="UCHisImportMestMedicine.btnSearch.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem8.Text" xml:space="preserve">
+    <value>Trạng thái:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem9.Text" xml:space="preserve">
+    <value>Loại thu hồi:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem11.Text" xml:space="preserve">
+    <value>TG tạo từ:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem12.Text" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem34.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCHisImportMestMedicine.STT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn1.Caption" xml:space="preserve">
+    <value>Chi tiết phiếu</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn6.Caption" xml:space="preserve">
+    <value>sửa</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn4.Caption" xml:space="preserve">
+    <value>hủy</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn3.Caption" xml:space="preserve">
+    <value>duyệt</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn8.Caption" xml:space="preserve">
+    <value>Từ chối duyệt</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn2.Caption" xml:space="preserve">
+    <value>Hủy duyệt</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn7.Caption" xml:space="preserve">
+    <value>thực nhập</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn11.Caption" xml:space="preserve">
+    <value>Hoàn thành</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn11.ToolTip" xml:space="preserve">
+    <value>Hoàn thành</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn10.Caption" xml:space="preserve">
+    <value>Sửa thông tin nhập NCC</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn10.ToolTip" xml:space="preserve">
+    <value>Sửa thông tin nhập NCC</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn12.Caption" xml:space="preserve">
+    <value>Tạo phiếu xuất trả NCC</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn12.ToolTip" xml:space="preserve">
+    <value>Tạo phiếu xuất trả NCC</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCImpMestCode.Caption" xml:space="preserve">
+    <value>Mã nhập</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCImpMestTypeName.Caption" xml:space="preserve">
+    <value>Loại nhập</value>
+  </data>
+  <data name="UCHisImportMestMedicine.IMP_MEST_STT_NAME.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCReqLoginName.Caption" xml:space="preserve">
+    <value>Người yêu cầu</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCMediStockName.Caption" xml:space="preserve">
+    <value>Kho nhập</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCApprovalLoginName.Caption" xml:space="preserve">
+    <value>Người phê duyệt</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCApprovalTime.Caption" xml:space="preserve">
+    <value>Thời gian duyệt</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCImpLoginName.Caption" xml:space="preserve">
+    <value>Người thực nhập</value>
+  </data>
+  <data name="UCHisImportMestMedicine.EVENT_LOG_TYPE_ID.Caption" xml:space="preserve">
+    <value>Thời gian thực nhập</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCReqDepartmentCode.Caption" xml:space="preserve">
+    <value>Mã khoa yêu cầu</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCReqDepartmentName.Caption" xml:space="preserve">
+    <value>Tên khoa yêu cầu</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCCreateTime.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCCreator.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCModifyTime.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCModifier.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+</root>

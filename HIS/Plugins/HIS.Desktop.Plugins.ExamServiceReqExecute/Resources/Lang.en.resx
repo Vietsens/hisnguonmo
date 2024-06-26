@@ -1,0 +1,1119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ExamServiceReqExecutebtnTrackingCreate.Text" xml:space="preserve">
+    <value>List of treatment sheets</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnAccidentHurt.Text" xml:space="preserve">
+    <value>Injury</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnAggrExam.Text" xml:space="preserve">
+    <value>Summary of PK application</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnAssBlood.Text" xml:space="preserve">
+    <value>Assign blood</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnAssignPaan.Text" xml:space="preserve">
+    <value>Indications for pathological surgery</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnAssignPaan.ToolTip" xml:space="preserve">
+    <value>Indications for pathology</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnAssignPre.Text" xml:space="preserve">
+    <value>Prescription (F8)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnAssignService.Text" xml:space="preserve">
+    <value>Indication (F9)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnBANgoaiChan.Text" xml:space="preserve">
+    <value>Outpatient medical record</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnChooseIcdText.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnChooseTemplate.Text" xml:space="preserve">
+    <value>Sampling</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnConnectBloodPressure.ToolTip" xml:space="preserve">
+    <value>Get the result from the meter</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnContentSubclinical.Text" xml:space="preserve">
+    <value>Select CLS result</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnContentSubclinicalEdit.ToolTip" xml:space="preserve">
+    <value>Select subclinical results</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnDeparment.Text" xml:space="preserve">
+    <value>Specialist</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnExamServiceAdd.Text" xml:space="preserve">
+    <value>explore more</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnFastTrackingCreate.Text" xml:space="preserve">
+    <value>Quick creation of treatment sheets</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnFinish.Text" xml:space="preserve">
+    <value>Finish (Ctrl E)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnHospitalize.Text" xml:space="preserve">
+    <value>Hospitalization (F11)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnInCongKhaiDichVu" xml:space="preserve">
+    <value>Publicizing medical examination and treatment services</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnitemnDebateDiagnostic.Text" xml:space="preserve">
+    <value>Create debate diagnostic</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnitemnDebateDiagnosticList.Text" xml:space="preserve">
+    <value>List of meeting minutes</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnKeDonYHCT.Text" xml:space="preserve">
+    <value>Prescription of Traditional Chinese Medicine</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnKeDonYHCT.ToolTip" xml:space="preserve">
+    <value>Prescription of traditional medicine</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnMedisoftHistory.Text" xml:space="preserve">
+    <value>Drugs that have been used up</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnMedisoftHistory.ToolTip" xml:space="preserve">
+    <value>Medicines used Medisoft</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnPrint_ExamService.Text" xml:space="preserve">
+    <value>Printing</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnRequestAdvance.Text" xml:space="preserve">
+    <value>Request for advance</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnSaveFinish.Text" xml:space="preserve">
+    <value>Save and finish</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnServiceReqList.Text" xml:space="preserve">
+    <value>Wishlist</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnTrackingCreate.Text" xml:space="preserve">
+    <value>Create sheet treatment</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnTrackingCreateV2.Text" xml:space="preserve">
+    <value>Create treatment sheet</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnTreatmentFinish.Text" xml:space="preserve">
+    <value>End of treatment (F10)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnTuTruc.Text" xml:space="preserve">
+    <value>cabinets direct</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.btnVoBenhAn.Text" xml:space="preserve">
+    <value>Tạo vỏ bệnh án</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.chkEditIcd.Properties.Caption" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.chkEditIcdCause.Properties.Caption" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.chkEditNextTreatmentInstruction.Properties.Caption" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.chkExamFinish.Properties.Caption" xml:space="preserve">
+    <value>End of examination</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.chkExamServiceAdd.Properties.Caption" xml:space="preserve">
+    <value>Explore more</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.chkHospitalize.Properties.Caption" xml:space="preserve">
+    <value>Hospitalize</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.chkPART_EXAM_EYE_BLIND_COLOR__BT.Properties.Caption" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.chkPART_EXAM_EYE_BLIND_COLOR__MMD.Properties.Caption" xml:space="preserve">
+    <value>Red blind</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.chkPART_EXAM_EYE_BLIND_COLOR__MMTB.Properties.Caption" xml:space="preserve">
+    <value>Total color blindness</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.chkPART_EXAM_EYE_BLIND_COLOR__MMV.Properties.Caption" xml:space="preserve">
+    <value>Yellow blind</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.chkPART_EXAM_EYE_BLIND_COLOR__MMXLC.Properties.Caption" xml:space="preserve">
+    <value>Green blind</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.chkTreatmentFinish.Properties.Caption" xml:space="preserve">
+    <value>End of treatment</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.drBtnOther.Text" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.grdColTime.Caption" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.gridColumn1.Caption" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.gridColumn10.Caption" xml:space="preserve">
+    <value>gridColumn10</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.gridColumn11.Caption" xml:space="preserve">
+    <value>ICD_CODE</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.gridColumn12.Caption" xml:space="preserve">
+    <value>Name of disease</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.gridColumn13.Caption" xml:space="preserve">
+    <value>Clinic</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.gridColumn14.Caption" xml:space="preserve">
+    <value>ICD</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.gridColumn15.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.gridColumn16.Caption" xml:space="preserve">
+    <value>Disease code</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.gridColumn17.Caption" xml:space="preserve">
+    <value>Choose</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.gridColumn18.Caption" xml:space="preserve">
+    <value>ICD_SUB_CODE</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.gridColumn19.Caption" xml:space="preserve">
+    <value>ICD_CODE</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.gridColumn2.Caption" xml:space="preserve">
+    <value>Clinic</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.gridColumn3.Caption" xml:space="preserve">
+    <value>ICD</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.gridColumn4.Caption" xml:space="preserve">
+    <value>Allergens/Drugs</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.gridColumn5.Caption" xml:space="preserve">
+    <value>Suspect</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.gridColumn6.Caption" xml:space="preserve">
+    <value>Sure</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.gridColumn7.Caption" xml:space="preserve">
+    <value>Clinical Manifestations</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.gridColumn8.Caption" xml:space="preserve">
+    <value>Name of active ingredient health insurance</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.gridColumn9.Caption" xml:space="preserve">
+    <value>gridColumn9</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.groupBox1.Text" xml:space="preserve">
+    <value>Vital signs</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.groupControlTreatmentFinish.Text" xml:space="preserve">
+    <value>EXAMINATION TREATMENT</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl1.Text" xml:space="preserve">
+    <value>Select to enter processing information</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl10.Text" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl11.Text" xml:space="preserve">
+    <value>Binocular horizontal field\\r\\n(nose-temporal direction)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl12.Text" xml:space="preserve">
+    <value>square meter</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl13.Text" xml:space="preserve">
+    <value>Vertical market\\r\\n(upper - lower direction)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl14.Text" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl15.Text" xml:space="preserve">
+    <value>Limit</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl16.Text" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl17.Text" xml:space="preserve">
+    <value>Limit</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl18.Text" xml:space="preserve">
+    <value>Shades:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl19.Text" xml:space="preserve">
+    <value>m;</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl2.Text" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl20.Text" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl21.Text" xml:space="preserve">
+    <value>m;</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl22.Text" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl3.Text" xml:space="preserve">
+    <value>times/minute</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl4.Text" xml:space="preserve">
+    <value>mmHG</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl5.Text" xml:space="preserve">
+    <value>kg</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl6.Text" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl7.Text" xml:space="preserve">
+    <value>oC</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl8.Text" xml:space="preserve">
+    <value>times/minute</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.labelControl9.Text" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl10.Text" xml:space="preserve">
+    <value>layoutControl10</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl11.Text" xml:space="preserve">
+    <value>layoutControl11</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl12.Text" xml:space="preserve">
+    <value>layoutControl12</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl13.Text" xml:space="preserve">
+    <value>layoutControl13</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl14.Text" xml:space="preserve">
+    <value>layoutControl14</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl15.Text" xml:space="preserve">
+    <value>layoutControl15</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl16.Text" xml:space="preserve">
+    <value>layoutControl16</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl17.Text" xml:space="preserve">
+    <value>layoutControl17</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl18.Text" xml:space="preserve">
+    <value>layoutControl18</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl19.Text" xml:space="preserve">
+    <value>layoutControl19</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl20.Text" xml:space="preserve">
+    <value>layoutControl20</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl21.Text" xml:space="preserve">
+    <value>layoutControl21</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl22.Text" xml:space="preserve">
+    <value>layoutControl22</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl6.Text" xml:space="preserve">
+    <value>layoutControl6</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl7.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl8.Text" xml:space="preserve">
+    <value>layoutControl8</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControl9.Text" xml:space="preserve">
+    <value>layoutControl9</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem19.Text" xml:space="preserve">
+    <value>Secondary disease:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem20.Text" xml:space="preserve">
+    <value>Attention:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem21.Text" xml:space="preserve">
+    <value>Left label:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem22.Text" xml:space="preserve">
+    <value>Explore the whole body:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem23.Text" xml:space="preserve">
+    <value>Vision without glasses (left):</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem26.Text" xml:space="preserve">
+    <value>Vision without glasses (right):</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem27.Text" xml:space="preserve">
+    <value>Vision with glasses (left):</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem28.Text" xml:space="preserve">
+    <value>Vision with glasses (right):</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem30.Text" xml:space="preserve">
+    <value>Ears:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem31.Text" xml:space="preserve">
+    <value>Nose:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem32.Text" xml:space="preserve">
+    <value>Throat:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem59.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Contraindications</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem59.Text" xml:space="preserve">
+    <value>In case of CC:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem72.Text" xml:space="preserve">
+    <value>MLCT:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem74.Text" xml:space="preserve">
+    <value>Right ear: Normal speech:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem75.Text" xml:space="preserve">
+    <value>Whisper:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem76.Text" xml:space="preserve">
+    <value>Left ear: Normal speech:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem77.Text" xml:space="preserve">
+    <value>Whisper:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem78.Text" xml:space="preserve">
+    <value>Rheumatoid diseases (if any):</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem79.Text" xml:space="preserve">
+    <value>Upper jaw:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlItem80.Text" xml:space="preserve">
+    <value>The lower jaw:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.layoutControlTabExamExecute.Text" xml:space="preserve">
+    <value>layoutControl22</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblCaptionConclude.Text" xml:space="preserve">
+    <value>Treatments:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblCaptionDiagnostic.Text" xml:space="preserve">
+    <value>Summary preclinical results:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblCaptionHospitalizationReason.Text" xml:space="preserve">
+    <value>Reason for examination:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblCaptionNgayThuCuaBenh.Text" xml:space="preserve">
+    <value>Day:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblCaptionPathologicalHistory.Text" xml:space="preserve">
+    <value>Medical history of the patient:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblCaptionPathologicalHistoryFamily.Text" xml:space="preserve">
+    <value>Medical history of the family:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblCaptionPathologicalProcess.Text" xml:space="preserve">
+    <value>Pathological process :</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblCaptionResultNote.Text" xml:space="preserve">
+    <value>Subsequent treatments:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblCDPhu.Text" xml:space="preserve">
+    <value>Extra CDs:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblEditIcd.Text" xml:space="preserve">
+    <value>Milk:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblIcdCauseText.Text" xml:space="preserve">
+    <value>Person/external person:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblIcdCauseText.Tooltip" xml:space="preserve">
+    <value>Icd cause text</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblIcdMainText.Text" xml:space="preserve">
+    <value>Main diseases:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblIcdText.Text" xml:space="preserve">
+    <value>Secondary disease:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblInformationExam.Text" xml:space="preserve">
+    <value>Check parts:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblIsToCalculateEgfr.ToolTip" xml:space="preserve">
+    <value>Mức lọc cầu thận</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblSick.Text" xml:space="preserve">
+    <value>disease</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lcCause.Text" xml:space="preserve">
+    <value>layoutControl14</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lcForTabpageMat__ThiTruong.Text" xml:space="preserve">
+    <value>layoutControl21</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lcgDHST.Text" xml:space="preserve">
+    <value>Vital signs</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciBelly.Text" xml:space="preserve">
+    <value>Waist circumference:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciBloodPressure.Text" xml:space="preserve">
+    <value>Blood pressure:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciBMI.Text" xml:space="preserve">
+    <value>BMI:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciBMIDisplay.Text" xml:space="preserve">
+    <value>BMI:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciBreathRate.Text" xml:space="preserve">
+    <value>Breathing:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciChest.Text" xml:space="preserve">
+    <value>Bust:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciChuY.Text" xml:space="preserve">
+    <value>Attention:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciExecuteTime.Text" xml:space="preserve">
+    <value>Measurement time:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciHeight.Text" xml:space="preserve">
+    <value>Height:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciIcdSubCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Secondary diagnosis</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciIcdSubCode.Text" xml:space="preserve">
+    <value>Secondary College:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciIcdText.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Initial diagnosis</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciIcdText.Text" xml:space="preserve">
+    <value>Main College:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciIcdTextCause.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Main diagnosis</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciIcdTextCause.Text" xml:space="preserve">
+    <value>Person/external person:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciKhamToanThan.Text" xml:space="preserve">
+    <value>Full body examination:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciKskCode.Text" xml:space="preserve">
+    <value>KSK code</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciKskCode.ToolTip" xml:space="preserve">
+    <value>KSK code</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciLeatherArea.Text" xml:space="preserve">
+    <value>Skin Area:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciMLCT.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Glomerular filtration rate</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciMLCT.Text" xml:space="preserve">
+    <value>MLCT:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciNextTreatmentInstructionText.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Main diagnosis</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciNextTreatmentInstructionText.Text" xml:space="preserve">
+    <value>Treatment direction:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciNote.Text" xml:space="preserve">
+    <value>Other:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciPatientCase.Text" xml:space="preserve">
+    <value>Patient case:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciProvisionalDianosis.Text" xml:space="preserve">
+    <value>Preliminary diagnosis:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciPulse.Text" xml:space="preserve">
+    <value>Circuit:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciSpo2.Text" xml:space="preserve">
+    <value>SPO2:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciTemperature.Text" xml:space="preserve">
+    <value>Temperature:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciWeight.Text" xml:space="preserve">
+    <value>Weight:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.llayoutControlItem72.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mức lọc cầu thận</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.STT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.txtIcdExtraCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Enter the patient code</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.txtIcdExtraName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Press F1 to select extra disease</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.txtIcdText.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Press F1 to select disease</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.txtInfomationExecute.ToolTip" xml:space="preserve">
+    <value>Select processing information</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.txtSick.Text" xml:space="preserve">
+    <value> disease</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabCoXuongKhop.Text" xml:space="preserve">
+    <value>Musculoskeletal (6)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabDaLieu.Text" xml:space="preserve">
+    <value>Dermatology (I)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabDinhDuong.Text" xml:space="preserve">
+    <value>Nutrition (U)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabHoHap.Text" xml:space="preserve">
+    <value>Respiration (2)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabMat.Text" xml:space="preserve">
+    <value>Eyes (9)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabNoiTiet.Text" xml:space="preserve">
+    <value>Endocrine (Q)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPage1.Text" xml:space="preserve">
+    <value>Current examination</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPage10.Text" xml:space="preserve">
+    <value>RHM (Ctrl 8)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPage11.Text" xml:space="preserve">
+    <value>Cool (Ctrl 9)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPage12.Text" xml:space="preserve">
+    <value>Endocrine (Ctrl Q)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPage13.Text" xml:space="preserve">
+    <value>Mental (Ctrl W)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPage14.Text" xml:space="preserve">
+    <value>Nutrition (Ctrl U)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPage15.Text" xml:space="preserve">
+    <value>Motor (Ctrl R)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPage16.Text" xml:space="preserve">
+    <value>Gynecology (Ctrl T)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPage17.Text" xml:space="preserve">
+    <value>Dermatology (Ctrl I)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPage3.Text" xml:space="preserve">
+    <value>Cyclic (Ctrl 1)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPage4.Text" xml:space="preserve">
+    <value>Respiratory (Ctrl 2)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPage5.Text" xml:space="preserve">
+    <value>Digest (Ctrl 3)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPage6.Text" xml:space="preserve">
+    <value>Kidney Urinary (Ctrl 4)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPage7.Text" xml:space="preserve">
+    <value>Nerve (Ctrl 5)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPage8.Text" xml:space="preserve">
+    <value>Musculoskeletal (Ctrl 6)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPage9.Text" xml:space="preserve">
+    <value>TMH (Ctrl 7)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPageChung.Text" xml:space="preserve">
+    <value>General (Ctrl 0)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPageContraindication.Text" xml:space="preserve">
+    <value>Contraindications</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPageDiUng.Text" xml:space="preserve">
+    <value>Drug allergy</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPageExamExecute.Text" xml:space="preserve">
+    <value>Examination treatment</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPageExamHistory.Text" xml:space="preserve">
+    <value>History of examination</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabRangHamMat.Text" xml:space="preserve">
+    <value>RHM (8)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabSanPhuKhoa.Text" xml:space="preserve">
+    <value>Obstetrics and Gynecology (T)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabTaiMuiHong.Text" xml:space="preserve">
+    <value>TMH (7)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabTamThan.Text" xml:space="preserve">
+    <value>Mental (W)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabThanKinh.Text" xml:space="preserve">
+    <value>Nervous (5)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabThanTietNieu.Text" xml:space="preserve">
+    <value>Urinary Kidneys (4)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabTieuHoa.Text" xml:space="preserve">
+    <value>Digestion (3)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabTuanHoan.Text" xml:space="preserve">
+    <value>Cycle (1)</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabVanDong.Text" xml:space="preserve">
+    <value>Movement (R)</value>
+  </data>
+  <data name="frmConnectCOM.btnConnect.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="frmConnectCOM.btnDisconnect.Text" xml:space="preserve">
+    <value>Disconnect</value>
+  </data>
+  <data name="frmConnectCOM.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmConnectCOM.layoutControlItem1.Text" xml:space="preserve">
+    <value>COM port:</value>
+  </data>
+  <data name="frmConnectCOM.layoutControlItem2.Text" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="frmConnectCOM.lblStatus.Text" xml:space="preserve">
+    <value>Not connected yet</value>
+  </data>
+  <data name="frmConnectCOM.Text" xml:space="preserve">
+    <value>Card reader connection configuration</value>
+  </data>
+  <data name="frmPayment.btnNo.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="frmPayment.btnYes.Text" xml:space="preserve">
+    <value>Have</value>
+  </data>
+  <data name="frmPayment.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmPayment.layoutControlItem1.Text" xml:space="preserve">
+    <value>Patient must pay:</value>
+  </data>
+  <data name="frmPayment.layoutControlItem2.Text" xml:space="preserve">
+    <value>Closed (or closed debt):</value>
+  </data>
+  <data name="frmPayment.layoutControlItem3.Text" xml:space="preserve">
+    <value>Missing:</value>
+  </data>
+  <data name="frmPayment.layoutControlItem4.Text" xml:space="preserve">
+    <value>Card account balance:</value>
+  </data>
+  <data name="frmPayment.layoutControlItem5.Text" xml:space="preserve">
+    <value>Do you want to make a payment?</value>
+  </data>
+  <data name="frmPayment.lblAmountPaid.Text" xml:space="preserve">
+    <value>1 million</value>
+  </data>
+  <data name="frmPayment.lblBalance.Text" xml:space="preserve">
+    <value>1 million</value>
+  </data>
+  <data name="frmPayment.lblTotalPatientPrice.Text" xml:space="preserve">
+    <value>1 million</value>
+  </data>
+  <data name="frmPayment.lblUnpaidAmout.Text" xml:space="preserve">
+    <value>1 million</value>
+  </data>
+  <data name="frmPayment.Text" xml:space="preserve">
+    <value>Notify</value>
+  </data>
+  <data name="frmSecondaryIcd.bar2.Text" xml:space="preserve">
+    <value>Main menu</value>
+  </data>
+  <data name="frmSecondaryIcd.bbtnChoose.Caption" xml:space="preserve">
+    <value>Select (Ctrl S)</value>
+  </data>
+  <data name="frmSecondaryIcd.bbtnClose.Caption" xml:space="preserve">
+    <value>Close (Esc)</value>
+  </data>
+  <data name="frmSecondaryIcd.btnChoose.Text" xml:space="preserve">
+    <value>Select (Ctrl S)</value>
+  </data>
+  <data name="frmSecondaryIcd.grdColCode.Caption" xml:space="preserve">
+    <value>Disease code</value>
+  </data>
+  <data name="frmSecondaryIcd.grdColName.Caption" xml:space="preserve">
+    <value>Name of disease</value>
+  </data>
+  <data name="frmSecondaryIcd.gridColumn1.Caption" xml:space="preserve">
+    <value>gridColumn1</value>
+  </data>
+  <data name="frmSecondaryIcd.gridViewSecondaryDisease.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Search keywords...</value>
+  </data>
+  <data name="frmSecondaryIcd.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmSecondaryIcd.lblIcdText.Text" xml:space="preserve">
+    <value>Secondary diseases:</value>
+  </data>
+  <data name="frmSecondaryIcd.Text" xml:space="preserve">
+    <value>Find and choose disease</value>
+  </data>
+  <data name="frmSecondaryIcd.txtIcdCodes.Properties.NullValuePrompt" xml:space="preserve">
+    <value>List of disease codes</value>
+  </data>
+  <data name="frmSecondaryIcd.txtIcdNames.Properties.NullValuePrompt" xml:space="preserve">
+    <value>List of disease names</value>
+  </data>
+  <data name="frmSecondaryIcd.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keyword</value>
+  </data>
+  <data name="frmXemGiayChuyenTuyen.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmXemGiayChuyenTuyen.Text" xml:space="preserve">
+    <value>Transfer paper</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_ICD__LCI_CHECK_EDIT_ICD" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_ICD__LCI_ICD_MAIN" xml:space="preserve">
+    <value>Initial College (F2):</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_ICD__LCI_PROVISIONAL_DIAGNOSIS" xml:space="preserve">
+    <value>Provisional diag:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_ICD__LCI_PROVISIONAL_DIAGNOSIS_TOOLTIP" xml:space="preserve">
+    <value>Provisional diagnosis</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_BANG_TRAC_NGHIEM_CO_VA_CAM_GIAC" xml:space="preserve">
+    <value>Bảng trăc nghiệp cơ và cảm giác</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_BENH_AN" xml:space="preserve">
+    <value>Patient</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_BENH_AN_CAP_CUU" xml:space="preserve">
+    <value>Emergency medical records</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_BENH_AN_DIEU_TRI_NGOAI_TRU_PTTT_PHONG_KHAM_PTTT" xml:space="preserve">
+    <value>Outpatient Medical Records - PTTT. Clinic</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_BENH_AN_NGOAI_TRU" xml:space="preserve">
+    <value>Outpatient cardiology</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_BENH_AN_NGOAI_TRU_DAY_MAT" xml:space="preserve">
+    <value>Bệnh án ngoại trú đáy mắt (BMK)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_BENH_AN_NGOAI_TRU_GLAUCOMA" xml:space="preserve">
+    <value>Bệnh án ngoại trú Glaucoma (BMK)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_BIEU_MAU_KHAC" xml:space="preserve">
+    <value>Other forms</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_FROM_KHAC" xml:space="preserve">
+    <value>From other</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_IN_DON_PHONG_KHAM_TONG_HOP" xml:space="preserve">
+    <value>General clinic application</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_IN_GOP_DON_THUOC" xml:space="preserve">
+    <value>Prescription printing</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_IN_PHIEU_XET_NGHIEM" xml:space="preserve">
+    <value>Total test result</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_IN_PHIEU_YEU_CAU_KHAM" xml:space="preserve">
+    <value>Print the request form</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_IN_TRICH_LUC" xml:space="preserve">
+    <value>Phiếu kết quả khám bệnh (trích lục)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_PHIEU_KB_CHUYEN_KHAM_PHONG_PTTT" xml:space="preserve">
+    <value>Medical examination card - Transfer to PTTT. clinic</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_PHIEU_KHAM_BENH_VAO_VIEN" xml:space="preserve">
+    <value>Print the medical examination form</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_PHIEU_KIEM_TRA_KHAM_SUC_KHOE_DINH_KY" xml:space="preserve">
+    <value>Phiếu kiểm tra khám sức khỏe định kì</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_PHIEU_PTTT" xml:space="preserve">
+    <value>Biểu mẫu khác - Phiếu PTTT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_PHIEU_TU_VAN" xml:space="preserve">
+    <value>Advice card</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_PHIEU_XAC_NHAN_DONG_Y_XET_NGHIEM_HIV_MPS401" xml:space="preserve">
+    <value>Confirmation form of consent to HIV test</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_PHIEU_XET_NGHIEM_DOM_MPS438" xml:space="preserve">
+    <value>Phiếu xét nghiệm đờm</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_PHIEU_XET_NGHIEM_VI_KHUAN_LAO_MPS436" xml:space="preserve">
+    <value>Phiếu xét nghiệm vi khuẩn lao</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_PHIEU_XET_NGHIEM_XPertXPressSARsnCOV2_MPS437" xml:space="preserve">
+    <value>Test Sheet XPert XPress SARs-nCOV-2</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_SECONDARY_DISEASE_BTN_CHOOSE" xml:space="preserve">
+    <value>Select (Ctrl S)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_SECONDARY_DISEASE_GRDCOL_CODE" xml:space="preserve">
+    <value>Disease code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_SECONDARY_DISEASE_GRDCOL_NAME" xml:space="preserve">
+    <value>Name of disease</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_SECONDARY_DISEASE_ICD_CODE__NULL_TEXT" xml:space="preserve">
+    <value>List of disease codes</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_SECONDARY_DISEASE_ICD_NAME__NULL_TEXT" xml:space="preserve">
+    <value>List of disease names</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_SECONDARY_GRID_ICD__FIND_NULL_PROMPT_TEXT" xml:space="preserve">
+    <value>Search keyword</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_PHIEU_VO_BENH_AN" xml:space="preserve">
+    <value>Phiếu vỏ bệnh án</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__DonThuocLanKhamTruoc" xml:space="preserve">
+    <value>You already have a prescription for the previous visit, do you want to order another one?</value>
+  </data>
+  <data name="toolTipItem1.Text" xml:space="preserve">
+    <value>Peripheral (capillary) blood oxygen saturation, measured through the skin</value>
+  </data>
+  <data name="toolTipItem2.Text" xml:space="preserve">
+    <value>Peripheral (capillary) blood oxygen saturation, measured through the skin</value>
+  </data>
+  <data name="UCDHST.BMIDISPLAY.NORMAL" xml:space="preserve">
+    <value>(Normal)</value>
+  </data>
+  <data name="UCDHST.BMIDISPLAY.OBESITY.I" xml:space="preserve">
+    <value>(Grade I obesity)</value>
+  </data>
+  <data name="UCDHST.BMIDISPLAY.OBESITY.II" xml:space="preserve">
+    <value>(Grade II obesity)</value>
+  </data>
+  <data name="UCDHST.BMIDISPLAY.OBESITY.III" xml:space="preserve">
+    <value>(Grade III obesity)</value>
+  </data>
+  <data name="UCDHST.BMIDISPLAY.OVERWEIGHT" xml:space="preserve">
+    <value>(Overweight)</value>
+  </data>
+  <data name="UCDHST.labelControl10.Text" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="UCDHST.labelControl12.Text" xml:space="preserve">
+    <value>square meter</value>
+  </data>
+  <data name="UCDHST.labelControl3.Text" xml:space="preserve">
+    <value>times/minute</value>
+  </data>
+  <data name="UCDHST.labelControl4.Text" xml:space="preserve">
+    <value>mmHG</value>
+  </data>
+  <data name="UCDHST.labelControl5.Text" xml:space="preserve">
+    <value>kg</value>
+  </data>
+  <data name="UCDHST.labelControl6.Text" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="UCDHST.labelControl7.Text" xml:space="preserve">
+    <value>oC</value>
+  </data>
+  <data name="UCDHST.labelControl8.Text" xml:space="preserve">
+    <value>times/minute</value>
+  </data>
+  <data name="UCDHST.labelControl9.Text" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="UCDHST.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCDHST.layoutControlItem1.Text" xml:space="preserve">
+    <value>Circuit:</value>
+  </data>
+  <data name="UCDHST.layoutControlItem10.Text" xml:space="preserve">
+    <value>BMI:</value>
+  </data>
+  <data name="UCDHST.layoutControlItem11.Text" xml:space="preserve">
+    <value>Skin Area:</value>
+  </data>
+  <data name="UCDHST.layoutControlItem17.Text" xml:space="preserve">
+    <value>times/minute</value>
+  </data>
+  <data name="UCDHST.layoutControlItem2.Text" xml:space="preserve">
+    <value>Temperature:</value>
+  </data>
+  <data name="UCDHST.layoutControlItem3.Text" xml:space="preserve">
+    <value>Blood pressure:</value>
+  </data>
+  <data name="UCDHST.layoutControlItem5.Text" xml:space="preserve">
+    <value>Breathing:</value>
+  </data>
+  <data name="UCDHST.layoutControlItem6.Text" xml:space="preserve">
+    <value>Weight:</value>
+  </data>
+  <data name="UCDHST.layoutControlItem7.Text" xml:space="preserve">
+    <value>Height:</value>
+  </data>
+  <data name="UCDHST.layoutControlItem8.Text" xml:space="preserve">
+    <value>Bust:</value>
+  </data>
+  <data name="UCDHST.layoutControlItem9.Text" xml:space="preserve">
+    <value>Waist circumference:</value>
+  </data>
+  <data name="UCDHST.lblSPO2.Text" xml:space="preserve">
+    <value>SPO2:</value>
+  </data>
+  <data name="UCDHST.lciNote.Text" xml:space="preserve">
+    <value>Other:</value>
+  </data>
+  <data name="UCDHST.SKINNY.I" xml:space="preserve">
+    <value>(Level I thin)</value>
+  </data>
+  <data name="UCDHST.SKINNY.II" xml:space="preserve">
+    <value>(Level II thin)</value>
+  </data>
+  <data name="UCDHST.SKINNY.III" xml:space="preserve">
+    <value>(Level III Skinny)</value>
+  </data>
+</root>

@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__BTN_FIND" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__BTN_REFRESH" xml:space="preserve">
+    <value>Refresh (Ctrl R)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__CAPTION" xml:space="preserve">
+    <value>Treatment list</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_ACCOUNT_BOOK_CODE" xml:space="preserve">
+    <value>Account book code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_ACCOUNT_BOOK_NAME" xml:space="preserve">
+    <value>Account book name</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_AMOUNT" xml:space="preserve">
+    <value>Amount money</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_CASHIER" xml:space="preserve">
+    <value>Cashier name</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_CASHIER_ROOM_NAME" xml:space="preserve">
+    <value>Cashier room</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_CREATE_TIME" xml:space="preserve">
+    <value>Create time</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_CREATOR" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_DOB" xml:space="preserve">
+    <value>Birthday</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_GENDER_NAME" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_MODIFIER" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_MODIFY_TIME" xml:space="preserve">
+    <value>Modify time</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_NATIONAL_TREATMENT_CODE" xml:space="preserve">
+    <value>National transaction code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_NUM_ORDER" xml:space="preserve">
+    <value>Number order</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_PATIENT_CODE" xml:space="preserve">
+    <value>Patient code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_PAY_FORM_NAME" xml:space="preserve">
+    <value>Pay form</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_STT" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_TIG_TREATMENT_CODE" xml:space="preserve">
+    <value>Tig transaction code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_TREATMENT_CODE" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_TREATMENT_TIME" xml:space="preserve">
+    <value>Treatment time</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_TREATMENT_TYPE_NAME" xml:space="preserve">
+    <value>Treatment type</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_TREATMENT_CODE" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__GRID_TREATMENT__COLUMN_VIR_PATIENT_NAME" xml:space="preserve">
+    <value>Patient name</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__LAYOUT_CHECK__TREATMENT_TYPE__BILL" xml:space="preserve">
+    <value>Bill</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__LAYOUT_CHECK__TREATMENT_TYPE__DEPOSIT" xml:space="preserve">
+    <value>Deposit</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__LAYOUT_CHECK__TREATMENT_TYPE__REPAY" xml:space="preserve">
+    <value>Repay</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__LAYOUT_TIME_FROM" xml:space="preserve">
+    <value>Time from:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__LAYOUT_TIME_TO" xml:space="preserve">
+    <value>Time to:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__NAV_BAR__GROUP_CREATE_TIME" xml:space="preserve">
+    <value>Create time</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__NAV_BAR__GROUP_TREATMENT_TYPE" xml:space="preserve">
+    <value>Treatment type</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__POPUP_MENU__ITEM_BIENLAITHUPHILEPHI" xml:space="preserve">
+    <value>In biên lai thu phí lệ phí</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__POPUP_MENU__ITEM_HOADONTHANHTOANCHITIETDICHVU" xml:space="preserve">
+    <value>Print bill receipt detail</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__POPUP_MENU__ITEM_HOADONTHANHTOANTHEOYEUCAUDICHVU" xml:space="preserve">
+    <value>Print bill receipt service request</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__POPUP_MENU__ITEM_PHIEUCHIDINH" xml:space="preserve">
+    <value>Print Assign vote</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__POPUP_MENU__ITEM_PHIEUHOANUNG" xml:space="preserve">
+    <value>Print repay receipt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__POPUP_MENU__ITEM_PHIEUHOANUNGDICHVU" xml:space="preserve">
+    <value>Print repay service receipt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__POPUP_MENU__ITEM_PHIEUTAMUNG" xml:space="preserve">
+    <value>Print deposit receipt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__POPUP_MENU__ITEM_PHIEUTAMUNGDICHVU" xml:space="preserve">
+    <value>Print deposit service receipt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__POPUP_MENU__ITEM_PHIEUTAMUNGDICHVUCHITIET" xml:space="preserve">
+    <value>Print depist service receipt detail</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__POPUP_MENU__ITEM_PHIEUTHUPHIDICHVU" xml:space="preserve">
+    <value>In phiếu thu phí dịch vụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__POPUP_MENU__ITEM_PHIEUTHUTHANHTOAN" xml:space="preserve">
+    <value>Print bill receipt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__REPOSITORY__BTN_CANCEL_TREATMENT" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__REPOSITORY__BTN_VIEW_BILL_DETAIL" xml:space="preserve">
+    <value>Bill detail</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__TXT_ACCOUNT_BOOK_CODE_NULL_VALUE" xml:space="preserve">
+    <value>Account book code (F2)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__TXT_KEY_WORD_NULL_VALUE" xml:space="preserve">
+    <value>Keyword</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__TXT_TREATMENT_CODE_NULL_VALUE" xml:space="preserve">
+    <value>Treatment code (F1)</value>
+  </data>
+</root>

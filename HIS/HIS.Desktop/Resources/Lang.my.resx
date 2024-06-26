@@ -1,0 +1,423 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BanVuiLongThoatPhanMemRaVaoLaiDeCapNhat" xml:space="preserve">
+    <value>ကျေးဇူးပြု၍ ဆော့ဖ်ဝဲမှထွက်ပြီး အပ်ဒိတ်လုပ်ရန် ပြန်ဝင်ပါ။</value>
+  </data>
+  <data name="blblHelp.Caption" xml:space="preserve">
+    <value>\</value>
+  </data>
+  <data name="DongTabBenPhai" xml:space="preserve">
+    <value>ညာဘက်ရှိ တက်ဘ်များကို ပိတ်ပါ။</value>
+  </data>
+  <data name="DongTabKhac" xml:space="preserve">
+    <value>အခြားတဘ်များကို ပိတ်ပါ။</value>
+  </data>
+  <data name="frmCheckServerConnect.gridColumn1.Caption" xml:space="preserve">
+    <value>ဆာဗာလိပ်စာ</value>
+  </data>
+  <data name="frmCheckServerConnect.gridColumn2.Caption" xml:space="preserve">
+    <value>နောက်ဆုံး ping အချိန်</value>
+  </data>
+  <data name="frmCheckServerConnect.gridColumn3.Caption" xml:space="preserve">
+    <value>အဆင့်အတန်း</value>
+  </data>
+  <data name="frmCheckServerConnect.gridColumn4.Caption" xml:space="preserve">
+    <value>ဖော်ပြပါ။</value>
+  </data>
+  <data name="frmCheckServerConnect.Text" xml:space="preserve">
+    <value>ဆာဗာချိတ်ဆက်မှုကို စစ်ဆေးပါ။</value>
+  </data>
+  <data name="frmDesktopConfig.btnSave.Text" xml:space="preserve">
+    <value>သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="frmDesktopConfig.btnSave.ToolTip" xml:space="preserve">
+    <value>သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn1.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn1.ToolTip" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn2.Caption" xml:space="preserve">
+    <value>ဖွဲ့စည်းမှု</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn2.ToolTip" xml:space="preserve">
+    <value>ဖွဲ့စည်းမှု</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn3.Caption" xml:space="preserve">
+    <value>တန်ဖိုး</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn3.ToolTip" xml:space="preserve">
+    <value>တန်ဖိုး</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn4.Caption" xml:space="preserve">
+    <value>ဖော်ပြပါ။</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn4.ToolTip" xml:space="preserve">
+    <value>ဖော်ပြပါ။</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn5.Caption" xml:space="preserve">
+    <value>gridColumn5</value>
+  </data>
+  <data name="frmDesktopConfig.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmDesktopConfig.Text" xml:space="preserve">
+    <value>ဖြန့်ကျက်ဖွဲ့စည်းမှု</value>
+  </data>
+  <data name="frmLogin.lblBranch" xml:space="preserve">
+    <value>အခြေခံ-</value>
+  </data>
+  <data name="frmLogin.Text" xml:space="preserve">
+    <value>လော့ဂ်အင်</value>
+  </data>
+  <data name="frmMain.backstageViewControl1.Text" xml:space="preserve">
+    <value>backstageViewControl1</value>
+  </data>
+  <data name="frmMain.backstageViewControl2.Text" xml:space="preserve">
+    <value>backstageViewControl2</value>
+  </data>
+  <data name="frmMain.backstageViewTabItem1.Caption" xml:space="preserve">
+    <value>အခန်းက အလုပ်လုပ်နေတယ်။</value>
+  </data>
+  <data name="frmMain.backstageViewTabItem2.Caption" xml:space="preserve">
+    <value>အခန်းက အလုပ်လုပ်နေတယ်။</value>
+  </data>
+  <data name="frmMain.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmMain.barbtnResetCacheStateControl.Caption" xml:space="preserve">
+    <value>ကက်ရှ်ထိန်းချုပ်မှုကို ပြန်လည်သတ်မှတ်ပါ (Ctrl Shift R)</value>
+  </data>
+  <data name="frmMain.barBtnSendReflection.Caption" xml:space="preserve">
+    <value>Ctrl F2</value>
+  </data>
+  <data name="frmMain.barButtonItem1.Caption" xml:space="preserve">
+    <value>လော့ဂ်အင်အမည်ကို ပြောင်းပါ။</value>
+  </data>
+  <data name="frmMain.barButtonItem2.Caption" xml:space="preserve">
+    <value>bbtnModuleControlHide</value>
+  </data>
+  <data name="frmMain.barButtonItem3.Caption" xml:space="preserve">
+    <value>barButtonItem3</value>
+  </data>
+  <data name="frmMain.barButtonItem4.Caption" xml:space="preserve">
+    <value>Ctrl Shift ၁</value>
+  </data>
+  <data name="frmMain.barHeaderItem1.Caption" xml:space="preserve">
+    <value>ဗားရှင်း- 2.0 @</value>
+  </data>
+  <data name="frmMain.barHeaderItem2.Caption" xml:space="preserve">
+    <value>barHeaderItem2</value>
+  </data>
+  <data name="frmMain.bbtnChanelRemoteSupport.Caption" xml:space="preserve">
+    <value>ဖောက်သည် တောင်းဆိုချက် ဖန်တီးပါ (Ctrl F2)</value>
+  </data>
+  <data name="frmMain.bbtnChangePassword.Caption" xml:space="preserve">
+    <value>စကားဝှက်ကိုပြောင်းရန်</value>
+  </data>
+  <data name="frmMain.bbtnClose.Caption" xml:space="preserve">
+    <value>ထွက်လိုက်ပါ။</value>
+  </data>
+  <data name="frmMain.bbtnCommonChooseRoom.Caption" xml:space="preserve">
+    <value>အခန်းရွေးပါ။</value>
+  </data>
+  <data name="frmMain.bbtnConfigApplication.Caption" xml:space="preserve">
+    <value>ဆော့ဖ်ဝဲဖွဲ့စည်းမှု</value>
+  </data>
+  <data name="frmMain.bbtnCreateReport.Caption" xml:space="preserve">
+    <value>အစီရင်ခံစာထုတ်ပါ။</value>
+  </data>
+  <data name="frmMain.bbtnCustomizeButton.Caption" xml:space="preserve">
+    <value>စိတ်ကြိုက်ခလုတ် (Ctrl shift S)</value>
+  </data>
+  <data name="frmMain.bbtnEventLog.Caption" xml:space="preserve">
+    <value>ထိခိုက်မှုမှတ်တမ်း</value>
+  </data>
+  <data name="frmMain.bbtnFeedback.Caption" xml:space="preserve">
+    <value>တုံ့ပြန်ချက်၊ ပံ့ပိုးမှု (Ctrl F2)</value>
+  </data>
+  <data name="frmMain.bbtnHideControl.Caption" xml:space="preserve">
+    <value>ထိန်းချုပ်မှုများကို ဖျောက်/ပြပါ။</value>
+  </data>
+  <data name="frmMain.bbtnHisConfig.Caption" xml:space="preserve">
+    <value>စနစ်နှင့် အကောင့်ဖွဲ့စည်းပုံ</value>
+  </data>
+  <data name="frmMain.bbtnMonitorTracking.Caption" xml:space="preserve">
+    <value>Workstation စီမံခန့်ခွဲမှု</value>
+  </data>
+  <data name="frmMain.bbtnPageOther.Caption" xml:space="preserve">
+    <value>တခြား</value>
+  </data>
+  <data name="frmMain.bbtnPlugin.Caption" xml:space="preserve">
+    <value>ဗားရှင်း</value>
+  </data>
+  <data name="frmMain.bbtnRefeshRamGC.Caption" xml:space="preserve">
+    <value>Ram(GC) ပြန်လည်စတင်ရန်</value>
+  </data>
+  <data name="frmMain.bbtnRefreshCache.Caption" xml:space="preserve">
+    <value>ကျွန်ုပ်၏စက်ပစ္စည်း ကက်ရှ်ကို စီမံပါ။</value>
+  </data>
+  <data name="frmMain.bbtnRefreshEmrConfig.Caption" xml:space="preserve">
+    <value>အီလက်ထရွန်နစ် ဆေးဘက်ဆိုင်ရာ မှတ်တမ်း ဖွဲ့စည်းမှုကို ပြန်လည်စတင်ပါ။</value>
+  </data>
+  <data name="frmMain.bbtnReport.Caption" xml:space="preserve">
+    <value>သတင်းပို့တယ်။</value>
+  </data>
+  <data name="frmMain.bbtnReportList.Caption" xml:space="preserve">
+    <value>အစီရင်ခံစာများစာရင်း</value>
+  </data>
+  <data name="frmMain.bbtnResetLisConfig.Caption" xml:space="preserve">
+    <value>LIS ကို ပြန်လည်စတင်ပါ။</value>
+  </data>
+  <data name="frmMain.bbtnResetServerConfigCache.Caption" xml:space="preserve">
+    <value>ဖွဲ့စည်းမှုပုံစံ၊ ကက်ရှ်ဆာဗာ (MOS၊ REDIS ကက်ရှ်ဆာဗာ) ကို ပြန်လည်စတင်ပါ။</value>
+  </data>
+  <data name="frmMain.bbtnShiftF2.Caption" xml:space="preserve">
+    <value>Shift F2</value>
+  </data>
+  <data name="frmMain.bbtnShiftF3.Caption" xml:space="preserve">
+    <value>Shift F3</value>
+  </data>
+  <data name="frmMain.bbtnSpeechVoice.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmMain.bbtnTutorial.Caption" xml:space="preserve">
+    <value>အသုံးပြုသူလက်စွဲ</value>
+  </data>
+  <data name="frmMain.bbtnVersionInfo.Caption" xml:space="preserve">
+    <value>ဗားရှင်း</value>
+  </data>
+  <data name="frmMain.blblHelp.Caption" xml:space="preserve">
+    <value>"ဖောက်သည်တောင်းဆိုမှုကိုဖန်တီးပါ" သို့ ဖြတ်လမ်းခလုတ် (Ctrl + F2)၊ အင်တာဖေ့စ်ကို စိတ်ကြိုက်ပြင်ဆင်ရန် (Ctrl+Shift+S)</value>
+  </data>
+  <data name="frmMain.gridColumn1.Caption" xml:space="preserve">
+    <value>တက်ဘ်စာမျက်နှာ</value>
+  </data>
+  <data name="frmMain.gridColumn2.ToolTip" xml:space="preserve">
+    <value>ပိတ်လိုက်</value>
+  </data>
+  <data name="frmMain.gridColumn3.Caption" xml:space="preserve">
+    <value>အခန်းအမည်</value>
+  </data>
+  <data name="frmMain.gridColumn4.Caption" xml:space="preserve">
+    <value>ဒယ်လ်</value>
+  </data>
+  <data name="frmMain.gridColumn5.Caption" xml:space="preserve">
+    <value>အခန်းအမည်</value>
+  </data>
+  <data name="frmMain.gridColumn6.Caption" xml:space="preserve">
+    <value>ဒယ်လ်</value>
+  </data>
+  <data name="frmMain.gridColumn6.ToolTip" xml:space="preserve">
+    <value>ရွေးချယ်ထားသောရုံးမှထွက်ခွာပါ။</value>
+  </data>
+  <data name="frmMain.gridColumn7.Caption" xml:space="preserve">
+    <value>တက်ဘ်စာမျက်နှာ</value>
+  </data>
+  <data name="frmMain.gridColumn8.Caption" xml:space="preserve">
+    <value>ဒယ်လ်</value>
+  </data>
+  <data name="frmMain.gridColumn8.ToolTip" xml:space="preserve">
+    <value>ရွေးချယ်ထားသောရုံးမှထွက်ခွာပါ။</value>
+  </data>
+  <data name="frmMain.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmMain.lblLanguage.Caption" xml:space="preserve">
+    <value>ဗီယက်နမ်လူမျိုး</value>
+  </data>
+  <data name="frmMain.lblRoomName.Caption" xml:space="preserve">
+    <value>အခန်းကို မရွေးချယ်ရသေးဘူး။</value>
+  </data>
+  <data name="frmMain.lblVersion.Caption" xml:space="preserve">
+    <value>©တီထွင်မှု</value>
+  </data>
+  <data name="frmMain.skinRibbonGalleryBarItem1.Caption" xml:space="preserve">
+    <value>ပြသခြင်း။</value>
+  </data>
+  <data name="frmMain.tabpageMoritoring.Caption" xml:space="preserve">
+    <value>အလုပ်ရုံကို စောင့်ကြည့်ပါ။</value>
+  </data>
+  <data name="frmMain.Text" xml:space="preserve">
+    <value>ဆေးရုံစီမံခန့်ခွဲမှုဆော့ဖ်ဝဲ (HIS) - ဆေးရုံပေါင်းစည်းမှုစနစ် MOS</value>
+  </data>
+  <data name="frmSystemConfig.Text" xml:space="preserve">
+    <value>စနစ်ဖွဲ့စည်းမှု</value>
+  </data>
+  <data name="frmUgrade.lblDescription.Text" xml:space="preserve">
+    <value>အပ်ဒိတ်ဗားရှင်းအတွက် စစ်ဆေးနေသည်...</value>
+  </data>
+  <data name="frmUgrade.Text" xml:space="preserve">
+    <value>frmUgrade</value>
+  </data>
+  <data name="frmUgradeAUS.lblDescription.Text" xml:space="preserve">
+    <value>အပ်ဒိတ်ဗားရှင်းအတွက် စစ်ဆေးနေသည်...</value>
+  </data>
+  <data name="frmUgradeAUS.Text" xml:space="preserve">
+    <value>frmUgrade</value>
+  </data>
+  <data name="frmUpgradeOption.btnUpgradeHand.Text" xml:space="preserve">
+    <value>Manual အဆင့်မြှင့်ခြင်း။</value>
+  </data>
+  <data name="frmUpgradeOption.lblStatus.Text" xml:space="preserve">
+    <value>resources.GetString(lblStatus.Text);</value>
+  </data>
+  <data name="frmUpgradeOption.Text" xml:space="preserve">
+    <value>အဆင့်မြှင့်ခြင်း - အဆင့်မြှင့်ခြင်း။</value>
+  </data>
+  <data name="KetNoiServerKhongOnDinh" xml:space="preserve">
+    <value>ဆာဗာချိတ်ဆက်မှု မတည်ငြိမ်ပါ။</value>
+  </data>
+  <data name="KetNoiServerOnDinh" xml:space="preserve">
+    <value>တည်ငြိမ်သောဆာဗာချိတ်ဆက်မှု</value>
+  </data>
+  <data name="MatKetNoiServer" xml:space="preserve">
+    <value>ဆာဗာသို့ ချိတ်ဆက်မှု ပြတ်တောက်သွားသည်...</value>
+  </data>
+  <data name="toolTipItem1.Text" xml:space="preserve">
+    <value>ရွေးချယ်ထားသောရုံးမှထွက်ခွာပါ။</value>
+  </data>
+  <data name="toolTipItem2.Text" xml:space="preserve">
+    <value>ရွေးချယ်ထားသောရုံးမှထွက်ခွာပါ။</value>
+  </data>
+  <data name="toolTipItem3.Text" xml:space="preserve">
+    <value>ဆော့ဖ်ဝဲသည် အသံထည့်သွင်းမှုမုဒ်တွင် လုပ်ဆောင်နေပါသည်။</value>
+  </data>
+  <data name="toolTipItem4.Text" xml:space="preserve">
+    <value>ဖောက်သည် တောင်းဆိုချက် ဖန်တီးပါ (Ctrl F2)</value>
+  </data>
+  <data name="toolTipItem5.Text" xml:space="preserve">
+    <value>ထွက်လိုက်ပါ။</value>
+  </data>
+  <data name="toolTipItem6.Text" xml:space="preserve">
+    <value>ဖွံ့ဖြိုး</value>
+  </data>
+  <data name="toolTipItem7.Text" xml:space="preserve">
+    <value>ဗားရှင်း</value>
+  </data>
+  <data name="toolTipItem8.Text" xml:space="preserve">
+    <value>အစီရင်ခံစာများစာရင်း</value>
+  </data>
+  <data name="toolTipItem9.Text" xml:space="preserve">
+    <value>အစီရင်ခံစာထုတ်ပါ။</value>
+  </data>
+</root>

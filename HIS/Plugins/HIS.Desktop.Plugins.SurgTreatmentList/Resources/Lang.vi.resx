@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SurgTreatmentListUC.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="SurgTreatmentListUC.navBarControl1.Text" xml:space="preserve">
+    <value>navBarControl1</value>
+  </data>
+  <data name="SurgTreatmentListUC.BarIntructionTime.Caption" xml:space="preserve">
+    <value>Ngày thực hiện</value>
+  </data>
+  <data name="SurgTreatmentListUC.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="SurgTreatmentListUC.LciIntructionTimeFrom.Text" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="SurgTreatmentListUC.LciIntructionTimeTo.Text" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="SurgTreatmentListUC.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="SurgTreatmentListUC.ChkInTreat.Properties.Caption" xml:space="preserve">
+    <value>Nội trú</value>
+  </data>
+  <data name="SurgTreatmentListUC.ChkOutTreat.Properties.Caption" xml:space="preserve">
+    <value>Ngoại trú</value>
+  </data>
+  <data name="SurgTreatmentListUC.layoutControlItem7.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="SurgTreatmentListUC.layoutControlItem8.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="SurgTreatmentListUC.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="SurgTreatmentListUC.ChkSA.Properties.Caption" xml:space="preserve">
+    <value>Siêu âm</value>
+  </data>
+  <data name="SurgTreatmentListUC.ChkNS.Properties.Caption" xml:space="preserve">
+    <value>Nội soi</value>
+  </data>
+  <data name="SurgTreatmentListUC.ChkCDHA.Properties.Caption" xml:space="preserve">
+    <value>CĐHA</value>
+  </data>
+  <data name="SurgTreatmentListUC.ChkCDHA.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán hình ảnh</value>
+  </data>
+  <data name="SurgTreatmentListUC.ChkTT.Properties.Caption" xml:space="preserve">
+    <value>Thủ thuật</value>
+  </data>
+  <data name="SurgTreatmentListUC.ChkPT.Properties.Caption" xml:space="preserve">
+    <value>Phẫu thuật</value>
+  </data>
+  <data name="SurgTreatmentListUC.layoutControlItem9.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="SurgTreatmentListUC.layoutControlItem10.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="SurgTreatmentListUC.layoutControlItem15.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="SurgTreatmentListUC.layoutControlItem16.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="SurgTreatmentListUC.layoutControlItem17.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="SurgTreatmentListUC.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="SurgTreatmentListUC.ChkDV.Properties.Caption" xml:space="preserve">
+    <value>Dịch vụ</value>
+  </data>
+  <data name="SurgTreatmentListUC.ChkKH.Properties.Caption" xml:space="preserve">
+    <value>Kế hoạch</value>
+  </data>
+  <data name="SurgTreatmentListUC.ChkCC.Properties.Caption" xml:space="preserve">
+    <value>Cấp cứu</value>
+  </data>
+  <data name="SurgTreatmentListUC.layoutControlItem11.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="SurgTreatmentListUC.layoutControlItem12.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="SurgTreatmentListUC.layoutControlItem13.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="SurgTreatmentListUC.BarTreatmentType.Caption" xml:space="preserve">
+    <value>Đối tượng</value>
+  </data>
+  <data name="SurgTreatmentListUC.BarServiceType.Caption" xml:space="preserve">
+    <value>Loại</value>
+  </data>
+  <data name="SurgTreatmentListUC.BarPtttGroupName.Caption" xml:space="preserve">
+    <value>Hình thức</value>
+  </data>
+  <data name="SurgTreatmentListUC.BtnRefresh.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="SurgTreatmentListUC.BtnSearch.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvEkip__GcStt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvEkip__GcUserRole.Caption" xml:space="preserve">
+    <value>Vai trò</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvEkip__GcUserName.Caption" xml:space="preserve">
+    <value>Họ và tên</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvSS_GcStt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvSS_GcStt.ToolTip" xml:space="preserve">
+    <value>Số thứ tự</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvSS_GcGatherData.Caption" xml:space="preserve">
+    <value>Lấy dữ liệu</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvSS_GcFee.Caption" xml:space="preserve">
+    <value>Hưởng chi phí</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvSS_GcTreatmentCode.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvSS_GcPatientName.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvSS_GcPtttMethodCode.Caption" xml:space="preserve">
+    <value>Mã PTTT</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvSS_GcPtttMethodCode.ToolTip" xml:space="preserve">
+    <value>Mã phương thức phẫu thuật thủ thuật</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvSS_GcPtttGroupName.Caption" xml:space="preserve">
+    <value>Loại PT</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvSS_GcPtttGroupName.ToolTip" xml:space="preserve">
+    <value>Loại phẫu thuật thủ thuật</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvSS_GcEndTime.Caption" xml:space="preserve">
+    <value>Ngày thực hiện</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvSS_GcServiceCode.Caption" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvSS_GcServiceName.Caption" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="SurgTreatmentListUC.TxtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvSS_GcEmotionlessMethodName.Caption" xml:space="preserve">
+    <value>Phương pháp vô cảm</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvSS_GcPtttPriority.Caption" xml:space="preserve">
+    <value>HT PTTT</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvSS_GcPtttPriority.ToolTip" xml:space="preserve">
+    <value>Hình thức phẫu thuật thủ thuật</value>
+  </data>
+  <data name="SurgTreatmentListUC.GvSS_GcExecuteLoginname.Caption" xml:space="preserve">
+    <value>Người thực hiện</value>
+  </data>
+  <data name="SurgTreatmentListUC.CboExecuteRoom.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SurgTreatmentListUC.LciExecuteRoom.Text" xml:space="preserve">
+    <value>Phòng thực hiện:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_SURG_TREATMENT_LIST__TOOLTIP__FEE" xml:space="preserve">
+    <value>Hưởng chi phí</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_SURG_TREATMENT_LIST__TOOLTIP__GATHER_DATA" xml:space="preserve">
+    <value>Lấy dữ liệu</value>
+  </data>
+  <data name="SurgTreatmentListUC.lcIs_Fee.Text" xml:space="preserve">
+    <value>Hưởng chi phí:</value>
+  </data>
+  <data name="SurgTreatmentListUC.lcIs_Gather_Data.Text" xml:space="preserve">
+    <value>Lấy dữ liệu:</value>
+  </data>
+</root>

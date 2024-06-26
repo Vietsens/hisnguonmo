@@ -1,0 +1,480 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmBacAntiBioticMap.btnChoose.Text" xml:space="preserve">
+    <value>Select (Ctrl S)</value>
+  </data>
+  <data name="frmBacAntiBioticMap.btnSearch.Text" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
+  </data>
+  <data name="frmBacAntiBioticMap.gridColumn1.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmBacAntiBioticMap.gridColumn2.Caption" xml:space="preserve">
+    <value>Antibiotic code</value>
+  </data>
+  <data name="frmBacAntiBioticMap.gridColumn3.Caption" xml:space="preserve">
+    <value>Name of antibiotic</value>
+  </data>
+  <data name="frmBacAntiBioticMap.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmBacAntiBioticMap.layoutControlItem1.Text" xml:space="preserve">
+    <value>Bacteria:</value>
+  </data>
+  <data name="frmBacAntiBioticMap.layoutControlItem2.Text" xml:space="preserve">
+    <value>Bacterial family:</value>
+  </data>
+  <data name="frmBacAntiBioticMap.Text" xml:space="preserve">
+    <value>Choose bacteria - antibiotics</value>
+  </data>
+  <data name="frmReasonReject.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmReasonReject.barBtnSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmReasonReject.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmReasonReject.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmReasonReject.lciBarcode.Text" xml:space="preserve">
+    <value>Barcodes:</value>
+  </data>
+  <data name="frmReasonReject.lciPatientCode.Text" xml:space="preserve">
+    <value>Patient code:</value>
+  </data>
+  <data name="frmReasonReject.lciPatientName.Text" xml:space="preserve">
+    <value>Patient name:</value>
+  </data>
+  <data name="frmReasonReject.lciReason.Text" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
+  <data name="frmReasonReject.lciServiceReqCode.Text" xml:space="preserve">
+    <value>Request code:</value>
+  </data>
+  <data name="frmReasonReject.lciTreatmentCode.Text" xml:space="preserve">
+    <value>Treatment code:</value>
+  </data>
+  <data name="frmReasonReject.Text" xml:space="preserve">
+    <value>Rejection of test samples</value>
+  </data>
+  <data name="frmUpdateCondition.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmUpdateCondition.barBtnSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmUpdateCondition.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmUpdateCondition.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmUpdateCondition.lciBarcode.Text" xml:space="preserve">
+    <value>Barcodes:</value>
+  </data>
+  <data name="frmUpdateCondition.lciPatientCode.Text" xml:space="preserve">
+    <value>Patient code:</value>
+  </data>
+  <data name="frmUpdateCondition.lciPatientName.Text" xml:space="preserve">
+    <value>Patient name:</value>
+  </data>
+  <data name="frmUpdateCondition.lciSampleCondition.Text" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="frmUpdateCondition.lciServiceReqCode.Text" xml:space="preserve">
+    <value>Request code:</value>
+  </data>
+  <data name="frmUpdateCondition.lciTreatmentCode.Text" xml:space="preserve">
+    <value>Treatment code:</value>
+  </data>
+  <data name="frmUpdateCondition.Text" xml:space="preserve">
+    <value>Sample status update</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.btnPrint.Text" xml:space="preserve">
+    <value>Print (Ctrl P)</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.btnResetNumOrder.Text" xml:space="preserve">
+    <value>Reset Stt (Ctrl R)</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.btnSearch.Text" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.grdColIndexCode.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.grdColIndexName.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.grdColIsParent.Caption" xml:space="preserve">
+    <value>IS_PARENT</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.grdCollDonvitinh.Caption" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.grdColLevel.Caption" xml:space="preserve">
+    <value>State value</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.grdCollSTT.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.grdColMaxValue.Caption" xml:space="preserve">
+    <value>MAX_VALUE</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.grdColMinValue.Caption" xml:space="preserve">
+    <value>MIN_VALUE</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.grdColNote.Caption" xml:space="preserve">
+    <value>NOTE</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.grdColVallue.Caption" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.grdColValueNormal.Caption" xml:space="preserve">
+    <value>Normal value</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn1.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn10.Caption" xml:space="preserve">
+    <value>Sampling room</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn11.Caption" xml:space="preserve">
+    <value>Creation time</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn12.Caption" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn13.Caption" xml:space="preserve">
+    <value>Repair time</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn15.Caption" xml:space="preserve">
+    <value>Designated room</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn16.Caption" xml:space="preserve">
+    <value>gridColumn16</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn17.Caption" xml:space="preserve">
+    <value>Date of birth</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn18.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn2.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn3.Caption" xml:space="preserve">
+    <value>Browser</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn4.Caption" xml:space="preserve">
+    <value>Print Barcode</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn5.Caption" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn6.Caption" xml:space="preserve">
+    <value>Command code</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn7.Caption" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn8.Caption" xml:space="preserve">
+    <value>Patient's name</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn9.Caption" xml:space="preserve">
+    <value>Processing room</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumnMps000244.Caption" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.layoutControlItem11.Text" xml:space="preserve">
+    <value>TG requests from:</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.layoutControlItem11.Tooltip" xml:space="preserve">
+    <value>Request time from:</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.layoutControlItem12.Text" xml:space="preserve">
+    <value>Arrive:</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.lciNewestBarcode.Text" xml:space="preserve">
+    <value>Latest barcodes:</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.treeListModifier.Caption" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.txtSearchKey.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keyword</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.txtSERVICE_REQ_CODE__EXACT.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Command code (F1)</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gc_ApproveResult.Caption" xml:space="preserve">
+    <value>Browse results</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gc_ApproveResult.ToolTip" xml:space="preserve">
+    <value>Browse/Cancel browsing results</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gc_ApproveSample.Caption" xml:space="preserve">
+    <value>Accept sample</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gc_ApproveSample.ToolTip" xml:space="preserve">
+    <value>Accept sample</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gc_Reject.Caption" xml:space="preserve">
+    <value>Sample rejection</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gc_Reject.ToolTip" xml:space="preserve">
+    <value>Sample rejection</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn14.Caption" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn19.Caption" xml:space="preserve">
+    <value>Cash Paying Machine</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn20.Caption" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn21.Caption" xml:space="preserve">
+    <value>Executor</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn22.Caption" xml:space="preserve">
+    <value>Select VS-KS</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn23.Caption" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn24.Caption" xml:space="preserve">
+    <value>Repair time</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn25.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn26.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn27.Caption" xml:space="preserve">
+    <value>MIC</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn28.Caption" xml:space="preserve">
+    <value>SRI</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn29.Caption" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn30.Caption" xml:space="preserve">
+    <value>Result machine</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn31.Caption" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn32.Caption" xml:space="preserve">
+    <value>Bacteria</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn33.Caption" xml:space="preserve">
+    <value>Sampler</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn34.Caption" xml:space="preserve">
+    <value>Sample reviewer</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumn35.Caption" xml:space="preserve">
+    <value>Sample browsing time</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumnBarCode.Caption" xml:space="preserve">
+    <value>Barcode</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.gridColumnGenderName.Caption" xml:space="preserve">
+    <value>Sex</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.labelControl1.Text" xml:space="preserve">
+    <value>Antibiotic chart</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.layoutControlItem11.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Request time</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.lciDob.Text" xml:space="preserve">
+    <value>Date of birth:</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.lciGenderName.Text" xml:space="preserve">
+    <value>Sex:</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.lciPatientCode.Text" xml:space="preserve">
+    <value>Patient code:</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.lciPatientName.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.repositoryItemCheckRerun_Disable.Caption" xml:space="preserve">
+    <value>Run the test again</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.repositoryItemCheckRerun_Enable.Caption" xml:space="preserve">
+    <value>Run the test again</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.repositoryItemPictureEdit2.NullText" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.toggleSwitchSelectAll.Properties.OffText" xml:space="preserve">
+    <value>Deselect all</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.toggleSwitchSelectAll.Properties.OnText" xml:space="preserve">
+    <value>Select all</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.treeListColDescription.Caption" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.treeListColumn_ReRun.Caption" xml:space="preserve">
+    <value>Run again XN</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.treeListColumn_ReRun.ToolTip" xml:space="preserve">
+    <value>Run the test again</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.treeListColumn1.Caption" xml:space="preserve">
+    <value>SRI</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.treeListColumn2.Caption" xml:space="preserve">
+    <value>MIC</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.treeListColumn3.Caption" xml:space="preserve">
+    <value>Result machine</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.treeListColumn6.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.treeListOldValue.Caption" xml:space="preserve">
+    <value>Prehistoric value</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.treeListSereServTein.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Enter the search string...</value>
+  </data>
+  <data name="UC_ReturnMicrobiologicalResults.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+</root>

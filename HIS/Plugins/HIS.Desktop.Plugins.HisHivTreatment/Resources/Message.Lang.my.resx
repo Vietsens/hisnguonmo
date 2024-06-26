@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AmTinh" xml:space="preserve">
+    <value>အပျက်သဘော</value>
+  </data>
+  <data name="BenhNhanHivChuaDieuTriArvChuyenToi" xml:space="preserve">
+    <value>ART ဆေးမရှိသော HIV လူနာများထံ လွှဲပြောင်းပေးသည်။</value>
+  </data>
+  <data name="BenhNhanHivChuaDieuTriArvDangKyLai" xml:space="preserve">
+    <value>ART ဆေးမရှိသော HIV လူနာများအား ပြန်လည်မှတ်ပုံတင်ပါ။</value>
+  </data>
+  <data name="BenhNhanHivDaDieuTriArvChuyenToi" xml:space="preserve">
+    <value>HIV ဝေဒနာရှင်များကို ART ဆေးဖြင့် လွှဲပြောင်းပေးနေပါပြီ။</value>
+  </data>
+  <data name="BenhNhanHivDaDieuTriArvNayDieuTriLai" xml:space="preserve">
+    <value>ART ကုထုံးဖြင့် ကုသခဲ့သည့် HIV ဝေဒနာရှင်များသည် ယခုအခါ ပြန်လည် ကုသမှု ခံယူနေကြပြီ ဖြစ်သည်။</value>
+  </data>
+  <data name="BenhNhanHivMoiDangKyLanDau" xml:space="preserve">
+    <value>HIV ဝေဒနာရှင် ပထမဦးဆုံးအကြိမ် မှတ်ပုံတင်အသစ်</value>
+  </data>
+  <data name="ChuyenDa" xml:space="preserve">
+    <value>အလုပ်သမား</value>
+  </data>
+  <data name="CoBau" xml:space="preserve">
+    <value>ကိုယ်ဝန်</value>
+  </data>
+  <data name="DangDieuTriLao" xml:space="preserve">
+    <value>တီဘီရောဂါအတွက် ဆေးကုသမှုခံယူနေရသည်။</value>
+  </data>
+  <data name="DieuTriArv" xml:space="preserve">
+    <value>ART ကုသမှု</value>
+  </data>
+  <data name="DieuTriDuPhongSauPhoiNhiem" xml:space="preserve">
+    <value>ထိတွေ့ပြီးနောက် ကြိုတင်ကာကွယ်မှု</value>
+  </data>
+  <data name="DieuTriDuPhongTruocPhoiNhiem" xml:space="preserve">
+    <value>ကြိုတင်ကာကွယ်မှု</value>
+  </data>
+  <data name="DieuTriLao" xml:space="preserve">
+    <value>တီဘီကုသမှု</value>
+  </data>
+  <data name="DieuTriLaoKhangThuoc" xml:space="preserve">
+    <value>ဆေးယဉ်ပါးတီဘီရောဂါကုသမှု</value>
+  </data>
+  <data name="DieuTriLaoTiemAn" xml:space="preserve">
+    <value>ငုပ်လျှိုးနေသောတီဘီရောဂါကုသမှု</value>
+  </data>
+  <data name="DieuTriViemGanB" xml:space="preserve">
+    <value>အသည်းရောင်အသားဝါ B ကုသမှု</value>
+  </data>
+  <data name="Duoi50BanSao" xml:space="preserve">
+    <value>ကော်ပီ 50/ml ထက်နည်းသည်။</value>
+  </data>
+  <data name="DuongTinh" xml:space="preserve">
+    <value>အပြုသဘောဆောင်သည်။</value>
+  </data>
+  <data name="DuPhongLao" xml:space="preserve">
+    <value>တီဘီရောဂါကာကွယ်ရေး</value>
+  </data>
+  <data name="Khac" xml:space="preserve">
+    <value>တခြား</value>
+  </data>
+  <data name="KhongDieuTriLao" xml:space="preserve">
+    <value>တီဘီ ကုသမှု မရှိပါ။</value>
+  </data>
+  <data name="KhongPhatHien" xml:space="preserve">
+    <value>ရှာမတွေ့ပါ။</value>
+  </data>
+  <data name="Lan" xml:space="preserve">
+    <value>အချိန်</value>
+  </data>
+  <data name="Lan3" xml:space="preserve">
+    <value>တတိယအကြိမ် (ပထမအကြိမ် အနုတ်လက္ခဏာနှင့် ဒုတိယ အကြိမ် အပြုသဘောအတွက်သာ သက်ဆိုင်သည်)</value>
+  </data>
+  <data name="NghienChichMaTuy" xml:space="preserve">
+    <value>ထိုးဆေးစွဲခြင်း။</value>
+  </data>
+  <data name="NghiNgoThatBaiDieuTri" xml:space="preserve">
+    <value>ကုသမှု ပျက်ကွက်သည်ဟု သံသယရှိသည်။</value>
+  </data>
+  <data name="NguoiNhiemHIV" xml:space="preserve">
+    <value>HIV ရှိသူ</value>
+  </data>
+  <data name="PhacDo" xml:space="preserve">
+    <value>စစ်အုပ်စု</value>
+  </data>
+  <data name="PhacDoBac" xml:space="preserve">
+    <value>အဆင့်အကြမ်းဖျဉ်း</value>
+  </data>
+  <data name="PhacDoKhacHIV" xml:space="preserve">
+    <value>အခြားနည်းလမ်းများ (HIV)</value>
+  </data>
+  <data name="PhacDoKhacLao" xml:space="preserve">
+    <value>အခြားနည်းများ (လာအို)</value>
+  </data>
+  <data name="PhoiNhiem" xml:space="preserve">
+    <value>ထိတွေ့ခြင်း</value>
+  </data>
+  <data name="SauSinh" xml:space="preserve">
+    <value>မွေးပြီးနောက်</value>
+  </data>
+  <data name="ThuongQuy" xml:space="preserve">
+    <value>လုပ်ရိုးလုပ်စဉ်</value>
+  </data>
+  <data name="TreDuoi18ThangSinhRaTuMeNhiemHiv" xml:space="preserve">
+    <value>HIV ရှိသောမိခင်မှမွေးဖွားသော 18 လအောက်ကလေးများ</value>
+  </data>
+  <data name="Tren1000BanSao" xml:space="preserve">
+    <value>အုပ်ရေ 1000/ml ကျော်</value>
+  </data>
+  <data name="TrePhoiNhiemVoiHiv" xml:space="preserve">
+    <value>ကလေးတွေ HIV နဲ့ ထိတွေ့တယ်။</value>
+  </data>
+  <data name="Tu200DenDuoi1000BanSao" xml:space="preserve">
+    <value>စောင်ရေ 200 မှ 1000/ml အထိ</value>
+  </data>
+  <data name="Tu50DenDuoi200BanSao" xml:space="preserve">
+    <value>50 မှ 200 ကော်ပီ/ml ထက်နည်းသည်။</value>
+  </data>
+  <data name="ViemGan" xml:space="preserve">
+    <value>အသည်းရောင်</value>
+  </data>
+  <data name="BoDieuTri" xml:space="preserve">
+    <value>ကုသမှုမှထွက်;</value>
+  </data>
+  <data name="CacDoiTuongKhac" xml:space="preserve">
+    <value>အခြားအရာဝတ္ထု။</value>
+  </data>
+  <data name="ChupXQuangPhoi" xml:space="preserve">
+    <value>ရင်ဘတ်ဓာတ်မှန်;</value>
+  </data>
+  <data name="CungSongChungVoiNguoiNhiemHIV" xml:space="preserve">
+    <value>HIV ပိုးရှိသူများနှင့် နေထိုင်သော အိမ်ထောင်ဖက်များနှင့် အခြားမိသားစုဝင်များ၊ အထက်ကုဒ် 0၊ 1၊ 2 နှင့် ကုဒ် 3 တွင် သတ်မှတ်ထားသော ဘာသာရပ်များ၏ အိမ်ထောင်ဘက်များ၊</value>
+  </data>
+  <data name="DangDieuTri" xml:space="preserve">
+    <value>ကုသခံရခြင်း၊</value>
+  </data>
+  <data name="DieuTriViemGanC" xml:space="preserve">
+    <value>အသည်းရောင် C ကုသမှု</value>
+  </data>
+  <data name="GiaiDoan1" xml:space="preserve">
+    <value>အဆင့် I;</value>
+  </data>
+  <data name="GiaiDoan2" xml:space="preserve">
+    <value>အဆင့် II;</value>
+  </data>
+  <data name="GiaiDoan3" xml:space="preserve">
+    <value>အဆင့် III;</value>
+  </data>
+  <data name="GiaiDoan4" xml:space="preserve">
+    <value>အဆင့် IV;</value>
+  </data>
+  <data name="HoanThanh" xml:space="preserve">
+    <value>အပြီးအစီး;</value>
+  </data>
+  <data name="KhongDanhGia" xml:space="preserve">
+    <value>အဆင့်သတ်မှတ်ထားခြင်းမရှိပါ။</value>
+  </data>
+  <data name="KhongSangLoc" xml:space="preserve">
+    <value>စိစစ်ခြင်းမရှိပါ;</value>
+  </data>
+  <data name="NgungDieuTri" xml:space="preserve">
+    <value>ကုသမှုရပ်တန့် (အကြောင်းပြချက်သတ်မှတ်);</value>
+  </data>
+  <data name="NguoiBanDam" xml:space="preserve">
+    <value>ပြည့်တန်ဆာများ;</value>
+  </data>
+  <data name="NguoiChuyenDoiGioiTinh" xml:space="preserve">
+    <value>လိင်ပြောင်းသူများ၊</value>
+  </data>
+  <data name="NguoiCoQuanHeTinhDucDongGioi" xml:space="preserve">
+    <value>အမျိုးသားများနှင့် လိင်ဆက်ဆံသူများ၊</value>
+  </data>
+  <data name="NguoiCoQuanHeTinhDucVoiNguoiNhiemHIV" xml:space="preserve">
+    <value>HIV ပိုးရှိသူများနှင့် လိင်ဆက်ဆံသူများ၊</value>
+  </data>
+  <data name="NguoiCoTrieuChungLamSangNghiNgoNhiemHIV" xml:space="preserve">
+    <value>HIV ပိုးကူးစက်ခံရသည်ဟု သံသယရှိသူများ၊</value>
+  </data>
+  <data name="NguoiDiBienDong" xml:space="preserve">
+    <value>မိုဘိုင်းလူများ;</value>
+  </data>
+  <data name="NguoiMacBenhLao" xml:space="preserve">
+    <value>တီဘီရောဂါရှိသူများ၊</value>
+  </data>
+  <data name="NguoiMacCacBenhLayTruyenQuaDuongTinhDuc" xml:space="preserve">
+    <value>လိင်မှတဆင့်ကူးစက်သောရောဂါရှိသူများ၊</value>
+  </data>
+  <data name="NguoiSuDungMaTuy" xml:space="preserve">
+    <value>မူးယစ်ဆေးဝါးသုံးစွဲသူများ;</value>
+  </data>
+  <data name="PhacDoMoiTheoHuongDanQuocGia" xml:space="preserve">
+    <value>နိုင်ငံတော် လမ်းညွှန်ချက်များအရ စည်းမျဉ်းသစ်၊</value>
+  </data>
+  <data name="PhamNhanNguoiBiTamGiam" xml:space="preserve">
+    <value>အကျဉ်းသားများ၊ အကျဉ်းသားများ၊ မသင်မနေရ ပညာရေးအဖွဲ့အစည်းများမှ အကျဉ်းသားများ၊ ပြုပြင်ရေးကျောင်း ကျောင်းသားများ၊ မူးယစ်ဆေးဝါး ပြန်လည်ထူထောင်ရေး အဆောက်အအုံ ကျောင်းသား၊</value>
+  </data>
+  <data name="SangLocTrieuChung" xml:space="preserve">
+    <value>ရောဂါလက္ခဏာစစ်ဆေးခြင်း;</value>
+  </data>
+  <data name="TacDungPhu" xml:space="preserve">
+    <value>ဘေးထွက်ဆိုးကျိုး;</value>
+  </data>
+  <data name="ThatBai" xml:space="preserve">
+    <value>ပျက်ကွက်;</value>
+  </data>
+  <data name="ThatBaiDieuTri" xml:space="preserve">
+    <value>ကုသမှုပျက်ကွက်;</value>
+  </data>
+  <data name="ThieuThuoc" xml:space="preserve">
+    <value>ဆေးဝါးချို့တဲ့;</value>
+  </data>
+  <data name="ToiUuHoaPhacDo" xml:space="preserve">
+    <value>စည်းကမ်းကို အကောင်းဆုံးဖြစ်အောင်၊</value>
+  </data>
+  <data name="TuVong" xml:space="preserve">
+    <value>သေပြီ;</value>
+  </data>
+  <data name="XetNghiemProteinPhanUngC" xml:space="preserve">
+    <value>C-Reactive Protein စမ်းသပ်ခြင်း။</value>
+  </data>
+</root>

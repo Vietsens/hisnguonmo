@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmMealRationDetail.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmMealRationDetail.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmMealRationDetail.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmMealRationDetail.gridColumnMedicineStt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmMealRationDetail.gridColumnMedicineMedicineTypeCode.Caption" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="frmMealRationDetail.gridColumnMedicineMedicineTypeName.Caption" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="frmMealRationDetail.gridColumnMedicineServiceUnitName.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="frmMealRationDetail.gridColumnMedicineAmount.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="frmMealRationDetail.gridColumnMedicineIsExpend.Caption" xml:space="preserve">
+    <value>Hao phí</value>
+  </data>
+  <data name="frmMealRationDetail.repositoryItemPictureEdit1.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmMealRationDetail.gridColumn2.Caption" xml:space="preserve">
+    <value>Số lô</value>
+  </data>
+  <data name="frmMealRationDetail.gridColumn3.Caption" xml:space="preserve">
+    <value>Hạn sử dụng</value>
+  </data>
+  <data name="frmMealRationDetail.gridColumn4.Caption" xml:space="preserve">
+    <value>Số đăng ký</value>
+  </data>
+  <data name="frmMealRationDetail.gridControlPrescriptionColumnRemove.Caption" xml:space="preserve">
+    <value>Loại bỏ</value>
+  </data>
+  <data name="frmMealRationDetail.gridControlPrescriptionExpMestCode.Caption" xml:space="preserve">
+    <value>Mã chỉ định</value>
+  </data>
+  <data name="frmMealRationDetail.gridColumnPrescriptionVirPatientName.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="frmMealRationDetail.gridColumn1.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="frmMealRationDetail.gridColumnPrescriptionDob.Caption" xml:space="preserve">
+    <value>Ngày sinh</value>
+  </data>
+  <data name="frmMealRationDetail.gridColumnPrescriptionGenderName.Caption" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="frmfrmMealRationDetail.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmMealRationDetail.bbtnSave.Caption" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmMealRationDetail.bbtnNew.Caption" xml:space="preserve">
+    <value>Mới (Ctrl N)</value>
+  </data>
+  <data name="frmMealRationDetail.btnApproval.Text" xml:space="preserve">
+    <value>Duyệt (Ctrl A)</value>
+  </data>
+  <data name="frmMealRationDetail.btnExport.Text" xml:space="preserve">
+    <value>Hủy duyệt</value>
+  </data>
+  <data name="frmMealRationDetail.cboPrint.Text" xml:space="preserve">
+    <value>In ấn</value>
+  </data>
+  <data name="frmMealRationDetail.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmMealRationDetail.groupControlCommonInfomation.Text" xml:space="preserve">
+    <value>Thông tin chung</value>
+  </data>
+  <data name="frmMealRationDetail.layoutControl7.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="frmMealRationDetail.lciCreator.Text" xml:space="preserve">
+    <value>Người duyệt:</value>
+  </data>
+  <data name="frmMealRationDetail.lciCreateTime.Text" xml:space="preserve">
+    <value>Thời gian duyệt:</value>
+  </data>
+  <data name="frmMealRationDetail.lciUserTime.Text" xml:space="preserve">
+    <value>Thời gian sử dụng:</value>
+  </data>
+  <data name="frmMealRationDetail.toggleSwitchTheoNhom.Properties.OffText" xml:space="preserve">
+    <value>Không hiển thị theo nhóm</value>
+  </data>
+  <data name="frmMealRationDetail.toggleSwitchTheoNhom.Properties.OnText" xml:space="preserve">
+    <value>Hiển thị theo nhóm</value>
+  </data>
+  <data name="frmMealRationDetail.Text" xml:space="preserve">
+    <value>Chi tiết phiếu lĩnh</value>
+  </data>
+  <data name="TaiKhoanKhongCoQuyenThucHienChucNang" xml:space="preserve">
+    <value>Tài khoản không có quyền thực hiện chức năng</value>
+  </data>
+  <data name="Plugin_HisSuimServiceType__BanCoMuonKhoaDuLieu" xml:space="preserve">
+    <value>Bạn có muốn khóa dữ liệu không?</value>
+  </data>
+  <data name="Plugin_HisSuimServiceType__BanCoMuonXoaDuLieu" xml:space="preserve">
+    <value>Bạn có muốn xóa dữ liệu không?</value>
+  </data>
+  <data name="Plugin_HisSuimServiceType__MoKhoaDuLieu" xml:space="preserve">
+    <value>Bạn có muốn mở khóa dữ liệu không?</value>
+  </data>
+  <data name="Plugin_HisSuimServiceType__TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Trường dữ liệu bắt buộc !</value>
+  </data>
+  <data name="frmMealRationDetail.lciExpMestCode.Text" xml:space="preserve">
+    <value>Mã phiếu:</value>
+  </data>
+  <data name="frmMealRationDetail.lciMedistock.Text" xml:space="preserve">
+    <value>Nhà ăn:</value>
+  </data>
+  <data name="frmMealRationDetail.lciReqDepartment.Text" xml:space="preserve">
+    <value>Khoa yêu cầu:</value>
+  </data>
+  <data name="frmMealRationDetail.lciLblReqName.Text" xml:space="preserve">
+    <value>Người yêu cầu:</value>
+  </data>
+  <data name="frmMealRationDetail.gridControlPrescriptionColumnSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmMealRationDetail.gridColumnPrescriptionServiceReqCode.Caption" xml:space="preserve">
+    <value>Mã y lệnh</value>
+  </data>
+  <data name="frmMealRationDetail.gridColumnDetailPrice.Caption" xml:space="preserve">
+    <value>Đơn giá</value>
+  </data>
+  <data name="frmMealRationDetail.gridColumnDetailTotalPrice.Caption" xml:space="preserve">
+    <value>Thành tiền</value>
+  </data>
+  <data name="frmMealRationDetail.btnYLenhThuocBenhNhan.Text" xml:space="preserve">
+    <value>Y lệnh thuốc BN (Ctrl W)</value>
+  </data>
+  <data name="FormDispenseDetail.groupControlDispense.Text" xml:space="preserve">
+    <value>Thông tin chung</value>
+  </data>
+  <data name="FormDispenseDetail.lciDispenseCode.Text" xml:space="preserve">
+    <value>Mã bào chế:</value>
+  </data>
+  <data name="FormDispenseDetail.lciDispenseTime.Text" xml:space="preserve">
+    <value>Thời gian bào chế:</value>
+  </data>
+  <data name="FormDispenseDetail.lciMedistock.Text" xml:space="preserve">
+    <value>Kho:</value>
+  </data>
+  <data name="frmMealRationDetail.lciLblReqTime.Text" xml:space="preserve">
+    <value>Thời gian yêu cầu:</value>
+  </data>
+  <data name="frmMealRationDetail.gridColumnIntructionTime.Caption" xml:space="preserve">
+    <value>Thời gian y lệnh</value>
+  </data>
+  <data name="frmMealRationDetail.gridColumnRationTimeName.Caption" xml:space="preserve">
+    <value>Tên bữa ăn</value>
+  </data>
+  <data name="frmMealRationDetail.gridColumnPatientClassifyName.Caption" xml:space="preserve">
+    <value>Đối tượng chi tiết</value>
+  </data>
+</root>

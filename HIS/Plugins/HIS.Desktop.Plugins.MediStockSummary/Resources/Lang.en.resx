@@ -1,0 +1,432 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmMediCardByDateReport.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmMediCardByDateReport.barButtonItem__Save.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmMediCardByDateReport.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmMediCardByDateReport.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmMediCardByDateReport.layoutControlItem1.Text" xml:space="preserve">
+    <value>Store code:</value>
+  </data>
+  <data name="frmMediCardByDateReport.layoutControlItem10.Text" xml:space="preserve">
+    <value>Arrive:</value>
+  </data>
+  <data name="frmMediCardByDateReport.layoutControlItem2.Text" xml:space="preserve">
+    <value>Warehouse name:</value>
+  </data>
+  <data name="frmMediCardByDateReport.layoutControlItem9.Text" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="frmMediCardByDateReport.lciExpiredDate.Text" xml:space="preserve">
+    <value>Due date:</value>
+  </data>
+  <data name="frmMediCardByDateReport.lciMediMateCode.Text" xml:space="preserve">
+    <value>Drug code:</value>
+  </data>
+  <data name="frmMediCardByDateReport.lciMediMateName.Text" xml:space="preserve">
+    <value>Name of the drug:</value>
+  </data>
+  <data name="frmMediCardByDateReport.lciPackageNumber.Text" xml:space="preserve">
+    <value>Lot number:</value>
+  </data>
+  <data name="frmMediCardByDateReport.Text" xml:space="preserve">
+    <value>frmMediCardByDateReport</value>
+  </data>
+  <data name="frmReasonLock.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmReasonLock.barButtonItem1.Caption" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="frmReasonLock.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmReasonLock.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmReasonLock.layoutControlItem1.Text" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
+  <data name="frmReasonLock.Text" xml:space="preserve">
+    <value>lock up</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__BLOOD_IN_STOCK__COLUMN_BLOOD_GROUP_CODE" xml:space="preserve">
+    <value>Blood group code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__BLOOD_IN_STOCK__COLUMN_BLOOD_GROUP_NAME" xml:space="preserve">
+    <value>Blood group</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__BLOOD_IN_STOCK__COLUMN_VOLUME" xml:space="preserve">
+    <value>Capacity</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_ACTIVE_INGR_BHYT_NAME" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_ALERT_MIN_IN_STOCK" xml:space="preserve">
+    <value>Number of warnings</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_AVAILABLE_AMOUNT" xml:space="preserve">
+    <value>Quantity available</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_AVAILABLE_CONVERT_AMOUNT" xml:space="preserve">
+    <value>Available in units of conversion</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_BASE_AMOUNT" xml:space="preserve">
+    <value>Base</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_BID_NUMBER" xml:space="preserve">
+    <value>Package</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_BLOOD_ABO_CODE" xml:space="preserve">
+    <value>Blood group</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_BLOOD_RH_CODE" xml:space="preserve">
+    <value>Rh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_COMPENSATION_BASE_AMOUNT" xml:space="preserve">
+    <value>Amount to be compensated</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_CONCENTRA" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_CONVERT_RATIO" xml:space="preserve">
+    <value>Conversion rate</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_CONVERT_UNIT_NAME" xml:space="preserve">
+    <value>Conversion unit</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_EXPIRED_DATE" xml:space="preserve">
+    <value>Shelf</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_IMP_PRICE" xml:space="preserve">
+    <value>Accede</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_IMP_VAT_RATIO" xml:space="preserve">
+    <value>VAT%</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_IMP_VAT_RATIO_NEXT" xml:space="preserve">
+    <value>Price after VAT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_LOCKING_REASON" xml:space="preserve">
+    <value>Lock reason</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_MEDICINE_TYPE_CODE" xml:space="preserve">
+    <value>Ghost</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_MEDICINE_TYPE_NAME" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_PACKAGE_NUMBER" xml:space="preserve">
+    <value>Lot number</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_REAL_BASE_AMOUNT" xml:space="preserve">
+    <value>Try real numbers</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_REGISTER_NUMBER" xml:space="preserve">
+    <value>Registered number</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_SERIAL_NUMBER" xml:space="preserve">
+    <value>Serial number</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_SERVICE_UNIT_NAME" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_SUPPLIER_MIN_IN_STOCK" xml:space="preserve">
+    <value>Supplier</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_SUPPLIER_NAME" xml:space="preserve">
+    <value>Supplier</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_TOTAL_AMOUNT" xml:space="preserve">
+    <value>Quantity in stock</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_TOTAL_AMOUNT_CONVERT" xml:space="preserve">
+    <value>Survive in units of conversion</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_TOTAL_EXP_PRICE" xml:space="preserve">
+    <value>Selling price after VAT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_TOTAL_PRICE" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_KHA_DUNG_BANG_TON_KHO" xml:space="preserve">
+    <value>Availability by inventory</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_TRA_KHA_DUNG" xml:space="preserve">
+    <value>Pay available</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_TRA_KHA_DUNG_VT" xml:space="preserve">
+    <value>Pay available</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_XEM_LICH_SU_XUAT_NHAP_THUOC" xml:space="preserve">
+    <value>View drug import and export history</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_XEM_LICH_SU_XUAT_NHAP_VAT_TU" xml:space="preserve">
+    <value>View import and export history of materials</value>
+  </data>
+  <data name="UCMediStockSummary.btnPrint.Text" xml:space="preserve">
+    <value>Printing</value>
+  </data>
+  <data name="UCMediStockSummary.btnRefesh.Text" xml:space="preserve">
+    <value>Redo (Ctrl R)</value>
+  </data>
+  <data name="UCMediStockSummary.btnSearch.Text" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
+  </data>
+  <data name="UCMediStockSummary.btnXuatExcel.Text" xml:space="preserve">
+    <value>Export Excel</value>
+  </data>
+  <data name="UCMediStockSummary.chkAlertMinStock.Properties.Caption" xml:space="preserve">
+    <value>Survive with minimal warning</value>
+  </data>
+  <data name="UCMediStockSummary.chkBlood.Properties.Caption" xml:space="preserve">
+    <value>Blood</value>
+  </data>
+  <data name="UCMediStockSummary.ChkExpiredDate.Properties.Caption" xml:space="preserve">
+    <value>Expiry date to</value>
+  </data>
+  <data name="UCMediStockSummary.ChkExpiredDate.ToolTip" xml:space="preserve">
+    <value>Expired to</value>
+  </data>
+  <data name="UCMediStockSummary.chkMaterial.Properties.Caption" xml:space="preserve">
+    <value>Supplies</value>
+  </data>
+  <data name="UCMediStockSummary.chkMedicine.Properties.Caption" xml:space="preserve">
+    <value>Drug</value>
+  </data>
+  <data name="UCMediStockSummary.ChkNoExpiredDate.Properties.Caption" xml:space="preserve">
+    <value>Filter out lines with no expiry date</value>
+  </data>
+  <data name="UCMediStockSummary.ChkNoExpiredDate.ToolTip" xml:space="preserve">
+    <value>Filter out lines with no expiry date</value>
+  </data>
+  <data name="UCMediStockSummary.chkShowLineZero.Properties.Caption" xml:space="preserve">
+    <value>Show end line</value>
+  </data>
+  <data name="UCMediStockSummary.ChkValidToTime.Properties.Caption" xml:space="preserve">
+    <value>Bid deadline is coming</value>
+  </data>
+  <data name="UCMediStockSummary.gridColumn1.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCMediStockSummary.gridColumn2.Caption" xml:space="preserve">
+    <value>Store code</value>
+  </data>
+  <data name="UCMediStockSummary.gridColumn3.Caption" xml:space="preserve">
+    <value>Name warehouse</value>
+  </data>
+  <data name="UCMediStockSummary.gridColumn4.Caption" xml:space="preserve">
+    <value>Departments</value>
+  </data>
+  <data name="UCMediStockSummary.gridColumnCheck.Caption" xml:space="preserve">
+    <value>Check</value>
+  </data>
+  <data name="UCMediStockSummary.gridViewMediStock.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Keyword search</value>
+  </data>
+  <data name="UCMediStockSummary.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCMediStockSummary.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCMediStockSummary.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="UCMediStockSummary.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="UCMediStockSummary.layoutControlItem10.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCMediStockSummary.layoutControlItem19.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Selling price by object</value>
+  </data>
+  <data name="UCMediStockSummary.layoutControlItem19.Text" xml:space="preserve">
+    <value>Selling price by object:</value>
+  </data>
+  <data name="UCMediStockSummary.layoutControlItem22.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Lot lock status</value>
+  </data>
+  <data name="UCMediStockSummary.layoutControlItem22.Text" xml:space="preserve">
+    <value>Batch lock status:</value>
+  </data>
+  <data name="UCMediStockSummary.txtKeyWork.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keyword</value>
+  </data>
+<data name="frmMediCardByDateReport.form.Text1" xml:space="preserve">
+     <value>Filter conditions - Drug store tag details by date</value>
+   </data>
+<data name="frmMediCardByDateReport.form.Text2" xml:space="preserve">
+     <value>Filter conditions - Summary of drug store tags by date</value>
+   </data>
+<data name="frmMediCardByDateReport.form.Text3" xml:space="preserve">
+     <value>Filter conditions - Inventory tag details by date</value>
+   </data>
+<data name="frmMediCardByDateReport.form.Text4" xml:space="preserve">
+     <value>Filter conditions - Summary of inventory tags by date</value>
+   </data>
+<data name="frmMediCardByDateReport.form.Text5" xml:space="preserve">
+     <value>Filter conditions - Blood store card details by date</value>
+   </data>
+<data name="frmMediCardByDateReport.form.Text6" xml:space="preserve">
+     <value>Filter conditions - Summary of blood store tags by date</value>
+   </data>
+<data name="frmMediCardByDateReport.medicine.Text1" xml:space="preserve">
+     <value>Medicine code:</value>
+   </data>
+<data name="frmMediCardByDateReport.medicine.Text2" xml:space="preserve">
+     <value>Medicne name:</value>
+   </data>
+<data name="frmMediCardByDateReport.material.Text1" xml:space="preserve">
+     <value>Material code:</value>
+   </data>
+<data name="frmMediCardByDateReport.material.Text2" xml:space="preserve">
+     <value>Material name:</value>
+   </data>
+<data name="frmMediCardByDateReport.blood.Text1" xml:space="preserve">
+     <value>Blood Type Code:</value>
+   </data>
+<data name="frmMediCardByDateReport.blood.Text2" xml:space="preserve">
+     <value>Blood Type Name:</value>
+	   </data>
+	<data name="UCMediStockSummary.NameButtonClose" xml:space="preserve">
+     <value>Collapse</value>
+   </data>
+	<data name="UCMediStockSummary.NameButtonOpen" xml:space="preserve">
+     <value>Details</value>
+   </data>
+	<data name="UCMediStockSummary.cboValue1" xml:space="preserve">
+     <value>All</value>
+   </data>
+	<data name="UCMediStockSummary.cboValue2" xml:space="preserve">
+     <value>Unlocked</value>
+   </data>
+	<data name="UCMediStockSummary.cboValue3" xml:space="preserve">
+     <value>Locked</value>
+   </data>
+</root>

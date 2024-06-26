@@ -1,0 +1,351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BenhNhanNoiTruChuaDuocChiDinhDichVuGiuong" xml:space="preserve">
+    <value>Bệnh nhân nội trú chưa được chỉ định dịch vụ giường</value>
+  </data>
+  <data name="CacPhieuChiDinhSauChuaKetThucKhongChoPhepKetThuc" xml:space="preserve">
+    <value>Các phiếu chỉ định sau chưa kết thúc: {0}</value>
+  </data>
+  <data name="CanhBaoBenhNhanDaKeThuocTrongNgay" xml:space="preserve">
+    <value>Bệnh nhân đã được kê thuốc trong ngày</value>
+  </data>
+  <data name="CanhBaoNgayHenLaChuNhat" xml:space="preserve">
+    <value>Ngày hẹn khám hiện tại là ngày chủ nhật bạn có muốn tiếp tục không</value>
+  </data>
+  <data name="CanhBaoNgayHenLaThuBay" xml:space="preserve">
+    <value>Ngày hẹn khám hiện tại là ngày thứ bảy bạn có muốn tiếp tục không</value>
+  </data>
+  <data name="CanhBaoSaiThongTinTheBHYT" xml:space="preserve">
+    <value>Bệnh nhân có thông tin BHYT chưa đúng, cần kiểm tra lại</value>
+  </data>
+  <data name="CanhBaoThoiGianHenKhamSoVoiThoiGianKetThucDieuTri" xml:space="preserve">
+    <value>Thời gian hẹn khám phải lớn hơn thời gian kết thúc điều trị</value>
+  </data>
+  <data name="ChuaLinhHetThuoc" xml:space="preserve">
+    <value>Chưa lĩnh hết thuốc</value>
+  </data>
+  <data name="ChuaNhapThoiGianHenKham" xml:space="preserve">
+    <value>Bạn chưa chọn thời gian hẹn khám, vui lòng kiểm tra lại</value>
+  </data>
+  <data name="ChuaNhapThongTinChuyenVien" xml:space="preserve">
+    <value>Bạn chưa nhập đầy đủ thông tin chuyển viện, vui lòng kiểm tra lại</value>
+  </data>
+  <data name="ChuaNhapThongTinTuVong" xml:space="preserve">
+    <value>Bạn chưa nhập đầy đủ thông tin tử vong, vui lòng kiểm tra lại</value>
+  </data>
+  <data name="ChucNangDangPhatTrienVuiLongThuLaiSau" xml:space="preserve">
+    <value>Chức năng không được hỗ trợ ở phiên bản hiện tại, vui lòng thử lại sau</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonBoSung" xml:space="preserve">
+    <value>. Bạn có muốn chặn không cho bổ sung?</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong" xml:space="preserve">
+    <value>Bạn có chắc muốn hủy dữ liệu?</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong" xml:space="preserve">
+    <value>Bạn có muốn xóa dữ liệu?</value>
+  </data>
+  <data name="KhongChonPhongLamViec" xml:space="preserve">
+    <value>Vui lòng chưa chọn kho làm việc</value>
+  </data>
+  <data name="KhongCoThuocVatTuNaoConDuSoluongKhaDungTrongKho" xml:space="preserve">
+    <value>Không tìm thấy thuốc - vật tư nào còn đủ khả dụng trong kho để kê</value>
+  </data>
+  <data name="KhongTimThayChinhSachGiaCuaDichVu" xml:space="preserve">
+    <value>Không tìm thấy chính sách giá của dịch vụ</value>
+  </data>
+  <data name="Plugin_AssignPrescription__AcinInteractive__OverGrade" xml:space="preserve">
+    <value>Hoạt chất {0} có trong thuốc {1} xung đột với hoạt chất {2} có trong thuốc {3} Thông tin xung đột: {4}. Mức độ: {5}.</value>
+  </data>
+  <data name="Plugin_AssignPrescription__BenhNhanDoiTuongTTBhytBatBuocPhaiNhapDuongDung" xml:space="preserve">
+    <value>Đối tượng bệnh nhân BHYT bắt buộc phải nhập đường dùng khi chỉ định thuốc</value>
+  </data>
+  <data name="Plugin_AssignPrescription__BuoiChieu" xml:space="preserve">
+    <value>buổi chiều</value>
+  </data>
+  <data name="Plugin_AssignPrescription__BuoiSang" xml:space="preserve">
+    <value>buổi sáng</value>
+  </data>
+  <data name="Plugin_AssignPrescription__BuoiToi" xml:space="preserve">
+    <value>buổi tối</value>
+  </data>
+  <data name="Plugin_AssignPrescription__BuoiTrua" xml:space="preserve">
+    <value>buổi trưa</value>
+  </data>
+  <data name="Plugin_AssignPrescription__CanhBaoThuocDaKeTrongNgay" xml:space="preserve">
+    <value>Thuốc đã kê trong ngày</value>
+  </data>
+  <data name="Plugin_AssignPrescription__CanhBaoVatTuDaKeTrongNgay" xml:space="preserve">
+    <value>Vật tư đã kê trong ngày</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Chieu" xml:space="preserve">
+    <value>Chiều {0} {1}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ChuaChonNgayChiDinh" xml:space="preserve">
+    <value>Chưa chọn ngày chỉ định</value>
+  </data>
+  <data name="Plugin_AssignPrescription__DoiTuongBHYTBatBuocPhaiNhapHDSD" xml:space="preserve">
+    <value>Bắt buộc phải nhập hướng dẫn sử dụng cho thuốc</value>
+  </data>
+  <data name="Plugin_AssignPrescription__HDSDVuotQuaKyTu" xml:space="preserve">
+    <value>Hướng dẫn sử dụng vượt độ dài cho phép</value>
+  </data>
+  <data name="Plugin_AssignPrescription__KhongCoDoiTuongThanhToan" xml:space="preserve">
+    <value>Không chọn đối tượng thanh toán</value>
+  </data>
+  <data name="Plugin_AssignPrescription__KhongNhapSoLuong" xml:space="preserve">
+    <value>Không nhập số lượng</value>
+  </data>
+  <data name="Plugin_AssignPrescription__KhongTimThayDoiTuongThanhToanTrongThoiGianYLenh" xml:space="preserve">
+    <value>Không tìm thấy đối tượng, vui lòng liên hệ quản trị hệ thống để được hỗ trợ</value>
+  </data>
+  <data name="Plugin_AssignPrescription__KhongTimThayIcdTuongUngVoiCacMaSau" xml:space="preserve">
+    <value>Không tìm thấy icd tương ứng với các mã sau: {0}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Message__VuotQuaSoLuongKhaDungTrongKho__CoMuonTiepTuc" xml:space="preserve">
+    <value>vượt quá số lượng khả dụng hoặc không có trong kho. Bạn có muốn chuyển các thuốc không đủ khả dụng sang thuốc ngoài kho hay không?</value>
+  </data>
+  <data name="Plugin_AssignPrescription__NgayUong" xml:space="preserve">
+    <value>Ngày {0}{1} {2} chia {3} lần, </value>
+  </data>
+  <data name="Plugin_AssignPrescription__NgayUongTemp2" xml:space="preserve">
+    <value>Ngày {0}{1} {2} {3} lần,</value>
+  </data>
+  <data name="Plugin_AssignPrescription__NgayXVienBuoiYZ" xml:space="preserve">
+    <value>Ngày {0}{1} {2} {3}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__PopupMenu_LoaiHaoPhi" xml:space="preserve">
+    <value>Hao phí tiền giường</value>
+  </data>
+  <data name="Plugin_AssignPrescription__PopupMenu_SuaSoNgay" xml:space="preserve">
+    <value>Sửa số ngày</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Sang" xml:space="preserve">
+    <value>Sáng {0} {1}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__SoLuongXuatLonHonSpoLuongKhadungTrongKho" xml:space="preserve">
+    <value>Số lượng kê đã vượt quá số khả dụng trong kho.</value>
+  </data>
+  <data name="Plugin_AssignPrescription__SoTienDaKeChoBHYTDaVuotquaMucGioiHan" xml:space="preserve">
+    <value>Số tiền đã kê {0} cho BHYT đã vượt quá mức giới hạn {1}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__SuaDonThuocDuLieuTruyenVaoKhongHopLe" xml:space="preserve">
+    <value>Sửa đơn thuốc dữ liệu truyền vào không hợp lệ, vui lòng liên hệ quản trị hệ thống để được hỗ trợ</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThongBaoTatForm" xml:space="preserve">
+    <value>Bạn đã chọn thuốc/ vật tư nhưng chưa lưu. Bạn có muốn đóng không?</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Thuoc" xml:space="preserve">
+    <value>Thuốc {0}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocDaChonTrongKhoKhongDuKe_BanComuonKeThuocNgoaiKho" xml:space="preserve">
+    <value>Thuốc đã chọn và các thuốc cùng hoạt chất khác trong kho không đủ để kê. Bạn có muốn kê thuốc ngoài kho không</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocDaduocKe" xml:space="preserve">
+    <value>Thuốc đã được kê, có chắc chắn muốn kê tiếp?</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocDaduocKeVaoDanhSachThuocChobenNhanBanCoMuonChuyenSangBNKhac" xml:space="preserve">
+    <value>Thuốc đã được kê vào danh sách chờ lưu cho bệnh nhân, bạn có muốn chuyển sang bệnh nhân khác?</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocKeSoLuongVuotQuaSoLuongCanhBaoTonKho" xml:space="preserve">
+    <value> Thuốc {0} kê đơn số lượng {1} đã vượt quá số lượng cảnh báo tồn kho.</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocKhongCoHoatChat" xml:space="preserve">
+    <value>Thuốc {0} không có hoạt chất</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocKhongCoTrongKho" xml:space="preserve">
+    <value>Thuốc không còn trong kho</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocVatuTrongDanhMuc" xml:space="preserve">
+    <value>Trong danh mục</value>
+  </data>
+  <data name="Plugin_AssignPrescription__TienBHYTDaKeVuotQuaMucGioiHan" xml:space="preserve">
+    <value>Tiền BHYT đã kê vượt quá mức giới hạn</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Toi" xml:space="preserve">
+    <value>Tối {0} {1}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__TongTienHaoPhiVuotQuaDinhMucHaoPhiKhongTheChonDichVuNay" xml:space="preserve">
+    <value>Tổng số tiền hao phí {0} đã vượt quá số tiền định mức hao phí {1} của dịch vụ chính {2}. Các thuốc/vật tư hao phí đã kê: {3}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__TongTienTheoDoiTuongDieuTriChoBHYTDaVuotquaMucGioiHan" xml:space="preserve">
+    <value>Tổng số tiền của các dịch vụ đã chỉ định của bệnh nhân đối thuộc diện điều trị {0} cho BHYT là {1} đã vượt quá mức giới hạn {2}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Trua" xml:space="preserve">
+    <value>Trưa {0} {1}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__TruongSoLuongNhapSaiDinhDang" xml:space="preserve">
+    <value>Số lượng chỉ cho phép nhập ký tự số (0-9), dấu phân tách thập phân ("," "." vd: 0.5; 0,5) và dấu phân số (/ vd: 3/4)</value>
+  </data>
+  <data name="Plugin_AssignPrescription__TruongThongTinCoDoDaiVuotQuaGioiHan" xml:space="preserve">
+    <value>Độ dài của trường dữ liệu không vượt quá 2000 ký tự</value>
+  </data>
+  <data name="Plugin_AssignPrescription__VatTu" xml:space="preserve">
+    <value>Vật tư {0}</value>
+  </data>
+  <data name="SoNgayGiuongLonHonSoNgayDieuTri" xml:space="preserve">
+    <value>Số ngày giường {0} lớn hơn số ngày điều trị {1}. Bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="SoNgayGiuongNhoHonSoNgayDieuTri" xml:space="preserve">
+    <value>Số ngày giường {0} nhỏ hơn số ngày điều trị {1}. Bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TaiKhoanKhongCoQuyenThucHienChucNang" xml:space="preserve">
+    <value>Tài khoản không có quyền thực hiện chức năng</value>
+  </data>
+  <data name="TakeBeanForUpdateThatBai" xml:space="preserve">
+    <value>Xử lý thất bại</value>
+  </data>
+  <data name="TakeBeanThatBai" xml:space="preserve">
+    <value>Xử lý thất bại</value>
+  </data>
+  <data name="ThoiGianKetThucNhoHoiThoiGianYLenhCuaCacMaYeuCauSau" xml:space="preserve">
+    <value>Thời gian kết thúc nhỏ hơn thời gian y lệnh của các mã yêu cầu: {0}</value>
+  </data>
+  <data name="ThoiGianTuVongKhongDuocBeHonThoiGianVaoVien" xml:space="preserve">
+    <value>Thời gian tử vong không được bé hơn thời gian vào viện {0}</value>
+  </data>
+  <data name="ThoiGianTuVongKhongDuocLonHonThoiGianHienTai" xml:space="preserve">
+    <value>Thời gian tử vong không được lớn hơn thời gian hiện tại {0}</value>
+  </data>
+  <data name="ThuocChayThanKhongCapChoBNMangVeKeNgoaiKho" xml:space="preserve">
+    <value>Thuốc chạy thận, không cấp cho bệnh nhân mang về. Thuốc này kê 'ngoài kho', nhằm làm căn cứ hướng dẫn cho điều dưỡng lấy thuốc khi thực hiện chạy thận</value>
+  </data>
+  <data name="ThuocChiDinhDungChoBenhNhanChuaQuaYTuoi" xml:space="preserve">
+    <value>Thuốc {0} chỉ định dùng cho bệnh nhân chưa quá {1} {2}</value>
+  </data>
+  <data name="ThuocChiDinhDungChoBenhNhanTuXDenYTuoi" xml:space="preserve">
+    <value>Thuốc {0} chỉ định dùng cho bệnh nhân từ {1} {2} đến {3} {4}</value>
+  </data>
+  <data name="ThuocChiDinhDungChoBenhNhanTuXTuoi" xml:space="preserve">
+    <value>Thuốc {0} chỉ định dùng cho bệnh nhân từ {1} {2}</value>
+  </data>
+  <data name="ThuocVatTuDaBiLamTronSoLuongLenDoSoLuongCuBiKeLe" xml:space="preserve">
+    <value>Thuốc/ vật tư đã bị làm tròn số lượng lên do số lượng cũ kê lẻ</value>
+  </data>
+  <data name="ThuocVatTuTachBeanThatBai" xml:space="preserve">
+    <value>Tồn tại thuốc/ vật tư không được thêm vào danh sách kê tạm do tách bean thất bại. Chi tiết gồm các thuốc/ vật tư sau: {0}</value>
+  </data>
+  <data name="ThuocVatTu__SoLuong__Kho" xml:space="preserve">
+    <value>Thuốc/ vật tư: {0} - số lượng: {1} - kho: {2}</value>
+  </data>
+</root>

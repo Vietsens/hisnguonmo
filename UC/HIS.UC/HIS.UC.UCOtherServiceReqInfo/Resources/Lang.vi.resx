@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmFun.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmFun.barButtonItem__Save.Caption" xml:space="preserve">
+    <value>Luu (Ctrl S)</value>
+  </data>
+  <data name="frmFun.btnAddInFor.ToolTip" xml:space="preserve">
+    <value>Bảo hiểm Bảo Việt</value>
+  </data>
+  <data name="frmFun.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmFun.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmFun.layoutControlItem1.Text" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="frmFun.layoutControlItem10.Text" xml:space="preserve">
+    <value>đ</value>
+  </data>
+  <data name="frmFun.layoutControlItem2.Text" xml:space="preserve">
+    <value>Sản phẩm:</value>
+  </data>
+  <data name="frmFun.layoutControlItem3.Text" xml:space="preserve">
+    <value>Tên khách hàng:</value>
+  </data>
+  <data name="frmFun.layoutControlItem4.Text" xml:space="preserve">
+    <value>Hạn mức:</value>
+  </data>
+  <data name="frmFun.layoutControlItem5.Text" xml:space="preserve">
+    <value>Công ty:</value>
+  </data>
+  <data name="frmFun.layoutControlItem6.Text" xml:space="preserve">
+    <value>Ngày cấp:</value>
+  </data>
+  <data name="frmFun.layoutControlItem7.Text" xml:space="preserve">
+    <value>Thời hạn từ:</value>
+  </data>
+  <data name="frmFun.layoutControlItem8.Text" xml:space="preserve">
+    <value>Thời hạn đến:</value>
+  </data>
+  <data name="frmFun.Text" xml:space="preserve">
+    <value>Thông tin bổ sung (Đơn vị cùng chi trả)</value>
+  </data>
+  <data name="toolTipItem1.Text" xml:space="preserve">
+    <value>Trường hợp ưu tiên</value>
+  </data>
+  <data name="toolTipItem2.Text" xml:space="preserve">
+    <value>Số thứ tự ưu tiên dành cho bệnh nhân đăng ký khám qua tổng đài</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.btnAddCTT.ToolTip" xml:space="preserve">
+    <value>Nhập thông tin bổ sung</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.cboPriorityType.ToolTip" xml:space="preserve">
+    <value>Trường hợp ưu tiên</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.layoutControlItem1.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Trường hợp ưu tiên</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.layoutControlItem1.Text" xml:space="preserve">
+    <value>TH ưu tiên:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.layoutControlItem3.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nguồn chi trả khác</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.layoutControlItem3.Text" xml:space="preserve">
+    <value>Nguồn CTK:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lcgOtherRequest.Text" xml:space="preserve">
+    <value>Yêu cầu khác</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciCboCTT.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Đơn vị cùng chi trả viện phí</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciCboCTT.Text" xml:space="preserve">
+    <value>Đơn vị CCT:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciEmergency.Text" xml:space="preserve">
+    <value>Cấp cứu:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciEmergencyTime.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời gian đau</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciEmergencyTime.Text" xml:space="preserve">
+    <value>TG đau:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciForchkCapMaMS.Text" xml:space="preserve">
+    <value>Cấp mã MS:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciFortxtIncode.Text" xml:space="preserve">
+    <value>Số vào viện:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciFortxtMaMS.Text" xml:space="preserve">
+    <value>Mã MS:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciFortxtSTTPriority.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số thứ tự ưu tiên dành cho bệnh nhân đăng ký khám qua tổng đài</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciFortxtSTTPriority.Text" xml:space="preserve">
+    <value>STT ƯT:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciGuaranteeLoginname.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Người bảo lãnh</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciGuaranteeLoginname.Text" xml:space="preserve">
+    <value>Bảo lãnh:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciGuaranteeReason.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Lý do bảo lãnh</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciGuaranteeReason.Text" xml:space="preserve">
+    <value>Lý do:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciIntructionTime.Text" xml:space="preserve">
+    <value>Thời gian:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciIsChronic.Text" xml:space="preserve">
+    <value>Mãn tính:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciIsNotRequireFee.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Khám thu sau</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciIsNotRequireFee.Text" xml:space="preserve">
+    <value>Thu sau:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciOweType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nợ viện phí</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciOweType.Text" xml:space="preserve">
+    <value>Nợ VP:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciPatientClassify.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Phân loại bệnh nhân</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciPatientClassify.Text" xml:space="preserve">
+    <value>Phân loại BN:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciPriority.Text" xml:space="preserve">
+    <value>Ưu tiên:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciTreatmentOrder.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số thứ tự hồ sơ</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciTreatmentOrder.Text" xml:space="preserve">
+    <value>STT HS:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciTreatmentType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Diện điều trị</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciTreatmentType.Text" xml:space="preserve">
+    <value>Diện ĐT:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciTuberculosis.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bệnh nhân thuộc chương trình phòng chống Lao quốc gia</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciTuberculosis.Text" xml:space="preserve">
+    <value>BN lao:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lcUCOtherServiceReqInfo.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+</root>

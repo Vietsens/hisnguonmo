@@ -1,0 +1,364 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="this.treeListColumn22.Caption = Inventec.Common.Resource.Get.Value(&quot;frmHisMediStock.treeListColumn22.Caption&quot;, Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmHisMediStock.bbtnAdd.Caption" xml:space="preserve">
+    <value>Add (Ctrl N)</value>
+  </data>
+  <data name="frmHisMediStock.bbtnEdit.Caption" xml:space="preserve">
+    <value>Edit (Ctrl S)</value>
+  </data>
+  <data name="frmHisMediStock.bbtnFocusDefault.Caption" xml:space="preserve">
+    <value>F2</value>
+  </data>
+  <data name="frmHisMediStock.bbtnReset.Caption" xml:space="preserve">
+    <value>Redo (Ctrl + C)</value>
+  </data>
+  <data name="frmHisMediStock.bbtnSearch.Caption" xml:space="preserve">
+    <value>Find (Ctrl + F)</value>
+  </data>
+  <data name="frmHisMediStock.btnAdd.Text" xml:space="preserve">
+    <value>Add (Ctrl N)</value>
+  </data>
+  <data name="frmHisMediStock.btnCancel.Text" xml:space="preserve">
+    <value>Redo (Ctrl + C)</value>
+  </data>
+  <data name="frmHisMediStock.btnEdit.Text" xml:space="preserve">
+    <value>Edit (Ctrl S)</value>
+  </data>
+  <data name="frmHisMediStock.btnSearch.Text" xml:space="preserve">
+    <value>Search (Ctrl + F)</value>
+  </data>
+  <data name="frmHisMediStock.cboDepartMentName.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmHisMediStock.cboParent.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmHisMediStock.chkAutoImport.Properties.Caption" xml:space="preserve">
+    <value>Automatically import</value>
+  </data>
+  <data name="frmHisMediStock.chkIsAllowImpSupplier.Properties.Caption" xml:space="preserve">
+    <value>Allows import from NCC</value>
+  </data>
+  <data name="frmHisMediStock.chkIsAutoApproveExp.Properties.Caption" xml:space="preserve">
+    <value>T / export activities require approval</value>
+  </data>
+  <data name="frmHisMediStock.chkIsAutoApproveImp.Properties.Caption" xml:space="preserve">
+    <value>T / mobile browser entry requirements</value>
+  </data>
+  <data name="frmHisMediStock.chkIsAutoCreateChmsImp.Properties.Caption" xml:space="preserve">
+    <value>T / generating asked to enter stock transfer</value>
+  </data>
+  <data name="frmHisMediStock.chkIsAutoExecuteExp.Properties.Caption" xml:space="preserve">
+    <value>T / performed export</value>
+  </data>
+  <data name="frmHisMediStock.chkIsBusiness.Properties.Caption" xml:space="preserve">
+    <value>Business Warehouse</value>
+  </data>
+  <data name="frmHisMediStock.chkIsCabinet.Properties.Caption" xml:space="preserve">
+    <value>Cabinets are online</value>
+  </data>
+  <data name="frmHisMediStock.chkIsGoodsRestrict.Properties.Caption" xml:space="preserve">
+    <value>Manage limited supplies of drugs stored</value>
+  </data>
+  <data name="frmHisMediStock.dnNavigation.Text" xml:space="preserve">
+    <value>dataNavigator1</value>
+  </data>
+  <data name="frmHisMediStock.layoutControl1.Text" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="frmHisMediStock.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmHisMediStock.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmHisMediStock.layoutControlItem2.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmHisMediStock.layoutControlItem3.Text" xml:space="preserve">
+    <value>Dad:</value>
+  </data>
+  <data name="frmHisMediStock.lcEditorInfo.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="frmHisMediStock.lciHeadCode.Text" xml:space="preserve">
+    <value>First health insurance card code:</value>
+  </data>
+  <data name="frmHisMediStock.lciIsAllowImpSupplier.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmHisMediStock.lciIsAutoApproveExp.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmHisMediStock.lciIsAutoApproveImp.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmHisMediStock.lciIsAutoCreateChmsImp.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmHisMediStock.lciIsAutoExecuteExp.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmHisMediStock.lciIsBusiness.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmHisMediStock.lciIsCabinet.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmHisMediStock.lciIsGoodsRestrict.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmHisMediStock.lciMediStockCode.Text" xml:space="preserve">
+    <value>Store code:</value>
+  </data>
+  <data name="frmHisMediStock.lciMediStockName.Text" xml:space="preserve">
+    <value>Name of store:</value>
+  </data>
+  <data name="frmHisMediStock.lciNotHeadCode.Text" xml:space="preserve">
+    <value>First health insurance card code does not allow:</value>
+  </data>
+  <data name="frmHisMediStock.lciParentId.Text" xml:space="preserve">
+    <value>Lock:</value>
+  </data>
+  <data name="frmHisMediStock.Text" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn1.Caption" xml:space="preserve">
+    <value>Health insurance card code</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn10.Caption" xml:space="preserve">
+    <value>Business Warehouse</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn11.Caption" xml:space="preserve">
+    <value>Automatically approve the request to export</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn12.Caption" xml:space="preserve">
+    <value>Automatic implementation of export</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn13.Caption" xml:space="preserve">
+    <value>Cabinets are online</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn14.Caption" xml:space="preserve">
+    <value>Automatically generates a request to enter stock transfer</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn15.Caption" xml:space="preserve">
+    <value>Automatic import approval requirements</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn16.Caption" xml:space="preserve">
+    <value>Manage limited supplies of drugs are stored</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn17.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn18.Caption" xml:space="preserve">
+    <value>Time created</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn19.Caption" xml:space="preserve">
+    <value>creators</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn2.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmHisMediStock.treeListColumn20.Caption" xml:space="preserve">
+    <value>Time correction</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn21.Caption" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn22.Caption" xml:space="preserve">
+    <value>First health insurance card code not allowed</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn23.Caption" xml:space="preserve">
+    <value>Automatically import</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn3.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmHisMediStock.treeListColumn4.Caption" xml:space="preserve">
+    <value>name warehouse</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn5.Caption" xml:space="preserve">
+    <value>Store code</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn6.Caption" xml:space="preserve">
+    <value>Kind of room</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn7.Caption" xml:space="preserve">
+    <value>scientific name</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn8.Caption" xml:space="preserve">
+    <value>Dad</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn9.Caption" xml:space="preserve">
+    <value>Allows import from NCC</value>
+  </data>
+  <data name="frmHisMediStock.chkShowDDT.Properties.Caption" xml:space="preserve">
+    <value>Show treatment</value>
+  </data>
+  <data name="frmHisMediStock.chkIsUsingPlanningTransDF.Properties.Caption" xml:space="preserve">
+    <value>Using Planning Trans As Default</value>
+    <comment>Mặc định xuất kế hoạch</comment>
+  </data>
+  <data name="frmHisMediStock.chkIsUsingPlanningTransDF.ToolTip" xml:space="preserve">
+    <value>Using Planning Trans As Default</value>
+    <comment>Mặc định chọn hình thức xuất kế hoạch khi thực hiện xuất chuyển kho</comment>
+  </data>
+  <data name="frmHisMediStock.treeListColumn27.Caption" xml:space="preserve">
+    <value>Using Planning Trans As Default</value>
+    <comment>Mặc định xuất kế hoạch</comment>
+  </data>
+  <data name="frmHisMediStock.chkIsDrugstore.Properties.Caption" xml:space="preserve">
+    <value>Is Drugstore</value>
+  </data>
+  <data name="frmHisMediStock.chkIsDrugstore.ToolTip" xml:space="preserve">
+    <value>Kho nhằm lưu thuốc/vật tư bị từ chối khi duyệt phiếu trả</value>
+  </data>
+  <data name="frmHisMediStock.treeListColumn28.Caption" xml:space="preserve">
+    <value>Is Drugstore</value>
+  </data>
+  <data name="frmHisMediStock.chkIS_FOR_REJECTED_MOBA.Properties.Caption" xml:space="preserve">
+    <value>Kho thuốc/VT bị từ chối duyệt phiếu trả</value>
+  </data>
+  <data name="frmHisMediStock.chkIS_MOBA_CHANGE_AMOUNT.Properties.Caption" xml:space="preserve">
+    <value>Cho phép sửa SL khi duyệt phiếu trả</value>
+  </data>
+  <data name="frmHisMediStock.chkIS_MOBA_CHANGE_AMOUNT.ToolTip" xml:space="preserve">
+    <value>Cho phép sửa số lượng khi duyệt phiếu trả</value>
+  </data>
+  <data name="frmHisMediStock.chkNotAllowMaterial.Properties.Caption" xml:space="preserve">
+    <value>Import of materials is not allowed</value>
+    <comment>Không cho phép nhập vật tư</comment>
+  </data>
+  <data name="frmHisMediStock.chkNotAllowMaterial.ToolTip" xml:space="preserve">
+    <value>Importing supplies is not allowed in the function "Import medicine and supplies"</value>
+    <comment>Không cho phép nhập vật tư ở chức năng “Nhập thuốc vật tư”</comment>
+  </data>
+  <data name="frmHisMediStock.chkNotAllowMedicine.Properties.Caption" xml:space="preserve">
+    <value>Importing drugs is not allowed</value>
+    <comment>Không cho phép nhập thuốc</comment>
+  </data>
+  <data name="frmHisMediStock.chkNotAllowMedicine.ToolTip" xml:space="preserve">
+    <value>Importing drugs is not allowed in the function "Importing drugs and supplies"</value>
+    <comment>Không cho phép nhập thuốc ở chức năng “Nhập thuốc vật tư”</comment>
+  </data>
+</root>

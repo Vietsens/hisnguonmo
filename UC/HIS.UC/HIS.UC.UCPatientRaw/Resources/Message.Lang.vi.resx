@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="HIS_UC_UCPatientRaw_BenhNhanDaTuVong" xml:space="preserve">
+    <value>Bệnh nhân {0} đã tử vong</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_DotDieuTriGanNhatCuaBenhNhanCoNgayRaLaHomNay" xml:space="preserve">
+    <value>Bệnh nhân có hồ sơ điều trị: {0} ra viện ngày hôm nay. Bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_DotKhamTruocCuaBenhNhanConNoTienVienPhi" xml:space="preserve">
+    <value>Đợt khám/điều trị trước đó của bệnh nhân còn nợ tiền viện phí. Mã hồ sơ điều trị {0}</value>
+  </data>
+	<data name="HIS_UC_UCPatientRaw_DotKhamTruocCuaBenhNhanConNoTienVienPhi3" xml:space="preserve">
+    <value>Đợt khám/điều trị trước đó của bệnh nhân có số tiền phải trả > 0 hoặc chưa duyệt khóa viện phí. Mã hồ sơ điều trị {0}</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_DotKhamTruocCuaBenhNhanCoThuocChuaUongHet" xml:space="preserve">
+    <value>Đợt khám/điều trị trước đó của bệnh nhân có {1} {2} {3}chưa uống hết</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_HoDemBNVuotQuaMaxLength" xml:space="preserve">
+    <value>Họ đệm vượt quá độ dài tối đa ({0} ký tự)</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_MaBenhNhanKhongTontai" xml:space="preserve">
+    <value>Không tìm thấy thông tin bệnh nhân với mã tương ứng</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_MaChuongTrinhKhongTontai" xml:space="preserve">
+    <value>Không tìm thấy thông tin bệnh nhân với mã chương trình</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_MaCmndCccdKhongTontai" xml:space="preserve">
+    <value>Không tìm thấy thông tin bệnh nhân với CMND/CCCD</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_MaDieuTriKhongTontai" xml:space="preserve">
+    <value>Không tìm thấy thông tin bệnh nhân với mã điều trị</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_MaHenKhamKhongTontai" xml:space="preserve">
+    <value>Không tìm thấy thông tin bệnh nhân với mã hẹn khám</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_NhapNgaySinhKhongDungDinhDang" xml:space="preserve">
+    <value>Nhập thông tin ngày sinh không đúng định dạng</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_SaiDinhDangGioAge" xml:space="preserve">
+    <value>Sai định dạng (Giá trị 0 =&gt; 23)</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_SaiDinhDangGioAgeVuotGiaTri23" xml:space="preserve">
+    <value>Giá trị không được lớn hơn 23 (Giá trị 0 =&gt; 23)</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_SoTheKhongTontai" xml:space="preserve">
+    <value>Không tìm thấy thông tin bệnh nhân với số thẻ</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_SoTuoiKhongDuocNhoHon7" xml:space="preserve">
+    <value>Số tuổi không được nhỏ hơn 7</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_TenBNVuotQuaMaxLength" xml:space="preserve">
+    <value>Tên vượt quá độ dài tối đa ({0} ký tự)</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_ThieuTruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Thiếu trường dữ liệu bắt buộc.</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_ThongTinNgaySinhPhaiNhoHonNgayHienTai" xml:space="preserve">
+    <value>Thông tin ngày sinh phải nhỏ hơn ngày hiện tại</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_ThuocCoThoiSuDungDen" xml:space="preserve">
+    <value>{0} có thuốc kê sử dụng đến {1}</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_TieuDeCuaSoThongBaoLaCanhBao" xml:space="preserve">
+    <value>Cảnh báo</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_TieuDeCuaSoThongBaoLaThongBao" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Trường dữ liệu bắt buộc.</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaBN" xml:space="preserve">
+    <value>Mã BN</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaBN_ToolTip" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaCMCC" xml:space="preserve">
+    <value>CMND/CCCD</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaCMCC_ToolTip" xml:space="preserve">
+    <value>Chứng minh nhân dân/ Căn cước công dân</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaCT" xml:space="preserve">
+    <value>Mã CT</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaCT_ToolTip" xml:space="preserve">
+    <value>Mã chương trình</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaDT" xml:space="preserve">
+    <value>Mã ĐT</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaDT_ToolTip" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaHK" xml:space="preserve">
+    <value>Mã HK</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaHK_ToolTip" xml:space="preserve">
+    <value>Mã hẹn khám</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaNV" xml:space="preserve">
+    <value>Mã NV</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaNV_ToolTip" xml:space="preserve">
+    <value>Mã nhân viên</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__SoDT" xml:space="preserve">
+    <value>Số ĐT</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__SoDT_ToolTip" xml:space="preserve">
+    <value>Số điện thoại</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__SoThe" xml:space="preserve">
+    <value>Số thẻ</value>
+  </data>
+	<data name="HIS_UC_UCPatientRaw_typeCodeFind__MaTuVan" xml:space="preserve">
+    <value>Mã tư vấn</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__SoThe_ToolTip" xml:space="preserve">
+    <value>Số thẻ thông minh</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_XuLyThatBai" xml:space="preserve">
+    <value>Xử lý thất bại.</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_YeuCauNhapDayDuNgayThangNamSinhVoiBNDuoi6Tuoi" xml:space="preserve">
+    <value>Yêu cầu nhập đầy đủ ngày/tháng/năm sinh với bệnh nhân dưới 6 tuổi</value>
+  </data>
+</root>

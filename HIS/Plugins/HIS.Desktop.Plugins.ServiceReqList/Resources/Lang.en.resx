@@ -1,0 +1,684 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmChangeRoom.bar2.Text" xml:space="preserve">
+    <value>Main menu</value>
+  </data>
+  <data name="frmChangeRoom.bbtnSaveRoom.Caption" xml:space="preserve">
+    <value>Save (Ctrl S )</value>
+  </data>
+  <data name="frmChangeRoom.btnSaveRoom.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmChangeRoom.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmChangeRoom.layoutControlItem1.Text" xml:space="preserve">
+    <value>Clinic:</value>
+  </data>
+  <data name="frmChangeRoom.layoutControlItem2.Text" xml:space="preserve">
+    <value>Emergency room:</value>
+  </data>
+  <data name="frmChangeRoom.layoutControlItem3.Text" xml:space="preserve">
+    <value>Operating room:</value>
+  </data>
+  <data name="frmChangeRoom.layoutControlItem4.Text" xml:space="preserve">
+    <value>Room:</value>
+  </data>
+  <data name="frmChangeRoom.Text" xml:space="preserve">
+    <value>Move room</value>
+  </data>
+  <data name="frmReason.btnPrint.Text" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="frmReason.btnSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="frmReason.chkReasonClose.Properties.Caption" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="frmReason.chkResonPrint.Properties.Caption" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="frmReason.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmReason.layoutControlItem1.Text" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
+  <data name="frmReason.Text" xml:space="preserve">
+    <value>Reason for not doing</value>
+  </data>
+  <data name="frmServiceReqList.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmServiceReqList.barButtonPrintTemBarcode.Caption" xml:space="preserve">
+    <value>Print Stamps (F7)</value>
+  </data>
+  <data name="frmServiceReqList.bbtnRCFind.Caption" xml:space="preserve">
+    <value>Search (Ctrl F)</value>
+  </data>
+  <data name="frmServiceReqList.bbtnRCRefresh.Caption" xml:space="preserve">
+    <value>Refresh (Ctrl R)</value>
+  </data>
+  <data name="frmServiceReqList.BenhNhan" xml:space="preserve">
+    <value>Patient</value>
+  </data>
+  <data name="frmServiceReqList.btnAggrExpMest.Text" xml:space="preserve">
+    <value>Ds recall</value>
+  </data>
+  <data name="frmServiceReqList.btnDropDownPrint.Text" xml:space="preserve">
+    <value>Print coupons</value>
+  </data>
+  <data name="frmServiceReqList.btnFind.Text" xml:space="preserve">
+    <value>Search (Ctrl F)</value>
+  </data>
+  <data name="frmServiceReqList.btnMobaCreate.Text" xml:space="preserve">
+    <value>Moba Create</value>
+  </data>
+  <data name="frmServiceReqList.btnPrintMedicine.Text" xml:space="preserve">
+    <value>Print prescription TRIAL</value>
+  </data>
+  <data name="frmServiceReqList.btnPrintTemBarcode.Text" xml:space="preserve">
+    <value>Stamp printing (F7)</value>
+  </data>
+  <data name="frmServiceReqList.btnPrintTotal.Text" xml:space="preserve">
+    <value>Print the order form CARDS</value>
+  </data>
+  <data name="frmServiceReqList.chkPK.Properties.Caption" xml:space="preserve">
+    <value>PK</value>
+  </data>
+  <data name="frmServiceReqList.chkPK.ToolTip" xml:space="preserve">
+    <value>Show only treatment rooms as \\Clinical\\</value>
+  </data>
+  <data name="frmServiceReqList.Gc_HisSendOldSystem.Caption" xml:space="preserve">
+    <value>Send old HT</value>
+  </data>
+  <data name="frmServiceReqList.gcolServiceTypeName.Caption" xml:space="preserve">
+    <value>Service type</value>
+  </data>
+  <data name="frmServiceReqList.grdColRationTime.Caption" xml:space="preserve">
+    <value>Ration</value>
+  </data>
+  <data name="frmServiceReqList.gridColOtherPrintForm.Caption" xml:space="preserve">
+    <value>Other print</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevAmount.Caption" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevCode.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevConvertAmount.Caption" xml:space="preserve">
+    <value>Amount of conversion</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevConvertName.Caption" xml:space="preserve">
+    <value>Conversion unit</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevConvertRatio.Caption" xml:space="preserve">
+    <value>Conversion rate</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevName.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevPatientTypeName.Caption" xml:space="preserve">
+    <value>Meal rate/DTT</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevPatientTypeName.ToolTip" xml:space="preserve">
+    <value>Meal rate/Payee</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevPrint.Caption" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevSTT.Caption" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevTypeName.Caption" xml:space="preserve">
+    <value>Payment object</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevUnitName.Caption" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevView.Caption" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_AllowNotExecute.Caption" xml:space="preserve">
+    <value>Not allowed to perform</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_BieuMauKhac.Caption" xml:space="preserve">
+    <value>Other forms</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Execute_Username.Caption" xml:space="preserve">
+    <value>Executor</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Request_Username.Caption" xml:space="preserve">
+    <value>Petitioner</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_ServiceReq_Choose.Caption" xml:space="preserve">
+    <value>Choose</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_ServiceReq_Delete.Caption" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_ServiceReq_Edit.Caption" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_ServiceReq_EditIntructionTime.Caption" xml:space="preserve">
+    <value>Edit specified time</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_ServiceReq_Print.Caption" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_ServiceReq_Stt.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_Amount.Caption" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_Cashier.Caption" xml:space="preserve">
+    <value>Requester</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_CashierRoomName.Caption" xml:space="preserve">
+    <value>Execute room</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_CreateTime.Caption" xml:space="preserve">
+    <value>Create time</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_Creator.Caption" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_Dob.Caption" xml:space="preserve">
+    <value>Intruction time</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_GenderName.Caption" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_Modifier.Caption" xml:space="preserve">
+    <value>modifier</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_ModifyTime.Caption" xml:space="preserve">
+    <value>Modify time</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_PatientCode.Caption" xml:space="preserve">
+    <value>Patient Code</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_PayFormName.Caption" xml:space="preserve">
+    <value>Request room</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_Stt.Caption" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_TransactionCode.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_TreatmentCode.Caption" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_VirPatientName.Caption" xml:space="preserve">
+    <value>Patient full name</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn1.Caption" xml:space="preserve">
+    <value>Intruction time</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn2.Caption" xml:space="preserve">
+    <value>Impact history</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn3.Caption" xml:space="preserve">
+    <value>Type of examination</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn3.ToolTip" xml:space="preserve">
+    <value>Main examination</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn4.Caption" xml:space="preserve">
+    <value>User manual</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn5.Caption" xml:space="preserve">
+    <value>gridColumn5</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn6.Caption" xml:space="preserve">
+    <value>Transfer rate</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn7.Caption" xml:space="preserve">
+    <value>Permission not to perform</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn8.Caption" xml:space="preserve">
+    <value>gridColumn8</value>
+  </data>
+  <data name="frmServiceReqList.GridColumnInReqExeute.Caption" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="frmServiceReqList.groupControlInfo.Text" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="frmServiceReqList.HoSoDieuTri" xml:space="preserve">
+    <value>Treatment file</value>
+  </data>
+  <data name="frmServiceReqList.KhoaChiDinh" xml:space="preserve">
+    <value>Request department</value>
+  </data>
+  <data name="frmServiceReqList.KhoaThucHien" xml:space="preserve">
+    <value>Execute department</value>
+  </data>
+  <data name="frmServiceReqList.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmServiceReqList.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmServiceReqList.layoutControlItem11.Text" xml:space="preserve">
+    <value>Number of ladders:</value>
+  </data>
+  <data name="frmServiceReqList.layoutControlItem15.Text" xml:space="preserve">
+    <value>Processing room:</value>
+  </data>
+  <data name="frmServiceReqList.layoutControlItem18.Text" xml:space="preserve">
+    <value>Date of birth:</value>
+  </data>
+  <data name="frmServiceReqList.layoutControlItem7.Text" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="frmServiceReqList.layoutControlItem8.Text" xml:space="preserve">
+    <value>Type:</value>
+  </data>
+  <data name="frmServiceReqList.lciAggrExpMestCode.Text" xml:space="preserve">
+    <value>Aggregate export code</value>
+  </data>
+  <data name="frmServiceReqList.lciAssignTurnCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Designation pass code</value>
+  </data>
+  <data name="frmServiceReqList.lciAssignTurnCode.Text" xml:space="preserve">
+    <value>College turn code:</value>
+  </data>
+  <data name="frmServiceReqList.lciBarcode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Barcode test</value>
+  </data>
+  <data name="frmServiceReqList.lciBarcode.Text" xml:space="preserve">
+    <value>Barcode XN:</value>
+  </data>
+  <data name="frmServiceReqList.lciBtnAggrExpMest.Text" xml:space="preserve">
+    <value>Aggregate export list</value>
+  </data>
+  <data name="frmServiceReqList.lciBtnMobaCreate.Text" xml:space="preserve">
+    <value>Create recall</value>
+  </data>
+  <data name="frmServiceReqList.lciExcuteDepartment.Text" xml:space="preserve">
+    <value>Processing department:</value>
+  </data>
+  <data name="frmServiceReqList.lciExpMestCode.Text" xml:space="preserve">
+    <value>Export code:</value>
+  </data>
+  <data name="frmServiceReqList.lciExpMestRoom.Text" xml:space="preserve">
+    <value>Exp Mest Room:</value>
+  </data>
+  <data name="frmServiceReqList.lciExpMestRoom.Text.Barcode" xml:space="preserve">
+    <value>Barcode:</value>
+  </data>
+  <data name="frmServiceReqList.lciExpMestStt.Text" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="frmServiceReqList.lciGender.Text" xml:space="preserve">
+    <value>Gender:</value>
+  </data>
+  <data name="frmServiceReqList.lciIntructionTimeFrom.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Order time</value>
+  </data>
+  <data name="frmServiceReqList.lciIntructionTimeFrom.Text" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="frmServiceReqList.lciIntructionTimeTo.Text" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="frmServiceReqList.lciIsHomePres.Text" xml:space="preserve">
+    <value>Take-away application:</value>
+  </data>
+  <data name="frmServiceReqList.lciIsKidney.Text" xml:space="preserve">
+    <value>Dialysis application:</value>
+  </data>
+  <data name="frmServiceReqList.lciKeyword.Text" xml:space="preserve">
+    <value>Keyword search</value>
+  </data>
+  <data name="frmServiceReqList.lciNumOrder.Text" xml:space="preserve">
+    <value>Numerical order:</value>
+  </data>
+  <data name="frmServiceReqList.lciPatientName.Text" xml:space="preserve">
+    <value>Full name:</value>
+  </data>
+  <data name="frmServiceReqList.lciRationSumCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>General coupon code</value>
+  </data>
+  <data name="frmServiceReqList.lciRationSumCode.Text" xml:space="preserve">
+    <value>TH coupon code:</value>
+  </data>
+  <data name="frmServiceReqList.lciRationTime.Text" xml:space="preserve">
+    <value>Ration:</value>
+  </data>
+  <data name="frmServiceReqList.lciReqDepartment.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Faculty required</value>
+  </data>
+  <data name="frmServiceReqList.lciReqDepartment.Text" xml:space="preserve">
+    <value>Request Department:</value>
+  </data>
+  <data name="frmServiceReqList.lciReqSended.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ordering information sent to the integrated system (LIS, PACS,...)</value>
+  </data>
+  <data name="frmServiceReqList.lciReqSended.Text" xml:space="preserve">
+    <value>Sent request:</value>
+  </data>
+  <data name="frmServiceReqList.lciServiceReqCode.Text" xml:space="preserve">
+    <value>Service request code:</value>
+  </data>
+  <data name="frmServiceReqList.lciSoTheTM.Text" xml:space="preserve">
+    <value>KCB TM card:</value>
+  </data>
+  <data name="frmServiceReqList.lciTreatmentCode.Text" xml:space="preserve">
+    <value>Treatment code:</value>
+  </data>
+  <data name="frmServiceReqList.PhongChiDinh" xml:space="preserve">
+    <value>Assign room</value>
+  </data>
+  <data name="frmServiceReqList.repositoryItemBtnBieuMauKhac.Buttons[0].ToolTip" xml:space="preserve">
+    <value>Other print type</value>
+  </data>
+  <data name="frmServiceReqList.repositoryItemBtnDeleteServiceReq.Buttons[0].ToolTip" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="frmServiceReqList.repositoryItemBtnEditServiceReq.Buttons[0].ToolTip" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="frmServiceReqList.repositoryItemBtnPrintServiceReq.Buttons[0].ToolTip" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="frmServiceReqList.repositoryItemButtonEditIntructionTime.Buttons[0].ToolTip" xml:space="preserve">
+    <value>Edit Intruction time</value>
+  </data>
+  <data name="frmServiceReqList.repositoryItemButtonView.Buttons[0].ToolTip" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="frmServiceReqList.repositoryItempicServiceReqStatus.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmServiceReqList.TatCa" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="frmServiceReqList.Text" xml:space="preserve">
+    <value>Service Request List</value>
+  </data>
+  <data name="frmServiceReqList.ToiTao" xml:space="preserve">
+    <value>Me</value>
+  </data>
+  <data name="frmServiceReqList.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Keyword search</value>
+  </data>
+  <data name="frmServiceReqList.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Patient code</value>
+  </data>
+  <data name="frmServiceReqList.txtServiceReqCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Service request code</value>
+  </data>
+  <data name="frmServiceReqList.txtStoreCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Store code</value>
+  </data>
+  <data name="frmServiceReqList.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="frmTutorial.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmTutorial.barButtonItem1.Caption" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="frmTutorial.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmTutorial.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmTutorial.layoutControlItem1.Text" xml:space="preserve">
+    <value>User manual:</value>
+  </data>
+  <data name="frmTutorial.layoutControlItem3.Text" xml:space="preserve">
+    <value>Transfer rate:</value>
+  </data>
+  <data name="frmTutorial.layoutControlItem4.Text" xml:space="preserve">
+    <value>Number of days:</value>
+  </data>
+  <data name="frmTutorial.lciSpinCountUsedBefore.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Number of days of previous drug use</value>
+  </data>
+  <data name="frmTutorial.lciSpinCountUsedBefore.Text" xml:space="preserve">
+    <value>Number of previous uses:</value>
+  </data>
+  <data name="frmTutorial.Text" xml:space="preserve">
+    <value>Edit general information</value>
+  </data>
+  <data name="His.Desktop.Plugins.ServiceReqlist.PriorityName" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__BIEU_MAU_KHAC" xml:space="preserve">
+    <value>Other forms</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__CACH_THUC_PHAU_THUAT" xml:space="preserve">
+    <value>The procedure of surgical procedure</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__CHUYEN_KHOA" xml:space="preserve">
+    <value>Print Specialty exam paper</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__DON_THUOC" xml:space="preserve">
+    <value>Prescription</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__DON_THUOC_YHCT" xml:space="preserve">
+    <value>Traditional medicine prescriptions</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__GIAY_CAM_DOAN" xml:space="preserve">
+    <value>Confirmation of surgical procedure and anesthesia resuscitation</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__GIAY_CHUNG_NHAN_PHAU_THUAT" xml:space="preserve">
+    <value>Surgical certificate</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__GIAY_CHUNG_NHAN_PTTT" xml:space="preserve">
+    <value>Certific surg service request</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__KHAM" xml:space="preserve">
+    <value>Print exam request</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__PHIEU_PHAU_THUAT" xml:space="preserve">
+    <value>Surgical tricks</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__PHIEU_YEU_CAU_XET_NGHIEM" xml:space="preserve">
+    <value>Test request form</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__THUOC_TONG_HOP" xml:space="preserve">
+    <value>Composite prescriptions</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__PHIEU_THU_KIEM_YC_KHAM" xml:space="preserve">
+    <value>Receipt cum examination request form</value>
+  </data>
+  <data name="ServiceReq.RightMenu.AllowNotExecute" xml:space="preserve">
+    <value>Permission not to perform</value>
+  </data>
+  <data name="ServiceReq.RightMenu.AttackTreatment" xml:space="preserve">
+    <value>Attached Profile</value>
+  </data>
+  <data name="ServiceReq.RightMenu.ChangeRoom" xml:space="preserve">
+    <value>Move room</value>
+  </data>
+  <data name="ServiceReq.RightMenu.ConnectDrugInterventionInfo" xml:space="preserve">
+    <value>Information on pharmaceutical intervention</value>
+  </data>
+  <data name="ServiceReq.RightMenu.Delete" xml:space="preserve">
+    <value>Erase</value>
+  </data>
+  <data name="ServiceReq.RightMenu.DeleteSelectedItem" xml:space="preserve">
+    <value>Delete the selected command</value>
+  </data>
+  <data name="ServiceReq.RightMenu.DisposeAllowNotExecute" xml:space="preserve">
+    <value>Canceling permission does not work</value>
+  </data>
+  <data name="ServiceReq.RightMenu.Edit" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="ServiceReq.RightMenu.EditCommonInfo" xml:space="preserve">
+    <value>Edit general information</value>
+  </data>
+  <data name="ServiceReq.RightMenu.EmrDocumentList" xml:space="preserve">
+    <value>List of signed documents</value>
+  </data>
+  <data name="ServiceReq.RightMenu.EventLog" xml:space="preserve">
+    <value>Impact history</value>
+  </data>
+  <data name="ServiceReq.RightMenu.Execute" xml:space="preserve">
+    <value>Perform</value>
+  </data>
+  <data name="ServiceReq.RightMenu.InputBeforeSurg" xml:space="preserve">
+    <value>Enter pre-surgery information</value>
+  </data>
+  <data name="ServiceReq.RightMenu.KetQuaHeThongBenhAnhDienTu" xml:space="preserve">
+    <value>Print the result sheet on the electronic medical record system</value>
+  </data>
+  <data name="ServiceReq.RightMenu.MainExam" xml:space="preserve">
+    <value>Main examination</value>
+  </data>
+  <data name="ServiceReq.RightMenu.NoExecute" xml:space="preserve">
+    <value>Do not perform</value>
+  </data>
+  <data name="ServiceReq.RightMenu.OtherPrint" xml:space="preserve">
+    <value>Other forms</value>
+  </data>
+  <data name="ServiceReq.RightMenu.OtherPrintByRequest" xml:space="preserve">
+    <value>Other forms on request</value>
+  </data>
+  <data name="ServiceReq.RightMenu.Print" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="ServiceReq.RightMenu.PrintSelectedItem" xml:space="preserve">
+    <value>Print order form</value>
+  </data>
+  <data name="ServiceReq.RightMenu.ReSendAssignToLIS" xml:space="preserve">
+    <value>Resend the order to the integrated system</value>
+  </data>
+  <data name="ServiceReq.RightMenu.SendAssignToOldSystem" xml:space="preserve">
+    <value>Send assignment information to the old system</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn11.Caption" xml:space="preserve">
+    <value>Service with confirmation not performed from processing room</value>
+  </data>
+  <data name="frmServiceReqList.lciTestSampleTypeName.Text" xml:space="preserve">
+    <value>Sample type:</value>
+  </data>
+</root>

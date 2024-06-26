@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmMaterialTypeCreate.btnRefresh.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.gridColumn1.Caption" xml:space="preserve">
+    <value>Đối tượng thanh toán</value>
+  </data>
+  <data name="frmMaterialTypeCreate.gridColumn1.ToolTip" xml:space="preserve">
+    <value>Đối tượng thanh toán</value>
+  </data>
+  <data name="frmMaterialTypeCreate.gridColumn2.Caption" xml:space="preserve">
+    <value>Giá</value>
+  </data>
+  <data name="frmMaterialTypeCreate.gridColumn2.ToolTip" xml:space="preserve">
+    <value>Giá</value>
+  </data>
+  <data name="frmMaterialTypeCreate.gridColumn3.Caption" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="frmMaterialTypeCreate.gridColumn3.ToolTip" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="frmMaterialTypeCreate.groupBox1.Text" xml:space="preserve">
+    <value>Thông tin chung</value>
+  </data>
+  <data name="frmMaterialTypeCreate.groupBox2.Text" xml:space="preserve">
+    <value>Thông tin cấu hình</value>
+  </data>
+  <data name="frmMaterialTypeCreate.groupBox3.Text" xml:space="preserve">
+    <value>Thông tin giá</value>
+  </data>
+  <data name="frmMaterialTypeCreate.layoutControlItem144.Text" xml:space="preserve">
+    <value>Chính sách giá bán:</value>
+  </data>
+  <data name="frmMaterialTypeCreate.layoutControlItem22.Text" xml:space="preserve">
+    <value>Là phim chụp:</value>
+  </data>
+  <data name="frmMaterialTypeCreate.layoutControlItem24.Text" xml:space="preserve">
+    <value>Kích thước:</value>
+  </data>
+  <data name="frmMaterialTypeCreate.layoutControlItem42.Text" xml:space="preserve">
+    <value>Cập nhật hồ sơ chưa khóa viện phí:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.layoutControlItem43.Text" xml:space="preserve">
+    <value>Cập nhật tất cả:</value>
+  </data>
+  <data name="frmMaterialTypeCreate.layoutControlItem5.Text" xml:space="preserve">
+    <value>Nhóm cha:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.layoutControlItem8.Text" xml:space="preserve">
+    <value>Nhóm BHYT:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lcAlertMaxInPrescription.Text" xml:space="preserve">
+    <value>SL tối đa/đơn:</value>
+  </data>
+  <data name="frmMaterialTypeCreate.lcAutoExpend.Text" xml:space="preserve">
+    <value>Tự động hao phí:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lcCPNG.Text" xml:space="preserve">
+    <value>CP ngoài gói:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lcGender.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="frmMaterialTypeCreate.lcHeinLimitPriceInTime.Text" xml:space="preserve">
+    <value>AD tỉ lệ BHYT mới:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lcHeinLimitRatio.Text" xml:space="preserve">
+    <value>Tỉ lệ BHYT (%):</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lcHeinLimitRatioOld.Text" xml:space="preserve">
+    <value>Tỉ lệ BHYT cũ (%):</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciAlertExpiredDate.Text" xml:space="preserve">
+    <value>Cảnh báo HSD:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciAlertMinInStock.Text" xml:space="preserve">
+    <value>CB tồn kho:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciBhytNumOrder.Text" xml:space="preserve">
+    <value>Số TT BHYT:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciChkMaxReuseCount.Text" xml:space="preserve">
+    <value>Là VT TSD:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciConcentra.Text" xml:space="preserve">
+    <value>Hàm lượng:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciHeinServiceBhytCode.Text" xml:space="preserve">
+    <value>Mã/Tên BHYT:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciImpPrice.Text" xml:space="preserve">
+    <value>Giá nhập:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciImpVatRatio.Text" xml:space="preserve">
+    <value>VAT nhập (%):</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciInternalPrice.Text" xml:space="preserve">
+    <value>Giá nội bộ:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciIsAllowOdd.Text" xml:space="preserve">
+    <value>Cho kê lẻ:</value>
+  </data>
+  <data name="frmMaterialTypeCreate.lciIsChemicalSubstance.Text" xml:space="preserve">
+    <value>Là hóa chất:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciIsRawMaterial.Text" xml:space="preserve">
+    <value>LNLBC:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciIsStent.Text" xml:space="preserve">
+    <value>Là stent:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciIsStopImp.Text" xml:space="preserve">
+    <value>Dừng nhập:</value>
+  </data>
+  <data name="frmMaterialTypeCreate.lciManufacture.Text" xml:space="preserve">
+    <value>Hãng sản xuất:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciMaterialTypeCode.Text" xml:space="preserve">
+    <value>Mã/Tên:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciNational.Text" xml:space="preserve">
+    <value>Quốc gia:</value>
+  </data>
+  <data name="frmMaterialTypeCreate.lciNumOrder.Text" xml:space="preserve">
+    <value>STT hiện:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciPackingType.Text" xml:space="preserve">
+    <value>Quy cách đ/gói:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lcIsAllowExportOdd.Text" xml:space="preserve">
+    <value>Cho xuất lẻ:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lcIsBusiness.Text" xml:space="preserve">
+    <value>Kinh doanh:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciServiceUnit.Text" xml:space="preserve">
+    <value>Đơn vị tính:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lcIsExprireDate.Text" xml:space="preserve">
+    <value>Phải nhập HSD:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lcIsMustPrepare.Text" xml:space="preserve">
+    <value>Phải dự trù:</value>
+  </data>
+  <data name="frmMaterialTypeCreate.lcIsNoHeinLimitForSpecial.Text" xml:space="preserve">
+    <value>Không áp trần:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciSpinMaxReuseCount.Text" xml:space="preserve">
+    <value>SL tái SD tối đa:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lcIsSaleEqualImpPrice.Text" xml:space="preserve">
+    <value>Bán bằng giá nhập:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lcLastExpPrice.Text" xml:space="preserve">
+    <value>Giá bán:</value>
+  </data>
+  <data name="frmMaterialTypeCreate.lcLastExpVatPrice.Text" xml:space="preserve">
+    <value>VAT bán (%):</value>
+  </data>
+  <data name="frmMaterialTypeCreate.lcMaterialGroupBHYT.Text" xml:space="preserve">
+    <value>Nhóm VT BHYT:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lcMaterialTypeMapId.Text" xml:space="preserve">
+    <value>VT tương đương:</value>
+    <comment>*</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.simpleButton1.Text" xml:space="preserve">
+    <value>Cập nhập cache máy của tôi</value>
+  </data>
+  <data name="frmMaterialTypeCreate.simpleButton2.Text" xml:space="preserve">
+    <value>Cập nhật cache toàn bộ máy trạm</value>
+  </data>
+  <data name="frmMaterialTypeCreate.lcHeinLimitPrice.Text" xml:space="preserve">
+    <value>Trần BHYT:</value>
+  </data>
+  <data name="frmMaterialTypeCreate.lcHeinLimitPriceOld.Text" xml:space="preserve">
+    <value>Trần BHYT cũ:</value>
+  </data>
+  <data name="frmMaterialTypeCreate.lcMaterialType.Text" xml:space="preserve">
+    <value>Chọn vật tư:</value>
+  </data>
+  <data name="frmMaterialTypeCreate.lcRecordTransaction.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Định khoản kế toán</value>
+  </data>
+  <data name="frmMaterialTypeCreate.lcRecordTransaction.Text" xml:space="preserve">
+    <value>Định khoản KT:</value>
+  </data>
+  <data name="frmMaterialTypeCreate.lciMaterialTypeMap.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Vật tư tương đương</value>
+  </data>
+  <data name="frmMaterialTypeCreate.lciCTK.Text" xml:space="preserve">
+    <value>Nguồn CTK:</value>
+  </data>
+  <data name="frmMaterialTypeCreate.lciIsSupported.Text" xml:space="preserve">
+    <value>Bệnh được hỗ trợ:</value>
+  </data>
+  <data name="frmMaterialTypeCreate.groupBox1" xml:space="preserve">
+    <value>Thông tin chung</value>
+  </data>
+  <data name="frmMaterialTypeCreate.layoutControlItem10.Text" xml:space="preserve">
+    <value>Model:</value>
+  </data>
+  <data name="frmMaterialTypeCreate.lciVTDichDanh.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Vật tư quản lý đích danh sử dụng số seri. Cần nhập số seri khi nhập và xuất vật tư.</value>
+  </data>
+  <data name="frmMaterialTypeCreate.lciVTDichDanh.Text" xml:space="preserve">
+    <value>VT đích danh:</value>
+  </data>
+</root>

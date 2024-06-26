@@ -1,0 +1,101 @@
+/* IVT
+ * @Project : hisnguonmo
+ * Copyright (C) 2017 INVENTEC
+ *  
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *  
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+ * GNU General Public License for more details.
+ *  
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+using Inventec.Desktop.Common.LibraryMessage;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HIS.Desktop.Plugins.ExpMestSaleCreateV2.Base
+{
+    class DateUtil
+    {
+        internal class DateValidObject
+        {
+            public DateValidObject() { }
+            public int Age { get; set; }
+            public string OutDate { get; set; }
+            public string Message { get; set; }
+            public bool HasNotDayDob { get; set; }
+
+        }
+
+        internal static DateValidObject ValidPatientDob(string inputDate)
+        {
+            DateValidObject result = new DateValidObject();
+            try
+            {
+                if (String.IsNullOrEmpty(inputDate))
+                {
+                    return result;
+                }
+                int patientDob = Inventec.Common.TypeConvert.Parse.ToInt32(inputDate);
+
+                if (inputDate.Length == 1 || inputDate.Length == 2)
+                {
+                    result.Age = (DateTime.Now.Year - patientDob);
+                    result.OutDate = "01/01/" + result.Age;
+                    result.HasNotDayDob = true;
+                }
+                else if (inputDate.Length == 4)
+                {
+                    if (patientDob <= DateTime.Now.Year)
+                    {
+                        result.OutDate = "01/01/" + inputDate;
+                        result.HasNotDayDob = true;
+                    }
+                }
+                else if (inputDate.Length == 8)
+                {
+                    result.OutDate = inputDate.Substring(0, 2) + "/" + inputDate.Substring(2, 2) + "/" + inputDate.Substring(4, 4);
+                }
+                else if (inputDate.Length == 10)
+                {
+                    result.OutDate = inputDate;
+                }
+                else
+                {
+                    result.Message = "Ngày sinh không đúng định dạng";
+                }
+
+                if (!String.IsNullOrEmpty(result.OutDate) && String.IsNullOrEmpty(result.Message))
+                {
+                    DateTime? dtPatientDob = HIS.Desktop.Utility.DateTimeHelper.ConvertDateStringToSystemDate(result.OutDate);
+                    if (dtPatientDob == null
+                         || dtPatientDob.Value == DateTime.MinValue)
+                    {
+                        result.Message = "Ngày sinh không đúng định dạng";
+                        result.OutDate = "";
+                    }
+                    else if (dtPatientDob != null
+                         && dtPatientDob.Value != null
+                         && dtPatientDob.Value.Date > DateTime.Now.Date)
+                    {
+                        result.Message = "Ngày sinh phải nhỏ hơn ngày hiện tại";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+    }
+}

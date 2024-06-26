@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BanBatBuocChonDichVuHenKhamKhiKetThucDieuTri" xml:space="preserve">
+    <value>Bạn bắt buộc chọn dịch vụ hẹn khám khi kết thúc điều trị</value>
+  </data>
+  <data name="BanCanNhapCacThongTinSauDePhucVuXuatXmlHoSoChungTu" xml:space="preserve">
+    <value>Bạn cần nhập các thông tin sau để phục vụ xuất Xml hồ sơ chứng từ (CV2076): {0}</value>
+  </data>
+  <data name="BanChuaChonPhongKhamLanSau" xml:space="preserve">
+    <value>Bạn chưa chọn phòng khám lần sau</value>
+  </data>
+  <data name="BanChuaChonStt" xml:space="preserve">
+    <value>Bạn chưa chọn số thứ tự</value>
+  </data>
+  <data name="BanCoMuonThucHienKhong" xml:space="preserve">
+    <value>Bạn có muốn thực hiện ký không?</value>
+  </data>
+  <data name="BanCoMuonTiepTuc" xml:space="preserve">
+    <value>{0} Bạn có muốn tiếp tục không?</value>
+  </data>
+  <data name="BatBuocChonChuongTrinh" xml:space="preserve">
+    <value>Bắt buộc chọn chương trình</value>
+  </data>
+  <data name="BenhNhanChuaCoDHST" xml:space="preserve">
+    <value>Bệnh nhân chưa có thông tin dấu hiệu sinh tồn</value>
+  </data>
+  <data name="BenhNhanCoThongTinBhytChuaDung" xml:space="preserve">
+    <value>Bệnh nhân có thông tin BHYT chưa đúng.</value>
+  </data>
+  <data name="BenhNhanDangThieuVienPhi" xml:space="preserve">
+    <value>Bệnh nhân đang thiếu viện phí ({0} đồng)</value>
+  </data>
+  <data name="BenhNhanDangThieuVienPhiBanCoMuonTiepTuc" xml:space="preserve">
+    <value>Bệnh nhân đang thiếu viện phí ({0} đồng). Bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="BenhNhanNoiTruChuaDuocChiDinhDichVuGiuong" xml:space="preserve">
+    <value>Bệnh nhân nội trú chưa được chỉ định dịch vụ giường.</value>
+  </data>
+  <data name="BenhNhanThieuCanNang" xml:space="preserve">
+    <value>Bệnh nhân thiếu thông tin cân nặng ở dấu hiệu sinh tồn</value>
+  </data>
+  <data name="BNCoDotDieuTriNTCuChuaKetThucKhongChoPhepChuyen" xml:space="preserve">
+    <value>Bệnh nhân có đợt điều trị ngoại trú/nội trú cũ chưa kết thúc không cho phép chuyển viện. (Hồ sơ đã tạo: “{0}”)</value>
+  </data>
+  <data name="BuaAnCoSoLuongLonHonSoNgayDieuTri" xml:space="preserve">
+    <value>Bữa ăn {0} có số lượng lớn hơn số ngày điều trị.</value>
+  </data>
+  <data name="BuaAnCoSoLuongLonHonSoNgayDieuTriBanCoMuonTiepTucKhong" xml:space="preserve">
+    <value>Bữa ăn {0} có số lượng lớn hơn số ngày điều trị. Bạn có muốn tiếp tục không?</value>
+  </data>
+  <data name="CacPhieuChiDinhSauChuaKetThucKhongChoPhepKetThuc" xml:space="preserve">
+    <value>Các phiếu chỉ định sau chưa kết thúc: {0}</value>
+  </data>
+  <data name="CacVatTuThieuThongTinHoaDonBanCoMuonTiepTuc" xml:space="preserve">
+    <value>Các vật tư {0} thiếu thông tin hóa đơn. Bạn có muốn tiếp tục không?</value>
+  </data>
+  <data name="CanhBaoNgayHenLaChuNhat" xml:space="preserve">
+    <value>Ngày hẹn khám hiện tại là ngày chủ nhật bạn có muốn tiếp tục không</value>
+  </data>
+  <data name="CanhBaoNgayHenLaThuBay" xml:space="preserve">
+    <value>Ngày hẹn khám hiện tại là ngày thứ bảy bạn có muốn tiếp tục không</value>
+  </data>
+  <data name="CanhBaoNgayHenToiDa" xml:space="preserve">
+    <value>Số ngày hẹn khám tối đa cho phép là {0} ngày.</value>
+  </data>
+  <data name="CanhBaoThoiGianHenKhamSoVoiThoiGianKetThucDieuTri" xml:space="preserve">
+    <value>Thời gian hẹn khám phải lớn hơn thời gian kết thúc điều trị</value>
+  </data>
+  <data name="ChuaDuocTaoVoBenhAn" xml:space="preserve">
+    <value>Bệnh nhân chương trình chưa được tạo Vỏ bệnh án. Bạn có muốn tạo hay không?</value>
+  </data>
+  <data name="ChuaLinhHetThuoc" xml:space="preserve">
+    <value>Chưa lĩnh hết thuốc</value>
+  </data>
+  <data name="ChuaNhapPhuongPhapDieuTri" xml:space="preserve">
+    <value>Bạn chưa nhập "Phương pháp điều trị".</value>
+  </data>
+  <data name="ChuaNhapThoiGianHenKham" xml:space="preserve">
+    <value>Bạn chưa chọn thời gian hẹn khám, vui lòng kiểm tra lại</value>
+  </data>
+  <data name="ChuaNhapThongTinChuyenVien" xml:space="preserve">
+    <value>Bạn chưa nhập đầy đủ thông tin chuyển viện, vui lòng kiểm tra lại</value>
+  </data>
+  <data name="ChuaNhapThongTinTuVong" xml:space="preserve">
+    <value>Bạn chưa nhập đầy đủ thông tin tử vong, vui lòng kiểm tra lại</value>
+  </data>
+  <data name="ChuaTongHopSuatAnMaYLenh" xml:space="preserve">
+    <value>- Chưa tổng hợp (Mã y lệnh: {0})</value>
+  </data>
+  <data name="ChucNangDangPhatTrienVuiLongThuLaiSau" xml:space="preserve">
+    <value>Chức năng không được hỗ trợ ở phiên bản hiện tại, vui lòng thử lại sau</value>
+  </data>
+  <data name="ChuongTrinhBatBuocChonDienDieuTriNgoaiTruHoSoSeDuocTuDongCapNhatSangDienDieuTriNgoaiTru" xml:space="preserve">
+    <value>Chương trình {0} bắt buộc chọn diện điều trị ngoại trú hồ sơ sẽ được tự động cập nhật sang diện điều trị ngoại trú</value>
+  </data>
+  <data name="CuaKhoaHienTai" xml:space="preserve">
+    <value>của khoa hiện tại</value>
+  </data>
+  <data name="DaCapHetSoKhamVaoNgay" xml:space="preserve">
+    <value>Đã cấp hết số khám vào ngày {0}</value>
+  </data>
+  <data name="DuLieuKhongHopLe" xml:space="preserve">
+    <value>Dữ liệu không hợp lệ</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong" xml:space="preserve">
+    <value>Bạn có chắc muốn hủy dữ liệu?</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong" xml:space="preserve">
+    <value>Bạn có muốn xóa dữ liệu?</value>
+  </data>
+  <data name="HoSoDaCoSoRaVien" xml:space="preserve">
+    <value>Hồ sơ đã có số ra viện bạn có muốn cấp lại không?</value>
+  </data>
+  <data name="HoSoKhongCoTtVaoBuong" xml:space="preserve">
+    <value>Hồ sơ không có thông tin vào buồng </value>
+  </data>
+  <data name="KhoaKhongCoBuong" xml:space="preserve">
+    <value>Khoa hiện tại không có buồng.</value>
+  </data>
+  <data name="KhongChoGanGiuong" xml:space="preserve">
+    <value> không cho phép gán giường</value>
+  </data>
+  <data name="KhungGioVuotQuaSoLuong" xml:space="preserve">
+    <value>Khung giờ này đã vượt quá số lượt hẹn khám cho phép. Bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="MaPhieuTongHopSuatAnMaYLenh" xml:space="preserve">
+    <value>- Mã phiếu: {0}(Mã y lệnh: {1})</value>
+  </data>
+  <data name="NguoiCap" xml:space="preserve">
+    <value>Người cấp giấy</value>
+  </data>
+  <data name="NoiLamViecCuaBenhNhan" xml:space="preserve">
+    <value>Nơi làm việc của bệnh nhân</value>
+  </data>
+  <data name="PhongKhamCoSoLuotKhamVuotDinhMuc" xml:space="preserve">
+    <value>Phòng khám có số lượt hẹn khám vượt số lượt cho phép: {0}. Bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="SoNgayGiuongLonHonSoNgayGiuongToiDa" xml:space="preserve">
+    <value>Số ngày giường {0} lớn hơn số ngày giường tối đa {1}.</value>
+  </data>
+  <data name="SoNgayGiuongNhoHonSoNgayGiuongToiDa" xml:space="preserve">
+    <value>Số ngày giường {0} nhỏ hơn số ngày giường tối đa {1}.</value>
+  </data>
+  <data name="TaiKhoanKhongCoQuyenThucHienChucNang" xml:space="preserve">
+    <value>Tài khoản không có quyền thực hiện chức năng</value>
+  </data>
+  <data name="TheBHYTCuaBNSeHetHanVaoNgay" xml:space="preserve">
+    <value>Thẻ BHYT của bệnh nhân sẽ hết hạn vào ngày {0}, bạn có chắc muốn hẹn khám vào ngày {1} không? Nếu tiếp tục, phần mềm sẽ tự động đổi sang đối tượng {2}</value>
+  </data>
+  <data name="ThoiGianKetThucNhoHoiThoiGianYLenhCuaCacMaYeuCauSau" xml:space="preserve">
+    <value>Thời gian kết thúc nhỏ hơn thời gian y lệnh của các mã yêu cầu: {0}</value>
+  </data>
+  <data name="ThoiGianNghiDen" xml:space="preserve">
+    <value>Thời gian nghỉ đến</value>
+  </data>
+  <data name="ThoiGianNghiTu" xml:space="preserve">
+    <value>Thời gian nghỉ từ</value>
+  </data>
+  <data name="ThoiGianTuVongKhongDuocBeHonThoiGianVaoVien" xml:space="preserve">
+    <value>Thời gian tử vong không được bé hơn thời gian vào viện {0}</value>
+  </data>
+  <data name="ThoiGianTuVongKhongDuocLonHonThoiGianHienTai" xml:space="preserve">
+    <value>Thời gian tử vong không được lớn hơn thời gian hiện tại {0}</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
+  <data name="TonTaiLichSuGiuongChuaCoThongTinThoiGianKetThucHoacThoiGianBatDauThoiGianKetThucLonHonThoiGianRaVien" xml:space="preserve">
+    <value>Tồn tại lịch sử giường chưa có thông tin thời gian kết thúc hoặc thời gian bắt đầu/thời gian kết thúc lớn hơn thời gian ra viện.</value>
+  </data>
+  <data name="TonTaiLichSuGiuongChuaCoThongTinThoiGianKetThucHoacThoiGianBatDauThoiGianKetThucLonHonThoiGianRaVienBanCoMuonTiepTuc" xml:space="preserve">
+    <value>Tồn tại lịch sử giường chưa có thông tin thời gian kết thúc hoặc thời gian bắt đầu/thời gian kết thúc lớn hơn thời gian ra viện. Bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Chưa nhập trường dữ liệu bắt buộc</value>
+  </data>
+  <data name="VanBanChuaDuChuKy" xml:space="preserve">
+    <value>Các văn bản sau chưa hoàn thành chữ ký:</value>
+  </data>
+  <data name="YLenhChuanHoanThanh" xml:space="preserve">
+    <value>Các y lệnh chưa hoàn thành: {0}. Bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="YLenhChuaTongHopHoacDuyetSuatAn" xml:space="preserve">
+    <value>Tồn tại y lệnh suất ăn chưa được duyệt:
+{0}.</value>
+  </data>
+  <data name="YLenhCoThoiGianChiDinhLonHonThoiGianRaKhoa" xml:space="preserve">
+    <value>Các y lệnh {0} có thời gian y lệnh lớn hơn thời gian ra khoa.</value>
+  </data>
+  <data name="YLenhThieuDichVuKhamBanCoMuonTiepTuc" xml:space="preserve">
+    <value>Y lệnh {0} thiếu dịch vụ khám. Bạn có muốn tiếp tục?</value>
+  </data>
+</root>

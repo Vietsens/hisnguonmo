@@ -1,0 +1,474 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="UCHisContactPointList.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCHisContactPointList.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="UCHisContactPointList.txtPatient.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UCHisContactPointList.btnRefresh.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="UCHisContactPointList.btnFind.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="UCHisContactPointList.n.Text" xml:space="preserve">
+    <value>navBarControl1</value>
+  </data>
+  <data name="UCHisContactPointList.AREA.Caption" xml:space="preserve">
+    <value>Phạm vi</value>
+  </data>
+  <data name="UCHisContactPointList.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCHisContactPointList.InDepartment.Text" xml:space="preserve">
+    <value>Đã từng ở khoa</value>
+  </data>
+  <data name="UCHisContactPointList.radioButton1.Text" xml:space="preserve">
+    <value>Toàn viện</value>
+  </data>
+  <data name="UCHisContactPointList.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="UCHisContactPointList.checkEdit4.Properties.Caption" xml:space="preserve">
+    <value>Đã duyệt khóa bảo hiểm</value>
+  </data>
+  <data name="UCHisContactPointList.checkEdit3.Properties.Caption" xml:space="preserve">
+    <value>Đã duyệt khóa tài chính</value>
+  </data>
+  <data name="UCHisContactPointList.checkEdit2.Properties.Caption" xml:space="preserve">
+    <value>Đã kết thúc điều trị</value>
+  </data>
+  <data name="UCHisContactPointList.checkEdit1.Properties.Caption" xml:space="preserve">
+    <value>Đang điều trị</value>
+  </data>
+  <data name="UCHisContactPointList.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="UCHisContactPointList.layoutCreateTimeFrom.Text" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="UCHisContactPointList.layoutCreateTimeTo.Text" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="UCHisContactPointList.navBarGroupCreateTime.Caption" xml:space="preserve">
+    <value>Thời gian vào viện</value>
+  </data>
+  <data name="UCHisContactPointList.Status.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCHisContactPointList.txtTreatment.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="UCHisContactPointList.ORDER.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCHisContactPointList.ORDER.ToolTip" xml:space="preserve">
+    <value>Số thứ tự</value>
+  </data>
+  <data name="UCHisContactPointList.STATUST.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCHisContactPointList.STATUST.ToolTip" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCHisContactPointList.repositoryItemPictureEdit1.Caption.Text" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCHisContactPointList.TIME_LINE.ToolTip" xml:space="preserve">
+    <value>Dòng thời gian</value>
+  </data>
+  <data name="UCHisContactPointList.BedRoomIn.Caption" xml:space="preserve">
+    <value>Chuyển vào buồng</value>
+  </data>
+  <data name="UCHisContactPointList.ServicePackgeView.Caption" xml:space="preserve">
+    <value>Xem gói dịch vụ</value>
+  </data>
+  <data name="UCHisContactPointList.fixTreatment.Caption" xml:space="preserve">
+    <value>Sửa hồ sơ điều trị</value>
+  </data>
+  <data name="UCHisContactPointList.ServiceReq.Caption" xml:space="preserve">
+    <value>Chỉ định dịch vụ</value>
+  </data>
+  <data name="UCHisContactPointList.ServiceReq.ToolTip" xml:space="preserve">
+    <value>Chỉ định dịch vụ</value>
+  </data>
+  <data name="UCHisContactPointList.ServiceReqList.Caption" xml:space="preserve">
+    <value>Danh sách y lệnh</value>
+  </data>
+  <data name="UCHisContactPointList.EDIT.ToolTip" xml:space="preserve">
+    <value>Sửa hồ sơ điều trị</value>
+  </data>
+  <data name="UCHisContactPointList.MergePatient.Caption" xml:space="preserve">
+    <value>Ghép mã bệnh nhân</value>
+  </data>
+  <data name="UCHisContactPointList.MergePatient.ToolTip" xml:space="preserve">
+    <value>Ghép mã bệnh nhân</value>
+  </data>
+  <data name="UCHisContactPointList.InfantInformation.Caption" xml:space="preserve">
+    <value>Thông tin trẻ sơ sinh</value>
+  </data>
+  <data name="UCHisContactPointList.AccidentHurt.Caption" xml:space="preserve">
+    <value>tai nạn thương tích</value>
+  </data>
+  <data name="UCHisContactPointList.AccidentHurt.ToolTip" xml:space="preserve">
+    <value>tai nạn thương tích</value>
+  </data>
+  <data name="UCHisContactPointList.finish.Caption" xml:space="preserve">
+    <value>Kết thúc điều trị</value>
+  </data>
+  <data name="UCHisContactPointList.TreatmentSumary.Caption" xml:space="preserve">
+    <value>Lịch sử điều trị</value>
+  </data>
+  <data name="UCHisContactPointList.TreatmentRecord.Caption" xml:space="preserve">
+    <value>Thông tin bệnh án</value>
+  </data>
+  <data name="UCHisContactPointList.TreatmentRecord.ToolTip" xml:space="preserve">
+    <value>Thông tin bệnh án</value>
+  </data>
+  <data name="UCHisContactPointList.FEE_INFO.Caption" xml:space="preserve">
+    <value>Tổng hợp viện phí</value>
+  </data>
+  <data name="UCHisContactPointList.Unfinish.Caption" xml:space="preserve">
+    <value>Mở lại điều trị</value>
+  </data>
+  <data name="UCHisContactPointList.SarPrintList.Caption" xml:space="preserve">
+    <value>Biểu mẫu khác</value>
+  </data>
+  <data name="UCHisContactPointList.gridColumn2.Caption" xml:space="preserve">
+    <value>Bảng kê thanh toán</value>
+  </data>
+  <data name="UCHisContactPointList.gridColumn2.ToolTip" xml:space="preserve">
+    <value>Bảng kê thanh toán</value>
+  </data>
+  <data name="UCHisContactPointList.gridColumn6.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="UCHisContactPointList.gridColumn6.ToolTip" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="UCHisContactPointList.PATIENT_CODE.Caption" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UCHisContactPointList.PATIENT_CODE.ToolTip" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UCHisContactPointList.TDL_PATIENT_NAME.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="UCHisContactPointList.TDL_PATIENT_NAME.ToolTip" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="UCHisContactPointList.DOB_ST.Caption" xml:space="preserve">
+    <value>Ngày sinh</value>
+  </data>
+  <data name="UCHisContactPointList.DOB_ST.ToolTip" xml:space="preserve">
+    <value>Ngày sinh</value>
+  </data>
+  <data name="UCHisContactPointList.GENDER_NAME.Caption" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="UCHisContactPointList.GENDER_NAME.ToolTip" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="UCHisContactPointList.VIR_ADDRESS.Caption" xml:space="preserve">
+    <value>Địa chỉ</value>
+  </data>
+  <data name="UCHisContactPointList.VIR_ADDRESS.ToolTip" xml:space="preserve">
+    <value>Địa chỉ</value>
+  </data>
+  <data name="UCHisContactPointList.IN_TIME_ST.Caption" xml:space="preserve">
+    <value>Thời gian vào</value>
+  </data>
+  <data name="UCHisContactPointList.IN_TIME_ST.ToolTip" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UCHisContactPointList.CLINICAL_IN_TIME_ST.Caption" xml:space="preserve">
+    <value>Thời gian nhập viện</value>
+  </data>
+  <data name="UCHisContactPointList.CLINICAL_IN_TIME_ST.ToolTip" xml:space="preserve">
+    <value>Thời gian nhập viện</value>
+  </data>
+  <data name="UCHisContactPointList.OUT_TIME_ST.Caption" xml:space="preserve">
+    <value>Thời gian ra</value>
+  </data>
+  <data name="UCHisContactPointList.OUT_TIME_ST.ToolTip" xml:space="preserve">
+    <value>Thời gian ra</value>
+  </data>
+  <data name="UCHisContactPointList.ICD_MAIN_TEXT.Caption" xml:space="preserve">
+    <value>Chẩn đoán chính</value>
+  </data>
+  <data name="UCHisContactPointList.ICD_MAIN_TEXT.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán chính</value>
+  </data>
+  <data name="UCHisContactPointList.ICD_TEXT.Caption" xml:space="preserve">
+    <value>Chẩn đoán phụ</value>
+  </data>
+  <data name="UCHisContactPointList.ICD_TEXT.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán phụ</value>
+  </data>
+  <data name="UCHisContactPointList.CREATE_TIME_ST.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UCHisContactPointList.CREATE_TIME_ST.ToolTip" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UCHisContactPointList.CREATOR.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="UCHisContactPointList.CREATOR.ToolTip" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="UCHisContactPointList.MODIFY_TIME_ST.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="UCHisContactPointList.MODIFY_TIME_ST.ToolTip" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="UCHisContactPointList.MODIFIER.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="UCHisContactPointList.MODIFIER.ToolTip" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="UCHisContactPointList.gridColPrint.Caption" xml:space="preserve">
+    <value>In ấn</value>
+  </data>
+  <data name="UCHisContactPointList.layoutViewColumn1.Caption" xml:space="preserve">
+    <value>Số thứ tự</value>
+  </data>
+  <data name="UCHisContactPointList.layoutViewColumn2.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCHisContactPointList.layoutViewColumn6.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="UCHisContactPointList.layoutViewColumn7.Caption" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UCHisContactPointList.layoutViewColumn8.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="UCHisContactPointList.layoutViewColumn9.Caption" xml:space="preserve">
+    <value>Ngày sinh</value>
+  </data>
+  <data name="UCHisContactPointList.layoutViewColumn10.Caption" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="UCHisContactPointList.layoutViewColumn11.Caption" xml:space="preserve">
+    <value>Địa chỉ</value>
+  </data>
+  <data name="UCHisContactPointList.layoutViewColumn12.Caption" xml:space="preserve">
+    <value>Thời gian vào</value>
+  </data>
+  <data name="UCHisContactPointList.layoutViewColumn13.Caption" xml:space="preserve">
+    <value>Thời gian nhập viện</value>
+  </data>
+  <data name="UCHisContactPointList.layoutViewColumn14.Caption" xml:space="preserve">
+    <value>Thời gian ra</value>
+  </data>
+  <data name="UCHisContactPointList.layoutViewColumn15.Caption" xml:space="preserve">
+    <value>Chẩn đoán chính</value>
+  </data>
+  <data name="UCHisContactPointList.layoutViewColumn16.Caption" xml:space="preserve">
+    <value>Chẩn đoán phụ</value>
+  </data>
+  <data name="UCHisContactPointList.layoutViewColumn17.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UCHisContactPointList.layoutViewColumn18.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="UCHisContactPointList.layoutViewColumn19.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="UCHisContactPointList.layoutViewColumn20.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="UCHisContactPointList.layoutControlItem2.Text" xml:space="preserve">
+    <value>Mã điều trị:</value>
+  </data>
+  <data name="UCHisContactPointList.layoutControlItem13.Text" xml:space="preserve">
+    <value>Từ khóa:</value>
+  </data>
+  <data name="UCHisContactPointList.a.Text" xml:space="preserve">
+    <value>Mã bệnh nhân:</value>
+  </data>
+  <data name="UCHisContactPointList.layoutControlItem12.Text" xml:space="preserve">
+    <value>layoutControlItem2</value>
+  </data>
+  <data name="UCHisContactPointList.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="UCHisContactPointList.barButtonItem1.Caption" xml:space="preserve">
+    <value>add</value>
+  </data>
+  <data name="UCHisContactPointList.bar2.Text" xml:space="preserve">
+    <value>fresh</value>
+  </data>
+  <data name="UCHisContactPointList.barButtonItem2.Caption" xml:space="preserve">
+    <value>fresh</value>
+  </data>
+  <data name="UCHisContactPointList.bar5.Text" xml:space="preserve">
+    <value>Status bar</value>
+  </data>
+  <data name="UCHisContactPointList.bar3.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="UCHisContactPointList.bar4.Text" xml:space="preserve">
+    <value>Main menu</value>
+  </data>
+  <data name="UCHisContactPointList.bar6.Text" xml:space="preserve">
+    <value>Status bar</value>
+  </data>
+  <data name="UCHisContactPointList.gridColumn1.Caption" xml:space="preserve">
+    <value>Số thẻ BHYT</value>
+  </data>
+  <data name="UCHisContactPointList.gridColumn1.ToolTip" xml:space="preserve">
+    <value>Số thẻ BHYT</value>
+  </data>
+  <data name="UCHisContactPointList.gridColumn4.Caption" xml:space="preserve">
+    <value>Loại ra viện</value>
+  </data>
+  <data name="UCHisContactPointList.TDL_HEIN_CARD_NUMBER.Caption" xml:space="preserve">
+    <value>Thẻ BHYT</value>
+  </data>
+  <data name="UCHisContactPointList.TREATMENT_END_TYPE_NAME.Caption" xml:space="preserve">
+    <value>Loại ra viện</value>
+  </data>
+  <data name="UCHisContactPointList.ChuaGui" xml:space="preserve">
+    <value>Chưa gửi</value>
+  </data>
+  <data name="UCHisContactPointList.DaGui" xml:space="preserve">
+    <value>Đã gửi</value>
+  </data>
+  <data name="UCHisContactPointList.INDAY" xml:space="preserve">
+    <value>Trong ngày</value>
+  </data>
+  <data name="UCHisContactPointList.INMONTH" xml:space="preserve">
+    <value>Trong tháng</value>
+  </data>
+  <data name="UCHisContactPointList.btnXuatXML.ToolTip" xml:space="preserve">
+    <value>Xuất XML đăng ký</value>
+  </data>
+</root>

@@ -1,0 +1,681 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmChangeRoom.bar2.Text" xml:space="preserve">
+    <value>ပင်မမီနူး</value>
+  </data>
+  <data name="frmChangeRoom.bbtnSaveRoom.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmChangeRoom.btnSaveRoom.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmChangeRoom.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmChangeRoom.layoutControlItem1.Text" xml:space="preserve">
+    <value>ဆေးခန်း-</value>
+  </data>
+  <data name="frmChangeRoom.layoutControlItem2.Text" xml:space="preserve">
+    <value>အရေးပေါ္အခန္း:</value>
+  </data>
+  <data name="frmChangeRoom.layoutControlItem3.Text" xml:space="preserve">
+    <value>ခွဲစိတ်ခန်း-</value>
+  </data>
+  <data name="frmChangeRoom.layoutControlItem4.Text" xml:space="preserve">
+    <value>အခန်း-</value>
+  </data>
+  <data name="frmChangeRoom.Text" xml:space="preserve">
+    <value>အခန်းပြောင်းပါ။</value>
+  </data>
+  <data name="frmReason.btnPrint.Text" xml:space="preserve">
+    <value>ညောင်ပင်</value>
+  </data>
+  <data name="frmReason.btnSave.Text" xml:space="preserve">
+    <value>သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="frmReason.chkReasonClose.Properties.Caption" xml:space="preserve">
+    <value>ပိတ်လိုက်</value>
+  </data>
+  <data name="frmReason.chkResonPrint.Properties.Caption" xml:space="preserve">
+    <value>ညောင်ပင်</value>
+  </data>
+  <data name="frmReason.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmReason.layoutControlItem1.Text" xml:space="preserve">
+    <value>အကြောင်းရင်း-</value>
+  </data>
+  <data name="frmReason.Text" xml:space="preserve">
+    <value>မလုပ်ရတဲ့အကြောင်းရင်း</value>
+  </data>
+  <data name="frmServiceReqList.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmServiceReqList.barButtonPrintTemBarcode.Caption" xml:space="preserve">
+    <value>ပုံနှိပ်တံဆိပ်ခေါင်း (F7)</value>
+  </data>
+  <data name="frmServiceReqList.bbtnRCFind.Caption" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="frmServiceReqList.bbtnRCRefresh.Caption" xml:space="preserve">
+    <value>ပြန်လုပ်ပါ (Ctrl R)</value>
+  </data>
+  <data name="frmServiceReqList.BenhNhan" xml:space="preserve">
+    <value>သည်းခံပါ။</value>
+  </data>
+  <data name="frmServiceReqList.btnAggrExpMest.Text" xml:space="preserve">
+    <value>Ds ပြန်ခေါ်တယ်။</value>
+  </data>
+  <data name="frmServiceReqList.btnDropDownPrint.Text" xml:space="preserve">
+    <value>ကူပွန်များ ထုတ်ယူပါ။</value>
+  </data>
+  <data name="frmServiceReqList.btnFind.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="frmServiceReqList.btnMobaCreate.Text" xml:space="preserve">
+    <value>မှတ်မိအောင်ဖန်တီးပါ။</value>
+  </data>
+  <data name="frmServiceReqList.btnPrintMedicine.Text" xml:space="preserve">
+    <value>ပုံနှိပ်ဆေးစာ စမ်းသပ်မှု</value>
+  </data>
+  <data name="frmServiceReqList.btnPrintTemBarcode.Text" xml:space="preserve">
+    <value>တံဆိပ်ခေါင်းပုံနှိပ်ခြင်း (F7)</value>
+  </data>
+  <data name="frmServiceReqList.btnPrintTotal.Text" xml:space="preserve">
+    <value>အော်ဒါပုံစံ CARDS ကို ရိုက်နှိပ်ပါ။</value>
+  </data>
+  <data name="frmServiceReqList.chkPK.Properties.Caption" xml:space="preserve">
+    <value>PK</value>
+  </data>
+  <data name="frmServiceReqList.chkPK.ToolTip" xml:space="preserve">
+    <value>ကုသမှုခန်းများကို \\Clinical\\ အဖြစ် ပြသပါ</value>
+  </data>
+  <data name="frmServiceReqList.Gc_HisSendOldSystem.Caption" xml:space="preserve">
+    <value>HT အဟောင်းကို ပို့ပါ။</value>
+  </data>
+  <data name="frmServiceReqList.gcolServiceTypeName.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမျိုးအစား</value>
+  </data>
+  <data name="frmServiceReqList.grdColRationTime.Caption" xml:space="preserve">
+    <value>ဆွမ်း</value>
+  </data>
+  <data name="frmServiceReqList.gridColOtherPrintForm.Caption" xml:space="preserve">
+    <value>အခြားပုံစံကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevAmount.Caption" xml:space="preserve">
+    <value>ပမာဏ</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevCode.Caption" xml:space="preserve">
+    <value>ကုဒ်</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevConvertAmount.Caption" xml:space="preserve">
+    <value>ပြောင်းလဲခြင်းပမာဏ</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevConvertName.Caption" xml:space="preserve">
+    <value>ပြောင်းလဲခြင်းယူနစ်</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevConvertRatio.Caption" xml:space="preserve">
+    <value>ကူးပြောင်းနှုန်း</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevName.Caption" xml:space="preserve">
+    <value>နာမည်</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevPatientTypeName.Caption" xml:space="preserve">
+    <value>အစားအသောက်နှုန်း/DTT</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevPatientTypeName.ToolTip" xml:space="preserve">
+    <value>အစားအသောက်နှုန်း/ငွေလက်ခံသူ</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevPrint.Caption" xml:space="preserve">
+    <value>ညောင်ပင်</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevTypeName.Caption" xml:space="preserve">
+    <value>ငွေပေးချေမှု ရှိကြပါတယ်။</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevUnitName.Caption" xml:space="preserve">
+    <value>ယူနစ်</value>
+  </data>
+  <data name="frmServiceReqList.gridColSerSevView.Caption" xml:space="preserve">
+    <value>ကြည့်ပါ။</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_AllowNotExecute.Caption" xml:space="preserve">
+    <value>ဖျော်ဖြေခွင့်မရှိပါ။</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_BieuMauKhac.Caption" xml:space="preserve">
+    <value>အခြားပုံစံများ</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Execute_Username.Caption" xml:space="preserve">
+    <value>အုပ်ချုပ်သူ</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Request_Username.Caption" xml:space="preserve">
+    <value>လျှောက်ထားသူ</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_ServiceReq_Choose.Caption" xml:space="preserve">
+    <value>ရွေးပါ။</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_ServiceReq_Delete.Caption" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_ServiceReq_Edit.Caption" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_ServiceReq_EditIntructionTime.Caption" xml:space="preserve">
+    <value>သတ်မှတ်ထားသောအချိန်ကို တည်းဖြတ်ပါ။</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_ServiceReq_Print.Caption" xml:space="preserve">
+    <value>ညောင်ပင်</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_ServiceReq_Stt.Caption" xml:space="preserve">
+    <value>အဆင့်အတန်း</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_Amount.Caption" xml:space="preserve">
+    <value>ရိုက်ပါ။</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_Cashier.Caption" xml:space="preserve">
+    <value>လျှောက်ထားသူ</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_CashierRoomName.Caption" xml:space="preserve">
+    <value>စီမံဆောင်ရွက်နေတယ်။</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_CreateTime.Caption" xml:space="preserve">
+    <value>ဖန်တီးချိန်</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_Creator.Caption" xml:space="preserve">
+    <value>ဖန်ဆင်းရှင်</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_Dob.Caption" xml:space="preserve">
+    <value>အော်ဒါမှာတယ်။</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_GenderName.Caption" xml:space="preserve">
+    <value>မွေးသည့်နှစ်</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_Modifier.Caption" xml:space="preserve">
+    <value>ပြုပြင်သူ</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_ModifyTime.Caption" xml:space="preserve">
+    <value>ပြုပြင်ချိန်</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_PatientCode.Caption" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_PayFormName.Caption" xml:space="preserve">
+    <value>သတ်မှတ်ထားသောအခန်း</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_Stt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_TransactionCode.Caption" xml:space="preserve">
+    <value>ကုဒ်</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_TreatmentCode.Caption" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn_Transaction_VirPatientName.Caption" xml:space="preserve">
+    <value>သည်းခံပါ။</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn1.Caption" xml:space="preserve">
+    <value>သတ်မှတ်ချိန်</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn2.Caption" xml:space="preserve">
+    <value>ထိခိုက်မှုသမိုင်း</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn3.Caption" xml:space="preserve">
+    <value>စာမေးပွဲအမျိုးအစား</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn3.ToolTip" xml:space="preserve">
+    <value>အဓိက စာမေးပွဲ</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn4.Caption" xml:space="preserve">
+    <value>အသုံးပြုသူလက်စွဲ</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn5.Caption" xml:space="preserve">
+    <value>gridColumn5</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn6.Caption" xml:space="preserve">
+    <value>လွှဲပြောင်းနှုန်း</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn7.Caption" xml:space="preserve">
+    <value>လုပ်ဆောင်ခွင့်မပြုပါ။</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn8.Caption" xml:space="preserve">
+    <value>ဇယားကွက် ၈</value>
+  </data>
+  <data name="frmServiceReqList.GridColumnInReqExeute.Caption" xml:space="preserve">
+    <value>အခြေအနေ-</value>
+  </data>
+  <data name="frmServiceReqList.groupControlInfo.Text" xml:space="preserve">
+    <value>ယေဘုယျသတင်းအချက်အလက်</value>
+  </data>
+  <data name="frmServiceReqList.HoSoDieuTri" xml:space="preserve">
+    <value>ကုသမှုမှတ်တမ်းများ</value>
+  </data>
+  <data name="frmServiceReqList.KhoaChiDinh" xml:space="preserve">
+    <value>သတ်မှတ်ထားသောဌာန</value>
+  </data>
+  <data name="frmServiceReqList.KhoaThucHien" xml:space="preserve">
+    <value>အကောင်အထည်ဖော်ရေးဌာန</value>
+  </data>
+  <data name="frmServiceReqList.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmServiceReqList.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmServiceReqList.layoutControlItem11.Text" xml:space="preserve">
+    <value>လှေကားအရေအတွက်-</value>
+  </data>
+  <data name="frmServiceReqList.layoutControlItem15.Text" xml:space="preserve">
+    <value>ဆောင်ရွက်ဆဲအခန်း-</value>
+  </data>
+  <data name="frmServiceReqList.layoutControlItem18.Text" xml:space="preserve">
+    <value>မွေးရက်:</value>
+  </data>
+  <data name="frmServiceReqList.layoutControlItem7.Text" xml:space="preserve">
+    <value>T/Thai-</value>
+  </data>
+  <data name="frmServiceReqList.layoutControlItem8.Text" xml:space="preserve">
+    <value>အမျိုးအစား-</value>
+  </data>
+  <data name="frmServiceReqList.lciAggrExpMestCode.Text" xml:space="preserve">
+    <value>ဘောက်ချာကုဒ်-</value>
+  </data>
+  <data name="frmServiceReqList.lciAssignTurnCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ရာထူးကုဒ်</value>
+  </data>
+  <data name="frmServiceReqList.lciAssignTurnCode.Text" xml:space="preserve">
+    <value>ကောလိပ်အလှည့်ကုဒ်-</value>
+  </data>
+  <data name="frmServiceReqList.lciBarcode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဘားကုဒ်စမ်းသပ်မှု</value>
+  </data>
+  <data name="frmServiceReqList.lciBarcode.Text" xml:space="preserve">
+    <value>ဘားကုဒ် XN-</value>
+  </data>
+  <data name="frmServiceReqList.lciBtnAggrExpMest.Text" xml:space="preserve">
+    <value>Ds ပြန်ခေါ်တယ်။</value>
+  </data>
+  <data name="frmServiceReqList.lciBtnMobaCreate.Text" xml:space="preserve">
+    <value>မှတ်မိအောင်ဖန်တီးပါ။</value>
+  </data>
+  <data name="frmServiceReqList.lciExcuteDepartment.Text" xml:space="preserve">
+    <value>ဆောင်ရွက်ဆဲဌာန-</value>
+  </data>
+  <data name="frmServiceReqList.lciExpMestCode.Text" xml:space="preserve">
+    <value>အထွက်ကုဒ်-</value>
+  </data>
+  <data name="frmServiceReqList.lciExpMestRoom.Text" xml:space="preserve">
+    <value>ပို့ကုန်ဂိုဒေါင်-</value>
+  </data>
+  <data name="frmServiceReqList.lciExpMestRoom.Text.Barcode" xml:space="preserve">
+    <value>ဘားကုဒ်များ</value>
+  </data>
+  <data name="frmServiceReqList.lciExpMestStt.Text" xml:space="preserve">
+    <value>အခြေအနေ-</value>
+  </data>
+  <data name="frmServiceReqList.lciGender.Text" xml:space="preserve">
+    <value>လိင်-</value>
+  </data>
+  <data name="frmServiceReqList.lciIntructionTimeFrom.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အော်ဒါမှာတယ်။</value>
+  </data>
+  <data name="frmServiceReqList.lciIntructionTimeFrom.Text" xml:space="preserve">
+    <value>TG y အမိန့်</value>
+  </data>
+  <data name="frmServiceReqList.lciIntructionTimeTo.Text" xml:space="preserve">
+    <value>ရောက်သည်-</value>
+  </data>
+  <data name="frmServiceReqList.lciIsHomePres.Text" xml:space="preserve">
+    <value>ယူသွားခြင်းလျှောက်လွှာ-</value>
+  </data>
+  <data name="frmServiceReqList.lciIsKidney.Text" xml:space="preserve">
+    <value>Dialysis လျှောက်လွှာ</value>
+  </data>
+  <data name="frmServiceReqList.lciKeyword.Text" xml:space="preserve">
+    <value>အဓိကစကားလုံးများကို ရှာဖွေပါ-</value>
+  </data>
+  <data name="frmServiceReqList.lciNumOrder.Text" xml:space="preserve">
+    <value>ဂဏန်းအမှာစာ-</value>
+  </data>
+  <data name="frmServiceReqList.lciPatientName.Text" xml:space="preserve">
+    <value>အမည်-</value>
+  </data>
+  <data name="frmServiceReqList.lciRationSumCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အထွေထွေကူပွန်ကုဒ်</value>
+  </data>
+  <data name="frmServiceReqList.lciRationSumCode.Text" xml:space="preserve">
+    <value>TH ကူပွန်ကုဒ်-</value>
+  </data>
+  <data name="frmServiceReqList.lciRationTime.Text" xml:space="preserve">
+    <value>အစားအစာ</value>
+  </data>
+  <data name="frmServiceReqList.lciReqDepartment.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဘာသာရပ်လိုအပ်သည်။</value>
+  </data>
+  <data name="frmServiceReqList.lciReqDepartment.Text" xml:space="preserve">
+    <value>ဆေး/ဂဌာန-</value>
+  </data>
+  <data name="frmServiceReqList.lciReqSended.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ပေါင်းစပ်စနစ် (LIS၊ PACS၊...) သို့ ပေးပို့သည့် အချက်အလက်</value>
+  </data>
+  <data name="frmServiceReqList.lciReqSended.Text" xml:space="preserve">
+    <value>ပေးပို့ထားသော တောင်းဆိုချက်-</value>
+  </data>
+  <data name="frmServiceReqList.lciServiceReqCode.Text" xml:space="preserve">
+    <value>တောင်းဆိုချက် ကုဒ်</value>
+  </data>
+  <data name="frmServiceReqList.lciSoTheTM.Text" xml:space="preserve">
+    <value>KCB TM ကတ်-</value>
+  </data>
+  <data name="frmServiceReqList.lciTreatmentCode.Text" xml:space="preserve">
+    <value>ကုသမှုကုဒ်-</value>
+  </data>
+  <data name="frmServiceReqList.PhongChiDinh" xml:space="preserve">
+    <value>သတ်မှတ်ထားသောအခန်း</value>
+  </data>
+  <data name="frmServiceReqList.repositoryItemBtnBieuMauKhac.Buttons[0].ToolTip" xml:space="preserve">
+    <value>အခြားပုံစံများ</value>
+  </data>
+  <data name="frmServiceReqList.repositoryItemBtnDeleteServiceReq.Buttons[0].ToolTip" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="frmServiceReqList.repositoryItemBtnEditServiceReq.Buttons[0].ToolTip" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="frmServiceReqList.repositoryItemBtnPrintServiceReq.Buttons[0].ToolTip" xml:space="preserve">
+    <value>ညောင်ပင်</value>
+  </data>
+  <data name="frmServiceReqList.repositoryItemButtonEditIntructionTime.Buttons[0].ToolTip" xml:space="preserve">
+    <value>အမိန့်၏အချိန်ကိုတည်းဖြတ်ပါ။</value>
+  </data>
+  <data name="frmServiceReqList.repositoryItemButtonView.Buttons[0].ToolTip" xml:space="preserve">
+    <value>ကြည့်ပါ။</value>
+  </data>
+  <data name="frmServiceReqList.repositoryItempicServiceReqStatus.NullText" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmServiceReqList.TatCa" xml:space="preserve">
+    <value>အားလုံး</value>
+  </data>
+  <data name="frmServiceReqList.Text" xml:space="preserve">
+    <value>ဆေးစာရင်း</value>
+  </data>
+  <data name="frmServiceReqList.ToiTao" xml:space="preserve">
+    <value>ငါဖန်တီးတယ်။</value>
+  </data>
+  <data name="frmServiceReqList.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
+  </data>
+  <data name="frmServiceReqList.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="frmServiceReqList.txtServiceReqCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ကုဒ်တောင်းပါ။</value>
+  </data>
+  <data name="frmServiceReqList.txtStoreCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>စတိုးကုဒ်</value>
+  </data>
+  <data name="frmServiceReqList.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
+  <data name="frmTutorial.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmTutorial.barButtonItem1.Caption" xml:space="preserve">
+    <value>သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="frmTutorial.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmTutorial.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmTutorial.layoutControlItem1.Text" xml:space="preserve">
+    <value>အသုံးပြုသူလက်စွဲ-</value>
+  </data>
+  <data name="frmTutorial.layoutControlItem3.Text" xml:space="preserve">
+    <value>လွှဲပြောင်းနှုန်း-</value>
+  </data>
+  <data name="frmTutorial.layoutControlItem4.Text" xml:space="preserve">
+    <value>ရက်အရေအတွက်-</value>
+  </data>
+  <data name="frmTutorial.lciSpinCountUsedBefore.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ယခင်ဆေးသုံးစွဲသည့်ရက်အရေအတွက်</value>
+  </data>
+  <data name="frmTutorial.lciSpinCountUsedBefore.Text" xml:space="preserve">
+    <value>ယခင်အသုံးပြုမှုအရေအတွက်-</value>
+  </data>
+  <data name="frmTutorial.Text" xml:space="preserve">
+    <value>အထွေထွေအချက်အလက်များကို တည်းဖြတ်ပါ။</value>
+  </data>
+  <data name="His.Desktop.Plugins.ServiceReqlist.PriorityName" xml:space="preserve">
+    <value>ဦးစားပေး</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__BIEU_MAU_KHAC" xml:space="preserve">
+    <value>အခြားပုံစံများ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__CACH_THUC_PHAU_THUAT" xml:space="preserve">
+    <value>ခွဲစိတ်မှုလုပ်ထုံးလုပ်နည်း</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__CHUYEN_KHOA" xml:space="preserve">
+    <value>ဆေးစစ်ချက်ကတ်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__DON_THUOC" xml:space="preserve">
+    <value>ဆေးစာ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__DON_THUOC_YHCT" xml:space="preserve">
+    <value>တိုင်းရင်းဆေးညွှန်း</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__GIAY_CAM_DOAN" xml:space="preserve">
+    <value>ခွဲစိတ်မှုနှင့် မေ့ဆေးလက်ခံကြောင်း လက်မှတ်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__GIAY_CHUNG_NHAN_PHAU_THUAT" xml:space="preserve">
+    <value>ခွဲစိတ်မှုလက်မှတ်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__GIAY_CHUNG_NHAN_PTTT" xml:space="preserve">
+    <value>ခွဲစိတ်မှုဆိုင်ရာ လက်မှတ်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__KHAM" xml:space="preserve">
+    <value>စာမေးပွဲလျှောက်လွှာပုံစံ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__PHIEU_PHAU_THUAT" xml:space="preserve">
+    <value>ခွဲစိတ်မှု ကတ်ပြား</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__PHIEU_YEU_CAU_XET_NGHIEM" xml:space="preserve">
+    <value>စမ်းသပ်တောင်းဆိုမှုပုံစံ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__CLICK__THUOC_TONG_HOP" xml:space="preserve">
+    <value>အထွေထွေဆေးစာ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERVICE_REQ_LIST__PHIEU_THU_KIEM_YC_KHAM" xml:space="preserve">
+    <value>ပြေစာနှင့် စာမေးပွဲလျှောက်လွှာပုံစံ</value>
+  </data>
+  <data name="ServiceReq.RightMenu.AllowNotExecute" xml:space="preserve">
+    <value>လုပ်ဆောင်ခွင့်မပြုပါ။</value>
+  </data>
+  <data name="ServiceReq.RightMenu.AttackTreatment" xml:space="preserve">
+    <value>ပူးတွဲပါပရိုဖိုင်</value>
+  </data>
+  <data name="ServiceReq.RightMenu.ChangeRoom" xml:space="preserve">
+    <value>အခန်းပြောင်းပါ။</value>
+  </data>
+  <data name="ServiceReq.RightMenu.ConnectDrugInterventionInfo" xml:space="preserve">
+    <value>ဆေးဝါးဝင်ရောက်စွက်ဖက်မှုဆိုင်ရာ အချက်အလက်</value>
+  </data>
+  <data name="ServiceReq.RightMenu.Delete" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="ServiceReq.RightMenu.DeleteSelectedItem" xml:space="preserve">
+    <value>ရွေးချယ်ထားသော အမိန့်ကို ဖျက်ပါ။</value>
+  </data>
+  <data name="ServiceReq.RightMenu.DisposeAllowNotExecute" xml:space="preserve">
+    <value>ခွင့်ပြုချက်ကို ပယ်ဖျက်ခြင်းသည် အလုပ်မဖြစ်ပါ။</value>
+  </data>
+  <data name="ServiceReq.RightMenu.Edit" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="ServiceReq.RightMenu.EditCommonInfo" xml:space="preserve">
+    <value>အထွေထွေအချက်အလက်များကို တည်းဖြတ်ပါ။</value>
+  </data>
+  <data name="ServiceReq.RightMenu.EmrDocumentList" xml:space="preserve">
+    <value>လက်မှတ်ရေးထိုးထားသော စာရွက်စာတမ်းများစာရင်း</value>
+  </data>
+  <data name="ServiceReq.RightMenu.EventLog" xml:space="preserve">
+    <value>ထိခိုက်မှုသမိုင်း</value>
+  </data>
+  <data name="ServiceReq.RightMenu.Execute" xml:space="preserve">
+    <value>မရရင်တော့</value>
+  </data>
+  <data name="ServiceReq.RightMenu.InputBeforeSurg" xml:space="preserve">
+    <value>ခွဲစိတ်မှုအကြိုအချက်အလက်ကို ထည့်သွင်းပါ။</value>
+  </data>
+  <data name="ServiceReq.RightMenu.KetQuaHeThongBenhAnhDienTu" xml:space="preserve">
+    <value>ရလဒ်စာရွက်ကို အီလက်ထရွန်နစ် ဆေးမှတ်တမ်းစနစ်တွင် ရိုက်နှိပ်ပါ။</value>
+  </data>
+  <data name="ServiceReq.RightMenu.MainExam" xml:space="preserve">
+    <value>အဓိက စာမေးပွဲ</value>
+  </data>
+  <data name="ServiceReq.RightMenu.NoExecute" xml:space="preserve">
+    <value>မလုပ်ဆောင်ပါနှင့်</value>
+  </data>
+  <data name="ServiceReq.RightMenu.OtherPrint" xml:space="preserve">
+    <value>အခြားပုံစံများ</value>
+  </data>
+  <data name="ServiceReq.RightMenu.OtherPrintByRequest" xml:space="preserve">
+    <value>အခြားပုံစံများကို တောင်းဆိုနိုင်ပါသည်။</value>
+  </data>
+  <data name="ServiceReq.RightMenu.Print" xml:space="preserve">
+    <value>ညောင်ပင်</value>
+  </data>
+  <data name="ServiceReq.RightMenu.PrintSelectedItem" xml:space="preserve">
+    <value>မှာယူမှုပုံစံကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="ServiceReq.RightMenu.ReSendAssignToLIS" xml:space="preserve">
+    <value>ပေါင်းစပ်စနစ်သို့ မှာယူမှုကို ပြန်လည်ပေးပို့ပါ။</value>
+  </data>
+  <data name="ServiceReq.RightMenu.SendAssignToOldSystem" xml:space="preserve">
+    <value>assignment အချက်အလက်ကို စနစ်ဟောင်းသို့ ပေးပို့ပါ။</value>
+  </data>
+  <data name="frmServiceReqList.lciTestSampleTypeName.Text" xml:space="preserve">
+    <value>နမူနာအမျိုးအစား-</value>
+  </data>
+</root>

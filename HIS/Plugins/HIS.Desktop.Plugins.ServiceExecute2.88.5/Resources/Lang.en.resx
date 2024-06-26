@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmCamera.KetNoiCongSvideo" xml:space="preserve">
+    <value>SVideo</value>
+  </data>
+  <data name="frmCamera.KetNoiCongUsb" xml:space="preserve">
+    <value>Usb</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_ASSIGN_PAAN_TEXT" xml:space="preserve">
+    <value>Assign paan</value>
+    <comment>Chỉ định GPBL</comment>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_ASSIGN_PAAN_TOOLTIP" xml:space="preserve">
+    <value>Assgin paan</value>
+    <comment>Chỉ định giải phẫu bệnh lý</comment>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_ASSIGN_PRESCRIPTION" xml:space="preserve">
+    <value>Prescription (F8)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_ASSIGN_SERVICE" xml:space="preserve">
+    <value>Assign service (F9)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_CAMERA" xml:space="preserve">
+    <value>Camera</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_CHANGE_IMAGE" xml:space="preserve">
+    <value>Change photos</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_CHANGE_OPTION" xml:space="preserve">
+    <value>Option</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_CHOOSE_IMAGE" xml:space="preserve">
+    <value>Choose photos</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_DELETE_IMAGE" xml:space="preserve">
+    <value>Delete photos</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_END" xml:space="preserve">
+    <value>Finish (Ctrl E)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_LOAD_IMAGE" xml:space="preserve">
+    <value>Refresh Image</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_PRINT" xml:space="preserve">
+    <value>Print (Ctrl P)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_SAVE" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_SAVE_N_CLOSE" xml:space="preserve">
+    <value>Save and close</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_SERE_SERV_TEMP_LIST" xml:space="preserve">
+    <value>List Template</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_SERVICE_REQ_MATY" xml:space="preserve">
+    <value>Material are wasted</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_TU_TRUC" xml:space="preserve">
+    <value>Cabinets</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__CHECK_ALL_IN_ONE" xml:space="preserve">
+    <value>Print the total results</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__DAY_OLDS" xml:space="preserve">
+    <value>days old</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_BTN_ADD" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_BTN_DELETE" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_BTN_SEND_SANCY" xml:space="preserve">
+    <value>Send request</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_BTN_SERVICE_REQ_MATY" xml:space="preserve">
+    <value>Declare waste materials</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_MACHINE_ID" xml:space="preserve">
+    <value>Machine</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_ROLE" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_SERVICE_CODE" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_SERVICE_NAME" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_USER_NAME" xml:space="preserve">
+    <value>Full name</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__HOURS_OLDS" xml:space="preserve">
+    <value>hours old</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_BEGIN_TIME" xml:space="preserve">
+    <value>Begin time:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_BEGIN_TIME_TOOL_TIP" xml:space="preserve">
+    <value>Time to start</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_END_TIME" xml:space="preserve">
+    <value>Finish time:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_END_TIME_TOOL_TIP" xml:space="preserve">
+    <value>Time to finish</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_NUMBER_OF_FILM" xml:space="preserve">
+    <value>Number of  film:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_SERE_SERV_TEMP_CODE" xml:space="preserve">
+    <value>Template:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__MONTH_OLDS" xml:space="preserve">
+    <value>months old</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__OLDS" xml:space="preserve">
+    <value>old</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__TXT_CONCLUDE__NULL_VALUE" xml:space="preserve">
+    <value>Conclude</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__TXT_NOTE__NULL_VALUE" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_CAMERA_TOOLTIP" xml:space="preserve">
+    <value>Camera (Ctrl X)</value>
+    <comment>Camera (Ctrl X)</comment>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_ADD_IMAGE" xml:space="preserve">
+    <value>Change image</value>
+    <comment>Đổi ảnh</comment>
+  </data>
+</root>

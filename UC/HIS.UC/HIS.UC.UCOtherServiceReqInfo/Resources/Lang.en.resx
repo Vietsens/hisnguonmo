@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmFun.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmFun.barButtonItem__Save.Caption" xml:space="preserve">
+    <value>Luu (Ctrl S)</value>
+  </data>
+  <data name="frmFun.btnAddInFor.ToolTip" xml:space="preserve">
+    <value>Bao Viet Insurance</value>
+  </data>
+  <data name="frmFun.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmFun.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmFun.layoutControlItem1.Text" xml:space="preserve">
+    <value>Card number:</value>
+  </data>
+  <data name="frmFun.layoutControlItem10.Text" xml:space="preserve">
+    <value>D</value>
+  </data>
+  <data name="frmFun.layoutControlItem2.Text" xml:space="preserve">
+    <value>Product:</value>
+  </data>
+  <data name="frmFun.layoutControlItem3.Text" xml:space="preserve">
+    <value>Customer name:</value>
+  </data>
+  <data name="frmFun.layoutControlItem4.Text" xml:space="preserve">
+    <value>Level:</value>
+  </data>
+  <data name="frmFun.layoutControlItem5.Text" xml:space="preserve">
+    <value>Company:</value>
+  </data>
+  <data name="frmFun.layoutControlItem6.Text" xml:space="preserve">
+    <value>Date Range:</value>
+  </data>
+  <data name="frmFun.layoutControlItem7.Text" xml:space="preserve">
+    <value>Period from:</value>
+  </data>
+  <data name="frmFun.layoutControlItem8.Text" xml:space="preserve">
+    <value>Due date:</value>
+  </data>
+  <data name="frmFun.Text" xml:space="preserve">
+    <value>Additional Information (Co-payer)</value>
+  </data>
+  <data name="toolTipItem1.Text" xml:space="preserve">
+    <value>Priority case</value>
+  </data>
+  <data name="toolTipItem2.Text" xml:space="preserve">
+    <value>Priority number for patients who register through the call center</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.btnAddCTT.ToolTip" xml:space="preserve">
+    <value>Enter additional information</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.cboPriorityType.ToolTip" xml:space="preserve">
+    <value>Priority case</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.layoutControlItem1.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Priority case</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.layoutControlItem1.Text" xml:space="preserve">
+    <value>TH priority:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.layoutControlItem3.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Other sources of payment</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.layoutControlItem3.Text" xml:space="preserve">
+    <value>CTK source:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lcgOtherRequest.Text" xml:space="preserve">
+    <value>Other Request</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciCboCTT.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Units to pay hospital fees</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciCboCTT.Text" xml:space="preserve">
+    <value>CCT unit:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciEmergency.Text" xml:space="preserve">
+    <value>Emergency</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciEmergencyTime.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Pain time</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciEmergencyTime.Text" xml:space="preserve">
+    <value>Emergency Time:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciForchkCapMaMS.Text" xml:space="preserve">
+    <value>MS code level:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciFortxtIncode.Text" xml:space="preserve">
+    <value>Hospital admission number:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciFortxtMaMS.Text" xml:space="preserve">
+    <value>MS code:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciFortxtSTTPriority.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Priority number for patients who register through the call center</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciFortxtSTTPriority.Text" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciGuaranteeLoginname.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Guardian</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciGuaranteeLoginname.Text" xml:space="preserve">
+    <value>Guarantee:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciGuaranteeReason.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Guarantee reason</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciGuaranteeReason.Text" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciIntructionTime.Text" xml:space="preserve">
+    <value>Time:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciIsChronic.Text" xml:space="preserve">
+    <value>Chronic</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciIsNotRequireFee.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Check-up later</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciIsNotRequireFee.Text" xml:space="preserve">
+    <value>Another time</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciOweType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hospital fee debt</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciOweType.Text" xml:space="preserve">
+    <value>Owe:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciPatientClassify.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Patient classification</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciPatientClassify.Text" xml:space="preserve">
+    <value>BN classification:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciPriority.Text" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciTreatmentOrder.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Profile number</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciTreatmentOrder.Text" xml:space="preserve">
+    <value>No. HS:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciTreatmentType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Area of \u200b\u200btreatment</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciTreatmentType.Text" xml:space="preserve">
+    <value>Treatment:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciTuberculosis.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Patients in the national TB program</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lciTuberculosis.Text" xml:space="preserve">
+    <value>TB patients:</value>
+  </data>
+  <data name="UCOtherServiceReqInfo.lcUCOtherServiceReqInfo.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+</root>

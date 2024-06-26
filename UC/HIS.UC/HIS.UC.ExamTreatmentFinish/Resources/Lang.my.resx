@@ -1,0 +1,696 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FormAppointment.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="FormAppointment.barButtonItemSave.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="FormAppointment.bbtnChonKhungGio.ToolTip" xml:space="preserve">
+    <value>အချိန်ဘောင်ကို ရွေးချယ်ပါ။</value>
+  </data>
+  <data name="FormAppointment.btnSave.Text" xml:space="preserve">
+    <value>သဘောတူသည် (Ctrl S)</value>
+  </data>
+  <data name="FormAppointment.btnServiceAppoint.Text" xml:space="preserve">
+    <value>DV ချိန်းတယ်။</value>
+  </data>
+  <data name="FormAppointment.btnServiceAppoint.ToolTip" xml:space="preserve">
+    <value>ရက်ချိန်းဝန်ဆောင်မှု</value>
+  </data>
+  <data name="FormAppointment.gridColumn2.Caption" xml:space="preserve">
+    <value>ကုဒ်</value>
+  </data>
+  <data name="FormAppointment.gridColumn3.Caption" xml:space="preserve">
+    <value>ဆေးခန်းနာမည်</value>
+  </data>
+  <data name="FormAppointment.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem1.Text" xml:space="preserve">
+    <value>ရက်အရေအတွက်-</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem10.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem11.Text" xml:space="preserve">
+    <value>STT-</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem4.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နောက်တစ်ခါ ဆေးခန်းသွားပါ။</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem4.Text" xml:space="preserve">
+    <value>PK နောက်တစ်ကြိမ်</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem5.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem6.Text" xml:space="preserve">
+    <value>ဆရာဝန် အကြံပေးချက်-</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem9.Text" xml:space="preserve">
+    <value>အခန်း-</value>
+  </data>
+  <data name="FormAppointment.lblStt.Text" xml:space="preserve">
+    <value>၀ယ်တယ်။</value>
+  </data>
+  <data name="FormAppointment.lciTimeAppointments.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ချိန်းထားချိန်</value>
+  </data>
+  <data name="FormAppointment.lciTimeAppointments.Text" xml:space="preserve">
+    <value>TG ရက်ချိန်းယူပါ-</value>
+  </data>
+  <data name="FormAppointment.lciTimeFrame.Text" xml:space="preserve">
+    <value>အချိန်နေရာ-</value>
+  </data>
+  <data name="FormAppointment.Text" xml:space="preserve">
+    <value>ပြန်တွေ့မယ်။</value>
+  </data>
+  <data name="FormAppointment.txtAdvise.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ဆရာဝန်ရဲ့ အကြံပေးချက်</value>
+  </data>
+  <data name="FormAppointment.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
+  </data>
+  <data name="FormTransfer.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="FormTransfer.barButtonItemSave.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="FormTransfer.btnSave.Text" xml:space="preserve">
+    <value>သဘောတူသည် (Ctrl S)</value>
+  </data>
+  <data name="FormTransfer.btnSaveTranPatiTemp.Text" xml:space="preserve">
+    <value>နမူနာပုံစံကို သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="FormTransfer.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem1.Text" xml:space="preserve">
+    <value>မူးယစ်ဆေးဝါးသုံးတယ်။</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem2.Text" xml:space="preserve">
+    <value>ပရော်ဖက်ရှင်နယ် အကြောင်းပြချက်များ-</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem3.Text" xml:space="preserve">
+    <value>ပရော်ဖက်ရှင်နယ် အကြောင်းပြချက်များ-</value>
+  </data>
+  <data name="FormTransfer.lciClinicalNote.Text" xml:space="preserve">
+    <value>လက်တွေ့လက္ခဏာများ</value>
+  </data>
+  <data name="FormTransfer.lciHuongDieuTri.Text" xml:space="preserve">
+    <value>ကုသမှုလမ်းညွှန်</value>
+  </data>
+  <data name="FormTransfer.lciMediOrg.Text" xml:space="preserve">
+    <value>ဦးတည်ရာ-</value>
+  </data>
+  <data name="FormTransfer.lciMediOrgAddress.Text" xml:space="preserve">
+    <value>လိပ်စာ-</value>
+  </data>
+  <data name="FormTransfer.lciNguoiHoTong.Text" xml:space="preserve">
+    <value>နာမည်အပြည့်အစုံ၊ ခေါင်းစဉ်၊ အစောင့်အကြပ်များ၏ ကျွမ်းကျင်အရည်အချင်းများ</value>
+  </data>
+  <data name="FormTransfer.lciPhuongPhapSuDung.Text" xml:space="preserve">
+    <value>ကုသမှုများ</value>
+  </data>
+  <data name="FormTransfer.lciPhuongTienVanChuyen.Text" xml:space="preserve">
+    <value>လမ်းပန်းဆက်သွယ်ရေး</value>
+  </data>
+  <data name="FormTransfer.lciSubclinicalResult.Text" xml:space="preserve">
+    <value>ဓာတ်ခွဲခန်းနှင့် subclinical ရလဒ်များ</value>
+  </data>
+  <data name="FormTransfer.lciTinhTrangNguoiBenh.Text" xml:space="preserve">
+    <value>လူနာအခြေအနေ</value>
+  </data>
+  <data name="FormTransfer.lciTranPatiForm.Text" xml:space="preserve">
+    <value>ပုံစံ-</value>
+  </data>
+  <data name="FormTransfer.lciTranPatiReason.Text" xml:space="preserve">
+    <value>အကြောင်းရင်း-</value>
+  </data>
+  <data name="FormTransfer.lciTranPatiTemp.Text" xml:space="preserve">
+    <value>နမူနာ:</value>
+  </data>
+  <data name="FormTransfer.Text" xml:space="preserve">
+    <value>ဆေးရုံလွှဲပြောင်းသတင်းအချက်အလက်</value>
+  </data>
+  <data name="frmICDInformation.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmICDInformation.bbtnSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmICDInformation.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmICDInformation.chkEditIcd.Properties.Caption" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="frmICDInformation.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmICDInformation.lciICDCode.Text" xml:space="preserve">
+    <value>ပင်မကောလိပ်-</value>
+  </data>
+  <data name="frmICDInformation.lciICDSubCode.Text" xml:space="preserve">
+    <value>အလယ်တန်းကောလိပ်-</value>
+  </data>
+  <data name="frmICDInformation.Text" xml:space="preserve">
+    <value>ရောဂါရှာဖွေရေးအချက်အလက်ကို စွန့်ထုတ်စက္ကူပေါ်တွင် ပြသထားသည်။</value>
+  </data>
+  <data name="frmICDInformation.txtIcdText.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ရောဂါကိုရွေးချယ်ရန် F1 ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="frmPopUpSick.btnOke.Text" xml:space="preserve">
+    <value>သဘောတူသည်။</value>
+  </data>
+  <data name="frmPopUpSick.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmPopUpSick.Text" xml:space="preserve">
+    <value>သတင်းအချက်အလက်</value>
+  </data>
+  <data name="frmSecondaryIcd.bar2.Text" xml:space="preserve">
+    <value>ပင်မမီနူး</value>
+  </data>
+  <data name="frmSecondaryIcd.bbtnChoose.Caption" xml:space="preserve">
+    <value>(Ctrl S) ကို ရွေးပါ</value>
+  </data>
+  <data name="frmSecondaryIcd.bbtnClose.Caption" xml:space="preserve">
+    <value>ပိတ်ရန် (Esc)</value>
+  </data>
+  <data name="frmSecondaryIcd.btnChoose.Text" xml:space="preserve">
+    <value>(Ctrl S) ကို ရွေးပါ</value>
+  </data>
+  <data name="frmSecondaryIcd.grdColCode.Caption" xml:space="preserve">
+    <value>ရောဂါကုဒ်</value>
+  </data>
+  <data name="frmSecondaryIcd.grdColName.Caption" xml:space="preserve">
+    <value>ရောဂါအမည်</value>
+  </data>
+  <data name="frmSecondaryIcd.gridColumn1.Caption" xml:space="preserve">
+    <value>ဇယားကွက် ၁</value>
+  </data>
+  <data name="frmSecondaryIcd.gridViewSecondaryDisease.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>သော့ချက်စာလုံးများကို ရှာဖွေပါ...</value>
+  </data>
+  <data name="frmSecondaryIcd.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmSecondaryIcd.lblIcdText.Text" xml:space="preserve">
+    <value>ဒုတိယရောဂါများ</value>
+  </data>
+  <data name="frmSecondaryIcd.Text" xml:space="preserve">
+    <value>ရောဂါရှာဖွေပြီး ရွေးချယ်ပါ။</value>
+  </data>
+  <data name="frmSecondaryIcd.txtIcdCodes.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ရောဂါကုဒ်များစာရင်း</value>
+  </data>
+  <data name="frmSecondaryIcd.txtIcdNames.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ရောဂါအမည်များစာရင်း</value>
+  </data>
+  <data name="frmSecondaryIcd.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
+  </data>
+  <data name="frmSecondaryIcdFull.bar2.Text" xml:space="preserve">
+    <value>ပင်မမီနူး</value>
+  </data>
+  <data name="frmSecondaryIcdFull.bbtnChoose.Caption" xml:space="preserve">
+    <value>(Ctrl S) ကို ရွေးပါ</value>
+  </data>
+  <data name="frmSecondaryIcdFull.bbtnClose.Caption" xml:space="preserve">
+    <value>ပိတ်ရန် (Esc)</value>
+  </data>
+  <data name="frmSecondaryIcdFull.btnChoose.Text" xml:space="preserve">
+    <value>(Ctrl S) ကို ရွေးပါ</value>
+  </data>
+  <data name="frmSecondaryIcdFull.grdColCode.Caption" xml:space="preserve">
+    <value>ရောဂါကုဒ်</value>
+  </data>
+  <data name="frmSecondaryIcdFull.grdColName.Caption" xml:space="preserve">
+    <value>ရောဂါအမည်</value>
+  </data>
+  <data name="frmSecondaryIcdFull.gridColumn1.Caption" xml:space="preserve">
+    <value>ဇယားကွက် ၁</value>
+  </data>
+  <data name="frmSecondaryIcdFull.gridViewSecondaryDisease.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>သော့ချက်စာလုံးများကို ရှာဖွေပါ...</value>
+  </data>
+  <data name="frmSecondaryIcdFull.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmSecondaryIcdFull.lblIcdText.Text" xml:space="preserve">
+    <value>ဒုတိယရောဂါများ</value>
+  </data>
+  <data name="frmSecondaryIcdFull.Text" xml:space="preserve">
+    <value>ရောဂါရှာဖွေပြီး ရွေးချယ်ပါ။</value>
+  </data>
+  <data name="frmSecondaryIcdFull.txtIcdCodes.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ရောဂါကုဒ်များစာရင်း</value>
+  </data>
+  <data name="frmSecondaryIcdFull.txtIcdNames.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ရောဂါအမည်များစာရင်း</value>
+  </data>
+  <data name="frmSecondaryIcdFull.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenLaChuNhat" xml:space="preserve">
+    <value>လက်ရှိချိန်းဆိုထားသည့်ရက်သည် တနင်္ဂနွေနေ့ဖြစ်သည်၊ ဆက်လက်လုပ်ဆောင်လိုပါသလား။</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenLaThuBay" xml:space="preserve">
+    <value>လက်ရှိချိန်းဆိုထားသည့်ရက်သည် စနေနေ့ဖြစ်သည်၊ ဆက်လက်လုပ်ဆောင်လိုပါသလား။</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenToiDa" xml:space="preserve">
+    <value>အများဆုံးရက်ချိန်းခွင့်ပြုသည့်ရက်အရေအတွက်မှာ {0} ရက်ဖြစ်သည်။</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_CanhBaoThoiGianHenKhamSoVoiThoiGianKetThucDieuTri" xml:space="preserve">
+    <value>ခန့်အပ်ချိန်သည် ကုသမှုပြီးဆုံးချိန်ထက် ပိုနေရပါမည်။</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_ChuaNhapThoiGianHenKham" xml:space="preserve">
+    <value>သင်ချိန်းဆိုထားသည့်အချိန်ကို မရွေးချယ်ရသေးပါ၊ ကျေးဇူးပြု၍ ထပ်မံစစ်ဆေးပါ။</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_ChuaNhapThongTinChuyenVien" xml:space="preserve">
+    <value>သင်သည် ဆေးရုံလွှဲပြောင်းမှုအချက်အလက်ကို လုံးလုံးမထည့်ရသေးပါ၊ ကျေးဇူးပြု၍ ထပ်မံစစ်ဆေးပါ။</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_ChuaNhapThongTinTuVong" xml:space="preserve">
+    <value>သေဆုံးခြင်းဆိုင်ရာ အချက်အလက်အပြည့်အစုံကို သင်မဖြည့်ရသေးပါ၊ ထပ်မံစစ်ဆေးပါ။</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_KhungGioVuotQuaSoLuong" xml:space="preserve">
+    <value>ဤအချိန်ဘောင်သည် ခွင့်ပြုထားသော ရက်ချိန်းအရေအတွက်ကို ကျော်လွန်သွားပါသည်။</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_PhongKhamCoSoLuotKhamVuotDinhMuc" xml:space="preserve">
+    <value>ဆေးခန်းတွင် ခွင့်ပြုထားသည်ထက် ရက်ချိန်းပိုများသည်- {0}။</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_ThongBao" xml:space="preserve">
+    <value>အကြောင်းကြားပါ။</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>လိုအပ်သောအကွက်များကို မထည့်ရသေးပါ။</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_TruongDuLieuVuotQuaKyTu" xml:space="preserve">
+    <value>ဒေတာအရှည်သည် {0} ကျော်လွန်သည်</value>
+  </data>
+  <data name="UcAdvise.gridColumn2.Caption" xml:space="preserve">
+    <value>ကုဒ်</value>
+  </data>
+  <data name="UcAdvise.gridColumn3.Caption" xml:space="preserve">
+    <value>နာမည်</value>
+  </data>
+  <data name="UcAdvise.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="UcAdvise.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="UcAdvise.layoutControlItem1.Text" xml:space="preserve">
+    <value>ဆရာဝန် အကြံပေးချက်-</value>
+  </data>
+  <data name="UcAdvise.layoutControlItem2.Text" xml:space="preserve">
+    <value>PK နောက်တစ်ကြိမ်</value>
+  </data>
+  <data name="UcAdvise.layoutControlItem3.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UcAdvise.txtAdvise.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ဆရာဝန်ရဲ့ အကြံပေးချက်</value>
+  </data>
+  <data name="UcAdvise.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
+  </data>
+  <data name="UCAppointmentAdvise.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="UCAppointmentAdvise.layoutControlItem1.Text" xml:space="preserve">
+    <value>ဆရာဝန် အကြံပေးချက်-</value>
+  </data>
+  <data name="UCAppointmentAdvise.txtAdvise.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ဆရာဝန်ရဲ့ အကြံပေးချက်</value>
+  </data>
+  <data name="UCExamTreatmentFinish.BMIDISPLAY.NORMAL" xml:space="preserve">
+    <value>(ပုံမှန်)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.BMIDISPLAY.OBESITY.I" xml:space="preserve">
+    <value>(၁) အဝလွန်ခြင်း၊</value>
+  </data>
+  <data name="UCExamTreatmentFinish.BMIDISPLAY.OBESITY.II" xml:space="preserve">
+    <value>(ဒုတိယတန်း အဝလွန်ခြင်း)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.BMIDISPLAY.OBESITY.III" xml:space="preserve">
+    <value>(၃ တန်း အဝလွန်ခြင်း)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.BMIDISPLAY.OVERWEIGHT" xml:space="preserve">
+    <value>(အဝလွန်)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl10.Text" xml:space="preserve">
+    <value>စင်တီမီတာ</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl12.Text" xml:space="preserve">
+    <value>စတုရန်းမီတာ</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl3.Text" xml:space="preserve">
+    <value>အကြိမ်/မိနစ်</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl4.Text" xml:space="preserve">
+    <value>mmHG</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl5.Text" xml:space="preserve">
+    <value>ကီလိုဂရမ်</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl6.Text" xml:space="preserve">
+    <value>စင်တီမီတာ</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl7.Text" xml:space="preserve">
+    <value>oC</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl8.Text" xml:space="preserve">
+    <value>အကြိမ်/မိနစ်</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl9.Text" xml:space="preserve">
+    <value>စင်တီမီတာ</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem1.Text" xml:space="preserve">
+    <value>ပတ်လမ်း-</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem10.Text" xml:space="preserve">
+    <value>BMI-</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem11.Text" xml:space="preserve">
+    <value>အရေပြားဧရိယာ-</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem17.Text" xml:space="preserve">
+    <value>အကြိမ်/မိနစ်</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem2.Text" xml:space="preserve">
+    <value>အပူချိန်</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem3.Text" xml:space="preserve">
+    <value>သွေးပေါင်ချိန်:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem5.Text" xml:space="preserve">
+    <value>အသက်ရှုခြင်း-</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem6.Text" xml:space="preserve">
+    <value>အလေးချိန်-</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem7.Text" xml:space="preserve">
+    <value>အမြင့်-</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem8.Text" xml:space="preserve">
+    <value>ရင်ဘတ်-</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem9.Text" xml:space="preserve">
+    <value>ခါးလုံးပတ်-</value>
+  </data>
+  <data name="UCExamTreatmentFinish.SKINNY.I" xml:space="preserve">
+    <value>(ပိန်အဆင့်)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.SKINNY.II" xml:space="preserve">
+    <value>(အဆင့် II ပါးပါး)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.SKINNY.III" xml:space="preserve">
+    <value>(အဆင့် III Skinny)</value>
+  </data>
+  <data name="UCTreatmentFinish.btnICDInformation.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCTreatmentFinish.btnICDInformation.ToolTip" xml:space="preserve">
+    <value>စွန့်ထုတ်သည့်စာရွက်ပေါ်တွင် ပြသထားသော နောက်ထပ်ရောဂါရှာဖွေရေးအချက်အလက်များ</value>
+  </data>
+  <data name="UCTreatmentFinish.chkEditIcd.Properties.Caption" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="UCTreatmentFinish.chkInPhieuTrichLuc.Properties.Caption" xml:space="preserve">
+    <value>: ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="UCTreatmentFinish.chkKyPhieuTrichLuc.Properties.Caption" xml:space="preserve">
+    <value>: ဆိုင်းဘုတ်</value>
+  </data>
+  <data name="UCTreatmentFinish.chkPrintAppoinment.Properties.Caption" xml:space="preserve">
+    <value>: ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="UCTreatmentFinish.chkPrintBHXH.Properties.Caption" xml:space="preserve">
+    <value>: ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="UCTreatmentFinish.chkPrintBordereau.Properties.Caption" xml:space="preserve">
+    <value>: ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="UCTreatmentFinish.chkPrintHosTransfer.Properties.Caption" xml:space="preserve">
+    <value>: ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="UCTreatmentFinish.chkPrintPrescription.Properties.Caption" xml:space="preserve">
+    <value>: ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="UCTreatmentFinish.chkSignAppoinment.Properties.Caption" xml:space="preserve">
+    <value>: ဆိုင်းဘုတ်</value>
+  </data>
+  <data name="UCTreatmentFinish.chkSignBHXH.Properties.Caption" xml:space="preserve">
+    <value>: ဆိုင်းဘုတ်</value>
+  </data>
+  <data name="UCTreatmentFinish.chkSignBordereau.Properties.Caption" xml:space="preserve">
+    <value>: ဆိုင်းဘုတ်</value>
+  </data>
+  <data name="UCTreatmentFinish.chkTraditionalIcd.Properties.Caption" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="UCTreatmentFinish.labelControl1.Text" xml:space="preserve">
+    <value>Appointment Service ချိန်းခြင်း။</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControl3.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem1.Text" xml:space="preserve">
+    <value>အချိန်-</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem10.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးရုံလွှဲနံပါတ်</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem10.Text" xml:space="preserve">
+    <value>CV နံပါတ်-</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem12.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem14.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နောက်ထပ်အချက်အလက်များ</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem14.Text" xml:space="preserve">
+    <value>အပိုဆောင်း TT-</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem2.Text" xml:space="preserve">
+    <value>ခဏပွဲရပ်ခြင်း:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem20.Text" xml:space="preserve">
+    <value>ရလဒ်:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem23.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးစစ်ချက်ရလဒ်စာရွက် (ကောက်နုတ်ချက်)</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem23.Text" xml:space="preserve">
+    <value>ကိုးကားချက်စာရွက်-</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem27.Text" xml:space="preserve">
+    <value>ဆေးညွှန်း-</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem28.Text" xml:space="preserve">
+    <value>လွှဲပြောင်းကတ်-</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem3.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>တိုင်းရင်းဆေးဆေးရုံမှ ဆင်းသက်ခြင်းကို စစ်ဆေးခြင်း။</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem3.Text" xml:space="preserve">
+    <value>တိုင်းရင်းဆေးကောလိပ်</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem4.Text" xml:space="preserve">
+    <value>ထုတ်လွှတ်မှုအမျိုးအစား-</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem5.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>လူမှုအာမခံအကျိုးခံစားခွင့်များအတွက် ခွင့်ကတ်ကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem5.Text" xml:space="preserve">
+    <value>လူမှုအာမခံဘဏ်ကတ်</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem6.Text" xml:space="preserve">
+    <value>ရက်ချိန်းကတ်-</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem7.Text" xml:space="preserve">
+    <value>စာရင်း-</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem8.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>တိုင်းရင်းဆေးဖြင့် ဆေးရုံတက်ကုသခြင်း။</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem8.Text" xml:space="preserve">
+    <value>တိုင်းရင်းဆေးဆေးရုံ (တွဲ) တွင် တက်ရောက်ခွင့်ရသော ကောလိပ်၊</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem9.Text" xml:space="preserve">
+    <value>ဆေးရုံဆင်းရမည့်နံပါတ်-</value>
+  </data>
+  <data name="UCTreatmentFinish.lciBANT.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ပြင်ပလူနာ ဆေးမှတ်တမ်းများကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="UCTreatmentFinish.lciBANT.Text" xml:space="preserve">
+    <value>ပြင်ပလူနာ BA ပုံနှိပ်ခြင်း-</value>
+  </data>
+  <data name="UCTreatmentFinish.lciCareer.Text" xml:space="preserve">
+    <value>အလုပ်-</value>
+  </data>
+  <data name="UCTreatmentFinish.lciChkCapSoLuuTruBA.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ပြင်ပလူနာ ဆေးမှတ်တမ်းများ ဖန်တီးပါ။</value>
+  </data>
+  <data name="UCTreatmentFinish.lciChkCapSoLuuTruBA.Text" xml:space="preserve">
+    <value>ပြင်ပလူနာ BA ကို ဖန်တီးပါ-</value>
+  </data>
+  <data name="UCTreatmentFinish.lciIcdText.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးရုံဆင်းချိန်ကို စစ်ဆေးခြင်း။</value>
+  </data>
+  <data name="UCTreatmentFinish.lciIcdText.Text" xml:space="preserve">
+    <value>ကောလိပ်ဆင်းချိန်-</value>
+  </data>
+  <data name="UCTreatmentFinish.lciIsExpXml4210Collinear.Text" xml:space="preserve">
+    <value>xml ကို အွန်လိုင်းတွင် ထုတ်ယူရန်-</value>
+  </data>
+  <data name="UCTreatmentFinish.lciPatientProgram.Text" xml:space="preserve">
+    <value>အစီအစဉ်-</value>
+  </data>
+  <data name="UCTreatmentFinish.lciSoLuuTruBA.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ပြင်ပလူနာမှတ်တမ်း သိုလှောင်မှုနံပါတ်</value>
+  </data>
+  <data name="UCTreatmentFinish.lciSoLuuTruBA.Text" xml:space="preserve">
+    <value>ပြင်ပလူနာ LTBA နံပါတ်-</value>
+  </data>
+  <data name="UCTreatmentFinish.txtIcdText.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ရောဂါကိုရွေးချယ်ရန် F1 ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="UCTreatmentFinish.xtraTabPage1.Text" xml:space="preserve">
+    <value>အကြံဉာဏ်</value>
+  </data>
+  <data name="UCTreatmentFinish.xtraTabPage2.Text" xml:space="preserve">
+    <value>နိဂုံး</value>
+  </data>
+</root>

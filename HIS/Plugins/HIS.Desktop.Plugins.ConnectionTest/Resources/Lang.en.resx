@@ -1,0 +1,645 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmAddTimeSample.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmAddTimeSample.bbtnSave.Caption" xml:space="preserve">
+    <value>bbtnSave</value>
+  </data>
+  <data name="frmAddTimeSample.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmAddTimeSample.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmAddTimeSample.layoutControlItem2.Text" xml:space="preserve">
+    <value>Sampling time:</value>
+  </data>
+  <data name="frmAddTimeSample.Text" xml:space="preserve">
+    <value>Notify</value>
+  </data>
+  <data name="frmChapNhanMau.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmChapNhanMau.bbtnSave.Caption" xml:space="preserve">
+    <value>bbtnSave</value>
+  </data>
+  <data name="frmChapNhanMau.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmChapNhanMau.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmChapNhanMau.layoutControlItem2.Text" xml:space="preserve">
+    <value>Sample pick up time:</value>
+  </data>
+  <data name="frmChapNhanMau.Text" xml:space="preserve">
+    <value>Sample Acceptance Information</value>
+  </data>
+  <data name="frmReasonReject.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmReasonReject.barBtnSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmReasonReject.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmReasonReject.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmReasonReject.lciBarcode.Text" xml:space="preserve">
+    <value>Barcodes:</value>
+  </data>
+  <data name="frmReasonReject.lciPatientCode.Text" xml:space="preserve">
+    <value>Patient code:</value>
+  </data>
+  <data name="frmReasonReject.lciPatientName.Text" xml:space="preserve">
+    <value>Patient name:</value>
+  </data>
+  <data name="frmReasonReject.lciReason.Text" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
+  <data name="frmReasonReject.lciServiceReqCode.Text" xml:space="preserve">
+    <value>Request code:</value>
+  </data>
+  <data name="frmReasonReject.lciTreatmentCode.Text" xml:space="preserve">
+    <value>Treatment code:</value>
+  </data>
+  <data name="frmReasonReject.Text" xml:space="preserve">
+    <value>Rejection of test samples</value>
+  </data>
+  <data name="frmSignerAdd.btnAdd.Text" xml:space="preserve">
+    <value>More signers</value>
+  </data>
+  <data name="frmSignerAdd.btnAddMe.Text" xml:space="preserve">
+    <value>Add me</value>
+  </data>
+  <data name="frmSignerAdd.btnSave.Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="frmSignerAdd.gridColumn1.Caption" xml:space="preserve">
+    <value>Signer</value>
+  </data>
+  <data name="frmSignerAdd.gridColumn2.Caption" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="frmSignerAdd.gridColumn3.Caption" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="frmSignerAdd.gridColumn4.Caption" xml:space="preserve">
+    <value>Order of signing</value>
+  </data>
+  <data name="frmSignerAdd.gridColumn5.Caption" xml:space="preserve">
+    <value>Erase</value>
+  </data>
+  <data name="frmSignerAdd.labelControl1.Text" xml:space="preserve">
+    <value>Select a signer:</value>
+  </data>
+  <data name="frmSignerAdd.labelControl2.Text" xml:space="preserve">
+    <value>Parallel signing:</value>
+  </data>
+  <data name="frmSignerAdd.labelControl3.Text" xml:space="preserve">
+    <value>Signing setup form:</value>
+  </data>
+  <data name="frmSignerAdd.Text" xml:space="preserve">
+    <value>Create a signing stream</value>
+  </data>
+  <data name="frmUpdateCondition.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmUpdateCondition.barBtnSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmUpdateCondition.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmUpdateCondition.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmUpdateCondition.lciBarcode.Text" xml:space="preserve">
+    <value>Barcodes:</value>
+  </data>
+  <data name="frmUpdateCondition.lciPatientCode.Text" xml:space="preserve">
+    <value>Patient code:</value>
+  </data>
+  <data name="frmUpdateCondition.lciPatientName.Text" xml:space="preserve">
+    <value>Patient name:</value>
+  </data>
+  <data name="frmUpdateCondition.lciSampleCondition.Text" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="frmUpdateCondition.lciServiceReqCode.Text" xml:space="preserve">
+    <value>Request code:</value>
+  </data>
+  <data name="frmUpdateCondition.lciTreatmentCode.Text" xml:space="preserve">
+    <value>Treatment code:</value>
+  </data>
+  <data name="frmUpdateCondition.Text" xml:space="preserve">
+    <value>Sample status update</value>
+  </data>
+  <data name="UC_ConnectionTest.btnApproveListResult.Text" xml:space="preserve">
+    <value>Browse results in batches</value>
+  </data>
+  <data name="UC_ConnectionTest.btnApproveListResult.ToolTip" xml:space="preserve">
+    <value>Browse results in batches</value>
+  </data>
+  <data name="UC_ConnectionTest.btnCancelForNote.Text" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="UC_ConnectionTest.btnCancelForResultDescription.Text" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="UC_ConnectionTest.btnCancelForValueRange.Text" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="UC_ConnectionTest.btnCreateSigner.Text" xml:space="preserve">
+    <value>Signing Setup</value>
+  </data>
+  <data name="UC_ConnectionTest.btnCreateSigner.ToolTip" xml:space="preserve">
+    <value>Set up the signing flow in case of using digital signing</value>
+  </data>
+  <data name="UC_ConnectionTest.btnInTachTheoNhom.Text" xml:space="preserve">
+    <value>Group printing</value>
+  </data>
+  <data name="UC_ConnectionTest.btnKhongThucHien.Text" xml:space="preserve">
+    <value>No execute</value>
+  </data>
+  <data name="UC_ConnectionTest.btnOKForNote.Text" xml:space="preserve">
+    <value>Agree</value>
+  </data>
+  <data name="UC_ConnectionTest.btnOKForResultDescription.Text" xml:space="preserve">
+    <value>Agree</value>
+  </data>
+  <data name="UC_ConnectionTest.btnOKForValueRange.Text" xml:space="preserve">
+    <value>Agree</value>
+  </data>
+  <data name="UC_ConnectionTest.btnPrint.Text" xml:space="preserve">
+    <value>Print (Ctrl + P)</value>
+  </data>
+  <data name="UC_ConnectionTest.btnResetNumOrder.Text" xml:space="preserve">
+    <value>Reset Stt (Ctrl R)</value>
+  </data>
+  <data name="UC_ConnectionTest.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="UC_ConnectionTest.btnSearch.Text" xml:space="preserve">
+    <value>Find (Ctrl + F)</value>
+  </data>
+  <data name="UC_ConnectionTest.cboKskContract.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Health check contract</value>
+  </data>
+  <data name="UC_ConnectionTest.chkOrderByBarcode.Properties.Caption" xml:space="preserve">
+    <value>Producing by barcode</value>
+  </data>
+  <data name="UC_ConnectionTest.chkOrderByBarcode.ToolTip" xml:space="preserve">
+    <value>Sort by barcode</value>
+  </data>
+  <data name="UC_ConnectionTest.chkShowSampleGroup.Properties.Caption" xml:space="preserve">
+    <value>Show all merged templates</value>
+  </data>
+  <data name="UC_ConnectionTest.chkSignProcess.Tooltip" xml:space="preserve">
+    <value>Automatically generate electronic documents and signers according to “Signing Setup” information after successful saving</value>
+  </data>
+  <data name="UC_ConnectionTest.chkSignProcess.ToolTip" xml:space="preserve">
+    <value>Automatically generate electronic documents and signers according to the information \\Signing Setup\\ after saving</value>
+  </data>
+  <data name="UC_ConnectionTest.gc_ApproveResult.Caption" xml:space="preserve">
+    <value>Browse results</value>
+  </data>
+  <data name="UC_ConnectionTest.gc_ApproveResult.ToolTip" xml:space="preserve">
+    <value>Browse/Cancel browsing results</value>
+  </data>
+  <data name="UC_ConnectionTest.gc_ApproveSample.Caption" xml:space="preserve">
+    <value>Accept sample</value>
+  </data>
+  <data name="UC_ConnectionTest.gc_ApproveSample.ToolTip" xml:space="preserve">
+    <value>Accept sample</value>
+  </data>
+  <data name="UC_ConnectionTest.gc_CheckApprovalList.Caption" xml:space="preserve">
+    <value>Browse batches</value>
+  </data>
+  <data name="UC_ConnectionTest.gc_Reject.Caption" xml:space="preserve">
+    <value>Sample rejection</value>
+  </data>
+  <data name="UC_ConnectionTest.gc_Reject.ToolTip" xml:space="preserve">
+    <value>Sample rejection</value>
+  </data>
+  <data name="UC_ConnectionTest.grdColIndexCode.Caption" xml:space="preserve">
+    <value>Code Index</value>
+  </data>
+  <data name="UC_ConnectionTest.grdColIndexName.Caption" xml:space="preserve">
+    <value>Name index</value>
+  </data>
+  <data name="UC_ConnectionTest.grdColIsParent.Caption" xml:space="preserve">
+    <value>IS_PARENT</value>
+  </data>
+  <data name="UC_ConnectionTest.grdCollDonvitinh.Caption" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="UC_ConnectionTest.grdCollDonvitinh.ToolTip" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="UC_ConnectionTest.grdColLevel.Caption" xml:space="preserve">
+    <value>State value</value>
+  </data>
+  <data name="UC_ConnectionTest.grdCollSTT.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="UC_ConnectionTest.grdColMaxValue.Caption" xml:space="preserve">
+    <value>MAX_VALUE</value>
+  </data>
+  <data name="UC_ConnectionTest.grdColMinValue.Caption" xml:space="preserve">
+    <value>MIN_VALUE</value>
+  </data>
+  <data name="UC_ConnectionTest.grdColNote.Caption" xml:space="preserve">
+    <value>NOTE</value>
+  </data>
+  <data name="UC_ConnectionTest.grdColVallue.Caption" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="UC_ConnectionTest.grdColValueNormal.Caption" xml:space="preserve">
+    <value>Normal value</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn1.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn10.Caption" xml:space="preserve">
+    <value>Sampling room</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn11.Caption" xml:space="preserve">
+    <value>Time created</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn12.Caption" xml:space="preserve">
+    <value>Approval_time</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn13.Caption" xml:space="preserve">
+    <value>Time correction</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn14.Caption" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn15.Caption" xml:space="preserve">
+    <value>Appointed rooms</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn16.Caption" xml:space="preserve">
+    <value>gridColumn16</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn17.Caption" xml:space="preserve">
+    <value>Birthday</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn18.Caption" xml:space="preserve">
+    <value>#</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn19.Caption" xml:space="preserve">
+    <value>Contract Code</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn2.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn20.Caption" xml:space="preserve">
+    <value>Overall results</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn21.Caption" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn22.Caption" xml:space="preserve">
+    <value>Sampling time</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn23.Caption" xml:space="preserve">
+    <value>Tg returns the results</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn24.Caption" xml:space="preserve">
+    <value>Sampling unit</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn25.Caption" xml:space="preserve">
+    <value>Approval name</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn26.Caption" xml:space="preserve">
+    <value>Sample name</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn27.Caption" xml:space="preserve">
+    <value>Signing status</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn3.Caption" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn4.Caption" xml:space="preserve">
+    <value>Print Barcode</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn5.Caption" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn6.Caption" xml:space="preserve">
+    <value>Code requirements</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn7.Caption" xml:space="preserve">
+    <value>Patient Code</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn8.Caption" xml:space="preserve">
+    <value>Patient's</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn9.Caption" xml:space="preserve">
+    <value>Treatment room</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumnBarCode.Caption" xml:space="preserve">
+    <value>Barcode</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumnGenderName.Caption" xml:space="preserve">
+    <value>Sex</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumnMps000244.Caption" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem11.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Request time from to</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem11.Text" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem11.Tooltip" xml:space="preserve">
+    <value>Request time from:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem12.Text" xml:space="preserve">
+    <value>Come:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem16.Text" xml:space="preserve">
+    <value>Note:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem21.Text" xml:space="preserve">
+    <value>Main College:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem23.Text" xml:space="preserve">
+    <value>Secondary College:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem29.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>The person who returns the result</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem29.Text" xml:space="preserve">
+    <value>Payer of results:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem31.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Results day</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem31.Text" xml:space="preserve">
+    <value>Payment date:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem32.Text" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem33.Text" xml:space="preserve">
+    <value>Signer:</value>
+  </data>
+  <data name="UC_ConnectionTest.lblApproveResultError.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="UC_ConnectionTest.lblApproveResultSuccess.Text" xml:space="preserve">
+    <value>0/0</value>
+  </data>
+  <data name="UC_ConnectionTest.lciApproveListSuccess.Text" xml:space="preserve">
+    <value>Processed:</value>
+  </data>
+  <data name="UC_ConnectionTest.lciApproveResultError.Text" xml:space="preserve">
+    <value>Error:</value>
+  </data>
+  <data name="UC_ConnectionTest.lciConfigMachine.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Set the option to force input to the return machine</value>
+  </data>
+  <data name="UC_ConnectionTest.lciConfigMachine.Text" xml:space="preserve">
+    <value>Warning on entering XN machine:</value>
+  </data>
+  <data name="UC_ConnectionTest.lciDob.Text" xml:space="preserve">
+    <value>Date of birth:</value>
+  </data>
+  <data name="UC_ConnectionTest.lciGenderName.Text" xml:space="preserve">
+    <value>Sex:</value>
+  </data>
+  <data name="UC_ConnectionTest.LciGroupEmrDocument.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UC_ConnectionTest.lciNewestBarcode.Text" xml:space="preserve">
+    <value>Newest barcode:</value>
+  </data>
+  <data name="UC_ConnectionTest.lciPatientCode.Text" xml:space="preserve">
+    <value>Patient code:</value>
+  </data>
+  <data name="UC_ConnectionTest.lciPatientName.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="UC_ConnectionTest.lciPrintNow.Text" xml:space="preserve">
+    <value>Print:</value>
+  </data>
+  <data name="UC_ConnectionTest.lciPrintPreview.Text" xml:space="preserve">
+    <value>Print preview:</value>
+  </data>
+  <data name="UC_ConnectionTest.lciResultTimeFrom.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Time to return results from to</value>
+  </data>
+  <data name="UC_ConnectionTest.lciResultTimeFrom.Text" xml:space="preserve">
+    <value>Paying results:</value>
+  </data>
+  <data name="UC_ConnectionTest.lciReturnResult.Text" xml:space="preserve">
+    <value>Return results:</value>
+  </data>
+  <data name="UC_ConnectionTest.lciSign.Text" xml:space="preserve">
+    <value>Sign:</value>
+  </data>
+  <data name="UC_ConnectionTest.lciSignApproveList.Text" xml:space="preserve">
+    <value>Sign:</value>
+  </data>
+  <data name="UC_ConnectionTest.repositoryItemCheckRerun_Disable.Caption" xml:space="preserve">
+    <value>Run the test again</value>
+  </data>
+  <data name="UC_ConnectionTest.repositoryItemCheckRerun_Enable.Caption" xml:space="preserve">
+    <value>Run the test again</value>
+  </data>
+  <data name="UC_ConnectionTest.repositoryItemPictureEdit2.NullText" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UC_ConnectionTest.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Patient Code (F2)</value>
+  </data>
+  <data name="UC_ConnectionTest.txtSearchKey.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Keyword search</value>
+  </data>
+  <data name="UC_ConnectionTest.txtSERVICE_REQ_CODE__EXACT.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Intruction code (F1)</value>
+  </data>
+  <data name="UC_ConnectionTest.treeListColDescription.Caption" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="UC_ConnectionTest.treeListColResultDescription.Caption" xml:space="preserve">
+    <value>Describe</value>
+  </data>
+  <data name="UC_ConnectionTest.treeListColumn_ReRun.Caption" xml:space="preserve">
+    <value>Run again XN</value>
+  </data>
+  <data name="UC_ConnectionTest.treeListColumn_ReRun.ToolTip" xml:space="preserve">
+    <value>Run the test again</value>
+  </data>
+  <data name="UC_ConnectionTest.treeListColumn1.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UC_ConnectionTest.treeListColumn3.Caption" xml:space="preserve">
+    <value>Cash Paying Machine</value>
+  </data>
+  <data name="UC_ConnectionTest.treeListColumn3.ToolTip" xml:space="preserve">
+    <value>Result machine</value>
+  </data>
+  <data name="UC_ConnectionTest.treeListColumn6.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UC_ConnectionTest.treeListColumnButtonForNote.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UC_ConnectionTest.treeListColumnForButtonResultDesciption.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UC_ConnectionTest.treeListColumnForOldValue.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UC_ConnectionTest.treeListModifier.Caption" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="UC_ConnectionTest.treeListOldValue.Caption" xml:space="preserve">
+    <value>Prehistoric value</value>
+  </data>
+  <data name="UC_ConnectionTest.treeListSereServTein.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Enter the search string...</value>
+  </data>
+  <data name="UC_ConnectionTest.xtraTabDocumentReq.Text" xml:space="preserve">
+    <value>Specify votes</value>
+  </data>
+  <data name="UC_ConnectionTest.xtraTabDocumentResult.Text" xml:space="preserve">
+    <value>Result sheet</value>
+  </data>
+</root>

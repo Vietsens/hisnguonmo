@@ -1,0 +1,720 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmTransactionBillTwoInOne.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.barBtnSaveAndSign.Caption" xml:space="preserve">
+    <value>Register (Ctrl A)</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.barButtonItem1.Caption" xml:space="preserve">
+    <value>Find (Ctrl + F)</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.bbtnRCConfigPrinter.Caption" xml:space="preserve">
+    <value>Printer (Ctrl C)</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.bbtnRCNew.Caption" xml:space="preserve">
+    <value>New (Ctrl N)</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.bbtnRCSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.bbtnRCSavePrint.Caption" xml:space="preserve">
+    <value>Save Print (Ctrl + Shift + S)</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.btnCancel.Text" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.btnConfigPos.ToolTip" xml:space="preserve">
+    <value>POS device connection configuration</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.btnConfigPrinter.Text" xml:space="preserve">
+    <value>Printer (Ctrl C)</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.btnNew.Text" xml:space="preserve">
+    <value>New (Ctrl N)</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.btnOk.Text" xml:space="preserve">
+    <value>Agree</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.btnPuLyDoDichVu.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.btnPuLyDoVienPhi.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.btnPuMoTaDichVu.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.btnPuMoTaVienPhi.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.BtnSaveAndSign.Text" xml:space="preserve">
+    <value>Deposit (Ctrl A)</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.btnSavePrint.Text" xml:space="preserve">
+    <value>Save Print (Ctrl + Shift + S)</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.btnSearch.Text" xml:space="preserve">
+    <value>Find (Ctrl + F)</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.checkNotInvoice.Properties.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.checkNotReciept.Properties.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.chkBuyerInfo.Properties.Caption" xml:space="preserve">
+    <value>Personal information</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.chkOrganizationInfo.Properties.Caption" xml:space="preserve">
+    <value>Agency information</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.ddBtnPrint.Text" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_Fund_Amount.Caption" xml:space="preserve">
+    <value>Amount of money</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_Fund_FundCode.Caption" xml:space="preserve">
+    <value>Payment fund code</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_Fund_FundId.Caption" xml:space="preserve">
+    <value>gridColumn1</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_Fund_FundName.Caption" xml:space="preserve">
+    <value>Name of payment fund</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_Fund_Limit.Caption" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_Fund_Stt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_RecieptBillFund_Amount.Caption" xml:space="preserve">
+    <value>Amount of money</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_RecieptBillFund_Delete.Caption" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_RecieptBillFund_FundCode.Caption" xml:space="preserve">
+    <value>Payment fund code</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_RecieptBillFund_FundName.Caption" xml:space="preserve">
+    <value>Payment Fund Name</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_RecieptBillFund_Stt.Caption" xml:space="preserve">
+    <value>Ord.</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_Transaction_AccountBookCode.Caption" xml:space="preserve">
+    <value>Book code</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_Transaction_AccountBookName.Caption" xml:space="preserve">
+    <value>Book name</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_Transaction_Amount.Caption" xml:space="preserve">
+    <value>Amount of money</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_Transaction_CashierRoomName.Caption" xml:space="preserve">
+    <value>Cashier's</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_Transaction_CashierUsername.Caption" xml:space="preserve">
+    <value>Trading staff</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_Transaction_CreateTime.Caption" xml:space="preserve">
+    <value>Created time</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_Transaction_Creator.Caption" xml:space="preserve">
+    <value>creators</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_Transaction_Lock.Caption" xml:space="preserve">
+    <value>Lock / Unlock</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_Transaction_Modifier.Caption" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_Transaction_ModifyTime.Caption" xml:space="preserve">
+    <value>Modified time</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_Transaction_NumOrder.Caption" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_Transaction_PayForm.Caption" xml:space="preserve">
+    <value>Method</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn_Transaction_TransactionCode.Caption" xml:space="preserve">
+    <value>Trading code</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.gridColumn1.Caption" xml:space="preserve">
+    <value>Fund's ID:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.labelControl1.Text" xml:space="preserve">
+    <value>D</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.labelControl2.Text" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.labelControl3.Text" xml:space="preserve">
+    <value>D</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.labelControl4.Text" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutCanThu.Text" xml:space="preserve">
+    <value>Need to collect:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControl6.Text" xml:space="preserve">
+    <value>layoutControl6</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControl7.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlBuyerInfoTab1.Text" xml:space="preserve">
+    <value>layoutControl8</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlBuyerInfoTab2.Text" xml:space="preserve">
+    <value>layoutControl8</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlGroupInvoice.Text" xml:space="preserve">
+    <value>Service bill</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlGroupReciept.Text" xml:space="preserve">
+    <value>General bill</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem18.Text" xml:space="preserve">
+    <value>Patient code:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem19.Text" xml:space="preserve">
+    <value>Subject:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem20.Text" xml:space="preserve">
+    <value>Patient name:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem21.Text" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem22.Text" xml:space="preserve">
+    <value>Date of birth:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem23.Text" xml:space="preserve">
+    <value>Sex:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem24.Text" xml:space="preserve">
+    <value>Place of SSC:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem25.Text" xml:space="preserve">
+    <value>Insurance card number:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem26.Text" xml:space="preserve">
+    <value>Word term:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem27.Text" xml:space="preserve">
+    <value>Due date:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem30.Text" xml:space="preserve">
+    <value>No TT:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem36.Text" xml:space="preserve">
+    <value>Total hospital fee:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem37.Text" xml:space="preserve">
+    <value>Fees to be collected:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem38.Text" xml:space="preserve">
+    <value>Total service fee:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem39.Text" xml:space="preserve">
+    <value>Service Receivable:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem40.Text" xml:space="preserve">
+    <value>Total advance:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem41.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Total cost of the patient</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem41.Text" xml:space="preserve">
+    <value>Total cost of NB:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem42.Text" xml:space="preserve">
+    <value>Total discount:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem44.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hospital fee receipt number:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem44.Text" xml:space="preserve">
+    <value>BLVP number:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem45.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Service Receipt Number</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem45.Text" xml:space="preserve">
+    <value>BLDV number:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem50.Text" xml:space="preserve">
+    <value>Form:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem52.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Connect to the bank's payment POS when selecting the payment method as \\Swipe</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem52.Text" xml:space="preserve">
+    <value>POS connection:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem53.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>POS device connection configuration</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem58.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem59.Text" xml:space="preserve">
+    <value>Tax code:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem60.Text" xml:space="preserve">
+    <value>Account number:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem61.Text" xml:space="preserve">
+    <value>Unit:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem62.Text" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem63.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem64.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem65.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem66.Text" xml:space="preserve">
+    <value>Unit:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem67.Text" xml:space="preserve">
+    <value>Tax code:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutControlItem68.Text" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutHienDu.Text" xml:space="preserve">
+    <value>Current remain:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutInvoiceAccountBook.Text" xml:space="preserve">
+    <value>Invoice book:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutInvoiceAmount.Text" xml:space="preserve">
+    <value>Amount of money:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutInvoiceDescription.Text" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutInvoiceDiscountPrice.Text" xml:space="preserve">
+    <value>Discount:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutInvoiceDiscountRatio.Text" xml:space="preserve">
+    <value>Discount (%):</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutInvoicePayForm.Text" xml:space="preserve">
+    <value>Method:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutInvoiceReason.Text" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutInvoiceTongTuDen.Text" xml:space="preserve">
+    <value>Total / From / To:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutRecieptAccountBook.Text" xml:space="preserve">
+    <value>Invoice book:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutRecieptAmount.Text" xml:space="preserve">
+    <value>Amount of money:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutRecieptDescription.Text" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutRecieptDiscountPrice.Text" xml:space="preserve">
+    <value>Discount:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutRecieptDiscountRatio.Text" xml:space="preserve">
+    <value>Discount (%)</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutRecieptPayForm.Text" xml:space="preserve">
+    <value>Method:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutRecieptReason.Text" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.layoutRecieptTongTuDen.Text" xml:space="preserve">
+    <value>General / From / To:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lcgBuyerInfo.Text" xml:space="preserve">
+    <value>Buyer information:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lcgInvoiceGroup.Text" xml:space="preserve">
+    <value>Service bill</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lcgReceiptGroup.Text" xml:space="preserve">
+    <value>Hospital bill</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lcgThongTinVienPhi.Text" xml:space="preserve">
+    <value>Hospital fee information</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciHeinRatio.Text" xml:space="preserve">
+    <value>Benefit level:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciHideHddt.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Not showing e-invoices after saving</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciHideHddt.Text" xml:space="preserve">
+    <value>Do not display phone contract:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciInvoiceAccountBook.Text" xml:space="preserve">
+    <value>Invoice book:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciInvoiceAmount1.Text" xml:space="preserve">
+    <value>Amount of money:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciInvoiceBook.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Service logbook</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciInvoiceBook.Text" xml:space="preserve">
+    <value>BLDV book:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciInvoiceDescription.Text" xml:space="preserve">
+    <value>Describe:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciInvoiceDiscountPrice.Text" xml:space="preserve">
+    <value>Discount:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciInvoiceDiscountRatio.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciInvoiceNumOrder.Text" xml:space="preserve">
+    <value>Some bills:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciInvoiceReason.Text" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciIsAutoRepay.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Autocomplete</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciIsAutoRepay.Text" xml:space="preserve">
+    <value>Automatic H/U :</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciIsKC.Text" xml:space="preserve">
+    <value>There is a transition:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciNotInvoice.Text" xml:space="preserve">
+    <value>No info:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciNotReciept.Text" xml:space="preserve">
+    <value>No info:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciReceiptBook.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hospital fee receipt book</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciReceiptBook.Text" xml:space="preserve">
+    <value>Book of BLVP:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciRecieptAccountBook.Text" xml:space="preserve">
+    <value>Revenue and expenditure book:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciRecieptAmount.Text" xml:space="preserve">
+    <value>Amount of money:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciRecieptDescription.Text" xml:space="preserve">
+    <value>Describe:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciRecieptDiscountPrice.Text" xml:space="preserve">
+    <value>Discount:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciRecieptDiscountRatio.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciRecieptNumOrder.Text" xml:space="preserve">
+    <value>Some bills:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciRecieptReason.Text" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciRepayAccountBook.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Autocomplete book</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciRepayAccountBook.Text" xml:space="preserve">
+    <value>Complete book:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciRepayNumOrder.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Autocomplete voucher number</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciRepayNumOrder.Text" xml:space="preserve">
+    <value>Certificate number:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciRightRoute.Text" xml:space="preserve">
+    <value>Route:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciServiceGroup.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciTongTinHoanThu.Text" xml:space="preserve">
+    <value>Total amount to be refunded:</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciTransactionTime.Text" xml:space="preserve">
+    <value>Trading time</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.navigationFrameBuyerInfo.Text" xml:space="preserve">
+    <value>navigationFrame1</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.radioSGAll.Properties.Caption" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.radioSGCLS.Properties.Caption" xml:space="preserve">
+    <value>CLS fee PT</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.radioSGExam.Properties.Caption" xml:space="preserve">
+    <value>Examination fee</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.radioSGMedicine.Properties.Caption" xml:space="preserve">
+    <value>Medicine fee</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.Text" xml:space="preserve">
+    <value>Pay to two book</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_Amount.Caption" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_DifferentPrice.Caption" xml:space="preserve">
+    <value>Deviant</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_DifferentPrice.Tooltip" xml:space="preserve">
+    <value>Difference</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_Discount.Caption" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_Expend.Caption" xml:space="preserve">
+    <value>Consumption</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_InvoicePrice.Caption" xml:space="preserve">
+    <value>Difference</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_InvoicePrice.Tooltip" xml:space="preserve">
+    <value>Total service fee</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_Price.Caption" xml:space="preserve">
+    <value>Unit price</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_RecieptPrice.Caption" xml:space="preserve">
+    <value>Payment's Cash</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_RecieptPrice.Tooltip" xml:space="preserve">
+    <value>Total hospital fee</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_ServiceCode.Caption" xml:space="preserve">
+    <value>Service code</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_ServiceName.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_ServiceReqCode.Caption" xml:space="preserve">
+    <value>Request code</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_VirTotalHeinPrice.Caption" xml:space="preserve">
+    <value>Co-payment</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_VirTotalPrice.Caption" xml:space="preserve">
+    <value>amount</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.txtFindTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search by treatment code</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search by treatment code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_BILL_FUND__VALID_AMOUNT_GREAT_THAN_ZERO" xml:space="preserve">
+    <value>Amount must be greater than 0!</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_BILL_FUND__VALID_FUND_NOT_FOUND" xml:space="preserve">
+    <value>Must choose payment fund!</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__RIGHT_ROUTE_FALSE" xml:space="preserve">
+    <value>Opposite line</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__RIGHT_ROUTE_TRUE" xml:space="preserve">
+    <value>Right line</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_TWO_IN_ONE__BTN_DROP_DOWN__ITEM_BIEN_LAI_THANH_TOAN" xml:space="preserve">
+    <value>Print regular invoices</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_TWO_IN_ONE__BTN_DROP_DOWN__ITEM_CHI_TIET_THANH_TOAN" xml:space="preserve">
+    <value>Print bill receipt detail</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_TWO_IN_ONE__BTN_DROP_DOWN__ITEM_HOA_DON_THANH_TOAN" xml:space="preserve">
+    <value>Print service invoice</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_TWO_IN_ONE__btnSearch" xml:space="preserve">
+    <value>Search(Ctrl F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_TWO_IN_ONE__layoutControlItem18" xml:space="preserve">
+    <value>Patient Code:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_TWO_IN_ONE__layoutControlItem19" xml:space="preserve">
+    <value>Patient Type:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_TWO_IN_ONE__layoutControlItem20" xml:space="preserve">
+    <value>Patient Name:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_TWO_IN_ONE__layoutControlItem21" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_TWO_IN_ONE__layoutControlItem22" xml:space="preserve">
+    <value>BirthDay:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_TWO_IN_ONE__layoutControlItem23" xml:space="preserve">
+    <value>Gender:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_TWO_IN_ONE__layoutControlItem24" xml:space="preserve">
+    <value>Medi Org Name:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_TWO_IN_ONE__layoutControlItem25" xml:space="preserve">
+    <value>Hein Card:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_TWO_IN_ONE__layoutControlItem26" xml:space="preserve">
+    <value>Card From:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_TWO_IN_ONE__layoutControlItem27" xml:space="preserve">
+    <value>Card To:</value>
+  </data>
+</root>

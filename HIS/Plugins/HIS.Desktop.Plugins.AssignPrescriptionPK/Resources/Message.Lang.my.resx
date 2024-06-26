@@ -1,0 +1,626 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="_KhongDuKhaDungTrongKho" xml:space="preserve">
+    <value>စတော့တွင် မရရှိနိုင်ပါ။</value>
+  </data>
+  <data name="_KhongNhapSoLuongKe" xml:space="preserve">
+    <value>ဂျုံ ပမာဏကို မထည့်ပါနဲ့။</value>
+  </data>
+  <data name="BanCoMuonNhapThongTinKetThucDieuTriKhong" xml:space="preserve">
+    <value>ကုသမှုရပ်စဲခြင်းဆိုင်ရာ အချက်အလက်ကို သင်ထည့်သွင်းလိုပါသလား။</value>
+  </data>
+  <data name="BanCoMuonTaoYeuCauKhong" xml:space="preserve">
+    <value>ပဋိဇီဝဆေးများအတွက် တောင်းဆိုမှုပုံစံတစ်ခု ဖန်တီးရန် လိုအပ်သည်- {0}။</value>
+  </data>
+  <data name="BanCoMuonTiepTuc" xml:space="preserve">
+    <value>{0} {1}။</value>
+  </data>
+  <data name="BanDangChonKeDonChoNBenhNhanBanCoChacMuonThucHien" xml:space="preserve">
+    <value>သင်သည် လူနာ {0} ဦးကို ညွှန်းရန် ရွေးချယ်နေသည်။</value>
+  </data>
+  <data name="BenhNhanChuaSuDungHetCacThuocSau" xml:space="preserve">
+    <value>လူနာ၏ယခင်စစ်ဆေးမှု / ကုသမှု၏ဆေးမှတ်တမ်းကုဒ်များနှင့်အတူ</value>
+  </data>
+  <data name="BenhNhanChuaThanhToanTienCongKham" xml:space="preserve">
+    <value>လူနာက စာမေးပွဲကြေး မပေးရသေးဘူး။</value>
+  </data>
+  <data name="BenhNhanChuongTrinhChuaDuocTaoVoBenhAn" xml:space="preserve">
+    <value>ပရိုဂရမ်လူနာသည် Case Case ကို မဖန်တီးရသေးပါ။</value>
+  </data>
+  <data name="BenhNhanChuongTrinhChuaDuocTaoVoBenhAnBanCoMuonTaoVBDHayKhong" xml:space="preserve">
+    <value>ပရိုဂရမ်ရှိ လူနာသည် Case Case မဖန်တီးရသေးပါ။</value>
+  </data>
+  <data name="BenhNhanDangNoTienKhogChoPhepChiDinhDV" xml:space="preserve">
+    <value>လူနာသည် အကြွေးတင်နေသဖြင့် ဆေးစာခွင့်မရှိပါ။</value>
+  </data>
+  <data name="BenhNhanDangThieuVienPhi" xml:space="preserve">
+    <value>လူနာသည် ဆေးရုံစရိတ် ({0} VND) ပျက်နေသည်။</value>
+  </data>
+  <data name="BenhNhanDangThieuVienPhi_0D" xml:space="preserve">
+    <value>လူနာသည် ဆေးရုံစရိတ် ({0} VND) ပျက်နေသည်။</value>
+  </data>
+  <data name="BenhNhanDiKamSomTruocXNgay" xml:space="preserve">
+    <value>လူနာသည် {0} ရက်မတိုင်မီ ဆရာဝန်၏ရုံးခန်းသို့ သွားခဲ့သည်။</value>
+  </data>
+  <data name="BenhNhanDiUngVoiThuocXBanCOmuonTiepTuc" xml:space="preserve">
+    <value>လူနာသည် ဆေး {0} နှင့် မတည့်ပါ။</value>
+  </data>
+  <data name="BenhNhanNghiNgoDiUngVoiThuocXBanCoMuonTiepTuc" xml:space="preserve">
+    <value>ဆေးဓာတ်မတည့်မှုသံသယသတိပေးချက်-</value>
+  </data>
+  <data name="BenhNhanNoiTruChuaDuocChiDinhDichVuGiuong" xml:space="preserve">
+    <value>အိပ်ယာဝန်ဆောင်မှုကို ပေးအပ်ခြင်းမပြုသော အတွင်းလူနာ</value>
+  </data>
+  <data name="BenhNhanSapHetHanTheBHYT_SoNgayThuocToiDa_BanCoMuonTiepTuc" xml:space="preserve">
+    <value>လူနာ၏ကျန်းမာရေးအာမခံကတ်သည် သက်တမ်းကုန်ဆုံးတော့မည် (အမြင့်ဆုံးဆေးရက် {0})။</value>
+  </data>
+  <data name="CacBenhNhanSaukeDonThatBai" xml:space="preserve">
+    <value>အောက်ဖော်ပြပါ လူနာများသည် ဆေးညွှန်းများ မအောင်မြင်ပါ။</value>
+  </data>
+  <data name="CacPhieuChiDinhSauChuaKetThucKhongChoPhepKetThuc" xml:space="preserve">
+    <value>အောက်ပါအမည်စာရင်းများကို ပိတ်မည်မဟုတ်ပါ- {0}</value>
+  </data>
+  <data name="CacThuocCoCUngHoatChat_BanCoMuonTiepTuc" xml:space="preserve">
+    <value>တူညီသောပါဝင်ပစ္စည်းပါသော ဆေးဝါးများ- ({0}) ဆက်လုပ်လိုပါသလား။</value>
+  </data>
+  <data name="CacThuocCoCungMaATC_BanCoMuonTiepTuc" xml:space="preserve">
+    <value>ပွားနေသော ဆေးအုပ်စု- 
+	{0}</value>
+  </data>
+	<data name="CacThuocCoCungMaGroupATC_BanCoMuonTiepTuc" xml:space="preserve">
+    <value>ပွားနေသော ဆေးအုပ်စု- 
+	{0}</value>
+  </data>
+  <data name="CacThuocTrungDuocTinh_BanCoMuonTiepTuc" xml:space="preserve">
+    <value>တူညီသောဆေး- {0}{1}{2} ဆက်လုပ်လိုပါသလား။</value>
+  </data>
+  <data name="CanhBaoBenhNhanDaKeThuocTrongNgay" xml:space="preserve">
+    <value>လူနာကို တစ်နေ့တာအတွက် ဆေးပေးတယ်။</value>
+  </data>
+  <data name="CanhBaoChongChiDinh" xml:space="preserve">
+    <value>တားမြစ်ဆေးသတိပေးချက်</value>
+  </data>
+  <data name="CanhBaoDiUngThuoc" xml:space="preserve">
+    <value>ဆေးဝါးဓာတ်မတည့်မှု သတိပေးချက်</value>
+  </data>
+  <data name="CanhBaoNgayHenLaChuNhat" xml:space="preserve">
+    <value>လက်ရှိချိန်းဆိုထားသည့်ရက်သည် တနင်္ဂနွေနေ့ဖြစ်သည်၊ ဆက်လက်လုပ်ဆောင်လိုပါသလား။</value>
+  </data>
+  <data name="CanhBaoNgayHenLaThuBay" xml:space="preserve">
+    <value>လက်ရှိချိန်းဆိုထားသည့်ရက်သည် စနေနေ့ဖြစ်သည်၊ ဆက်လက်လုပ်ဆောင်လိုပါသလား။</value>
+  </data>
+  <data name="CanhBaoSaiThongTinTheBHYT" xml:space="preserve">
+    <value>လူနာတွင် ကျန်းမာရေးအာမခံအချက်အလက်များ မှားယွင်းနေသဖြင့် ပြန်လည်စစ်ဆေးရန် လိုအပ်ပါသည်။</value>
+  </data>
+  <data name="CanhBaoThoiGianHenKhamSoVoiThoiGianKetThucDieuTri" xml:space="preserve">
+    <value>ချိန်းဆိုချိန်သည် ကုသမှုပြီးဆုံးချိန်ထက် ပိုနေရပါမည်။</value>
+  </data>
+  <data name="CanhBaoThuocKeVuotQuaSoNGaySuDung" xml:space="preserve">
+    <value>တက်ကြွသောပါဝင်ပစ္စည်း {1} ပါသော ဆေးဝါး {0} ကို အသုံးပြုသည့်ရက်အရေအတွက်ထက် ကျော်လွန်ပြီး {2} တွင် သတ်မှတ်ခဲ့သည်။</value>
+  </data>
+  <data name="CapNhatThatBai_KhongDuSoLuongKhaDung" xml:space="preserve">
+    <value>အပ်ဒိတ် မအောင်မြင်ပါ။</value>
+  </data>
+  <data name="ChanChongChiDinh" xml:space="preserve">
+    <value>တားမြစ်တားမြစ်ချက်များ-</value>
+  </data>
+  <data name="ChuaLinhHetThuoc" xml:space="preserve">
+    <value>ဆေးအားလုံး မရသေးပါ။</value>
+  </data>
+  <data name="ChuaNhapThoiGianHenKham" xml:space="preserve">
+    <value>သင်ချိန်းဆိုထားသည့်အချိန်ကို မရွေးချယ်ရသေးပါ၊ ကျေးဇူးပြု၍ ထပ်မံစစ်ဆေးပါ။</value>
+  </data>
+  <data name="ChuaNhapThongTinChuyenVien" xml:space="preserve">
+    <value>လွှဲပြောင်းမှုအချက်အလက်အပြည့်အစုံကို သင်မဖြည့်ရသေးပါ၊ ကျေးဇူးပြု၍ ထပ်မံစစ်ဆေးပါ။</value>
+  </data>
+  <data name="ChuaNhapThongTinTuVong" xml:space="preserve">
+    <value>သေဆုံးခြင်းဆိုင်ရာ အချက်အလက်အပြည့်အစုံကို သင်မဖြည့်ရသေးပါ၊ ထပ်မံစစ်ဆေးပါ။</value>
+  </data>
+  <data name="ChuaThucHienXongDichVuCLS" xml:space="preserve">
+    <value>CLS ဝန်ဆောင်မှုများ မပြီးသေးသော လူနာများသည် ဆေးစာများကို ခွင့်မပြုပါ။</value>
+  </data>
+  <data name="ChucNangDangPhatTrienVuiLongThuLaiSau" xml:space="preserve">
+    <value>လုပ်ဆောင်ချက်ကို လက်ရှိဗားရှင်းတွင် မပံ့ပိုးပါ၊ ကျေးဇူးပြု၍ နောက်မှ ထပ်ကြိုးစားပါ။</value>
+  </data>
+  <data name="DanhSachThuocDaKeDaCoThuocTheoXKhongTheBoSungThemThuocYZ" xml:space="preserve">
+    <value>သတ်မှတ်ထားသော ဆေးဝါး/ပစ္စည်းများစာရင်းတွင် ဆေးဝါး/ပစ္စည်းများ ({0}) ပါရှိပြီး {1} အရ၊ {3} အရ ဆေးဝါး/ပစ္စည်းများ ထပ်မံထည့်၍မရပါ {2}</value>
+  </data>
+  <data name="DanhSachThuocVatTuTonTai2KhoXuat" xml:space="preserve">
+    <value>သိုလှောင်ရုံ 2 ခုတွင် ဆေးဝါး/ပစ္စည်းများစာရင်း ရှိပါသည်။</value>
+  </data>
+  <data name="DichVuTrongCauHinhThuocCHuaDuocCauHinhChanDoanICD" xml:space="preserve">
+    <value>{0} {1} ဆေးဝါးဖွဲ့စည်းပုံရှိ ဝန်ဆောင်မှုသည် ရောဂါရှာဖွေရေးပုံစံ (ICD) မပြုလုပ်ရသေးပါ</value>
+  </data>
+  <data name="DichVuTrongCauHinhThuocCHuaDuocCauHinhChanDoanICDBanCoMuonTiepTuc" xml:space="preserve">
+    <value>{0} {1} ဆေးပရိုဖိုင်ရှိ ဝန်ဆောင်မှုကို ရောဂါရှာဖွေရေး (ICD) အတွက် ပြင်ဆင်သတ်မှတ်ထားခြင်းမရှိပါ။</value>
+  </data>
+  <data name="DonThuocCoCacThuocThuocNhomKhangSinhBanCOMuonTiepTuc" xml:space="preserve">
+    <value>ပဋိဇီဝဆေးအုပ်စုတွင် ပါဝင်သောဆေးများ- {0}။</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonBoSung" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong" xml:space="preserve">
+    <value>ဒေတာကို ဖျက်လိုသည်မှာ သေချာပါသလား။</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong" xml:space="preserve">
+    <value>ဒေတာကို ဖျက်လိုပါသလား။</value>
+  </data>
+  <data name="HoSoDangNoTienKhongChoPhepKeDon" xml:space="preserve">
+    <value>ကြွေးမြီမှတ်တမ်းများတွင် ဆေးစာများကို ခွင့်မပြုပါ။</value>
+  </data>
+  <data name="IcdKhongDung" xml:space="preserve">
+    <value>သင်သည် မှားယွင်းသော ရောဂါရှာဖွေရေးကုဒ်ကို ထည့်သွင်းခဲ့သည်။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_ICD__LCI_CHECK_EDIT_ICD" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_ICD__LCI_ICD_MAIN" xml:space="preserve">
+    <value>ပင်မကောလိပ်-</value>
+  </data>
+  <data name="KhongChonPhongLamViec" xml:space="preserve">
+    <value>အလုပ်လုပ်သော ဂိုဒေါင်ကို မရွေးချယ်ပါနှင့်</value>
+  </data>
+  <data name="KhongCoThuocVatTuNaoConDuSoluongKhaDungTrongKho" xml:space="preserve">
+    <value>ဆေးမတွေ့ပါ - ဆေးစာအတွက် လက်ကျန်ရှိပစ္စည်းများ</value>
+  </data>
+  <data name="KhongTimThayChinhSachGiaCuaDichVu" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအတွက် သင့်လျော်သော ငွေပေးချေမှု အရာဝတ္ထုကို ရှာမတွေ့ပါ။</value>
+  </data>
+  <data name="KhongTimThayIcdTuongUngVoiCacMaSau" xml:space="preserve">
+    <value>ရောဂါကုဒ် {0} စာရင်းတွင် မပါဝင်ပါ၊ ကျေးဇူးပြု၍ ထပ်မံစစ်ဆေးပါ။</value>
+  </data>
+  <data name="KhongTimThayThongTinICD" xml:space="preserve">
+    <value>ICD အချက်အလက်ကို ရှာမတွေ့ပါ။</value>
+  </data>
+  <data name="KhongTimThayThuocVatTuDuocCauHinhChanDoanICD" xml:space="preserve">
+    <value>မည်သည့်ဆေးဝါးမျှ မတွေ့ပါ၊ ပြုပြင်မထားသော ICD ရောဂါရှာဖွေရေး အထောက်အပံ့များ</value>
+  </data>
+  <data name="MabenhPhuDaDuocSuDungChoMaBenhChinh" xml:space="preserve">
+    <value>နံပါတ်ခွဲကုဒ် {0} ကို အဓိကကုဒ်အတွက် အသုံးပြုထားပြီး၊ ကျေးဇူးပြု၍ ထပ်မံစစ်ဆေးပါ။</value>
+  </data>
+  <data name="NgayChuaCoToDieuTri" xml:space="preserve">
+    <value>ရက်စွဲ {0} ကုသမှုစာရွက်မရှိပါ။</value>
+  </data>
+  <data name="NgayCoNhieuHon1ToDieuTri" xml:space="preserve">
+    <value>ရက်စွဲ {0} တွင် ကုသမှုစာရွက် 1 ခုထက်ပိုပါသည်။</value>
+  </data>
+  <data name="NgayKhongNamTrongNgaykeDon" xml:space="preserve">
+    <value>{0} ရက်စွဲပါ ကုသမှုစာရွက်သည် ဆေးညွှန်းရက်စွဲတွင် မရှိပါ။</value>
+  </data>
+  <data name="NhapQuaKyTuBenhPhu" xml:space="preserve">
+    <value>စာလုံးခွဲကုဒ် သို့မဟုတ် စာလုံးခွဲအမည်သည် ရှည်လွန်းသည် (အက္ခရာ 500 လုံး)</value>
+  </data>
+  <data name="PhongKhamCoSoLuongKhamVuotSoLuotChoPhep" xml:space="preserve">
+    <value>ဆေးခန်းတွင် ခွင့်ပြုထားသည်ထက် ရက်ချိန်းပိုများသည်- {0}။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__AcinInteractive__OverGrade" xml:space="preserve">
+    <value>တက်ကြွသောပါဝင်ပစ္စည်း {0} ({1}) သည် တက်ကြွသောပါဝင်ပစ္စည်း {2} ({3}) နှင့် ဓါတ်ပြုပါသည်။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__BanCoMuonBoSungKhongNeuCoVuiLongNhapLyDo" xml:space="preserve">
+    <value>ထည့်လိုပါသလား။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__BenhNhanDoiTuongTTBhytBatBuocPhaiNhapDuongDung" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံရှိသော လူနာများသည် ဆေးဝါးများ ညွှန်ကြားရာတွင် စီမံအုပ်ချုပ်မှု လမ်းကြောင်းသို့ ဝင်ရောက်ရန် လိုအပ်ပါသည်။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__BuoiChieu" xml:space="preserve">
+    <value>နေ့လည်</value>
+  </data>
+  <data name="Plugin_AssignPrescription__BuoiSang" xml:space="preserve">
+    <value>မနက်ခင်း</value>
+  </data>
+  <data name="Plugin_AssignPrescription__BuoiToi" xml:space="preserve">
+    <value>ည</value>
+  </data>
+  <data name="Plugin_AssignPrescription__BuoiTrua" xml:space="preserve">
+    <value>နေ့လည်</value>
+  </data>
+  <data name="Plugin_AssignPrescription__CanhBaoDaKeTrongNgay" xml:space="preserve">
+    <value>တစ်နေ့တာအတွက် အမိန့်ပေးတယ်။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__CanhBaoThuocDaKeTrongNgay" xml:space="preserve">
+    <value>တစ်နေ့တာအတွက် သတ်မှတ်ထားသော ဆေးဝါးများ</value>
+  </data>
+  <data name="Plugin_AssignPrescription__CanhBaoVatTuDaKeTrongNgay" xml:space="preserve">
+    <value>တစ်နေ့တာအတွက် ပစ္စည်းတွေ မှာထားတာ</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Chieu" xml:space="preserve">
+    <value>အတိုင်းအတာ {0} {1}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ChuaChonNgayChiDinh" xml:space="preserve">
+    <value>သတ်မှတ်ထားသောရက်စွဲကို မရွေးချယ်ရသေးပါ။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__DoiTuongBHYTBatBuocPhaiNhapHDSD" xml:space="preserve">
+    <value>ဆေးဝါးအတွက် အသုံးပြုရန် ညွှန်ကြားချက်များ ထည့်သွင်းရန် လိုအပ်သည်။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__HDSDVuotQuaKyTu" xml:space="preserve">
+    <value>အသုံးပြုရန် ညွှန်ကြားချက်များသည် ခွင့်ပြုထားသော အရှည်ထက် ကျော်လွန်ပါသည်။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__KhongCoDoiTuongThanhToan" xml:space="preserve">
+    <value>ငွေပေးသူကို မရွေးချယ်ပါနှင့်</value>
+  </data>
+  <data name="Plugin_AssignPrescription__KhongNhapSoLuong" xml:space="preserve">
+    <value>ပမာဏ မထည့်ပါနဲ့။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__KhongThuocNhomThuoc" xml:space="preserve">
+    <value>{0} သည် ဆေးအမျိုးအစားနှင့် မသက်ဆိုင်ပါ။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__KhongTimThayDoiTuongThanhToanTrongThoiGianYLenh" xml:space="preserve">
+    <value>အရာဝတ္ထုကို ရှာမတွေ့ပါ၊ အကူအညီအတွက် စနစ်စီမံခန့်ခွဲသူကို ဆက်သွယ်ပါ။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__KhongTimThayIcdTuongUngVoiCacMaSau" xml:space="preserve">
+    <value>အောက်ပါ ICD ကုဒ် မရှိပါ သို့မဟုတ် ဖော်မတ်မှားယွင်းနေသည်- {0}။ ဆော့ဖ်ဝဲလ်သည် ICD ကုဒ်များစာရင်းကို ပိုင်းခြားထားသော semicolon တစ်ခုကိုသာ လက်ခံသည်။ ထပ်မံစစ်ဆေးပါ။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Message__VuotQuaSoLuongKhaDungTrongKho" xml:space="preserve">
+    <value>ရနိုင်သောပမာဏထက်ကျော်လွန်သည် သို့မဟုတ် စတော့တွင်မပါဝင်ပါ။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Message__VuotQuaSoLuongKhaDungTrongKho__CoMuonTiepTuc" xml:space="preserve">
+    <value>ရနိုင်သောပမာဏထက်ကျော်လွန်သည် သို့မဟုတ် စတော့တွင်မပါဝင်ပါ။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__NgayChiDinhTuLonHonNgayChiDinhDen" xml:space="preserve">
+    <value>သတ်မှတ်ထားသောရက်စွဲသည် ဆိုက်ရောက်မည့်ရက်ထက် မပိုနိုင်ပါ။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__NgayDuTruKhongDuocNhoHonThoiGianChiDinh" xml:space="preserve">
+    <value>ခန့်မှန်းရက်စွဲသည် သတ်မှတ်ထားသည့်အချိန်ထက် မနည်းသင့်ပါ။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__NgayUong" xml:space="preserve">
+    <value>ရက်စွဲ {0}{1} {2} ပိုင်း {3} ကြိမ်၊</value>
+  </data>
+  <data name="Plugin_AssignPrescription__NgayUongTemp2" xml:space="preserve">
+    <value>ရက်စွဲ {0}{1} {2} {3} ကြိမ်</value>
+  </data>
+  <data name="Plugin_AssignPrescription__NgayUongTemp3" xml:space="preserve">
+    <value>{0} {1}/အကြိမ် * {2} ကြိမ်/ရက်</value>
+  </data>
+  <data name="Plugin_AssignPrescription__NgayUongTemp4" xml:space="preserve">
+    <value>{0}{1} ရက်။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__NgayXVienBuoiYZ" xml:space="preserve">
+    <value>ရက်စွဲ {0}{1} {2} {3}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__PopupMenu_HuyPhaTruyen" xml:space="preserve">
+    <value>ဂီယာအဆင့်ကို ပယ်ဖျက်ပါ။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__PopupMenu_LoaiHaoPhi" xml:space="preserve">
+    <value>အိပ်ယာအတွက် ပိုက်ဆံကုန်မယ်။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__PopupMenu_PhaTruyenCungNhau" xml:space="preserve">
+    <value>ပြုတ်ရည်တို့ အတူတူပါပဲ။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__PopupMenu_SuaSoNgay" xml:space="preserve">
+    <value>ရက်အရေအတွက်ကို တည်းဖြတ်ပါ။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Sang" xml:space="preserve">
+    <value>တောက်ပသော {0} {1}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__SoLuongXuatLonHonSpoLuongKhadungTrongKho" xml:space="preserve">
+    <value>ဆန်စပါး အရေအတွက်သည် စတော့တွင် ရနိုင်သော ပစ္စည်းထက် ကျော်လွန်နေပါသည်။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__SoTienDaKeChoBHYTDaVuotquaMucGioiHan" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံအတွက် ဖော်ပြထားသည့် {0} ပမာဏသည် ကန့်သတ်ချက်ထက်ကျော်လွန်နေပါသည် {1}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__SuaDonThuocDuLieuTruyenVaoKhongHopLe" xml:space="preserve">
+    <value>မမှန်ကန်သော ဆေးညွှန်းဒေတာကို ပြင်နေသည်၊ အကူအညီအတွက် ကျေးဇူးပြု၍ စနစ်စီမံခန့်ခွဲသူကို ဆက်သွယ်ပါ။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThongBaoTatForm" xml:space="preserve">
+    <value>သင့်တွင် ဆေးဝါး/ပစ္စည်းများကို ရွေးချယ်ထားသော်လည်း မသိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Thuoc" xml:space="preserve">
+    <value>မူးယစ်ဆေးဝါး {0}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocDaChonTrongKhoKhongDuKe_BanComuonKeThuocNgoaiKho" xml:space="preserve">
+    <value>စတော့တွင်ရှိသော တူညီသောတက်ကြွပါဝင်ပစ္စည်းပါသော အခြားဆေးများနှင့် ညွှန်းရန်မလုံလောက်ပါ။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocDaduocKe" xml:space="preserve">
+    <value>ဆေးညွှန်းပြီးပြီ၊ ဆက်လုပ်ချင်နေတာ သေချာလား။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocDaduocKeVaoDanhSachThuocChobenNhanBanCoMuonChuyenSangBNKhac" xml:space="preserve">
+    <value>ဆေးသည် လူနာအတွက် စောင့်ဆိုင်းစာရင်းတွင် ရှိပြီး၊ အခြားလူနာထံ လွှဲပြောင်းလိုပါသလား။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocKeSoLuongVuotQuaSoLuongCanhBaoTonKho" xml:space="preserve">
+    <value>ဆေးဝါး {0} ညွှန်းကိန်း {1} သည် စာရင်းသတိပေးချက် ပမာဏထက် ကျော်လွန်နေပါသည်။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocKhongCoHoatChat" xml:space="preserve">
+    <value>တက်ကြွသောပါဝင်ပစ္စည်းများမပါဘဲ မူးယစ်ဆေးဝါး {0}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocKhongCoTrongKho" xml:space="preserve">
+    <value>ဆေးမကျန်တော့ဘူး။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocTuongtacVoiThuocNhungVanKeDo" xml:space="preserve">
+    <value>မူးယစ်ဆေးဝါး {0} နှင့် မူးယစ်ဆေးဝါး {1} တို့သည် အပြန်အလှန် အကျိုးသက်ရောက်မှုရှိသော်လည်း အပြန်အလှန်တုံ့ပြန်မှုများကြောင့် ညွှန်းဆဲဖြစ်သည်။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocVatuTrongDanhMuc" xml:space="preserve">
+    <value>အမျိုးအစားထဲမှာ</value>
+  </data>
+  <data name="Plugin_AssignPrescription__TienBHYTDaKeVuotQuaMucGioiHan" xml:space="preserve">
+    <value>သတ်မှတ်ထားသော ကျန်းမာရေးအာမခံပရီမီယံသည် ကန့်သတ်ချက်ထက်ကျော်လွန်ပါသည်။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Toi" xml:space="preserve">
+    <value>အမှောင် {0} {1}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__TongTienHaoPhiVuotQuaDinhMucHaoPhiKhongTheChonDichVuNay" xml:space="preserve">
+    <value>အမှိုက်စုစုပေါင်း {0} သည် ပင်မဝန်ဆောင်မှု {2} ၏ စွန့်ပစ်ပစ္စည်း {1} ပမာဏကို ကျော်လွန်နေပါသည်။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__TongTienTheoDoiTuongDieuTriChoBHYTDaVuotquaMucGioiHan" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံဖြင့် အကျုံးဝင်သော လူနာ၏ ဝန်ဆောင်မှုများ {0} စုစုပေါင်းပမာဏသည် {1} ကန့်သတ်ချက်ထက် {2} ကျော်လွန်သွားသည်</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Trua" xml:space="preserve">
+    <value>နေ့လည် {0} {1}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__TruongSoLuongNhapSaiDinhDang" xml:space="preserve">
+    <value>ဂဏန်းများသည် ဂဏန်းအက္ခရာများ (0-9)၊ ဒဿမ ခြားနားခြင်း (\</value>
+  </data>
+  <data name="Plugin_AssignPrescription__TruongThongTinCoDoDaiVuotQuaGioiHan" xml:space="preserve">
+    <value>ဒေတာအကွက်၏ အရှည်သည် စာလုံးရေ 2000 ထက် မပိုသင့်ပါ။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__VatTu" xml:space="preserve">
+    <value>ပစ္စည်းများ {0}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__VatTuDaduocKe" xml:space="preserve">
+    <value>ပစ္စည်းများကို အော်ဒါမှာပြီးပါပြီ၊ နောက်ထပ်မှာယူလိုသည်မှာ သေချာပါသလား။</value>
+  </data>
+  <data name="Plugin_AssignPrescription__VatTuKhongDuKeBanCoMuonKeVatTuMuaNgoai" xml:space="preserve">
+    <value>ပစ္စည်း {0} သည် စတော့တင်ရန် မလုံလောက်ပါ။</value>
+  </data>
+  <data name="SereServConditionAlert__DVChuaDuocNhapDieuKien" xml:space="preserve">
+    <value>ဆေးဝါး/ထောက်ပံ့ပစ္စည်းများ {0} အခြေအနေ မထည့်သွင်းရသေးပါ။</value>
+  </data>
+  <data name="SereServOtherpaySourceAlert__DVChuaDuocNhapNguonChiTra" xml:space="preserve">
+    <value>ဆေးဝါး/ပစ္စည်းများအတွက် \</value>
+  </data>
+  <data name="SoLuongBiLePhanThapPhanToiDaX" xml:space="preserve">
+    <value>ဒဿမနေရာများ၏ အများဆုံးအရေအတွက်မှာ 6 ဖြစ်သည်။ {0}/{1} \u003d {2}</value>
+  </data>
+  <data name="SoNgayGiuongLonHonSoNgayDieuTri" xml:space="preserve">
+    <value>အိပ်ရာဝင်သည့်ရက်အရေအတွက် {0} သည် ကုသမှုရက် {1} ထက် ပိုများသည်။</value>
+  </data>
+  <data name="SoNgayGiuongNhoHonSoNgayDieuTri" xml:space="preserve">
+    <value>အိပ်ရာဝင်ရက် {0} အရေအတွက်သည် ကုသမှုရက် {1} ထက်နည်းသည်။</value>
+  </data>
+  <data name="SoNgayHenKhamToiDaChoPhepLaXXX" xml:space="preserve">
+    <value>အများဆုံးရက်ချိန်းခွင့်ပြုသည့်ရက်အရေအတွက်မှာ {0} ရက်ဖြစ်သည်။</value>
+  </data>
+  <data name="SoNgayHenKhamToiDaChoPhepLaXXX__BanCoMuonTiepTuc" xml:space="preserve">
+    <value>အများဆုံးရက်ချိန်းခွင့်ပြုသည့်ရက်အရေအတွက်မှာ {0} ရက်ဖြစ်သည်။</value>
+  </data>
+  <data name="SuaDonThuocKhongChoPhepTachDonThuocTrongKhoVaNgoaiKho" xml:space="preserve">
+    <value>ဆေးစာများကို တည်းဖြတ်ခြင်းသည် စတိုးဆိုင်အတွင်းနှင့် ဆိုင်အပြင်ရှိ ဆေးစာများကို ခွဲခြားခွင့်မပြုပါ။</value>
+  </data>
+  <data name="TaiKhoanKhongCoQuyenThucHienChucNang" xml:space="preserve">
+    <value>အကောင့်သည် လုပ်ဆောင်ချက်ကို လုပ်ဆောင်ရန် ခွင့်ပြုချက် မရှိပါ။</value>
+  </data>
+  <data name="TakeBeanForUpdateThatBai" xml:space="preserve">
+    <value>ကိုင်တွယ်မှု မအောင်မြင်</value>
+  </data>
+  <data name="TakeBeanThatBai" xml:space="preserve">
+    <value>ကိုင်တွယ်မှု မအောင်မြင်</value>
+  </data>
+  <data name="ThoiGianKetThucNhoHoiThoiGianYLenhCuaCacMaYeuCauSau" xml:space="preserve">
+    <value>အဆုံးအချိန်သည် တောင်းဆိုမှုကုဒ်များ၏ အမိန့်ပေးချိန်ထက် နည်းသည်- {0}</value>
+  </data>
+  <data name="ThoiGianTuVongKhongDuocBeHonThoiGianVaoVien" xml:space="preserve">
+    <value>သေဆုံးချိန်သည် ဆေးရုံတက်ချိန်ထက် မနည်းရပါမည် {0}</value>
+  </data>
+  <data name="ThoiGianTuVongKhongDuocLonHonThoiGianHienTai" xml:space="preserve">
+    <value>သေဆုံးချိန်သည် လက်ရှိအချိန်ထက် မပိုနိုင်ပါ {0}</value>
+  </data>
+  <data name="ThoiGianYLenhKhongNamTrongThoiGianBNHienDienTaiKhoa" xml:space="preserve">
+    <value>မှာယူသည့်အချိန်သည် လူနာဌာနတွင် ရှိနေသည့်အချိန်အတွင်း မဟုတ်ပါ ({0})</value>
+  </data>
+  <data name="ThoVoiTocDoXTrongYGio" xml:space="preserve">
+    <value>{0} လီတာ/မိနစ် နှုန်းဖြင့် {1} နာရီ အသက်ရှုပါ။</value>
+  </data>
+  <data name="ThuocChayThanKhongCapChoBNMangVeKeNgoaiKho" xml:space="preserve">
+    <value>Dialysis ဆေးများကို လူနာအား အိမ်ပြန်ယူရန် ပေးသည် ။</value>
+  </data>
+  <data name="ThuocChiDinhDungChoBenhNhanChuaQuaYTuoi" xml:space="preserve">
+    <value>{1} {2} ထက်မပိုသော လူနာများတွင် အသုံးပြုရန် ညွှန်ပြထားသော ဆေး {0}</value>
+  </data>
+  <data name="ThuocChiDinhDungChoBenhNhanTuXDenYTuoi" xml:space="preserve">
+    <value>ဆေး {0} ကို {1} {2} မှ {3} {4} အထိ လူနာများတွင် အသုံးပြုရန် ညွှန်ပြသည်</value>
+  </data>
+  <data name="ThuocChiDinhDungChoBenhNhanTuXTuoi" xml:space="preserve">
+    <value>{1} {2} မှ လူနာများတွင် အသုံးပြုရန် ညွှန်ပြထားသော ဆေး {0}</value>
+  </data>
+  <data name="ThuocCoDauCanHoiChan_BanCoMuonHoiChan" xml:space="preserve">
+    <value>ခန့်အပ်ထားသောဌာနသည် ဆေးဝါး(များ) အတွက် တိုင်ပင်ဆွေးနွေးမှု မိနစ်တစ်ခုကို မဖန်တီးရသေးပါ- {0}။</value>
+  </data>
+  <data name="ThuocCoDauCanHoiChan_ChuaTaoHetVoiHoatChat_BanCoMuonHoiChan" xml:space="preserve">
+    <value>ညွှန်ပြထားသော ဌာနသည် မူးယစ်ဆေးဝါး၏ အောက်ပါ ပါဝင်ပစ္စည်းများကြောင့် {0} ဆေးဝါးအတွက် အစည်းအဝေးမှတ်တမ်းကို မဖန်တီးရသေးပါ- {1}</value>
+  </data>
+  <data name="ThuocCoGioiHanChiDinhThanhToanBHYTDeNghiBSXemXetTruocKhiKe" xml:space="preserve">
+    <value>ဆေးဝါးများတွင် ကျန်းမာရေးအာမခံပေးချေမှုအတွက် ကန့်သတ်ညွှန်ပြမှုများရှိသည်။</value>
+  </data>
+  <data name="ThuocVatTu__SoLuong__Kho" xml:space="preserve">
+    <value>ဆေးဝါး/ပစ္စည်းများ- {0} - ပမာဏ- {1} - စတော့- {2}</value>
+  </data>
+  <data name="ThuocVatTuChiSuDungChoGioiTinhX" xml:space="preserve">
+    <value>ဆေးဝါး/ပစ္စည်းများ {0} သည် ကျားမ {1} အတွက်သာ အသုံးပြုရန်ဖြစ်သည်။</value>
+  </data>
+  <data name="ThuocVatTuDaBiLamTronSoLuongLenDoSoLuongCuBiKeLe" xml:space="preserve">
+    <value>ဆေးဝါး/ပစ္စည်း အဟောင်းများကို စုဆောင်းပြီးပါပြီ။</value>
+  </data>
+  <data name="ThuocVatTuKhongChiemKhaDung" xml:space="preserve">
+    <value>မရရှိနိုင်သော ဆေးဝါး/ပစ္စည်းများ</value>
+  </data>
+  <data name="ThuocVatTuTachBeanThatBai" xml:space="preserve">
+    <value>ပဲသီးခွဲထုတ်မှု ပျက်ကွက်မှုကြောင့် ယာယီစာရင်းတွင် ထည့်မထားသော လက်ရှိဆေးဝါး/ပစ္စည်းများ။</value>
+  </data>
+  <data name="ThuocXChongChiDinhVoiBenhNhanY" xml:space="preserve">
+    <value>ဆေးဝါး '{0}' ကို လူနာ '{1}' အတွက် တားမြစ်ထားသည်</value>
+  </data>
+  <data name="ThuocXKeQuaSoLuongChoPhepBanCoMuonBoSung" xml:space="preserve">
+    <value>ဆေးဝါးများ {0} ကျော်လွန်သတ်မှတ်ထားသည် ({1} {2})။ ထည့်လိုပါသလား။ “Yes” ကို ရွေးချယ်ပါက အကြောင်းရင်းကို ထည့်သွင်းပါ။</value>
+  </data>
+  <data name="ThuocXKeQuaSoLuongChoPhepCoChan" xml:space="preserve">
+    <value>ဆေးဝါးများ {0} ကျော်လွန်သတ်မှတ်ထားသည် ({1} {2})။</value>
+  </data>
+  <data name="TongTienDichVuHaoPhiVuotQuaMucGiaTriDuocCauHinh" xml:space="preserve">
+    <value>ဖြုန်းတီးသော ဝန်ဆောင်မှု၏ စုစုပေါင်းပမာဏသည် သတ်မှတ်ထားသော တန်ဖိုး {0} ထက် ကျော်လွန်နေပါသည်။</value>
+  </data>
+  <data name="Trong1LanKeDonChiDuocKeTheoLoHoacTheoLoai" xml:space="preserve">
+    <value>ဆေးစာတစ်ခုတည်းတွင်၊ ၎င်းကို အသုတ်အလိုက် သို့မဟုတ် အမျိုးအစားဖြင့်သာ သတ်မှတ်သည်၊ ၎င်းကို တစ်ချိန်တည်းတွင် နှစ်မျိုးလုံးတွင် ညွှန်ကြားခွင့်မပြုပါ။</value>
+  </data>
+  <data name="TrongNgayDaCoThuocKhangSinhBanCoMuonTiepTuc" xml:space="preserve">
+    <value>နေ့စဥ်အတွင်း ပဋိဇီဝဆေးများ ရနိုင်သည်- {0}။</value>
+  </data>
+  <data name="TruongDuLieuVuotQuaKyTu" xml:space="preserve">
+    <value>ထည့်သွင်းမှုအကွက်သည် ရှည်လွန်းသည်။</value>
+  </data>
+  <data name="VatTuTSDKhongChoPhepSua" xml:space="preserve">
+    <value>ပြန်သုံးနိုင်သော ပစ္စည်းများကို ပြုပြင်ခွင့်မပြုပါ။</value>
+  </data>
+  <data name="VatTuXKeQuaSoLuongChoPhepBanCoMuonBoSung" xml:space="preserve">
+    <value>ထောက်ပံ့မှုများ {0} သည် ခွင့်ပြုထားသော ပမာဏထက် ကျော်လွန်နေသည် ({1} {2})။ ထည့်လိုပါသလား။ “Yes” ကို ရွေးချယ်ပါက အကြောင်းရင်းကို ထည့်သွင်းပါ။</value>
+  </data>
+  <data name="VuiLongKeThuocVatTu" xml:space="preserve">
+    <value>ကျေးဇူးပြု၍ ဆေးဝါးနှင့် အထောက်အပံ့များ ပေးဆောင်ပါ။</value>
+  </data>
+  <data name="WarnKeDonCoSoLuongQuyDoiLe" xml:space="preserve">
+    <value>နှံစားပြောင်းအရေအတွက်သည် ထူးဆန်းသော \</value>
+  </data>
+  <data name="WarnThuocVatTuCoHanSuDungNhoHonThoiGianYLenh" xml:space="preserve">
+    <value>ဆေးဝါး/ပစ္စည်းများ ({0} - {1}) သည် မှာယူမှုကာလထက် နည်းသော သက်တမ်းကုန်ဆုံးရက်ဖြစ်သည်။</value>
+  </data>
+  <data name="ThuocVatTuChuaNhapLyDoKeQuaSoLuongToiDaTrongDon" xml:space="preserve">
+    <value>ဆေးဝါး/ထောက်ပံ့ပစ္စည်းများ {0} သည် ဆေးစာတွင် အများဆုံးပမာဏထက်ကျော်လွန်သော ဆေးစာအတွက် အကြောင်းပြချက်ကို ထည့်သွင်းထားခြင်းမရှိပါ။</value>
+  </data>
+  <data name="ThuocXKeQuaSoLuongChoPhepTrongNgayBanCoMuonBoSung" xml:space="preserve">
+    <value>မူးယစ်ဆေးဝါး {0} ကို တစ်နေ့တာအတွက် ခွင့်ပြုထားသည်ထက် ပိုမိုသတ်မှတ်ထားသည် ({1} {2})။ ထည့်ချင်လား မထည့်ဘူးလား။ “Yes” ကို ရွေးချယ်ပါက အကြောင်းရင်းကို ထည့်သွင်းပါ။</value>
+  </data>
+  <data name="VatTuXKeQuaSoLuongChoPhepTrongNgayBanCoMuonBoSung" xml:space="preserve">
+    <value>ထောက်ပံ့မှုများ {0} သည် တစ်နေ့တာအတွက် ခွင့်ပြုထားသော ပမာဏထက် ကျော်လွန်နေသည် ({1} {2})။ ထည့်ချင်လား မထည့်ဘူးလား။ “Yes” ကို ရွေးချယ်ပါက အကြောင်းရင်းကို ထည့်သွင်းပါ။</value>
+  </data>
+  <data name="ThuocVatTuChuaNhapLyDoKeQuaSoLuongToiDaTrongNgay" xml:space="preserve">
+    <value>ဆေးဝါး/ထောက်ပံ့ပစ္စည်းများ {0} သည် နေ့တစ်နေ့၏ အများဆုံးပမာဏထက်ကျော်လွန်သော ဆေးစာအတွက် အကြောင်းပြချက်ကို ထည့်သွင်းမထားပါ။</value>
+  </data>
+  <data name="DsThuocKeQuaSoLuongChoPhepCoChan" xml:space="preserve">
+    <value>ဆေး {0} ကို တစ်နေ့တာခွင့်ပြုသည့်ပမာဏထက် ပိုသတ်မှတ်ထားသည်။</value>
+  </data>
+  <data name="BanCoMuonBoSungKhong" xml:space="preserve">
+    <value>ထည့်လိုပါသလား။</value>
+  </data>
+  <data name="TruongDuLieuVuotQuaKyTuChoPhep" xml:space="preserve">
+    <value>ဒေတာအကွက်သည် ခွင့်ပြုထားသော အက္ခရာများကို ကျော်လွန်နေပါသည်။</value>
+  </data>
+  <data name="TrongTruongHopCoVuiLongNhapLyDo" xml:space="preserve">
+    <value>“Yes” ကို ရွေးချယ်ပါက အကြောင်းပြချက်ကို ထည့်သွင်းပါ။</value>
+  </data>
+</root>

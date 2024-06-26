@@ -1,0 +1,561 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmAssignPrescription.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmAssignPrescription.barbtnNew.Caption" xml:space="preserve">
+    <value>Refresh (Ctrl N)</value>
+  </data>
+  <data name="frmAssignPrescription.barbtnPrintShortcut.Caption" xml:space="preserve">
+    <value>Print (Ctrl P)</value>
+  </data>
+  <data name="frmAssignPrescription.barbtnSaveAndPrintShortcut.Caption" xml:space="preserve">
+    <value>Save &amp; Print (Ctrl I)</value>
+  </data>
+  <data name="frmAssignPrescription.barbtnSaveShortcut.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmAssignPrescription.bbtnBoSung.Caption" xml:space="preserve">
+    <value>Add (Ctr A)</value>
+  </data>
+  <data name="frmAssignPrescription.bbtnF2.Caption" xml:space="preserve">
+    <value>F2</value>
+  </data>
+  <data name="frmAssignPrescription.bbtnF3.Caption" xml:space="preserve">
+    <value>F3</value>
+  </data>
+  <data name="frmAssignPrescription.btnAdd.Text" xml:space="preserve">
+    <value>Add (Ctrl K)</value>
+  </data>
+  <data name="frmAssignPrescription.btnAdd.Text.Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="frmAssignPrescription.btnDiscash.Text" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="frmAssignPrescription.btnNew.Text" xml:space="preserve">
+    <value>New (Ctrl N)</value>
+  </data>
+  <data name="frmAssignPrescription.btnPrint.Text" xml:space="preserve">
+    <value>Print (Ctrl P)</value>
+  </data>
+  <data name="frmAssignPrescription.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmAssignPrescription.btnSaveAndPrint.Text" xml:space="preserve">
+    <value>Save &amp; Print (Ctrl I)</value>
+  </data>
+  <data name="frmAssignPrescription.btnSaveTemplate.Text" xml:space="preserve">
+    <value>Save template</value>
+  </data>
+  <data name="frmAssignPrescription.btnSereservInTreatmentPreview.Text" xml:space="preserve">
+    <value>Specified service details</value>
+  </data>
+  <data name="frmAssignPrescription.btnShowDetail.Text" xml:space="preserve">
+    <value>Service request</value>
+  </data>
+  <data name="frmAssignPrescription.cboExecuteGroup.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignPrescription.cboExpMestTemplate.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignPrescription.cboHtu.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignPrescription.cboIcdMedicine.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignPrescription.cboMedicineUseForm.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignPrescription.cboMediStockExport.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignPrescription.cboPriviousExpMest.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignPrescription.chkIcdMedicine.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignPrescription.grcAmount__TabMedicine.Caption" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="frmAssignPrescription.grcConcentra__TabMedicine.Caption" xml:space="preserve">
+    <value>Concentra</value>
+  </data>
+  <data name="frmAssignPrescription.grcDelete__MedicinePage.Caption" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="frmAssignPrescription.grcDelete__MedicinePage.ToolTip" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="frmAssignPrescription.grcExpend__TabMedicine.Caption" xml:space="preserve">
+    <value>Deficit/Wastage:</value>
+  </data>
+  <data name="frmAssignPrescription.grcIsOutKtcFee__TabMedicine.Caption" xml:space="preserve">
+    <value>Other fees/cost</value>
+  </data>
+  <data name="frmAssignPrescription.grcKHBHYT__TabMedicine.Caption" xml:space="preserve">
+    <value>Combining health insurance</value>
+  </data>
+  <data name="frmAssignPrescription.grcManuMedicineName__TabMedicine.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="frmAssignPrescription.grcMediStockExpMest__TabMedicine.Caption" xml:space="preserve">
+    <value>Export Stock</value>
+  </data>
+  <data name="frmAssignPrescription.grcNumOrder.Caption" xml:space="preserve">
+    <value>#</value>
+  </data>
+  <data name="frmAssignPrescription.grcPatientType__TabMedicine.Caption" xml:space="preserve">
+    <value>Tel payment</value>
+  </data>
+  <data name="frmAssignPrescription.grcPrice__TabMedicine.Caption" xml:space="preserve">
+    <value>Unit price</value>
+  </data>
+  <data name="frmAssignPrescription.grcTotalPrice__TabMedicine.Caption" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="frmAssignPrescription.grcTutorial__TabMedicine.Caption" xml:space="preserve">
+    <value>Manuals</value>
+  </data>
+  <data name="frmAssignPrescription.grcUnit__TabMedicine.Caption" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="frmAssignPrescription.grcUseForm__TabMedicine.Caption" xml:space="preserve">
+    <value>Medicine use form</value>
+  </data>
+  <data name="frmAssignPrescription.grcUseTimeTo__TabMedicine.Caption" xml:space="preserve">
+    <value>Use time to</value>
+  </data>
+  <data name="frmAssignPrescription.labelControl2.Text" xml:space="preserve">
+    <value>OTHER</value>
+  </data>
+  <data name="frmAssignPrescription.layoutControl12.Text" xml:space="preserve">
+    <value>LayoutControl12</value>
+  </data>
+  <data name="frmAssignPrescription.layoutControl25.Text" xml:space="preserve">
+    <value>LayoutControl25</value>
+  </data>
+  <data name="frmAssignPrescription.layoutControl27.Text" xml:space="preserve">
+    <value>LayoutControl27</value>
+  </data>
+  <data name="frmAssignPrescription.layoutControl6.Text" xml:space="preserve">
+    <value>LayoutControl6</value>
+  </data>
+  <data name="frmAssignPrescription.layoutControl7.Text" xml:space="preserve">
+    <value>LayoutControl7</value>
+  </data>
+  <data name="frmAssignPrescription.layoutControlItem24.Text" xml:space="preserve">
+    <value>Add Medic</value>
+  </data>
+  <data name="frmAssignPrescription.layoutControlItem6.Text" xml:space="preserve">
+    <value>Number of day</value>
+  </data>
+  <data name="frmAssignPrescription.lciAmount.Text" xml:space="preserve">
+    <value>Quantity (F3):</value>
+  </data>
+  <data name="frmAssignPrescription.lciBtnAdd.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="frmAssignPrescription.lciBtnDiscard.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="frmAssignPrescription.lciChieu.Text" xml:space="preserve">
+    <value>P.m:</value>
+  </data>
+  <data name="frmAssignPrescription.lciDichVuChinh_Medi.Text" xml:space="preserve">
+    <value>Primary Services:</value>
+  </data>
+  <data name="frmAssignPrescription.lciEdit_TabMedicine.Text" xml:space="preserve">
+    <value>Edit:</value>
+  </data>
+  <data name="frmAssignPrescription.lciExecuteGroup.Text" xml:space="preserve">
+    <value>Handling Group:</value>
+  </data>
+  <data name="frmAssignPrescription.lciExpMestTemplate.Text" xml:space="preserve">
+    <value>Template form:</value>
+  </data>
+  <data name="frmAssignPrescription.lciHtu.Text" xml:space="preserve">
+    <value>How to use:</value>
+  </data>
+  <data name="frmAssignPrescription.lciHuongDan.Text" xml:space="preserve">
+    <value>Tutorial:</value>
+  </data>
+  <data name="frmAssignPrescription.lciIcdMain.Text" xml:space="preserve">
+    <value>Primary/Pri/Main diagnosis:</value>
+  </data>
+  <data name="frmAssignPrescription.lciIcdText.Text" xml:space="preserve">
+    <value>Sub diagnosis:</value>
+  </data>
+  <data name="frmAssignPrescription.lciLadder.Text" xml:space="preserve">
+    <value>Ladders:</value>
+  </data>
+  <data name="frmAssignPrescription.lciLoiDanBacSi.Text" xml:space="preserve">
+    <value>Advise:</value>
+  </data>
+  <data name="frmAssignPrescription.lciluyKeTienThuoc.Text" xml:space="preserve">
+    <value>Accumulated drug cost:</value>
+  </data>
+  <data name="frmAssignPrescription.lciMedicineUseForm.Text" xml:space="preserve">
+    <value>Medicine use form:</value>
+  </data>
+  <data name="frmAssignPrescription.lciMediStockExpMest.Text" xml:space="preserve">
+    <value>Export stock:</value>
+  </data>
+  <data name="frmAssignPrescription.lciPatientTypeName.Text" xml:space="preserve">
+    <value>Patient type:</value>
+  </data>
+  <data name="frmAssignPrescription.lciPriviousExpMest.Text" xml:space="preserve">
+    <value>Old Prescription:</value>
+  </data>
+  <data name="frmAssignPrescription.lciSang.Text" xml:space="preserve">
+    <value>A.m:</value>
+  </data>
+  <data name="frmAssignPrescription.lciSoLuongNgay.Text" xml:space="preserve">
+    <value>No. of days:</value>
+  </data>
+  <data name="frmAssignPrescription.lciTimeAssign.Text" xml:space="preserve">
+    <value>Indicated time:</value>
+  </data>
+  <data name="frmAssignPrescription.lciToi.Text" xml:space="preserve">
+    <value>Night:</value>
+  </data>
+  <data name="frmAssignPrescription.lciTongTien.Text" xml:space="preserve">
+    <value>Total price:</value>
+  </data>
+  <data name="frmAssignPrescription.lciTrua.Text" xml:space="preserve">
+    <value>Lunch:</value>
+  </data>
+  <data name="frmAssignPrescription.lciUsedto.Text" xml:space="preserve">
+    <value>Use time:</value>
+  </data>
+  <data name="frmAssignPrescription.repositoryItemcboMedicineUseForm.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignPrescription.repositoryItemcboPatientType_TabMedicine.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignPrescription.repositoryItemcboPatientType_TabMedicine_GridLookUp.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignPrescription.txtIcdExtraCodes.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Icd extra code</value>
+  </data>
+  <data name="frmAssignPrescription.txtIcdExtraNames.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Press F1 to select icd</value>
+  </data>
+  <data name="frmAssignPrescription.txtLoiDanBacSi.Properties.NullValuePrompt" xml:space="preserve">
+    <value>F5 to select content library</value>
+  </data>
+  <data name="frmAssignPrescription.txtMedicineTypeOther.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Medicine name</value>
+  </data>
+  <data name="frmAssignPrescription.txtUnitOther.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="frmAssignPrescription.xtraTabPageMedicine_Material.Text" xml:space="preserve">
+    <value>Material</value>
+  </data>
+  <data name="frmAssignPrescription.xtraTabPageMedicine_MaterialCategory.Text" xml:space="preserve">
+    <value>Outer Material</value>
+  </data>
+  <data name="frmAssignPrescription.xtraTabPageMedicine_Medicine.Text" xml:space="preserve">
+    <value>Medicine</value>
+  </data>
+  <data name="frmAssignPrescription.xtraTabPageMedicine_MedicineCategory.Text" xml:space="preserve">
+    <value>Outer Medicine</value>
+  </data>
+  <data name="frmAssignPrescription.xtraTabPage__MediMaty.Text" xml:space="preserve">
+    <value>Medicine - Material</value>
+  </data>
+  <data name="frmHisExpMestTemplateCreate.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmHisExpMestTemplateCreate.barButtonItem1.Caption" xml:space="preserve">
+    <value>Save (Ctrl + S)</value>
+  </data>
+  <data name="frmHisExpMestTemplateCreate.btnSave__ExpMestTemplate.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmHisExpMestTemplateCreate.layoutControl1.Text" xml:space="preserve">
+    <value>LayoutControl1</value>
+  </data>
+  <data name="frmHisExpMestTemplateCreate.layoutControlItem1.Text" xml:space="preserve">
+    <value>Code:</value>
+  </data>
+  <data name="frmHisExpMestTemplateCreate.layoutControlItem2.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="frmHisExpMestTemplateCreate.layoutControlItem3.Text" xml:space="preserve">
+    <value>Describtion:</value>
+  </data>
+  <data name="frmHisExpMestTemplateCreate.Text" xml:space="preserve">
+    <value>Create template</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_ACTIVE_INGR_BHYT_NAME" xml:space="preserve">
+    <value>Active ingr</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_AVAILABLE_AMOUNT" xml:space="preserve">
+    <value>Availability</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_CONCENTRA" xml:space="preserve">
+    <value>Concentra</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MANUFACTURER_NAME" xml:space="preserve">
+    <value>Manufacturer</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MEDI_STOCK" xml:space="preserve">
+    <value>Export Stock</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_NATIONAL_NAME" xml:space="preserve">
+    <value>Made in</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_SERVICE_UNIT_NAME" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MATERIAL__GC_MATERIAL_TYPE_CODE" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MATERIAL__GC_MATERIAL_TYPE_NAME" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_MEDICINE_TYPE_CODE" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_MEDICINE_TYPE_NAME" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_MEDICINE_USE_FROM_NAME" xml:space="preserve">
+    <value>Used form</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__KEY_WORD_NULL_VALUE" xml:space="preserve">
+    <value>Keyword search (F2)</value>
+  </data>
+  <data name="frmAssignPrescription.btnTomLuocVienPhi.Text" xml:space="preserve">
+    <value>Summary fees</value>
+  </data>
+  <data name="frmAssignPrescription.lciDob.Text" xml:space="preserve">
+    <value>Birthday:</value>
+  </data>
+  <data name="frmAssignPrescription.lciGenderName.Text" xml:space="preserve">
+    <value>Gender:</value>
+  </data>
+  <data name="frmAssignPrescription.lciPatientName.Text" xml:space="preserve">
+    <value>Patient:</value>
+  </data>
+  <data name="frmAssignPrescription.chkMultiIntructionTime.Text" xml:space="preserve">
+    <value>Multi date</value>
+  </data>
+  <data name="frmAssignPrescription.lciMedicineTypeName.Text" xml:space="preserve">
+    <value>Medicine/Material:</value>
+  </data>
+  <data name="frmAssignPrescription.btnAddTutorial.Text" xml:space="preserve">
+    <value>Save TT</value>
+  </data>
+  <data name="frmAssignPrescription.btnViewPrescription.Text" xml:space="preserve">
+    <value>View prescriotion (Ctrl X)</value>
+  </data>
+  <data name="frmHisExpMestTemplateCreate.layoutControlItem5.Text" xml:space="preserve">
+    <value>Public:</value>
+  </data>
+  <data name="FormMultiChooseDate__CaptionCalendaInput" xml:space="preserve">
+    <value>Instruction date:</value>
+  </data>
+  <data name="FormMultiChooseDate__CaptionText" xml:space="preserve">
+    <value>Select multiple intruction date</value>
+  </data>
+  <data name="FormMultiChooseDate__CaptionTimeInput" xml:space="preserve">
+    <value>Intruction hours:</value>
+  </data>
+  <data name="FormMultiChooseDate__CaptionBtnChoose" xml:space="preserve">
+    <value>Choose</value>
+  </data>
+  <data name="btnSelectPrescriptionPrevious__ToolTip" xml:space="preserve">
+    <value>Selected pre prescription</value>
+  </data>
+  <data name="btnShowPrescriptionPrevious__ToolTip" xml:space="preserve">
+    <value>View pre prescription</value>
+  </data>
+  <data name="gridControlPreviousprescription__gcolIntructionTime__Caption" xml:space="preserve">
+    <value>Service Req Code</value>
+  </data>
+  <data name="gridControlPreviousprescription__gcolIntructionUser__Caption" xml:space="preserve">
+    <value>Intruction user</value>
+  </data>
+  <data name="gBoxTreatmentFinishInfo__Text" xml:space="preserve">
+    <value>End of treatment:</value>
+  </data>
+  <data name="lciAppointmentTime__Text" xml:space="preserve">
+    <value>Appointment Time:</value>
+  </data>
+  <data name="lciForchkAutoBK__Text" xml:space="preserve">
+    <value>Print debrous:</value>
+  </data>
+  <data name="lciForchkAutoPrintGHK__Text" xml:space="preserve">
+    <value>Print appointment:</value>
+  </data>
+  <data name="lciFordtEndTime__Text" xml:space="preserve">
+    <value>Time out:</value>
+  </data>
+  <data name="lciTreatmentEndType__Text" xml:space="preserve">
+    <value>End type:</value>
+  </data>
+  <data name="gridControlTreatmentBedRoom__grdColBedName__Caption" xml:space="preserve">
+    <value>Bed room</value>
+  </data>
+  <data name="gridControlTreatmentBedRoom__grdColDob__Caption" xml:space="preserve">
+    <value>Day of bridth</value>
+  </data>
+  <data name="gridControlTreatmentBedRoom__grdColPatientName__Caption" xml:space="preserve">
+    <value>Patient name</value>
+  </data>
+  <data name="gridControlTreatmentBedRoom__grdColSTT__Caption" xml:space="preserve">
+    <value>Num order</value>
+  </data>
+  <data name="gridControlTreatmentBedRoom__grdColTreatmentCode__Caption" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="frmAssignPrescription.Text.Cabinet.IsTreatmentIn" xml:space="preserve">
+    <value>Dispense medicine cabinet</value>
+  </data>
+  <data name="frmAssignPrescription.Text.Cabinet.IsTreatmentOut" xml:space="preserve">
+    <value>Medication prescription (clinic)</value>
+  </data>
+  <data name="frmAssignPrescription.Text.IsTreatmentIn" xml:space="preserve">
+    <value>Out-door medicine (clinic)</value>
+  </data>
+  <data name="frmAssignPrescription.Text.IsTreatmentOut" xml:space="preserve">
+    <value>Medication (Inpatient)</value>
+  </data>
+  <data name="frmAssignPrescription.lciTreatmentTypeName.Text" xml:space="preserve">
+    <value>Treatment type:</value>
+  </data>
+  <data name="frmAssignPrescription.lciTreatmentTypeName.Tooltip" xml:space="preserve">
+    <value>Treatment type:</value>
+  </data>
+  <data name="TakeBeanThatBai" xml:space="preserve">
+    <value />
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_PARENT_NAME" xml:space="preserve">
+    <value>Parent Name</value>
+  </data>
+</root>

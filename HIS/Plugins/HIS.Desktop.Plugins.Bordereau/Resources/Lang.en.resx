@@ -1,0 +1,504 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CacDichVuBanChonCoDVPTBanCoChacMuonGanVaoGoiKhong" xml:space="preserve">
+    <value>Among the services you choose are surgical services.</value>
+  </data>
+  <data name="CacDichVuBanChonCoDVPTKhongChoPhepThucHien" xml:space="preserve">
+    <value>Among the services you choose are surgical services: {0}.</value>
+  </data>
+  <data name="CacDichVuDaDuocTichHPVaHPTGKhongTheBoTichHPTruocKhiBoTichHPTG" xml:space="preserve">
+    <value>The following services have been charged for bed charges</value>
+  </data>
+  <data name="CacDichVuSauCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep" xml:space="preserve">
+    <value>The following services have the specified time within the disallowed period: {0}.Do you want to continue?</value>
+  </data>
+  <data name="frmBordereau.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmBordereau.barButtonItemFind.Caption" xml:space="preserve">
+    <value>Search (Ctrl F)</value>
+  </data>
+  <data name="frmBordereau.btnFind.Text" xml:space="preserve">
+    <value>Search (Ctrl F)</value>
+  </data>
+  <data name="frmBordereau.btnPrint.Text" xml:space="preserve">
+    <value>Printing</value>
+  </data>
+  <data name="frmBordereau.chkAmount.Text" xml:space="preserve">
+    <value>Quantity \u003e 0</value>
+  </data>
+  <data name="frmBordereau.grcExpendTypeId.Caption" xml:space="preserve">
+    <value>HPTG</value>
+  </data>
+  <data name="frmBordereau.grcExpendTypeId.ToolTip" xml:space="preserve">
+    <value>It's a waste of money for the bed</value>
+  </data>
+  <data name="frmBordereau.gridCol_Package.Caption" xml:space="preserve">
+    <value>Service pack</value>
+  </data>
+  <data name="frmBordereau.gridColIsFundAccepted.Caption" xml:space="preserve">
+    <value>Funds accept payment</value>
+  </data>
+  <data name="frmBordereau.gridColumn1.Caption" xml:space="preserve">
+    <value>Coupon code request</value>
+  </data>
+  <data name="frmBordereau.gridColumn10.Caption" xml:space="preserve">
+    <value>Type of service</value>
+  </data>
+  <data name="frmBordereau.gridColumn11.Caption" xml:space="preserve">
+    <value>Expend</value>
+  </data>
+  <data name="frmBordereau.gridColumn11.ToolTip" xml:space="preserve">
+    <value>Expend</value>
+  </data>
+  <data name="frmBordereau.gridColumn12.Caption" xml:space="preserve">
+    <value>Comes DV</value>
+  </data>
+  <data name="frmBordereau.gridColumn13.Caption" xml:space="preserve">
+    <value>Package price</value>
+  </data>
+  <data name="frmBordereau.gridColumn14.Caption" xml:space="preserve">
+    <value>SERVICE_TYPE_ID</value>
+  </data>
+  <data name="frmBordereau.gridColumn15.Caption" xml:space="preserve">
+    <value>The cost of the patient's payment is temporarily calculated</value>
+  </data>
+  <data name="frmBordereau.gridColumn15.ToolTip" xml:space="preserve">
+    <value>Estimated patient expenses</value>
+  </data>
+  <data name="frmBordereau.gridColumn16.Caption" xml:space="preserve">
+    <value>The amount is temporarily calculated</value>
+  </data>
+  <data name="frmBordereau.gridColumn17.Caption" xml:space="preserve">
+    <value>Other sources CT</value>
+  </data>
+  <data name="frmBordereau.gridColumn17.ToolTip" xml:space="preserve">
+    <value>Other sources of payment</value>
+  </data>
+  <data name="frmBordereau.gridColumn18.Caption" xml:space="preserve">
+    <value>BHYT Code</value>
+  </data>
+  <data name="frmBordereau.gridColumn2.Caption" xml:space="preserve">
+    <value>Time required</value>
+  </data>
+  <data name="frmBordereau.gridColumn3.Caption" xml:space="preserve">
+    <value>Service code</value>
+  </data>
+  <data name="frmBordereau.gridColumn4.Caption" xml:space="preserve">
+    <value>Service name</value>
+  </data>
+  <data name="frmBordereau.gridColumn5.Caption" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="frmBordereau.gridColumn5.ToolTip" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="frmBordereau.gridColumn6.Caption" xml:space="preserve">
+    <value>Designated Faculty</value>
+  </data>
+  <data name="frmBordereau.gridColumn7.Caption" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="frmBordereau.gridColumn7.ToolTip" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="frmBordereau.gridColumn8.Caption" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="frmBordereau.gridColumn9.Caption" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="frmBordereau.gridColumnDescription.Caption" xml:space="preserve">
+    <value>Describe</value>
+  </data>
+  <data name="frmBordereau.gridColumnDoiTuongPT.Caption" xml:space="preserve">
+    <value>Additional phone number</value>
+  </data>
+  <data name="frmBordereau.gridColumnDoiTuongPT.ToolTip" xml:space="preserve">
+    <value>Ancillary subjects</value>
+  </data>
+  <data name="frmBordereau.gridColumnDvDinhKem.Caption" xml:space="preserve">
+    <value>Comes with DVD</value>
+  </data>
+  <data name="frmBordereau.gridColumnDvDinhKem.ToolTip" xml:space="preserve">
+    <value>Service included</value>
+  </data>
+  <data name="frmBordereau.gridColumnEquipment.Caption" xml:space="preserve">
+    <value>Set of supplies</value>
+  </data>
+  <data name="frmBordereau.gridColumnEquipmentId.Caption" xml:space="preserve">
+    <value>gridColumn12</value>
+  </data>
+  <data name="frmBordereau.gridColumnIsNoExecute.Caption" xml:space="preserve">
+    <value>Not done</value>
+  </data>
+  <data name="frmBordereau.gridColumnIsNotUseBHYT.Caption" xml:space="preserve">
+    <value>Not entitled to health insurance</value>
+  </data>
+  <data name="frmBordereau.gridColumnIsOutKtcFee.Caption" xml:space="preserve">
+    <value>Cost outside the package</value>
+  </data>
+  <data name="frmBordereau.gridColumnOtherPaySource.Caption" xml:space="preserve">
+    <value>Other souces</value>
+  </data>
+  <data name="frmBordereau.gridColumnPatientTypeName.Caption" xml:space="preserve">
+    <value>Tel payment</value>
+  </data>
+  <data name="frmBordereau.gridColumnPatientTypeName.ToolTip" xml:space="preserve">
+    <value>Subjects payment</value>
+  </data>
+  <data name="frmBordereau.gridColumnShareCount.Caption" xml:space="preserve">
+    <value>Lying down</value>
+  </data>
+  <data name="frmBordereau.gridColumnStentOrder.Caption" xml:space="preserve">
+    <value>TT Stent</value>
+  </data>
+  <data name="frmBordereau.gridColumnStentOrder.ToolTip" xml:space="preserve">
+    <value>Order of stents</value>
+  </data>
+  <data name="frmBordereau.gridViewBordereau.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Keyword search</value>
+  </data>
+  <data name="frmBordereau.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmBordereau.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem10.Text" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem11.Text" xml:space="preserve">
+    <value>Date of birth:</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem12.Text" xml:space="preserve">
+    <value>Tel:</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem15.Text" xml:space="preserve">
+    <value>Arrival time:</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem16.Text" xml:space="preserve">
+    <value>Time from:</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem18.Text" xml:space="preserve">
+    <value>Treatment code:</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem19.Text" xml:space="preserve">
+    <value>Payment Fund:</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem20.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem21.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Treatment records in the same outpatient medical record</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem21.Text" xml:space="preserve">
+    <value>Students in the same BA:</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem3.Text" xml:space="preserve">
+    <value>Receivables:</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem4.Text" xml:space="preserve">
+    <value>BN receivables:</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem5.Text" xml:space="preserve">
+    <value>Animal skin:</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem6.Text" xml:space="preserve">
+    <value>Need to collect:</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem8.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="frmBordereau.lciPayType.Text" xml:space="preserve">
+    <value>Payment status:</value>
+  </data>
+  <data name="frmBordereau.lciReturnResult.Text" xml:space="preserve">
+    <value>Payer:</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemDTTT" xml:space="preserve">
+    <value>Payment object</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemDTTTPhuTthu" xml:space="preserve">
+    <value>Ancillary subjects</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemEquipment" xml:space="preserve">
+    <value>Set of supplies</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemExecute" xml:space="preserve">
+    <value>Do not perform</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemExpend" xml:space="preserve">
+    <value>Eliminate waste</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemExpendType" xml:space="preserve">
+    <value>Waste of money on bed</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemFunAccept" xml:space="preserve">
+    <value>Leave the fund to accept payment</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemHasParent" xml:space="preserve">
+    <value>Unattach</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemIsNotOutParentFee" xml:space="preserve">
+    <value>Out-of-package costs</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.itemIsNotUseBHYT" xml:space="preserve">
+    <value>Not entitled to health insurance</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemIsOutParentFee" xml:space="preserve">
+    <value>Eliminate out-of-package costs</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemNoExecute" xml:space="preserve">
+    <value>Perform</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemNotExpend" xml:space="preserve">
+    <value>Waste of money</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemNotExpendType" xml:space="preserve">
+    <value>Waste of money for bed</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemNotFunAccept" xml:space="preserve">
+    <value>Funds accept payment</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.itemOtherPaySource" xml:space="preserve">
+    <value>Other pay</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemSetParent" xml:space="preserve">
+    <value>Service Attachment</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemShareCount" xml:space="preserve">
+    <value>Number of beds together</value>
+  </data>
+  <data name="frmBordereau.repositoryItemLookUpEdit_PatientType.NullText" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmBordereau.repositoryItemPictureEdit1.NullText" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmBordereau.Text" xml:space="preserve">
+    <value>Payment list</value>
+  </data>
+  <data name="frmBordereau.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keyword</value>
+  </data>
+  <data name="frmChooseOtherPaySource.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmChooseOtherPaySource.barButtonItem1.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="frmChooseOtherPaySource.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmChooseOtherPaySource.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmChooseOtherPaySource.layoutControlItem1.Text" xml:space="preserve">
+    <value>Other souces:</value>
+  </data>
+  <data name="frmChooseOtherPaySource.Text" xml:space="preserve">
+    <value>Choose another source</value>
+  </data>
+  <data name="frmChoosePatientType.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmChoosePatientType.barButtonItem1.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="frmChoosePatientType.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmChoosePatientType.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmChoosePatientType.layoutControlItem1.Text" xml:space="preserve">
+    <value>Tel:</value>
+  </data>
+  <data name="frmChoosePatientType.Text" xml:space="preserve">
+    <value>Select payment object</value>
+  </data>
+  <data name="frmChooseService.btnChoose.Text" xml:space="preserve">
+    <value>Choose</value>
+  </data>
+  <data name="frmChooseService.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmChooseService.layoutControlItem2.Text" xml:space="preserve">
+    <value>Service:</value>
+  </data>
+  <data name="frmChooseService.Text" xml:space="preserve">
+    <value>Choose a service</value>
+  </data>
+  <data name="frmChooseShareCount.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmChooseShareCount.barButtonItem1.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="frmChooseShareCount.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmChooseShareCount.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmChooseShareCount.layoutControlItem1.Text" xml:space="preserve">
+    <value>Co-located number:</value>
+  </data>
+  <data name="frmChooseShareCount.Text" xml:space="preserve">
+    <value>Number lying down</value>
+  </data>
+  <data name="frmEquipmentSet.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmEquipmentSet.barButtonItemCtrlS.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="frmEquipmentSet.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmEquipmentSet.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmEquipmentSet.layoutControlItem1.Text" xml:space="preserve">
+    <value>Set of supplies:</value>
+  </data>
+  <data name="frmEquipmentSet.layoutControlItem2.Text" xml:space="preserve">
+    <value>Ceiling price:</value>
+  </data>
+  <data name="frmEquipmentSet.lblNumOrder.Text" xml:space="preserve">
+    <value>Set of numbers:</value>
+  </data>
+  <data name="frmEquipmentSet.Text" xml:space="preserve">
+    <value>Choose a set of supplies</value>
+  </data>
+  <data name="frmPriceEdit.btnOK.Text" xml:space="preserve">
+    <value>Agree</value>
+  </data>
+  <data name="frmPriceEdit.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmPriceEdit.layoutControlItem1.Text" xml:space="preserve">
+    <value>Price:</value>
+  </data>
+  <data name="frmPriceEdit.Text" xml:space="preserve">
+    <value>Edit price</value>
+  </data>
+</root>

@@ -1,0 +1,615 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{38ECDDB9-08E6-4697-90E5-AF731792B90D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HIS.UC.PlusInfo</RootNamespace>
+    <AssemblyName>HIS.UC.PlusInfo</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility" />
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\..\..\..\..\RELEASE\MOS\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.RichEdit.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Snap.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.NavBar.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Printing.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraNavBar.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraRichEdit.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="HID.EFMODEL">
+      <HintPath>..\..\..\..\..\..\Release\HID\HID.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="HID.Filter">
+      <HintPath>..\..\..\..\..\..\Release\HID\HID.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="His.UC.LibraryMessage">
+      <HintPath>..\..\..\..\..\..\Release\HIS\ReferencedAssemblies\His.UC.LibraryMessage.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.SereServTree">
+      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.SereServTree\HIS.UC.SereServTree.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.WorkPlace">
+      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.WorkPlace\HIS.UC.WorkPlace.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.HIS_RS">
+      <HintPath>..\..\..\..\..\..\Release\HIS\ReferencedAssemblies\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Adapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Release\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Controls.EditorLoader">
+      <HintPath>..\..\..\..\..\..\Release\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Controls.PopupLoader">
+      <HintPath>..\..\..\..\..\..\Release\Inventec.Common\Inventec.Common.Controls.PopupLoader\Inventec.Common.Controls.PopupLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.DateTime, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Release\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
+      <HintPath>..\..\..\..\..\..\Release\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\..\..\..\Release\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Mapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Release\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Number">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Number\Inventec.Common.Number.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Resource, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Release\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.String">
+      <HintPath>..\..\..\..\..\..\Release\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.TypeConvert, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Release\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.WebApiClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Release\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Release\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.Controls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Controls\Inventec.Desktop.Common.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.Controls.ValidationRule, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Release\Inventec.Desktop\Inventec.Desktop.Common.Controls.ValidationRule\Inventec.Desktop.Common.Controls.ValidationRule.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.LanguageManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Release\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.Message">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.Modules, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Release\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Release\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Release\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Release\MOS\MOS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Release\MOS\MOS.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="SDA.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Release\SDA\SDA.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Release\SDA\SDA.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.SDO">
+      <HintPath>..\..\..\..\..\..\Release\SDA\SDA.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Input.Manipulations" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationClient" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ADO\PatientInformationADO.cs" />
+    <Compile Include="ADO\SereServADO.cs" />
+    <Compile Include="ADO\TreatmentExamADO.cs" />
+    <Compile Include="ADO\UCPatientExtendADO.cs" />
+    <Compile Include="ADO\UCPlusInfoADO.cs" />
+    <Compile Include="ADO\WorkPlaceADO.cs" />
+    <Compile Include="ClassGlobal\DisplayProcessor.cs" />
+    <Compile Include="ClassGlobal\RequestUriStore.cs" />
+    <Compile Include="ClassGlobal\ResourceMessage.cs" />
+    <Compile Include="Config\UCPlusInfoConfig.cs" />
+    <Compile Include="ClassGlobal\GlobalStore.cs" />
+    <Compile Include="Design\UCExamHistory.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCExamHistory.Designer.cs">
+      <DependentUpon>UCExamHistory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCTaxCode.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCTaxCode.Designer.cs">
+      <DependentUpon>UCTaxCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCHrmKskCode.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCHrmKskCode.Designer.cs">
+      <DependentUpon>UCHrmKskCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCHohName.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCHohName.Designer.cs">
+      <DependentUpon>UCHohName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCAddressOfBirth.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCAddressOfBirth.Designer.cs">
+      <DependentUpon>UCAddressOfBirth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCCommuneOfBirth.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCCommuneOfBirth.Designer.cs">
+      <DependentUpon>UCCommuneOfBirth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCDistrictOfBirth.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCDistrictOfBirth.Designer.cs">
+      <DependentUpon>UCDistrictOfBirth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCPatientStoreCode.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCPatientStoreCode.Designer.cs">
+      <DependentUpon>UCPatientStoreCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\DesignForm\frmPatientExtend.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\DesignForm\frmPatientExtend.Designer.cs">
+      <DependentUpon>frmPatientExtend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCMaHoNgheo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCMaHoNgheo.Designer.cs">
+      <DependentUpon>UCMaHoNgheo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCBloodRh.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCBloodRh.Designer.cs">
+      <DependentUpon>UCBloodRh.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCMotherName.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCMotherName.Designer.cs">
+      <DependentUpon>UCMotherName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCFatherName.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCFatherName.Designer.cs">
+      <DependentUpon>UCFatherName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCHouseHoldRelative.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCHouseHoldRelative.Designer.cs">
+      <DependentUpon>UCHouseHoldRelative.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCHouseHold.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCHouseHold.Designer.cs">
+      <DependentUpon>UCHouseHold.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCAddressNow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCAddressNow.Designer.cs">
+      <DependentUpon>UCAddressNow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCCommuneNow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCCommuneNow.Designer.cs">
+      <DependentUpon>UCCommuneNow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCDistrictNow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCDistrictNow.Designer.cs">
+      <DependentUpon>UCDistrictNow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCProvinceNow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCProvinceNow.Designer.cs">
+      <DependentUpon>UCProvinceNow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCCMNDPlace.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCCMNDPlace.Designer.cs">
+      <DependentUpon>UCCMNDPlace.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCCMNDDate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCCMNDDate.Designer.cs">
+      <DependentUpon>UCCMNDDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCCMND.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCCMND.Designer.cs">
+      <DependentUpon>UCCMND.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCBlood.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCBlood.Designer.cs">
+      <DependentUpon>UCBlood.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCEmail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCEmail.Designer.cs">
+      <DependentUpon>UCEmail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCEthnic.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCEthnic.Designer.cs">
+      <DependentUpon>UCEthnic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCMilitaryRank.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCMilitaryRank.Designer.cs">
+      <DependentUpon>UCMilitaryRank.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCNational.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCNational.Designer.cs">
+      <DependentUpon>UCNational.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCPatientExtend.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCPatientExtend.Designer.cs">
+      <DependentUpon>UCPatientExtend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCPhoneNumber.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCPhoneNumber.Designer.cs">
+      <DependentUpon>UCPhoneNumber.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCProgram.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCProgram.Designer.cs">
+      <DependentUpon>UCProgram.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCProvinceOfBirth.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCProvinceOfBirth.Designer.cs">
+      <DependentUpon>UCProvinceOfBirth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UCWorkPlace.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCWorkPlace.Designer.cs">
+      <DependentUpon>UCWorkPlace.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PlusInfoProsessor.cs" />
+    <Compile Include="Popup\frmTreatmentDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popup\frmTreatmentDetail.Designer.cs">
+      <DependentUpon>frmTreatmentDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ResourceLanguageManager.cs" />
+    <Compile Include="Resources\ResourceMessage.cs" />
+    <Compile Include="ShareMethod\ChoiceControl.cs" />
+    <Compile Include="ShareMethod\IShareMethodInit.cs" />
+    <Compile Include="ShareMethod\ResourceLanguageManager.cs" />
+    <Compile Include="ShareMethod\ShareMethod.cs" />
+    <Compile Include="UCPlusInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCPlusInfo.Designer.cs">
+      <DependentUpon>UCPlusInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCPlusInfo__Dispose.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCPlusInfo__Data.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCPlusInfo__Focus.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCPlusInfo__Process.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCPlusInfo__SetAddress.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Validate\MessageUtil.cs" />
+    <Compile Include="Validate\ValidControl.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
+      <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
+      <Name>HIS.Desktop.ApiConsumer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
+      <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
+      <Name>HIS.Desktop.Controls.Session</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.DelegateRegister\HIS.Desktop.DelegateRegister.csproj">
+      <Project>{e85ee8f3-8e6b-46cd-adbd-b292f67ccffb}</Project>
+      <Name>HIS.Desktop.DelegateRegister</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
+      <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
+      <Name>HIS.Desktop.LocalStorage.BackendData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
+      <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
+      <Name>HIS.Desktop.LocalStorage.ConfigApplication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
+      <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
+      <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
+      <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
+      <Name>HIS.Desktop.LocalStorage.LocalData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
+      <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
+      <Name>HIS.Desktop.LocalStorage.Location</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
+      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
+      <Name>HIS.Desktop.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\HIS\Plugins\HIS.Desktop.Plugins.Library.RegisterConfig\HIS.Desktop.Plugins.Library.RegisterConfig.csproj">
+      <Project>{9247dd49-482c-4227-88df-616a8aaf3f38}</Project>
+      <Name>HIS.Desktop.Plugins.Library.RegisterConfig</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Design\UCExamHistory.resx">
+      <DependentUpon>UCExamHistory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCTaxCode.resx">
+      <DependentUpon>UCTaxCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCHrmKskCode.resx">
+      <DependentUpon>UCHrmKskCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCHohName.resx">
+      <DependentUpon>UCHohName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCAddressOfBirth.resx">
+      <DependentUpon>UCAddressOfBirth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCCommuneOfBirth.resx">
+      <DependentUpon>UCCommuneOfBirth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCDistrictOfBirth.resx">
+      <DependentUpon>UCDistrictOfBirth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCPatientStoreCode.resx">
+      <DependentUpon>UCPatientStoreCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\DesignForm\frmPatientExtend.resx">
+      <DependentUpon>frmPatientExtend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCMaHoNgheo.resx">
+      <DependentUpon>UCMaHoNgheo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCBloodRh.resx">
+      <DependentUpon>UCBloodRh.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCMotherName.resx">
+      <DependentUpon>UCMotherName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCFatherName.resx">
+      <DependentUpon>UCFatherName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCHouseHoldRelative.resx">
+      <DependentUpon>UCHouseHoldRelative.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCHouseHold.resx">
+      <DependentUpon>UCHouseHold.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCAddressNow.resx">
+      <DependentUpon>UCAddressNow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCCommuneNow.resx">
+      <DependentUpon>UCCommuneNow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCDistrictNow.resx">
+      <DependentUpon>UCDistrictNow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCProvinceNow.resx">
+      <DependentUpon>UCProvinceNow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCCMNDPlace.resx">
+      <DependentUpon>UCCMNDPlace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCCMNDDate.resx">
+      <DependentUpon>UCCMNDDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCCMND.resx">
+      <DependentUpon>UCCMND.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCBlood.resx">
+      <DependentUpon>UCBlood.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCEmail.resx">
+      <DependentUpon>UCEmail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCEthnic.resx">
+      <DependentUpon>UCEthnic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCMilitaryRank.resx">
+      <DependentUpon>UCMilitaryRank.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCNational.resx">
+      <DependentUpon>UCNational.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCPatientExtend.resx">
+      <DependentUpon>UCPatientExtend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCPhoneNumber.resx">
+      <DependentUpon>UCPhoneNumber.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCProgram.resx">
+      <DependentUpon>UCProgram.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCProvinceOfBirth.resx">
+      <DependentUpon>UCProvinceOfBirth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UCWorkPlace.resx">
+      <DependentUpon>UCWorkPlace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Popup\frmTreatmentDetail.resx">
+      <DependentUpon>frmTreatmentDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.my.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Message.Lang.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Message.Lang.my.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Message.Lang.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCPlusInfo.resx">
+      <DependentUpon>UCPlusInfo.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

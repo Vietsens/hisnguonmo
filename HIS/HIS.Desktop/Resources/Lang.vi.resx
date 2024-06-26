@@ -1,0 +1,425 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BanVuiLongThoatPhanMemRaVaoLaiDeCapNhat" xml:space="preserve">
+    <value>Bạn vui lòng thoát phần mềm ra vào lại để cập nhật</value>
+  </data>
+  <data name="blblHelp.Caption" xml:space="preserve">
+    <value>Phím tắt (Ctrl + F2) để "Tạo yêu cầu khách hàng"; (Ctrl+Shift+S) để tùy biến giao diện</value>
+  </data>
+  <data name="DongTabBenPhai" xml:space="preserve">
+    <value>Đóng các tab bên phải</value>
+  </data>
+  <data name="DongTabKhac" xml:space="preserve">
+    <value>Đóng các tab khác</value>
+  </data>
+  <data name="frmCheckServerConnect.gridColumn1.Caption" xml:space="preserve">
+    <value>Địa chỉ Server</value>
+  </data>
+  <data name="frmCheckServerConnect.gridColumn2.Caption" xml:space="preserve">
+    <value>Thời gian lần ping cuối</value>
+  </data>
+  <data name="frmCheckServerConnect.gridColumn3.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="frmCheckServerConnect.gridColumn4.Caption" xml:space="preserve">
+    <value>Mô tả</value>
+  </data>
+  <data name="frmCheckServerConnect.Text" xml:space="preserve">
+    <value>Kiểm tra kết nối server</value>
+  </data>
+  <data name="frmDesktopConfig.btnSave.Text" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="frmDesktopConfig.btnSave.ToolTip" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn1.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn1.ToolTip" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn2.Caption" xml:space="preserve">
+    <value>Cấu hình</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn2.ToolTip" xml:space="preserve">
+    <value>Cấu hình</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn3.Caption" xml:space="preserve">
+    <value>Giá trị</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn3.ToolTip" xml:space="preserve">
+    <value>Giá trị</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn4.Caption" xml:space="preserve">
+    <value>Mô tả</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn4.ToolTip" xml:space="preserve">
+    <value>Mô tả</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn5.Caption" xml:space="preserve">
+    <value>gridColumn5</value>
+  </data>
+  <data name="frmDesktopConfig.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmDesktopConfig.Text" xml:space="preserve">
+    <value>Cấu hình triển khai</value>
+  </data>
+  <data name="frmLogin.lblBranch" xml:space="preserve">
+    <value>Cơ sở:</value>
+  </data>
+  <data name="frmLogin.Text" xml:space="preserve">
+    <value>Đăng nhập</value>
+  </data>
+  <data name="frmMain.backstageViewControl1.Text" xml:space="preserve">
+    <value>backstageViewControl1</value>
+  </data>
+  <data name="frmMain.backstageViewControl2.Text" xml:space="preserve">
+    <value>backstageViewControl2</value>
+  </data>
+  <data name="frmMain.backstageViewTabItem1.Caption" xml:space="preserve">
+    <value>Phòng đang làm việc</value>
+  </data>
+  <data name="frmMain.backstageViewTabItem2.Caption" xml:space="preserve">
+    <value>Phòng đang làm việc</value>
+  </data>
+  <data name="frmMain.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmMain.barbtnResetCacheStateControl.Caption" xml:space="preserve">
+    <value>Reset cache control(Ctrl Shift R)</value>
+  </data>
+  <data name="frmMain.barBtnSendReflection.Caption" xml:space="preserve">
+    <value>Ctrl F2</value>
+  </data>
+  <data name="frmMain.barButtonItem1.Caption" xml:space="preserve">
+    <value>Đổi tên đăng nhập</value>
+  </data>
+  <data name="frmMain.barButtonItem2.Caption" xml:space="preserve">
+    <value>bbtnModuleControlHide</value>
+  </data>
+  <data name="frmMain.barButtonItem3.Caption" xml:space="preserve">
+    <value>barButtonItem3</value>
+  </data>
+  <data name="frmMain.barButtonItem4.Caption" xml:space="preserve">
+    <value>Ctrl+Shift+1</value>
+  </data>
+  <data name="frmMain.barHeaderItem1.Caption" xml:space="preserve">
+    <value>Phiên bản: 2.0 @</value>
+  </data>
+  <data name="frmMain.barHeaderItem2.Caption" xml:space="preserve">
+    <value>barHeaderItem2</value>
+  </data>
+  <data name="frmMain.bbtnChanelRemoteSupport.Caption" xml:space="preserve">
+    <value>Tạo yêu cầu khách hàng (Ctrl F2)</value>
+  </data>
+  <data name="frmMain.bbtnChangePassword.Caption" xml:space="preserve">
+    <value>Đổi mật khẩu</value>
+  </data>
+  <data name="frmMain.bbtnClose.Caption" xml:space="preserve">
+    <value>Đăng xuất</value>
+  </data>
+  <data name="frmMain.bbtnCommonChooseRoom.Caption" xml:space="preserve">
+    <value>Chọn phòng</value>
+  </data>
+  <data name="frmMain.bbtnConfigApplication.Caption" xml:space="preserve">
+    <value>Cấu hình phần mềm</value>
+  </data>
+  <data name="frmMain.bbtnCreateReport.Caption" xml:space="preserve">
+    <value>Tạo báo cáo</value>
+  </data>
+  <data name="frmMain.bbtnCustomizeButton.Caption" xml:space="preserve">
+    <value>Customize button (Ctrl shift S)</value>
+  </data>
+  <data name="frmMain.bbtnEventLog.Caption" xml:space="preserve">
+    <value>Nhật ký tác động</value>
+  </data>
+  <data name="frmMain.bbtnFeedback.Caption" xml:space="preserve">
+    <value>Phản hồi, hỗ trợ (Ctrl F2)</value>
+  </data>
+  <data name="frmMain.bbtnHideControl.Caption" xml:space="preserve">
+    <value>Ẩn/hiện control</value>
+  </data>
+  <data name="frmMain.bbtnHisConfig.Caption" xml:space="preserve">
+    <value>Cấu hình hệ thống và tài khoản</value>
+  </data>
+  <data name="frmMain.bbtnMonitorTracking.Caption" xml:space="preserve">
+    <value>Quản lý máy trạm</value>
+  </data>
+  <data name="frmMain.bbtnPageOther.Caption" xml:space="preserve">
+    <value>Khác</value>
+  </data>
+  <data name="frmMain.bbtnPlugin.Caption" xml:space="preserve">
+    <value>Phiên bản</value>
+  </data>
+  <data name="frmMain.bbtnRefeshRamGC.Caption" xml:space="preserve">
+    <value>Refesh Ram(GC)</value>
+  </data>
+  <data name="frmMain.bbtnRefreshCache.Caption" xml:space="preserve">
+    <value>Quản lý cache máy của tôi</value>
+  </data>
+  <data name="frmMain.bbtnRefreshEmrConfig.Caption" xml:space="preserve">
+    <value>Tải lại cấu hình bệnh án điện tử</value>
+  </data>
+  <data name="frmMain.bbtnReport.Caption" xml:space="preserve">
+    <value>Báo cáo</value>
+  </data>
+  <data name="frmMain.bbtnReportList.Caption" xml:space="preserve">
+    <value>Danh sách báo cáo</value>
+  </data>
+  <data name="frmMain.bbtnResetLisConfig.Caption" xml:space="preserve">
+    <value>Tải lại cấu hình LIS</value>
+  </data>
+  <data name="frmMain.bbtnResetServerConfigCache.Caption" xml:space="preserve">
+    <value>Tải lại cấu hình, cache server (MOS, REDIS cache server)</value>
+  </data>
+  <data name="frmMain.bbtnShiftF2.Caption" xml:space="preserve">
+    <value>Shift F2</value>
+  </data>
+  <data name="frmMain.bbtnShiftF3.Caption" xml:space="preserve">
+    <value>Shift F3</value>
+  </data>
+  <data name="frmMain.bbtnSpeechVoice.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmMain.bbtnTutorial.Caption" xml:space="preserve">
+    <value>Hướng dẫn sử dụng</value>
+  </data>
+  <data name="frmMain.bbtnVersionInfo.Caption" xml:space="preserve">
+    <value>Phiên bản</value>
+  </data>
+  <data name="frmMain.blblHelp.Caption" xml:space="preserve">
+    <value>Phím tắt (Ctrl + F2) để "Tạo yêu cầu khách hàng" (Ctrl+Shift+S) để tùy biến giao diện</value>
+  </data>
+  <data name="frmMain.gridColumn1.Caption" xml:space="preserve">
+    <value>Tabpage</value>
+  </data>
+  <data name="frmMain.gridColumn2.ToolTip" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
+  <data name="frmMain.gridColumn3.Caption" xml:space="preserve">
+    <value>RoomName</value>
+  </data>
+  <data name="frmMain.gridColumn4.Caption" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="frmMain.gridColumn5.Caption" xml:space="preserve">
+    <value>RoomName</value>
+  </data>
+  <data name="frmMain.gridColumn6.Caption" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="frmMain.gridColumn6.ToolTip" xml:space="preserve">
+    <value>Bỏ phòng làm việc đã chọn</value>
+  </data>
+  <data name="frmMain.gridColumn7.Caption" xml:space="preserve">
+    <value>Tabpage</value>
+  </data>
+  <data name="frmMain.gridColumn8.Caption" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="frmMain.gridColumn8.ToolTip" xml:space="preserve">
+    <value>Bỏ phòng làm việc đã chọn</value>
+  </data>
+  <data name="frmMain.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmMain.lblLanguage.Caption" xml:space="preserve">
+    <value>Tiếng việt</value>
+  </data>
+  <data name="frmMain.lblRoomName.Caption" xml:space="preserve">
+    <value>Chưa chọn phòng</value>
+  </data>
+  <data name="frmMain.lblVersion.Caption" xml:space="preserve">
+    <value>©Inventec</value>
+  </data>
+  <data name="frmMain.skinRibbonGalleryBarItem1.Caption" xml:space="preserve">
+    <value>Giao diện</value>
+  </data>
+  <data name="frmMain.tabpageMoritoring.Caption" xml:space="preserve">
+    <value>Theo dõi máy trạm</value>
+  </data>
+  <data name="frmMain.Text" xml:space="preserve">
+    <value>Phần mềm quản lý bệnh viên (HIS) - Hệ thống tích hợp bệnh viện MOS</value>
+  </data>
+  <data name="frmSystemConfig.Text" xml:space="preserve">
+    <value>Cấu hình hệ thống</value>
+  </data>
+  <data name="frmUgrade.lblDescription.Text" xml:space="preserve">
+    <value>Đang kiểm tra phiên bản cập nhật ...</value>
+  </data>
+  <data name="frmUgrade.Text" xml:space="preserve">
+    <value>frmUgrade</value>
+  </data>
+  <data name="frmUgradeAUS.lblDescription.Text" xml:space="preserve">
+    <value>Đang kiểm tra phiên bản cập nhật ...</value>
+  </data>
+  <data name="frmUgradeAUS.Text" xml:space="preserve">
+    <value>frmUgrade</value>
+  </data>
+  <data name="frmUpgradeOption.btnUpgradeHand.Text" xml:space="preserve">
+    <value>Nâng cấp thủ công</value>
+  </data>
+  <data name="frmUpgradeOption.lblStatus.Text" xml:space="preserve">
+    <value>Phiên bản phần mềm trên máy tính của bạn có thể đã cũ và cần nâng cấp, tuy nhiên chế độ nâng cấp tự động không làm việc, bạn có muốn nâng cấp thủ công lên phiên bản mới nhất?
+Phiên bản hiện tại: {0}
+Phiên bản cần nâng cấp: {1}</value>
+  </data>
+  <data name="frmUpgradeOption.Text" xml:space="preserve">
+    <value>Nâng cấp - Upgrade</value>
+  </data>
+  <data name="KetNoiServerKhongOnDinh" xml:space="preserve">
+    <value>Kết nối server không ổn định</value>
+  </data>
+  <data name="KetNoiServerOnDinh" xml:space="preserve">
+    <value>Kết nối server ổn định</value>
+  </data>
+  <data name="MatKetNoiServer" xml:space="preserve">
+    <value>Mất kết nối đến server...</value>
+  </data>
+  <data name="toolTipItem1.Text" xml:space="preserve">
+    <value>Bỏ phòng làm việc đã chọn</value>
+  </data>
+  <data name="toolTipItem2.Text" xml:space="preserve">
+    <value>Bỏ phòng làm việc đã chọn</value>
+  </data>
+  <data name="toolTipItem3.Text" xml:space="preserve">
+    <value>Phần mềm đang chạy ở chế độ nhập liệu bằng giọng nói</value>
+  </data>
+  <data name="toolTipItem4.Text" xml:space="preserve">
+    <value>Tạo yêu cầu khách hàng (Ctrl F2)</value>
+  </data>
+  <data name="toolTipItem5.Text" xml:space="preserve">
+    <value>Đăng xuất</value>
+  </data>
+  <data name="toolTipItem6.Text" xml:space="preserve">
+    <value>Phát triển</value>
+  </data>
+  <data name="toolTipItem7.Text" xml:space="preserve">
+    <value>Phiên bản</value>
+  </data>
+  <data name="toolTipItem8.Text" xml:space="preserve">
+    <value>Danh sách báo cáo</value>
+  </data>
+  <data name="toolTipItem9.Text" xml:space="preserve">
+    <value>Tạo báo cáo</value>
+  </data>
+</root>

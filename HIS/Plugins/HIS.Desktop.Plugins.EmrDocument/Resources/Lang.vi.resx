@@ -1,0 +1,345 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="EmrDocumentForm.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="EmrDocumentForm.bar3.Text" xml:space="preserve">
+    <value>Main menu</value>
+  </data>
+  <data name="EmrDocumentForm.barButtonItem1.Caption" xml:space="preserve">
+    <value>a</value>
+  </data>
+  <data name="EmrDocumentForm.bbtnsearch.Caption" xml:space="preserve">
+    <value>barButtonItem1</value>
+  </data>
+  <data name="EmrDocumentForm.btnDelete.Text" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="EmrDocumentForm.btnDownload.Text" xml:space="preserve">
+    <value>Tải xuống</value>
+  </data>
+  <data name="EmrDocumentForm.btnPrint.Text" xml:space="preserve">
+    <value>In</value>
+  </data>
+  <data name="EmrDocumentForm.btnSearch.Text" xml:space="preserve">
+    <value>Tìm kiếm (Ctrl F)</value>
+  </data>
+  <data name="EmrDocumentForm.chkDowloadGroup.Properties.Caption" xml:space="preserve">
+    <value>Tải văn bản gộp</value>
+  </data>
+  <data name="EmrDocumentForm.grclDepartment.Caption" xml:space="preserve">
+    <value>Đơn vị</value>
+  </data>
+  <data name="EmrDocumentForm.grclRejectTime.Caption" xml:space="preserve">
+    <value>Thời gian từ chối</value>
+  </data>
+  <data name="EmrDocumentForm.grclRejectTime_LD.Caption" xml:space="preserve">
+    <value>Lý do từ chối</value>
+  </data>
+  <data name="EmrDocumentForm.grclStt.Caption" xml:space="preserve">
+    <value>#</value>
+  </data>
+  <data name="EmrDocumentForm.grclTitle.Caption" xml:space="preserve">
+    <value>Chức danh/Quan hệ</value>
+  </data>
+  <data name="EmrDocumentForm.grclUser.Caption" xml:space="preserve">
+    <value>Người ký</value>
+  </data>
+  <data name="EmrDocumentForm.gridColumn1.Caption" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
+  <data name="EmrDocumentForm.gridColumn2.Caption" xml:space="preserve">
+    <value>gridColumn2</value>
+  </data>
+  <data name="EmrDocumentForm.gridColumn3.Caption" xml:space="preserve">
+    <value>#</value>
+  </data>
+  <data name="EmrDocumentForm.gridColumn4.Caption" xml:space="preserve">
+    <value>Ngày tạo</value>
+  </data>
+  <data name="EmrDocumentForm.gridColumn5.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="EmrDocumentForm.gridColumn6.Caption" xml:space="preserve">
+    <value>Loại</value>
+  </data>
+  <data name="EmrDocumentForm.gridColumn7.Caption" xml:space="preserve">
+    <value>            Tên</value>
+  </data>
+  <data name="EmrDocumentForm.gridColumn8.Caption" xml:space="preserve">
+    <value>Mã văn bản</value>
+  </data>
+  <data name="EmrDocumentForm.gtclSignTime.Caption" xml:space="preserve">
+    <value>Thời gian ký</value>
+  </data>
+  <data name="EmrDocumentForm.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="EmrDocumentForm.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="EmrDocumentForm.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="EmrDocumentForm.layoutControlItem11.Text" xml:space="preserve">
+    <value>Hiển thị văn bản gộp:</value>
+  </data>
+  <data name="EmrDocumentForm.layoutControlItem12.Text" xml:space="preserve">
+    <value>Mã điều trị:</value>
+  </data>
+  <data name="EmrDocumentForm.layoutControlItem19.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bao gồm các hồ sơ trong cùng bệnh án ngoại trú</value>
+  </data>
+  <data name="EmrDocumentForm.layoutControlItem19.Text" xml:space="preserve">
+    <value>Bao gồm cùng HSBA:</value>
+  </data>
+  <data name="EmrDocumentForm.layoutControlItem4.Text" xml:space="preserve">
+    <value>Loại văn bản:</value>
+  </data>
+  <data name="EmrDocumentForm.layoutControlItem9.Text" xml:space="preserve">
+    <value>Trạng thái ký:</value>
+  </data>
+  <data name="EmrDocumentForm.lciCheckGroupType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nhóm văn bản theo loại văn bản</value>
+  </data>
+  <data name="EmrDocumentForm.lciCheckGroupType.Text" xml:space="preserve">
+    <value>Nhóm theo loại VB:</value>
+  </data>
+  <data name="EmrDocumentForm.lciIncludeDelete.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bao gồm các văn bản đã hủy</value>
+  </data>
+  <data name="EmrDocumentForm.lciIncludeDelete.Text" xml:space="preserve">
+    <value>Bao gồm hủy:</value>
+  </data>
+  <data name="EmrDocumentForm.Text" xml:space="preserve">
+    <value>Chi tiết bệnh án</value>
+  </data>
+  <data name="EmrDocumentForm.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="EmrDocumentForm.treeListColumn1.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="EmrDocumentForm.treeListColumn10.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="EmrDocumentForm.treeListColumn11.Caption" xml:space="preserve">
+    <value>Mã văn bản</value>
+  </data>
+  <data name="EmrDocumentForm.treeListColumn12.Caption" xml:space="preserve">
+    <value>Đính kèm file</value>
+  </data>
+  <data name="EmrDocumentForm.treeListColumn2.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="EmrDocumentForm.treeListColumn3.Caption" xml:space="preserve">
+    <value>#</value>
+  </data>
+  <data name="EmrDocumentForm.treeListColumn4.Caption" xml:space="preserve">
+    <value>           Tên</value>
+  </data>
+  <data name="EmrDocumentForm.treeListColumn5.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="EmrDocumentForm.treeListColumn6.Caption" xml:space="preserve">
+    <value>Mã HIS</value>
+  </data>
+  <data name="EmrDocumentForm.treeListColumn7.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="EmrDocumentForm.treeListColumn8.Caption" xml:space="preserve">
+    <value>TG hồ sơ</value>
+  </data>
+  <data name="EmrDocumentForm.treeListColumn9.Caption" xml:space="preserve">
+    <value>Ngày tạo</value>
+  </data>
+  <data name="EmrDocumentForm.treeListColumnDOCUMENT_TYPE_NAME.Caption" xml:space="preserve">
+    <value>Loại</value>
+  </data>
+  <data name="frmAttackFile.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmAttackFile.bbtnAttackFile.Caption" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmAttackFile.btnAttackFile.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmAttackFile.btnCapture.ToolTip" xml:space="preserve">
+    <value>Chụp hình (F2)</value>
+  </data>
+  <data name="frmAttackFile.btnScan.ToolTip" xml:space="preserve">
+    <value>Máy Scan</value>
+  </data>
+  <data name="frmAttackFile.chkPrintDupicate.Properties.Caption" xml:space="preserve">
+    <value>2 mặt</value>
+  </data>
+  <data name="frmAttackFile.gridColumn1.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmAttackFile.gridColumn2.Caption" xml:space="preserve">
+    <value>DELETE</value>
+  </data>
+  <data name="frmAttackFile.gridColumn3.Caption" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="frmAttackFile.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmAttackFile.layoutControlItem2.Text" xml:space="preserve">
+    <value>Loại văn bản:</value>
+  </data>
+  <data name="frmAttackFile.layoutControlItem7.Text" xml:space="preserve">
+    <value>Nhóm văn bản:</value>
+  </data>
+  <data name="frmAttackFile.lciFortxtDocumentName.Text" xml:space="preserve">
+    <value>Tên văn bản:</value>
+  </data>
+  <data name="frmAttackFile.pteAnhChupFileDinhKem.Properties.NullText" xml:space="preserve">
+    <value>File ảnh đính kèm</value>
+  </data>
+  <data name="frmAttackFile.Text" xml:space="preserve">
+    <value>Đính kèm file</value>
+  </data>
+  <data name="FrmReason.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FrmReason.barSave.Caption" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="FrmReason.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="FrmReason.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FrmReason.layoutControlItem1.Text" xml:space="preserve">
+    <value>Lý do xuất:</value>
+  </data>
+  <data name="FrmReason.Text" xml:space="preserve">
+    <value>Lý do xuất văn bản</value>
+  </data>
+  <data name="toolTipItem1.Text" xml:space="preserve">
+    <value>Đính kèm file</value>
+  </data>
+  <data name="toolTipItem2.Text" xml:space="preserve">
+    <value>Chọn file trong máy tính</value>
+  </data>
+</root>

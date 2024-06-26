@@ -1,0 +1,462 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmApproveAggrExpMest.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmApproveAggrExpMest.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmApproveAggrExpMest.cboPrint.Text" xml:space="preserve">
+    <value>In ấn</value>
+  </data>
+  <data name="frmApproveAggrExpMest.xtraTabPagePrescription.Text" xml:space="preserve">
+    <value>Đơn dược</value>
+  </data>
+  <data name="frmApproveAggrExpMest.layoutControl6.Text" xml:space="preserve">
+    <value>layoutControl6</value>
+  </data>
+  <data name="frmApproveAggrExpMest.layoutControl8.Text" xml:space="preserve">
+    <value>layoutControl8</value>
+  </data>
+  <data name="frmApproveAggrExpMest.xtraTabPageRequestMediMateInPrescription.Text" xml:space="preserve">
+    <value>Danh sách yêu cầu</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridControlMedcineInPrescriptionColumnStt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridControlMedcineInPrescriptionMedicineTypeCode.Caption" xml:space="preserve">
+    <value>Mã thuốc</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridControlMedcineInPrescriptionMedicineTypeName.Caption" xml:space="preserve">
+    <value>Tên thuốc</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridControlMedcineInPrescriptionServiceUnitName.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridControlMedcineInPrescriptionAmount.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridControlMedcineInPrescriptionPackageNumber.Caption" xml:space="preserve">
+    <value>Số lô</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridControlMedcineInPrescriptionExpiredDate.Caption" xml:space="preserve">
+    <value>Hạn sử dụng</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridControlMedcineInPrescriptionMedicineRegisterNumber.Caption" xml:space="preserve">
+    <value>Số đăng ký</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridControlMedcineInPrescriptionActiveIngrBhytName.Caption" xml:space="preserve">
+    <value>Tên hoạt chất</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridControlMedcineInPrescriptionActiveIngrBhytCode.Caption" xml:space="preserve">
+    <value>Mã hoạt chất</value>
+  </data>
+  <data name="frmApproveAggrExpMest.repositoryItemPictureEdit3.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmApproveAggrExpMest.xtraTabPageApprovalMediMateInPrescription.Text" xml:space="preserve">
+    <value>Danh sách duyệt</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprovalMedcineInPrescriptionSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprovalMedcineInPrescriptionMedicineTypeCode.Caption" xml:space="preserve">
+    <value>Mã thuốc</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprovalMedcineInPrescriptionMedicineTypeName.Caption" xml:space="preserve">
+    <value>Tên thuốc</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprovalMedcineInPrescriptionServiceUnitName.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprovalMedcineInPrescriptionAmount.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprovalMedcineInPrescriptionPackageNumber.Caption" xml:space="preserve">
+    <value>Số lô</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprovalMedcineInPrescriptionExpiredDate.Caption" xml:space="preserve">
+    <value>Hạn sử dụng</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprovalMedcineInPrescriptionMedicineRegisterNumber.Caption" xml:space="preserve">
+    <value>Số đăng ký</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprovalMedcineInPrescriptionActiveIngrBhytName.Caption" xml:space="preserve">
+    <value>Tên hoạt chất</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprovalMedcineInPrescriptionActiveIngrBhytCode.Caption" xml:space="preserve">
+    <value>Mã hoạt chất</value>
+  </data>
+  <data name="frmApproveAggrExpMest.repositoryItemPictureEdit4.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmApproveAggrExpMest.layoutControlItem14.Text" xml:space="preserve">
+    <value>Thời gian chỉ định:</value>
+  </data>
+  <data name="frmApproveAggrExpMest.layoutControlItem18.Text" xml:space="preserve">
+    <value>Người yêu cầu:</value>
+  </data>
+  <data name="frmApproveAggrExpMest.layoutControlItem19.Text" xml:space="preserve">
+    <value>Thời gian sử dụng:</value>
+  </data>
+  <data name="frmApproveAggrExpMest.layoutControlItem15.Text" xml:space="preserve">
+    <value>ICD:</value>
+  </data>
+  <data name="frmApproveAggrExpMest.layoutControlItem17.Text" xml:space="preserve">
+    <value>Lời dặn bác sĩ:</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridControlPrescriptionColumnRemove.Caption" xml:space="preserve">
+    <value>Loại bỏ</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridControlPrescriptionExpMestCode.Caption" xml:space="preserve">
+    <value>Mã xuất</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnPrescriptionVirPatientName.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnPrescriptionDob.Caption" xml:space="preserve">
+    <value>Ngày sinh</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnPrescriptionGenderName.Caption" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="frmApproveAggrExpMest.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmApproveAggrExpMest.bbtnSave.Caption" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmApproveAggrExpMest.bbtnNew.Caption" xml:space="preserve">
+    <value>Mới (Ctrl N)</value>
+  </data>
+  <data name="frmApproveAggrExpMest.xtraTabPageRequestMedicine.Text" xml:space="preserve">
+    <value>Yêu cầu thuốc </value>
+  </data>
+  <data name="frmApproveAggrExpMest.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnMedicineStt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnMedicineMedicineTypeCode.Caption" xml:space="preserve">
+    <value>Mã thuốc</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnMedicineMedicineTypeName.Caption" xml:space="preserve">
+    <value>Tên thuốc</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnMedicineServiceUnitName.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnMedicineAmount.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnMedicineIsExpend.Caption" xml:space="preserve">
+    <value>Hao phí</value>
+  </data>
+  <data name="frmApproveAggrExpMest.repositoryItemPictureEdit1.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumn2.Caption" xml:space="preserve">
+    <value>Số lô</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumn3.Caption" xml:space="preserve">
+    <value>Hạn sử dụng</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumn4.Caption" xml:space="preserve">
+    <value>Số đăng ký</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumn5.Caption" xml:space="preserve">
+    <value>Tên hoạt chất</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumn6.Caption" xml:space="preserve">
+    <value>Mã hoạt chất</value>
+  </data>
+  <data name="frmApproveAggrExpMest.xtraTabPageApprovalMedicine.Text" xml:space="preserve">
+    <value>Duyệt thuốc</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprvovalMedicineSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprvovalMedicineMedicineTypeCode.Caption" xml:space="preserve">
+    <value>Mã thuốc</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprvovalMedicineMedicineTypeName.Caption" xml:space="preserve">
+    <value>Tên thuốc</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprvovalMedicineServiceUnitName.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprvovalMedicineAmount.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprvovalMedicineIsExpend.Caption" xml:space="preserve">
+    <value>Hao phí</value>
+  </data>
+  <data name="frmApproveAggrExpMest.repositoryItemPictureEdit5.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprvovalMedicineBidNumber.Caption" xml:space="preserve">
+    <value>Số lô</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprvovalMedicineExpiredDate.Caption" xml:space="preserve">
+    <value>Hạn sử dụng</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprvovalMedicineRegisterNumber.Caption" xml:space="preserve">
+    <value>Số đăng ký</value>
+  </data>
+  <data name="frmApproveAggrExpMest.columnApprvovalMedicineActiveIngrBhytName.Caption" xml:space="preserve">
+    <value>Tên hoạt chất</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprvovalMedicineActiveIngrBhytCode.Caption" xml:space="preserve">
+    <value>Mã hoạt chất</value>
+  </data>
+  <data name="frmApproveAggrExpMest.xtraTabPageRequestMaterial.Text" xml:space="preserve">
+    <value>Yêu cầu vật tư</value>
+  </data>
+  <data name="frmApproveAggrExpMest.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnMaterialStt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnMaterialMaterialTypeCode.Caption" xml:space="preserve">
+    <value>Mã vật tư</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnMaterialMaterialTypeName.Caption" xml:space="preserve">
+    <value>Tên vật tư</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnMaterialServiceUnitName.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnMaterialAmount.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnMaterialIsExpend.Caption" xml:space="preserve">
+    <value>Hao phí</value>
+  </data>
+  <data name="frmApproveAggrExpMest.repositoryItemPictureEdit2.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnMaterialBidNumber.Caption" xml:space="preserve">
+    <value>Số lô</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnMaterialExpiredDate.Caption" xml:space="preserve">
+    <value>Hạn sử dụng</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnMaterialRegisterNumber.Caption" xml:space="preserve">
+    <value>Số đăng ký</value>
+  </data>
+  <data name="frmApproveAggrExpMest.xtraTabPageApprovalMaterial.Text" xml:space="preserve">
+    <value>Duyệt vật tư</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprovalMaterialSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprovalMaterialMaterialType.Caption" xml:space="preserve">
+    <value>Mã vật tư</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprovalMaterialMaterialTypeName.Caption" xml:space="preserve">
+    <value>Tên vật tư</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprovalMaterialServiceUnitName.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprovalMaterialAmount.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprovalMaterialIsExpend.Caption" xml:space="preserve">
+    <value>Hao phí</value>
+  </data>
+  <data name="frmApproveAggrExpMest.repositoryItemPictureEdit6.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprovalMaterialBidNumber.Caption" xml:space="preserve">
+    <value>Số lô</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprovalMaterialExpiredDate.Caption" xml:space="preserve">
+    <value>Hạn sử dụng</value>
+  </data>
+  <data name="frmApproveAggrExpMest.gridColumnApprovalMaterialRegisterNumber.Caption" xml:space="preserve">
+    <value>Số đăng ký</value>
+  </data>
+  <data name="frmApproveAggrExpMest.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmApproveAggrExpMest.groupControlCommonInfomation.Text" xml:space="preserve">
+    <value>Thông tin chung</value>
+  </data>
+  <data name="frmApproveAggrExpMest.layoutControl7.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="frmApproveAggrExpMest.lciCreator.Text" xml:space="preserve">
+    <value>Người tạo:</value>
+  </data>
+  <data name="frmApproveAggrExpMest.lciCreateTime.Text" xml:space="preserve">
+    <value>Thời gian tạo:</value>
+  </data>
+  <data name="frmApproveAggrExpMest.lciUserTime.Text" xml:space="preserve">
+    <value>Thời gian sử dụng:</value>
+  </data>
+  <data name="frmApproveAggrExpMest.Text" xml:space="preserve">
+    <value>Chi tiết phiếu lĩnh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__FRM_AGG_EXP_MEST_FILTER" xml:space="preserve">
+    <value>Điều kiện lọc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__IN_PHIEU_LINH_THUOC" xml:space="preserve">
+    <value>Phiếu lĩnh thuốc, vật tư</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__IN_PHIEU_LINH_THUOC_GAY_NGHIEN_HUONG_TAM_THAN" xml:space="preserve">
+    <value>Phiếu lĩnh thuốc gây nghiện, hướng tâm thần</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__IN_PHIEU_TONG_HOP" xml:space="preserve">
+    <value>Phiếu tổng hợp</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__IN_TRA_DOI_THUOC" xml:space="preserve">
+    <value>Phiếu tra đồi thuốc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_AGG_EXP_MEST_FILTER__GAY_NGHIEN_HUONG_THAN" xml:space="preserve">
+    <value>Điều kiện lọc - Gây nghiện, hướng tâm thần</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_AGG_EXP_MEST_FILTER__LINH_THUOC_VAT_TU" xml:space="preserve">
+    <value>Điều kiện lọc - Lĩnh thuốc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_AGG_EXP_MEST_FILTER__SUM" xml:space="preserve">
+    <value>Điều kiện lọc - Tổng hợp</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_AGG_EXP_MEST_FILTER__TRA_DOI" xml:space="preserve">
+    <value>Điều kiện lọc - Tra đổi</value>
+  </data>
+  <data name="TaiKhoanKhongCoQuyenThucHienChucNang" xml:space="preserve">
+    <value>Tài khoản không có quyền thực hiện chức năng</value>
+  </data>
+  <data name="Plugin_HisSuimServiceType__BanCoMuonKhoaDuLieu" xml:space="preserve">
+    <value>Bạn có muốn khóa dữ liệu không?</value>
+  </data>
+  <data name="Plugin_HisSuimServiceType__BanCoMuonXoaDuLieu" xml:space="preserve">
+    <value>Bạn có muốn xóa dữ liệu không?</value>
+  </data>
+  <data name="Plugin_HisSuimServiceType__MoKhoaDuLieu" xml:space="preserve">
+    <value>Bạn có muốn mở khóa dữ liệu không?</value>
+  </data>
+  <data name="Plugin_HisSuimServiceType__TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Trường dữ liệu bắt buộc !</value>
+  </data>
+</root>

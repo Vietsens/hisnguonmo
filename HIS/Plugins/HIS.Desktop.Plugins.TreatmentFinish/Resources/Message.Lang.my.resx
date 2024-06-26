@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BanBatBuocChonDichVuHenKhamKhiKetThucDieuTri" xml:space="preserve">
+    <value>ကုသမှုပြီးဆုံးချိန်တွင် ရက်ချိန်းဝန်ဆောင်မှုကို ရွေးချယ်ရန် လိုအပ်ပါသည်။</value>
+  </data>
+  <data name="BanCanNhapCacThongTinSauDePhucVuXuatXmlHoSoChungTu" xml:space="preserve">
+    <value>Xml စာရွက်စာတမ်းများ (CV2076) ကို ထုတ်ယူရန် အောက်ပါအချက်အလက်များကို ထည့်သွင်းရန် လိုအပ်သည်- {0}</value>
+  </data>
+  <data name="BanChuaChonPhongKhamLanSau" xml:space="preserve">
+    <value>သင့်နောက်ထပ်ဆေးခန်းကို သင်မရွေးချယ်ရသေးပါ။</value>
+  </data>
+  <data name="BanChuaChonStt" xml:space="preserve">
+    <value>နံပါတ်စဉ်တစ်ခုကို သင်ရွေးချယ်မထားပါ။</value>
+  </data>
+  <data name="BanCoMuonThucHienKhong" xml:space="preserve">
+    <value>လက်မှတ်ထိုးလိုပါသလား။</value>
+  </data>
+  <data name="BanCoMuonTiepTuc" xml:space="preserve">
+    <value>{0} ဆက်လုပ်လိုပါသလား။</value>
+  </data>
+  <data name="BatBuocChonChuongTrinh" xml:space="preserve">
+    <value>အစီအစဉ်တစ်ခုကို ရွေးချယ်ရန် လိုအပ်သည်။</value>
+  </data>
+  <data name="BenhNhanChuaCoDHST" xml:space="preserve">
+    <value>လူနာတွင် အရေးကြီးသော လက္ခဏာ အချက်အလက် မရှိပါ။</value>
+  </data>
+  <data name="BenhNhanCoThongTinBhytChuaDung" xml:space="preserve">
+    <value>လူနာတွင် မမှန်ကန်သော ကျန်းမာရေးအာမခံအချက်အလက်များရှိသည်။</value>
+  </data>
+  <data name="BenhNhanDangThieuVienPhi" xml:space="preserve">
+    <value>လူနာသည် ဆေးရုံစရိတ် ({0} VND) ချို့တဲ့နေသည်</value>
+  </data>
+  <data name="BenhNhanDangThieuVienPhiBanCoMuonTiepTuc" xml:space="preserve">
+    <value>လူနာသည် ဆေးရုံစရိတ် ({0} VND) ချို့တဲ့နေသည်။</value>
+  </data>
+  <data name="BenhNhanNoiTruChuaDuocChiDinhDichVuGiuong" xml:space="preserve">
+    <value>အတွင်းလူနာများအား အိပ်ယာဝန်ဆောင်မှုများ ပေးအပ်ခြင်းမပြုရ။</value>
+  </data>
+  <data name="BenhNhanThieuCanNang" xml:space="preserve">
+    <value>လူနာသည် အရေးကြီးသော လက္ခဏာများတွင် ကိုယ်အလေးချိန် အချက်အလက် ချို့တဲ့သည်။</value>
+  </data>
+  <data name="BNCoDotDieuTriNTCuChuaKetThucKhongChoPhepChuyen" xml:space="preserve">
+    <value>ယခင် ပြင်ပလူနာ/ အတွင်းလူနာ ကုသမှု မပြီးဆုံးသေးသော လူနာများကို ဆေးရုံသို့ ပြောင်းရွှေ့ခွင့် မပြုပါ။</value>
+  </data>
+  <data name="BuaAnCoSoLuongLonHonSoNgayDieuTri" xml:space="preserve">
+    <value>အစားအစာများ {0} သည် ကုသသည့်ရက်အရေအတွက်ထက် ပိုများသည်။</value>
+  </data>
+  <data name="BuaAnCoSoLuongLonHonSoNgayDieuTriBanCoMuonTiepTucKhong" xml:space="preserve">
+    <value>အစားအစာများ {0} သည် ကုသသည့်ရက်အရေအတွက်ထက် ပိုများသည်။</value>
+  </data>
+  <data name="CacPhieuChiDinhSauChuaKetThucKhongChoPhepKetThuc" xml:space="preserve">
+    <value>အောက်ပါအမှာစာများ မပြီးပြတ်သေးပါ- {0}</value>
+  </data>
+  <data name="CacVatTuThieuThongTinHoaDonBanCoMuonTiepTuc" xml:space="preserve">
+    <value>ပစ္စည်းများ {0} သည် ပြေစာအချက်အလက် ပျောက်ဆုံးနေပါသည်။</value>
+  </data>
+  <data name="CanhBaoNgayHenLaChuNhat" xml:space="preserve">
+    <value>လက်ရှိချိန်းဆိုထားသည့်ရက်မှာ တနင်္ဂနွေဖြစ်သည်။ သင်ဆက်လက်လုပ်ဆောင်လိုပါသလား။</value>
+  </data>
+  <data name="CanhBaoNgayHenLaThuBay" xml:space="preserve">
+    <value>လက်ရှိချိန်းဆိုထားသည့်ရက်သည် စနေနေ့ဖြစ်သည်။ သင်ဆက်လက်လုပ်ဆောင်လိုပါသလား။</value>
+  </data>
+  <data name="CanhBaoNgayHenToiDa" xml:space="preserve">
+    <value>အများဆုံးရက်ချိန်းခွင့်ပြုသည့်ရက်အရေအတွက်မှာ {0} ရက်ဖြစ်သည်။</value>
+  </data>
+  <data name="CanhBaoThoiGianHenKhamSoVoiThoiGianKetThucDieuTri" xml:space="preserve">
+    <value>ချိန်းဆိုထားသည့်အချိန်သည် ကုသမှုပြီးဆုံးချိန်ထက် ပိုနေရပါမည်။</value>
+  </data>
+  <data name="ChuaDuocTaoVoBenhAn" xml:space="preserve">
+    <value>ပရိုဂရမ်လူနာသည် ဆေးမှတ်တမ်းခွံတစ်ခုကို မဖန်တီးရသေးပါ။</value>
+  </data>
+  <data name="ChuaLinhHetThuoc" xml:space="preserve">
+    <value>ဆေးအကုန်မသောက်ရသေးဘူး။</value>
+  </data>
+  <data name="ChuaNhapPhuongPhapDieuTri" xml:space="preserve">
+    <value>သင်သည် \</value>
+  </data>
+  <data name="ChuaNhapThoiGianHenKham" xml:space="preserve">
+    <value>သင်ချိန်းဆိုမည့်အချိန်ကို မရွေးချယ်ရသေးပါ၊ ကျေးဇူးပြု၍ ထပ်မံစစ်ဆေးပါ။</value>
+  </data>
+  <data name="ChuaNhapThongTinChuyenVien" xml:space="preserve">
+    <value>သင်သည် ဆေးရုံလွှဲပြောင်းမှု အချက်အလက် အပြည့်အစုံကို မဖြည့်ရသေးပါ၊ ကျေးဇူးပြု၍ ထပ်မံစစ်ဆေးပါ။</value>
+  </data>
+  <data name="ChuaNhapThongTinTuVong" xml:space="preserve">
+    <value>သေဆုံးခြင်းဆိုင်ရာ အချက်အလက်အပြည့်အစုံကို သင်မဖြည့်ရသေးပါ၊ ထပ်မံစစ်ဆေးပါ။</value>
+  </data>
+  <data name="ChuaTongHopSuatAnMaYLenh" xml:space="preserve">
+    <value>- မပြုစုရသေးပါ (အမှာစာကုဒ်- {0})</value>
+  </data>
+  <data name="ChucNangDangPhatTrienVuiLongThuLaiSau" xml:space="preserve">
+    <value>လုပ်ဆောင်ချက်ကို လက်ရှိဗားရှင်းတွင် မပံ့ပိုးပါ၊ ကျေးဇူးပြု၍ နောက်မှ ထပ်ကြိုးစားပါ။</value>
+  </data>
+  <data name="ChuongTrinhBatBuocChonDienDieuTriNgoaiTruHoSoSeDuocTuDongCapNhatSangDienDieuTriNgoaiTru" xml:space="preserve">
+    <value>ပြင်ပလူနာကုသမှုကို ရွေးချယ်ရန် ပရိုဂရမ် {0} လိုအပ်ပြီး မှတ်တမ်းများကို ပြင်ပလူနာကုသမှုသို့ အလိုအလျောက် အပ်ဒိတ်လုပ်မည်ဖြစ်သည်။</value>
+  </data>
+  <data name="CuaKhoaHienTai" xml:space="preserve">
+    <value>လက်ရှိဌာန၏</value>
+  </data>
+  <data name="DaCapHetSoKhamVaoNgay" xml:space="preserve">
+    <value>စာမေးပွဲနံပါတ်များအားလုံးကို {0} ရက်စွဲဖြင့် ထုတ်ပြန်ထားပါသည်။</value>
+  </data>
+  <data name="DuLieuKhongHopLe" xml:space="preserve">
+    <value>မမှန်ကန်သောဒေတာ</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong" xml:space="preserve">
+    <value>ဒေတာကို ဖျက်လိုသည်မှာ သေချာပါသလား။</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong" xml:space="preserve">
+    <value>ဒေတာကို ဖျက်လိုပါသလား။</value>
+  </data>
+  <data name="HoSoDaCoSoRaVien" xml:space="preserve">
+    <value>ဖိုင်တွင် ဆေးရုံဆင်းရမည့်နံပါတ်ရှိပြီး၊ ၎င်းကို ပြန်လည်ထုတ်ပေးလိုပါသလား။</value>
+  </data>
+  <data name="HoSoKhongCoTtVaoBuong" xml:space="preserve">
+    <value>မှတ်တမ်းများတွင် အခန်းဝင်ခြင်းဆိုင်ရာ အချက်အလက် မရှိပါ။</value>
+  </data>
+  <data name="KhoaKhongCoBuong" xml:space="preserve">
+    <value>လက်ရှိဌာနတွင် အခန်းများ မရှိပါ။</value>
+  </data>
+  <data name="KhongChoGanGiuong" xml:space="preserve">
+    <value>အိပ်ရာနေရာများကို ခွင့်မပြုပါ။</value>
+  </data>
+  <data name="KhungGioVuotQuaSoLuong" xml:space="preserve">
+    <value>ဤအချိန်ဘောင်သည် ခွင့်ပြုထားသော ရက်ချိန်းအရေအတွက်ကို ကျော်လွန်သွားပါသည်။</value>
+  </data>
+  <data name="MaPhieuTongHopSuatAnMaYLenh" xml:space="preserve">
+    <value>- ဘောက်ချာကုဒ်- {0} (မှာယူမှုကုဒ်- {1})</value>
+  </data>
+  <data name="NguoiCap" xml:space="preserve">
+    <value>လိုင်စင်ရှိသူ</value>
+  </data>
+  <data name="NoiLamViecCuaBenhNhan" xml:space="preserve">
+    <value>လူနာ၏လုပ်ငန်းခွင်</value>
+  </data>
+  <data name="PhongKhamCoSoLuotKhamVuotDinhMuc" xml:space="preserve">
+    <value>ဆေးခန်း၏ ရက်ချိန်းအရေအတွက်သည် ခွင့်ပြုထားသော နံပါတ်ထက် ကျော်လွန်နေသည်- {0}။</value>
+  </data>
+  <data name="SoNgayGiuongLonHonSoNgayGiuongToiDa" xml:space="preserve">
+    <value>အိပ်ရာဝင်ရက် အရေအတွက် {0} သည် အများဆုံး အိပ်ရာဝင်ရက် {1} ထက် ပိုများသည်။</value>
+  </data>
+  <data name="SoNgayGiuongNhoHonSoNgayGiuongToiDa" xml:space="preserve">
+    <value>အိပ်ရာဝင်ရက်အရေအတွက် {0} သည် အများဆုံးအိပ်ရာဝင်ရက် {1} ထက်နည်းသည်။</value>
+  </data>
+  <data name="TaiKhoanKhongCoQuyenThucHienChucNang" xml:space="preserve">
+    <value>အကောင့်သည် လုပ်ဆောင်ချက်များကို လုပ်ဆောင်ရန် ခွင့်ပြုချက်မရှိပါ။</value>
+  </data>
+  <data name="TheBHYTCuaBNSeHetHanVaoNgay" xml:space="preserve">
+    <value>လူနာ၏ကျန်းမာရေးအာမခံကတ်သည် {0} ရက်စွဲတွင် သက်တမ်းကုန်ဆုံးမည်ဖြစ်ပြီး၊ သင်သည် {1} ရက်စွဲဖြင့် ရက်ချိန်းယူလိုသည်မှာ သေချာပါသလား။</value>
+  </data>
+  <data name="ThoiGianKetThucNhoHoiThoiGianYLenhCuaCacMaYeuCauSau" xml:space="preserve">
+    <value>အဆုံးအချိန်သည် တောင်းဆိုမှုကုဒ်များ၏ အမိန့်ပေးချိန်ထက် နည်းသည်- {0}</value>
+  </data>
+  <data name="ThoiGianNghiDen" xml:space="preserve">
+    <value>အားလပ်ရက်အချိန်ရောက်ပြီ။</value>
+  </data>
+  <data name="ThoiGianNghiTu" xml:space="preserve">
+    <value>အားလပ်ချိန်</value>
+  </data>
+  <data name="ThoiGianTuVongKhongDuocBeHonThoiGianVaoVien" xml:space="preserve">
+    <value>သေရမည့်အချိန်သည် ဆေးရုံတက်ရမည့်အချိန်ထက် မနည်းနိုင် {0}</value>
+  </data>
+  <data name="ThoiGianTuVongKhongDuocLonHonThoiGianHienTai" xml:space="preserve">
+    <value>သေဆုံးချိန်သည် လက်ရှိအချိန်ထက် မပိုနိုင်ပါ {0}</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>အသိပေးချက်</value>
+  </data>
+  <data name="TonTaiLichSuGiuongChuaCoThongTinThoiGianKetThucHoacThoiGianBatDauThoiGianKetThucLonHonThoiGianRaVien" xml:space="preserve">
+    <value>အိပ်ရာဝင်မှတ်တမ်းသည် အဆုံးအချိန်အချက်အလက်မရှိဘဲ တည်ရှိနေပါသည် သို့မဟုတ် စတင်ချိန်/ကုန်ဆုံးချိန်သည် ထွက်ခွာချိန်ထက် ပိုများသည်။</value>
+  </data>
+  <data name="TonTaiLichSuGiuongChuaCoThongTinThoiGianKetThucHoacThoiGianBatDauThoiGianKetThucLonHonThoiGianRaVienBanCoMuonTiepTuc" xml:space="preserve">
+    <value>အိပ်ရာဝင်မှတ်တမ်းသည် အဆုံးအချိန်အချက်အလက်မရှိဘဲ တည်ရှိနေပါသည် သို့မဟုတ် စတင်ချိန်/ကုန်ဆုံးချိန်သည် ထွက်ခွာချိန်ထက် ပိုများသည်။</value>
+  </data>
+  <data name="TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>လိုအပ်သော ဒေတာအကွက်များကို မထည့်ရသေးပါ။</value>
+  </data>
+  <data name="VanBanChuaDuChuKy" xml:space="preserve">
+    <value>အောက်ပါစာရွက်စာတမ်းများကို လက်မှတ်မထိုးရသေးပါ။</value>
+  </data>
+  <data name="YLenhChuanHoanThanh" xml:space="preserve">
+    <value>မပြီးသေးသော မှာယူမှုများ- {0}။</value>
+  </data>
+  <data name="YLenhChuaTongHopHoacDuyetSuatAn" xml:space="preserve">
+    <value>အတည်မပြုထားသော အစားအသောက် မှာယူမှုတစ်ခု ရှိသည်-\r\n</value>
+  </data>
+  <data name="YLenhCoThoiGianChiDinhLonHonThoiGianRaKhoa" xml:space="preserve">
+    <value>ဆေးဘက်ဆိုင်ရာအမိန့်စာ {0} တွင် ဆေးကုသချိန်ထက် ဆေးရုံဆင်းချိန်ထက် ပိုကြီးပါသည်။</value>
+  </data>
+  <data name="YLenhThieuDichVuKhamBanCoMuonTiepTuc" xml:space="preserve">
+    <value>ဆေးဘက်ဆိုင်ရာအမိန့် {0} တွင် စစ်ဆေးမှုဝန်ဆောင်မှုများ ချို့တဲ့နေသည်။</value>
+  </data>
+</root>

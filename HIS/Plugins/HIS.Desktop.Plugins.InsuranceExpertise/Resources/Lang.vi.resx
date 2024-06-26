@@ -1,0 +1,447 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML4210__COMBO_FILTER__ITEM_ALL" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML4210__COMBO_FILTER__ITEM_IN_LIST" xml:space="preserve">
+    <value>Trong danh sách</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML4210__COMBO_FILTER__ITEM_OUT_LIST" xml:space="preserve">
+    <value>Ngoài danh sách</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML4210__TXT_KEYWORD__NULL_VALUE" xml:space="preserve">
+    <value>Danh sách đầu số thẻ bhyt cách nhau bởi dấu , (phẩy)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__BTN_APPROVAL" xml:space="preserve">
+    <value>Duyệt (Ctrl S)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__BTN_CANCEL_APPROVAL" xml:space="preserve">
+    <value>Hủy duyệt (Ctrl C)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__BTN_FIND" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__BTN_LOCK_HEIN" xml:space="preserve">
+    <value>Khóa (Ctrl L)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__BTN_UNLOCK_HEIN" xml:space="preserve">
+    <value>Mở khóa (Ctrl O)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_STATUS__ITEM_ALL" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_STATUS__ITEM_APPROVALED" xml:space="preserve">
+    <value>Có hồ sơ duyệt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_STATUS__ITEM_HAS_APPROVAL_NOT_XML" xml:space="preserve">
+    <value>Đã duyệt chưa xuất xml</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_STATUS__ITEM_IS_LOCK_HEIN" xml:space="preserve">
+    <value>Đã khóa</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_STATUS__ITEM_IS_UNLOCK_HEIN" xml:space="preserve">
+    <value>Chưa khóa</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_STATUS__ITEM_NOT_APPROVAL" xml:space="preserve">
+    <value>Chưa duyệt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_XML__ITEM_917" xml:space="preserve">
+    <value>Xml 917</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_XML__ITEM_9324" xml:space="preserve">
+    <value>Xml 9324</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__GRID_CONTROL__COLUMN_STT" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__GRID_HEIN_APPROVAL__COLUMN_EXECUTE_TIME" xml:space="preserve">
+    <value>Thời gian duyệt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__GRID_HEIN_APPROVAL__COLUMN_EXECUTE_USERNAME" xml:space="preserve">
+    <value>Người duyệt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__GRID_HEIN_APPROVAL__COLUMN_HEIN_APPROVAL_CODE" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__GRID_HEIN_APPROVAL__COLUMN_NUM_ORDER" xml:space="preserve">
+    <value>Stt duyệt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__GRID_HEIN_CARD__COLUMN_HEIN_CARD_FROM_TIME" xml:space="preserve">
+    <value>Hạn từ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__GRID_HEIN_CARD__COLUMN_HEIN_CARD_NUMBER" xml:space="preserve">
+    <value>Số thẻ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__GRID_HEIN_CARD__COLUMN_HEIN_CARD_TO_TIME" xml:space="preserve">
+    <value>Hạn đến</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__GRID_TREATMENT__COLUMN_DOB" xml:space="preserve">
+    <value>Ngày sinh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__GRID_TREATMENT__COLUMN_GENDER_NAME" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__GRID_TREATMENT__COLUMN_IN_TIME" xml:space="preserve">
+    <value>Thời gian vào viện</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__GRID_TREATMENT__COLUMN_OUT_TIME" xml:space="preserve">
+    <value>Thời gian ra viện</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__GRID_TREATMENT__COLUMN_PATIENT_CODE" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__GRID_TREATMENT__COLUMN_TREATMENT_CODE" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__GRID_TREATMENT__COLUMN_VIR_PATIENT_NAME" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__LAYOUT_EXECUTE_TIME" xml:space="preserve">
+    <value>Thời gian duyệt:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__LAYOUT_FROM_TIME" xml:space="preserve">
+    <value>Duyệt VP từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__LAYOUT_IN_BRANCH" xml:space="preserve">
+    <value>Trong c/nhánh:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__LAYOUT_STATUS" xml:space="preserve">
+    <value>Trạng thái:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__LAYOUT_TO_TIME" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__LAYOUT_VIR_TOTAL_HEIN_PRICE" xml:space="preserve">
+    <value>BHYT trả:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__LAYOUT_VIR_TOTAL_PATIENT_PRICE" xml:space="preserve">
+    <value>Bệnh nhân trả:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__LAYOUT_VIR_TOTAL_PRICE" xml:space="preserve">
+    <value>Tổng tiền:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__LAYOUT_XML" xml:space="preserve">
+    <value>Loại xml:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__REPOSITORY_STATUS_APPROVALED" xml:space="preserve">
+    <value>Có hồ sơ duyệt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__REPOSITORY_STATUS_LOCK_HEIN" xml:space="preserve">
+    <value>Đã khóa</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__REPOSITORY_STATUS_NOT_APPROVAL" xml:space="preserve">
+    <value>Chưa duyệt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__REPOSITORY_STATUS_UNLOCK_HEIN" xml:space="preserve">
+    <value>Chưa khóa</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__TREE_SERE_SERV__COLUMN_AMOUNT" xml:space="preserve">
+    <value>SL</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__TREE_SERE_SERV__COLUMN_DISCOUNT" xml:space="preserve">
+    <value>Chiết khấu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__TREE_SERE_SERV__COLUMN_IS_EXPEND" xml:space="preserve">
+    <value>Hao phí</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__TREE_SERE_SERV__COLUMN_SERVICE_CODE" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__TREE_SERE_SERV__COLUMN_SERVICE_NAME" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__TREE_SERE_SERV__COLUMN_SERVICE_REQ_CODE" xml:space="preserve">
+    <value>Mã yêu cầu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__TREE_SERE_SERV__COLUMN_TRANSACTION_CODE" xml:space="preserve">
+    <value>Mã giao dịch</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__TREE_SERE_SERV__COLUMN_VAT_RATIO" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__TREE_SERE_SERV__COLUMN_VIR_PRICE" xml:space="preserve">
+    <value>Đơn giá</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__TREE_SERE_SERV__COLUMN_VIR_TOTAL_HEIN_PRICE" xml:space="preserve">
+    <value>Đồng chi trả</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PATIENT_PRICE" xml:space="preserve">
+    <value>Bệnh nhân trả</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PRICE" xml:space="preserve">
+    <value>Thành tiền</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__TXT_FIND_TREATMENT_CODE__NULL_VALUE" xml:space="preserve">
+    <value>Mã điều trị (F2)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__TXT_KEY_WORD__NULL_VALUE" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="UCInsuranceExpertise.btnDownload.Text" xml:space="preserve">
+    <value>Tải file mẫu</value>
+  </data>
+  <data name="UCInsuranceExpertise.btnDownload.ToolTip" xml:space="preserve">
+    <value>Nhập khẩu điều kiện lọc</value>
+  </data>
+  <data name="UCInsuranceExpertise.btnFind.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="UCInsuranceExpertise.btnImport.Text" xml:space="preserve">
+    <value>NK điều kiện lọc</value>
+  </data>
+  <data name="UCInsuranceExpertise.btnLockHein.Text" xml:space="preserve">
+    <value>Khóa (Ctrl L)</value>
+  </data>
+  <data name="UCInsuranceExpertise.btnLuuTru.Text" xml:space="preserve">
+    <value>Lưu trữ (F5)</value>
+  </data>
+  <data name="UCInsuranceExpertise.btnLuuTru.ToolTip" xml:space="preserve">
+    <value>Đánh số lưu trữ bảng kê của hồ sơ</value>
+  </data>
+  <data name="UCInsuranceExpertise.btnUnLockHein.Text" xml:space="preserve">
+    <value>Mở khóa (Ctrl O)</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridCol_HeinApproval_Cancel.Caption" xml:space="preserve">
+    <value>Hủy duyệt</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridCol_HeinApproval_DownXml.Caption" xml:space="preserve">
+    <value>Tải xml</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumn_HeinApproval_ExecuteTime.Caption" xml:space="preserve">
+    <value>Thời gian duyệt</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumn_HeinApproval_ExecuteUserName.Caption" xml:space="preserve">
+    <value>Người duyệt</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumn_HeinApproval_HeinApprovalCode.Caption" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumn_HeinCard_HeinCardFromTime.Caption" xml:space="preserve">
+    <value>Hạn từ</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumn_HeinCard_HeinCardNumber.Caption" xml:space="preserve">
+    <value>Số thẻ</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumn_HeinCard_HeinCardToTime.Caption" xml:space="preserve">
+    <value>Hạn đến</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumn_HeinCardNumber_Approval.Caption" xml:space="preserve">
+    <value>Duyệt</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumn_Treatment_Dob.Caption" xml:space="preserve">
+    <value>Ngày sinh</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumn_Treatment_GenderName.Caption" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumn_Treatment_ImageStatus.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumn_Treatment_InTime.Caption" xml:space="preserve">
+    <value>Thời gian vào viện</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumn_Treatment_IsLockHein.Caption" xml:space="preserve">
+    <value>Khóa/mở</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumn_Treatment_OutTime.Caption" xml:space="preserve">
+    <value>Thời gian ra viện</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumn_Treatment_PatientCode.Caption" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumn_Treatment_Stt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumn_Treatment_TreatmentCode.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumn_Treatment_VirPatientName.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumn1.Caption" xml:space="preserve">
+    <value>Xem XML</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumn2.Caption" xml:space="preserve">
+    <value>Mã lưu trữ bảng kê</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumnTreatment_DownloadXML.Caption" xml:space="preserve">
+    <value>Tải XML</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumnTreatment_GiamDinh.Caption" xml:space="preserve">
+    <value>Giám định</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumnTreatment_GiamDinh.ToolTip" xml:space="preserve">
+    <value>Giám định (Ctrl S)</value>
+  </data>
+  <data name="UCInsuranceExpertise.gridColumnTreatment_XMLView.Caption" xml:space="preserve">
+    <value>Xem XML</value>
+  </data>
+  <data name="UCInsuranceExpertise.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCInsuranceExpertise.layoutControlItem15.Text" xml:space="preserve">
+    <value>Thời gian khóa:</value>
+  </data>
+  <data name="UCInsuranceExpertise.layoutControlItem8.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Trong chi nhánh</value>
+  </data>
+  <data name="UCInsuranceExpertise.layoutControlItem8.Text" xml:space="preserve">
+    <value>Trong c/nhánh:</value>
+  </data>
+  <data name="UCInsuranceExpertise.layoutControlItem9.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nhập khẩu điều kiện lọc</value>
+  </data>
+  <data name="UCInsuranceExpertise.layoutExecuteTime.Text" xml:space="preserve">
+    <value>Thời gian duyệt:</value>
+  </data>
+  <data name="UCInsuranceExpertise.layoutFeeLockTimeFrom.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Duyệt Viện phí từ</value>
+  </data>
+  <data name="UCInsuranceExpertise.layoutFeeLockTimeFrom.Text" xml:space="preserve">
+    <value>Duyệt VP từ:</value>
+  </data>
+  <data name="UCInsuranceExpertise.layoutFeeLockTimeTo.Text" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="UCInsuranceExpertise.layoutStatus.Text" xml:space="preserve">
+    <value>Trạng thái:</value>
+  </data>
+  <data name="UCInsuranceExpertise.layoutVirTotalHeinPrice.Text" xml:space="preserve">
+    <value>Bhyt trả:</value>
+  </data>
+  <data name="UCInsuranceExpertise.layoutVirTotalPatientPrice.Text" xml:space="preserve">
+    <value>Bệnh nhân trả:</value>
+  </data>
+  <data name="UCInsuranceExpertise.layoutVirTotalPrice.Text" xml:space="preserve">
+    <value>Tổng tiền:</value>
+  </data>
+  <data name="UCInsuranceExpertise.lcStoreBordereauCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mã lưu trữ bảng kê</value>
+  </data>
+  <data name="UCInsuranceExpertise.lcStoreBordereauCode.Text" xml:space="preserve">
+    <value>Số LT:</value>
+  </data>
+  <data name="UCInsuranceExpertise.txtFindTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã điều trị (F2)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__repositoryItem_Dowload" xml:space="preserve">
+    <value>Tải XML 4210</value>
+  </data>
+</root>

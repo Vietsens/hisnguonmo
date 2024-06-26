@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BanChuaChonLuocDo" xml:space="preserve">
+    <value>You have not selected a schema.</value>
+  </data>
+  <data name="BanChuaChonPhuongPhapNao" xml:space="preserve">
+    <value>You have not selected any method.</value>
+  </data>
+  <data name="BanChuaNhapThongTinTuongUngVoiCacVaiTRo" xml:space="preserve">
+    <value>You have not entered the information corresponding to the role(s): {0}.</value>
+  </data>
+  <data name="BanCoMuonSuaThoiGianYLenhBangThoiGianBatDauPTTT" xml:space="preserve">
+    <value>Do you want to fix the command y time with the PTTT start time?</value>
+  </data>
+  <data name="BanCoMuonTiepTucKhong" xml:space="preserve">
+    <value>do you want to continue?</value>
+  </data>
+  <data name="BanKhongPhaiLaBacSyKhongDuocKetThuc" xml:space="preserve">
+    <value>You are not a Doctor so you are not allowed to end</value>
+  </data>
+  <data name="DichVuChuaThucHienKhongChoKetThucXuLy" xml:space="preserve">
+    <value>{0} unexecuted service does not terminate processing</value>
+  </data>
+  <data name="DichVuKhongCoThoiGianKetThucKhongChoKetThucXuLy" xml:space="preserve">
+    <value>Service {0} has no end time not for processing end</value>
+  </data>
+  <data name="DichVuThieuThongTinKhongChoKetThucXuLy" xml:space="preserve">
+    <value>Service {0} not enough infomation can't finish</value>
+  </data>
+  <data name="DuLieuEkipTrung" xml:space="preserve">
+    <value>Duplicate team data</value>
+  </data>
+  <data name="KhongChoPhepTraKetQuaDichVu_Sau_PhutTinhTuThoiDiemRaYLenh" xml:space="preserve">
+    <value>Not allowed to return service results {0} after {1} minutes from the time of issuing the command ({2})</value>
+  </data>
+  <data name="KhongCoDuLieuMau" xml:space="preserve">
+    <value>No sample data.</value>
+  </data>
+  <data name="KhongCoNoiDungLuuMau" xml:space="preserve">
+    <value>There is no content that can be saved, please check again.</value>
+  </data>
+  <data name="MaBenhChinhVuotQuaKyTuChoPhep" xml:space="preserve">
+    <value>The main disease code exceeds the allowed characters</value>
+  </data>
+  <data name="MaICDKhongDungVuiLongKiemTraLai" xml:space="preserve">
+    <value>The ICD code is incorrect.</value>
+  </data>
+  <data name="Plugin_ExecuteRoom__BanCoMuonHuyBatDauKhong" xml:space="preserve">
+    <value>Do you want to cancel the start?</value>
+  </data>
+  <data name="Plugin_ExecuteRoom__XacNhanHuyBatDau" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="Plugin_SurgServiceReqExecute__BatBuocThoiGianKetThuc" xml:space="preserve">
+    <value>Please select an end time</value>
+  </data>
+  <data name="Plugin_SurgServiceReqExecute__KhongTimThayICDTuongUng" xml:space="preserve">
+    <value>The icd corresponding to the following codes was not found: {0}</value>
+  </data>
+  <data name="Plugin_SurgServiceReqExecute__ThoiGianBatDauKhongDuocLonHonThoiGianKetThuc" xml:space="preserve">
+    <value>The start time cannot be greater than the end time</value>
+  </data>
+  <data name="Plugin_SurgServiceReqExecute__ThoiGianBatDauPhaiLonHonThoiGianYLenh" xml:space="preserve">
+    <value>The start time must be greater than the command time</value>
+  </data>
+  <data name="Plugin_SurgServiceReqExecute__ThoiGianBatDauThoiGianKetThuc" xml:space="preserve">
+    <value>Set the start time and end time incorrectly</value>
+  </data>
+  <data name="Plugin_SurgServiceReqExecute__ThoiGianBatDauThoiGianVaoVien" xml:space="preserve">
+    <value>Start time should not be less than the admission time</value>
+  </data>
+  <data name="Plugin_SurgServiceReqExecute__ThoiGianKetThucKhongDuocLonHonThoiGianHeThong" xml:space="preserve">
+    <value>End time cannot be greater than current time</value>
+  </data>
+  <data name="Plugin_SurgServiceReqExecute__ThoiGianKetThucKhongDuocNhoHonThoiGianBatDau" xml:space="preserve">
+    <value>The end time must not be less than the start time</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PhieuKeKhaiThuocVatTu" xml:space="preserve">
+    <value>Medicine material public</value>
+  </data>
+  <data name="TaiKhoanDuocThietLapVoiCacVaiTro" xml:space="preserve">
+    <value>Account {0} is set up with roles {1}</value>
+  </data>
+  <data name="TenBenhChinhVuotQuaKyTuChoPhep" xml:space="preserve">
+    <value>The main disease name exceeds the allowed characters</value>
+  </data>
+  <data name="ThoiGianBatDauPhaiLonHonThoiGianYLenh" xml:space="preserve">
+    <value>The start time must be greater than the command time</value>
+  </data>
+  <data name="ThoiGianBatDauThoiGianRaVien" xml:space="preserve">
+    <value>The time of onset should not be greater than the time of discharge</value>
+  </data>
+  <data name="ThoiGianKetThucKhongDuocNhoHonThoiGianYLenh" xml:space="preserve">
+    <value>End time should not be less than command time</value>
+  </data>
+  <data name="ThoiGianKetThucThoiGianRaVien" xml:space="preserve">
+    <value>End time should not be greater than discharge time</value>
+  </data>
+  <data name="ThoiGianKetThucThoiGianVaoVien" xml:space="preserve">
+    <value>End time should not be less than hospital stay</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>Notify</value>
+  </data>
+  <data name="TraKetQuaDichVu_VuotQua_PhutTinhTuThoiDiemRaYLenh" xml:space="preserve">
+    <value>Returning service results {0} beyond {1} minutes from the time of issuing the command ({2})</value>
+  </data>
+  <data name="TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Required field</value>
+  </data>
+  <data name="TruongDuLieuVuotQuaKyTu" xml:space="preserve">
+    <value>Input field is too long</value>
+  </data>
+  <data name="UploadFileThatBaiVuiLongLienHeQuanTriheThongDeDuocHoTro" xml:space="preserve">
+    <value>File upload failed, please contact system administrator for support.</value>
+  </data>
+  <data name="VuiLongNhapThongTinkipThucHien" xml:space="preserve">
+    <value>Please enter crew information</value>
+  </data>
+</root>

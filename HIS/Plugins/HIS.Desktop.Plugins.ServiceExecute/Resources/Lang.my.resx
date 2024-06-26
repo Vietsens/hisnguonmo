@@ -1,0 +1,1020 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="((Telerik.WinControls.UI.RadApplicationMenuButtonElement)(UcTelerikFullWord.richTextEditorRibbonBar1.GetChildAt(0).GetChildAt(5))).Text" xml:space="preserve">
+    <value>ဖို</value>
+  </data>
+  <data name="((Telerik.WinControls.UI.RadRibbonBarElement)(UcTelerikFullWord.richTextEditorRibbonBar1.GetChildAt(0))).Text" xml:space="preserve">
+    <value>richTextEditorRibbonBar1</value>
+  </data>
+  <data name="((Telerik.WinControls.UI.RichTextEditorRibbonUI.RichTextEditorRibbonTab)(UcTelerikFullWord.richTextEditorRibbonBar1.GetChildAt(0).GetChildAt(4).GetChildAt(0).GetChildAt(0).GetChildAt(5))).Text" xml:space="preserve">
+    <value>သုံးသပ်ချက်</value>
+  </data>
+  <data name="((Telerik.WinControls.UI.RichTextEditorRibbonUI.RichTextEditorRibbonTab)(UcTelerikFullWord.richTextEditorRibbonBar1.GetChildAt(0).GetChildAt(4).GetChildAt(0).GetChildAt(0).GetChildAt(6))).Text" xml:space="preserve">
+    <value>အမြင်</value>
+  </data>
+  <data name="FormHistoryCLS.Gc_EndTime.Caption" xml:space="preserve">
+    <value>ကုန်ဆုံးချိန်</value>
+  </data>
+  <data name="FormHistoryCLS.Gc_IntructionTime.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormHistoryCLS.Gc_ServiceName.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှု</value>
+  </data>
+  <data name="FormHistoryCLS.Gc_Vỉew.Caption" xml:space="preserve">
+    <value>ကြည့်ပါ။</value>
+  </data>
+  <data name="FormHistoryCLS.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="FormHistoryCLS.Text" xml:space="preserve">
+    <value>ရလဒ်မှတ်တမ်း</value>
+  </data>
+  <data name="FormImageTemp.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="FormImageTemp.barBtnSave.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="FormImageTemp.barBtnSearch.Caption" xml:space="preserve">
+    <value>Crtl F</value>
+  </data>
+  <data name="FormImageTemp.btnSave.Text" xml:space="preserve">
+    <value>(Ctrl S) ကို ရွေးပါ</value>
+  </data>
+  <data name="FormImageTemp.btnSearch.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="FormImageTemp.gridColumn1.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="FormImageTemp.gridColumn3.Caption" xml:space="preserve">
+    <value>ခေါင်းစဥ်</value>
+  </data>
+  <data name="FormImageTemp.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="FormImageTemp.Text" xml:space="preserve">
+    <value>ခွဲစိတ်မှုပုံစံဇယားပုံစံ</value>
+  </data>
+  <data name="FormImageTemp.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
+  </data>
+  <data name="FormPtttTemp.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="FormPtttTemp.barBtnSave.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="FormPtttTemp.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="FormPtttTemp.chkPublic.Properties.Caption" xml:space="preserve">
+    <value>ဆေးရုံတစ်ခုလုံး ဖွင့်ထားရတယ်။</value>
+  </data>
+  <data name="FormPtttTemp.chkPublicDepartment.Properties.Caption" xml:space="preserve">
+    <value>ဌာနတွင်း ကြော်ငြာခြင်း။</value>
+  </data>
+  <data name="FormPtttTemp.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="FormPtttTemp.layoutControlItem3.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormPtttTemp.lciPtttTempCode.Text" xml:space="preserve">
+    <value>ကုဒ်:</value>
+  </data>
+  <data name="FormPtttTemp.lciPtttTempName.Text" xml:space="preserve">
+    <value>အမည်-</value>
+  </data>
+  <data name="FormPtttTemp.Text" xml:space="preserve">
+    <value>နမူနာခွဲစိတ်မှု</value>
+  </data>
+  <data name="FormViewImage.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="FormViewImage.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="FormViewImage.PictureEdit.Properties.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormViewImage.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormViewImage.tileControl.Text" xml:space="preserve">
+    <value>tileControl1</value>
+  </data>
+  <data name="FormViewImageV2.gc_Caption.Caption" xml:space="preserve">
+    <value>မှတ်ချက်</value>
+  </data>
+  <data name="FormViewImageV2.gc_Check.Caption" xml:space="preserve">
+    <value>ရွေးပါ။</value>
+  </data>
+  <data name="FormViewImageV2.gc_Image.Caption" xml:space="preserve">
+    <value>ပုံ</value>
+  </data>
+  <data name="FormViewImageV2.gc_Stt.Caption" xml:space="preserve">
+    <value>St</value>
+  </data>
+  <data name="FormViewImageV2.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="FormViewImageV2.layoutViewCard1.Text" xml:space="preserve">
+    <value>TemplateCard</value>
+  </data>
+  <data name="FormViewImageV2.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmCamera.KetNoiCongSvideo" xml:space="preserve">
+    <value>SVideo အပေါက်</value>
+  </data>
+  <data name="frmCamera.KetNoiCongUsb" xml:space="preserve">
+    <value>USB အပေါက်</value>
+  </data>
+  <data name="frmClsInfo.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmClsInfo.barButtonItem1.Caption" xml:space="preserve">
+    <value>ညောင်ပင်</value>
+  </data>
+  <data name="frmClsInfo.bbtnSaveShortcut.Caption" xml:space="preserve">
+    <value>သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="frmClsInfo.btnAddImageLuocDoPTTT.ToolTip" xml:space="preserve">
+    <value>ခွဲစိတ်ခန်းနှင့် လုပ်ထုံးလုပ်နည်းပုံများ ၏နောက်ထပ်ဓာတ်ပုံများ</value>
+  </data>
+  <data name="frmClsInfo.btnChooseLuocDoPTTT.ToolTip" xml:space="preserve">
+    <value>ခွဲစိတ်မှုဆိုင်ရာ လုပ်ငန်းစဉ်ဇယား နမူနာပုံစံကို ရွေးချယ်ပါ။</value>
+  </data>
+  <data name="frmClsInfo.btnPrint.Text" xml:space="preserve">
+    <value>ပရင့်ထုတ်ခြင်း (Ctrl P)</value>
+  </data>
+  <data name="frmClsInfo.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmClsInfo.btnSavePtttTemp.ToolTip" xml:space="preserve">
+    <value>ခွဲစိတ်မှုပုံစံပုံစံကို သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="frmClsInfo.chkIcdCm.Properties.Caption" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="frmClsInfo.chkPreView.Properties.Caption" xml:space="preserve">
+    <value>ပရင့်အစမ်းကြည့်ရှုခြင်း။</value>
+  </data>
+  <data name="frmClsInfo.chkPrint.Properties.Caption" xml:space="preserve">
+    <value>ညောင်ပင်</value>
+  </data>
+  <data name="frmClsInfo.chkSign.Properties.Caption" xml:space="preserve">
+    <value>ဆိုင်းဘုတ်</value>
+  </data>
+  <data name="frmClsInfo.gridColumn1.Caption" xml:space="preserve">
+    <value>ရွေးပါ။</value>
+  </data>
+  <data name="frmClsInfo.gridColumn2.Caption" xml:space="preserve">
+    <value>ပုံ</value>
+  </data>
+  <data name="frmClsInfo.gridColumn3.Caption" xml:space="preserve">
+    <value>ဇယားကွက် ၂</value>
+  </data>
+  <data name="frmClsInfo.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem1.Text" xml:space="preserve">
+    <value>Package အမျိုးအစား-</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem11.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နမူနာခွဲစိတ်မှု</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem11.Text" xml:space="preserve">
+    <value>PTTT ပုံစံ-</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem14.Text" xml:space="preserve">
+    <value>အမျိုးအစားခွဲရန်-</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem15.Text" xml:space="preserve">
+    <value>နမူနာအစုံ-</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem2.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ခွဲစိတ်ကုသနည်းကို ဖော်ပြသော ဆရာဝန်မှတ်စု</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem2.Text" xml:space="preserve">
+    <value>BS မှတ်စုများ-</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem21.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နည်းလမ်း 2-</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem21.Text" xml:space="preserve">
+    <value>နည်းလမ်း 2-</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem28.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ခံစားချက်မဲ့ရလဒ်များ</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem28.Text" xml:space="preserve">
+    <value>စွဲမက်ဖွယ်ရလဒ်များ-</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem30.Text" xml:space="preserve">
+    <value>ဌာန-</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem33.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ICD9-CM.အမျိုးအစားအလိုက် အဓိကရောဂါရှာဖွေခြင်း။</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem33.Text" xml:space="preserve">
+    <value>ပင်မ ICM9-CM ကောလိပ်-</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem37.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>လုပ်နေတဲ့လူအရေအတွက်</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem37.Text" xml:space="preserve">
+    <value>လူအရေအတွက် TH-</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem43.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ICD9-CM. အမျိုးအစားအလိုက် ရောဂါအမည်ခွဲများ</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem43.Text" xml:space="preserve">
+    <value>အလယ်တန်း ICD9-CM ကောလိပ်</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem5.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem9.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>လက်တွေ့ကျသောနည်းလမ်း</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem9.Text" xml:space="preserve">
+    <value>TT နည်းလမ်း-</value>
+  </data>
+  <data name="frmClsInfo.layoutControlRight.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmClsInfo.lciBanMo.Text" xml:space="preserve">
+    <value>လည်ပတ်မှုဇယား-</value>
+  </data>
+  <data name="frmClsInfo.lciCachThuc.Text" xml:space="preserve">
+    <value>နည်းလမ်း-</value>
+  </data>
+  <data name="frmClsInfo.lciHinhThucPTTT.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ခွဲစိတ်မှုအမျိုးအစား</value>
+  </data>
+  <data name="frmClsInfo.lciHinhThucPTTT.Text" xml:space="preserve">
+    <value>ပုံစံ-</value>
+  </data>
+  <data name="frmClsInfo.lciKTC.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နည်းပညာမြင့် ခွဲစိတ်မှု</value>
+  </data>
+  <data name="frmClsInfo.lciKTC.Text" xml:space="preserve">
+    <value>KTC-</value>
+  </data>
+  <data name="frmClsInfo.lciMachine.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>လှည့်ကွက်စက်</value>
+  </data>
+  <data name="frmClsInfo.lciMachine.Text" xml:space="preserve">
+    <value>စက်က:</value>
+  </data>
+  <data name="frmClsInfo.lciNhomMau.Text" xml:space="preserve">
+    <value>သွေးအုပ်စု:</value>
+  </data>
+  <data name="frmClsInfo.lciPhanLoai.Text" xml:space="preserve">
+    <value>အမျိုးအစားခွဲရန်-</value>
+  </data>
+  <data name="frmClsInfo.lciPhuongPhap.Text" xml:space="preserve">
+    <value>နည်းလမ်း-</value>
+  </data>
+  <data name="frmClsInfo.lciRh.Text" xml:space="preserve">
+    <value>Rh-</value>
+  </data>
+  <data name="frmClsInfo.lciTaiBien.Text" xml:space="preserve">
+    <value>ကပ်ဆိုး-</value>
+  </data>
+  <data name="frmClsInfo.lciTinhTrang.Text" xml:space="preserve">
+    <value>အခြေအနေ-</value>
+  </data>
+  <data name="frmClsInfo.lciTuVongTrong.Text" xml:space="preserve">
+    <value>သေဆုံးခြင်း-</value>
+  </data>
+  <data name="frmClsInfo.lciVoCam.Text" xml:space="preserve">
+    <value>အာရုံမခံနိုင်မှု-</value>
+  </data>
+  <data name="frmClsInfo.Text" xml:space="preserve">
+    <value>CLS. အကောင်အထည်ဖော်မှု အချက်အလက်</value>
+  </data>
+  <data name="frmClsInfo.tileViewColumn1.Caption" xml:space="preserve">
+    <value>ရွေးပါ။</value>
+  </data>
+  <data name="frmClsInfo.tileViewColumn2.Caption" xml:space="preserve">
+    <value>ပုံ</value>
+  </data>
+  <data name="frmClsInfo.tileViewColumn3.Caption" xml:space="preserve">
+    <value>နာမည်</value>
+  </data>
+  <data name="frmClsInfo.tileViewColumn4.Caption" xml:space="preserve">
+    <value>tile ViewColumn4</value>
+  </data>
+  <data name="frmClsInfo.tileViewColumn5.Caption" xml:space="preserve">
+    <value>tile ViewColumnSTTImage</value>
+  </data>
+  <data name="frmClsInfo.txtIcdCmSubName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ရောဂါကိုရွေးချယ်ရန် F1 ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="frmClsInfo.xtraTabPage1.Text" xml:space="preserve">
+    <value>ဖော်ပြပါ။</value>
+  </data>
+  <data name="frmClsInfo.xtraTabPage3.Text" xml:space="preserve">
+    <value>ပုံကြမ်း</value>
+  </data>
+  <data name="frmEkipTemp.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmEkipTemp.barButtonItem1.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmEkipTemp.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmEkipTemp.chkPublic.Properties.Caption" xml:space="preserve">
+    <value>ဆေးရုံတစ်ခုလုံး ဖွင့်ထားရတယ်။</value>
+  </data>
+  <data name="frmEkipTemp.labelControl1.Text" xml:space="preserve">
+    <value>ဌာနတွင်း ကြော်ငြာခြင်း။</value>
+  </data>
+  <data name="frmEkipTemp.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmEkipTemp.layoutControlItem1.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEkipTemp.layoutControlItem2.Text" xml:space="preserve">
+    <value>အမည်-</value>
+  </data>
+  <data name="frmEkipTemp.layoutControlItem4.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEkipTemp.Text" xml:space="preserve">
+    <value>နမူနာဖန်တီးရေးအဖွဲ့</value>
+  </data>
+  <data name="frmSTTNumber.btnOK.Text" xml:space="preserve">
+    <value>သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="frmSTTNumber.Text" xml:space="preserve">
+    <value>အမျိုးအစားခွဲယူမှုနံပါတ်ကို ပြင်ဆင်ပါ။</value>
+  </data>
+  <data name="HIS.Desktop.Plugins.ServiceExecute.FormHistoryCLS.Text" xml:space="preserve">
+    <value>ရလဒ်မှတ်တမ်း</value>
+  </data>
+  <data name="HIS.Desktop.Plugins.ServiceExecute.lciForlblNumberOfImageSelected" xml:space="preserve">
+    <value>ရွေးပါ-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__AGE" xml:space="preserve">
+    <value>အသက်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_ADD_IMAGE" xml:space="preserve">
+    <value>ပုံများကို တည်းဖြတ်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_ASSIGN_PAAN_TEXT" xml:space="preserve">
+    <value>GPBL သတ်မှတ်ခြင်း။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_ASSIGN_PAAN_TOOLTIP" xml:space="preserve">
+    <value>ရောဂါဗေဒအတွက်ညွှန်ပြချက်များ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_ASSIGN_PRESCRIPTION" xml:space="preserve">
+    <value>ဆေးစာ (F8)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_ASSIGN_SERVICE" xml:space="preserve">
+    <value>ညွှန်ပြချက် (F9)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_CAMERA" xml:space="preserve">
+    <value>ကင်မရာ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_CAMERA_TOOLTIP" xml:space="preserve">
+    <value>ကင်မရာကို ချိတ်ဆက်ပါ (Ctrl D)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_CHANGE_IMAGE" xml:space="preserve">
+    <value>ဓာတ်ပုံပြောင်းပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_CHANGE_OPTION" xml:space="preserve">
+    <value>ရွေးချယ်မှု</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_CHOOSE_IMAGE" xml:space="preserve">
+    <value>ဓာတ်ပုံတစ်ပုံကို ရွေးပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_DELETE_IMAGE" xml:space="preserve">
+    <value>ဓာတ်ပုံများကို ဖျက်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_END" xml:space="preserve">
+    <value>အဆုံးသတ် (Ctrl E)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_LOAD_IMAGE" xml:space="preserve">
+    <value>ဓာတ်ပုံကို ပြန်လည်စတင်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_PRINT" xml:space="preserve">
+    <value>ပရင့်ထုတ်ခြင်း (Ctrl P)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_SAVE" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_SAVE_N_CLOSE" xml:space="preserve">
+    <value>သိမ်းဆည်းပြီး ပိတ်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_SERE_SERV_CONTENT_LIBRARY" xml:space="preserve">
+    <value>အကြောင်းအရာစာကြည့်တိုက်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_SERE_SERV_TEMP_LIST" xml:space="preserve">
+    <value>နမူနာ ကတ်တလောက်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_SERVICE_REQ_MATY" xml:space="preserve">
+    <value>လူသုံးကုန်များ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_TU_TRUC" xml:space="preserve">
+    <value>တာဝန်ကျ အစိုးရအဖွဲ့ဝင်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__CHECK_ALL_IN_ONE" xml:space="preserve">
+    <value>ပေါင်းစပ်ရလဒ်များကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__CHK_SAVE_IMAGE_TO_FILE" xml:space="preserve">
+    <value>ပုံကို သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__CHK_SAVE_IMAGE_TO_FILE__TOOL_TIP" xml:space="preserve">
+    <value>လျှပ်တစ်ပြက်ရိုက်ချက်ကို ဖိုင်တွင် သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__CHK_SIGN" xml:space="preserve">
+    <value>ဆိုင်းဘုတ်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__CHK_SIGN__TOOL_TIP" xml:space="preserve">
+    <value>\</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__CHK_UPPER__TOOL_TIP" xml:space="preserve">
+    <value>မူရင်းအားဖြင့်၊ \</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__CHUA_NHAP_EKIP" xml:space="preserve">
+    <value>သင်သည် အကောင်အထည်ဖော်ရေးအဖွဲ့သို့ မ၀င်ရသေးပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__CHUA_NHAP_VAITRO" xml:space="preserve">
+    <value>အခန်းကဏ္ဍအတွက် အမည်တစ်ခု ထည့်သွင်းရန် လိုအပ်သည်။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__COMBO_MACHINE_OPTION_BLOCK" xml:space="preserve">
+    <value>လိုအပ်သည်။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__COMBO_MACHINE_OPTION_WARNING" xml:space="preserve">
+    <value>သတိပေးချက်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__DAY_OLDS" xml:space="preserve">
+    <value>ရက်တွေရှိသေးတယ်။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_BTN_ADD" xml:space="preserve">
+    <value>နောက်ထပ်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_BTN_DELETE" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_BTN_SEND_SANCY" xml:space="preserve">
+    <value>အော်ဒါပို့ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_BTN_SERVICE_REQ_MATY" xml:space="preserve">
+    <value>အသုံးအဆောင်ပစ္စည်းများကို ကြေညာပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_MACHINE_ID" xml:space="preserve">
+    <value>ပြုပြင်ခြင်းစက်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_ROLE" xml:space="preserve">
+    <value>အခန်းကဏ္ဍ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_SERVICE_CODE" xml:space="preserve">
+    <value>ကုဒ်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_SERVICE_NAME" xml:space="preserve">
+    <value>နာမည်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_USER_NAME" xml:space="preserve">
+    <value>ပထမနှင့်နောက်ဆုံးအမည်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__HOURS_OLDS" xml:space="preserve">
+    <value>အသက်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_BEGIN_TIME" xml:space="preserve">
+    <value>အစ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_BEGIN_TIME_TOOL_TIP" xml:space="preserve">
+    <value>စတင်ချိန်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_END_TIME" xml:space="preserve">
+    <value>အဆုံး:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_END_TIME_TOOL_TIP" xml:space="preserve">
+    <value>ကုန်ဆုံးချိန်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_NUMBER_OF_FILM" xml:space="preserve">
+    <value>ရုပ်ရှင်အရေအတွက်-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_SERE_SERV_TEMP_CODE" xml:space="preserve">
+    <value>နမူနာ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_SIZE_OF_FILM" xml:space="preserve">
+    <value>ရုပ်ရှင်အရွယ်အစား-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__MONTH_OLDS" xml:space="preserve">
+    <value>လသားအရွယ်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__OLDS" xml:space="preserve">
+    <value>အသက်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__TXT_CONCLUDE__NULL_VALUE" xml:space="preserve">
+    <value>နိဂုံး</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__TXT_NOTE__NULL_VALUE" xml:space="preserve">
+    <value>မှတ်ချက်</value>
+  </data>
+  <data name="tileViewItemElement1.Text" xml:space="preserve">
+    <value>tile ViewColumn ၂</value>
+  </data>
+  <data name="tileViewItemElement2.Text" xml:space="preserve">
+    <value>tile ViewColumnName</value>
+  </data>
+  <data name="tileViewItemElement3.Text" xml:space="preserve">
+    <value>tile ViewColumn ၂</value>
+  </data>
+  <data name="tileViewItemElement4.Text" xml:space="preserve">
+    <value>tile ViewColumnName</value>
+  </data>
+  <data name="UCEkipUser.gridColumn1.Caption" xml:space="preserve">
+    <value>အခန်းကဏ္ဍ</value>
+  </data>
+  <data name="UCEkipUser.gridColumn2.Caption" xml:space="preserve">
+    <value>နာမည်အပြည့်အစုံ</value>
+  </data>
+  <data name="UCEkipUser.gridColumn3.Caption" xml:space="preserve">
+    <value>ဌာန</value>
+  </data>
+  <data name="UCEkipUser.gridColumn4.Caption" xml:space="preserve">
+    <value>gridColumn4</value>
+  </data>
+  <data name="UCEkipUser.gridColumn5.Caption" xml:space="preserve">
+    <value>gridColumn5</value>
+  </data>
+  <data name="UCEkipUser.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="UCEkipUser.lciInformationSurg.Text" xml:space="preserve">
+    <value>အကောင်အထည်ဖော်ရေးအဖွဲ့-</value>
+  </data>
+  <data name="UCServiceExecute.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="UCServiceExecute.btnAssignPrescription.Text" xml:space="preserve">
+    <value>ဆေးစာ (F8)</value>
+  </data>
+  <data name="UCServiceExecute.btnAssignService.Text" xml:space="preserve">
+    <value>ညွှန်ပြချက် (F9)</value>
+  </data>
+  <data name="UCServiceExecute.btnBoQua.Text" xml:space="preserve">
+    <value>ကျော်သွားပါ။</value>
+  </data>
+  <data name="UCServiceExecute.btnCamera.ToolTip" xml:space="preserve">
+    <value>ကင်မရာကိုချိတ်ဆက်ပါ။</value>
+  </data>
+  <data name="UCServiceExecute.btnCapture.ToolTip" xml:space="preserve">
+    <value>ရိုက်ကွင်း (F2/F11)</value>
+  </data>
+  <data name="UCServiceExecute.BtnChangeImage.ToolTip" xml:space="preserve">
+    <value>ဓာတ်ပုံပြောင်းပါ။</value>
+  </data>
+  <data name="UCServiceExecute.BtnChooseImage.ToolTip" xml:space="preserve">
+    <value>ဓာတ်ပုံတစ်ပုံကို ရွေးပါ။</value>
+  </data>
+  <data name="UCServiceExecute.btnDeleteImage.ToolTip" xml:space="preserve">
+    <value>ဓာတ်ပုံများကို ဖျက်ပါ။</value>
+  </data>
+  <data name="UCServiceExecute.btnDongY.Text" xml:space="preserve">
+    <value>သဘောတူတယ်။</value>
+  </data>
+  <data name="UCServiceExecute.BtnEmr.Text" xml:space="preserve">
+    <value>ဆိုင်းဘုတ်</value>
+  </data>
+  <data name="UCServiceExecute.BtnEmr.ToolTip" xml:space="preserve">
+    <value>အီလက်ထရွန်နစ်ဆေးဘက်ဆိုင်ရာမှတ်တမ်းကို လက်မှတ်ရေးထိုးပြီး သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="UCServiceExecute.btnFinish.Text" xml:space="preserve">
+    <value>အဆုံးသတ် (Ctrl E)</value>
+  </data>
+  <data name="UCServiceExecute.btnKhaiBaoVTTH.ToolTip" xml:space="preserve">
+    <value>အသုံးအဆောင်ပစ္စည်းများကို တပ်ဆင်ပါ။</value>
+  </data>
+  <data name="UCServiceExecute.btnLoadImage.ToolTip" xml:space="preserve">
+    <value>ဓာတ်ပုံကို ပြန်လည်စတင်ပါ။</value>
+  </data>
+  <data name="UCServiceExecute.btnPrint.Text" xml:space="preserve">
+    <value>ပရင့်ထုတ်ခြင်း (Ctrl P)</value>
+  </data>
+  <data name="UCServiceExecute.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="UCServiceExecute.btnSaveEkipTemp.ToolTip" xml:space="preserve">
+    <value>နမူနာအဖွဲ့ကို သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="UCServiceExecute.btnShowConfig.ToolTip" xml:space="preserve">
+    <value>ကင်မရာဂုဏ်သတ္တိများကို ပြသခြင်း/ဝှက်ခြင်းတို့ကို စိတ်ကြိုက်ပြင်ဆင်ပါ။</value>
+  </data>
+  <data name="UCServiceExecute.btnTuTruc.Text" xml:space="preserve">
+    <value>တာဝန်ကျ အစိုးရအဖွဲ့ဝင်</value>
+  </data>
+  <data name="UCServiceExecute.btnTuTruc.ToolTip" xml:space="preserve">
+    <value>ကက်ဘိနက်အမိန့်</value>
+  </data>
+  <data name="UCServiceExecute.CheckAllInOne.Properties.Caption" xml:space="preserve">
+    <value>ပေါင်းစပ်ရလဒ်များ</value>
+  </data>
+  <data name="UCServiceExecute.Checked.Caption" xml:space="preserve">
+    <value>ရွေးပါ။</value>
+  </data>
+  <data name="UCServiceExecute.chkAttachImage.Properties.Caption" xml:space="preserve">
+    <value>ဓာတ်ပုံများ ပူးတွဲပါ</value>
+  </data>
+  <data name="UCServiceExecute.chkAutoCapture.ToolTip" xml:space="preserve">
+    <value>အလိုအလျောက် ရိုက်ကူးခြင်း။</value>
+  </data>
+  <data name="UCServiceExecute.ChkAutoFinish.Properties.Caption" xml:space="preserve">
+    <value>KT</value>
+  </data>
+  <data name="UCServiceExecute.ChkAutoFinish.ToolTip" xml:space="preserve">
+    <value>အောင်မြင်စွာ သိမ်းဆည်းပြီးနောက် y အမိန့်ကို အလိုအလျောက် အဆုံးသတ်ပါ။</value>
+  </data>
+  <data name="UCServiceExecute.chkClose.Properties.Caption" xml:space="preserve">
+    <value>ပိတ်လိုက်</value>
+  </data>
+  <data name="UCServiceExecute.chkClose.ToolTip" xml:space="preserve">
+    <value>အောင်မြင်စွာ သိမ်းဆည်းပြီးနောက် မျက်နှာပြင်ကို အလိုအလျောက် ပိတ်ပါ။</value>
+  </data>
+  <data name="UCServiceExecute.chkForPreview.Properties.Caption" xml:space="preserve">
+    <value>ပရင့်အစမ်းကြည့်ရှုခြင်း။</value>
+  </data>
+  <data name="UCServiceExecute.chkForPreview.ToolTip" xml:space="preserve">
+    <value>မပုံနှိပ်မီ အကြောင်းအရာကို ကြည့်ရှုရန် မျက်နှာပြင်ကို ပြသပါ။</value>
+  </data>
+  <data name="UCServiceExecute.chkKeTieuHao.Properties.Caption" xml:space="preserve">
+    <value>လူသုံးကုန်များ</value>
+  </data>
+  <data name="UCServiceExecute.chkKeTieuHao.ToolTip" xml:space="preserve">
+    <value>\</value>
+  </data>
+  <data name="UCServiceExecute.chkPrint.Properties.Caption" xml:space="preserve">
+    <value>ညောင်ပင်</value>
+  </data>
+  <data name="UCServiceExecute.chkPrint.ToolTip" xml:space="preserve">
+    <value>အောင်မြင်စွာသိမ်းဆည်းပြီးနောက် ကူပွန်များကို အလိုအလျောက် ပရင့်ထုတ်ပါ။</value>
+  </data>
+  <data name="UCServiceExecute.chkSaveImageToFile.Properties.Caption" xml:space="preserve">
+    <value>ပုံကို သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="UCServiceExecute.chkSaveImageToFile.ToolTip" xml:space="preserve">
+    <value>ပုံကို ဖိုင်တွင်သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="UCServiceExecute.chkSign.Properties.Caption" xml:space="preserve">
+    <value>ဆိုင်းဘုတ်</value>
+  </data>
+  <data name="UCServiceExecute.chkSign.ToolTip" xml:space="preserve">
+    <value>\\Save\\ အောင်မြင်ပြီးနောက် အီလက်ထရွန်နစ် ဆေးဘက်ဆိုင်ရာ မှတ်တမ်းများကို အလိုအလျောက် လက်မှတ်ထိုး သိမ်းဆည်းပါ</value>
+  </data>
+  <data name="UCServiceExecute.chkUpper.Properties.Caption" xml:space="preserve">
+    <value>ပန်းရင့်</value>
+  </data>
+  <data name="UCServiceExecute.chkUpper.ToolTip" xml:space="preserve">
+    <value>မူရင်းအားဖြင့်၊ စာသားကို စာလုံးကြီး \\နိဂုံး\\</value>
+  </data>
+  <data name="UCServiceExecute.dropDownButton.Text" xml:space="preserve">
+    <value>တခြား</value>
+  </data>
+  <data name="UCServiceExecute.Gc_CreateTime.Caption" xml:space="preserve">
+    <value>ဖန်တီးချိန်</value>
+  </data>
+  <data name="UCServiceExecute.Gc_Creator.Caption" xml:space="preserve">
+    <value>ဖန်ဆင်းရှင်</value>
+  </data>
+  <data name="UCServiceExecute.Gc_ImageStt.Caption" xml:space="preserve">
+    <value>gridColumn၃</value>
+  </data>
+  <data name="UCServiceExecute.Gc_MachineId.Caption" xml:space="preserve">
+    <value>ပြုပြင်ခြင်းစက်</value>
+  </data>
+  <data name="UCServiceExecute.Gc_Modifier.Caption" xml:space="preserve">
+    <value>ပြုပြင်သူ</value>
+  </data>
+  <data name="UCServiceExecute.Gc_ModifyTime.Caption" xml:space="preserve">
+    <value>ပြုပြင်ချိန်</value>
+  </data>
+  <data name="UCServiceExecute.Gc_SendSancy.Caption" xml:space="preserve">
+    <value>အော်ဒါပို့ပါ။</value>
+  </data>
+  <data name="UCServiceExecute.Gc_SereServTraKQ.Caption" xml:space="preserve">
+    <value>ဇယားကွက် ၁</value>
+  </data>
+  <data name="UCServiceExecute.Gc_ServiceCode.Caption" xml:space="preserve">
+    <value>ကုဒ်</value>
+  </data>
+  <data name="UCServiceExecute.Gc_ServiceName.Caption" xml:space="preserve">
+    <value>နာမည်</value>
+  </data>
+  <data name="UCServiceExecute.Gc_Stt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCServiceExecute.gridColAdd.Caption" xml:space="preserve">
+    <value>နောက်ထပ်</value>
+  </data>
+  <data name="UCServiceExecute.gridColDelete.Caption" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="UCServiceExecute.gridColTitles.Caption" xml:space="preserve">
+    <value>အခန်းကဏ္ဍ</value>
+  </data>
+  <data name="UCServiceExecute.gridColumn1.Caption" xml:space="preserve">
+    <value>ဆေးဝါးနှင့် ထောက်ပံ့ရေး ကြေငြာချက်ကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="UCServiceExecute.gridColumn18.Caption" xml:space="preserve">
+    <value>မဲများ</value>
+  </data>
+  <data name="UCServiceExecute.gridColumn2.Caption" xml:space="preserve">
+    <value>ဇယားကွက် ၂</value>
+  </data>
+  <data name="UCServiceExecute.gridColumn3.Caption" xml:space="preserve">
+    <value>ဌာန</value>
+  </data>
+  <data name="UCServiceExecute.gridColumnImage.Caption" xml:space="preserve">
+    <value>ပုံ</value>
+  </data>
+  <data name="UCServiceExecute.gridColUserName.Caption" xml:space="preserve">
+    <value>ပထမနှင့်နောက်ဆုံးအမည်</value>
+  </data>
+  <data name="UCServiceExecute.label1.Text" xml:space="preserve">
+    <value>ဒုတိယ</value>
+  </data>
+  <data name="UCServiceExecute.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="UCServiceExecute.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="UCServiceExecute.layoutControl3.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
+  </data>
+  <data name="UCServiceExecute.layoutControl4.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="UCServiceExecute.layoutControl5.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၅</value>
+  </data>
+  <data name="UCServiceExecute.layoutControlGroup2.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCServiceExecute.layoutControlItem19.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ချိတ်ဆက်ကိရိယာ</value>
+  </data>
+  <data name="UCServiceExecute.layoutControlItem19.Text" xml:space="preserve">
+    <value>KN ဂိတ်-</value>
+  </data>
+  <data name="UCServiceExecute.layoutControlItem24.Text" xml:space="preserve">
+    <value>ရုပ်ရှင်အရွယ်အစား-</value>
+  </data>
+  <data name="UCServiceExecute.layoutControlItem27.Text" xml:space="preserve">
+    <value>ပရင့်အစမ်းကြည့်ရှုခြင်း-</value>
+  </data>
+  <data name="UCServiceExecute.layoutControlItem34.Text" xml:space="preserve">
+    <value>အမိန့်ကုဒ် (F5):</value>
+  </data>
+  <data name="UCServiceExecute.layoutControlItem39.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCServiceExecute.layoutControlItem40.Text" xml:space="preserve">
+    <value>စုစုပေါင်း ဓာတ်ပုံများ-</value>
+  </data>
+  <data name="UCServiceExecute.layoutControlItem41.Text" xml:space="preserve">
+    <value>ဓာတ်ပုံ ၁ ပုံ ရိုက်ရန် အချိန်-</value>
+  </data>
+  <data name="UCServiceExecute.lblNumberOfImageSelected.Text" xml:space="preserve">
+    <value>၀ယ်တယ်။</value>
+  </data>
+  <data name="UCServiceExecute.lcgImage.Text" xml:space="preserve">
+    <value>ပုံ</value>
+  </data>
+  <data name="UCServiceExecute.LcgPatientInfo.Text" xml:space="preserve">
+    <value>အုပ်ချုပ်ရေးဆိုင်ရာအချက်အလက်</value>
+  </data>
+  <data name="UCServiceExecute.LciAddress.Text" xml:space="preserve">
+    <value>လိပ်စာ-</value>
+  </data>
+  <data name="UCServiceExecute.LciBeginTime.Text" xml:space="preserve">
+    <value>အစ:</value>
+  </data>
+  <data name="UCServiceExecute.lciContentLibrary.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၅</value>
+  </data>
+  <data name="UCServiceExecute.lciEkipDepartment.Text" xml:space="preserve">
+    <value>ဌာန-</value>
+  </data>
+  <data name="UCServiceExecute.lciEkipUserTemp.Text" xml:space="preserve">
+    <value>နမူနာအစုံ-</value>
+  </data>
+  <data name="UCServiceExecute.LciEndTime.Text" xml:space="preserve">
+    <value>အဆုံး:</value>
+  </data>
+  <data name="UCServiceExecute.LciExecuteName.Text" xml:space="preserve">
+    <value>ဆရာဝန်-</value>
+  </data>
+  <data name="UCServiceExecute.lciForlblNumberOfImageSelected.Text" xml:space="preserve">
+    <value>ရွေးပါ-</value>
+  </data>
+  <data name="UCServiceExecute.LciGender.Text" xml:space="preserve">
+    <value>လိင်-</value>
+  </data>
+  <data name="UCServiceExecute.LciHeinCardNumber.Text" xml:space="preserve">
+    <value>ကတ်နံပါတ်:</value>
+  </data>
+  <data name="UCServiceExecute.LciKtv.Text" xml:space="preserve">
+    <value>နည်းပညာရှင်များ-</value>
+  </data>
+  <data name="UCServiceExecute.lciMunberOfFilm.Text" xml:space="preserve">
+    <value>ရုပ်ရှင်အရေအတွက်-</value>
+  </data>
+  <data name="UCServiceExecute.LciNurse.Text" xml:space="preserve">
+    <value>လက်ထောက်သူနာပြု-</value>
+  </data>
+  <data name="UCServiceExecute.LciPatientDob.Text" xml:space="preserve">
+    <value>မွေးရက်:</value>
+  </data>
+  <data name="UCServiceExecute.LciPatientName.Text" xml:space="preserve">
+    <value>လူနာ-</value>
+  </data>
+  <data name="UCServiceExecute.LciPatientType.Text" xml:space="preserve">
+    <value>အကြောင်းအရာ-</value>
+  </data>
+  <data name="UCServiceExecute.lciSereServTempCode.Text" xml:space="preserve">
+    <value>နမူနာ:</value>
+  </data>
+  <data name="UCServiceExecute.LciTreatmentType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကုသမှုဧရိယာ</value>
+  </data>
+  <data name="UCServiceExecute.LciTreatmentType.Text" xml:space="preserve">
+    <value>ဖုန်းဧရိယာ-</value>
+  </data>
+  <data name="UCServiceExecute.repositoryItemPictureStt.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCServiceExecute.simpleButton1.Text" xml:space="preserve">
+    <value>သမိုင်း</value>
+  </data>
+  <data name="UCServiceExecute.tileViewColumn2.Caption" xml:space="preserve">
+    <value>ပုံ</value>
+  </data>
+  <data name="UCServiceExecute.tileViewColumn4.Caption" xml:space="preserve">
+    <value>tile ViewColumn4</value>
+  </data>
+  <data name="UCServiceExecute.tileViewColumnName.Caption" xml:space="preserve">
+    <value>နာမည်</value>
+  </data>
+  <data name="UCServiceExecute.tileViewColumnSTTImage.Caption" xml:space="preserve">
+    <value>tile ViewColumnSTTImage</value>
+  </data>
+  <data name="UCServiceExecute.tileViewIsChecked.Caption" xml:space="preserve">
+    <value>ရွေးပါ။</value>
+  </data>
+  <data name="UCServiceExecute.txtConclude.Properties.NullValuePrompt" xml:space="preserve">
+    <value>နိဂုံး</value>
+  </data>
+  <data name="UCServiceExecute.txtNote.Properties.NullValuePrompt" xml:space="preserve">
+    <value>မှတ်ချက်</value>
+  </data>
+  <data name="UCServiceExecute.txtServiceReqCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အမိန့်ကုဒ်</value>
+  </data>
+  <data name="UCServiceExecute.xtraTabPageConclude.Text" xml:space="preserve">
+    <value>နိဂုံး၊ မှတ်စု</value>
+  </data>
+  <data name="UCServiceExecute.xtraTabPageEkip.Text" xml:space="preserve">
+    <value>အကောင်အထည်ဖော်ရေးအဖွဲ့</value>
+  </data>
+  <data name="UcTelerikFullWord.richTextEditorRibbonBar1.ExitButton.Text" xml:space="preserve">
+    <value>ထွက်ပေါက်</value>
+  </data>
+  <data name="UcTelerikFullWord.richTextEditorRibbonBar1.OptionsButton.Text" xml:space="preserve">
+    <value>ရွေးချယ်စရာများ</value>
+  </data>
+  <data name="UcTelerikFullWord.richTextEditorRibbonBar1.Text" xml:space="preserve">
+    <value>richTextEditorRibbonBar1</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_TRACKING_LIST" xml:space="preserve">
+    <value>ကုသမှုစာရွက်များစာရင်း</value>
+  </data>
+</root>

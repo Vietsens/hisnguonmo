@@ -1,0 +1,504 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CacDichVuBanChonCoDVPTBanCoChacMuonGanVaoGoiKhong" xml:space="preserve">
+    <value>သင်ရွေးချယ်သော ဝန်ဆောင်မှုများထဲတွင် ခွဲစိတ်မှုဆိုင်ရာ ဝန်ဆောင်မှုများဖြစ်သည်။</value>
+  </data>
+  <data name="CacDichVuBanChonCoDVPTKhongChoPhepThucHien" xml:space="preserve">
+    <value>သင်ရွေးချယ်သည့် ဝန်ဆောင်မှုများထဲတွင် ခွဲစိတ်မှုဝန်ဆောင်မှုများ ဖြစ်သည်- {0}။</value>
+  </data>
+  <data name="CacDichVuDaDuocTichHPVaHPTGKhongTheBoTichHPTruocKhiBoTichHPTG" xml:space="preserve">
+    <value>အိပ်ရာဖိုးအတွက် အောက်ပါဝန်ဆောင်မှုများကို ကောက်ခံထားပါသည်။</value>
+  </data>
+  <data name="CacDichVuSauCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep" xml:space="preserve">
+    <value>အောက်ပါဝန်ဆောင်မှုများသည် ခွင့်မပြုသောကာလအတွင်း သတ်မှတ်ထားသောအချိန်ရှိသည်- {0}.ဆက်လက်လုပ်ဆောင်လိုပါသလား။</value>
+  </data>
+  <data name="frmBordereau.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmBordereau.barButtonItemFind.Caption" xml:space="preserve">
+    <value>ရှာရန် (Ctrl F)</value>
+  </data>
+  <data name="frmBordereau.btnFind.Text" xml:space="preserve">
+    <value>ရှာရန် (Ctrl F)</value>
+  </data>
+  <data name="frmBordereau.btnPrint.Text" xml:space="preserve">
+    <value>ပုံနှိပ်ခြင်း။</value>
+  </data>
+  <data name="frmBordereau.chkAmount.Text" xml:space="preserve">
+    <value>အရေအတွက် \u003e 0</value>
+  </data>
+  <data name="frmBordereau.grcExpendTypeId.Caption" xml:space="preserve">
+    <value>HPTG</value>
+  </data>
+  <data name="frmBordereau.grcExpendTypeId.ToolTip" xml:space="preserve">
+    <value>အိပ်ယာအတွက် ပိုက်ဆံဖြုန်းနေတာ</value>
+  </data>
+  <data name="frmBordereau.gridCol_Package.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအထုပ်</value>
+  </data>
+  <data name="frmBordereau.gridColIsFundAccepted.Caption" xml:space="preserve">
+    <value>ငွေပေးချေမှုကို လက်ခံပါသည်။</value>
+  </data>
+  <data name="frmBordereau.gridColumn1.Caption" xml:space="preserve">
+    <value>ဆေးအမိန့်စာ ကုတ်</value>
+  </data>
+  <data name="frmBordereau.gridColumn10.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမျိုးအစား</value>
+  </data>
+  <data name="frmBordereau.gridColumn11.Caption" xml:space="preserve">
+    <value>HP</value>
+  </data>
+  <data name="frmBordereau.gridColumn11.ToolTip" xml:space="preserve">
+    <value>ငွေဖြုန်းတီးခြင်း။</value>
+  </data>
+  <data name="frmBordereau.gridColumn12.Caption" xml:space="preserve">
+    <value>အကောင်အထည်ဖော်ရေးအခန်း</value>
+  </data>
+  <data name="frmBordereau.gridColumn13.Caption" xml:space="preserve">
+    <value>Package စျေးနှုန်း</value>
+  </data>
+  <data name="frmBordereau.gridColumn14.Caption" xml:space="preserve">
+    <value>SERVICE_TYPE_ID</value>
+  </data>
+  <data name="frmBordereau.gridColumn15.Caption" xml:space="preserve">
+    <value>လူနာ၏ငွေပေးချေမှုကုန်ကျစရိတ်ကို ယာယီတွက်ချက်ပါသည်။</value>
+  </data>
+  <data name="frmBordereau.gridColumn15.ToolTip" xml:space="preserve">
+    <value>ခန့်မှန်းလူနာကုန်ကျစရိတ်</value>
+  </data>
+  <data name="frmBordereau.gridColumn16.Caption" xml:space="preserve">
+    <value>ပမာဏကို ယာယီတွက်ချက်သည်။</value>
+  </data>
+  <data name="frmBordereau.gridColumn17.Caption" xml:space="preserve">
+    <value>အခြားသတင်းရင်းမြစ် CT</value>
+  </data>
+  <data name="frmBordereau.gridColumn17.ToolTip" xml:space="preserve">
+    <value>အခြားငွေပေးချေမှုအရင်းအမြစ်များ</value>
+  </data>
+  <data name="frmBordereau.gridColumn18.Caption" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံကုဒ်</value>
+  </data>
+  <data name="frmBordereau.gridColumn2.Caption" xml:space="preserve">
+    <value>အော်ဒါမှာတယ်။</value>
+  </data>
+  <data name="frmBordereau.gridColumn3.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကုဒ်</value>
+  </data>
+  <data name="frmBordereau.gridColumn4.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမည်</value>
+  </data>
+  <data name="frmBordereau.gridColumn5.Caption" xml:space="preserve">
+    <value>SL</value>
+  </data>
+  <data name="frmBordereau.gridColumn5.ToolTip" xml:space="preserve">
+    <value>ပမာဏ</value>
+  </data>
+  <data name="frmBordereau.gridColumn6.Caption" xml:space="preserve">
+    <value>သတ်မှတ်ထားသောဌာန</value>
+  </data>
+  <data name="frmBordereau.gridColumn7.Caption" xml:space="preserve">
+    <value>ယူနစ်</value>
+  </data>
+  <data name="frmBordereau.gridColumn7.ToolTip" xml:space="preserve">
+    <value>ယူနစ်</value>
+  </data>
+  <data name="frmBordereau.gridColumn8.Caption" xml:space="preserve">
+    <value>တစ်ခုချင်းစျေးနှုန်း</value>
+  </data>
+  <data name="frmBordereau.gridColumn9.Caption" xml:space="preserve">
+    <value>ငွေထဲသို့</value>
+  </data>
+  <data name="frmBordereau.gridColumnDescription.Caption" xml:space="preserve">
+    <value>ဖော်ပြပါ။</value>
+  </data>
+  <data name="frmBordereau.gridColumnDoiTuongPT.Caption" xml:space="preserve">
+    <value>အပိုဖုန်းနံပါတ်</value>
+  </data>
+  <data name="frmBordereau.gridColumnDoiTuongPT.ToolTip" xml:space="preserve">
+    <value>နောက်ဆက်တွဲ ဘာသာရပ်များ</value>
+  </data>
+  <data name="frmBordereau.gridColumnDvDinhKem.Caption" xml:space="preserve">
+    <value>DVD နှင့် လာပါသည်။</value>
+  </data>
+  <data name="frmBordereau.gridColumnDvDinhKem.ToolTip" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုပါဝင်ပါသည်။</value>
+  </data>
+  <data name="frmBordereau.gridColumnEquipment.Caption" xml:space="preserve">
+    <value>ရိက္ခာအစုံ</value>
+  </data>
+  <data name="frmBordereau.gridColumnEquipmentId.Caption" xml:space="preserve">
+    <value>gridColumn12</value>
+  </data>
+  <data name="frmBordereau.gridColumnIsNoExecute.Caption" xml:space="preserve">
+    <value>မလုပ်ဆောင်ပါနှင့်</value>
+  </data>
+  <data name="frmBordereau.gridColumnIsNotUseBHYT.Caption" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံ ခံစားခွင့်မရှိပါ။</value>
+  </data>
+  <data name="frmBordereau.gridColumnIsOutKtcFee.Caption" xml:space="preserve">
+    <value>အထုပ်ထဲက CP</value>
+  </data>
+  <data name="frmBordereau.gridColumnOtherPaySource.Caption" xml:space="preserve">
+    <value>အခြားသော အရင်းအမြစ်များ</value>
+  </data>
+  <data name="frmBordereau.gridColumnPatientTypeName.Caption" xml:space="preserve">
+    <value>ငွေပေးချေမှုဖုန်း</value>
+  </data>
+  <data name="frmBordereau.gridColumnPatientTypeName.ToolTip" xml:space="preserve">
+    <value>ငွေပေးချေမှု ရှိကြပါတယ်။</value>
+  </data>
+  <data name="frmBordereau.gridColumnShareCount.Caption" xml:space="preserve">
+    <value>လဲလျောင်းသည်</value>
+  </data>
+  <data name="frmBordereau.gridColumnStentOrder.Caption" xml:space="preserve">
+    <value>TT Stent</value>
+  </data>
+  <data name="frmBordereau.gridColumnStentOrder.ToolTip" xml:space="preserve">
+    <value>stents ၏အမိန့်</value>
+  </data>
+  <data name="frmBordereau.gridViewBordereau.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
+  </data>
+  <data name="frmBordereau.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmBordereau.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem10.Text" xml:space="preserve">
+    <value>လိပ်စာ-</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem11.Text" xml:space="preserve">
+    <value>မွေးရက်:</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem12.Text" xml:space="preserve">
+    <value>ဖုန်း</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem15.Text" xml:space="preserve">
+    <value>ရောက်ရှိချိန်:</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem16.Text" xml:space="preserve">
+    <value>အချိန်-</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem18.Text" xml:space="preserve">
+    <value>ကုသမှုကုဒ်-</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem19.Text" xml:space="preserve">
+    <value>ငွေပေးချေမှုရန်ပုံငွေ-</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem20.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem21.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ပြင်ပလူနာ ဆေးမှတ်တမ်းတွင် ကုသမှုမှတ်တမ်းများ</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem21.Text" xml:space="preserve">
+    <value>တူညီသော BA မှ ကျောင်းသား၊</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem3.Text" xml:space="preserve">
+    <value>လက်ခံနိုင်မှုများ-</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem4.Text" xml:space="preserve">
+    <value>လက်ခံနိုင်သော BN-</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem5.Text" xml:space="preserve">
+    <value>စုဆောင်းထားသည်-</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem6.Text" xml:space="preserve">
+    <value>ပိုမိုစုဆောင်းရန် လိုအပ်သည်-</value>
+  </data>
+  <data name="frmBordereau.layoutControlItem8.Text" xml:space="preserve">
+    <value>အမည်-</value>
+  </data>
+  <data name="frmBordereau.lciPayType.Text" xml:space="preserve">
+    <value>TT အခြေအနေ-</value>
+  </data>
+  <data name="frmBordereau.lciReturnResult.Text" xml:space="preserve">
+    <value>ငွေပေးသူ-</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemDTTT" xml:space="preserve">
+    <value>ငွေပေးချေမှု ရှိကြပါတယ်။</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemDTTTPhuTthu" xml:space="preserve">
+    <value>နောက်ဆက်တွဲ ဘာသာရပ်များ</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemEquipment" xml:space="preserve">
+    <value>ရိက္ခာအစုံ</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemExecute" xml:space="preserve">
+    <value>မလုပ်ဆောင်ပါနှင့်</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemExpend" xml:space="preserve">
+    <value>အမှိုက်ရှင်းပါ။</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemExpendType" xml:space="preserve">
+    <value>ကုတင်ပေါ်မှာ ပိုက်ဆံဖြုန်းတယ်။</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemFunAccept" xml:space="preserve">
+    <value>ငွေပေးချေမှုကို လက်ခံရန် ရန်ပုံငွေကို ချန်ထားပါ။</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemHasParent" xml:space="preserve">
+    <value>ဖြုတ်ပါ။</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemIsNotOutParentFee" xml:space="preserve">
+    <value>အထုပ်ပြင်ပကုန်ကျစရိတ်</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.itemIsNotUseBHYT" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံ ခံစားခွင့်မရှိပါ။</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemIsOutParentFee" xml:space="preserve">
+    <value>အထုပ်ပြင်ပကုန်ကျစရိတ်များကို ဖယ်ရှားပါ။</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemNoExecute" xml:space="preserve">
+    <value>မရရင်တော့</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemNotExpend" xml:space="preserve">
+    <value>ငွေဖြုန်းတီးခြင်း။</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemNotExpendType" xml:space="preserve">
+    <value>အိပ်ယာအတွက် ပိုက်ဆံကုန်မယ်။</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemNotFunAccept" xml:space="preserve">
+    <value>ငွေပေးချေမှုကို လက်ခံပါသည်။</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.itemOtherPaySource" xml:space="preserve">
+    <value>အခြားသော အရင်းအမြစ်များ</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemSetParent" xml:space="preserve">
+    <value>ဝန်ဆောင်မှု ပူးတွဲပါ</value>
+  </data>
+  <data name="frmBordereau.PopupMenu.ItemShareCount" xml:space="preserve">
+    <value>ကုတင်အရေအတွက်</value>
+  </data>
+  <data name="frmBordereau.repositoryItemLookUpEdit_PatientType.NullText" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmBordereau.repositoryItemPictureEdit1.NullText" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmBordereau.Text" xml:space="preserve">
+    <value>ငွေပေးချေမှုစာရင်း</value>
+  </data>
+  <data name="frmBordereau.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
+  </data>
+  <data name="frmChooseOtherPaySource.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmChooseOtherPaySource.barButtonItem1.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="frmChooseOtherPaySource.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmChooseOtherPaySource.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmChooseOtherPaySource.layoutControlItem1.Text" xml:space="preserve">
+    <value>အခြားသော အရင်းအမြစ်များ-</value>
+  </data>
+  <data name="frmChooseOtherPaySource.Text" xml:space="preserve">
+    <value>အခြားအရင်းအမြစ်ကို ရွေးပါ။</value>
+  </data>
+  <data name="frmChoosePatientType.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmChoosePatientType.barButtonItem1.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="frmChoosePatientType.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmChoosePatientType.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmChoosePatientType.layoutControlItem1.Text" xml:space="preserve">
+    <value>ဖုန်း</value>
+  </data>
+  <data name="frmChoosePatientType.Text" xml:space="preserve">
+    <value>ငွေပေးချေမှုအရာဝတ္ထုကို ရွေးပါ။</value>
+  </data>
+  <data name="frmChooseService.btnChoose.Text" xml:space="preserve">
+    <value>ရွေးပါ။</value>
+  </data>
+  <data name="frmChooseService.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmChooseService.layoutControlItem2.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှု-</value>
+  </data>
+  <data name="frmChooseService.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုတစ်ခုရွေးချယ်ပါ။</value>
+  </data>
+  <data name="frmChooseShareCount.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmChooseShareCount.barButtonItem1.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="frmChooseShareCount.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmChooseShareCount.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmChooseShareCount.layoutControlItem1.Text" xml:space="preserve">
+    <value>ပူးတွဲတည်နေရာနံပါတ်-</value>
+  </data>
+  <data name="frmChooseShareCount.Text" xml:space="preserve">
+    <value>ငုတ်တုတ်</value>
+  </data>
+  <data name="frmEquipmentSet.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmEquipmentSet.barButtonItemCtrlS.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="frmEquipmentSet.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmEquipmentSet.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmEquipmentSet.layoutControlItem1.Text" xml:space="preserve">
+    <value>ထောက်ပံ့ရေးပစ္စည်းအစုံ-</value>
+  </data>
+  <data name="frmEquipmentSet.layoutControlItem2.Text" xml:space="preserve">
+    <value>မျက်နှာကျက်စျေးနှုန်း</value>
+  </data>
+  <data name="frmEquipmentSet.lblNumOrder.Text" xml:space="preserve">
+    <value>နံပါတ်များ အစုံ-</value>
+  </data>
+  <data name="frmEquipmentSet.Text" xml:space="preserve">
+    <value>ပစ္စည်းအစုံကို ရွေးချယ်ပါ။</value>
+  </data>
+  <data name="frmPriceEdit.btnOK.Text" xml:space="preserve">
+    <value>သဘောတူတယ်။</value>
+  </data>
+  <data name="frmPriceEdit.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmPriceEdit.layoutControlItem1.Text" xml:space="preserve">
+    <value>စျေးနှုန်း:</value>
+  </data>
+  <data name="frmPriceEdit.Text" xml:space="preserve">
+    <value>စျေးနှုန်းကို တည်းဖြတ်ပါ။</value>
+  </data>
+</root>

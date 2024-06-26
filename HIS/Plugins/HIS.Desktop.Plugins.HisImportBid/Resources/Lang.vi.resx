@@ -1,0 +1,399 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__ACTIVE_INGR_BHYT_CODE" xml:space="preserve">
+    <value>Mã hoạt chất</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__ACTIVE_INGR_BHYT_NAME" xml:space="preserve">
+    <value>Tên hoạt chất</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__AMOUNT" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_GROUP_CODE" xml:space="preserve">
+    <value>Nhóm thầu</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_NAME" xml:space="preserve">
+    <value>Tên thầu</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_NUMBER" xml:space="preserve">
+    <value>Quyết định thầu</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_NUM_ORDER" xml:space="preserve">
+    <value>Stt Thầu</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_PACKAGE_CODE" xml:space="preserve">
+    <value>Gói thầu</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_TYPE_CODE" xml:space="preserve">
+    <value>Loại thầu</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_YEAR" xml:space="preserve">
+    <value>Năm quyết định</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BTN_DOWNLOAD" xml:space="preserve">
+    <value>Tải file mẫu</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BTN_IMPORT" xml:space="preserve">
+    <value>Nhập khẩu</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BTN_SAVE" xml:space="preserve">
+    <value>Lưu(Ctrl S)</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BTN_SHOW_LINE_ERROR__ERROR" xml:space="preserve">
+    <value>Dòng lỗi</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BTN_SHOW_LINE_ERROR__OK" xml:space="preserve">
+    <value>Dòng không lỗi</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__CONCENTRA" xml:space="preserve">
+    <value>Hàm lượng</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__IMP_PRICE" xml:space="preserve">
+    <value>Giá nhập</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__IMP_VAT_RATIO" xml:space="preserve">
+    <value>VAT %</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__MANUFACTURE_NAME" xml:space="preserve">
+    <value>Hãng sản xuất</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__MEDICINE_TYPE_CODE" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__MEDICINE_TYPE_NAME" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__NATIONAL_NAME" xml:space="preserve">
+    <value>Quốc gia</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__PACKING_TYPE_NAME" xml:space="preserve">
+    <value>Quy cách đóng gói</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__RP_BTN_DELETE" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__RP_BTN_ERROR" xml:space="preserve">
+    <value>Hiển thị lỗi</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__SERVICE_UNIT_NAME" xml:space="preserve">
+    <value>ĐVT</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__STT" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__SUPPLIER_NAME" xml:space="preserve">
+    <value>Nhà thầu</value>
+  </data>
+  <data name="BiTrung" xml:space="preserve">
+    <value>bị lặp lại</value>
+  </data>
+  <data name="CanhBaoMau" xml:space="preserve">
+    <value>Máu {0} </value>
+  </data>
+  <data name="CanhBaoThuoc" xml:space="preserve">
+    <value>Thuốc {0} </value>
+  </data>
+  <data name="CanhBaoVatTu" xml:space="preserve">
+    <value>Vật tư {0} </value>
+  </data>
+  <data name="DangSua" xml:space="preserve">
+    <value>Đang sửa {0}</value>
+  </data>
+  <data name="GoiThauQuaDai" xml:space="preserve">
+    <value>mã gói thầu dài hơn 4 ký tự </value>
+  </data>
+  <data name="HeThongTBKQXLYCCuaFrontendThatBai" xml:space="preserve">
+    <value>Xử lý thất bại</value>
+  </data>
+  <data name="KhongCoNhaCungCap" xml:space="preserve">
+    <value>không có nhà thầu </value>
+  </data>
+  <data name="KhongCoSttThau" xml:space="preserve">
+    <value>không có số thứ tự thầu </value>
+  </data>
+  <data name="NhomThauQuaDai" xml:space="preserve">
+    <value>mã nhóm thầu dài hơn 4 ký tự </value>
+  </data>
+  <data name="SaiDinhDangNam" xml:space="preserve">
+    <value>thông tin năm không hợp lệ </value>
+  </data>
+  <data name="SoLuongKhongDuocAm" xml:space="preserve">
+    <value>số lượng không được nhỏ hơn 0 </value>
+  </data>
+  <data name="SttThauQuaDai" xml:space="preserve">
+    <value>số thứ tự thầu dài hơn 20 ký tự </value>
+  </data>
+  <data name="ThieuTruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Chưa nhập trường dữ liệu bắt buộc</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
+  <data name="GoiThauKhongDuDoDai" xml:space="preserve">
+    <value>mã gói thầu dài không đủ 4 ký tự </value>
+  </data>
+  <data name="KhongCoThongTinGoiThau" xml:space="preserve">
+    <value>không có gói thầu </value>
+  </data>
+  <data name="KhongCoThongTinNam" xml:space="preserve">
+    <value>không có năm thầu </value>
+  </data>
+  <data name="KhongCoThongTinQDThau" xml:space="preserve">
+    <value>không có quyết định thầu </value>
+  </data>
+  <data name="KhongCoThongTinTenThau" xml:space="preserve">
+    <value>không có tên thầu </value>
+  </data>
+  <data name="NamKhongDuocLonHonNamHienTai" xml:space="preserve">
+    <value>năm không được lớn hơn năm hiện tại</value>
+  </data>
+  <data name="KhongCoThongTinLoaiThau" xml:space="preserve">
+    <value>không có loại thầu</value>
+  </data>
+  <data name="KhongCoGiaNhap" xml:space="preserve">
+    <value>không có giá nhập</value>
+  </data>
+  <data name="KhongCoSoLuong" xml:space="preserve">
+    <value>không có số lượng</value>
+  </data>
+  <data name="GiaKhongDuocAm" xml:space="preserve">
+    <value>giá không được âm</value>
+  </data>
+  <data name="KhongCoVAT" xml:space="preserve">
+    <value>không có VAT</value>
+  </data>
+  <data name="VATKhongDuocAm" xml:space="preserve">
+    <value>VAT không được âm</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_MATERIAL_TYPE_CODE" xml:space="preserve">
+    <value>Mã trúng thầu</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_MATERIAL_TYPE_NAME" xml:space="preserve">
+    <value>Tên trúng thầu</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__HEIN_SERVICE_BHYT_NAME" xml:space="preserve">
+    <value>Tên BHYT</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__JOIN_BID_MATERIAL_TYPE_CODE" xml:space="preserve">
+    <value>Mã dự thầu</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__SMATERIAL_TYPE_MAP_CODE" xml:space="preserve">
+    <value>Mã vật tư TĐ</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__SMATERIAL_TYPE_MAP_CODE_TOOLTIP" xml:space="preserve">
+    <value>Mã vật tư tương đương</value>
+  </data>
+  <data name="KhongDuocNhapMaDuThau" xml:space="preserve">
+    <value>Không được nhập mã dự thầu</value>
+  </data>
+  <data name="KhongDuocNhapMaTrungThau" xml:space="preserve">
+    <value>Không được nhập mã trúng thầu</value>
+  </data>
+  <data name="KhongDuocNhapMaVatTuKhiNhapMaVatTuTuongDuong" xml:space="preserve">
+    <value>Không được nhập mã vật tư khi nhập mã vật tư tương đương</value>
+  </data>
+  <data name="KhongDuocNhapMaVatTuTuongDuong" xml:space="preserve">
+    <value>Không được nhập mã vật tư tương đương</value>
+  </data>
+  <data name="KhongDuocNhapQuyCachDongGoi" xml:space="preserve">
+    <value>Không được nhập quy cách đóng gói</value>
+  </data>
+  <data name="KhongDuocNhapTenBHYT" xml:space="preserve">
+    <value>Không được nhập tên BHYT</value>
+  </data>
+  <data name="KhongDuocNhapTenTrungThau" xml:space="preserve">
+    <value>Không được nhập tên trúng thầu</value>
+  </data>
+  <data name="MaDuThauQuaDai" xml:space="preserve">
+    <value>Mã dự thầu dài hơn 50 ký tự</value>
+  </data>
+  <data name="MaTrungThauQuaDai" xml:space="preserve">
+    <value>Mã trúng thầu dài hơn 50 ký tự</value>
+  </data>
+  <data name="MaVatTuTuongDuongQuaDai" xml:space="preserve">
+    <value>Mã vật tư tương đương dài hơn 25 ký tự</value>
+  </data>
+  <data name="QuyCachDongGoiQuaDai" xml:space="preserve">
+    <value>Quy cách đóng gói dài hơn 300 ký tự</value>
+  </data>
+  <data name="TenBHYTQuaDai" xml:space="preserve">
+    <value>Tên BHYT dài hơn 500 ký tự</value>
+  </data>
+  <data name="TenTrungThauQuaDai" xml:space="preserve">
+    <value>Tên trúng thầu dài hơn 500 ký tự</value>
+  </data>
+  <data name="GioTuoiThoQuaDai" xml:space="preserve">
+    <value>Giờ tuổi thọ dài hơn 19 ký tự</value>
+  </data>
+  <data name="HangsanxuatQuaDai" xml:space="preserve">
+    <value>Hãng sản xuất dài hơn 6 ký tự</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__DAY_LIFESPAN" xml:space="preserve">
+    <value>Ngày tuổi thọ</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__HOUR_LIFESPAN" xml:space="preserve">
+    <value>Giờ tuổi thọ</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__MEDICINE_REGISTER_NUMBER" xml:space="preserve">
+    <value>Số đăng ký</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__MONTH_LIFESPAN" xml:space="preserve">
+    <value>Tháng tuổi thọ</value>
+  </data>
+  <data name="KhongDuocNhapSoDangKy" xml:space="preserve">
+    <value>Không được nhập số đăng ký</value>
+  </data>
+  <data name="NgayTuoiThoQuaDai" xml:space="preserve">
+    <value>Ngày tuổi thọ dài hơn 19 ký tự</value>
+  </data>
+  <data name="NongDoHamLuongQuaDai" xml:space="preserve">
+    <value>Nồng độ/Hàm Lượng dài hơn 1000 ký tự</value>
+  </data>
+  <data name="NuocsanxuatQuaDai" xml:space="preserve">
+    <value>Nước sản xuất dài hơn 100 ký tự</value>
+  </data>
+  <data name="SoDangKyQuaDai" xml:space="preserve">
+    <value>Số đăng ký dài hơn 500 ký tự</value>
+  </data>
+  <data name="ThangTuoiThoQuaDai" xml:space="preserve">
+    <value>Tháng tuổi thọ dài hơn 19 ký tự</value>
+  </data>
+  <data name="TuoiThoKhongHopLe" xml:space="preserve">
+    <value>Tuổi thọ không hợp lệ</value>
+  </data>
+  <data name="GioTuoiThoSaiDinhDang" xml:space="preserve">
+    <value>Giờ tuổi thọ sai định dạng</value>
+  </data>
+  <data name="NgayTuoiThoSaiDinhDang" xml:space="preserve">
+    <value>Ngày tuổi thọ sai định dạng</value>
+  </data>
+  <data name="ThangTuoiThoSaiDinhDang" xml:space="preserve">
+    <value>Tháng tuổi thọ sai định dạng</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_EXTRA_CODE" xml:space="preserve">
+    <value>Mã QĐ thầu</value>
+  </data>
+  <data name="KhongCoThongTinMaQDThau" xml:space="preserve">
+    <value>Không có mã quyết định thầu</value>
+  </data>
+  <data name="MaQDThauQuaDai" xml:space="preserve">
+    <value>Mã quyết định thầu dài hơn 50 ký tự</value>
+  </data>
+</root>

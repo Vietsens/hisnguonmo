@@ -1,0 +1,684 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmTransactionBill.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmTransactionBill.barButtonItem1.Caption" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="frmTransactionBill.bbtnNew.Caption" xml:space="preserve">
+    <value>အသစ် (Ctrl N)</value>
+  </data>
+  <data name="frmTransactionBill.bbtnRCSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmTransactionBill.bbtnRCSavePrint.Caption" xml:space="preserve">
+    <value>ပုံနှိပ်သိမ်းဆည်းပါ (Ctrl I)</value>
+  </data>
+  <data name="frmTransactionBill.bbtnRCSaveSign.Caption" xml:space="preserve">
+    <value>ငွေသွင်းခြင်း (Ctrl A)</value>
+  </data>
+  <data name="frmTransactionBill.btnNew.Text" xml:space="preserve">
+    <value>အသစ် (Ctrl N)</value>
+  </data>
+  <data name="frmTransactionBill.btnPosConfig.ToolTip" xml:space="preserve">
+    <value>POS စက်ပစ္စည်းချိတ်ဆက်မှုပုံစံ</value>
+  </data>
+  <data name="frmTransactionBill.btnSave.Text" xml:space="preserve">
+    <value>ကယ်တင်ပါ။ (Ctrl S)</value>
+  </data>
+  <data name="frmTransactionBill.btnSaveAndSign.Text" xml:space="preserve">
+    <value>ငွေသွင်းခြင်း (Ctrl A)</value>
+  </data>
+  <data name="frmTransactionBill.btnSavePrint.Text" xml:space="preserve">
+    <value>ပုံနှိပ်သိမ်းဆည်းပါ (Ctrl I)</value>
+  </data>
+  <data name="frmTransactionBill.btnSearch.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="frmTransactionBill.btnStateForInformationUser.ToolTip" xml:space="preserve">
+    <value>အကယ်၍ \\Pin\\၊ အမည်အပြည့်အစုံ၊ အခွန်ကုဒ်၊ အကောင့်နံပါတ်၊ ယူနစ်၊ နေရပ်လိပ်စာ အကွက်များရှိ တန်ဖိုး</value>
+  </data>
+  <data name="frmTransactionBill.chkAutoClose.Properties.Caption" xml:space="preserve">
+    <value>: အလိုအလျောက်ပိတ်</value>
+  </data>
+  <data name="frmTransactionBill.chkAutoClose.ToolTip" xml:space="preserve">
+    <value>'Save in' သို့မဟုတ် 'Store in' သို့မဟုတ် 'Print' အောင်မြင်သောအခါတွင် လုပ်ဆောင်ချက်ကို အလိုအလျောက်ပိတ်ပါ</value>
+  </data>
+  <data name="frmTransactionBill.chkAutoRepay.Properties.Caption" xml:space="preserve">
+    <value>အလိုအလျောက်ဖြည့်ပါ။</value>
+  </data>
+  <data name="frmTransactionBill.chkCoKetChuyen.Properties.Caption" xml:space="preserve">
+    <value>အကူးအပြောင်းရှိတယ်။</value>
+  </data>
+  <data name="frmTransactionBill.chkConnectPOS.ToolTip" xml:space="preserve">
+    <value>ငွေပေးချေနည်းလမ်းကို \\Swipe အဖြစ်ရွေးချယ်သောအခါ ဘဏ်၏ငွေပေးချေမှု POS သို့ ချိတ်ဆက်ပါ။</value>
+  </data>
+  <data name="frmTransactionBill.chkHideHddt.Properties.Caption" xml:space="preserve">
+    <value>: e-invoice ကို မပြပါနှင့်</value>
+  </data>
+  <data name="frmTransactionBill.chkOther.Properties.Caption" xml:space="preserve">
+    <value>တခြား</value>
+  </data>
+  <data name="frmTransactionBill.chkPrintBKBHNT.Properties.Caption" xml:space="preserve">
+    <value>: ပြင်ပလူနာအာမခံကြေညာချက်ကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="frmTransactionBill.chkPrintBKBHNT.ToolTip" xml:space="preserve">
+    <value>\\Save in ခလုတ်ကိုနှိပ်သောအခါ လူနာတွင် ကျန်းမာရေးအာမခံရှိလျှင် နောက်ထပ်စာရင်းကို ပရင့်ထုတ်ပါ။</value>
+  </data>
+  <data name="frmTransactionBill.chkPrintHddt.Properties.Caption" xml:space="preserve">
+    <value>: ငွေတောင်းခံလွှာကို ပရင့်ထုတ်ပါ။</value>
+  </data>
+  <data name="frmTransactionBill.chkPrintPrescription.Properties.Caption" xml:space="preserve">
+    <value>:PK တစ်ခုတည်းကို ပရင့်ထုတ်ပါ။</value>
+  </data>
+  <data name="frmTransactionBill.chkPrintPrescription.ToolTip" xml:space="preserve">
+    <value>ဆေးရုံအခကြေးငွေပေးဆောင်ပြီးသော့ကို ပေးဆောင်ပြီးနောက် ဆေးခန်းဆေးစာများကို အလိုအလျောက်ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="frmTransactionBill.ddBtnPrint.Text" xml:space="preserve">
+    <value>ညောင်ပင်</value>
+  </data>
+  <data name="frmTransactionBill.DirectCollection" xml:space="preserve">
+    <value>တိုက်ရိုက်စုဆောင်းခြင်း။</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Fund_Amount.Caption" xml:space="preserve">
+    <value>ငွေပမာဏ</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Fund_Budget.Caption" xml:space="preserve">
+    <value>အဆင့်</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Fund_Button.Caption" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Fund_FundCode.Caption" xml:space="preserve">
+    <value>ငွေပေးချေမှုရန်ပုံငွေကုဒ်</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Fund_FundName.Caption" xml:space="preserve">
+    <value>ငွေပေးချေမှုရန်ပုံငွေအမည်</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Fund_Stt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_AccountBookCode.Caption" xml:space="preserve">
+    <value>စာအုပ်ကုဒ်</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_AccountBookName.Caption" xml:space="preserve">
+    <value>စာအုပ်နာမည်</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_Amount.Caption" xml:space="preserve">
+    <value>ငွေပမာဏ</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_CashierRoom.Caption" xml:space="preserve">
+    <value>ငွေကိုင်ခန်း</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_CashierUseName.Caption" xml:space="preserve">
+    <value>ပြောပြသူများ</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_CreateTime.Caption" xml:space="preserve">
+    <value>ဖန်တီးချိန်</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_Creator.Caption" xml:space="preserve">
+    <value>ဖန်ဆင်းရှင်</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_Lock.Caption" xml:space="preserve">
+    <value>လော့ခ်/သော့ဖွင့်ပါ။</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_Modifier.Caption" xml:space="preserve">
+    <value>ပြုပြင်သူ</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_ModifyTime.Caption" xml:space="preserve">
+    <value>ပြုပြင်ချိန်</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_NumOrder.Caption" xml:space="preserve">
+    <value>နံပါတ်</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_PayForm.Caption" xml:space="preserve">
+    <value>ပုံစံ</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_TransactionCode.Caption" xml:space="preserve">
+    <value>ကုန်သွယ်မှုကုဒ်</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn1.Caption" xml:space="preserve">
+    <value>FUND_ID</value>
+  </data>
+  <data name="frmTransactionBill.groupControl1.Text" xml:space="preserve">
+    <value>ဝယ်သူအချက်အလက်</value>
+  </data>
+  <data name="frmTransactionBill.labelControl1.Text" xml:space="preserve">
+    <value>တံဆိပ်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmTransactionBill.labelControl2.Text" xml:space="preserve">
+    <value>တံဆိပ်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmTransactionBill.layoutAccountBook.Text" xml:space="preserve">
+    <value>ဝင်ငွေနှင့် အသုံးစရိတ် စာအုပ်-</value>
+  </data>
+  <data name="frmTransactionBill.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmTransactionBill.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmTransactionBill.layoutControl3.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
+  </data>
+  <data name="frmTransactionBill.layoutControl4.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem11.Text" xml:space="preserve">
+    <value>ဆေးဝါး/ပစ္စည်းများ မသုံးပါနှင့်။</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem13.Text" xml:space="preserve">
+    <value>လူနာကုဒ်-</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem14.Text" xml:space="preserve">
+    <value>အကြောင်းအရာ-</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem15.Text" xml:space="preserve">
+    <value>လူနာအမည်-</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem16.Text" xml:space="preserve">
+    <value>လိပ်စာ-</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem20.Text" xml:space="preserve">
+    <value>မွေးရက်:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem21.Text" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem22.Text" xml:space="preserve">
+    <value>SSC ၏နေရာ-</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem23.Text" xml:space="preserve">
+    <value>အာမခံကတ်နံပါတ်-</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem25.Text" xml:space="preserve">
+    <value>စကားလုံးအသုံးအနှုန်း-</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem26.Text" xml:space="preserve">
+    <value>နောက်ဆုံးရက်:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem29.Text" xml:space="preserve">
+    <value>BN ပေးသောပမာဏ-</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem3.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem31.Text" xml:space="preserve">
+    <value>BN ပေးဆောင်ရမည့် ပမာဏ-</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem32.Text" xml:space="preserve">
+    <value>အမည်-</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem33.Text" xml:space="preserve">
+    <value>အခွန်ကုဒ်-</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem34.Text" xml:space="preserve">
+    <value>အကောင့်နံပါတ်:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem36.Text" xml:space="preserve">
+    <value>လိပ်စာ-</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem37.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အီး-ပြေစာများကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem37.Text" xml:space="preserve">
+    <value>ဖုန်းစာချုပ်ကို ပရင့်ထုတ်ခြင်း-</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem39.Text" xml:space="preserve">
+    <value>POS ချိတ်ဆက်မှု-</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem42.Text" xml:space="preserve">
+    <value>အခမဲ့ဝန်ဆောင်မှုများကိုပြသပါ။</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem44.Text" xml:space="preserve">
+    <value>ယူနစ်-</value>
+  </data>
+  <data name="frmTransactionBill.layoutDescription.Text" xml:space="preserve">
+    <value>မှတ်စု:</value>
+  </data>
+  <data name="frmTransactionBill.layoutDiscount.Text" xml:space="preserve">
+    <value>လျှော့စျေး (ဃ):</value>
+  </data>
+  <data name="frmTransactionBill.layoutDiscountRatio.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>% လျှော့စျေး</value>
+  </data>
+  <data name="frmTransactionBill.layoutDiscountRatio.Text" xml:space="preserve">
+    <value>လျှော့စျေး(%):</value>
+  </data>
+  <data name="frmTransactionBill.layoutHienDu.Text" xml:space="preserve">
+    <value>လက်ကျန်ငွေ:</value>
+  </data>
+  <data name="frmTransactionBill.layoutPayForm.Text" xml:space="preserve">
+    <value>ပုံစံ-</value>
+  </data>
+  <data name="frmTransactionBill.layoutReason.Text" xml:space="preserve">
+    <value>အကြောင်းရင်း-</value>
+  </data>
+  <data name="frmTransactionBill.layoutReceiveAmount.Text" xml:space="preserve">
+    <value>စုဆောင်းရန်-</value>
+  </data>
+  <data name="frmTransactionBill.layoutTongTuDen.Text" xml:space="preserve">
+    <value>လက်မှတ်နံပါတ်-</value>
+  </data>
+  <data name="frmTransactionBill.layoutTotalAmount.Text" xml:space="preserve">
+    <value>ငွေပမာဏ-</value>
+  </data>
+  <data name="frmTransactionBill.layoutTransactionTime.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ငွေလွှဲချိန်</value>
+  </data>
+  <data name="frmTransactionBill.layoutTransactionTime.Text" xml:space="preserve">
+    <value>ငွေပေးငွေယူ Tg-</value>
+  </data>
+  <data name="frmTransactionBill.lciAccountBookRepay.Text" xml:space="preserve">
+    <value>စာအုပ်အပြည့်အစုံ-</value>
+  </data>
+  <data name="frmTransactionBill.LciBillFund.Text" xml:space="preserve">
+    <value>ပံ့ပိုးမှုရန်ပုံငွေ-</value>
+  </data>
+  <data name="frmTransactionBill.lciCoKetChuyen.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmTransactionBill.lciHeinRatio.Text" xml:space="preserve">
+    <value>အကျိုးခံစားခွင့်အဆင့်-</value>
+  </data>
+  <data name="frmTransactionBill.lciHideHddt.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ထုတ်ပေးလိုက်သော အီး-ပြေစာသည် မပြသပါ။</value>
+  </data>
+  <data name="frmTransactionBill.lciHideHddt.Text" xml:space="preserve">
+    <value>ဖုန်းစာချုပ်ကို မပြပါနှင့်။</value>
+  </data>
+  <data name="frmTransactionBill.lciNumOrderRepay.Text" xml:space="preserve">
+    <value>လက်မှတ်နံပါတ်-</value>
+  </data>
+  <data name="frmTransactionBill.lciRepayAmount.Text" xml:space="preserve">
+    <value>ပြန်အမ်းငွေပမာဏ-</value>
+  </data>
+  <data name="frmTransactionBill.lciReplaceReason.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အစားထိုးအချက်အလက်။</value>
+  </data>
+  <data name="frmTransactionBill.lciReplaceReason.Text" xml:space="preserve">
+    <value>အစားထိုး TT-</value>
+  </data>
+  <data name="frmTransactionBill.lciRightRoute.Text" xml:space="preserve">
+    <value>လမ်းကြောင်း-</value>
+  </data>
+  <data name="frmTransactionBill.lciServiceGroup.Text" xml:space="preserve">
+    <value>အမြန်ရွေးချယ်ပါ-</value>
+  </data>
+  <data name="frmTransactionBill.lciTranferAmount.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>လွှဲပြောင်းပမာဏ</value>
+  </data>
+  <data name="frmTransactionBill.lciTranferAmount.Text" xml:space="preserve">
+    <value>အာမခံပမာဏ-</value>
+  </data>
+  <data name="frmTransactionBill.radioSGAll.Properties.Caption" xml:space="preserve">
+    <value>အားလုံး</value>
+  </data>
+  <data name="frmTransactionBill.radioSGCLS.Properties.Caption" xml:space="preserve">
+    <value>CLS ကြေး PT</value>
+  </data>
+  <data name="frmTransactionBill.radioSGExam.Properties.Caption" xml:space="preserve">
+    <value>စာမေးပွဲကြေး</value>
+  </data>
+  <data name="frmTransactionBill.radioSGMedicine.Properties.Caption" xml:space="preserve">
+    <value>ဆေးဖိုး</value>
+  </data>
+  <data name="frmTransactionBill.Text" xml:space="preserve">
+    <value>ပေးဆပ်ပါ။</value>
+  </data>
+  <data name="frmTransactionBill.txtFindTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ကုသမှုကုဒ်ဖြင့်ရှာဖွေပါ။</value>
+  </data>
+  <data name="frmTransactionBill.txtPatientCode.Text" xml:space="preserve">
+    <value>တံဆိပ်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_BIEN_LAI_PHI_LE_PHI" xml:space="preserve">
+    <value>အခကြေးငွေ ဖြတ်ပိုင်းများကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_CHUYEN_DOI_HOA_DON_DIEN_TU" xml:space="preserve">
+    <value>အီလက်ထရွန်းနစ် ပြေစာအဖြစ် ပြောင်းလဲခြင်း။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_HOA_DON_NHAP" xml:space="preserve">
+    <value>ပြေစာမူကြမ်းများကို ထုတ်ယူပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_IN_HOA_DON_DIEN_TU" xml:space="preserve">
+    <value>အီး-ပြေစာများကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_IN_HOAN_UNG_THANH_TOAN" xml:space="preserve">
+    <value>ဆေးရုံဆင်းငွေ ပြန်အမ်းငွေပုံစံကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_IN_PHIEU_CHI_DINH" xml:space="preserve">
+    <value>မှာယူမှုပုံစံကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_PHIEU_THU_THANH_TOAN" xml:space="preserve">
+    <value>ငွေပေးချေမှုပြေစာများကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_PHIEU_THU_TT_CHI_TIET_DICH_VU" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအသေးစိတ်နှင့်အတူ ငွေပေးချေပြေစာကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_PHIEU_THU_TT_THEO_YEU_CAU" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုတောင်းဆိုချက်များအရ ငွေပေးချေပြေစာများကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_NEW" xml:space="preserve">
+    <value>အသစ် (Ctrl N)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_PRINT" xml:space="preserve">
+    <value>ညောင်ပင်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_SAVE" xml:space="preserve">
+    <value>ကယ်တင်ပါ။ (Ctrl S)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_SAVE_INVOICE_SIGN" xml:space="preserve">
+    <value>ငွေသွင်းခြင်း (Ctrl A)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_SEARCH" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__btnSearch" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__CAPTION" xml:space="preserve">
+    <value>ပေးဆပ်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__CHK_CO_KET_CHUYEN" xml:space="preserve">
+    <value>အကူးအပြောင်းရှိတယ်။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__chkAutoRepay" xml:space="preserve">
+    <value>အလိုအလျောက်ဖြည့်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__chkAutoRepay_ToolTip" xml:space="preserve">
+    <value>မှတ်တမ်းပြီးသွားပါက ငွေပြန်အမ်းငွေကို အလိုအလျောက်ထုတ်ပေးပြီး ငွေပေးချေပြီးနောက် လူနာထံသို့ ပြန်ရန်ငွေကျန်နေသေးသည်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_BILL_FUND__VALID_AMOUNT_GREAT_THAN_ZERO" xml:space="preserve">
+    <value>ပမာဏသည် သုညထက် ပိုနေရပါမည်။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_BILL_FUND__VALID_FUND_NOT_FOUND" xml:space="preserve">
+    <value>ငွေပေးချေမှုရန်ပုံငွေကို ရွေးချယ်ရပါမည်။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_CONTROL__COLUMN_STT" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_FUND__COLUMN_AMOUNT" xml:space="preserve">
+    <value>ငွေပမာဏ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_FUND__COLUMN_FUND_CODE" xml:space="preserve">
+    <value>ငွေပေးချေမှုရန်ပုံငွေကုဒ်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_FUND__COLUMN_FUND_NAME" xml:space="preserve">
+    <value>ငွေပေးချေမှုရန်ပုံငွေအမည်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_ACCOUNT_BOOK" xml:space="preserve">
+    <value>ဝင်ငွေနှင့် အသုံးစရိတ် စာအုပ်-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_CREATOR" xml:space="preserve">
+    <value>ဖန်တီးသူ-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DESCRIPTION" xml:space="preserve">
+    <value>မှတ်စု:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DISCOUNT" xml:space="preserve">
+    <value>လျှော့စျေး(đ):</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DISCOUNT_RATIO" xml:space="preserve">
+    <value>လျှော့စျေး(%):</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DISCOUNT_RATIO_TOOLTIP" xml:space="preserve">
+    <value>လျှော့စျေး %</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DISCOUNT_REASON" xml:space="preserve">
+    <value>အကြောင်းရင်း-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_HEIN_RATIO" xml:space="preserve">
+    <value>အကျိုးခံစားခွင့်အဆင့်-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_HIEN_DU" xml:space="preserve">
+    <value>လက်ကျန်ငွေ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_NUM_ORDER" xml:space="preserve">
+    <value>လက်မှတ်နံပါတ်-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_PAY_FORM" xml:space="preserve">
+    <value>ပုံစံ-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_PIN" xml:space="preserve">
+    <value>ပင်နံပါတ် 4 ခု-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_RIGHT_ROUTE" xml:space="preserve">
+    <value>လမ်းကြောင်း-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_SERE_SERV_EXPEND" xml:space="preserve">
+    <value>ငွေဖြုန်းတီးခြင်း။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_SWIPE_AMOUNT_TEXT" xml:space="preserve">
+    <value>QT ပမာဏ-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_SWIPE_AMOUNT_TOOLTIP" xml:space="preserve">
+    <value>ကတ်ပမာဏ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TONG_TU_DEN" xml:space="preserve">
+    <value>လက်မှတ်နံပါတ်-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TOTAL_AMOUNT" xml:space="preserve">
+    <value>ငွေပမာဏ-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TOTAL_RECEIVE" xml:space="preserve">
+    <value>စုဆောင်းရန်-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TRANSACTION_CODE" xml:space="preserve">
+    <value>ကုန်သွယ်မှုကုဒ်-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TRANSFER_AMOUNT_TEXT" xml:space="preserve">
+    <value>အာမခံပမာဏ-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TRANSFER_AMOUNT_TOOLTIP" xml:space="preserve">
+    <value>လွှဲပြောင်းပမာဏ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem13" xml:space="preserve">
+    <value>လူနာကုဒ်-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem14" xml:space="preserve">
+    <value>အကြောင်းအရာ-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem15" xml:space="preserve">
+    <value>လူနာအမည်-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem16" xml:space="preserve">
+    <value>လိပ်စာ-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem20" xml:space="preserve">
+    <value>မွေးရက်:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem21" xml:space="preserve">
+    <value>လိင်-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem22" xml:space="preserve">
+    <value>SSC ၏နေရာ-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem23" xml:space="preserve">
+    <value>အာမခံကတ်နံပါတ်-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem25" xml:space="preserve">
+    <value>စကားလုံးအသုံးအနှုန်း-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem26" xml:space="preserve">
+    <value>နောက်ဆုံးရက်:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__PRINT_MENU__ITEM_BARCODE" xml:space="preserve">
+    <value>ဘားကုဒ်ကို ပရင့်ထုတ်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__PRINT_MENU__ITEM_BIEN_BAN_KIEM_NHAP_TU_NCC" xml:space="preserve">
+    <value>ပေးသွင်းသူထံမှ check-in မှတ်တမ်းကို ပရင့်ထုတ်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__REPOSITORY__BTN_DELETE_BILL_FUND" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__RIGHT_ROUTE_FALSE" xml:space="preserve">
+    <value>ဆန့်ကျင်ဘက်မျဉ်း</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__RIGHT_ROUTE_TRUE" xml:space="preserve">
+    <value>ညာဘက်လိုင်း</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TRANSACTION_TIME" xml:space="preserve">
+    <value>ငွေပေးငွေယူ Tg-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TRANSACTION_TIME__TOOLTIP" xml:space="preserve">
+    <value>ငွေလွှဲချိန်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_AMOUNT" xml:space="preserve">
+    <value>SL</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_DISCOUNT" xml:space="preserve">
+    <value>လျှော့စျေး</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_IS_EXPEND" xml:space="preserve">
+    <value>ငွေဖြုန်းတီးခြင်း။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_SERVICE_CODE" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကုဒ်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_SERVICE_NAME" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမည်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_SERVICE_REQ_CODE" xml:space="preserve">
+    <value>ကုဒ်တောင်းပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_TRANSACTION_CODE" xml:space="preserve">
+    <value>ကုန်သွယ်မှုကုဒ်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VAT_RATIO" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VIR_PRICE" xml:space="preserve">
+    <value>တစ်ခုချင်းစျေးနှုန်း</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VIR_TOTAL_HEIN_PRICE" xml:space="preserve">
+    <value>ပူးတွဲလစာ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PATIENT_PRICE" xml:space="preserve">
+    <value>လူနာက ပိုက်ဆံပေးတယ်။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PRICE" xml:space="preserve">
+    <value>ငွေထဲသို့</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_DEPA_CREATE__MEDICINE_TREE__COLUMN_DUNG_TICH" xml:space="preserve">
+    <value>စွမ်းရည်</value>
+  </data>
+</root>

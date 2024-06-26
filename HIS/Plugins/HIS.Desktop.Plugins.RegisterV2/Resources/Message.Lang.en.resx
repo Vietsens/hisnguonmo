@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BenhNhanCoHenKhamVaoNgayTaiPhongKhamY" xml:space="preserve">
+    <value>Patient has an appointment on \</value>
+  </data>
+  <data name="GoiSangCongBHXHTraVeMaLoi" xml:space="preserve">
+    <value>Error code: {0}</value>
+  </data>
+  <data name="Gov001" xml:space="preserve">
+    <value>The card is managed by the Social Security of the Ministry of Defense, please check the card and identification information</value>
+  </data>
+  <data name="Gov002" xml:space="preserve">
+    <value>The card is managed by the Social Security of the Ministry of Public Security, please check the card and identification information</value>
+  </data>
+  <data name="Gov010" xml:space="preserve">
+    <value>Card is expired</value>
+  </data>
+  <data name="Gov050" xml:space="preserve">
+    <value>Can't see health insurance card information</value>
+  </data>
+  <data name="Gov051" xml:space="preserve">
+    <value>Card code is incorrect</value>
+  </data>
+  <data name="Gov052" xml:space="preserve">
+    <value>The card issuing province code (the 4th and 5th character of the card code) is incorrect</value>
+  </data>
+  <data name="Gov053" xml:space="preserve">
+    <value>Card benefit code (3rd character) is incorrect</value>
+  </data>
+  <data name="Gov060" xml:space="preserve">
+    <value>Card with wrong name\</value>
+  </data>
+  <data name="Gov061" xml:space="preserve">
+    <value>Card with wrong name (correct first letter)</value>
+  </data>
+  <data name="Gov070" xml:space="preserve">
+    <value>Wrong date of birth card</value>
+  </data>
+  <data name="Gov080" xml:space="preserve">
+    <value>Card of wrong gender</value>
+  </data>
+  <data name="Gov100" xml:space="preserve">
+    <value>Error getting card number data</value>
+  </data>
+  <data name="Gov101" xml:space="preserve">
+    <value>Error Server Gov</value>
+  </data>
+  <data name="Gov110" xml:space="preserve">
+    <value>Card has been revoked</value>
+  </data>
+  <data name="Gov120" xml:space="preserve">
+    <value>Discounted card</value>
+  </data>
+  <data name="Gov121" xml:space="preserve">
+    <value>Reduced card.</value>
+  </data>
+  <data name="Gov122" xml:space="preserve">
+    <value>Reduced card.</value>
+  </data>
+  <data name="Gov123" xml:space="preserve">
+    <value>Reduced card.</value>
+  </data>
+  <data name="Gov124" xml:space="preserve">
+    <value>Reduced card.</value>
+  </data>
+  <data name="Gov130" xml:space="preserve">
+    <value>Children do not present the card</value>
+  </data>
+  <data name="GovError" xml:space="preserve">
+    <value>Invalid card</value>
+  </data>
+  <data name="Plugin_Register_BanChuaChonDichVuKham" xml:space="preserve">
+    <value>Not any exam services was selected yet, do you want continue?</value>
+  </data>
+  <data name="Plugin_Register_BanChuaChonHinhThucGiaoDich" xml:space="preserve">
+    <value>You have not selected a transaction method.</value>
+  </data>
+  <data name="Plugin_Register_BanChuaChonPhongThuNgan" xml:space="preserve">
+    <value>You have not selected a working cashier room</value>
+  </data>
+  <data name="Plugin_Register_BanChuaChonSoTamUng" xml:space="preserve">
+    <value>You have not selected the advance book.</value>
+  </data>
+  <data name="Plugin_Register_BanChuaDuocCapSoHoaDon" xml:space="preserve">
+    <value>You have not been granted a receipt/invoice book</value>
+  </data>
+  <data name="Plugin_Register_BanCoMuonNhapThongTinKhuVuc" xml:space="preserve">
+    <value>Are you sure you want to enter 'Region' information?</value>
+  </data>
+  <data name="Plugin_Register_BanCoMuonThayDoiThongTinBenhNhanTheoCmndCccdHayKhong" xml:space="preserve">
+    <value>Do you want to change patient information according to ID card/CCCD?</value>
+  </data>
+  <data name="Plugin_Register_BanCoMuonThayDoiThongTinNgayCapNoiCapTheoCmndCccdHayKhong" xml:space="preserve">
+    <value>Do you want to get the date/place of issue according to your ID/CCCD?</value>
+  </data>
+  <data name="Plugin_Register_BenhNhanChuaChonCongKham" xml:space="preserve">
+    <value>The patient has not chosen the examination, do you want to continue?</value>
+  </data>
+  <data name="Plugin_Register_CanhBaoDichVuDaDuocChiDinhTrongKhoangThoiGianCauHinh" xml:space="preserve">
+    <value>The following services have the specified time within the disallowed period: {0}.Do you want to continue?</value>
+  </data>
+  <data name="Plugin_Register_CanhBaoTheBhytSapHatHan" xml:space="preserve">
+    <value>The card is expiring soon ( {0} day remain), do you want to use?</value>
+  </data>
+  <data name="Plugin_Register_CapMaMSThatBaiBanCoMuonTiepTuc" xml:space="preserve">
+    <value>MS code level failed.</value>
+  </data>
+  <data name="Plugin_Register_ChonPhongThuNganTruocKhiMoTinhNangNay" xml:space="preserve">
+    <value>To open this function you must select cashier's first</value>
+  </data>
+  <data name="Plugin_Register_ChuaCoThongTinBacSiKham" xml:space="preserve">
+    <value>No doctor information available.</value>
+  </data>
+  <data name="Plugin_Register_ChuaNhapAnhChupCMNDMatTruocMatSauKhiDaCheckCapMaMS" xml:space="preserve">
+    <value>In case of checking and choosing to issue an MS code, it is mandatory to take a photo of the front and back of the ID card</value>
+  </data>
+  <data name="Plugin_Register_ChuaNhapCMNDNumberKhiDaCheckCapMaMS" xml:space="preserve">
+    <value>In case of checking and choosing to issue an MS code, it is mandatory to enter the ID number</value>
+  </data>
+  <data name="Plugin_Register_ChucNangNayChuaDuocHoTroTrongPhienBanNay" xml:space="preserve">
+    <value>Current version is not support this function</value>
+  </data>
+  <data name="Plugin_Register_DichVuDinhKemDichVuChuaCoChinhSachGia" xml:space="preserve">
+    <value>{0} service attached {1} does not have a pricing policy</value>
+  </data>
+  <data name="Plugin_Register_DoiDichVuHenKhamSeDoiSttDaCap" xml:space="preserve">
+    <value>Patient has a clinic or non-clinic examination service, registered examination service at the time of appointment ({0} - {1}).</value>
+  </data>
+  <data name="Plugin_Register_DoiTuongBenhNhanLaBHYTBatBuocPhaiChonLaDungTuyen" xml:space="preserve">
+    <value>"Health insurance" patient must select appropriate levels</value>
+  </data>
+  <data name="Plugin_Register_DotDieuTriGanNhatCuaBenhNhanCoNgayRaLaHomNay" xml:space="preserve">
+    <value>Patient with treatment record: {0} discharged today.</value>
+  </data>
+  <data name="Plugin_Register_DotKhamTruocCuaBenhNhanConNoTienVienPhi" xml:space="preserve">
+    <value>Session examination / treatment before the patient's hospital bills owed. Code treatment records {0}</value>
+  </data>
+  <data name="Plugin_Register_DotKhamTruocCuaBenhNhanCoThuocChuaUongHet" xml:space="preserve">
+    <value>Session examination / treatment before the patient's treatment records code {0} of {1} medicine also {2} {3} has not drank</value>
+  </data>
+  <data name="Plugin_Register_DuLieuRong" xml:space="preserve">
+    <value>Empty data</value>
+  </data>
+  <data name="Plugin_Register_HeThongTBKetQuaTraVeCuaServerKhongHopLe" xml:space="preserve">
+    <value>Result of server incorrect.</value>
+  </data>
+  <data name="Plugin_Register_HoDemBNVuotQuaMaxLength" xml:space="preserve">
+    <value>First name exceeds maximum length (70 characters)</value>
+  </data>
+  <data name="Plugin_Register_MaBenhNhanKhongTontai" xml:space="preserve">
+    <value>Couldn't find patient information with corresponding code</value>
+  </data>
+  <data name="Plugin_Register_MaChuongTrinhKhongTontai" xml:space="preserve">
+    <value>Patient information not found with program code</value>
+  </data>
+  <data name="Plugin_Register_MaHenKhamKhongTontai" xml:space="preserve">
+    <value>Couldn't find patient information with appointment code</value>
+  </data>
+  <data name="Plugin_Register_MaHoNgheoKhongHopLe" xml:space="preserve">
+    <value>Code must include 9 to 12 character. Case of 12 charater, Code must end with "VCN"</value>
+  </data>
+  <data name="Plugin_Register_MotSoThongTinVungThongTinKhacNhapKhongDungDinhDang" xml:space="preserve">
+    <value>Some information in the \</value>
+  </data>
+  <data name="Plugin_Register_NgaySinhKhongDuocNhoHon7" xml:space="preserve">
+    <value>Age must be more than 7</value>
+  </data>
+  <data name="Plugin_Register_NguoiDungInPhieuYeCauKhamKhongCoDuLieuDangKyKham" xml:space="preserve">
+    <value>No registed data to print requested exam form.</value>
+  </data>
+  <data name="Plugin_Register_NhapGioSinhKhongDung" xml:space="preserve">
+    <value>Time of birth is incorrect</value>
+  </data>
+  <data name="Plugin_Register_NhapNgaySinhKhongDungDinhDang" xml:space="preserve">
+    <value>Date format is incorrect. Correct format: DDmmYYYY</value>
+  </data>
+  <data name="Plugin_Register_NoVienPhi" xml:space="preserve">
+    <value>The patient's previous examination/treatment still owes hospital fees.</value>
+  </data>
+  <data name="Plugin_Register_QuaGioiHanKiemTraTheQuaCongBHXH" xml:space="preserve">
+    <value>Checkout time is expired</value>
+  </data>
+  <data name="Plugin_Register_SoTheBHYTKhongHopLe" xml:space="preserve">
+    <value>Invalid card {0}</value>
+  </data>
+  <data name="Plugin_Register_SoTheDaDuocSuDung" xml:space="preserve">
+    <value>Card number {0} has used</value>
+  </data>
+  <data name="Plugin_Register_SoTheKhongTontai" xml:space="preserve">
+    <value>Patient information with card number not found</value>
+  </data>
+  <data name="Plugin_Register_TenBNVuotQuaMaxLength" xml:space="preserve">
+    <value>Last name exceeds maximum length (30 characters)</value>
+  </data>
+  <data name="Plugin_Register_TheBhytChuaDenHanSuDung" xml:space="preserve">
+    <value>The Card is not reached to used time yet</value>
+  </data>
+  <data name="Plugin_Register_TheBhytDaHetHanSuDung" xml:space="preserve">
+    <value>The Card's expired</value>
+  </data>
+  <data name="Plugin_Register_TheDaDuocSuDungTrongNgay" xml:space="preserve">
+    <value>The Health insurance Card's expired</value>
+  </data>
+  <data name="Plugin_Register_ThieuTruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Required Fields are missing</value>
+  </data>
+  <data name="Plugin_Register_ThoiGianYLenhLonHonThoiGianHanDenCuaTheBHYT" xml:space="preserve">
+    <value>The time of the order is larger than the expiry time of the health insurance card</value>
+  </data>
+  <data name="Plugin_Register_ThongBao" xml:space="preserve">
+    <value>Notify</value>
+  </data>
+  <data name="Plugin_Register_ThongTinNgaySinhPhaiNhoHonNgayHienTai" xml:space="preserve">
+    <value>Birthday must be less than current date</value>
+  </data>
+  <data name="Plugin_Register_ThuocCoThoiSuDungDen" xml:space="preserve">
+    <value>{0} limited use to {1}</value>
+  </data>
+  <data name="Plugin_Register_TieuDeCuaSoThongBaoLaCanhBao" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="Plugin_Register_TieuDeCuaSoThongBaoLaThongBao" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="Plugin_Register_TimDuocMotBenhNhanTheoThongTinNguoiDungNhapNeuKhongPhaiBNCuVuiLongNhanNutBNMoi" xml:space="preserve">
+    <value>1 patient found. If not old patient, please click  "New patient".</value>
+  </data>
+  <data name="Plugin_Register_TimDuocMotBNTheoThongTinNhap" xml:space="preserve">
+    <value>1 patient found.</value>
+  </data>
+  <data name="Plugin_Register_Title_InBangKiemTruocTiemChung" xml:space="preserve">
+    <value>Checklist before vaccination</value>
+  </data>
+  <data name="Plugin_Register_Title_InBienLaiHoaDon" xml:space="preserve">
+    <value>Print receipt/invoice</value>
+  </data>
+  <data name="Plugin_Register_Title_InDichVuKham" xml:space="preserve">
+    <value>Examination services print</value>
+  </data>
+  <data name="Plugin_Register_Title_InPhieuYeuCauKham" xml:space="preserve">
+    <value>Print the medical examination request form</value>
+  </data>
+  <data name="Plugin_Register_Title_InTheBenhNhan" xml:space="preserve">
+    <value>Patient card print</value>
+  </data>
+  <data name="Plugin_Register_TreEmCoGiayKhaiSinhPhaiNhapThongTinHanhChinh" xml:space="preserve">
+    <value>Children who had birth certificate, must  fill administrative info.</value>
+  </data>
+  <data name="Plugin_Register_TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Required Fields</value>
+  </data>
+  <data name="Plugin_Register_VuotQuaLuotKhamBHYTTrongNgay" xml:space="preserve">
+    <value>Room {0} has exceeded {1} health insurance visits in a day.</value>
+  </data>
+  <data name="Plugin_Register_XuLyThatBai" xml:space="preserve">
+    <value>Process fails</value>
+  </data>
+  <data name="Plugin_Register_YeuCauNhapDayDuNgayThangNamSinhVoiBNDuoi6Tuoi" xml:space="preserve">
+    <value>Please complete all day/month/year of birth for patients who is under 6 years old</value>
+  </data>
+  <data name="ThongBaoKetQuaTimKiemBenhNhanKhiQuetTheDuLieuTraVeNull" xml:space="preserve">
+    <value>Invalid card</value>
+  </data>
+</root>

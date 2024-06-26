@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BanBatBuocChonDichVuHenKhamKhiKetThucDieuTri" xml:space="preserve">
+    <value>You are required to choose an appointment service at the end of treatment</value>
+  </data>
+  <data name="BanCanNhapCacThongTinSauDePhucVuXuatXmlHoSoChungTu" xml:space="preserve">
+    <value>You need to enter the following information to export Xml documents (CV2076): {0}</value>
+  </data>
+  <data name="BanChuaChonPhongKhamLanSau" xml:space="preserve">
+    <value>You haven't chosen your next clinic yet</value>
+  </data>
+  <data name="BanChuaChonStt" xml:space="preserve">
+    <value>You have not selected a serial number</value>
+  </data>
+  <data name="BanCoMuonThucHienKhong" xml:space="preserve">
+    <value>Would you like to sign?</value>
+  </data>
+  <data name="BanCoMuonTiepTuc" xml:space="preserve">
+    <value>{0} Do you want to continue?</value>
+  </data>
+  <data name="BatBuocChonChuongTrinh" xml:space="preserve">
+    <value>Required to choose a program</value>
+  </data>
+  <data name="BenhNhanChuaCoDHST" xml:space="preserve">
+    <value>The patient does not have vital sign information</value>
+  </data>
+  <data name="BenhNhanCoThongTinBhytChuaDung" xml:space="preserve">
+    <value>The patient has incorrect health insurance information.</value>
+  </data>
+  <data name="BenhNhanDangThieuVienPhi" xml:space="preserve">
+    <value>Patient is lacking hospital fees ({0} VND)</value>
+  </data>
+  <data name="BenhNhanDangThieuVienPhiBanCoMuonTiepTuc" xml:space="preserve">
+    <value>The patient is lacking hospital fees ({0} VND).</value>
+  </data>
+  <data name="BenhNhanNoiTruChuaDuocChiDinhDichVuGiuong" xml:space="preserve">
+    <value>Bệnh nhân nội trú chưa được chỉ định dịch vụ giường. Bạn có muốn tiếp tục không?</value>
+  </data>
+  <data name="BenhNhanThieuCanNang" xml:space="preserve">
+    <value>Patient lacks weight information in vital signs</value>
+  </data>
+  <data name="BNCoDotDieuTriNTCuChuaKetThucKhongChoPhepChuyen" xml:space="preserve">
+    <value>Patients whose previous outpatient/inpatient treatment has not ended are not allowed to be transferred to the hospital.</value>
+  </data>
+  <data name="BuaAnCoSoLuongLonHonSoNgayDieuTri" xml:space="preserve">
+    <value>Meals {0} are larger in number than the number of days of treatment.</value>
+  </data>
+  <data name="BuaAnCoSoLuongLonHonSoNgayDieuTriBanCoMuonTiepTucKhong" xml:space="preserve">
+    <value>Meals {0} are larger in number than the number of days of treatment.</value>
+  </data>
+  <data name="CacPhieuChiDinhSauChuaKetThucKhongChoPhepKetThuc" xml:space="preserve">
+    <value>The following orders have not yet been completed: {0}</value>
+  </data>
+  <data name="CacVatTuThieuThongTinHoaDonBanCoMuonTiepTuc" xml:space="preserve">
+    <value>Supplies {0} are missing invoice information.</value>
+  </data>
+  <data name="CanhBaoNgayHenLaChuNhat" xml:space="preserve">
+    <value>The date of your current appointment is Sunday you want to continue</value>
+  </data>
+  <data name="CanhBaoNgayHenLaThuBay" xml:space="preserve">
+    <value>The date of your current appointment is Saturday you want to continue</value>
+  </data>
+  <data name="CanhBaoNgayHenToiDa" xml:space="preserve">
+    <value>The maximum number of appointment days allowed is {0} days.</value>
+  </data>
+  <data name="CanhBaoThoiGianHenKhamSoVoiThoiGianKetThucDieuTri" xml:space="preserve">
+    <value>Appointment time is greater than the end of treatment</value>
+  </data>
+  <data name="ChuaDuocTaoVoBenhAn" xml:space="preserve">
+    <value>Bệnh nhân chương trình chưa được tạo Vỏ bệnh án. Bạn có muốn tạo hay không?</value>
+  </data>
+  <data name="ChuaLinhHetThuoc" xml:space="preserve">
+    <value>Haven't taken all the medicine yet</value>
+  </data>
+  <data name="ChuaNhapPhuongPhapDieuTri" xml:space="preserve">
+    <value>You have not entered \</value>
+  </data>
+  <data name="ChuaNhapThoiGianHenKham" xml:space="preserve">
+    <value>You have not selected an appointment time, please check again</value>
+  </data>
+  <data name="ChuaNhapThongTinChuyenVien" xml:space="preserve">
+    <value>You have not entered the transfer information, please check again</value>
+  </data>
+  <data name="ChuaNhapThongTinTuVong" xml:space="preserve">
+    <value>You have not entered enough information to die, please check again</value>
+  </data>
+  <data name="ChuaTongHopSuatAnMaYLenh" xml:space="preserve">
+    <value>- Not yet compiled (Order code: {0})</value>
+  </data>
+  <data name="ChucNangDangPhatTrienVuiLongThuLaiSau" xml:space="preserve">
+    <value>Function not supported in current version, please try again later</value>
+  </data>
+  <data name="ChuongTrinhBatBuocChonDienDieuTriNgoaiTruHoSoSeDuocTuDongCapNhatSangDienDieuTriNgoaiTru" xml:space="preserve">
+    <value>Program {0} is required to select outpatient treatment and the records will be automatically updated to outpatient treatment</value>
+  </data>
+  <data name="CuaKhoaHienTai" xml:space="preserve">
+    <value>of the current department</value>
+  </data>
+  <data name="DaCapHetSoKhamVaoNgay" xml:space="preserve">
+    <value>All examination numbers have been issued on date {0}</value>
+  </data>
+  <data name="DuLieuKhongHopLe" xml:space="preserve">
+    <value>Invalid data</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong" xml:space="preserve">
+    <value>Are you sure you want to destroy the data?</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong" xml:space="preserve">
+    <value>Are you sure you want to delete the data?</value>
+  </data>
+  <data name="HoSoDaCoSoRaVien" xml:space="preserve">
+    <value>The file already has a hospital discharge number, do you want to reissue it?</value>
+  </data>
+  <data name="HoSoKhongCoTtVaoBuong" xml:space="preserve">
+    <value>The records do not have information on chamber entry</value>
+  </data>
+  <data name="KhoaKhongCoBuong" xml:space="preserve">
+    <value>The department currently has no rooms.</value>
+  </data>
+  <data name="KhongChoGanGiuong" xml:space="preserve">
+    <value>Bed assignments are not allowed</value>
+  </data>
+  <data name="KhungGioVuotQuaSoLuong" xml:space="preserve">
+    <value>This time frame has exceeded the allowed number of appointments.</value>
+  </data>
+  <data name="MaPhieuTongHopSuatAnMaYLenh" xml:space="preserve">
+    <value>- Voucher code: {0} (Order code: {1})</value>
+  </data>
+  <data name="NguoiCap" xml:space="preserve">
+    <value>Licenser</value>
+  </data>
+  <data name="NoiLamViecCuaBenhNhan" xml:space="preserve">
+    <value>Patient's workplace</value>
+  </data>
+  <data name="PhongKhamCoSoLuotKhamVuotDinhMuc" xml:space="preserve">
+    <value>The clinic's number of appointments exceeds the allowed number: {0}.</value>
+  </data>
+  <data name="SoNgayGiuongLonHonSoNgayGiuongToiDa" xml:space="preserve">
+    <value>The number of bed days {0} is greater than the maximum number of bed days {1}.</value>
+  </data>
+  <data name="SoNgayGiuongNhoHonSoNgayGiuongToiDa" xml:space="preserve">
+    <value>Number of bed days {0} is less than maximum number of bed days {1}.</value>
+  </data>
+  <data name="TaiKhoanKhongCoQuyenThucHienChucNang" xml:space="preserve">
+    <value>Account does not exist executable function</value>
+  </data>
+  <data name="TheBHYTCuaBNSeHetHanVaoNgay" xml:space="preserve">
+    <value>The patient's health insurance card will expire on date {0}, are you sure you want to make an appointment on date {1}?</value>
+  </data>
+  <data name="ThoiGianKetThucNhoHoiThoiGianYLenhCuaCacMaYeuCauSau" xml:space="preserve">
+    <value>The end time is less than the command time of the request codes: {0}</value>
+  </data>
+  <data name="ThoiGianNghiDen" xml:space="preserve">
+    <value>Vacation time comes</value>
+  </data>
+  <data name="ThoiGianNghiTu" xml:space="preserve">
+    <value>Time off from</value>
+  </data>
+  <data name="ThoiGianTuVongKhongDuocBeHonThoiGianVaoVien" xml:space="preserve">
+    <value>Death time should not be less than the time into hospital {0}</value>
+  </data>
+  <data name="ThoiGianTuVongKhongDuocLonHonThoiGianHienTai" xml:space="preserve">
+    <value>Death time is not greater than the current time {0}</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="TonTaiLichSuGiuongChuaCoThongTinThoiGianKetThucHoacThoiGianBatDauThoiGianKetThucLonHonThoiGianRaVien" xml:space="preserve">
+    <value>Bed history exists without end time information or start/end time is greater than discharge time.</value>
+  </data>
+  <data name="TonTaiLichSuGiuongChuaCoThongTinThoiGianKetThucHoacThoiGianBatDauThoiGianKetThucLonHonThoiGianRaVienBanCoMuonTiepTuc" xml:space="preserve">
+    <value>Bed history exists without end time information or start/end time is greater than discharge time.</value>
+  </data>
+  <data name="TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>The required field has not been entered yet</value>
+  </data>
+  <data name="VanBanChuaDuChuKy" xml:space="preserve">
+    <value>The following documents have not yet been signed:</value>
+  </data>
+  <data name="YLenhChuanHoanThanh" xml:space="preserve">
+    <value>Uncompleted orders: {0}.</value>
+  </data>
+  <data name="YLenhChuaTongHopHoacDuyetSuatAn" xml:space="preserve">
+    <value>There is an unapproved meal order:\r\n</value>
+  </data>
+  <data name="YLenhCoThoiGianChiDinhLonHonThoiGianRaKhoa" xml:space="preserve">
+    <value>The medical orders {0} have a medical order time greater than the hospital discharge time.</value>
+  </data>
+  <data name="YLenhThieuDichVuKhamBanCoMuonTiepTuc" xml:space="preserve">
+    <value>Medical order {0} lacks examination services.</value>
+  </data>
+</root>

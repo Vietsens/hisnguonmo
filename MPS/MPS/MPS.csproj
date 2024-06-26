@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B7C687BA-A486-414E-8BCB-A6B294CA4310}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MPS</RootNamespace>
+    <AssemblyName>MPS</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>Lib\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.HIS_RS">
+      <HintPath>..\..\..\IMSys\RELEASE\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.BarcodeLib, Version=1.0.0.19, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.BarcodeLib\Inventec.Common.BarcodeLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.DateTime, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.FlexCelExport">
+      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.FlexCelExport\Inventec.Common.FlexCelExport.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.FlexCelPrint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
+      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Mapper">
+      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Number">
+      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.Number\Inventec.Common.Number.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Print, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.Print\Inventec.Common.Print.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.QRCoder">
+      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.QRCoder\Inventec.Common.QRCoder.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Repository">
+      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.Repository\Inventec.Common.Repository.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.String">
+      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.TypeConvert">
+      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core">
+      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.ClientSystem">
+      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Login">
+      <HintPath>..\..\..\IMSys\RELEASE\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+    </Reference>
+    <Reference Include="LIS.EFMODEL">
+      <HintPath>..\..\..\IMSys\RELEASE\LIS\LIS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="LIS.SDO">
+      <HintPath>..\..\..\IMSys\RELEASE\LIS\LIS.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>Lib\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.LibraryHein.Bhyt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.LibraryHein.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.LibraryHein.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.LibraryHein.Factory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.LibraryHein.Factory.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.LibraryHein.HcmPoorFund, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.LibraryHein.HcmPoorFund.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.LibraryHein.Ksk, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.LibraryHein.Ksk.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.ServicePaty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.ServicePaty.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.TDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.TDO.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.EFMODEL">
+      <HintPath>..\..\..\IMSys\RELEASE\SAR\SAR.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.Filter">
+      <HintPath>..\..\..\IMSys\RELEASE\SAR\SAR.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MpsPrinter.cs" />
+    <Compile Include="Old\ADO\Bordereau\BordereauSingleValue.cs" />
+    <Compile Include="Old\ADO\Bordereau\RoomTypeCFG.cs" />
+    <Compile Include="Old\ADO\Bordereau\ServiceTypeCFG.cs" />
+    <Compile Include="Old\ADO\Bordereau\HeinServiceTypeCFG.cs" />
+    <Compile Include="Old\ADO\Bordereau\PatientTypeCFG.cs" />
+    <Compile Include="Old\ADO\CareDetailViewPrintADO.cs" />
+    <Compile Include="Old\ADO\CareViewPrintADO.cs" />
+    <Compile Include="Old\ADO\DepartmentADO.cs" />
+    <Compile Include="Old\ADO\DepartmentTranADO.cs" />
+    <Compile Include="Old\ADO\DhstADOPrint.cs" />
+    <Compile Include="Old\ADO\ExeHisSereServRehaADO.cs" />
+    <Compile Include="Old\ADO\ExeInfusionDetailADO.cs" />
+    <Compile Include="Old\ADO\ExeMediReactADO.cs" />
+    <Compile Include="Old\ADO\ExeSereServ.cs" />
+    <Compile Include="Old\ADO\ExeSereServSdo.cs" />
+    <Compile Include="Old\ADO\ExpMestAggregatePrintADO.cs" />
+    <Compile Include="Old\ADO\ExpMestAggregatePrintByPageADO.cs" />
+    <Compile Include="Old\ADO\ExpMestBloodADO.cs" />
+    <Compile Include="Old\ADO\ExpMestMedicineADO.cs" />
+    <Compile Include="Old\ADO\ExpMestMedicinePrintADO.cs" />
+    <Compile Include="Old\ADO\GroupServiceTypeADO.cs" />
+    <Compile Include="Old\ADO\HeinCardADO.cs" />
+    <Compile Include="Old\ADO\HeinServiceTypeADO.cs" />
+    <Compile Include="Old\ADO\HisAnticipateMetyADO.cs" />
+    <Compile Include="Old\ADO\HisBidMetyADO.cs" />
+    <Compile Include="Old\ADO\HisCareCheck.cs" />
+    <Compile Include="Old\ADO\HisInfusionCheck.cs" />
+    <Compile Include="Old\ADO\HisMediMateBloodInStock_Print.cs" />
+    <Compile Include="Old\ADO\HisSereServPrintADO.cs" />
+    <Compile Include="Old\ADO\HisSereServPrintByPageADO.cs" />
+    <Compile Include="Old\ADO\HisSereServPTTTADO.cs" />
+    <Compile Include="Old\ADO\HisSereServTeinADO.cs" />
+    <Compile Include="Old\ADO\HisServiceReqCheck.cs" />
+    <Compile Include="Old\ADO\HisServiceReqCombo.cs" />
+    <Compile Include="Old\ADO\HisServiceReqTrackingId.cs" />
+    <Compile Include="Old\ADO\hisTrackingADO.cs" />
+    <Compile Include="Old\ADO\HisTrackingCheck.cs" />
+    <Compile Include="Old\ADO\HisTrackingGroupADOs.cs" />
+    <Compile Include="Old\ADO\ImpMestAggregatePrintADO.cs" />
+    <Compile Include="Old\ADO\ImpMestAggregatePrintByPageADO.cs" />
+    <Compile Include="Old\ADO\ImpMestMedicinePrintADO.cs" />
+    <Compile Include="Old\ADO\InvoiceDetailADO.cs" />
+    <Compile Include="Old\ADO\MedicineExpmestTypeADO.cs" />
+    <Compile Include="Old\ADO\MedicinesPublicByDateADO.cs" />
+    <Compile Include="Old\ADO\Mps000062ADO.cs" />
+    <Compile Include="Old\ADO\Mps000069ADO.cs" />
+    <Compile Include="Old\ADO\Mps000084ADO.cs" />
+    <Compile Include="Old\ADO\Mps000085ADO.cs" />
+    <Compile Include="Old\ADO\Mps000088ADO.cs" />
+    <Compile Include="Old\ADO\Mps000088ByMediEndMate.cs" />
+    <Compile Include="Old\ADO\Mps000089ADO.cs" />
+    <Compile Include="Old\ADO\Mps000090ADO.cs" />
+    <Compile Include="Old\ADO\Mps000130ADO.cs" />
+    <Compile Include="Old\ADO\Mps000132ADO.cs" />
+    <Compile Include="Old\ADO\Mps000134ADO.cs" />
+    <Compile Include="Old\ADO\Mps000135ADO.cs" />
+    <Compile Include="Old\ADO\Mps000140ADO.cs" />
+    <Compile Include="Old\ADO\Mps000141ADO.cs" />
+    <Compile Include="Old\ADO\Mps000142ADO.cs" />
+    <Compile Include="Old\ADO\Mps000143ADO.cs" />
+    <Compile Include="Old\ADO\Mps000144ADO.cs" />
+    <Compile Include="Old\ADO\Mps000145ADO.cs" />
+    <Compile Include="Old\ADO\Mps000146ADO.cs" />
+    <Compile Include="Old\ADO\Mps000149ADO.cs" />
+    <Compile Include="Old\ADO\Mps000151ADO.cs" />
+    <Compile Include="Old\ADO\Mps000154ADO.cs" />
+    <Compile Include="Old\ADO\Mps000155ADO.cs" />
+    <Compile Include="Old\ADO\Mps000166ADO.cs" />
+    <Compile Include="Old\ADO\Mps000168ADO.cs" />
+    <Compile Include="Old\ADO\PatientADO.cs" />
+    <Compile Include="Old\ADO\PatyAlterBhytADO.cs" />
+    <Compile Include="Old\ADO\RehaTrainPrintADO.cs" />
+    <Compile Include="Old\ADO\RehaTrainPrintByPageADO.cs" />
+    <Compile Include="Old\ADO\SereServGroupPlusADO.cs" />
+    <Compile Include="Old\ADO\SereServGroupPlusSDO.cs" />
+    <Compile Include="Old\ADO\SereServKTCADO.cs" />
+    <Compile Include="Old\ADO\SereSrevPrintADO.cs" />
+    <Compile Include="Old\ADO\ServiceGroupPrintADO.cs" />
+    <Compile Include="Old\ADO\TotalNextPage.cs" />
+    <Compile Include="Old\ADO\TrackingPrint\Mps000062ADOMedicines.cs" />
+    <Compile Include="Old\ADO\TrackingPrint\Mps000062ADOServiceCLS.cs" />
+    <Compile Include="Old\ADO\TrackingPrint\Mps000062RemedyCount.cs" />
+    <Compile Include="Old\ADO\TranPatiReasonADO.cs" />
+    <Compile Include="Old\ADO\TreatmentADO.cs" />
+    <Compile Include="Old\ADO\UserInfoPTTTADO.cs" />
+    <Compile Include="Old\AgeUtil.cs" />
+    <Compile Include="Old\CommonKey.cs" />
+    <Compile Include="Old\GlobalQuery.cs" />
+    <Compile Include="Old\PatientUtil.cs" />
+    <Compile Include="Old\PrintConfig.cs" />
+    <Compile Include="PrintStorage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Lib\AutoMapper.dll" />
+    <Content Include="Lib\log4net.dll" />
+    <Content Include="Lib\Newtonsoft.Json.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MPS.ProcessorBase\MPS.ProcessorBase.csproj">
+      <Project>{075d8b91-153f-4e19-a00a-77547e6f2bd0}</Project>
+      <Name>MPS.ProcessorBase</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

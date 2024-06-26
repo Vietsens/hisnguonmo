@@ -1,0 +1,504 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmPatientChoice.btnClose.Text" xml:space="preserve">
+    <value>Bỏ qua</value>
+  </data>
+  <data name="frmPatientChoice.grdAddress.Caption" xml:space="preserve">
+    <value>Địa chỉ</value>
+  </data>
+  <data name="frmPatientChoice.grdChoose.Caption" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="frmPatientChoice.grdCode.Caption" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="frmPatientChoice.grdDate.Caption" xml:space="preserve">
+    <value>Ngày sinh</value>
+  </data>
+  <data name="frmPatientChoice.grdGender.Caption" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="frmPatientChoice.grdName.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="frmPatientChoice.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmPatientChoice.layoutControlItem3.Text" xml:space="preserve">
+    <value>resources.GetString(layoutControlItem3.Text)</value>
+  </data>
+  <data name="frmPatientChoice.lblDescription.Text" xml:space="preserve">
+    <value>Chọn bệnh nhân bằng cách bấm enter hoặc nháy đúp chuột vào bệnh nhân. Thêm hồ sơ bệnh nhân mới chọn Bỏ qua</value>
+  </data>
+  <data name="frmPatientChoice.Text" xml:space="preserve">
+    <value>Chọn thông tin bệnh nhân</value>
+  </data>
+  <data name="HIS.UC.UCHeniInfo.Message.MaHoNgheoKhongHopLe" xml:space="preserve">
+    <value>Mã hộ nghèo phải 9 hoặc 12 ký tự, trường hợp 12 ký tự bắt buộc phải kết thúc bằng chuỗi "VCN"</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_AIA_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_AIA_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_AIA_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BCV_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BCV_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BCV_LAYOUT_NOT_CHECK_HSD" xml:space="preserve">
+    <value>Không KT HSD:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BCV_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT__LCI_HNCODE" xml:space="preserve">
+    <value>Mã hộ nghèo:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT__LCI_IN_CODE" xml:space="preserve">
+    <value>Số chuyển viện:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LAYOUT_CONTROL_ITEM1" xml:space="preserve">
+    <value>Bệnh phụ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LAYOUT_CONTROL_ITEM12" xml:space="preserve">
+    <value>CĐ tuyến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LAYOUT_CONTROL_ITEM13" xml:space="preserve">
+    <value>CV tuyến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LAYOUT_CONTROL_ITEM6" xml:space="preserve">
+    <value>Trái tuyến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LAYOUT_CONTROL_ITEM7" xml:space="preserve">
+    <value>Đúng tuyến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_CAPTION_ADDRESS" xml:space="preserve">
+    <value>Địa chỉ thẻ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_CAPTION_HAS_DOB_CERTIFICATE" xml:space="preserve">
+    <value>KS</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_HEINCARD_FROM_DATE" xml:space="preserve">
+    <value>Hạn từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_HEINCARD_MEDIORG" xml:space="preserve">
+    <value>Nơi ĐKKCB BĐ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_HEINCARD_NUMBER" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_HEINCARD_TO_DATE" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_MEDI_RECOORD_DIAGNOSE_ICD" xml:space="preserve">
+    <value>Chẩn đoán TD:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_MEDI_RECORD_BENEFIT_SYMBOL" xml:space="preserve">
+    <value>Mức hưởng:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_MEDI_RECORD_LIVE_AREA" xml:space="preserve">
+    <value>Khu vực:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_MEDI_RECORD_MEDI_ORG_FORM" xml:space="preserve">
+    <value>Nơi chuyển đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_MEDI_RECORD_TRANS_PATI_FORM" xml:space="preserve">
+    <value>HT chuyển:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_MEDI_RECORD_TRANS_PATI_REASON" xml:space="preserve">
+    <value>Lý do chuyển:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_RIGHT_ROUTE_TYPE" xml:space="preserve">
+    <value>Trường hợp:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LCI_JOIN_5_YEAR" xml:space="preserve">
+    <value>5 năm:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LCI_PAID_6_MONTH" xml:space="preserve">
+    <value>6 tháng:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BIC_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BIC_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BIC_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BVTM_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BVTM_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BVTM_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_DAII_CHI_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_DAII_CHI_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_DAII_CHI_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_GEL_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_GELI_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_GELI_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_GENERALI_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_GENERALI_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_GENERALI_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_INSMART_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_INSMART_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_INSMART_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_KSK_CONTRACT_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Hợp đồng KSK:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_LIBERTY_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_LIBERTY_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_LIBERTY_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_PRUD_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_PRUD_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_PRUD_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_PTI_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_PTI_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_PTI_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_PVI_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_PVI_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_PVI_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_TMN_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_TMN_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_TMN_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_VCLI_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_VCLI_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_VCLI_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="lblEditIcd.Text" xml:space="preserve">
+    <value>Sửa:</value>
+  </data>
+  <data name="lciFreeCoPainTime.Text" xml:space="preserve">
+    <value>TDMC chi trả:</value>
+  </data>
+  <data name="lciIcdMain.Text" xml:space="preserve">
+    <value>Bệnh chính:</value>
+  </data>
+  <data name="lcirdoRightRoute.Text" xml:space="preserve">
+    <value>Đúng tuyến:</value>
+  </data>
+  <data name="lcirdoWrongRoute.Text" xml:space="preserve">
+    <value>Trái tuyến:</value>
+  </data>
+  <data name="toolTipItem1.Text" xml:space="preserve">
+    <value>Đồng chi trả lũy kế đủ 6 tháng lương tối thiểu</value>
+  </data>
+  <data name="toolTipItem2.Text" xml:space="preserve">
+    <value>Đóng bảo hiểm y tế đủ 5 năm liên tục</value>
+  </data>
+  <data name="toolTipItem3.Text" xml:space="preserve">
+    <value>Nhấn tổ hợp phím Ctrl + F để mở danh sách thẻ của bệnh  nhân</value>
+  </data>
+  <data name="toolTipItem4.Text" xml:space="preserve">
+    <value>Tự tạo thẻ BHYT cho trường hợp trẻ em dưới 6 tuổi có giấy khai sinh</value>
+  </data>
+  <data name="txtFreeCoPainTime.Tooltip" xml:space="preserve">
+    <value>Thời điểm miễn cùng chi trả</value>
+  </data>
+  <data name="txtIcdExtraCodes.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã bệnh phụ</value>
+  </data>
+  <data name="txtIcdExtraNames.Properties.NullValuePrompt" xml:space="preserve">
+    <value>F1 để chọn bệnh</value>
+  </data>
+  <data name="UCHeinInfo.btnCheckInfoBHYT.ToolTip" xml:space="preserve">
+    <value>Kiểm tra thông tin thẻ BHYT</value>
+  </data>
+  <data name="UCHeinInfo.cboHeinRightRoute.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Tuyến</value>
+  </data>
+  <data name="UCHeinInfo.cboNoiSong.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Nơi sống</value>
+  </data>
+  <data name="UCHeinInfo.chkHasAbsentLetter.Properties.Caption" xml:space="preserve">
+    <value>Giấy đăng ký tạm trú, tạm vắng</value>
+  </data>
+  <data name="UCHeinInfo.chkHasAbsentLetter.ToolTip" xml:space="preserve">
+    <value>Với trường hợp bệnh nhân có thẻ BHYT khác nơi KCB ban đầu nhưng có giấy đăng ký tạm trú, tạm vắng trên địa bàn sẽ được hưởng như đúng tuyến</value>
+  </data>
+  <data name="UCHeinInfo.chkHasWorkingLetter.Properties.Caption" xml:space="preserve">
+    <value>Giấy đi công tác, quyết định nhập học</value>
+  </data>
+  <data name="UCHeinInfo.chkHasWorkingLetter.ToolTip" xml:space="preserve">
+    <value>Với trường hợp bệnh nhân có thẻ BHYT khác nơi KCB ban đầu nhưng có giấy đi công tác hoặc quyết định nhập học sẽ được hưởng như đúng tuyến</value>
+  </data>
+  <data name="UCHeinInfo.chkIsBhytHolded.Properties.Caption" xml:space="preserve">
+    <value>Giữ thẻ BHYT</value>
+  </data>
+  <data name="UCHeinInfo.chkIsTt46.Properties.Caption" xml:space="preserve">
+    <value>TT 46</value>
+  </data>
+  <data name="UCHeinInfo.chkIsTt46.ToolTip" xml:space="preserve">
+    <value>Với các bệnh nhân điều trị dài ngày có thẻ BHYT khác nơi KCB ban đầu vẫn được hưởng như đúng tuyến theo thông tư 46</value>
+  </data>
+  <data name="UCHeinInfo.dtHeinCardToTime.Properties.NullValuePrompt" xml:space="preserve">
+    <value>dd/MM/yyyy</value>
+  </data>
+  <data name="UCHeinInfo.gboxHeinCardInformation.Text" xml:space="preserve">
+    <value>BHYT (F3)</value>
+  </data>
+  <data name="UCHeinInfo.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCHeinInfo.layoutControlItem2.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời điểm tham gia bảo hiểm đủ 5 năm</value>
+  </data>
+  <data name="UCHeinInfo.layoutControlItem2.Text" xml:space="preserve">
+    <value>TĐ đủ 5N:</value>
+  </data>
+  <data name="UCHeinInfo.lciFreeCoPainTime.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời điểm miễn cùng chi trả</value>
+  </data>
+  <data name="UCHeinInfo.lciFreeCoPainTime.Text" xml:space="preserve">
+    <value>TĐ MCCT:</value>
+  </data>
+  <data name="UCHeinInfo.lciHasAbsentLetter.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCHeinInfo.lciHasDobCertificate.Text" xml:space="preserve">
+    <value>Thẻ tạm:</value>
+  </data>
+  <data name="UCHeinInfo.lciHasWorkingLetter.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCHeinInfo.lciHeinCardAddress.Text" xml:space="preserve">
+    <value>Địa chỉ thẻ:</value>
+  </data>
+  <data name="UCHeinInfo.lciHeinCardFromTime.Text" xml:space="preserve">
+    <value>Hạn từ:</value>
+  </data>
+  <data name="UCHeinInfo.lciHeinCardNumber.Text" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="UCHeinInfo.lciHeinCardToTime.Text" xml:space="preserve">
+    <value>Hạn đến:</value>
+  </data>
+  <data name="UCHeinInfo.lciHeinRightRoute.Text" xml:space="preserve">
+    <value>Loại:</value>
+  </data>
+  <data name="UCHeinInfo.lciIsBhytHolded.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCHeinInfo.lciIsTt46.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCHeinInfo.lciJoin5Year.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Đã tham gia bảo hiểm đủ 5 năm</value>
+  </data>
+  <data name="UCHeinInfo.lciJoin5Year.Text" xml:space="preserve">
+    <value>5N:</value>
+  </data>
+  <data name="UCHeinInfo.lciKCBBĐ.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nơi khám chữa bệnh ban đầu</value>
+  </data>
+  <data name="UCHeinInfo.lciKCBBĐ.Text" xml:space="preserve">
+    <value>Nơi KCBBĐ:</value>
+  </data>
+  <data name="UCHeinInfo.lciKhongKTHSD.Text" xml:space="preserve">
+    <value>Không KT HSD:</value>
+  </data>
+  <data name="UCHeinInfo.lciKV.Text" xml:space="preserve">
+    <value>Khu vực:</value>
+  </data>
+  <data name="UCHeinInfo.lciPaid6Month.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Đồng chi trả bảo hiểm đã đủ 6 tháng lương tối thiểu</value>
+  </data>
+  <data name="UCHeinInfo.lciPaid6Month.Text" xml:space="preserve">
+    <value>6T:</value>
+  </data>
+  <data name="UCHeinInfo.txtDu5Nam.ToolTip" xml:space="preserve">
+    <value>Thời điểm đủ 5 năm liên tục</value>
+  </data>
+  <data name="UCHeinInfo.txtFreeCoPainTime.ToolTip" xml:space="preserve">
+    <value>Thời điểm miễn cùng chi trả</value>
+  </data>
+  <data name="UCHeinInfo.txtNote.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
+</root>

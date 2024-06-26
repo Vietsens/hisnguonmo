@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmMobaCabinetCreate.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmMobaCabinetCreate.cboImpMediStock.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmMobaCabinetCreate.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmMobaCabinetCreate.bbtnRCSave.Caption" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmMobaCabinetCreate.bbtnRCPrint.Caption" xml:space="preserve">
+    <value>In (Ctrl P)</value>
+  </data>
+  <data name="frmMobaCabinetCreate.btnPrint.Text" xml:space="preserve">
+    <value>In (Ctrl P)</value>
+  </data>
+  <data name="frmMobaCabinetCreate.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmMobaCabinetCreate.xtraTabPageMedicine.Text" xml:space="preserve">
+    <value>Thuốc</value>
+  </data>
+  <data name="frmMobaCabinetCreate.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMedicine_Stt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMedicine_MedicineTypeCode.Caption" xml:space="preserve">
+    <value>Mã thuốc</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMedicine_MedicineTypName.Caption" xml:space="preserve">
+    <value>Tên thuốc</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMedicine_ServiceUnitName.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMedicine_MobaAmount.Caption" xml:space="preserve">
+    <value>Số lượng thu hồi</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMedicine_Amount.Caption" xml:space="preserve">
+    <value>Số lượng xuất</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMedicine_CanMobaAmount.Caption" xml:space="preserve">
+    <value>Số lượng khả dụng</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMedicine_ImpPrice.Caption" xml:space="preserve">
+    <value>Giá xuất</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMedicine_VatRatio.Caption" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMedicine_VirTotalImpPrice.Caption" xml:space="preserve">
+    <value>Thành tiền</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMedicine_BidNumber.Caption" xml:space="preserve">
+    <value>Gói thầu</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMedicine_PackageNumber.Caption" xml:space="preserve">
+    <value>Số lô</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMedicine_RegisterNumber.Caption" xml:space="preserve">
+    <value>Số đăng ký</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMedicine_ExpiredDate.Caption" xml:space="preserve">
+    <value>Hạn sửa dụng</value>
+  </data>
+  <data name="frmMobaCabinetCreate.xtraTabPageMaterial.Text" xml:space="preserve">
+    <value>Vật tư</value>
+  </data>
+  <data name="frmMobaCabinetCreate.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMaterial_Stt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMaterial_MaterialTypeCode.Caption" xml:space="preserve">
+    <value>Mã vật tư</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMaterial_MaterialTypeName.Caption" xml:space="preserve">
+    <value>Tên vật tư</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMaterial_ServiceUnitName.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMaterial_MobaAmount.Caption" xml:space="preserve">
+    <value>Số lượng thu hồi</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMaterial_Amount.Caption" xml:space="preserve">
+    <value>Số lượng xuất</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMaterial_CanMobaAmount.Caption" xml:space="preserve">
+    <value>Số lượng khả dụng</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMaterial_ImpPrice.Caption" xml:space="preserve">
+    <value>Giá xuất</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMaterial_VatRatio.Caption" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMaterial_VirTotalImpPrice.Caption" xml:space="preserve">
+    <value>Thành tiền</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMaterial_BidNumber.Caption" xml:space="preserve">
+    <value>Gói thầu</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMaterial_PackageNumber.Caption" xml:space="preserve">
+    <value>Số lô</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMaterial_RegisterNumber.Caption" xml:space="preserve">
+    <value>Số đăng ký</value>
+  </data>
+  <data name="frmMobaCabinetCreate.gridColumn_ExpMestMaterial_ExpiredDate.Caption" xml:space="preserve">
+    <value>Hạn sử dụng</value>
+  </data>
+  <data name="frmMobaCabinetCreate.layoutTotalPrice.Text" xml:space="preserve">
+    <value>Tổng tiền:</value>
+  </data>
+  <data name="frmMobaCabinetCreate.layoutTotalFeePrice.Text" xml:space="preserve">
+    <value>Tiền vốn:</value>
+  </data>
+  <data name="frmMobaCabinetCreate.layoutTotalVatPrice.Text" xml:space="preserve">
+    <value>Tiền thuế:</value>
+  </data>
+  <data name="frmMobaCabinetCreate.layoutControlItem5.Text" xml:space="preserve">
+    <value>Kho nhập:</value>
+  </data>
+  <data name="frmMobaCabinetCreate.layoutControlItem7.Text" xml:space="preserve">
+    <value>Lý do:</value>
+  </data>
+  <data name="frmMobaCabinetCreate.Text" xml:space="preserve">
+    <value>Nhập đơn tủ trực trả lại</value>
+  </data>
+</root>

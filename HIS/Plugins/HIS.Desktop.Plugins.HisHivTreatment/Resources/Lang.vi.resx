@@ -1,0 +1,420 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmHivTreatment.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmHivTreatment.barButtonItemSave.Caption" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmHivTreatment.btnDelete.Text" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="frmHivTreatment.btnEdit.Text" xml:space="preserve">
+    <value>Sửa (Ctrl S)</value>
+  </data>
+  <data name="frmHivTreatment.btnGetInfo.Text" xml:space="preserve">
+    <value>Lấy thông tin gần nhất</value>
+  </data>
+  <data name="frmHivTreatment.btnGetInfo.ToolTip" xml:space="preserve">
+    <value>Lấy thông tin theo đợt điều trị gần nhất</value>
+  </data>
+  <data name="frmHivTreatment.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmHivTreatment.cboBeginRegimenLevel.ToolTip" xml:space="preserve">
+    <value>Bậc phác đồ điều trị khi bắt đầu điều trị</value>
+  </data>
+  <data name="frmHivTreatment.cboRegimenHiv.ToolTip" xml:space="preserve">
+    <value>Phác đồ điều trị của đợt điều trị</value>
+  </data>
+  <data name="frmHivTreatment.cboRegimenHivBegin.ToolTip" xml:space="preserve">
+    <value>Phác đồ điều trị khi bắt đầu điều trị</value>
+  </data>
+  <data name="frmHivTreatment.cboRegimenLevel.ToolTip" xml:space="preserve">
+    <value>Bậc phác đồ của đợt điều trị</value>
+  </data>
+  <data name="frmHivTreatment.cboTestPcrResult.ToolTip" xml:space="preserve">
+    <value>Kết quả xét nghiệm PCR</value>
+  </data>
+  <data name="frmHivTreatment.cboTestPcrRnaReason.ToolTip" xml:space="preserve">
+    <value>Lý do chỉ định xét nghiệm đo tải lượng vi rút ở người bệnh đang điều trị ARV</value>
+  </data>
+  <data name="frmHivTreatment.cboTestPcrRnaResult.ToolTip" xml:space="preserve">
+    <value>Kết quả xét nghiệm tải lượng vi rút HIV, là số lượng bản sao vi rút HIV trên 1 ml máu</value>
+  </data>
+  <data name="frmHivTreatment.cboTestPcrTimes.ToolTip" xml:space="preserve">
+    <value>Lần thực hiện xét nghiệm PCR</value>
+  </data>
+  <data name="frmHivTreatment.cboTuberculosisRegimen.ToolTip" xml:space="preserve">
+    <value>Phác đồ điều trị Lao của người nhiễm HIV hoặc Lao tiềm ẩn</value>
+  </data>
+  <data name="frmHivTreatment.cboTuberculosisTreatmentType.ToolTip" xml:space="preserve">
+    <value>Loại điều trị Lao</value>
+  </data>
+  <data name="frmHivTreatment.dtArvPatientBegin.ToolTip" xml:space="preserve">
+    <value>Thời điểm đầu tiên người bệnh nhận thuốc ARV</value>
+  </data>
+  <data name="frmHivTreatment.dtArvTreatmentBegin.ToolTip" xml:space="preserve">
+    <value>Ngày bắt đầu xử trí của đợt điều trị ARV</value>
+  </data>
+  <data name="frmHivTreatment.dtArvTreatmentEnd.ToolTip" xml:space="preserve">
+    <value>Ngày kết thúc xử trí của đợt điều trị ARV</value>
+  </data>
+  <data name="frmHivTreatment.dtCtxTreatmentBegin.ToolTip" xml:space="preserve">
+    <value>Ngày bắt đầu điều trị Cotrimoxazol (CTX)</value>
+  </data>
+  <data name="frmHivTreatment.dtTestPcrResult.ToolTip" xml:space="preserve">
+    <value>Ngày có kết quả xét nghiệm PCR</value>
+  </data>
+  <data name="frmHivTreatment.dtTestPcrRna.ToolTip" xml:space="preserve">
+    <value>Thời điểm lấy mẫu làm xét nghiệm tải lượng virus</value>
+  </data>
+  <data name="frmHivTreatment.dtTestPcrRnaResult.ToolTip" xml:space="preserve">
+    <value>Thời điểm có kết quả xét nghiệm tải lượng virus</value>
+  </data>
+  <data name="frmHivTreatment.dtTuberculosisTreatmentBegin.ToolTip" xml:space="preserve">
+    <value>Thời điểm bắt đầu điều trị bệnh lao hoặc lao tiềm ẩn tại cơ sở KBCB</value>
+  </data>
+  <data name="frmHivTreatment.dtTuberculosisTreatmentEnd.ToolTip" xml:space="preserve">
+    <value>Thời điểm kết thúc điều trị bệnh lao hoặc lao tiềm ẩn tại cơ sở KBCB</value>
+  </data>
+  <data name="frmHivTreatment.groupBox1.Text" xml:space="preserve">
+    <value>Thông tin hành chính</value>
+  </data>
+  <data name="frmHivTreatment.groupBox2.Text" xml:space="preserve">
+    <value>Thông tin bệnh án điều trị HIV/AIDS</value>
+  </data>
+  <data name="frmHivTreatment.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmHivTreatment.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmHivTreatment.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmHivTreatment.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmHivTreatment.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem1.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem10.Text" xml:space="preserve">
+    <value>Họ tên:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem11.Text" xml:space="preserve">
+    <value>Số CCCD/CMT:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem12.Text" xml:space="preserve">
+    <value>Địa chỉ:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem13.Text" xml:space="preserve">
+    <value>Loại bệnh nhân:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem14.Text" xml:space="preserve">
+    <value>Tình trạng đến khám:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem15.Text" xml:space="preserve">
+    <value>Lý do điều trị:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem16.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bậc phác đồ điều trị khi bắt đầu điều trị</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem16.Text" xml:space="preserve">
+    <value>Bậc phác đồ ĐT BD:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem17.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Phác đồ điều trị khi bắt đầu điều trị</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem17.Text" xml:space="preserve">
+    <value>Phác đồ ĐT BD:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem18.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời điểm đầu tiên người bệnh nhận thuốc ARV</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem18.Text" xml:space="preserve">
+    <value>Ngày BĐ ĐT ARV:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem19.Text" xml:space="preserve">
+    <value>Ngày mang thai:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem20.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ngày bắt đầu điều trị Cotrimoxazol (CTX)</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem20.Text" xml:space="preserve">
+    <value>Ngày BĐ ĐT CTX:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem21.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Phác đồ điều trị của đợt điều trị</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem21.Text" xml:space="preserve">
+    <value>Phác đồ ĐT:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem22.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bậc phác đồ của đợt điều trị</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem22.Text" xml:space="preserve">
+    <value>Bậc phác đồ ĐT:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem23.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời điểm bắt đầu điều trị bệnh lao hoặc lao tiềm ẩn tại cơ sở KBCB</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem23.Text" xml:space="preserve">
+    <value>Ngày BĐ ĐT Lao:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem24.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời điểm kết thúc điều trị bệnh lao hoặc lao tiềm ẩn tại cơ sở KBCB</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem24.Text" xml:space="preserve">
+    <value>Ngày KT ĐT Lao:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem25.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Loại điều trị Lao</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem25.Text" xml:space="preserve">
+    <value>Loại ĐT Lao:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem26.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Phác đồ điều trị Lao của người nhiễm HIV hoặc Lao tiềm ẩn</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem26.Text" xml:space="preserve">
+    <value>Phác đồ ĐT Lao:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem27.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời điểm lấy mẫu làm xét nghiệm tải lượng virus</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem27.Text" xml:space="preserve">
+    <value>Ngày XN viruts:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem28.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời điểm có kết quả xét nghiệm tải lượng virus</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem28.Text" xml:space="preserve">
+    <value>Ngày kết quả XN:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem29.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Lý do chỉ định xét nghiệm đo tải lượng vi rút ở người bệnh đang điều trị ARV</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem29.Text" xml:space="preserve">
+    <value>Lý do XN:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem30.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Kết quả xét nghiệm tải lượng vi rút HIV, là số lượng bản sao vi rút HIV trên 1 ml máu</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem30.Text" xml:space="preserve">
+    <value>Kết quả XN:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem31.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Lần thực hiện xét nghiệm PCR</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem31.Text" xml:space="preserve">
+    <value>Lần XN PCR:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem32.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Kết quả xét nghiệm PCR</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem32.Text" xml:space="preserve">
+    <value>Kết quả XN PCR:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem33.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ngày có kết quả xét nghiệm PCR</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem33.Text" xml:space="preserve">
+    <value>Ngày KQ XN PCR:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem34.Text" xml:space="preserve">
+    <value>Ngày xét nghiệm PCR:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem35.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ngày bắt đầu xử trí của đợt điều trị ARV</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem35.Text" xml:space="preserve">
+    <value>Ngày bắt đầu xử trí:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem36.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ngày kết thúc xử trí của đợt điều trị ARV</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem36.Text" xml:space="preserve">
+    <value>Ngày kết thúc xử trí:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem37.Text" xml:space="preserve">
+    <value>Xử trí</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem4.Text" xml:space="preserve">
+    <value>Mã điều trị:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem5.Text" xml:space="preserve">
+    <value>Ngày sinh:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem7.Text" xml:space="preserve">
+    <value>Số thẻ BHYT:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem8.Text" xml:space="preserve">
+    <value>Ngày nhiễm HIV:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem9.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số ngày thuốc ARV được cấp</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem9.Text" xml:space="preserve">
+    <value>Số ngày cấp thuốc:</value>
+  </data>
+  <data name="frmHivTreatment.Text" xml:space="preserve">
+    <value>Thông tin điều trị HIV/AIDS</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem38.Text" xml:space="preserve">
+    <value>Lí do chuyển PĐ:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem39.Text" xml:space="preserve">
+    <value>Ngày chuyển pháp đồ:</value>
+  </data>
+  <data name="frmHivTreatment.layoutControlItem40.Text" xml:space="preserve">
+    <value>Phương pháp sàng lọc:</value>
+  </data>
+  <data name="frmHivTreatment.lciGiaiDoanlamSang.Text" xml:space="preserve">
+    <value>Giai đoạn lâm sàng:</value>
+  </data>
+  <data name="frmHivTreatment.lciKetQuaDieuTriLao.Text" xml:space="preserve">
+    <value>Kết quả điều trị lao:</value>
+  </data>
+  <data name="frmHivTreatment.lciNhomDoiTuong.Text" xml:space="preserve">
+    <value>Nhóm đối tượng:</value>
+  </data>
+  <data name="frmHivTreatment.lciNoiBDDTARV.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nơi bắt đâu điều trị ARV</value>
+  </data>
+  <data name="frmHivTreatment.lciNoiBDDTARV.Text" xml:space="preserve">
+    <value>NOI_BDDT_ARV:</value>
+  </data>
+  <data name="frmHivTreatment.lciNoiLayMauXN.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nơi lấy mẫu xét nghiệm</value>
+  </data>
+  <data name="frmHivTreatment.lciNoiLayMauXN.Text" xml:space="preserve">
+    <value>Nơi lấy mẫu XN:</value>
+  </data>
+  <data name="frmHivTreatment.lciNoiXNKD.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nơi xét nghiệm khẳng định nhiễm HIV</value>
+  </data>
+  <data name="frmHivTreatment.lciNoiXNKD.Text" xml:space="preserve">
+    <value>Nơi XNKĐ:</value>
+  </data>
+</root>

@@ -1,0 +1,567 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmAggregateExpMestPrintFilter.bar2.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.barButtonItem1.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.barButtonItem3.Caption" xml:space="preserve">
+    <value>အခန်းကို ရွေးပါ (Ctrl S)</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.btnSendRequest.Text" xml:space="preserve">
+    <value>(Ctrl S) ကို ရွေးပါ</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.chkIsBlood.Properties.Caption" xml:space="preserve">
+    <value>သွေး</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.chkIsChemicalSustance.Properties.Caption" xml:space="preserve">
+    <value>ဓာတုဗေဒ</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.chkMaterial.Properties.Caption" xml:space="preserve">
+    <value>ပစ္စည်းများ</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.chkMedicine.Properties.Caption" xml:space="preserve">
+    <value>ဆေးဝါး</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn1.Caption" xml:space="preserve">
+    <value>အခန်းကုဒ်</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn10.Caption" xml:space="preserve">
+    <value>ရွေးချယ်ပါ။</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn11.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn12.Caption" xml:space="preserve">
+    <value>အခန်းကုဒ်</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn13.Caption" xml:space="preserve">
+    <value>အခန်းအမည်</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn14.Caption" xml:space="preserve">
+    <value>ဌာနအမည်</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn15.Caption" xml:space="preserve">
+    <value>ယူနစ်အမည်</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn16.Caption" xml:space="preserve">
+    <value>လမ်းကြောင်းကုဒ်</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn17.Caption" xml:space="preserve">
+    <value>လမ်းနာမည်</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn3.Caption" xml:space="preserve">
+    <value>ယူနစ်ကုဒ်</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn4.Caption" xml:space="preserve">
+    <value>အခန်းအမည်</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn5.Caption" xml:space="preserve">
+    <value>ဌာနအမည်</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn6.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn7.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn8.Caption" xml:space="preserve">
+    <value>ဌာနကုဒ်</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn9.Caption" xml:space="preserve">
+    <value>ဌာနအမည်</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridViewServiceUnit.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>ရှာဖွေမှု သော့ချက်စာလုံးများ ထည့်ပါ...</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridViewUseForm.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>ရှာဖွေမှု သော့ချက်စာလုံးများ ထည့်ပါ...</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl13.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl14.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၉</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl15.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl16.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl17.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl18.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၈</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl19.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၇</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl20.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၆</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl6.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၆</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl9.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၉</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControlItem27.Text" xml:space="preserve">
+    <value>အမျိုးအစား-</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControlItem28.Text" xml:space="preserve">
+    <value>နမူနာ:</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControlItem30.Text" xml:space="preserve">
+    <value>အမည်-</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControlItem31.Text" xml:space="preserve">
+    <value>ဖော်မတ်-</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControlItem32.Text" xml:space="preserve">
+    <value>ဖော်ပြပါ-</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControlItem35.Text" xml:space="preserve">
+    <value>ရောက်သည်-</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControlItem36.Text" xml:space="preserve">
+    <value>မှ-</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.simpleButton1.Text" xml:space="preserve">
+    <value>ပို့ပါ (Ctrl S)</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.simpleButton2.Text" xml:space="preserve">
+    <value>အချိန်ဇယားတစ်ခုသတ်မှတ်ပါ (Ctrl C)</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.Text" xml:space="preserve">
+    <value>စစ်ထုတ်မှုအခြေအနေများ - ဆေးဝါးစစ်ဆေးချက်စာရွက်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__FRM_AGG_EXP_MEST_FILTER" xml:space="preserve">
+    <value>စစ်ထုတ်မှုအခြေအနေ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__IN_PHIEU_HUY_THUOC_VAT_TU" xml:space="preserve">
+    <value>ဆေးဝါး/ပစ္စည်းများအတွက် ပယ်ဖျက်ခြင်းစလစ်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__IN_PHIEU_LINH_NANG_CAO" xml:space="preserve">
+    <value>အဆင့်မြင့်ဘောက်ချာ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__IN_PHIEU_LINH_THUOC" xml:space="preserve">
+    <value>ဆေးဝါးနှင့် ထောက်ပံ့ရေး ပြေစာ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__IN_PHIEU_LINH_THUOC_THEO_BENH_NHAN" xml:space="preserve">
+    <value>လူနာအလိုက် ပြေစာများကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__IN_PHIEU_LINH_TONG_HOP" xml:space="preserve">
+    <value>ဆေးဝါး/ အထွေထွေဆေးဝါးလက်ခံဖြတ်ပိုင်းကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__IN_PHIEU_TONG_HOP" xml:space="preserve">
+    <value>အကျဉ်းချုပ်စာရွက်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__IN_PHIEU_TRA_DOI_THUOC" xml:space="preserve">
+    <value>ဆေးစစ်ချက်စာရွက်ကို ရိုက်နှိပ်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__IN_TRA_DOI_THUOC" xml:space="preserve">
+    <value>ဆေးစစ်ချက်စာရွက်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__IN_TRA_DOI_THUOC_TONG_HOP" xml:space="preserve">
+    <value>ပုံနှိပ်တိုက်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_AGG_EXP_MEST_FILTER__LINH_THUOC_VAT_TU" xml:space="preserve">
+    <value>စစ်ထုတ်မှုအခြေအနေများ - မူးယစ်ဆေးဝါးအကွက်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_AGG_EXP_MEST_FILTER__PHIEU_LINH_NANG_CAO" xml:space="preserve">
+    <value>အခြေအနေများကို စစ်ထုတ်ခြင်း - အဆင့်မြင့်ကူပွန်များ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_AGG_EXP_MEST_FILTER__SUM" xml:space="preserve">
+    <value>စစ်ထုတ်မှု အခြေအနေများ - စုစည်းမှု</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_AGG_EXP_MEST_FILTER__TRA_DOI" xml:space="preserve">
+    <value>စစ်ထုတ်မှုအခြေအနေများ - ချိန်း</value>
+  </data>
+  <data name="UCExpMestAggregate.barButtonItem1.Caption" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="UCExpMestAggregate.barButtonItem2.Caption" xml:space="preserve">
+    <value>ပြန်လုပ်ပါ (Ctrl R)</value>
+  </data>
+  <data name="UCExpMestAggregate.barButtonItem3.Caption" xml:space="preserve">
+    <value>စုစည်းမှု (Ctrl T)</value>
+  </data>
+  <data name="UCExpMestAggregate.btnAggrExpMest.Text" xml:space="preserve">
+    <value>စုစည်းမှု (Ctrl T)</value>
+  </data>
+  <data name="UCExpMestAggregate.btnInTraDoiTongHop.Text" xml:space="preserve">
+    <value>ပုံနှိပ်တိုက်</value>
+  </data>
+  <data name="UCExpMestAggregate.btnRefresh.Text" xml:space="preserve">
+    <value>ပြန်လုပ်ပါ (Ctrl R)</value>
+  </data>
+  <data name="UCExpMestAggregate.btnSearch.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="UCExpMestAggregate.checkIHomePres.Properties.Caption" xml:space="preserve">
+    <value>ယူသွားသည့်ပုံစံ</value>
+  </data>
+  <data name="UCExpMestAggregate.checkPresKidney.Properties.Caption" xml:space="preserve">
+    <value>Dialysis လျှောက်လွှာ</value>
+  </data>
+  <data name="UCExpMestAggregate.checkPresNormal.Properties.Caption" xml:space="preserve">
+    <value>ပုံမှန်မီနူး</value>
+  </data>
+  <data name="UCExpMestAggregate.chkNotSynthetic.Properties.Caption" xml:space="preserve">
+    <value>မပြုစုရသေးဘူး။</value>
+  </data>
+  <data name="UCExpMestAggregate.chkSynthesized.Properties.Caption" xml:space="preserve">
+    <value>ပေါင်းစပ်ထားပါတယ်။</value>
+  </data>
+  <data name="UCExpMestAggregate.chkThuocVTTheoPhieuXuat.Properties.Caption" xml:space="preserve">
+    <value>ထုတ်ဝေစလစ်တစ်ခုစီအလိုက် ဆေးဝါး/ပစ္စည်းများကို ပြသပါ။</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExecuteRoomName.Caption" xml:space="preserve">
+    <value>ဂိုဒေါင်ကို တင်ပို့သည်။</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpCreateTime.Caption" xml:space="preserve">
+    <value>ဖန်တီးချိန်</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpCreator.Caption" xml:space="preserve">
+    <value>ဖန်ဆင်းရှင်</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpDelete.Caption" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpDelete.ToolTip" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpMestCode.Caption" xml:space="preserve">
+    <value>ဘောက်ချာကုဒ်</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpPrint.Caption" xml:space="preserve">
+    <value>အနှစ်ချုပ်စာရွက်ကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpPrint.ToolTip" xml:space="preserve">
+    <value>အနှစ်ချုပ်စာရွက်ကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqCode.Caption" xml:space="preserve">
+    <value>ဘောက်ချာကုဒ်</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqIntructionTime.Caption" xml:space="preserve">
+    <value>အော်ဒါမှာတယ်။</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqPatientCode.Caption" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqPatientName.Caption" xml:space="preserve">
+    <value>လူနာအမည်</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqRoomName.Caption" xml:space="preserve">
+    <value>ဂိုဒေါင်ကို တင်ပို့သည်။</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqStatus.Caption" xml:space="preserve">
+    <value>အဆင့်အတန်း</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqStatus.ToolTip" xml:space="preserve">
+    <value>အဆင့်အတန်း</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqTreatmentCode.Caption" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqUserName.Caption" xml:space="preserve">
+    <value>ရေးဆွဲသူ</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqUserTime.Caption" xml:space="preserve">
+    <value>အသုံးပြုချိန်</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpStatus.Caption" xml:space="preserve">
+    <value>အဆင့်အတန်း</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpStockName.Caption" xml:space="preserve">
+    <value>ဂိုဒေါင်ကို တင်ပို့သည်။</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpTime.Caption" xml:space="preserve">
+    <value>အသုံးပြုချိန်</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpTimeDisplay.Caption" xml:space="preserve">
+    <value>တင်ပို့ချိန်</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpUserName.Caption" xml:space="preserve">
+    <value>တင်ပို့သူ</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColIntructionTime.Caption" xml:space="preserve">
+    <value>အော်ဒါမှာတယ်။</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColMediAmount.Caption" xml:space="preserve">
+    <value>အရေအတွက်</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColMediBidNumber.Caption" xml:space="preserve">
+    <value>အရေအတွက်</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColMediSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColMediTypeCode.Caption" xml:space="preserve">
+    <value>ကုဒ်</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColMediTypeName.Caption" xml:space="preserve">
+    <value>နာမည်</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColMediUnitName.Caption" xml:space="preserve">
+    <value>ယူနစ်</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColPatientCode.Caption" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColPatientName.Caption" xml:space="preserve">
+    <value>လူနာအမည်</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColReqUserName.Caption" xml:space="preserve">
+    <value>ရေးဆွဲသူ</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColServiceReqCode.Caption" xml:space="preserve">
+    <value>ဘောက်ချာကုဒ်</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColStatus.Caption" xml:space="preserve">
+    <value>အဆင့်အတန်း</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColStatus.ToolTip" xml:space="preserve">
+    <value>အဆင့်အတန်း</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColTreatmentCode.Caption" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
+  <data name="UCExpMestAggregate.gridColDelete.Caption" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="UCExpMestAggregate.gridColEditPres.Caption" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl10.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁၀</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl11.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁၁</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl12.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁၂</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl13.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁၃</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl14.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁၄</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl15.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁၅</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl16.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁၆</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl17.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁၇</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl3.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl4.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl5.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၅</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl6.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၆</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl7.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၇</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl8.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၈</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl9.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၉</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControlItem27.Text" xml:space="preserve">
+    <value>ယခု ပရင့်ထုတ်ပါ-</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControlItem5.Text" xml:space="preserve">
+    <value>မှ-</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControlItem6.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControlItem7.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControlItem8.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCExpMestAggregate.lciCheckNotSynthetic.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCExpMestAggregate.lciCheckSynthesized.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCExpMestAggregate.lciFromIntructionTime.Text" xml:space="preserve">
+    <value>မှ-</value>
+  </data>
+  <data name="UCExpMestAggregate.lciToIntructionTime.Text" xml:space="preserve">
+    <value>ရောက်သည်-</value>
+  </data>
+  <data name="UCExpMestAggregate.navBarFilterProcess.Text" xml:space="preserve">
+    <value>navBarControl1</value>
+  </data>
+  <data name="UCExpMestAggregate.navBarGroup1.Caption" xml:space="preserve">
+    <value>လူနာရှိကြပါတယ်။</value>
+  </data>
+  <data name="UCExpMestAggregate.navBarGroupMediStock.Caption" xml:space="preserve">
+    <value>ဂိုဒေါင်ကို တင်ပို့သည်။</value>
+  </data>
+  <data name="UCExpMestAggregate.navBarGroupTypePress.Caption" xml:space="preserve">
+    <value>Single အမျိုးအစား</value>
+  </data>
+  <data name="UCExpMestAggregate.navBarGroupUserTimeTo.Caption" xml:space="preserve">
+    <value>အသုံးပြုသောအချိန်</value>
+  </data>
+  <data name="UCExpMestAggregate.navBed.Caption" xml:space="preserve">
+    <value>အိပ်ရာဝင်</value>
+  </data>
+  <data name="UCExpMestAggregate.navIntructionTime.Caption" xml:space="preserve">
+    <value>သတ်မှတ်ချိန်</value>
+  </data>
+  <data name="UCExpMestAggregate.navRoom.Caption" xml:space="preserve">
+    <value>အခန်း</value>
+  </data>
+  <data name="UCExpMestAggregate.navStatus.Caption" xml:space="preserve">
+    <value>အဆင့်အတန်း</value>
+  </data>
+  <data name="UCExpMestAggregate.txtKeywordProcess.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံး (F2) ရှာရန်</value>
+  </data>
+</root>

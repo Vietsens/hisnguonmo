@@ -1,0 +1,453 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="UCTreatmentList.a.Text" xml:space="preserve">
+    <value>Patients code:</value>
+  </data>
+  <data name="UCTreatmentList.AccidentHurt.Caption" xml:space="preserve">
+    <value>injury</value>
+  </data>
+  <data name="UCTreatmentList.AccidentHurt.ToolTip" xml:space="preserve">
+    <value>injury</value>
+  </data>
+  <data name="UCTreatmentList.AREA.Caption" xml:space="preserve">
+    <value>Limit</value>
+  </data>
+  <data name="UCTreatmentList.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="UCTreatmentList.bar2.Text" xml:space="preserve">
+    <value>fresh</value>
+  </data>
+  <data name="UCTreatmentList.bar3.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="UCTreatmentList.bar4.Text" xml:space="preserve">
+    <value>Main navigation</value>
+  </data>
+  <data name="UCTreatmentList.bar5.Text" xml:space="preserve">
+    <value>Status bar</value>
+  </data>
+  <data name="UCTreatmentList.bar6.Text" xml:space="preserve">
+    <value>Status bar</value>
+  </data>
+  <data name="UCTreatmentList.barButtonItem1.Caption" xml:space="preserve">
+    <value>add</value>
+  </data>
+  <data name="UCTreatmentList.barButtonItem2.Caption" xml:space="preserve">
+    <value>fresh</value>
+  </data>
+  <data name="UCTreatmentList.BedRoomIn.Caption" xml:space="preserve">
+    <value>Transferred into chamber</value>
+  </data>
+  <data name="UCTreatmentList.btnFind.Text" xml:space="preserve">
+    <value>Find (Ctrl + F)</value>
+  </data>
+  <data name="UCTreatmentList.btnRefresh.Text" xml:space="preserve">
+    <value>Redo (Ctrl R)</value>
+  </data>
+  <data name="UCTreatmentList.checkEdit1.Properties.Caption" xml:space="preserve">
+    <value>Being treated</value>
+  </data>
+  <data name="UCTreatmentList.checkEdit2.Properties.Caption" xml:space="preserve">
+    <value>Ended treatment</value>
+  </data>
+  <data name="UCTreatmentList.checkEdit3.Properties.Caption" xml:space="preserve">
+    <value>Key financial browsed</value>
+  </data>
+  <data name="UCTreatmentList.checkEdit4.Properties.Caption" xml:space="preserve">
+    <value>Already approved insurance courses</value>
+  </data>
+  <data name="UCTreatmentList.CLINICAL_IN_TIME_ST.Caption" xml:space="preserve">
+    <value>Time hospitalization</value>
+  </data>
+  <data name="UCTreatmentList.CLINICAL_IN_TIME_ST.ToolTip" xml:space="preserve">
+    <value>Time hospitalization</value>
+  </data>
+  <data name="UCTreatmentList.CREATE_TIME_ST.Caption" xml:space="preserve">
+    <value>Time created</value>
+  </data>
+  <data name="UCTreatmentList.CREATE_TIME_ST.ToolTip" xml:space="preserve">
+    <value>Time created</value>
+  </data>
+  <data name="UCTreatmentList.CREATOR.Caption" xml:space="preserve">
+    <value>creators</value>
+  </data>
+  <data name="UCTreatmentList.CREATOR.ToolTip" xml:space="preserve">
+    <value>creators</value>
+  </data>
+  <data name="UCTreatmentList.DOB_ST.Caption" xml:space="preserve">
+    <value>Birthday</value>
+  </data>
+  <data name="UCTreatmentList.DOB_ST.ToolTip" xml:space="preserve">
+    <value>Birthday</value>
+  </data>
+  <data name="UCTreatmentList.EDIT.ToolTip" xml:space="preserve">
+    <value>Edit Profile therapy</value>
+  </data>
+  <data name="UCTreatmentList.FEE_INFO.Caption" xml:space="preserve">
+    <value>Synthetic fees</value>
+  </data>
+  <data name="UCTreatmentList.finish.Caption" xml:space="preserve">
+    <value>Finishing treatment</value>
+  </data>
+  <data name="UCTreatmentList.fixTreatment.Caption" xml:space="preserve">
+    <value>Edit Profile therapy</value>
+  </data>
+  <data name="UCTreatmentList.GENDER_NAME.Caption" xml:space="preserve">
+    <value>Sex</value>
+  </data>
+  <data name="UCTreatmentList.GENDER_NAME.ToolTip" xml:space="preserve">
+    <value>Sex</value>
+  </data>
+  <data name="UCTreatmentList.gridColPrint.Caption" xml:space="preserve">
+    <value>Printing</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn1.Caption" xml:space="preserve">
+    <value>Health insurance card number</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn1.ToolTip" xml:space="preserve">
+    <value>Health insurance card number</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn2.Caption" xml:space="preserve">
+    <value>Payment list</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn2.ToolTip" xml:space="preserve">
+    <value>Payment list</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn6.Caption" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn6.ToolTip" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="UCTreatmentList.ICD_MAIN_TEXT.Caption" xml:space="preserve">
+    <value>Diagnosis</value>
+  </data>
+  <data name="UCTreatmentList.ICD_MAIN_TEXT.ToolTip" xml:space="preserve">
+    <value>Diagnosis</value>
+  </data>
+  <data name="UCTreatmentList.ICD_TEXT.Caption" xml:space="preserve">
+    <value>Secondary diagnosis</value>
+  </data>
+  <data name="UCTreatmentList.ICD_TEXT.ToolTip" xml:space="preserve">
+    <value>Secondary diagnosis</value>
+  </data>
+  <data name="UCTreatmentList.InDepartment.Text" xml:space="preserve">
+    <value>Ever in science</value>
+  </data>
+  <data name="UCTreatmentList.InfantInformation.Caption" xml:space="preserve">
+    <value>Information newborns</value>
+  </data>
+  <data name="UCTreatmentList.IN_TIME_ST.Caption" xml:space="preserve">
+    <value>Time in</value>
+  </data>
+  <data name="UCTreatmentList.IN_TIME_ST.ToolTip" xml:space="preserve">
+    <value>Time created</value>
+  </data>
+  <data name="UCTreatmentList.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCTreatmentList.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCTreatmentList.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="UCTreatmentList.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="UCTreatmentList.layoutControlItem12.Text" xml:space="preserve">
+    <value>layoutControlItem2</value>
+  </data>
+  <data name="UCTreatmentList.layoutControlItem13.Text" xml:space="preserve">
+    <value>Key word:</value>
+  </data>
+  <data name="UCTreatmentList.layoutControlItem2.Text" xml:space="preserve">
+    <value>Treatment code:</value>
+  </data>
+  <data name="UCTreatmentList.layoutCreateTimeFrom.Text" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="UCTreatmentList.layoutCreateTimeTo.Text" xml:space="preserve">
+    <value>Come:</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn1.Caption" xml:space="preserve">
+    <value>Numerical order</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn10.Caption" xml:space="preserve">
+    <value>Sex</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn11.Caption" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn12.Caption" xml:space="preserve">
+    <value>Time in</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn13.Caption" xml:space="preserve">
+    <value>Time hospitalization</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn14.Caption" xml:space="preserve">
+    <value>Time out</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn15.Caption" xml:space="preserve">
+    <value>Diagnosis</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn16.Caption" xml:space="preserve">
+    <value>Secondary diagnosis</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn17.Caption" xml:space="preserve">
+    <value>Time created</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn18.Caption" xml:space="preserve">
+    <value>creators</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn19.Caption" xml:space="preserve">
+    <value>Time correction</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn2.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn20.Caption" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn6.Caption" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn7.Caption" xml:space="preserve">
+    <value>Patients code</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn8.Caption" xml:space="preserve">
+    <value>Patient's</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn9.Caption" xml:space="preserve">
+    <value>Birthday</value>
+  </data>
+  <data name="UCTreatmentList.MergePatient.Caption" xml:space="preserve">
+    <value>Transplant patient code</value>
+  </data>
+  <data name="UCTreatmentList.MergePatient.ToolTip" xml:space="preserve">
+    <value>Transplant patient code</value>
+  </data>
+  <data name="UCTreatmentList.MODIFIER.Caption" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="UCTreatmentList.MODIFIER.ToolTip" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="UCTreatmentList.MODIFY_TIME_ST.Caption" xml:space="preserve">
+    <value>Time correction</value>
+  </data>
+  <data name="UCTreatmentList.MODIFY_TIME_ST.ToolTip" xml:space="preserve">
+    <value>Time correction</value>
+  </data>
+  <data name="UCTreatmentList.n.Text" xml:space="preserve">
+    <value>navBarControl1</value>
+  </data>
+  <data name="UCTreatmentList.navBarGroupCreateTime.Caption" xml:space="preserve">
+    <value>Time in Hospital</value>
+  </data>
+  <data name="UCTreatmentList.ORDER.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCTreatmentList.ORDER.ToolTip" xml:space="preserve">
+    <value>Numerical order</value>
+  </data>
+  <data name="UCTreatmentList.OUT_TIME_ST.Caption" xml:space="preserve">
+    <value>Time out</value>
+  </data>
+  <data name="UCTreatmentList.OUT_TIME_ST.ToolTip" xml:space="preserve">
+    <value>Time out</value>
+  </data>
+  <data name="UCTreatmentList.PATIENT_CODE.Caption" xml:space="preserve">
+    <value>Patients code</value>
+  </data>
+  <data name="UCTreatmentList.PATIENT_CODE.ToolTip" xml:space="preserve">
+    <value>Patients code</value>
+  </data>
+  <data name="UCTreatmentList.radioButton1.Text" xml:space="preserve">
+    <value>full library</value>
+  </data>
+  <data name="UCTreatmentList.repositoryItemPictureEdit1.Caption.Text" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="UCTreatmentList.SarPrintList.Caption" xml:space="preserve">
+    <value>Another form</value>
+  </data>
+  <data name="UCTreatmentList.ServicePackgeView.Caption" xml:space="preserve">
+    <value>See the service pack</value>
+  </data>
+  <data name="UCTreatmentList.ServiceReq.Caption" xml:space="preserve">
+    <value>Specify service</value>
+  </data>
+  <data name="UCTreatmentList.ServiceReq.ToolTip" xml:space="preserve">
+    <value>Specify service</value>
+  </data>
+  <data name="UCTreatmentList.ServiceReqList.Caption" xml:space="preserve">
+    <value>Wishlist</value>
+  </data>
+  <data name="UCTreatmentList.Status.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="UCTreatmentList.STATUST.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="UCTreatmentList.STATUST.ToolTip" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="UCTreatmentList.TIME_LINE.ToolTip" xml:space="preserve">
+    <value>Timeline</value>
+  </data>
+  <data name="UCTreatmentList.TreatmentRecord.Caption" xml:space="preserve">
+    <value>Medical information</value>
+  </data>
+  <data name="UCTreatmentList.TreatmentRecord.ToolTip" xml:space="preserve">
+    <value>Medical information</value>
+  </data>
+  <data name="UCTreatmentList.TreatmentSumary.Caption" xml:space="preserve">
+    <value>Treatment history</value>
+  </data>
+  <data name="UCTreatmentList.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Keyword search</value>
+  </data>
+  <data name="UCTreatmentList.txtPatient.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Patients code</value>
+  </data>
+  <data name="UCTreatmentList.txtTreatment.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="UCTreatmentList.Unfinish.Caption" xml:space="preserve">
+    <value>Reopening treatment</value>
+  </data>
+  <data name="UCTreatmentList.VIR_ADDRESS.Caption" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="UCTreatmentList.VIR_ADDRESS.ToolTip" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="UCTreatmentList.TDL_PATIENT_NAME.Caption" xml:space="preserve">
+    <value>Patient's</value>
+  </data>
+  <data name="UCTreatmentList.TDL_PATIENT_NAME.ToolTip" xml:space="preserve">
+    <value>Patient's</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn4.Caption" xml:space="preserve">
+    <value>Treatment End Type</value>
+  </data>
+</root>

@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FormSovaovien.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="FormSovaovien.bTN.Caption" xml:space="preserve">
+    <value>သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="FormSovaovien.BtnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="FormSovaovien.label1.Text" xml:space="preserve">
+    <value>ဆေးရုံဝင်ခွင့်ရနံပါတ်-</value>
+  </data>
+  <data name="FormSovaovien.Text" xml:space="preserve">
+    <value>ဆေးရုံနံပါတ်ထည့်ပါ။</value>
+  </data>
+  <data name="FormSovavien.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="FormSovavien.bTN.Caption" xml:space="preserve">
+    <value>သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="FormSovavien.BtnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="FormSovavien.label1.Text" xml:space="preserve">
+    <value>ဆေးရုံဝင်ခွင့်ရနံပါတ်-</value>
+  </data>
+  <data name="FormSovavien.Text" xml:space="preserve">
+    <value>ဆေးရုံနံပါတ်ထည့်ပါ။</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.bar2.Text" xml:space="preserve">
+    <value>စိတ်ကြိုက် ၃</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.barButtonItemSave.Caption" xml:space="preserve">
+    <value>Ctr S</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.barButtonItemSave1.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.chkBHYT.Properties.Caption" xml:space="preserve">
+    <value>အကန့်အသတ်မရှိ ကျန်းမာရေးအာမခံဆေးဝါးများ</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.chkNeedSickLeaveCert.Properties.Caption" xml:space="preserve">
+    <value>ဖျားနာခွင့် တောင်းခံခြင်း။</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.ChkUpdateSereServ.Properties.Caption" xml:space="preserve">
+    <value>သတ်မှတ်ထားသော ဝန်ဆောင်မှုများ/ ဆေးဝါး/ ပစ္စည်းများ အတွက် ငွေပေးချေမှုရင်းမြစ်ကို အပ်ဒိတ်လုပ်ပါ။</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.groupBox1.Text" xml:space="preserve">
+    <value>ယေဘုယျသတင်းအချက်အလက်</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.groupBox2.Text" xml:space="preserve">
+    <value>ပူးတွဲပေးဆောင်မှုယူနစ်</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.groupBox3.Text" xml:space="preserve">
+    <value>တည်စေ</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.groupBox4.Text" xml:space="preserve">
+    <value>အခြားငွေပေးချေမှုအရင်းအမြစ်များ</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.label1.Text" xml:space="preserve">
+    <value>အရေးပေါ်-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.label2.Text" xml:space="preserve">
+    <value>အရေးပေါ်-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.labelControl1.Text" xml:space="preserve">
+    <value>ဃ</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControl3.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControl4.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControl5.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၅</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem10.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem12.Text" xml:space="preserve">
+    <value>ပရိုဖိုင်နံပါတ်-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem15.Text" xml:space="preserve">
+    <value>ကတ်နံပါတ်:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem16.Text" xml:space="preserve">
+    <value>ထုတ်ကုန်-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem18.Text" xml:space="preserve">
+    <value>ကာလ-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem19.Text" xml:space="preserve">
+    <value>သတ်မှတ်ချိန်းရက်:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem20.Text" xml:space="preserve">
+    <value>ရက်စွဲအပိုင်း-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem21.Text" xml:space="preserve">
+    <value>ဝယ်ယူသူအမည်-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem22.Text" xml:space="preserve">
+    <value>ကုမ္ပဏီ-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem23.Text" xml:space="preserve">
+    <value>အဆင့်-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem25.Text" xml:space="preserve">
+    <value>ဆေးရုံစရိတ်အကြွေး</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem26.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem27.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem29.Text" xml:space="preserve">
+    <value>ဆရာဝန်-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem3.Text" xml:space="preserve">
+    <value>ဆေးရုံဝင်ခွင့်ရနံပါတ်-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem32.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးရုံတက်ရမည့်နံပါတ်ကို ပြင်ပေးသည်။</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem4.Text" xml:space="preserve">
+    <value>ဆေးရုံဆင်းရမည့်နံပါတ်-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem5.Text" xml:space="preserve">
+    <value>CCT ယူနစ်-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lciClinicalInTime.Text" xml:space="preserve">
+    <value>ကုသမှုခံယူမည့်ရက်စွဲ-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lciInTime.Text" xml:space="preserve">
+    <value>အချိန်-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.LciOtherPaySource.Text" xml:space="preserve">
+    <value>ငွေပေးချေမှုရင်းမြစ်-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lciOutTime.Text" xml:space="preserve">
+    <value>ဆေးရုံဆင်းမည့်ရက်-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.Text" xml:space="preserve">
+    <value>ကုသမှုမှတ်တမ်းအချက်အလက်ကို တည်းဖြတ်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_ICD_EDIT__BTN_SAVE" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_ICD_EDIT__CBO_ICD_SUB_TEXT___NULL_VAULE" xml:space="preserve">
+    <value>ရောဂါကိုရွေးချယ်ရန် F1 ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_ICD_EDIT__CHK_BHYT" xml:space="preserve">
+    <value>အကန့်အသတ်မရှိ ကျန်းမာရေးအာမခံဆေးဝါးများ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_ICD_EDIT__CHK_NEED_SICK_LEAVE_CERT" xml:space="preserve">
+    <value>ဖျားနာခွင့်လက်မှတ်တောင်းခံခြင်း-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_ICD_EDIT__LCI_CHECK_ICD" xml:space="preserve">
+    <value>ပြင်ဆင်ပါ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_ICD_EDIT__LCI_CLINICAL_IN_TIME" xml:space="preserve">
+    <value>ကုသမှုခံယူမည့်ရက်စွဲ-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_ICD_EDIT__LCI_ICD" xml:space="preserve">
+    <value>အဓိက ရောဂါရှာဖွေခြင်း-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_ICD_EDIT__LCI_ICD_SUB" xml:space="preserve">
+    <value>ဒုတိယရောဂါရှာဖွေခြင်း-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_ICD_EDIT__LCI_IN_TIME" xml:space="preserve">
+    <value>အချိန်-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_ICD_EDIT__LCI_NotCheckLhmpReason" xml:space="preserve">
+    <value>အကြောင်းရင်း-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_ICD_EDIT__LCI_OUT_TIME" xml:space="preserve">
+    <value>ဆေးရုံဆင်းမည့်ရက်-</value>
+  </data>
+</root>

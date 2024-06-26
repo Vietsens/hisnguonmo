@@ -1,0 +1,684 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmTransactionBill.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmTransactionBill.barButtonItem1.Caption" xml:space="preserve">
+    <value>Find(Ctrl F)</value>
+  </data>
+  <data name="frmTransactionBill.bbtnNew.Caption" xml:space="preserve">
+    <value>New (Ctrl N)</value>
+  </data>
+  <data name="frmTransactionBill.bbtnRCSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmTransactionBill.bbtnRCSavePrint.Caption" xml:space="preserve">
+    <value>Save print (Ctrl I)</value>
+  </data>
+  <data name="frmTransactionBill.bbtnRCSaveSign.Caption" xml:space="preserve">
+    <value>Deposit (Ctrl A)</value>
+  </data>
+  <data name="frmTransactionBill.btnNew.Text" xml:space="preserve">
+    <value>New (Ctrl N)</value>
+  </data>
+  <data name="frmTransactionBill.btnPosConfig.ToolTip" xml:space="preserve">
+    <value>POS device connection configuration</value>
+  </data>
+  <data name="frmTransactionBill.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmTransactionBill.btnSaveAndSign.Text" xml:space="preserve">
+    <value>Deposit (Ctrl A)</value>
+  </data>
+  <data name="frmTransactionBill.btnSavePrint.Text" xml:space="preserve">
+    <value>Save print (Ctrl I)</value>
+  </data>
+  <data name="frmTransactionBill.btnSearch.Text" xml:space="preserve">
+    <value>Find(Ctrl F)</value>
+  </data>
+  <data name="frmTransactionBill.btnStateForInformationUser.ToolTip" xml:space="preserve">
+    <value>If \\Pin\\, the value in the boxes Full name, Tax code, Account number, Unit, Address</value>
+  </data>
+  <data name="frmTransactionBill.chkAutoClose.Properties.Caption" xml:space="preserve">
+    <value>:Auto close</value>
+  </data>
+  <data name="frmTransactionBill.chkAutoClose.ToolTip" xml:space="preserve">
+    <value>Automatically close function when 'Save in' or 'Save in' or 'Print' is successful</value>
+  </data>
+  <data name="frmTransactionBill.chkAutoRepay.Properties.Caption" xml:space="preserve">
+    <value>Autocomplete</value>
+  </data>
+  <data name="frmTransactionBill.chkCoKetChuyen.Properties.Caption" xml:space="preserve">
+    <value>There is a transition</value>
+  </data>
+  <data name="frmTransactionBill.chkConnectPOS.ToolTip" xml:space="preserve">
+    <value>Connect to the bank's payment POS when selecting the payment method as \\Swipe</value>
+  </data>
+  <data name="frmTransactionBill.chkHideHddt.Properties.Caption" xml:space="preserve">
+    <value>:Do not display the e-invoice</value>
+  </data>
+  <data name="frmTransactionBill.chkOther.Properties.Caption" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="frmTransactionBill.chkPrintBKBHNT.Properties.Caption" xml:space="preserve">
+    <value>: Print outpatient insurance statement</value>
+  </data>
+  <data name="frmTransactionBill.chkPrintBKBHNT.ToolTip" xml:space="preserve">
+    <value>Print additional list in case the patient has health insurance when pressing the \\Save in button.</value>
+  </data>
+  <data name="frmTransactionBill.chkPrintHddt.Properties.Caption" xml:space="preserve">
+    <value>:Print Invoice</value>
+  </data>
+  <data name="frmTransactionBill.chkPrintPrescription.Properties.Caption" xml:space="preserve">
+    <value>:Print single PK</value>
+  </data>
+  <data name="frmTransactionBill.chkPrintPrescription.ToolTip" xml:space="preserve">
+    <value>Automatically print clinic prescriptions after paying and approving the hospital fee key</value>
+  </data>
+  <data name="frmTransactionBill.ddBtnPrint.Text" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="frmTransactionBill.DirectCollection" xml:space="preserve">
+    <value>(DirectCollection)</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Fund_Amount.Caption" xml:space="preserve">
+    <value>Amount of money</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Fund_Budget.Caption" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Fund_Button.Caption" xml:space="preserve">
+    <value>Erase</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Fund_FundCode.Caption" xml:space="preserve">
+    <value>Payment fund code</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Fund_FundName.Caption" xml:space="preserve">
+    <value>Name of payment fund</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Fund_Stt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_AccountBookCode.Caption" xml:space="preserve">
+    <value>Book code</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_AccountBookName.Caption" xml:space="preserve">
+    <value>Book name</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_Amount.Caption" xml:space="preserve">
+    <value>Amount of money</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_CashierRoom.Caption" xml:space="preserve">
+    <value>Cashier's Room</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_CashierUseName.Caption" xml:space="preserve">
+    <value>Tellers</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_CreateTime.Caption" xml:space="preserve">
+    <value>Creation time</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_Creator.Caption" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_Lock.Caption" xml:space="preserve">
+    <value>Lock/Unlock</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_Modifier.Caption" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_ModifyTime.Caption" xml:space="preserve">
+    <value>Repair time</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_NumOrder.Caption" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_PayForm.Caption" xml:space="preserve">
+    <value>Form</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_TransactionCode.Caption" xml:space="preserve">
+    <value>Trading code</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn1.Caption" xml:space="preserve">
+    <value>FUND_ID</value>
+  </data>
+  <data name="frmTransactionBill.groupControl1.Text" xml:space="preserve">
+    <value>Buyer Information</value>
+  </data>
+  <data name="frmTransactionBill.labelControl1.Text" xml:space="preserve">
+    <value>labelControl1</value>
+  </data>
+  <data name="frmTransactionBill.labelControl2.Text" xml:space="preserve">
+    <value>labelControl2</value>
+  </data>
+  <data name="frmTransactionBill.layoutAccountBook.Text" xml:space="preserve">
+    <value>Revenue and expenditure book:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmTransactionBill.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmTransactionBill.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmTransactionBill.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem11.Text" xml:space="preserve">
+    <value>Do not take medicine/supplies:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem13.Text" xml:space="preserve">
+    <value>Patient code:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem14.Text" xml:space="preserve">
+    <value>Subject:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem15.Text" xml:space="preserve">
+    <value>Patient name:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem16.Text" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem20.Text" xml:space="preserve">
+    <value>Date of birth:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem21.Text" xml:space="preserve">
+    <value>Sex</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem22.Text" xml:space="preserve">
+    <value>Place of SSC:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem23.Text" xml:space="preserve">
+    <value>Insurance card number:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem25.Text" xml:space="preserve">
+    <value>Word term:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem26.Text" xml:space="preserve">
+    <value>Due date:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem29.Text" xml:space="preserve">
+    <value>Amount BN gives:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem3.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem31.Text" xml:space="preserve">
+    <value>Amount to pay BN:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem32.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem33.Text" xml:space="preserve">
+    <value>Tax code:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem34.Text" xml:space="preserve">
+    <value>Account number:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem36.Text" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem37.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Print e-invoices</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem37.Text" xml:space="preserve">
+    <value>Print phone contract:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem39.Text" xml:space="preserve">
+    <value>POS connection:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem42.Text" xml:space="preserve">
+    <value>Show free services</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem44.Text" xml:space="preserve">
+    <value>Unit:</value>
+  </data>
+  <data name="frmTransactionBill.layoutDescription.Text" xml:space="preserve">
+    <value>Note:</value>
+  </data>
+  <data name="frmTransactionBill.layoutDiscount.Text" xml:space="preserve">
+    <value>Discount (d):</value>
+  </data>
+  <data name="frmTransactionBill.layoutDiscountRatio.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>% discount</value>
+  </data>
+  <data name="frmTransactionBill.layoutDiscountRatio.Text" xml:space="preserve">
+    <value>Discount(%):</value>
+  </data>
+  <data name="frmTransactionBill.layoutHienDu.Text" xml:space="preserve">
+    <value>Current balance:</value>
+  </data>
+  <data name="frmTransactionBill.layoutPayForm.Text" xml:space="preserve">
+    <value>Form:</value>
+  </data>
+  <data name="frmTransactionBill.layoutReason.Text" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
+  <data name="frmTransactionBill.layoutReceiveAmount.Text" xml:space="preserve">
+    <value>To collect:</value>
+  </data>
+  <data name="frmTransactionBill.layoutTongTuDen.Text" xml:space="preserve">
+    <value>Certificate number:</value>
+  </data>
+  <data name="frmTransactionBill.layoutTotalAmount.Text" xml:space="preserve">
+    <value>Amount of money:</value>
+  </data>
+  <data name="frmTransactionBill.layoutTransactionTime.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Transaction time</value>
+  </data>
+  <data name="frmTransactionBill.layoutTransactionTime.Text" xml:space="preserve">
+    <value>Transaction Tg:</value>
+  </data>
+  <data name="frmTransactionBill.lciAccountBookRepay.Text" xml:space="preserve">
+    <value>Complete book:</value>
+  </data>
+  <data name="frmTransactionBill.LciBillFund.Text" xml:space="preserve">
+    <value>Support Fund:</value>
+  </data>
+  <data name="frmTransactionBill.lciCoKetChuyen.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmTransactionBill.lciHeinRatio.Text" xml:space="preserve">
+    <value>Benefit level:</value>
+  </data>
+  <data name="frmTransactionBill.lciHideHddt.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>e-invoices just issued are not displayed</value>
+  </data>
+  <data name="frmTransactionBill.lciHideHddt.Text" xml:space="preserve">
+    <value>Do not display phone contract:</value>
+  </data>
+  <data name="frmTransactionBill.lciNumOrderRepay.Text" xml:space="preserve">
+    <value>Certificate number:</value>
+  </data>
+  <data name="frmTransactionBill.lciRepayAmount.Text" xml:space="preserve">
+    <value>Refund amount:</value>
+  </data>
+  <data name="frmTransactionBill.lciReplaceReason.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Alternative information.</value>
+  </data>
+  <data name="frmTransactionBill.lciReplaceReason.Text" xml:space="preserve">
+    <value>Alternative TT:</value>
+  </data>
+  <data name="frmTransactionBill.lciRightRoute.Text" xml:space="preserve">
+    <value>Route:</value>
+  </data>
+  <data name="frmTransactionBill.lciServiceGroup.Text" xml:space="preserve">
+    <value>Quick select:</value>
+  </data>
+  <data name="frmTransactionBill.lciTranferAmount.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Transfer amount</value>
+  </data>
+  <data name="frmTransactionBill.lciTranferAmount.Text" xml:space="preserve">
+    <value>Securities amount:</value>
+  </data>
+  <data name="frmTransactionBill.radioSGAll.Properties.Caption" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="frmTransactionBill.radioSGCLS.Properties.Caption" xml:space="preserve">
+    <value>CLS fee PT</value>
+  </data>
+  <data name="frmTransactionBill.radioSGExam.Properties.Caption" xml:space="preserve">
+    <value>Examination fee</value>
+  </data>
+  <data name="frmTransactionBill.radioSGMedicine.Properties.Caption" xml:space="preserve">
+    <value>Medicine fee</value>
+  </data>
+  <data name="frmTransactionBill.Text" xml:space="preserve">
+    <value>Pay</value>
+  </data>
+  <data name="frmTransactionBill.txtFindTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search by treatment code</value>
+  </data>
+  <data name="frmTransactionBill.txtPatientCode.Text" xml:space="preserve">
+    <value>labelControl2</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_BIEN_LAI_PHI_LE_PHI" xml:space="preserve">
+    <value>Print Fee Fee Charges</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_CHUYEN_DOI_HOA_DON_DIEN_TU" xml:space="preserve">
+    <value>Electronic invoice conversion</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_HOA_DON_NHAP" xml:space="preserve">
+    <value>Print draft invoice</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_IN_HOA_DON_DIEN_TU" xml:space="preserve">
+    <value>Print e-invoices</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_IN_HOAN_UNG_THANH_TOAN" xml:space="preserve">
+    <value>Print the hospital discharge payment refund form</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_IN_PHIEU_CHI_DINH" xml:space="preserve">
+    <value>Print assign vote</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_PHIEU_THU_THANH_TOAN" xml:space="preserve">
+    <value>Print bill receipt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_PHIEU_THU_TT_CHI_TIET_DICH_VU" xml:space="preserve">
+    <value>Print bill receipt detail</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_PHIEU_THU_TT_THEO_YEU_CAU" xml:space="preserve">
+    <value>Print bill receipt service request</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_NEW" xml:space="preserve">
+    <value>New (Ctrl N)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_PRINT" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_SAVE" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_SAVE_INVOICE_SIGN" xml:space="preserve">
+    <value>Save and sign (Ctrl A)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_SEARCH" xml:space="preserve">
+    <value>Search(Ctrl F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__btnSearch" xml:space="preserve">
+    <value>Search(Ctrl F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__CAPTION" xml:space="preserve">
+    <value>Bill</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__CHK_CO_KET_CHUYEN" xml:space="preserve">
+    <value>Is tranfer</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__chkAutoRepay" xml:space="preserve">
+    <value>Autocomplete</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__chkAutoRepay_ToolTip" xml:space="preserve">
+    <value>Automatically generate a refund transaction if the record has ended and there is still money left to return the patient after making the payment</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_BILL_FUND__VALID_AMOUNT_GREAT_THAN_ZERO" xml:space="preserve">
+    <value>Amount money must be greater than 0</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_BILL_FUND__VALID_FUND_NOT_FOUND" xml:space="preserve">
+    <value>Must be choice bill fund!</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_CONTROL__COLUMN_STT" xml:space="preserve">
+    <value>Number order</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_FUND__COLUMN_AMOUNT" xml:space="preserve">
+    <value>Amount money</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_FUND__COLUMN_FUND_CODE" xml:space="preserve">
+    <value>Fund code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_FUND__COLUMN_FUND_NAME" xml:space="preserve">
+    <value>Fund name</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_ACCOUNT_BOOK" xml:space="preserve">
+    <value>Account book:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_CREATOR" xml:space="preserve">
+    <value>Creator:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DESCRIPTION" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DISCOUNT" xml:space="preserve">
+    <value>Discount:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DISCOUNT_RATIO" xml:space="preserve">
+    <value>Discount (%):</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DISCOUNT_RATIO_TOOLTIP" xml:space="preserve">
+    <value>discount %</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DISCOUNT_REASON" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_HEIN_RATIO" xml:space="preserve">
+    <value>Benefit level:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_HIEN_DU" xml:space="preserve">
+    <value>Surplus:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_NUM_ORDER" xml:space="preserve">
+    <value>Number order:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_PAY_FORM" xml:space="preserve">
+    <value>Pay form:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_PIN" xml:space="preserve">
+    <value>4 PIN numbers:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_RIGHT_ROUTE" xml:space="preserve">
+    <value>Route:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_SERE_SERV_EXPEND" xml:space="preserve">
+    <value>Expend</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_SWIPE_AMOUNT_TEXT" xml:space="preserve">
+    <value>Amount of QT:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_SWIPE_AMOUNT_TOOLTIP" xml:space="preserve">
+    <value>Card amount</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TONG_TU_DEN" xml:space="preserve">
+    <value>Document number:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TOTAL_AMOUNT" xml:space="preserve">
+    <value>Amount money:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TOTAL_RECEIVE" xml:space="preserve">
+    <value>Receivable:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TRANSACTION_CODE" xml:space="preserve">
+    <value>Transaction code:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TRANSFER_AMOUNT_TEXT" xml:space="preserve">
+    <value>Ck amount:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TRANSFER_AMOUNT_TOOLTIP" xml:space="preserve">
+    <value>tranfer amount:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem13" xml:space="preserve">
+    <value>Patient Code:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem14" xml:space="preserve">
+    <value>Patient Type Alter:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem15" xml:space="preserve">
+    <value>Patient Name:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem16" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem20" xml:space="preserve">
+    <value>DOB:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem21" xml:space="preserve">
+    <value>Gender:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem22" xml:space="preserve">
+    <value>MediOrgName:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem23" xml:space="preserve">
+    <value>Hein Card:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem25" xml:space="preserve">
+    <value>Hein Card From:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem26" xml:space="preserve">
+    <value>Hein Card To;</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__PRINT_MENU__ITEM_BARCODE" xml:space="preserve">
+    <value>Print barcode</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__PRINT_MENU__ITEM_BIEN_BAN_KIEM_NHAP_TU_NCC" xml:space="preserve">
+    <value>Print coupon import from supplier</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__REPOSITORY__BTN_DELETE_BILL_FUND" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__RIGHT_ROUTE_FALSE" xml:space="preserve">
+    <value>Opposite line</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__RIGHT_ROUTE_TRUE" xml:space="preserve">
+    <value>Right line</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TRANSACTION_TIME" xml:space="preserve">
+    <value>Transaction time:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TRANSACTION_TIME__TOOLTIP" xml:space="preserve">
+    <value>Transaction time</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_AMOUNT" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_DISCOUNT" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_IS_EXPEND" xml:space="preserve">
+    <value>Expend</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_SERVICE_CODE" xml:space="preserve">
+    <value>Service code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_SERVICE_NAME" xml:space="preserve">
+    <value>Service name</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_SERVICE_REQ_CODE" xml:space="preserve">
+    <value>Service request code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_TRANSACTION_CODE" xml:space="preserve">
+    <value>Transaction code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VAT_RATIO" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VIR_PRICE" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VIR_TOTAL_HEIN_PRICE" xml:space="preserve">
+    <value>Total hein price</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PATIENT_PRICE" xml:space="preserve">
+    <value>Total patient price</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PRICE" xml:space="preserve">
+    <value>Total price</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_DEPA_CREATE__MEDICINE_TREE__COLUMN_DUNG_TICH" xml:space="preserve">
+    <value>Volume</value>
+  </data>
+</root>

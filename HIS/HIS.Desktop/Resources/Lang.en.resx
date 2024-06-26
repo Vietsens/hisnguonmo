@@ -1,0 +1,423 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BanVuiLongThoatPhanMemRaVaoLaiDeCapNhat" xml:space="preserve">
+    <value>Please exit the software and re-enter to update</value>
+  </data>
+  <data name="blblHelp.Caption" xml:space="preserve">
+    <value>Shortcut (Ctrl F2) to \</value>
+  </data>
+  <data name="DongTabBenPhai" xml:space="preserve">
+    <value>Close tabs on the right</value>
+  </data>
+  <data name="DongTabKhac" xml:space="preserve">
+    <value>Close other tabs</value>
+  </data>
+  <data name="frmCheckServerConnect.gridColumn1.Caption" xml:space="preserve">
+    <value>Server address</value>
+  </data>
+  <data name="frmCheckServerConnect.gridColumn2.Caption" xml:space="preserve">
+    <value>Last ping time</value>
+  </data>
+  <data name="frmCheckServerConnect.gridColumn3.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="frmCheckServerConnect.gridColumn4.Caption" xml:space="preserve">
+    <value>Describe</value>
+  </data>
+  <data name="frmCheckServerConnect.Text" xml:space="preserve">
+    <value>Check server connection</value>
+  </data>
+  <data name="frmDesktopConfig.btnSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="frmDesktopConfig.btnSave.ToolTip" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn1.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn1.ToolTip" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn2.Caption" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn2.ToolTip" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn3.Caption" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn3.ToolTip" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn4.Caption" xml:space="preserve">
+    <value>Describe</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn4.ToolTip" xml:space="preserve">
+    <value>Describe</value>
+  </data>
+  <data name="frmDesktopConfig.gridColumn5.Caption" xml:space="preserve">
+    <value>gridColumn5</value>
+  </data>
+  <data name="frmDesktopConfig.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmDesktopConfig.Text" xml:space="preserve">
+    <value>Deployment Configuration</value>
+  </data>
+  <data name="frmLogin.lblBranch" xml:space="preserve">
+    <value>Basis:</value>
+  </data>
+  <data name="frmLogin.Text" xml:space="preserve">
+    <value>Log in</value>
+  </data>
+  <data name="frmMain.backstageViewControl1.Text" xml:space="preserve">
+    <value>backstageViewControl1</value>
+  </data>
+  <data name="frmMain.backstageViewControl2.Text" xml:space="preserve">
+    <value>backstageViewControl2</value>
+  </data>
+  <data name="frmMain.backstageViewTabItem1.Caption" xml:space="preserve">
+    <value>Room is working</value>
+  </data>
+  <data name="frmMain.backstageViewTabItem2.Caption" xml:space="preserve">
+    <value>Room is working</value>
+  </data>
+  <data name="frmMain.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmMain.barbtnResetCacheStateControl.Caption" xml:space="preserve">
+    <value>Reset cache control(Ctrl Shift R)</value>
+  </data>
+  <data name="frmMain.barBtnSendReflection.Caption" xml:space="preserve">
+    <value>Ctrl F2</value>
+  </data>
+  <data name="frmMain.barButtonItem1.Caption" xml:space="preserve">
+    <value>Change login name</value>
+  </data>
+  <data name="frmMain.barButtonItem2.Caption" xml:space="preserve">
+    <value>bbtnModuleControlHide</value>
+  </data>
+  <data name="frmMain.barButtonItem3.Caption" xml:space="preserve">
+    <value>barButtonItem3</value>
+  </data>
+  <data name="frmMain.barButtonItem4.Caption" xml:space="preserve">
+    <value>Ctrl Shift 1</value>
+  </data>
+  <data name="frmMain.barHeaderItem1.Caption" xml:space="preserve">
+    <value>Version: 2.0 @</value>
+  </data>
+  <data name="frmMain.barHeaderItem2.Caption" xml:space="preserve">
+    <value>barHeaderItem2</value>
+  </data>
+  <data name="frmMain.bbtnChanelRemoteSupport.Caption" xml:space="preserve">
+    <value>Create customer request (Ctrl F2)</value>
+  </data>
+  <data name="frmMain.bbtnChangePassword.Caption" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="frmMain.bbtnClose.Caption" xml:space="preserve">
+    <value>Log out</value>
+  </data>
+  <data name="frmMain.bbtnCommonChooseRoom.Caption" xml:space="preserve">
+    <value>Choose a room</value>
+  </data>
+  <data name="frmMain.bbtnConfigApplication.Caption" xml:space="preserve">
+    <value>Software configuration</value>
+  </data>
+  <data name="frmMain.bbtnCreateReport.Caption" xml:space="preserve">
+    <value>Generate report</value>
+  </data>
+  <data name="frmMain.bbtnCustomizeButton.Caption" xml:space="preserve">
+    <value>Customize button (Ctrl shift S)</value>
+  </data>
+  <data name="frmMain.bbtnEventLog.Caption" xml:space="preserve">
+    <value>Impact log</value>
+  </data>
+  <data name="frmMain.bbtnFeedback.Caption" xml:space="preserve">
+    <value>Feedback, support (Ctrl F2)</value>
+  </data>
+  <data name="frmMain.bbtnHideControl.Caption" xml:space="preserve">
+    <value>Hide/show controls</value>
+  </data>
+  <data name="frmMain.bbtnHisConfig.Caption" xml:space="preserve">
+    <value>System and account configuration</value>
+  </data>
+  <data name="frmMain.bbtnMonitorTracking.Caption" xml:space="preserve">
+    <value>Workstation Management</value>
+  </data>
+  <data name="frmMain.bbtnPageOther.Caption" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="frmMain.bbtnPlugin.Caption" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="frmMain.bbtnRefeshRamGC.Caption" xml:space="preserve">
+    <value>Refresh Ram(GC)</value>
+  </data>
+  <data name="frmMain.bbtnRefreshCache.Caption" xml:space="preserve">
+    <value>Manage my device cache</value>
+  </data>
+  <data name="frmMain.bbtnRefreshEmrConfig.Caption" xml:space="preserve">
+    <value>Reload electronic medical record configuration</value>
+  </data>
+  <data name="frmMain.bbtnReport.Caption" xml:space="preserve">
+    <value>Report</value>
+  </data>
+  <data name="frmMain.bbtnReportList.Caption" xml:space="preserve">
+    <value>List of reports</value>
+  </data>
+  <data name="frmMain.bbtnResetLisConfig.Caption" xml:space="preserve">
+    <value>Reload LIS. config</value>
+  </data>
+  <data name="frmMain.bbtnResetServerConfigCache.Caption" xml:space="preserve">
+    <value>Reload configuration, cache server (MOS, REDIS cache server)</value>
+  </data>
+  <data name="frmMain.bbtnShiftF2.Caption" xml:space="preserve">
+    <value>Shift F2</value>
+  </data>
+  <data name="frmMain.bbtnShiftF3.Caption" xml:space="preserve">
+    <value>Shift F3</value>
+  </data>
+  <data name="frmMain.bbtnSpeechVoice.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmMain.bbtnTutorial.Caption" xml:space="preserve">
+    <value>User manual</value>
+  </data>
+  <data name="frmMain.bbtnVersionInfo.Caption" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="frmMain.blblHelp.Caption" xml:space="preserve">
+    <value>Shortcut key (Ctrl F2) to \\Create Customer Request\\ (Ctrl Shift S) to customize delivery</value>
+  </data>
+  <data name="frmMain.gridColumn1.Caption" xml:space="preserve">
+    <value>Tabpage</value>
+  </data>
+  <data name="frmMain.gridColumn2.ToolTip" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="frmMain.gridColumn3.Caption" xml:space="preserve">
+    <value>RoomName</value>
+  </data>
+  <data name="frmMain.gridColumn4.Caption" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="frmMain.gridColumn5.Caption" xml:space="preserve">
+    <value>RoomName</value>
+  </data>
+  <data name="frmMain.gridColumn6.Caption" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="frmMain.gridColumn6.ToolTip" xml:space="preserve">
+    <value>Leave the selected office</value>
+  </data>
+  <data name="frmMain.gridColumn7.Caption" xml:space="preserve">
+    <value>Tabpage</value>
+  </data>
+  <data name="frmMain.gridColumn8.Caption" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="frmMain.gridColumn8.ToolTip" xml:space="preserve">
+    <value>Leave the selected office</value>
+  </data>
+  <data name="frmMain.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmMain.lblLanguage.Caption" xml:space="preserve">
+    <value>Vietnamese</value>
+  </data>
+  <data name="frmMain.lblRoomName.Caption" xml:space="preserve">
+    <value>Haven't selected a room yet</value>
+  </data>
+  <data name="frmMain.lblVersion.Caption" xml:space="preserve">
+    <value>©Inventec</value>
+  </data>
+  <data name="frmMain.skinRibbonGalleryBarItem1.Caption" xml:space="preserve">
+    <value>Display</value>
+  </data>
+  <data name="frmMain.tabpageMoritoring.Caption" xml:space="preserve">
+    <value>Monitor the workstation</value>
+  </data>
+  <data name="frmMain.Text" xml:space="preserve">
+    <value>Hospital Management Software (HIS) - Hospital Integration System MOS</value>
+  </data>
+  <data name="frmSystemConfig.Text" xml:space="preserve">
+    <value>System configuration</value>
+  </data>
+  <data name="frmUgrade.lblDescription.Text" xml:space="preserve">
+    <value>Checking for updated version...</value>
+  </data>
+  <data name="frmUgrade.Text" xml:space="preserve">
+    <value>frmUgrade</value>
+  </data>
+  <data name="frmUgradeAUS.lblDescription.Text" xml:space="preserve">
+    <value>Checking for updated version...</value>
+  </data>
+  <data name="frmUgradeAUS.Text" xml:space="preserve">
+    <value>frmUgrade</value>
+  </data>
+  <data name="frmUpgradeOption.btnUpgradeHand.Text" xml:space="preserve">
+    <value>Manual upgrade</value>
+  </data>
+  <data name="frmUpgradeOption.lblStatus.Text" xml:space="preserve">
+    <value>resources.GetString(lblStatus.Text);</value>
+  </data>
+  <data name="frmUpgradeOption.Text" xml:space="preserve">
+    <value>Upgrade - Upgrade</value>
+  </data>
+  <data name="KetNoiServerKhongOnDinh" xml:space="preserve">
+    <value>Server connection is not stable</value>
+  </data>
+  <data name="KetNoiServerOnDinh" xml:space="preserve">
+    <value>Server connection is stable</value>
+  </data>
+  <data name="MatKetNoiServer" xml:space="preserve">
+    <value>Lost connection to server...</value>
+  </data>
+  <data name="toolTipItem1.Text" xml:space="preserve">
+    <value>Leave the selected office</value>
+  </data>
+  <data name="toolTipItem2.Text" xml:space="preserve">
+    <value>Leave the selected office</value>
+  </data>
+  <data name="toolTipItem3.Text" xml:space="preserve">
+    <value>The software is running in voice input mode</value>
+  </data>
+  <data name="toolTipItem4.Text" xml:space="preserve">
+    <value>Create customer request (Ctrl F2)</value>
+  </data>
+  <data name="toolTipItem5.Text" xml:space="preserve">
+    <value>Log out</value>
+  </data>
+  <data name="toolTipItem6.Text" xml:space="preserve">
+    <value>Develop</value>
+  </data>
+  <data name="toolTipItem7.Text" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="toolTipItem8.Text" xml:space="preserve">
+    <value>List of reports</value>
+  </data>
+  <data name="toolTipItem9.Text" xml:space="preserve">
+    <value>Generate report</value>
+  </data>
+</root>

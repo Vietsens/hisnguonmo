@@ -1,0 +1,810 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DICH_VU" xml:space="preserve">
+    <value>Service bill</value>
+  </data>
+  <data name="FormReportTime.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormReportTime.barButtonItemSave.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="FormReportTime.btnSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="FormReportTime.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormReportTime.lciCreateTimeFrom.Text" xml:space="preserve">
+    <value>Are from:</value>
+  </data>
+  <data name="FormReportTime.lciCreateTimeTo.Text" xml:space="preserve">
+    <value>Arrive:</value>
+  </data>
+  <data name="FormReportTime.Text" xml:space="preserve">
+    <value>Book creation time</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__BTN_ADD" xml:space="preserve">
+    <value>New (Ctrl N)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__BTN_CANCEL" xml:space="preserve">
+    <value>Cancel (Ctrl B)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__BTN_EDIT" xml:space="preserve">
+    <value>Edit (Ctrl E)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__BTN_REFRESH" xml:space="preserve">
+    <value>Refresh (Ctrl R)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__BTN_REFRESH_TRANSACTION" xml:space="preserve">
+    <value>Refresh (Ctrl Shift R)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__BTN_SAVE" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__BTN_SEARCH" xml:space="preserve">
+    <value>Search (Ctrl F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__BTN_SEARCH_TRANSACTION" xml:space="preserve">
+    <value>Search (Ctrl Shift F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__CHK_NOT_GEN_ORDER" xml:space="preserve">
+    <value>Not auto number</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__CHK_SHOW_ALL" xml:space="preserve">
+    <value>Hiển thị tất cả</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__FROM_ORDER_NUMBER" xml:space="preserve">
+    <value>Order number:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__FROM_REPORT_TIME" xml:space="preserve">
+    <value>Report time</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN__NUM_ORDER" xml:space="preserve">
+    <value>Number order</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN__PATIENT_TYPE_ID" xml:space="preserve">
+    <value>Bill type</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN__RELEASE_TIME" xml:space="preserve">
+    <value>Release time</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN__SYMBOL_CODE" xml:space="preserve">
+    <value>Symbol code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN__TEMPLATE_CODE" xml:space="preserve">
+    <value>Template code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_ACCOUNT_BOOK_CODE" xml:space="preserve">
+    <value>Account book code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_ACCOUNT_BOOK_NAME" xml:space="preserve">
+    <value>Account book name</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_ACCOUNT_HOLDER" xml:space="preserve">
+    <value>Holder</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_AMOUNT" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_CREATE_TIME" xml:space="preserve">
+    <value>Create time</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_CREATOR" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_CURRENT_NUM_ORDER" xml:space="preserve">
+    <value>Current No.</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_DOB" xml:space="preserve">
+    <value>Date of birth</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_FROM_NUM_ORDER" xml:space="preserve">
+    <value>From No.</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_GENDER" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_IS_ACTIVE" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_MAX_ITEM_NUMBER" xml:space="preserve">
+    <value>Max item number</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_MODIFIER" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_MODIFY_TIME" xml:space="preserve">
+    <value>Modify time</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_NUM_OREDER" xml:space="preserve">
+    <value>Number order</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_PATIENT_CODE" xml:space="preserve">
+    <value>Patient code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_PATIENT_NAME" xml:space="preserve">
+    <value>Patient name</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_PAY_NAME" xml:space="preserve">
+    <value>Payments</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_PRINT_COUNT" xml:space="preserve">
+    <value>Print count</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_TO_NUM_ORDER" xml:space="preserve">
+    <value>To No.</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_TOTAL" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_TRANSACTION_CODE" xml:space="preserve">
+    <value>Transaction code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_TRANSACTION_TYPE" xml:space="preserve">
+    <value>Transaction type</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_TREATMENT_CODE" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__GRID_COLUMN_WORKING_SHIFT" xml:space="preserve">
+    <value>Working shift</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__KEY_WORD_NULL_VALUE" xml:space="preserve">
+    <value>Keyword search</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_ACCOUNT_BOOK_CODE" xml:space="preserve">
+    <value>Code:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_ACCOUNT_BOOK_NAME" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_BILL_TYPE" xml:space="preserve">
+    <value>Bill type:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_CHK_FOR_BILL" xml:space="preserve">
+    <value>Bill</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_CHK_FOR_DEBT" xml:space="preserve">
+    <value>For debt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_CHK_FOR_DEPOSIT" xml:space="preserve">
+    <value>Deposit</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_CHK_FOR_OTHER_SALE" xml:space="preserve">
+    <value>Other sale</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_CHK_FOR_REPAY" xml:space="preserve">
+    <value>Repay</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_CHK_FOR_WITHDRAW" xml:space="preserve">
+    <value>Withdraw</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_COUNT" xml:space="preserve">
+    <value>Count:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_DESCRIPTION" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_FOR_ACCOUNT_BOOK" xml:space="preserve">
+    <value>Account book type:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_MAX_ITEM_NUMBER" xml:space="preserve">
+    <value>Max item number:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_NOT_GEN_ORDER" xml:space="preserve">
+    <value>Transaction order:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_NUM_ORDER" xml:space="preserve">
+    <value>Number order:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_PATIENT_TYPE_ID" xml:space="preserve">
+    <value>Patient type:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_RELEASE_TIME" xml:space="preserve">
+    <value>Relese time:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_SYMBOL_CODE" xml:space="preserve">
+    <value>Symbol code:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_TEMPLATE_CODE" xml:space="preserve">
+    <value>Template code:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LAYOUT_TOTAL" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LBL_CREATE_TIME__TO" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LBL_CTEATE_TIME__FROM" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LCI_BILL_SUM" xml:space="preserve">
+    <value>Bill:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LCI_DEPOSIT_SUM" xml:space="preserve">
+    <value>Deposit:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LCI_REPAY_SUM" xml:space="preserve">
+    <value>Repay:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__LCI_TOTAL_PRICE" xml:space="preserve">
+    <value>Total price</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__NAV_ACCOUNT_BOOK_TYPE" xml:space="preserve">
+    <value>Account book type</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__NAV_TITLE_CREATE_TIME" xml:space="preserve">
+    <value>Create time</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__TEXTBOX_MAX_ITEM_NUMBER" xml:space="preserve">
+    <value>Max item number</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__TOOLTIP_ACT_LOCK" xml:space="preserve">
+    <value>Lock</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK__TXT_ACCOUNT_BOOK_CODE" xml:space="preserve">
+    <value>Self-generated code</value>
+  </data>
+  <data name="THUONG" xml:space="preserve">
+    <value>Bills often</value>
+  </data>
+  <data name="UCHisAccountBookList.btnAdd.Text" xml:space="preserve">
+    <value>New (Ctrl N)</value>
+  </data>
+  <data name="UCHisAccountBookList.btnCancel.Text" xml:space="preserve">
+    <value>Skip (Ctrl B)</value>
+  </data>
+  <data name="UCHisAccountBookList.btnExportTransactionToExcel.Text" xml:space="preserve">
+    <value>Export Excel</value>
+  </data>
+  <data name="UCHisAccountBookList.btnImport.Text" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="UCHisAccountBookList.btnRefesh.Text" xml:space="preserve">
+    <value>Redo (Ctrl R)</value>
+  </data>
+  <data name="UCHisAccountBookList.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="UCHisAccountBookList.btnSearch.Text" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
+  </data>
+  <data name="UCHisAccountBookList.btnSearchTransaction.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="UCHisAccountBookList.chkForBill.Properties.Caption" xml:space="preserve">
+    <value>Pay</value>
+  </data>
+  <data name="UCHisAccountBookList.chkForDebt.Properties.Caption" xml:space="preserve">
+    <value>Debts</value>
+  </data>
+  <data name="UCHisAccountBookList.chkForDeposit.Properties.Caption" xml:space="preserve">
+    <value>Advance</value>
+  </data>
+  <data name="UCHisAccountBookList.chkForOtherSale.Properties.Caption" xml:space="preserve">
+    <value>Other payment</value>
+  </data>
+  <data name="UCHisAccountBookList.chkForRepay.Properties.Caption" xml:space="preserve">
+    <value>Reimbursement</value>
+  </data>
+  <data name="UCHisAccountBookList.chkLuonTachTheoTungSo.Properties.Caption" xml:space="preserve">
+    <value>Always separate strips by book</value>
+  </data>
+  <data name="UCHisAccountBookList.chkLuonTachTheoTungSo.ToolTip" xml:space="preserve">
+    <value>Always generate the number of vouchers in separate strips corresponding to each book.</value>
+  </data>
+  <data name="UCHisAccountBookList.chkNotGenOrder.Properties.Caption" xml:space="preserve">
+    <value>No auto-generating numbers</value>
+  </data>
+  <data name="UCHisAccountBookList.chkShowAll.Properties.Caption" xml:space="preserve">
+    <value>Show all</value>
+  </data>
+  <data name="UCHisAccountBookList.gc_SwipeAmount.Caption" xml:space="preserve">
+    <value>Amount QT</value>
+  </data>
+  <data name="UCHisAccountBookList.gc_SwipeAmount.ToolTip" xml:space="preserve">
+    <value>Card amount</value>
+  </data>
+  <data name="UCHisAccountBookList.gc_TransferAmuont.Caption" xml:space="preserve">
+    <value>CZK amount</value>
+  </data>
+  <data name="UCHisAccountBookList.gc_TransferAmuont.ToolTip" xml:space="preserve">
+    <value>Transfer amount</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_AccountBookCode.Caption" xml:space="preserve">
+    <value>Book code</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_AccountBookName.Caption" xml:space="preserve">
+    <value>Book name</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_Amount.Caption" xml:space="preserve">
+    <value>Amount of money</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_TRANSACTION_BANK_NAME.Caption" xml:space="preserve">
+    <value>Bank</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_Cashier.Caption" xml:space="preserve">
+    <value>Tellers</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_CashierRoomName.Caption" xml:space="preserve">
+    <value>Cashier's Room</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_CreateTime.Caption" xml:space="preserve">
+    <value>Creation time</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_Creator.Caption" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_DerectlyBilling.Caption" xml:space="preserve">
+    <value>Payments</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_Dob.Caption" xml:space="preserve">
+    <value>Date of birth</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_GenderName.Caption" xml:space="preserve">
+    <value>Sex</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_Modifier.Caption" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_ModifyTime.Caption" xml:space="preserve">
+    <value>Repair time</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_NationalTransactionCode.Caption" xml:space="preserve">
+    <value>Country code</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_NumOrder.Caption" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_PatientCode.Caption" xml:space="preserve">
+    <value>Patient code</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_PayFormName.Caption" xml:space="preserve">
+    <value>Form</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_Stt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_Tig_TransactionCode.Caption" xml:space="preserve">
+    <value>Card transaction code</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_TransactionCode.Caption" xml:space="preserve">
+    <value>Trading code</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_TransactionTime.Caption" xml:space="preserve">
+    <value>Transaction time</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_TransactionTime.ToolTip" xml:space="preserve">
+    <value>Transaction time</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_TransactionTypeName.Caption" xml:space="preserve">
+    <value>Transaction type</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_TreatmentCode.Caption" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn_Transaction_VirPatientName.Caption" xml:space="preserve">
+    <value>Patient</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn1.Caption" xml:space="preserve">
+    <value>Transaction time</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn1.ToolTip" xml:space="preserve">
+    <value>Transaction time</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn2.Caption" xml:space="preserve">
+    <value>Real food</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn3.Caption" xml:space="preserve">
+    <value>Exemption reason</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn4.Caption" xml:space="preserve">
+    <value>Exemptions</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn5.Caption" xml:space="preserve">
+    <value>Payment Fund</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn6.Caption" xml:space="preserve">
+    <value>Forward</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn8.Caption" xml:space="preserve">
+    <value>Transaction status</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn8.ToolTip" xml:space="preserve">
+    <value>Transaction status</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn9.Caption" xml:space="preserve">
+    <value>Rounded amount</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnActive.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnAddCashierRoom.Caption" xml:space="preserve">
+    <value>Assign room to use</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnAddCashierRoom.ToolTip" xml:space="preserve">
+    <value>Assign room to use</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnAddUser.Caption" xml:space="preserve">
+    <value>User Assignment</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnAddUser.ToolTip" xml:space="preserve">
+    <value>User Assignment</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnCode.Caption" xml:space="preserve">
+    <value>Book code</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnCreate.Caption" xml:space="preserve">
+    <value>Creation time</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnCreator.Caption" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnCurrent.Caption" xml:space="preserve">
+    <value>Present</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnDestroy.Caption" xml:space="preserve">
+    <value>gridColumnDestroy</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnEdit.Caption" xml:space="preserve">
+    <value>gridColumnEdit</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnForBill.Caption" xml:space="preserve">
+    <value>gridColumnForBill</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnForBill.ToolTip" xml:space="preserve">
+    <value>Pay</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnForDebt.Caption" xml:space="preserve">
+    <value>gridColumnForReDebt</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnForDebt.ToolTip" xml:space="preserve">
+    <value>Debts</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnForDeposit.Caption" xml:space="preserve">
+    <value>gridColumnForDeposit</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnForDeposit.ToolTip" xml:space="preserve">
+    <value>Advance</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnForOtherSale.Caption" xml:space="preserve">
+    <value>gridColumnForOtherSale</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnForOtherSale.ToolTip" xml:space="preserve">
+    <value>Other payment</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnForRepay.Caption" xml:space="preserve">
+    <value>gridColumnForRepay</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnForRepay.ToolTip" xml:space="preserve">
+    <value>Reimbursement</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnFrom.Caption" xml:space="preserve">
+    <value>From number</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnHoler.Caption" xml:space="preserve">
+    <value>Book owner</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnInvoiceSys.Caption" xml:space="preserve">
+    <value>Contract</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnInvoiceSys.ToolTip" xml:space="preserve">
+    <value>Electronic bill</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnLock.Caption" xml:space="preserve">
+    <value>gridColumnLock</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnMaxItemNumber.Caption" xml:space="preserve">
+    <value>Maximum number of items per ticket</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnMaxItemNumber.ToolTip" xml:space="preserve">
+    <value>Maximum number of items per ticket</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnModifier.Caption" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnModify.Caption" xml:space="preserve">
+    <value>Repair time</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnName.Caption" xml:space="preserve">
+    <value>Book name</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnNumOrder.Caption" xml:space="preserve">
+    <value>Prioritized</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnPatientType.Caption" xml:space="preserve">
+    <value>Payment object</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnReleaseTime.Caption" xml:space="preserve">
+    <value>Release date</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnReportDetail.Caption" xml:space="preserve">
+    <value>gridColumnReportDetail</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnSymbolCode.Caption" xml:space="preserve">
+    <value>Symbol</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnTemplateCode.Caption" xml:space="preserve">
+    <value>Denominator</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnTo.Caption" xml:space="preserve">
+    <value>to some</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnTotal.Caption" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnView.Caption" xml:space="preserve">
+    <value>gridColumnView</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnWorkingShift.Caption" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumnWorkingShift.ToolTip" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="UCHisAccountBookList.gridViewAccountBook.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Search keyword</value>
+  </data>
+  <data name="UCHisAccountBookList.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCHisAccountBookList.layoutControlCRUD.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCHisAccountBookList.layoutControlItem11.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Always generate the number of vouchers in separate strips corresponding to each book.</value>
+  </data>
+  <data name="UCHisAccountBookList.layoutControlItem11.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCHisAccountBookList.layoutControlItem14.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCHisAccountBookList.layoutControlItem15.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCHisAccountBookList.layoutControlItem20.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCHisAccountBookList.layoutControlTransaction.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCHisAccountBookList.lciAccountBookCode.Text" xml:space="preserve">
+    <value>Code:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciAccountBookName.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciAccountingSubmission.Text" xml:space="preserve">
+    <value>Accounting submission:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciBillType.Text" xml:space="preserve">
+    <value>Bills</value>
+  </data>
+  <data name="UCHisAccountBookList.lciCount.Text" xml:space="preserve">
+    <value>Votes:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciCreateTimeTo.Text" xml:space="preserve">
+    <value>Arrive:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciCreatTimeFrom.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Trading time from</value>
+  </data>
+  <data name="UCHisAccountBookList.lciCreatTimeFrom.Text" xml:space="preserve">
+    <value>GD time from:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciDescription.Text" xml:space="preserve">
+    <value>Describe:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciEInvoiceSys.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Electronic invoice system</value>
+  </data>
+  <data name="UCHisAccountBookList.lciEInvoiceSys.Text" xml:space="preserve">
+    <value>Phone bill:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciForAccountBook.Text" xml:space="preserve">
+    <value>Window type:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciForDebt.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCHisAccountBookList.lciForDebt1.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCHisAccountBookList.lciFromNumberOrder.Text" xml:space="preserve">
+    <value>Are from:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciMaxItemNumber.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Maximum number of product lines per ticket</value>
+  </data>
+  <data name="UCHisAccountBookList.lciMaxItemNumber.Text" xml:space="preserve">
+    <value>Maximum number of MHs:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciNotGenOrder.Text" xml:space="preserve">
+    <value>Certificate number:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciNumOrder.Text" xml:space="preserve">
+    <value>Priority:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciPatientTypeId.Text" xml:space="preserve">
+    <value>Subject:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciReleaseTime.Text" xml:space="preserve">
+    <value>Release date:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciSymbolCode.Text" xml:space="preserve">
+    <value>Symbol:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciTemplateCode.Text" xml:space="preserve">
+    <value>Denominator:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciTotalDebt.Text" xml:space="preserve">
+    <value>Total liabilities:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciTotalIncome.Text" xml:space="preserve">
+    <value>Total revenue:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciTotalRefund.Text" xml:space="preserve">
+    <value>Total refund:</value>
+  </data>
+  <data name="UCHisAccountBookList.lciWorkingShift.Text" xml:space="preserve">
+    <value>Shift:</value>
+  </data>
+  <data name="UCHisAccountBookList.repositoryItemPictureForBill.NullText" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCHisAccountBookList.repositoryItemPictureForDebt.NullText" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCHisAccountBookList.repositoryItemPictureForDeposit.NullText" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCHisAccountBookList.repositoryItemPictureForOtherSale.NullText" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCHisAccountBookList.repositoryItemPictureForRepay.NullText" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCHisAccountBookList.repositoryItemPictureLock.NullText" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCHisAccountBookList.spinEditMaxItemNumber.ToolTip" xml:space="preserve">
+    <value>Maximum number of product lines per ticket</value>
+  </data>
+  <data name="UCHisAccountBookList.STT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCHisAccountBookList.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keyword</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn10.Caption" xml:space="preserve">
+    <value>Description/reason for advance</value>
+  </data>
+  <data name="UCHisAccountBookList.gridColumn7.Caption" xml:space="preserve">
+    <value>Refund reason</value>
+  </data>
+  <data name="UCHisAccountBookList.layoutControlItem12.Text" xml:space="preserve">
+    <value>Transaction time</value>
+  </data>
+  <data name="UCHisAccountBookList.layoutControlItem19.Text" xml:space="preserve">
+    <value>Number of vouchers</value>
+  </data>
+</root>

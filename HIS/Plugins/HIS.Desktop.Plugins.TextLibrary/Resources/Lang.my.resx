@@ -1,0 +1,303 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FormTextLibrary.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="FormTextLibrary.barButtonItemChoose.Caption" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="FormTextLibrary.barButtonItemFocus.Caption" xml:space="preserve">
+    <value>F2</value>
+  </data>
+  <data name="FormTextLibrary.barButtonItemNew.Caption" xml:space="preserve">
+    <value>Ctrl FEMALE</value>
+  </data>
+  <data name="FormTextLibrary.barButtonItemSave.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="FormTextLibrary.barButtonItemSearch.Caption" xml:space="preserve">
+    <value>Ctrl F</value>
+  </data>
+  <data name="FormTextLibrary.btnChoose.Text" xml:space="preserve">
+    <value>(Ctrl T) ကို ရွေးပါ</value>
+  </data>
+  <data name="FormTextLibrary.btnNew.Text" xml:space="preserve">
+    <value>အသစ် (Ctrl N)</value>
+  </data>
+  <data name="FormTextLibrary.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="FormTextLibrary.btnSearch.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="FormTextLibrary.chkDocument.Properties.Caption" xml:space="preserve">
+    <value>စာရွက်စာတမ်း</value>
+  </data>
+  <data name="FormTextLibrary.chkIsDepartment.Properties.Caption" xml:space="preserve">
+    <value>ဌာနအလိုက် မျှဝေပါသည်။</value>
+  </data>
+  <data name="FormTextLibrary.chkIsPublic.Properties.Caption" xml:space="preserve">
+    <value>ဆေးရုံတစ်ခုလုံးကို မျှဝေပါ။</value>
+  </data>
+  <data name="FormTextLibrary.chkPicture.Properties.Caption" xml:space="preserve">
+    <value>ပုံ</value>
+  </data>
+  <data name="FormTextLibrary.Gc_CreateTime.Caption" xml:space="preserve">
+    <value>ဖန်တီးချိန်</value>
+  </data>
+  <data name="FormTextLibrary.Gc_Creator.Caption" xml:space="preserve">
+    <value>ဖန်ဆင်းရှင်</value>
+  </data>
+  <data name="FormTextLibrary.Gc_Hashtag.Caption" xml:space="preserve">
+    <value>ကတ်</value>
+  </data>
+  <data name="FormTextLibrary.Gc_IsPublic.Caption" xml:space="preserve">
+    <value>ဆေးရုံတစ်ခုလုံးကို မျှဝေပါ။</value>
+  </data>
+  <data name="FormTextLibrary.Gc_Modifier.Caption" xml:space="preserve">
+    <value>ပြုပြင်သူ</value>
+  </data>
+  <data name="FormTextLibrary.Gc_ModifyTime.Caption" xml:space="preserve">
+    <value>ပြုပြင်ချိန်</value>
+  </data>
+  <data name="FormTextLibrary.Gc_Stt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="FormTextLibrary.Gc_Title.Caption" xml:space="preserve">
+    <value>ခေါင်းစဥ်</value>
+  </data>
+  <data name="FormTextLibrary.gridColumn1.Caption" xml:space="preserve">
+    <value>ဖြတ်လမ်းကုဒ်</value>
+  </data>
+  <data name="FormTextLibrary.gridColumn17.Caption" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="FormTextLibrary.gridColumn18.Caption" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="FormTextLibrary.gridColumn2.Caption" xml:space="preserve">
+    <value>အကြောင်းအရာ</value>
+  </data>
+  <data name="FormTextLibrary.gridColumn3.Caption" xml:space="preserve">
+    <value>ဌာနအလိုက် မျှဝေပါသည်။</value>
+  </data>
+  <data name="FormTextLibrary.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="FormTextLibrary.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="FormTextLibrary.layoutControl3.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
+  </data>
+  <data name="FormTextLibrary.layoutControlItem13.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormTextLibrary.layoutControlItem14.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormTextLibrary.layoutControlItem9.Text" xml:space="preserve">
+    <value>ဖြတ်လမ်းကုဒ်-</value>
+  </data>
+  <data name="FormTextLibrary.lciHashTag.Text" xml:space="preserve">
+    <value>ကတ်-</value>
+  </data>
+  <data name="FormTextLibrary.lciTitle.Text" xml:space="preserve">
+    <value>ခေါင်းစဥ်:</value>
+  </data>
+  <data name="FormTextLibrary.Text" xml:space="preserve">
+    <value>အကြောင်းအရာစာကြည့်တိုက်</value>
+  </data>
+  <data name="FormTextLibrary.txtFindHashtag.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ကတ် (F2)</value>
+  </data>
+  <data name="FormTextLibrary.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TEXT_LIBRARY__BTN_CHOOSE" xml:space="preserve">
+    <value>(Ctrl T) ကို ရွေးပါ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TEXT_LIBRARY__BTN_NEW" xml:space="preserve">
+    <value>အသစ် (Ctrl N)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TEXT_LIBRARY__BTN_REFRESH" xml:space="preserve">
+    <value>ပြန်လုပ်ပါ (Ctrl R)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TEXT_LIBRARY__BTN_SEARCH" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TEXT_LIBRARY__BTN_UPDATE" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TEXT_LIBRARY__GC_CREATE_TIME" xml:space="preserve">
+    <value>ဖန်တီးချိန်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TEXT_LIBRARY__GC_CREATOR" xml:space="preserve">
+    <value>ဖန်ဆင်းရှင်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TEXT_LIBRARY__GC_HASHTAG" xml:space="preserve">
+    <value>ကတ်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TEXT_LIBRARY__GC_HOTKEY" xml:space="preserve">
+    <value>ဖြတ်လမ်းကုဒ်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TEXT_LIBRARY__GC_MODIFIER" xml:space="preserve">
+    <value>ပြုပြင်သူ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TEXT_LIBRARY__GC_MODIFY_TIME" xml:space="preserve">
+    <value>ပြုပြင်ချိန်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TEXT_LIBRARY__GC_STT" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TEXT_LIBRARY__GC_TITLE" xml:space="preserve">
+    <value>ခေါင်းစဥ်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TEXT_LIBRARY__LCI_CHK_IS_PUBLIC" xml:space="preserve">
+    <value>မျှဝေပါ-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TEXT_LIBRARY__LCI_HASHTAG" xml:space="preserve">
+    <value>ကတ်-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TEXT_LIBRARY__LCI_HOTKEY" xml:space="preserve">
+    <value>ဖြတ်လမ်းကုဒ်-</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TEXT_LIBRARY__LCI_TITLE" xml:space="preserve">
+    <value>ခေါင်းစဥ်:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TEXT_LIBRARY__TXT_FIND_HASHTAG__NULL_VALUE" xml:space="preserve">
+    <value>ကတ် (F2)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TEXT_LIBRARY__TXT_KEYWORD__NULL_VALUE" xml:space="preserve">
+    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
+  </data>
+  <data name="toolTipItem1.Text" xml:space="preserve">
+    <value>သင့်ကွန်ပျူတာရှိ ဖိုင်များကို ရွေးပါ။</value>
+  </data>
+  <data name="UCDocument.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="UCPicture.btnSelectImage.Text" xml:space="preserve">
+    <value>ဓာတ်ပုံတစ်ပုံကို ရွေးပါ။</value>
+  </data>
+  <data name="UCPicture.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+</root>

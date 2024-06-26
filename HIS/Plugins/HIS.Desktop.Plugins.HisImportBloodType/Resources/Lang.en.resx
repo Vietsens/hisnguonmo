@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="HeThongTBKQXLYCCuaFrontendThatBai" xml:space="preserve">
+    <value>Process fails</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__BTN_DOWNLOAD_TEMPLATE" xml:space="preserve">
+    <value>Download template</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__BTN_IMPORT" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__BTN_LINE_ERROR__ERROR" xml:space="preserve">
+    <value>Line error</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__BTN_REFRESH" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__BTN_SAVE" xml:space="preserve">
+    <value>Save(Ctrl S)</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_ALERT_EXPIRED_DATE" xml:space="preserve">
+    <value>Alter expired date</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_BLOOD_GROUP_NAME" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_BLOOD_TYPE_CODE" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_BLOOD_TYPE_NAME" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_DELETE" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_HEIN_LIMIT_PRICE" xml:space="preserve">
+    <value>Hein limit price</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_HEIN_LIMIT_PRICE_INTR_TIME" xml:space="preserve">
+    <value>Intruction time</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_HEIN_LIMIT_PRICE_IN_TIME" xml:space="preserve">
+    <value>In time</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_HEIN_LIMIT_PRICE_OLD" xml:space="preserve">
+    <value>Old hein limit price</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_HEIN_LIMIT_RATIO" xml:space="preserve">
+    <value>Hein limit ratio</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_HEIN_LIMIT_RATIO_OLD" xml:space="preserve">
+    <value>Old hein limit ration</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_HEIN_SERVICE_BHYT_CODE" xml:space="preserve">
+    <value>Hein code</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_HEIN_SERVICE_BHYT_NAME" xml:space="preserve">
+    <value>Hein name</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_HEIN_SERVICE_TYPE_NAME" xml:space="preserve">
+    <value>Hein type name</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_IMP_PRICE" xml:space="preserve">
+    <value>Import price</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_IMP_VAT_RATIO" xml:space="preserve">
+    <value>Import Vat</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_INTERNAL_PRICE" xml:space="preserve">
+    <value>Internal price</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_LINE_ERROR" xml:space="preserve">
+    <value>Line error</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_PACKING_TYPE_NAME" xml:space="preserve">
+    <value>Packing type</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_PARENT_CODE" xml:space="preserve">
+    <value>Parent</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_SERVICE_UNIT_NAME" xml:space="preserve">
+    <value>Service unit</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_STT" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_VOLUME" xml:space="preserve">
+    <value>Volume</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__HEIN_ORDER" xml:space="preserve">
+    <value>Hein order</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__RP_BTN_DELETE" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__RP_BTN_LINE_ERROR" xml:space="preserve">
+    <value>Show error</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="BiTrung" xml:space="preserve">
+    <value>Already exist {0} in file import</value>
+  </data>
+  <data name="CoThiPhaiNhap" xml:space="preserve">
+    <value>Having {0} must enter {1}</value>
+  </data>
+  <data name="DaTonTai" xml:space="preserve">
+    <value>{0} already exist</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__BTN_LINE_ERROR__OK" xml:space="preserve">
+    <value>Line not error</value>
+  </data>
+  <data name="KhongHopLe" xml:space="preserve">
+    <value>{0} Invalid</value>
+  </data>
+  <data name="Maxlength" xml:space="preserve">
+    <value>{0} beyond the permissible length</value>
+  </data>
+  <data name="NhomMau" xml:space="preserve">
+    <value>Blood group</value>
+  </data>
+  <data name="ThieuTruongDuLieuBatBuoc" xml:space="preserve">
+    <value>No required data field</value>
+  </data>
+  <data name="KhongDongThoiCoCacThongTin" xml:space="preserve">
+    <value>Only enter {0} or {1}</value>
+  </data>
+</root>

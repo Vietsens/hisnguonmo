@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="IVT_LANGUAGE_KEY_FRM_SECONDARY_DISEASE_BTN_CHOOSE" xml:space="preserve">
+    <value>Chọn (Ctrl S)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_SECONDARY_DISEASE_GRDCOL_CODE" xml:space="preserve">
+    <value>Mã bệnh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_SECONDARY_DISEASE_GRDCOL_NAME" xml:space="preserve">
+    <value>Tên bệnh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_SECONDARY_DISEASE_ICD_CODE__NULL_TEXT" xml:space="preserve">
+    <value>Danh sách mã bệnh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_SECONDARY_DISEASE_ICD_NAME__NULL_TEXT" xml:space="preserve">
+    <value>Danh sách tên bệnh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_SECONDARY_GRID_ICD__FIND_NULL_PROMPT_TEXT" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__BTN_ADD" xml:space="preserve">
+    <value>Thêm (Ctrl A)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__BTN_NEW" xml:space="preserve">
+    <value>Mới (Ctrl N)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__BTN_PRINT" xml:space="preserve">
+    <value>In</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__BTN_SAVE" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__BTN_SAVE_PRINT" xml:space="preserve">
+    <value>Lưu in (Ctrl I)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__GRID_CONTROL__COLUMN_AMOUNT" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__GRID_CONTROL__COLUMN_MANUFACTURER_NAME" xml:space="preserve">
+    <value>Hãng sản xuất</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__GRID_CONTROL__COLUMN_MEDI_MATE_TYPE_NAME" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__GRID_CONTROL__COLUMN_NATIONAL_NAME" xml:space="preserve">
+    <value>Nước sản xuất</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__GRID_CONTROL__COLUMN_SERVICE_UNIT_NAME" xml:space="preserve">
+    <value>ĐVT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__GRID_EXP_MEST_MATERIAL__COLUMN_AMOUNT" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__GRID_EXP_MEST_MATERIAL__COLUMN_EXPIRED_DATE" xml:space="preserve">
+    <value>Hạn sử dụng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__GRID_EXP_MEST_MATERIAL__COLUMN_MANUFACTURER_NAME" xml:space="preserve">
+    <value>Hãng sản xuất</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__GRID_EXP_MEST_MATERIAL__COLUMN_MATERIAL_TYPE_NAME" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__GRID_EXP_MEST_MATERIAL__COLUMN_NATIONAL_NAME" xml:space="preserve">
+    <value>Nước sản xuất</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__GRID_EXP_MEST_MATERIAL__COLUMN_PACKAGE_NUMBER" xml:space="preserve">
+    <value>Số lô</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__GRID_EXP_MEST_MATERIAL__COLUMN_SERVICE_UNIT_NAME" xml:space="preserve">
+    <value>ĐVT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__GRID_EXP_MEST_MEDICINE__COLUMN_AMOUNT" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__GRID_EXP_MEST_MEDICINE__COLUMN_EXPIRED_DATE" xml:space="preserve">
+    <value>Hạn sử dụng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__GRID_EXP_MEST_MEDICINE__COLUMN_MANUFACTURER_NAME" xml:space="preserve">
+    <value>Hãng sản xuất</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__GRID_EXP_MEST_MEDICINE__COLUMN_MEDICINE_TYPE_NAME" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__GRID_EXP_MEST_MEDICINE__COLUMN_NATIONAL_NAME" xml:space="preserve">
+    <value>Nước sản xuất</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__GRID_EXP_MEST_MEDICINE__COLUMN_PACKAGE_NUMBER" xml:space="preserve">
+    <value>Số lô</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__GRID_EXP_MEST_MEDICINE__COLUMN_SERVICE_UNIT_NAME" xml:space="preserve">
+    <value>ĐVT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__LAYOUT_CHECK_IMP_EXP_PRICE" xml:space="preserve">
+    <value>Nhập lại giá bán</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__LAYOUT_CHECK_VISITOR" xml:space="preserve">
+    <value>Vãng lai</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__LAYOUT_DESCRIPTION" xml:space="preserve">
+    <value>Mô tả:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__LAYOUT_DISCOUNT" xml:space="preserve">
+    <value>Chiết khấu:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__LAYOUT_EXP_AMOUNT" xml:space="preserve">
+    <value>Số lượng:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__LAYOUT_EXP_MEDI_STOCK" xml:space="preserve">
+    <value>Kho xuất:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__LAYOUT_EXP_MEST_TEMPLATE" xml:space="preserve">
+    <value>Đơn mẫu:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__LAYOUT_EXP_PRICE" xml:space="preserve">
+    <value>Giá:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__LAYOUT_EXP_VAT_RATIO" xml:space="preserve">
+    <value>VAT (%):</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__LAYOUT_NOTE" xml:space="preserve">
+    <value>Ghi chú:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__LAYOUT_PATIENT" xml:space="preserve">
+    <value>Bệnh nhân:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__LAYOUT_PATIENT_TYPE" xml:space="preserve">
+    <value>Đối tượng mua:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__LAYOUT_PRESCRIPTION_CODE" xml:space="preserve">
+    <value>Mã đơn:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__LAYOUT_TUTORIAL" xml:space="preserve">
+    <value>HDSD:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__MATERIAL_TREE__COLUMN_AVAILABLE_AMOUNT" xml:space="preserve">
+    <value>Khả dụng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__MATERIAL_TREE__COLUMN_MANUFACTURER_NAME" xml:space="preserve">
+    <value>Hãng sản xuất</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__MATERIAL_TREE__COLUMN_MATERIAL_TYPE_CODE" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__MATERIAL_TREE__COLUMN_MATERIAL_TYPE_NAME" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__MATERIAL_TREE__COLUMN_NATIONAL_NAME" xml:space="preserve">
+    <value>Nước sản xuất</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__MATERIAL_TREE__COLUMN_SERVICE_UNIT_NAME" xml:space="preserve">
+    <value>ĐVT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__MEDICINE_TREE__COLUMN_ACTIVE_INGR_BHYT_NAME" xml:space="preserve">
+    <value>Hoạt chất</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__MEDICINE_TREE__COLUMN_AVAILABLE_AMOUNT" xml:space="preserve">
+    <value>Khả dụng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__MEDICINE_TREE__COLUMN_MANUFACTURER_NAME" xml:space="preserve">
+    <value>Hãng sản xuất</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__MEDICINE_TREE__COLUMN_MEDICINE_TYPE_CODE" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__MEDICINE_TREE__COLUMN_MEDICINE_TYPE_NAME" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__MEDICINE_TREE__COLUMN_NATIONAL_NAME" xml:space="preserve">
+    <value>Nước sản xuất</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__MEDICINE_TREE__COLUMN_REGISTER_NUMBER" xml:space="preserve">
+    <value>Số đăng ký</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__MEDICINE_TREE__COLUMN_SERVICE_UNIT_NAME" xml:space="preserve">
+    <value>ĐVT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__PRINT_MENU__ITEM_IN_HUONG_DAN_SU_DUNG" xml:space="preserve">
+    <value>In hướng dẫn sử dụng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__PRINT_MENU__ITEM_IN_PHIEU_XUAT_BAN" xml:space="preserve">
+    <value>In phiếu xuất bán</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__REPOSITORY_BTN_DELETE" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__TXT_KEYWORD__NULL_VALUE" xml:space="preserve">
+    <value>Tìm theo mã hoặc tên</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__TXT_PRESCRIPTION_CODE__NULL_VALUE" xml:space="preserve">
+    <value>Mã đơn (F2)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__TXT_TREATMENT_CODE__NULL_VALUE" xml:space="preserve">
+    <value>Mã điều trị (F3)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__XTRA_TAB_MATERIAL" xml:space="preserve">
+    <value>Vật tư</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_SALE_CREATE__XTRA_TAB_MEDICINE" xml:space="preserve">
+    <value>Thuốc</value>
+  </data>
+</root>

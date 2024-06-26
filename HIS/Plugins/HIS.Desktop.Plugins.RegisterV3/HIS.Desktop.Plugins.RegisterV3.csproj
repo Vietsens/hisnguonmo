@@ -1,0 +1,643 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F536B1AC-9A3C-4991-A770-B040DD56E830}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HIS.Desktop.Plugins.RegisterV3</RootNamespace>
+    <AssemblyName>HIS.Desktop.Plugins.RegisterV3</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility" />
+    <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferencedAssemblies\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="CARD.WCF.Service.TapCardService">
+      <HintPath>..\..\..\..\..\..\RELEASE\WCF\CARD.WCF\TapCardService\4.5\CARD.WCF.Service.TapCardService.dll</HintPath>
+    </Reference>
+    <Reference Include="CHC.WCFClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\WCF\CHC.WCF\Client\CHC.WCFClient.dll</HintPath>
+    </Reference>
+    <Reference Include="CPA.WCFClient.CallPatientClient">
+      <HintPath>..\..\..\..\..\..\RELEASE\WCF\CPA.WCF\Client\CallPatient\CPA.WCFClient.CallPatientClient.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\LIBRARY\DevLib\DevExpress.XtraBars.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\LIBRARY\DevLib\DevExpress.XtraGrid.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\LIBRARY\DevLib\DevExpress.XtraTreeList.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="HID.EFMODEL">
+      <HintPath>..\..\..\..\..\..\RELEASE\HID\HID.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="HID.Filter">
+      <HintPath>..\..\..\..\..\..\RELEASE\HID\HID.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="His.Bhyt.Consumer">
+      <HintPath>..\..\..\..\..\..\RELEASE\HIS\His.Bhyt.Consumer\His.Bhyt.Consumer.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.CheckHeinGOV, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.Desktop.Plugins.Library.CheckHeinGOV\HIS.Desktop.Plugins.Library.CheckHeinGOV.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.ConnectBloodPressure">
+      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.Desktop.Plugins.Library.ConnectBloodPressure\HIS.Desktop.Plugins.Library.ConnectBloodPressure.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
+      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.HisSyncToHid">
+      <HintPath>..\..\..\..\..\..\..\TEST_HIS\HIS\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.HisSyncToHid.dll</HintPath>
+    </Reference>
+    <Reference Include="His.EventLog">
+      <HintPath>..\..\..\..\..\..\RELEASE\HIS\His.EventLog\His.EventLog.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.TranPati">
+      <HintPath>..\..\..\..\..\..\Release\HIS\HIS.UC.TranPati\HIS.UC.TranPati.dll</HintPath>
+    </Reference>
+    <Reference Include="His.UC.UCHein, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Release\HIS\His.UC.UCHein\His.UC.UCHein.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.HIS_RS">
+      <HintPath>..\..\..\..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Adapter">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Controls.EditorLoader">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Controls.PopupLoader">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Controls.PopupLoader\Inventec.Common.Controls.PopupLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.DateTime">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Mapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Number">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Number\Inventec.Common.Number.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.QrCodeBHYT ">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.QrCodeBHYT\Inventec.Common.QrCodeBHYT .dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Resource">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.RichEditor">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.RichEditor\Inventec.Common.RichEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.SignLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.String, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.ThreadCustom">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.ThreadCustom\Inventec.Common.ThreadCustom.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.TypeConvert">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.WebApiClient">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.Controls">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Controls\Inventec.Desktop.Common.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.Controls.ValidationRule">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Controls.ValidationRule\Inventec.Desktop.Common.Controls.ValidationRule.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.HtmlString">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.HtmlString\Inventec.Desktop.Common.HtmlString.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.LanguageManager">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.LibraryMessage">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.LibraryMessage\Inventec.Desktop.Common.LibraryMessage.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.Message">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.Modules">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Core">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.ClientSystem">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.Core">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Token\Inventec.Token.Core\Inventec.Token.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Login, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.WCF.DCO">
+      <HintPath>..\..\..\..\..\..\RELEASE\WCF\Inventec.WCF\Service\.Net 4.5\Inventec.WCFService.ReadServiceCodeService\Inventec.WCF.DCO.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.WCFService.ReadServiceCodeService">
+      <HintPath>..\..\..\..\..\..\RELEASE\WCF\Inventec.WCF\Service\.Net 4.5\Inventec.WCFService.ReadServiceCodeService\Inventec.WCFService.ReadServiceCodeService.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.Filter">
+      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.LibraryHein.Bhyt">
+      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS\MPS.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000001.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000001.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000178.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000178.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000444.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000444.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.ProcessorBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferencedAssemblies\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="SDA.EFMODEL">
+      <HintPath>..\..\..\..\..\..\RELEASE\SDA\SDA.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.Filter">
+      <HintPath>..\..\..\..\..\..\RELEASE\SDA\SDA.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.SDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\SDA\SDA.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\HIS\His.Bhyt.Consumer\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Input.Manipulations" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationClient" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ADO\CaseTypeADO.cs" />
+    <Compile Include="ADO\ExecuteRoomADO.cs" />
+    <Compile Include="ADO\PersonADO.cs" />
+    <Compile Include="ADO\ServiceReqADO.cs" />
+    <Compile Include="CalculatePatientAge.cs" />
+    <Compile Include="Choice\frmCheckHeinCardGOV.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Choice\frmCheckHeinCardGOV.Designer.cs">
+      <DependentUpon>frmCheckHeinCardGOV.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Choice\frmPersonSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Choice\frmPersonSelect.Designer.cs">
+      <DependentUpon>frmPersonSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Choice\frmServiceReqChoice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Choice\frmServiceReqChoice.Designer.cs">
+      <DependentUpon>frmServiceReqChoice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Choice\frmTransPati.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Choice\frmTransPati.Designer.cs">
+      <DependentUpon>frmTransPati.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DateUtil.cs" />
+    <Compile Include="GlobalStore.cs" />
+    <Compile Include="Delegate.cs" />
+    <Compile Include="Choice\frmPatientChoice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Choice\frmPatientChoice.Designer.cs">
+      <DependentUpon>frmPatientChoice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KeyboardWorker.cs" />
+    <Compile Include="LayoutControlUtil.cs" />
+    <Compile Include="PrintTypeCodeWorker.cs" />
+    <Compile Include="Process\LoadExecuteRoomProcess.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RegisterProcessor.cs" />
+    <Compile Include="Register\ServiceRequestRegisterBehaviorBase__Check.cs" />
+    <Compile Include="Register\Exam\IServiceRequestRegisterExam.cs" />
+    <Compile Include="Register\Exam\ServiceRequestRegisterExamBehavior.cs" />
+    <Compile Include="Register\Exam\ServiceRequestRegisterExamBehaviorFactory.cs" />
+    <Compile Include="Register\PatientProfile\IServiceRequestRegisterPatientProfile.cs" />
+    <Compile Include="Register\PatientProfile\ServiceRequestRegisterPatientProfileBehavior.cs" />
+    <Compile Include="Register\PatientProfile\ServiceRequestRegisterPatientProfileBehaviorFactory.cs" />
+    <Compile Include="Register\ServiceRequestRegister.cs" />
+    <Compile Include="Register\ServiceRequestRegisterBehaviorBase.cs" />
+    <Compile Include="ResourceMessage.cs" />
+    <Compile Include="RequestUriStore.cs" />
+    <Compile Include="Resources\ResourceLanguageManager.cs" />
+    <Compile Include="RunV3\UCRegister__RoomVitaminA.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__RoomVaccine.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister.Designer.cs">
+      <DependentUpon>UCRegister.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__Bill.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__CallPatient.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__DepositDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__Keyboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__Load.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__New.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__Save.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__SaveAndAssain.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__TreatmentBedRoom.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__TTCT.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__UCPatientRawInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\EditorLoaderProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RunV3\IRun.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RunV3\RunBehavior.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RunV3\RunFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RunV3\ShareMethod\IShareMethod.cs" />
+    <Compile Include="RunV3\ShareMethod\ShareMethod.cs" />
+    <Compile Include="RunV3\UCRegister__AddressCombo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__Init.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__PlusInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__Print.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__Process.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__ReadCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__Relative.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__Search.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__SetDelegate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__TabIndex.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__UCHein.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__ValidateRule.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UC\RoomVaccine.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UC\RoomVaccine.Designer.cs">
+      <DependentUpon>RoomVaccine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RunV3\UC\RoomVitaminA.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UC\RoomVitaminA.Designer.cs">
+      <DependentUpon>RoomVitaminA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ValidationRule\PatientName__ValidationRule.cs" />
+    <Compile Include="ValidationRule\PatientDob__ValidationRule.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\HISUTIL\His.Bhyt\His.Bhyt.InsuranceExpertise\His.Bhyt.InsuranceExpertise.csproj">
+      <Project>{c2fa385e-f0c5-4b17-88e3-e6c3e53e2b38}</Project>
+      <Name>His.Bhyt.InsuranceExpertise</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.AddressCombo\HIS.UC.AddressCombo.csproj">
+      <Project>{38f82de7-3ecd-442b-91d6-ca54a5b954e0}</Project>
+      <Name>HIS.UC.AddressCombo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.KskContract\HIS.UC.KskContract.csproj">
+      <Project>{cbd388f9-a64b-4302-acd6-d43ca07096e2}</Project>
+      <Name>HIS.UC.KskContract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.PlusInfo\HIS.UC.PlusInfo.csproj">
+      <Project>{38ecddb9-08e6-4697-90e5-af731792b90d}</Project>
+      <Name>HIS.UC.PlusInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.RoomExamService\HIS.UC.RoomExamService.csproj">
+      <Project>{2770fe74-96ea-4bfd-ab55-a04b07a04989}</Project>
+      <Name>HIS.UC.RoomExamService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.ServiceRoom\HIS.UC.ServiceRoom.csproj">
+      <Project>{c02ada96-015b-4edb-b944-9183e1087224}</Project>
+      <Name>HIS.UC.ServiceRoom</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCHeniInfo\HIS.UC.UCHeniInfo.csproj">
+      <Project>{7e49c257-4e48-4456-9053-68ea77e46e53}</Project>
+      <Name>HIS.UC.UCHeniInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCImageInfo\HIS.UC.UCImageInfo.csproj">
+      <Project>{17b3d00e-ee47-4c3d-903d-68dbaf5951d7}</Project>
+      <Name>HIS.UC.UCImageInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCOtherServiceReqInfo\HIS.UC.UCOtherServiceReqInfo.csproj">
+      <Project>{3fe38a92-0c75-475c-aaea-f1c3a647963a}</Project>
+      <Name>HIS.UC.UCOtherServiceReqInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCPatientRaw\HIS.UC.UCPatientRaw.csproj">
+      <Project>{e3891201-0493-4164-b1dc-d99277ba6291}</Project>
+      <Name>HIS.UC.UCPatientRaw</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCRelativeInfo\HIS.UC.UCRelativeInfo.csproj">
+      <Project>{c5a20f34-8afa-47f2-b8d5-a8eb0b3d67b0}</Project>
+      <Name>HIS.UC.UCRelativeInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCServiceRoomInfo\HIS.UC.UCServiceRoomInfo.csproj">
+      <Project>{b4750acf-9857-4837-844a-a439e7f82571}</Project>
+      <Name>HIS.UC.UCServiceRoomInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCTransPati\HIS.UC.UCTransPati.csproj">
+      <Project>{173bf142-9e08-494e-924e-fcb61fedcf94}</Project>
+      <Name>HIS.UC.UCTransPati</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.WorkPlace\HIS.UC.WorkPlace.csproj">
+      <Project>{9a64eb39-e849-43d4-a47a-8c02ea5183e7}</Project>
+      <Name>HIS.UC.WorkPlace</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
+      <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
+      <Name>HIS.Desktop.ADO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
+      <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
+      <Name>HIS.Desktop.ApiConsumer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.Common\HIS.Desktop.Common.csproj">
+      <Project>{59fdcba7-0f9f-4257-b95a-e37a1ccfe107}</Project>
+      <Name>HIS.Desktop.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
+      <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
+      <Name>HIS.Desktop.Controls.Session</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.DelegateRegister\HIS.Desktop.DelegateRegister.csproj">
+      <Project>{e85ee8f3-8e6b-46cd-adbd-b292f67ccffb}</Project>
+      <Name>HIS.Desktop.DelegateRegister</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
+      <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
+      <Name>HIS.Desktop.LocalStorage.BackendData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
+      <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
+      <Name>HIS.Desktop.LocalStorage.ConfigApplication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.ConfigSystem\HIS.Desktop.LocalStorage.ConfigSystem.csproj">
+      <Project>{48d25a6a-11bc-4f0f-8dd7-15e03a2bcada}</Project>
+      <Name>HIS.Desktop.LocalStorage.ConfigSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
+      <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
+      <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
+      <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
+      <Name>HIS.Desktop.LocalStorage.LocalData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
+      <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
+      <Name>HIS.Desktop.LocalStorage.Location</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.Print\HIS.Desktop.Print.csproj">
+      <Project>{aeeca321-fd65-407a-8d70-ba5362883b87}</Project>
+      <Name>HIS.Desktop.Print</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
+      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
+      <Name>HIS.Desktop.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
+      <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
+      <Name>HIS.Desktop.Library.CacheClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.RegisterConfig\HIS.Desktop.Plugins.Library.RegisterConfig.csproj">
+      <Project>{9247dd49-482c-4227-88df-616a8aaf3f38}</Project>
+      <Name>HIS.Desktop.Plugins.Library.RegisterConfig</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Choice\frmCheckHeinCardGOV.resx">
+      <DependentUpon>frmCheckHeinCardGOV.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Choice\frmPatientChoice.resx">
+      <DependentUpon>frmPatientChoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Choice\frmPersonSelect.resx">
+      <DependentUpon>frmPersonSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Choice\frmServiceReqChoice.resx">
+      <DependentUpon>frmServiceReqChoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Choice\frmTransPati.resx">
+      <DependentUpon>frmTransPati.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Message.Lang.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Message.Lang.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RunV3\UCRegister.resx">
+      <DependentUpon>UCRegister.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RunV3\UC\RoomVaccine.resx">
+      <DependentUpon>RoomVaccine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RunV3\UC\RoomVitaminA.resx">
+      <DependentUpon>RoomVitaminA.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>echo PREBUILDSTEP for $(ProjectName)
+
+echo Copying files from $(ProjectDir)bin\$(Configuration) to $(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies
+
+if not exist "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" mkdir "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies"
+
+xcopy "$(ProjectDir)bin\$(Configuration)\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" /i /d /y
+xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\Debug\Plugins\Module" /Y /I
+
+if not exist "$(ProjectDir)bin\$(Configuration)\vi" mkdir "$(ProjectDir)bin\$(Configuration)\vi"
+if not exist "$(ProjectDir)bin\$(Configuration)\en" mkdir "$(ProjectDir)bin\$(Configuration)\en"
+xcopy "$(ProjectDir)bin\$(Configuration)\vi\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\vi" /Y /I
+xcopy "$(ProjectDir)bin\$(Configuration)\en\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\en" /Y /I
+
+if errorlevel 1 goto BuildEventFailed
+
+if errorlevel 1 goto BuildEventFailed
+
+REM Exit properly because the build will not fail
+REM unless the final step exits with an error code
+
+goto BuildEventOK
+:BuildEventFailed
+echo PREBUILDSTEP for $(ProjectName) FAILED
+exit 1
+:BuildEventOK
+echo PREBUILDSTEP for $(ProjectName) COMPLETED OK</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

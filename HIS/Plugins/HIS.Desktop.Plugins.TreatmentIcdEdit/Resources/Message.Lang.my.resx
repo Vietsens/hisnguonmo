@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BenhNhanChuaKetThucDieuTri" xml:space="preserve">
+    <value>လူနာသည် ကုသမှုမပြီးသေးပါ၊ ဆင်းမည့်ရက်ကို ပြုပြင်၍မရပါ။</value>
+  </data>
+  <data name="BenhNhanKoPhaiNoiTruKhongChoPhepNhapNgay" xml:space="preserve">
+    <value>လူနာသည် ကုသမှုခံယူရန် အရည်အချင်းမပြည့်မီပါ၊ ကုသမှုရက်အတွင်း ဝင်ရောက်ခွင့်မရှိပါ။</value>
+  </data>
+  <data name="CanhBao" xml:space="preserve">
+    <value>သတိပေးချက်</value>
+  </data>
+  <data name="CDNhapVien" xml:space="preserve">
+    <value>ကောလိပ်ဝင်ခွင့်-</value>
+  </data>
+  <data name="CDPhuNV" xml:space="preserve">
+    <value>NV အလယ်တန်းကောလိပ်</value>
+  </data>
+  <data name="CDYHCTPhu" xml:space="preserve">
+    <value>တိုင်းရင်းဆေးပညာအလယ်တန်းကောလိပ်</value>
+  </data>
+  <data name="ChanDoanNhapVien" xml:space="preserve">
+    <value>ဆေးရုံတက်ကုသခြင်းတို့ကို စစ်ဆေးခြင်း။</value>
+  </data>
+  <data name="ChanDoanPhuNhapVien" xml:space="preserve">
+    <value>ဆေးရုံတက်ကုသခြင်း၏ နောက်ဆက်တွဲရောဂါလက္ခဏာ</value>
+  </data>
+  <data name="ChanDoanYHCT" xml:space="preserve">
+    <value>တိုင်းရင်းဆေးပညာ၏ရောဂါလက္ခဏာ</value>
+  </data>
+  <data name="ChanDoanYHCTKemTheo" xml:space="preserve">
+    <value>တိုင်းရင်းဆေးပညာနှင့်တွဲ၍ ရောဂါရှာဖွေခြင်း။</value>
+  </data>
+  <data name="KhongTimThayIcdTuongUngVoiCacMaSau" xml:space="preserve">
+    <value>အောက်ပါကုဒ်များနှင့် သက်ဆိုင်သော icd ကို ရှာမတွေ့ပါ- {0}</value>
+  </data>
+  <data name="MaChanDoanKhongDung" xml:space="preserve">
+    <value>ပင်မရောဂါရှာဖွေရေးကုဒ် မမှန်ကန်ပါ၊ ကျေးဇူးပြု၍ ပြန်ထည့်ပါ။</value>
+  </data>
+  <data name="NgayRaKhongDuocNhoHonNgayVao" xml:space="preserve">
+    <value>ဆေးရုံဆင်းရမည့်ရက်သည် ဆေးရုံတက်ရမည့်ရက်ထက် မနည်းစေရပါ။</value>
+  </data>
+  <data name="NgayRaKhongDuocNhoHonNgayVaoNoiTru" xml:space="preserve">
+    <value>ဆေးရုံဆင်းရမည့်ရက်သည် ဝင်ခွင့်ရက်ထက် မနည်းစေရပါ။</value>
+  </data>
+  <data name="NgayVaoKhongDuocDeTrong" xml:space="preserve">
+    <value>ကုသမှုဝင်ရောက်မည့်ရက်စွဲကို ကွက်လပ်ထား၍မရပါ။</value>
+  </data>
+  <data name="NgayVaoKhongDuocLonHonNgayHienTai" xml:space="preserve">
+    <value>ဝင်ခွင့်ရက်စွဲသည် လက်ရှိရက်စွဲထက် မပိုသင့်ပါ။</value>
+  </data>
+  <data name="NgayVaoKhongDuocLonHonNgayVaoNoiTru" xml:space="preserve">
+    <value>ဝင်ခွင့်ရက်စွဲသည် ဝင်ခွင့်ရက်ထက် မနည်းစေရပါ။</value>
+  </data>
+  <data name="NguyenNhanNgoai" xml:space="preserve">
+    <value>ပြင်ပအကြောင်းတရားများ</value>
+  </data>
+  <data name="NhanF1DeChonBenh" xml:space="preserve">
+    <value>ရောဂါကိုရွေးချယ်ရန် F1 ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="NNNgoai" xml:space="preserve">
+    <value>NN ပြင်ပ-</value>
+  </data>
+  <data name="STTHoSoDaTonTai" xml:space="preserve">
+    <value>မှတ်တမ်းနံပါတ် ({0}) ရှိနှင့်ပြီးဖြစ်သည်။</value>
+  </data>
+  <data name="TaiKhoanKhongCoQuyenThucHienChucNang" xml:space="preserve">
+    <value>အကောင့်သည် လုပ်ဆောင်ချက်ကို လုပ်ဆောင်ရန် ခွင့်ပြုချက် မရှိပါ။</value>
+  </data>
+  <data name="ThieuTruongDuLieu" xml:space="preserve">
+    <value>ဒေတာအကွက်ပျောက်နေသည်။</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>အသိပေးချက်</value>
+  </data>
+  <data name="TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>လိုအပ်သောအကွက်များကို မထည့်ရသေးပါ။</value>
+  </data>
+</root>

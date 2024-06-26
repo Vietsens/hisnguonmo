@@ -1,0 +1,360 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="UCAntibioticRequestList.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCAntibioticRequestList.groupBoxChiTiet.Text" xml:space="preserve">
+    <value>Thông tin chi tiết</value>
+  </data>
+  <data name="UCAntibioticRequestList.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="UCAntibioticRequestList.layoutControlItem4.Text" xml:space="preserve">
+    <value>Mã yêu cầu:</value>
+  </data>
+  <data name="UCAntibioticRequestList.layoutControlItem11.Text" xml:space="preserve">
+    <value>Mã điều trị:</value>
+  </data>
+  <data name="UCAntibioticRequestList.layoutControlItem12.Text" xml:space="preserve">
+    <value>Tên bệnh nhân:</value>
+  </data>
+  <data name="UCAntibioticRequestList.layoutControlItem21.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="UCAntibioticRequestList.layoutControlItem23.Text" xml:space="preserve">
+    <value>Ngày sinh:</value>
+  </data>
+  <data name="UCAntibioticRequestList.layoutControlItem24.Text" xml:space="preserve">
+    <value>Địa chỉ:</value>
+  </data>
+  <data name="UCAntibioticRequestList.layoutControlItem25.Text" xml:space="preserve">
+    <value>Kho nhập:</value>
+  </data>
+  <data name="UCAntibioticRequestList.layoutControlItem26.Text" xml:space="preserve">
+    <value>Đối tượng:</value>
+  </data>
+  <data name="UCAntibioticRequestList.layoutControlItem29.Text" xml:space="preserve">
+    <value>Chiết khấu:</value>
+  </data>
+  <data name="UCAntibioticRequestList.layoutControlItem30.Text" xml:space="preserve">
+    <value>Nhà cung cấp:</value>
+  </data>
+  <data name="UCAntibioticRequestList.layoutControlItem31.Text" xml:space="preserve">
+    <value>Lý do xuất:</value>
+  </data>
+  <data name="UCAntibioticRequestList.btnListDepa.Text" xml:space="preserve">
+    <value>Mã phiếu xuất sd</value>
+  </data>
+  <data name="UCAntibioticRequestList.btnExportCodeList.Text" xml:space="preserve">
+    <value>Xuất mã phiếu</value>
+  </data>
+  <data name="UCAntibioticRequestList.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCAntibioticRequestList.cboType.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCAntibioticRequestList.cboStatus.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCAntibioticRequestList.chkInStock.Properties.Caption" xml:space="preserve">
+    <value>Trong kho</value>
+  </data>
+  <data name="UCAntibioticRequestList.txtExpMestCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã xuất (F2)</value>
+  </data>
+  <data name="UCAntibioticRequestList.btnRefresh.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="UCAntibioticRequestList.btnSearch.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="UCAntibioticRequestList.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="UCAntibioticRequestList.lciCreateTimeFrom.Text" xml:space="preserve">
+    <value>Ngày tạo từ:</value>
+  </data>
+  <data name="UCAntibioticRequestList.lciExpTimeFrom.Text" xml:space="preserve">
+    <value>Ngày HT từ:</value>
+  </data>
+  <data name="UCAntibioticRequestList.layoutControlItem27.Text" xml:space="preserve">
+    <value>Trạng thái:</value>
+  </data>
+  <data name="UCAntibioticRequestList.layoutControlItem28.Text" xml:space="preserve">
+    <value>Loại xuất:</value>
+  </data>
+  <data name="UCAntibioticRequestList.lciCreateTimeTo.Text" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="UCAntibioticRequestList.lciExpTimeTo.Text" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="UCAntibioticRequestList.layoutControlItem9.Text" xml:space="preserve">
+    <value>Trong kho:</value>
+  </data>
+  <data name="UCAntibioticRequestList.STT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCAntibioticRequestList.gridColumn1.Caption" xml:space="preserve">
+    <value>Chi tiết</value>
+  </data>
+  <data name="UCAntibioticRequestList.gridColumn15.Caption" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="UCAntibioticRequestList.gridColumn6.Caption" xml:space="preserve">
+    <value>Hủy</value>
+  </data>
+  <data name="UCAntibioticRequestList.gridColumn3.Caption" xml:space="preserve">
+    <value>Phê duyệt</value>
+  </data>
+  <data name="UCAntibioticRequestList.gridColumn20.Caption" xml:space="preserve">
+    <value>Từ chối duyệt</value>
+  </data>
+  <data name="UCAntibioticRequestList.gridColumn4.Caption" xml:space="preserve">
+    <value>Hủy duyệt</value>
+  </data>
+  <data name="UCAntibioticRequestList.gridColumn7.Caption" xml:space="preserve">
+    <value>Thực xuất</value>
+  </data>
+  <data name="UCAntibioticRequestList.gridColumn8.Caption" xml:space="preserve">
+    <value>Tạo nhập hao phí trả lại</value>
+  </data>
+  <data name="UCAntibioticRequestList.gridColumn8.ToolTip" xml:space="preserve">
+    <value>Tạo nhập hao phí trả lại</value>
+  </data>
+  <data name="UCAntibioticRequestList.gridColumn2.Caption" xml:space="preserve">
+    <value>Tạo yêu cầu nhập thu hồi</value>
+  </data>
+  <data name="UCAntibioticRequestList.gridColumn9.Caption" xml:space="preserve">
+    <value>Tạo phiếu nhập</value>
+  </data>
+  <data name="UCAntibioticRequestList.gridColumn5.Caption" xml:space="preserve">
+    <value>Chỉ định xét nghiệm</value>
+  </data>
+  <data name="UCAntibioticRequestList.gridColumn16.Caption" xml:space="preserve">
+    <value>Copy phiếu xuất</value>
+  </data>
+  <data name="UCAntibioticRequestList.IMP_MEST_STT_NAME.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCAntibioticRequestList.gridColumn10.Caption" xml:space="preserve">
+    <value>Trạng thái duyệt</value>
+  </data>
+  <data name="UCAntibioticRequestList.gridColumn10.ToolTip" xml:space="preserve">
+    <value>Trạng thái duyệt</value>
+  </data>
+  <data name="UCAntibioticRequestList.GcExpMestCode.Caption" xml:space="preserve">
+    <value>Mã xuất</value>
+  </data>
+  <data name="UCAntibioticRequestList.GcExpMestTypeName.Caption" xml:space="preserve">
+    <value>Loại xuất</value>
+  </data>
+  <data name="UCAntibioticRequestList.GcReqName.Caption" xml:space="preserve">
+    <value>Người yêu cầu</value>
+  </data>
+  <data name="UCAntibioticRequestList.GcMediStockName.Caption" xml:space="preserve">
+    <value>Kho xuất</value>
+  </data>
+  <data name="UCAntibioticRequestList.GcApprovalName.Caption" xml:space="preserve">
+    <value>Người phê duyệt</value>
+  </data>
+  <data name="UCAntibioticRequestList.GcApprovalTime.Caption" xml:space="preserve">
+    <value>Thời gian duyệt</value>
+  </data>
+  <data name="UCAntibioticRequestList.GcExpLoginName.Caption" xml:space="preserve">
+    <value>Người thực xuất</value>
+  </data>
+  <data name="UCAntibioticRequestList.GcFinishTime.Caption" xml:space="preserve">
+    <value>Thời gian hoàn thành</value>
+  </data>
+  <data name="UCAntibioticRequestList.GcReqDepartmentCode.Caption" xml:space="preserve">
+    <value>Mã khoa yêu cầu</value>
+  </data>
+  <data name="UCAntibioticRequestList.GcReqDepartmentName.Caption" xml:space="preserve">
+    <value>Tên khoa yêu cầu</value>
+  </data>
+  <data name="UCAntibioticRequestList.GcCreateTime.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UCAntibioticRequestList.GcCreator.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="UCAntibioticRequestList.GcModifyTime.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="UCAntibioticRequestList.GcModifier.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="UCAntibioticRequestList.layoutControlItem10.Text" xml:space="preserve">
+    <value>Thông tin chi tiết</value>
+  </data>
+  <data name="UCAntibioticRequestList.GcNationalExpMestCode.Caption" xml:space="preserve">
+    <value>Mã quốc gia</value>
+  </data>
+  <data name="UCAntibioticRequestList.cboPatientType.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCAntibioticRequestList.gridColumn_PatientType.Caption" xml:space="preserve">
+    <value>Đối tượng BN</value>
+  </data>
+  <data name="UCAntibioticRequestList.gridColumn_PatientType.ToolTip" xml:space="preserve">
+    <value>Đối tượng bệnh nhân</value>
+  </data>
+  <data name="UCAntibioticRequestList.lciBhytNumber.Text" xml:space="preserve">
+    <value>Số thẻ BHYT:</value>
+  </data>
+  <data name="UCAntibioticRequestList.lciPatientType.Text" xml:space="preserve">
+    <value>Đối tượng BN:</value>
+  </data>
+  <data name="UCAntibioticRequestList.lciPatientType.ToolTip" xml:space="preserve">
+    <value>Đối tượng bệnh nhân</value>
+  </data>
+  <data name="UCAntibioticRequestList.gridColumnExpMestSubCode.Caption" xml:space="preserve">
+    <value>Mã thứ cấp</value>
+  </data>
+  <data name="UCAntibioticRequestList.gridColumn18.Caption" xml:space="preserve">
+    <value>Số toa</value>
+  </data>
+  <data name="UCAntibioticRequestList.chkInHDSD.ToolTip" xml:space="preserve">
+    <value>Tự động in hướng dẫn sử dụng đơn thuốc khi thực xuất</value>
+  </data>
+  <data name="UCAntibioticRequestList.layoutControlItem36.Text" xml:space="preserve">
+    <value>In HDSD</value>
+  </data>
+  <data name="UCAntibioticRequestList.layoutControlItem36.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tự động in hướng dẫn sử dụng đơn thuốc khi thực xuất</value>
+  </data>
+  <data name="UCAntibioticRequestList.lciAveragePerMedicine.Text" xml:space="preserve">
+    <value>Tiền / 1 đơn:</value>
+  </data>
+  <data name="UCAntibioticRequestList.lciTotalOfMedicine.Text" xml:space="preserve">
+    <value>Đơn thuốc:</value>
+  </data>
+  <data name="UCAntibioticRequestList.lciTotalOfPatient.Text" xml:space="preserve">
+    <value>Bệnh nhân:</value>
+  </data>
+  <data name="UCAntibioticRequestList.lciTotalOfPrice.Text" xml:space="preserve">
+    <value>Tổng tiền:</value>
+  </data>
+  <data name="UCAntibioticRequestList.lciAveragePerMedicine.ToolTip" xml:space="preserve">
+    <value>Bình quân số tiền/1 đơn</value>
+  </data>
+</root>

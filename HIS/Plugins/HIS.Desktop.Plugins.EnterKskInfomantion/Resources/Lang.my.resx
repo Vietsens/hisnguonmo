@@ -1,0 +1,774 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmEnterKskInfomantion.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmEnterKskInfomantion.bbtnF2.Caption" xml:space="preserve">
+    <value>F2</value>
+  </data>
+  <data name="frmEnterKskInfomantion.bbtnFinish.Caption" xml:space="preserve">
+    <value>အဆုံးသတ် (Ctrl D)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.bbtnSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.bbtnSearch.Caption" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.bbtnUnfinish.Caption" xml:space="preserve">
+    <value>KT ကို ပယ်ဖျက်ပါ (Ctrl O)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.BMIDISPLAY.NORMAL" xml:space="preserve">
+    <value>(ပုံမှန်)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.BMIDISPLAY.OBESITY.I" xml:space="preserve">
+    <value>(၁) အဝလွန်ခြင်း၊</value>
+  </data>
+  <data name="frmEnterKskInfomantion.BMIDISPLAY.OBESITY.II" xml:space="preserve">
+    <value>(ဒုတိယတန်း အဝလွန်ခြင်း)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.BMIDISPLAY.OBESITY.III" xml:space="preserve">
+    <value>(၃ တန်း အဝလွန်ခြင်း)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.BMIDISPLAY.OVERWEIGHT" xml:space="preserve">
+    <value>(အဝလွန်)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.btnChooseResult.Text" xml:space="preserve">
+    <value>ရလဒ်ကိုရွေးချယ်ပါ။</value>
+  </data>
+  <data name="frmEnterKskInfomantion.btnFinish.Text" xml:space="preserve">
+    <value>အဆုံးသတ် (Ctrl D)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.btnPrint.Text" xml:space="preserve">
+    <value>ကူပွန်များ ထုတ်ယူပါ။</value>
+  </data>
+  <data name="frmEnterKskInfomantion.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.btnSearch.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.btnUnfinish.Text" xml:space="preserve">
+    <value>KT ကို ပယ်ဖျက်ပါ (Ctrl O)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.btnUnfinish.ToolTip" xml:space="preserve">
+    <value>ဇာတ်သိမ်းမှုကို ပယ်ဖျက်ပါ။</value>
+  </data>
+  <data name="frmEnterKskInfomantion.emptySpaceItem14.Text" xml:space="preserve">
+    <value>ဗလာSpaceItem4</value>
+  </data>
+  <data name="frmEnterKskInfomantion.emptySpaceItem15.Text" xml:space="preserve">
+    <value>လွတ်နေသော SpaceItem2</value>
+  </data>
+  <data name="frmEnterKskInfomantion.emptySpaceItem16.Text" xml:space="preserve">
+    <value>ဗလာ SpaceItem7</value>
+  </data>
+  <data name="frmEnterKskInfomantion.emptySpaceItem19.Text" xml:space="preserve">
+    <value>ဗလာစပေ့စ် ၉</value>
+  </data>
+  <data name="frmEnterKskInfomantion.emptySpaceItem20.Text" xml:space="preserve">
+    <value>လွတ်နေသော SpaceItem10</value>
+  </data>
+  <data name="frmEnterKskInfomantion.emptySpaceItem22.Text" xml:space="preserve">
+    <value>ဗလာ SpaceItem12</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColBirthDate.Caption" xml:space="preserve">
+    <value>မွေးနေ့</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColExecuteDepartmentName.Caption" xml:space="preserve">
+    <value>အကောင်အထည်ဖော်ရေးဌာန</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColExecuteRoomName.Caption" xml:space="preserve">
+    <value>အကောင်အထည်ဖော်ရေးအခန်း</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColGender.Caption" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColInstrctionTime.Caption" xml:space="preserve">
+    <value>အော်ဒါမှာတယ်။</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColPatientCode.Caption" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColPatientName.Caption" xml:space="preserve">
+    <value>လူနာအမည်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColServiceReqCode.Caption" xml:space="preserve">
+    <value>အမိန့်ကုဒ်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColStatus.Caption" xml:space="preserve">
+    <value>အဆင့်အတန်း</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColStatus.ToolTip" xml:space="preserve">
+    <value>အဆင့်အတန်း</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColTreatmentCode.Caption" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.gridViewServiceReq.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>ရှာဖွေရေးစာကြောင်းကို ရိုက်ထည့်ပါ...</value>
+  </data>
+  <data name="frmEnterKskInfomantion.groupBoxPatientInfo.Text" xml:space="preserve">
+    <value>လူနာအချက်အလက်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.label1.Text" xml:space="preserve">
+    <value>mmHG</value>
+  </data>
+  <data name="frmEnterKskInfomantion.label2.Text" xml:space="preserve">
+    <value>ကီလိုဂရမ်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.label3.Text" xml:space="preserve">
+    <value>°C</value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl1.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl10.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl11.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl12.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl13.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl14.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl17.Text" xml:space="preserve">
+    <value>II</value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl19.Text" xml:space="preserve">
+    <value>I. လက်တွေ့စမ်းသပ်မှုရလဒ်များ</value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl2.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl6.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl7.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl9.Text" xml:space="preserve">
+    <value>III</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControl3.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlGroup8.Text" xml:space="preserve">
+    <value>အမြစ်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem100.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆီးကျောက်ကပ်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem100.Text" xml:space="preserve">
+    <value>9. ကျောက်ကပ် TN-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem101.Text" xml:space="preserve">
+    <value>11. မျက်လုံး</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem102.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Dentomaxillofacial</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem102.Text" xml:space="preserve">
+    <value>13. RHM-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem103.Text" xml:space="preserve">
+    <value>8. အရေပြားရောဂါဗေဒ-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem104.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နား နှာခေါင်း လည်ချောင်း</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem104.Text" xml:space="preserve">
+    <value>12. TMH-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem105.Text" xml:space="preserve">
+    <value>10. ခွဲစိတ်မှု-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem106.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၄၉</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem107.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၅၀</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem108.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၅၁</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem109.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၅၃</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem11.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>သိမ်းဆည်းသည့်အခါ အလိုအလျောက် စာမေးပွဲပြီးဆုံးသည်။</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem11.Text" xml:space="preserve">
+    <value>အလိုအလျောက် အဆုံးသတ်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem110.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၅၄</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem111.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၅၅</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem112.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၅၆</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem113.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၅၇</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem114.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၅၈</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem115.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၅၉</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem116.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၆၀</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem117.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၆၁</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem118.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၅၂</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem119.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၁၇</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem120.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အထွေထွေကောက်ချက်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem120.Text" xml:space="preserve">
+    <value>4. အထွေထွေ ထုထည်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem121.Text" xml:space="preserve">
+    <value>15. အကျိအမြှေး-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem122.Text" xml:space="preserve">
+    <value>16. Hematopoietic စနစ်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem123.Text" xml:space="preserve">
+    <value>17. လှုပ်ရှားမှု-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem124.Text" xml:space="preserve">
+    <value>18. နှလုံးသွေးကြော</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem125.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Lymph nodes များ</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem125.Text" xml:space="preserve">
+    <value>19. Lymph nodes, BH-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem126.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၆၈</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem127.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေး အမျိုးအစားခွဲခြားခြင်း။</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem127.Text" xml:space="preserve">
+    <value>1. PL ကျန်းမာရေး-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem128.Text" xml:space="preserve">
+    <value>2. ရောဂါ \u003cbr\u003e (ရှိလျှင်):</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem129.Text" xml:space="preserve">
+    <value>3. ဆုံးဖြတ်ရန် ဖြေရှင်းချက်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem130.Text" xml:space="preserve">
+    <value>14. လက်သည်းများ</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem131.Text" xml:space="preserve">
+    <value>20. သွေးကြောမျှင်များ-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem139.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem140.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem141.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>subclinical ရလဒ်များ</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem141.Text" xml:space="preserve">
+    <value>II</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem143.Text" xml:space="preserve">
+    <value>17. အာဟာရ-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem145.Text" xml:space="preserve">
+    <value>နိဂုံးချုပ်ရက်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem146.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆရာဝန်က နိဂုံးချုပ်သည်။</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem146.Text" xml:space="preserve">
+    <value>BS က နိဂုံးချုပ်သည်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem147.Text" xml:space="preserve">
+    <value>ဖိုင်နံပါတ်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem148.Text" xml:space="preserve">
+    <value>ဌာန-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem149.Text" xml:space="preserve">
+    <value>ဆေးခန်း-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem18.Text" xml:space="preserve">
+    <value>အမြင့်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem19.Text" xml:space="preserve">
+    <value>အလေးချိန်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem20.Text" xml:space="preserve">
+    <value>KSK စာချုပ်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem21.Text" xml:space="preserve">
+    <value>BMI-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem22.Text" xml:space="preserve">
+    <value>ပတ်လမ်း-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem23.Text" xml:space="preserve">
+    <value>စင်တီမီတာ</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem24.Text" xml:space="preserve">
+    <value>အကြိမ်/မိနစ်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem25.Text" xml:space="preserve">
+    <value>သွေးပေါင်ချိန်:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem29.Text" xml:space="preserve">
+    <value>အပူချိန်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem30.Text" xml:space="preserve">
+    <value>အသက်ရှုခြင်း-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem31.Text" xml:space="preserve">
+    <value>14. ထုတ်ကုန်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem32.Text" xml:space="preserve">
+    <value>အကြိမ်/မိနစ်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem34.Text" xml:space="preserve">
+    <value>1. သံသရာ-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem35.Text" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem36.Text" xml:space="preserve">
+    <value>2. အသက်ရှုခြင်း-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem37.Text" xml:space="preserve">
+    <value>3. အစာခြေခြင်း-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem38.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံကတ် သက်တမ်းကုန်ဆုံးခြင်း။</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem38.Text" xml:space="preserve">
+    <value>မွေးနေ့:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem39.Text" xml:space="preserve">
+    <value>4. အတွင်းခန်း-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem40.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကြွက်သားအကြော</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem40.Text" xml:space="preserve">
+    <value>5. CXK-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem41.Text" xml:space="preserve">
+    <value>6. အာရုံကြော</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem42.Text" xml:space="preserve">
+    <value>7. စိတ်ပိုင်းဆိုင်ရာ</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem43.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆီးကျောက်ကပ်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem43.Text" xml:space="preserve">
+    <value>9. ကျောက်ကပ် TN-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem44.Text" xml:space="preserve">
+    <value>11. မျက်လုံး</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem45.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Dentomaxillofacial</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem45.Text" xml:space="preserve">
+    <value>13. RHM-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem46.Text" xml:space="preserve">
+    <value>8. အရေပြားရောဂါဗေဒ-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem47.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နား နှာခေါင်း လည်ချောင်း</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem47.Text" xml:space="preserve">
+    <value>12. TMH-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem48.Text" xml:space="preserve">
+    <value>10. ခွဲစိတ်မှု-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem65.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Physiotherapy - ပြန်လည်ထူထောင်ရေး</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem65.Text" xml:space="preserve">
+    <value>15. VLTL - ပြန်လည်ထူထောင်ရေး-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem67.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>တိုင်းရင်းဆေး</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem67.Text" xml:space="preserve">
+    <value>16. တိုင်းရင်းဆေး-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem69.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေး အမျိုးအစားခွဲခြားခြင်း။</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem69.Text" xml:space="preserve">
+    <value>1. PL ကျန်းမာရေး-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem7.Text" xml:space="preserve">
+    <value>လိင်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem70.Text" xml:space="preserve">
+    <value>2. ရောဂါများ (ရှိလျှင်):</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem71.Text" xml:space="preserve">
+    <value>3. ဖြေရှင်းချက်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem72.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>လက်တွေ့ နိဂုံးချုပ်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem72.Text" xml:space="preserve">
+    <value>1. နိဂုံး LS-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem73.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Subclinical ကောက်ချက်ချ</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem73.Text" xml:space="preserve">
+    <value>2. CLS ၏နိဂုံး-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem74.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>လုပ်ငန်းခွင်ရောဂါ</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem74.Text" xml:space="preserve">
+    <value>3. လုပ်ငန်းခွင်ရောဂါများ-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem75.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>စံအစည်းအဝေး နိဂုံး</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem75.Text" xml:space="preserve">
+    <value>4. နိဂုံး HC-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem76.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>လေးထောင့်ကွက်များကို အကောင်အထည်ဖော်ခြင်း။</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem76.Text" xml:space="preserve">
+    <value>5. ပြဿနာကို အဖြေရှာပါ-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem77.Text" xml:space="preserve">
+    <value>6. စာမေးပွဲ၏နိဂုံး-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem78.Text" xml:space="preserve">
+    <value>7. အထွေထွေကောက်ချက်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem79.Text" xml:space="preserve">
+    <value>အမြင့်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem80.Text" xml:space="preserve">
+    <value>အလေးချိန်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem81.Text" xml:space="preserve">
+    <value>BMI-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem82.Text" xml:space="preserve">
+    <value>ပတ်လမ်း-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem83.Text" xml:space="preserve">
+    <value>စင်တီမီတာ</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem84.Text" xml:space="preserve">
+    <value>အကြိမ်/မိနစ်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem85.Text" xml:space="preserve">
+    <value>သွေးပေါင်ချိန်:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem86.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၂၆</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem87.Text" xml:space="preserve">
+    <value>ကီလိုဂရမ်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem88.Text" xml:space="preserve">
+    <value>mmHG</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem89.Text" xml:space="preserve">
+    <value>အပူချိန်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem90.Text" xml:space="preserve">
+    <value>အသက်ရှုခြင်း-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem91.Text" xml:space="preserve">
+    <value>oC</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem92.Text" xml:space="preserve">
+    <value>အကြိမ်/မိနစ်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem93.Text" xml:space="preserve">
+    <value>1. သံသရာ-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem94.Text" xml:space="preserve">
+    <value>2. အသက်ရှုခြင်း-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem95.Text" xml:space="preserve">
+    <value>3. အစာခြေခြင်း-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem96.Text" xml:space="preserve">
+    <value>4. အတွင်းခန်း-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem97.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အရိုးအဆစ်တွေရှိတယ်။</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem97.Text" xml:space="preserve">
+    <value>5. CXK-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem98.Text" xml:space="preserve">
+    <value>6. အာရုံကြော</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem99.Text" xml:space="preserve">
+    <value>7. စိတ်ပိုင်းဆိုင်ရာ</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlPatientInfo.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၅</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlTab1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlTab2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlTab3.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lblBmiDisplayTextTab1.Text" xml:space="preserve">
+    <value>      </value>
+  </data>
+  <data name="frmEnterKskInfomantion.lblBmiDisplayTextTab3.Text" xml:space="preserve">
+    <value>      </value>
+  </data>
+  <data name="frmEnterKskInfomantion.lblKetQuaKhamLamSang.Text" xml:space="preserve">
+    <value>I. လက်တွေ့စမ်းသပ်မှုရလဒ်များ</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lciAddress.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>စာမေးပွဲအချိန်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lciAddress.Text" xml:space="preserve">
+    <value>ဆေးစစ်ချက်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lciDOB.Text" xml:space="preserve">
+    <value>လူနာကုဒ်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lciIntructionDate.Text" xml:space="preserve">
+    <value>စာမေးပွဲရက်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lciKSKContract.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးစစ်ဆေးခြင်းစာချုပ်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lciKSKContract.Text" xml:space="preserve">
+    <value>စာချုပ်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lciPatientCode.Text" xml:space="preserve">
+    <value>အမိန့်ကုဒ်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lciPatientName.Text" xml:space="preserve">
+    <value>ကုသမှုကုဒ်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lciTreatmentType.Text" xml:space="preserve">
+    <value>အမည်-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.SKINNY.I" xml:space="preserve">
+    <value>(ပိန်အဆင့်)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.SKINNY.II" xml:space="preserve">
+    <value>(အဆင့် II ပါးပါး)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.SKINNY.III" xml:space="preserve">
+    <value>(အဆင့် III Skinny)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးစစ်ဆေးချက်အချက်အလက်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.ToolTipControl.CXL" xml:space="preserve">
+    <value>လုပ်ငန်းစဉ်မရှိပါ။</value>
+  </data>
+  <data name="frmEnterKskInfomantion.ToolTipControl.DXL" xml:space="preserve">
+    <value>လုပ်ဆောင်နေသည်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.ToolTipControl.KT" xml:space="preserve">
+    <value>ပြီးမြောက်သည်။</value>
+  </data>
+  <data name="frmEnterKskInfomantion.txtExamOccupationalTherapy.ToolTip" xml:space="preserve">
+    <value>Physiotherapy - ပြန်လည်ထူထောင်ရေး</value>
+  </data>
+  <data name="frmEnterKskInfomantion.txtExamTraditional.ToolTip" xml:space="preserve">
+    <value>တိုင်းရင်းဆေး</value>
+  </data>
+  <data name="frmEnterKskInfomantion.txtPatientCodeForSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.txtServiceReqCodeForSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အမိန့်ကုဒ်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.txtTreatmentCodeForSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.xtraTabPage1.Text" xml:space="preserve">
+    <value>အထွေထွေစာမေးပွဲ</value>
+  </data>
+  <data name="frmEnterKskInfomantion.xtraTabPage2.Text" xml:space="preserve">
+    <value>နိဂုံးချုပ်ပါ။</value>
+  </data>
+  <data name="frmEnterKskInfomantion.xtraTabPage3.Text" xml:space="preserve">
+    <value>လုပ်ငန်းခွင်ရောဂါ</value>
+  </data>
+  <data name="frmEnterKskInfomantion.xtraTabPage4.Text" xml:space="preserve">
+    <value>ကောလိပ် - TDCN</value>
+  </data>
+  <data name="frmEnterKskInfomantion.xtraTabPage6.Text" xml:space="preserve">
+    <value>XN သွေးအရေအတွက်</value>
+  </data>
+  <data name="frmEnterKskInfomantion.xtraTabPage7.Text" xml:space="preserve">
+    <value>ဆီးစစ်ခြင်း။</value>
+  </data>
+  <data name="frmEnterKskInfomantion.xtraTabPage8.Text" xml:space="preserve">
+    <value>အခြား XN</value>
+  </data>
+</root>

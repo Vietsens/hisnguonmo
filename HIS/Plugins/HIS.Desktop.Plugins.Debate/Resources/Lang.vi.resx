@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmDebate.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmDebate.barButtonItem1.Caption" xml:space="preserve">
+    <value>Ctrl+N</value>
+  </data>
+  <data name="frmDebate.barButtonItem2.Caption" xml:space="preserve">
+    <value>Ctrl F</value>
+  </data>
+  <data name="frmDebate.barButtonItem3.Caption" xml:space="preserve">
+    <value>Ctrl R</value>
+  </data>
+  <data name="frmDebate.btnFind.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="frmDebate.btnnew.Text" xml:space="preserve">
+    <value>Mới (Ctrl N)</value>
+  </data>
+  <data name="frmDebate.btnPrintDebate.Text" xml:space="preserve">
+    <value>In sổ biên bản hội chẩn</value>
+  </data>
+  <data name="frmDebate.btnReset.Text" xml:space="preserve">
+    <value>Làm mới (Ctrl R)</value>
+  </data>
+  <data name="frmDebate.chkAll.Properties.Caption" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
+  <data name="frmDebate.chkCreator.Properties.Caption" xml:space="preserve">
+    <value>Tôi tạo</value>
+  </data>
+  <data name="frmDebate.chkUserInvite.Properties.Caption" xml:space="preserve">
+    <value>Tôi được mời</value>
+  </data>
+  <data name="frmDebate.gridColumn1.Caption" xml:space="preserve">
+    <value>Xem</value>
+  </data>
+  <data name="frmDebate.gridColumn2.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="frmDebate.gridColumn3.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="frmDebate.gridColumn4.Caption" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="frmDebate.gridColumn5.Caption" xml:space="preserve">
+    <value>Địa điểm hội chẩn</value>
+  </data>
+  <data name="frmDebate.gridColumn6.Caption" xml:space="preserve">
+    <value>Khoa điều trị</value>
+  </data>
+  <data name="frmDebate.gridColumn8.Caption" xml:space="preserve">
+    <value>Chẩn đoán phụ</value>
+  </data>
+  <data name="frmDebate.gridColumnIn.Caption" xml:space="preserve">
+    <value>Partin</value>
+  </data>
+  <data name="frmDebate.gridColumnIn.ToolTip" xml:space="preserve">
+    <value>In hội chẩn</value>
+  </data>
+  <data name="frmDebate.gridDabeteconten.Caption" xml:space="preserve">
+    <value>Người yêu cầu</value>
+  </data>
+  <data name="frmDebate.gridDabeteICD_NAME.Caption" xml:space="preserve">
+    <value>Chẩn đoán chính</value>
+  </data>
+  <data name="frmDebate.gridDebateConclusion.Caption" xml:space="preserve">
+    <value>Kết luận</value>
+  </data>
+  <data name="frmDebate.gridDebateDelete.Caption" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="frmDebate.gridDebateDelete.ToolTip" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="frmDebate.gridDebateedit.Caption" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="frmDebate.gridDebateedit.ToolTip" xml:space="preserve">
+    <value>Sửa hội chẩn</value>
+  </data>
+  <data name="frmDebate.gridDebateTime.Caption" xml:space="preserve">
+    <value>Thời gian</value>
+  </data>
+  <data name="frmDebate.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmDebate.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmDebate.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmDebate.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmDebate.layoutControlItem10.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmDebate.layoutControlItem13.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmDebate.layoutControlItem14.Text" xml:space="preserve">
+    <value>Khoa điều trị:</value>
+  </data>
+  <data name="frmDebate.layoutControlItem7.Text" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="frmDebate.layoutControlItem8.Text" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="frmDebate.layoutControlItem9.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmDebate.lciChkAutoSign.Text" xml:space="preserve">
+    <value>Tự động thiết lập ký theo thành phần tham gia</value>
+  </data>
+  <data name="frmDebate.navBarControl1.Text" xml:space="preserve">
+    <value>navBarControl1</value>
+  </data>
+  <data name="frmDebate.navBarGroup1.Caption" xml:space="preserve">
+    <value>Thời gian</value>
+  </data>
+  <data name="frmDebate.navBarGroup2.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="frmDebate.Print.BienBanHoiChanThuocDauSao" xml:space="preserve">
+    <value>Biên bản hội chẩn thuốc dấu *</value>
+  </data>
+  <data name="frmDebate.Print.SoBienBan" xml:space="preserve">
+    <value>In sổ biên bản hội chẩn</value>
+  </data>
+  <data name="frmDebate.Print.TrichBienBan" xml:space="preserve">
+    <value>In biên bản hội chẩn</value>
+  </data>
+  <data name="frmDebate.STT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmDebate.Text" xml:space="preserve">
+    <value>Biên bản hội chẩn</value>
+  </data>
+  <data name="frmDebate.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="frmDebate.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+</root>

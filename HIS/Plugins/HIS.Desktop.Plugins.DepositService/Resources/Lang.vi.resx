@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmDepositService.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmDepositService.bbtnNew.Caption" xml:space="preserve">
+    <value>Mới (Ctrl N)</value>
+  </data>
+  <data name="frmDepositService.bbtnSave.Caption" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmDepositService.bbtnSaveAndPrint.Caption" xml:space="preserve">
+    <value>Lưu và in</value>
+  </data>
+  <data name="frmDepositService.btnAdd.Text" xml:space="preserve">
+    <value>Mới (Ctrl N)</value>
+  </data>
+  <data name="frmDepositService.btnAdd.ToolTip" xml:space="preserve">
+    <value>Cập nhật số dư tài khoản thẻ</value>
+  </data>
+  <data name="frmDepositService.btnPosConfig.ToolTip" xml:space="preserve">
+    <value>Cấu hình kết nối thiết bị POS</value>
+  </data>
+  <data name="frmDepositService.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmDepositService.btnSaveAndPrint.Text" xml:space="preserve">
+    <value>Lưu In(Ctrl I)</value>
+  </data>
+  <data name="frmDepositService.chkAddMedicineMaterial.Text" xml:space="preserve">
+    <value>H/thị thuốc/vật tư:</value>
+  </data>
+  <data name="frmDepositService.chkAddMedicineMaterial.ToolTip" xml:space="preserve">
+    <value>Hiển thị thuốc/ vật tư</value>
+  </data>
+  <data name="frmDepositService.chkAutoClose.Properties.Caption" xml:space="preserve">
+    <value>     :Tự động đóng</value>
+  </data>
+  <data name="frmDepositService.chkAutoClose.ToolTip" xml:space="preserve">
+    <value>Tự động đóng chức năng khi 'Lưu' hoặc 'Lưu in' thành công</value>
+  </data>
+  <data name="frmDepositService.ddbPrint.Text" xml:space="preserve">
+    <value>In ấn</value>
+  </data>
+  <data name="frmDepositService.dtTransactionTime.ToolTip" xml:space="preserve">
+    <value>Thời gian giao dịch</value>
+  </data>
+  <data name="frmDepositService.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmDepositService.layoutControlItem11.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số tiền bệnh nhân đưa</value>
+  </data>
+  <data name="frmDepositService.layoutControlItem11.Text" xml:space="preserve">
+    <value>Số tiền BN đưa:</value>
+  </data>
+  <data name="frmDepositService.layoutControlItem11Option.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>4 chữ số cuối của số thẻ ngân hàng</value>
+  </data>
+  <data name="frmDepositService.layoutControlItem11Option.Text" xml:space="preserve">
+    <value>4 số cuối thẻ NH:</value>
+  </data>
+  <data name="frmDepositService.layoutControlItem12.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số tiền cần trả lại bệnh nhân</value>
+  </data>
+  <data name="frmDepositService.layoutControlItem12.Text" xml:space="preserve">
+    <value>Số tiền trả BN:</value>
+  </data>
+  <data name="frmDepositService.layoutControlItem12Option.Text" xml:space="preserve">
+    <value>Số dư tài khoản thẻ:</value>
+  </data>
+  <data name="frmDepositService.layoutControlItem13.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Không hiển thị các dịch vụ có giá 0đ</value>
+  </data>
+  <data name="frmDepositService.layoutControlItem13.Text" xml:space="preserve">
+    <value>Ẩn dịch vụ không có chi phí</value>
+  </data>
+  <data name="frmDepositService.layoutControlItem14.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Không hiển thị các dịch vụ có số tiền BHYT chi trả</value>
+  </data>
+  <data name="frmDepositService.layoutControlItem14.Text" xml:space="preserve">
+    <value>Ẩn dịch vụ BHYT</value>
+  </data>
+  <data name="frmDepositService.layoutControlItem15.Text" xml:space="preserve">
+    <value>Ẩn dịch vụ không có chi phí bệnh nhân trả</value>
+  </data>
+  <data name="frmDepositService.layoutControlItem5.Text" xml:space="preserve">
+    <value>Hình thức:</value>
+  </data>
+  <data name="frmDepositService.layoutControlItem7.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Kết nối đến POS thanh toán của ngân hàng khi chọn hình thức thanh toán là "Quẹt thẻ ngân hàng" hoặc "Tiền mặt/Quẹt thẻ"</value>
+  </data>
+  <data name="frmDepositService.layoutControlItem7.Text" xml:space="preserve">
+    <value>Kết nối POS:</value>
+  </data>
+  <data name="frmDepositService.layoutTongTuDen.Text" xml:space="preserve">
+    <value>Số chứng từ:</value>
+  </data>
+  <data name="frmDepositService.lblAccountBook.Text" xml:space="preserve">
+    <value>Sổ :</value>
+  </data>
+  <data name="frmDepositService.lblAmount.Text" xml:space="preserve">
+    <value>Số tiền:</value>
+  </data>
+  <data name="frmDepositService.lblAmountReturnToPatient.ToolTip" xml:space="preserve">
+    <value>Số tiền cần trả lại bệnh nhân</value>
+  </data>
+  <data name="frmDepositService.lblCashierRoom.Text" xml:space="preserve">
+    <value>Phòng thu ngân:</value>
+  </data>
+  <data name="frmDepositService.lblCreateTime.Text" xml:space="preserve">
+    <value>Thời gian tạo:</value>
+  </data>
+  <data name="frmDepositService.lblDescription.Text" xml:space="preserve">
+    <value>Mô tả :</value>
+  </data>
+  <data name="frmDepositService.lblNumberOrder.Text" xml:space="preserve">
+    <value>Số chứng từ:</value>
+  </data>
+  <data name="frmDepositService.lblPayForm.Text" xml:space="preserve">
+    <value>Hình thức:</value>
+  </data>
+  <data name="frmDepositService.lblTotalFromNumberOder.Text" xml:space="preserve">
+    <value>Số chứng từ:</value>
+  </data>
+  <data name="frmDepositService.lblTransactionCode.Text" xml:space="preserve">
+    <value>Mã giao dịch :</value>
+  </data>
+  <data name="frmDepositService.lciTranferAmount.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số tiền chuyển khoản</value>
+  </data>
+  <data name="frmDepositService.lciTranferAmount.Text" xml:space="preserve">
+    <value>Số tiền CK:</value>
+  </data>
+  <data name="frmDepositService.lciTransactionTime.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời gian giao dịch</value>
+  </data>
+  <data name="frmDepositService.lciTransactionTime.Text" xml:space="preserve">
+    <value>TG giao dịch:</value>
+  </data>
+  <data name="frmDepositService.spnAmountGiveByPatient.ToolTip" xml:space="preserve">
+    <value>Số tiền bệnh nhân đưa</value>
+  </data>
+  <data name="frmDepositService.Text" xml:space="preserve">
+    <value>Tạm ứng theo dịch vụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_DEPOSIT_SERVICE__TREE_SERE_SERV__COLUMN_AMOUNT" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_DEPOSIT_SERVICE__TREE_SERE_SERV__COLUMN_DISCOUNT" xml:space="preserve">
+    <value>Chiết khấu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_DEPOSIT_SERVICE__TREE_SERE_SERV__COLUMN_INTRUCTION_TIME" xml:space="preserve">
+    <value>Thời gian chỉ định</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_DEPOSIT_SERVICE__TREE_SERE_SERV__COLUMN_IS_EXPEND" xml:space="preserve">
+    <value>Hao phí</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_DEPOSIT_SERVICE__TREE_SERE_SERV__COLUMN_SERVICE_CODE" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_DEPOSIT_SERVICE__TREE_SERE_SERV__COLUMN_SERVICE_NAME" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_DEPOSIT_SERVICE__TREE_SERE_SERV__COLUMN_SERVICE_REQ_CODE" xml:space="preserve">
+    <value>Mã yêu cầu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_DEPOSIT_SERVICE__TREE_SERE_SERV__COLUMN_TRANSACTION_CODE" xml:space="preserve">
+    <value>Mã giao dịch</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_DEPOSIT_SERVICE__TREE_SERE_SERV__COLUMN_VAT_RATIO" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_DEPOSIT_SERVICE__TREE_SERE_SERV__COLUMN_VIR_PRICE" xml:space="preserve">
+    <value>Đơn giá</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_DEPOSIT_SERVICE__TREE_SERE_SERV__COLUMN_VIR_TOTAL_HEIN_PRICE" xml:space="preserve">
+    <value>Đồng chi trả</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_DEPOSIT_SERVICE__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PATIENT_PRICE" xml:space="preserve">
+    <value>Bệnh nhân trả</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_DEPOSIT_SERVICE__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PRICE" xml:space="preserve">
+    <value>Thành tiền</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_DEPOSIT_SERVICE__TREE_SERE_SERV__LAYOUT_SERE_SERV_EXPEND" xml:space="preserve">
+    <value>Hao phí</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_SWIPE_AMOUNT_TEXT" xml:space="preserve">
+    <value>Số tiền QT:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_SWIPE_AMOUNT_TOOLTIP" xml:space="preserve">
+    <value>Số tiền quẹt thẻ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TEXT" xml:space="preserve">
+    <value>Số tiền CK:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TOOLTIP" xml:space="preserve">
+    <value>Số tiền chuyển khoản</value>
+  </data>
+  <data name="LuuInVaThanhToan" xml:space="preserve">
+    <value>Lưu in &amp; Thanh toán</value>
+  </data>
+</root>

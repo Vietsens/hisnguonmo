@@ -1,0 +1,553 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmFetusBorn.bar8.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmFetusBorn.barButtonItem13.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+    <comment>Lưu (Ctrl S)</comment>
+  </data>
+  <data name="frmFetusBorn.barButtonItem14.Caption" xml:space="preserve">
+    <value>Refresh</value>
+    <comment>Làm lại</comment>
+  </data>
+  <data name="frmFetusBorn.barButtonItem__Save.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+    <comment>Lưu (Ctrl S)</comment>
+  </data>
+  <data name="frmFetusBorn.barButtonI__Refesh.Caption" xml:space="preserve">
+    <value>Refresh</value>
+    <comment>Làm lại</comment>
+  </data>
+  <data name="frmFetusBorn.btnRefesh.Text" xml:space="preserve">
+    <value>Refresh (Ctrl R)</value>
+    <comment>Làm lại (Ctrl R)</comment>
+  </data>
+  <data name="frmFetusBorn.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+    <comment>Lưu (Ctrl S)</comment>
+  </data>
+  <data name="frmFetusBorn.checkEdit2.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmFetusBorn.checkEdit3.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmFetusBorn.checkEdit4.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmFetusBorn.checkEdit7.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmFetusBorn.checkEdit8.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmFetusBorn.chkCheckCase33.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmFetusBorn.chkCheckCase43.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmFetusBorn.chkCheckCaseHaveNotYet.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmFetusBorn.chkHIVBefore.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmFetusBorn.chkHIVBorn.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmFetusBorn.chkIsBreastFeedingFirstHour.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmFetusBorn.chkIsDeath.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmFetusBorn.chkIsFetusManage.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmFetusBorn.chkIsK1.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmFetusBorn.chkIsUVFull.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmFetusBorn.groupBox3.Text" xml:space="preserve">
+    <value>Exam born</value>
+    <comment>Phần khám thai</comment>
+  </data>
+  <data name="frmFetusBorn.groupBox4.Text" xml:space="preserve">
+    <value>Exam mother</value>
+    <comment>Phần khám mẹ</comment>
+  </data>
+  <data name="frmFetusBorn.groupBox5.Text" xml:space="preserve">
+    <value>Check count</value>
+    <comment>Số lần kiểm tra</comment>
+  </data>
+  <data name="frmFetusBorn.groupBox6.Text" xml:space="preserve">
+    <value>PARA</value>
+    <comment>Tiền sử thai sản (PARA)</comment>
+  </data>
+  <data name="frmFetusBorn.groupBoxChamSocSauSinh.Text" xml:space="preserve">
+    <value>Look up after born</value>
+    <comment>Chăm sóc sau sinh</comment>
+  </data>
+  <data name="frmFetusBorn.groupBoxConSongCanNang.Text" xml:space="preserve">
+    <value>Weight</value>
+    <comment>Con sống cân nặng</comment>
+  </data>
+  <data name="frmFetusBorn.groupBoxSoLanKiemTra.Text" xml:space="preserve">
+    <value>Check count</value>
+    <comment>Số lần kiểm tra</comment>
+  </data>
+  <data name="frmFetusBorn.groupBoxTaiBienSanKhoa.Text" xml:space="preserve">
+    <value>Accident born</value>
+    <comment>Tai biến sản khoa</comment>
+  </data>
+  <data name="frmFetusBorn.groupBoxTienSuThaiSan.Text" xml:space="preserve">
+    <value>PARA</value>
+    <comment>Tiền sử thai sản (PARA)</comment>
+  </data>
+  <data name="frmFetusBorn.groupBoxXetNghiemHIV.Text" xml:space="preserve">
+    <value>HIV</value>
+    <comment>Xét nghiệm HIV</comment>
+  </data>
+  <data name="frmFetusBorn.labelControl1.Text" xml:space="preserve">
+    <value>Gram</value>
+    <comment>Gram</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmFetusBorn.layoutControl10.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmFetusBorn.layoutControl11.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmFetusBorn.layoutControl12.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmFetusBorn.layoutControl13.Text" xml:space="preserve">
+    <value>layoutControl13</value>
+  </data>
+  <data name="frmFetusBorn.layoutControl14.Text" xml:space="preserve">
+    <value>layoutControl14</value>
+  </data>
+  <data name="frmFetusBorn.layoutControl15.Text" xml:space="preserve">
+    <value>layoutControl15</value>
+  </data>
+  <data name="frmFetusBorn.layoutControl16.Text" xml:space="preserve">
+    <value>layoutControl16</value>
+  </data>
+  <data name="frmFetusBorn.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmFetusBorn.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmFetusBorn.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmFetusBorn.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmFetusBorn.layoutControl6.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmFetusBorn.layoutControl7.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmFetusBorn.layoutControl8.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmFetusBorn.layoutControl9.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem1.Text" xml:space="preserve">
+    <value>Heart born: </value>
+    <comment>Tim thai:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem10.Text" xml:space="preserve">
+    <value>Broken born:</value>
+    <comment>Số sảy thai/phá thai:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem11.Text" xml:space="preserve">
+    <value>Check mother</value>
+    <comment>Phần khám mẹ</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem12.Text" xml:space="preserve">
+    <value>Born: </value>
+    <comment>Tiên lượng đẻ:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem13.Text" xml:space="preserve">
+    <value>UV:</value>
+    <comment>Số mũi UV đã tiêm:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem2.Text" xml:space="preserve">
+    <value>Ngôi thai: </value>
+    <comment>Ngôi thai:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem27.Text" xml:space="preserve">
+    <value>Tim thai: </value>
+    <comment>Tim thai:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem28.Text" xml:space="preserve">
+    <value>Ngôi thai: </value>
+    <comment>Ngôi thai:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem29.Text" xml:space="preserve">
+    <value>Trọng lượng: </value>
+    <comment>Trọng lượng:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem3.Text" xml:space="preserve">
+    <value>Số lần đẻ đủ tháng:</value>
+    <comment>Số lần đẻ đủ tháng:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem30.Text" xml:space="preserve">
+    <value>Khung chậu: </value>
+    <comment>Khung chậu:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem31.Text" xml:space="preserve">
+    <value>Xét nghiệm khác: </value>
+    <comment>Xét nghiệm khác:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem32.Text" xml:space="preserve">
+    <value>Chiều cao: </value>
+    <comment>Chiều cao:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem33.Text" xml:space="preserve">
+    <value>Huyết áp: </value>
+    <comment>Huyết áp:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem34.Text" xml:space="preserve">
+    <value>Chiều cao tử cung: </value>
+    <comment>Chiều cao tử cung:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem35.Text" xml:space="preserve">
+    <value>Vòng bụng: </value>
+    <comment>Vòng bụng:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem36.Text" xml:space="preserve">
+    <value>Thiếu máu: </value>
+    <comment>Thiếu máu:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem37.Text" xml:space="preserve">
+    <value>Xét nghiệm HIV: </value>
+    <comment>Xét nghiệm HIV:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem38.Text" xml:space="preserve">
+    <value>Protein niệu: </value>
+    <comment>Protein niệu:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem39.Text" xml:space="preserve">
+    <value>/</value>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem4.Text" xml:space="preserve">
+    <value>Số lần đẻ non:</value>
+    <comment>Số lần đẻ non:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem40.Text" xml:space="preserve">
+    <value>Ngày kinh cuối cùng: </value>
+    <comment>Ngày kinh cuối cùng:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem41.Text" xml:space="preserve">
+    <value>Phần khám mẹ</value>
+    <comment>Phần khám mẹ</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem42.Text" xml:space="preserve">
+    <value>Tuần thai: </value>
+    <comment>Tuần thai:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem43.Text" xml:space="preserve">
+    <value>Dự kiến ngày sinh: </value>
+    <comment>Dự kiến ngày sinh:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem44.Text" xml:space="preserve">
+    <value>Lần có thai thứ mấy: </value>
+    <comment>Lần có thai thứ mấy:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem45.Text" xml:space="preserve">
+    <value>Tiên lượng đẻ: </value>
+    <comment>Tiên lượng đẻ:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem46.Text" xml:space="preserve">
+    <value>Số mũi UV đã tiêm: </value>
+    <comment>Số mũi UV đã tiêm:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem5.Text" xml:space="preserve">
+    <value>Phần khám mẹ</value>
+    <comment>Phần khám mẹ</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem58.Text" xml:space="preserve">
+    <value>Được quản lý thai:</value>
+    <comment>Được quản lý thai:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem59.Text" xml:space="preserve">
+    <value>Đã tiêm đủ vacxin UV:</value>
+    <comment>Đã tiêm đủ vacxin UV:</comment>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem6.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmFetusBorn.layoutControlItem8.Text" xml:space="preserve">
+    <value>Số con hiện có:</value>
+    <comment>Số con hiện có:</comment>
+  </data>
+  <data name="frmFetusBorn.lciBornMethod.Text" xml:space="preserve">
+    <value>Born method:</value>
+  </data>
+  <data name="frmFetusBorn.lciBornPlace.Text" xml:space="preserve">
+    <value>Born place:</value>
+    <comment>Nơi đẻ:</comment>
+  </data>
+  <data name="frmFetusBorn.lciCheckCase33.Text" xml:space="preserve">
+    <value>Check 3/3:</value>
+    <comment>3 lần/ 3 kỳ:</comment>
+  </data>
+  <data name="frmFetusBorn.lciCheckCase43.Text" xml:space="preserve">
+    <value>Check 4/3:</value>
+    <comment>4 lần/ 3 kỳ:</comment>
+  </data>
+  <data name="frmFetusBorn.lciCheckCaseHaveNotYet.Text" xml:space="preserve">
+    <value>Not yet</value>
+    <comment>Chưa rõ:</comment>
+  </data>
+  <data name="frmFetusBorn.lciChildGender__Female.Text" xml:space="preserve">
+    <value>Female</value>
+    <comment>Nữ</comment>
+  </data>
+  <data name="frmFetusBorn.lciChildGender__Male.Text" xml:space="preserve">
+    <value>Male</value>
+    <comment>Nam</comment>
+  </data>
+  <data name="frmFetusBorn.lciChildStatus.Text" xml:space="preserve">
+    <value>Child status:</value>
+    <comment>Tình trạng con:</comment>
+  </data>
+  <data name="frmFetusBorn.lciChildWeight.Text" xml:space="preserve">
+    <value>Weight:</value>
+    <comment>Cân nặng:</comment>
+  </data>
+  <data name="frmFetusBorn.lciExam742.Text" xml:space="preserve">
+    <value>Exam 7 to 42:</value>
+    <comment>Khám từ 7 đến 42 ngày:</comment>
+  </data>
+  <data name="frmFetusBorn.lciFirstWeekExam.Text" xml:space="preserve">
+    <value>First exam:</value>
+    <comment>Khám đầu tuần:</comment>
+  </data>
+  <data name="frmFetusBorn.lciHIVBefore.Text" xml:space="preserve">
+    <value>HIV before:</value>
+    <comment>Đã xét nghiệm HIV từ trước:</comment>
+  </data>
+  <data name="frmFetusBorn.lciHIVBorn.Text" xml:space="preserve">
+    <value>HIV born:</value>
+    <comment>Đã xét nghiệm khi chuyển dạ:</comment>
+  </data>
+  <data name="frmFetusBorn.lciIsBreastFeedingFirstHour.Text" xml:space="preserve">
+    <value>Breast feeding:</value>
+    <comment>Bú giờ đầu:</comment>
+  </data>
+  <data name="frmFetusBorn.lciIsDeath.Text" xml:space="preserve">
+    <value>Death:</value>
+    <comment>Sản phụ bị tử vong:</comment>
+  </data>
+  <data name="frmFetusBorn.lciIsFetusManage.Text" xml:space="preserve">
+    <value>Fetus manager:</value>
+    <comment>Được quản lý thai:</comment>
+  </data>
+  <data name="frmFetusBorn.lciIsK1.Text" xml:space="preserve">
+    <value>K1:</value>
+    <comment>Có tiêm vitamin K1</comment>
+  </data>
+  <data name="frmFetusBorn.lciIsUVFull.Text" xml:space="preserve">
+    <value>UV full:</value>
+    <comment>Đã tiêm đủ vacxin UV:</comment>
+  </data>
+  <data name="frmFetusBorn.lciMidWifeName.Text" xml:space="preserve">
+    <value>Mid wife name:</value>
+    <comment>Người đỡ đẻ:</comment>
+  </data>
+  <data name="frmFetusBorn.lciNote.Text" xml:space="preserve">
+    <value>Note:</value>
+    <comment>Ghi chú:</comment>
+  </data>
+  <data name="frmFetusBorn.lciObstetricComplication.Text" xml:space="preserve">
+    <value>Obsteric comp:</value>
+    <comment>Biến chứng sản khoa:</comment>
+  </data>
+  <data name="frmFetusBorn.lciParaChildCount.Text" xml:space="preserve">
+    <value>Miscarriare count:</value>
+    <comment>Số con hiện có:</comment>
+  </data>
+  <data name="frmFetusBorn.lciParaMiscarriageCount.Text" xml:space="preserve">
+    <value>Miscarriage count:</value>
+    <comment>Số sảy thai/phá thai:</comment>
+  </data>
+  <data name="frmFetusBorn.lciParaNormalCount.Text" xml:space="preserve">
+    <value>Normal count:</value>
+    <comment>Số lần đẻ đủ tháng:</comment>
+  </data>
+  <data name="frmFetusBorn.lciParaPrematurelyCount.Text" xml:space="preserve">
+    <value>Prematurely count:</value>
+    <comment>Số lần đẻ non:</comment>
+  </data>
+  <data name="frmFetusBorn.memoEdit1.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Note</value>
+    <comment>Ghi chú</comment>
+  </data>
+  <data name="frmFetusBorn.memoEdit2.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Note</value>
+    <comment>Ghi chú</comment>
+  </data>
+  <data name="frmFetusBorn.rdoFemale.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmFetusBorn.rdoMale.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmFetusBorn.simpleButton1.Text" xml:space="preserve">
+    <value>Refesh (Ctrl R)</value>
+    <comment>Làm lại (Ctrl R)</comment>
+  </data>
+  <data name="frmFetusBorn.simpleButton2.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+    <comment>Lưu (Ctrl S)</comment>
+  </data>
+  <data name="frmFetusBorn.simpleButton3.Text" xml:space="preserve">
+    <value>Refesh (Ctrl R)</value>
+    <comment>Làm lại (Ctrl R)</comment>
+  </data>
+  <data name="frmFetusBorn.simpleButton4.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+    <comment>Lưu (Ctrl S)</comment>
+  </data>
+  <data name="frmFetusBorn.Text" xml:space="preserve">
+    <value>frm</value>
+  </data>
+  <data name="frmFetusBorn.lciIsChildDeath.Text" xml:space="preserve">
+    <value>Child death:</value>
+    <comment>Thai nhi tử vong:</comment>
+  </data>
+  <data name="DoDaiVuotQua" xml:space="preserve">
+    <value>Character length exceeds </value>
+  </data>
+</root>

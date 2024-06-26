@@ -1,0 +1,420 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmTuberclusisTreatment.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmTuberclusisTreatment.barButtonItemSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmTuberclusisTreatment.btnDelete.Text" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="frmTuberclusisTreatment.btnEdit.Text" xml:space="preserve">
+    <value>တည်းဖြတ်ရန် (Ctrl S)</value>
+  </data>
+  <data name="frmTuberclusisTreatment.btnGetInfo.Text" xml:space="preserve">
+    <value>နောက်ဆုံးပေါ်အချက်အလက်များကိုရယူပါ။</value>
+  </data>
+  <data name="frmTuberclusisTreatment.btnGetInfo.ToolTip" xml:space="preserve">
+    <value>လတ်တလော ကုသမှုအပိုင်းအလိုက် အချက်အလက်ကို ရယူပါ။</value>
+  </data>
+  <data name="frmTuberclusisTreatment.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmTuberclusisTreatment.cboBeginRegimenLevel.ToolTip" xml:space="preserve">
+    <value>ကုသမှုအစတွင် ကုသမှုအဆင့်</value>
+  </data>
+  <data name="frmTuberclusisTreatment.cboRegimenHiv.ToolTip" xml:space="preserve">
+    <value>ကုသခြင်း၏ အုပ်ချုပ်မှုပုံစံ</value>
+  </data>
+  <data name="frmTuberclusisTreatment.cboRegimenHivBegin.ToolTip" xml:space="preserve">
+    <value>ကုသမှုအစတွင် ကုသရေးပရိုတိုကော</value>
+  </data>
+  <data name="frmTuberclusisTreatment.cboRegimenLevel.ToolTip" xml:space="preserve">
+    <value>ကုသမှုသင်တန်း၏ Regimen အဆင့်</value>
+  </data>
+  <data name="frmTuberclusisTreatment.cboTestPcrResult.ToolTip" xml:space="preserve">
+    <value>PCR စမ်းသပ်မှုရလဒ်များ</value>
+  </data>
+  <data name="frmTuberclusisTreatment.cboTestPcrRnaReason.ToolTip" xml:space="preserve">
+    <value>ART ကုထုံးဖြင့် လူနာများတွင် Viral load test ကို မှာကြားရခြင်း အကြောင်းရင်း</value>
+  </data>
+  <data name="frmTuberclusisTreatment.cboTestPcrRnaResult.ToolTip" xml:space="preserve">
+    <value>HIV Viral load စစ်ဆေးမှုရလဒ်သည် သွေးတစ်မီလီလီတာလျှင် HIV ဗိုင်းရပ်စ်မိတ္တူအရေအတွက်ဖြစ်သည်။</value>
+  </data>
+  <data name="frmTuberclusisTreatment.cboTestPcrTimes.ToolTip" xml:space="preserve">
+    <value>PCR စမ်းသပ်ရန်အချိန်</value>
+  </data>
+  <data name="frmTuberclusisTreatment.cboTuberculosisRegimen.ToolTip" xml:space="preserve">
+    <value>HIV သို့မဟုတ် ငုပ်လျှိုးနေသော တီဘီရောဂါရှိသူများ၏ တီဘီကုသနည်းများ</value>
+  </data>
+  <data name="frmTuberclusisTreatment.cboTuberculosisTreatmentType.ToolTip" xml:space="preserve">
+    <value>တီဘီကုသမှုအမျိုးအစား</value>
+  </data>
+  <data name="frmTuberclusisTreatment.dtArvPatientBegin.ToolTip" xml:space="preserve">
+    <value>လူနာသည် ARV ဆေးကို ဘယ်အချိန်က စပြီး လက်ခံခဲ့သလဲ။</value>
+  </data>
+  <data name="frmTuberclusisTreatment.dtArvTreatmentBegin.ToolTip" xml:space="preserve">
+    <value>ART ကုသမှုသင်တန်း စတင်သည့်နေ့</value>
+  </data>
+  <data name="frmTuberclusisTreatment.dtArvTreatmentEnd.ToolTip" xml:space="preserve">
+    <value>ARV ကုသမှု ပြီးဆုံးသည့်နေ့</value>
+  </data>
+  <data name="frmTuberclusisTreatment.dtCtxTreatmentBegin.ToolTip" xml:space="preserve">
+    <value>Cotrimoxazole (CTX) ကုသမှု စတင်သည့်နေ့စွဲ</value>
+  </data>
+  <data name="frmTuberclusisTreatment.dtTestPcrResult.ToolTip" xml:space="preserve">
+    <value>PCR စမ်းသပ်မှုရလဒ်များနေ့စွဲ</value>
+  </data>
+  <data name="frmTuberclusisTreatment.dtTestPcrRna.ToolTip" xml:space="preserve">
+    <value>Viral load စမ်းသပ်ရန်အတွက် နမူနာယူရမည့်အချိန်</value>
+  </data>
+  <data name="frmTuberclusisTreatment.dtTestPcrRnaResult.ToolTip" xml:space="preserve">
+    <value>Viral load စမ်းသပ်မှုရလဒ်များကို မည်သည့်အချိန်တွင် ရနိုင်မည်နည်း။</value>
+  </data>
+  <data name="frmTuberclusisTreatment.dtTuberculosisTreatmentBegin.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးစောင့်ရှောက်မှုဌာနတွင် တီဘီ သို့မဟုတ် ငုပ်လျှိုးနေသောတီဘီအတွက် ကုသမှုစတင်ရမည့်အချိန်</value>
+  </data>
+  <data name="frmTuberclusisTreatment.dtTuberculosisTreatmentEnd.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးစောင့်ရှောက်မှုဌာနတွင် တီဘီ သို့မဟုတ် ငုပ်လျှိုးနေသောတီဘီအတွက် ကုသမှုကို အဆုံးသတ်ရန် အချိန်ဖြစ်သည်။</value>
+  </data>
+  <data name="frmTuberclusisTreatment.groupBox1.Text" xml:space="preserve">
+    <value>အုပ်ချုပ်ရေးဆိုင်ရာအချက်အလက်</value>
+  </data>
+  <data name="frmTuberclusisTreatment.groupBox2.Text" xml:space="preserve">
+    <value>bệnh lao ကုသမှုဆိုင်ရာ ဆေးမှတ်တမ်း အချက်အလက်</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControl3.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControl4.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControl5.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem1.Text" xml:space="preserve">
+    <value>လိင်-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem10.Text" xml:space="preserve">
+    <value>အမည်-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem11.Text" xml:space="preserve">
+    <value>CCCD/CMT နံပါတ်-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem12.Text" xml:space="preserve">
+    <value>လိပ်စာ-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem13.Text" xml:space="preserve">
+    <value>လူနာအမျိုးအစား-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem14.Text" xml:space="preserve">
+    <value>လည်ပတ်မှုအခြေအနေ-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem15.Text" xml:space="preserve">
+    <value>ကုသမှုအတွက်အကြောင်းပြချက်</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem16.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကုသမှုအစတွင် ကုသမှုအဆင့်</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem16.Text" xml:space="preserve">
+    <value>BD ကုသမှုအဆင့်-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem17.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကုသမှုအစတွင် ကုသရေးပရိုတိုကော</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem17.Text" xml:space="preserve">
+    <value>BD ဖုန်း၏ ပုံကြမ်း-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem18.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>လူနာသည် ARV ဆေးကို ဘယ်အချိန်က စပြီး လက်ခံခဲ့သလဲ။</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem18.Text" xml:space="preserve">
+    <value>ARV သင်တန်းရက်စွဲ-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem19.Text" xml:space="preserve">
+    <value>ကိုယ်ဝန်ရက်စွဲ-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem20.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Cotrimoxazole (CTX) ကုသမှု စတင်သည့်နေ့စွဲ</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem20.Text" xml:space="preserve">
+    <value>CTX သင်တန်းရက်</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem21.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကုသခြင်း၏ အုပ်ချုပ်မှုပုံစံ</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem21.Text" xml:space="preserve">
+    <value>ဖုန်းပုံကြမ်း-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem22.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကုသမှုသင်တန်း၏ Regimen အဆင့်</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem22.Text" xml:space="preserve">
+    <value>ဖုန်းထိန်းချုပ်မှုအဆင့်-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem23.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးစောင့်ရှောက်မှုဌာနတွင် တီဘီ သို့မဟုတ် ငုပ်လျှိုးနေသောတီဘီအတွက် ကုသမှုစတင်ရမည့်အချိန်</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem23.Text" xml:space="preserve">
+    <value>လာအို အမျိုးသားနေ့</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem24.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးစောင့်ရှောက်မှုဌာနတွင် တီဘီ သို့မဟုတ် ငုပ်လျှိုးနေသောတီဘီအတွက် ကုသမှုကို အဆုံးသတ်ရန် အချိန်ဖြစ်သည်။</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem24.Text" xml:space="preserve">
+    <value>KT အလုပ်သမားနေ့</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem25.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>တီဘီကုသမှုအမျိုးအစား</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem25.Text" xml:space="preserve">
+    <value>တီဘီအမျိုးအစား-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem26.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>HIV သို့မဟုတ် ငုပ်လျှိုးနေသော တီဘီရောဂါရှိသူများ၏ တီဘီကုသနည်းများ</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem26.Text" xml:space="preserve">
+    <value>လာအိုနိုင်ငံ ပုံကြမ်း-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem27.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Viral load စမ်းသပ်ရန်အတွက် နမူနာယူရမည့်အချိန်</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem27.Text" xml:space="preserve">
+    <value>ဗိုင်းရပ်စ်များနေ့-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem28.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Viral load စမ်းသပ်မှုရလဒ်များကို မည်သည့်အချိန်တွင် ရနိုင်မည်နည်း။</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem28.Text" xml:space="preserve">
+    <value>စာမေးပွဲရလဒ်များနေ့စွဲ-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem29.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ART ကုထုံးဖြင့် လူနာများတွင် Viral load test ကို မှာကြားရခြင်း အကြောင်းရင်း</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem29.Text" xml:space="preserve">
+    <value>အကြောင်းရင်း XN-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem30.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>HIV Viral load စစ်ဆေးမှုရလဒ်သည် သွေးတစ်မီလီလီတာလျှင် HIV ဗိုင်းရပ်စ်မိတ္တူအရေအတွက်ဖြစ်သည်။</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem30.Text" xml:space="preserve">
+    <value>XN ရလဒ်-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem31.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>PCR စမ်းသပ်ရန်အချိန်</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem31.Text" xml:space="preserve">
+    <value>PCR စမ်းသပ်မှု-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem32.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>PCR စမ်းသပ်မှုရလဒ်များ</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem32.Text" xml:space="preserve">
+    <value>PCR စမ်းသပ်မှုရလဒ်များ</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem33.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>PCR စမ်းသပ်မှုရလဒ်များနေ့စွဲ</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem33.Text" xml:space="preserve">
+    <value>PCR စမ်းသပ်မှုရလဒ်များနေ့စွဲ-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem34.Text" xml:space="preserve">
+    <value>PCR စမ်းသပ်ရက်စွဲ-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem35.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ART ကုသမှုသင်တန်း စတင်သည့်နေ့</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem35.Text" xml:space="preserve">
+    <value>စတင်လုပ်ဆောင်သည့်ရက်စွဲ-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem36.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ARV ကုသမှု ပြီးဆုံးသည့်နေ့</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem36.Text" xml:space="preserve">
+    <value>ဆောင်ရွက်ဆဲ ပြီးဆုံးသည့်ရက်စွဲ-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem37.Text" xml:space="preserve">
+    <value>ဖြေရှင်းရန်</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem4.Text" xml:space="preserve">
+    <value>ကုသမှုကုဒ်-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem5.Text" xml:space="preserve">
+    <value>မွေးနေ့:</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem7.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံကတ်နံပါတ်-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem8.Text" xml:space="preserve">
+    <value>HIV ကူးစက်ခံရသည့်ရက်စွဲ-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem9.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ART ဆေး ပေးသည့် ရက်အရေအတွက်</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem9.Text" xml:space="preserve">
+    <value>ဆေးပေးသည့်ရက်အရေအတွက်-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.Text" xml:space="preserve">
+    <value>bệnh lao ကုသမှုဆိုင်ရာ အချက်အလက်</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem38.Text" xml:space="preserve">
+    <value>ဇယားကိုပြောင်းရခြင်းအကြောင်းရင်း-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem39.Text" xml:space="preserve">
+    <value>တရားဓမ္မလွှဲပြောင်းသည့်ရက်စွဲ</value>
+  </data>
+  <data name="frmTuberclusisTreatment.layoutControlItem40.Text" xml:space="preserve">
+    <value>စစ်ဆေးခြင်းနည်းလမ်း-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.lciGiaiDoanlamSang.Text" xml:space="preserve">
+    <value>ဆေးဘက်ဆိုင်ရာအဆင့်-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.lciKetQuaDieuTriLao.Text" xml:space="preserve">
+    <value>တီဘီရောဂါကုသမှု၏ရလဒ်များ</value>
+  </data>
+  <data name="frmTuberclusisTreatment.lciNhomDoiTuong.Text" xml:space="preserve">
+    <value>ပစ်မှတ်အုပ်စု-</value>
+  </data>
+  <data name="frmTuberclusisTreatment.lciNoiBDDTARV.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ARV ကုသမှုကို ဘယ်မှာစရမလဲ</value>
+  </data>
+  <data name="frmTuberclusisTreatment.lciNoiBDDTARV.Text" xml:space="preserve">
+    <value>NOI_BDDT_ARV:</value>
+  </data>
+  <data name="frmTuberclusisTreatment.lciNoiLayMauXN.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>စမ်းသပ်ရန်အတွက် နမူနာယူရမည့်နေရာ</value>
+  </data>
+  <data name="frmTuberclusisTreatment.lciNoiLayMauXN.Text" xml:space="preserve">
+    <value>နမူနာယူရမည့်နေရာ</value>
+  </data>
+  <data name="frmTuberclusisTreatment.lciNoiXNKD.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>စစ်ဆေးမှုသည် HIV ကူးစက်မှုကို အတည်ပြုသည့်နေရာ</value>
+  </data>
+  <data name="frmTuberclusisTreatment.lciNoiXNKD.Text" xml:space="preserve">
+    <value>တင်သွင်းခြင်းနှင့် တင်ပို့သည့်နေရာ</value>
+  </data>
+</root>

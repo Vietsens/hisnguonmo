@@ -1,0 +1,396 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__ACTIVE_INGR_BHYT_CODE" xml:space="preserve">
+    <value>Active ingredient Code</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__ACTIVE_INGR_BHYT_NAME" xml:space="preserve">
+    <value>Active ingredient</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__AMOUNT" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_GROUP_CODE" xml:space="preserve">
+    <value>Bid group code</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_NAME" xml:space="preserve">
+    <value>Bid name</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_NUMBER" xml:space="preserve">
+    <value>Bid number</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_NUM_ORDER" xml:space="preserve">
+    <value>Bid Num order</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_PACKAGE_CODE" xml:space="preserve">
+    <value>Bid package</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_TYPE_CODE" xml:space="preserve">
+    <value>Bid type</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_YEAR" xml:space="preserve">
+    <value>Bid year</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BTN_DOWNLOAD" xml:space="preserve">
+    <value>Dowload Template</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BTN_IMPORT" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BTN_SAVE" xml:space="preserve">
+    <value>Save(Ctrl S)</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BTN_SHOW_LINE_ERROR__ERROR" xml:space="preserve">
+    <value>Line Error</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BTN_SHOW_LINE_ERROR__OK" xml:space="preserve">
+    <value>Dòng không lỗi</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__CONCENTRA" xml:space="preserve">
+    <value>Concentra</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__IMP_PRICE" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__IMP_VAT_RATIO" xml:space="preserve">
+    <value>VAT %</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__MANUFACTURE_NAME" xml:space="preserve">
+    <value>Manufacture</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__MEDICINE_TYPE_CODE" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__MEDICINE_TYPE_NAME" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__NATIONAL_NAME" xml:space="preserve">
+    <value>National</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__PACKING_TYPE_NAME" xml:space="preserve">
+    <value>Packing type</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__RP_BTN_DELETE" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__RP_BTN_ERROR" xml:space="preserve">
+    <value>Show error</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__SERVICE_UNIT_NAME" xml:space="preserve">
+    <value>Service unit</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__STT" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__SUPPLIER_NAME" xml:space="preserve">
+    <value>Supplier</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="BiTrung" xml:space="preserve">
+    <value>repeated</value>
+  </data>
+  <data name="CanhBaoMau" xml:space="preserve">
+    <value>Blood {0} </value>
+  </data>
+  <data name="CanhBaoThuoc" xml:space="preserve">
+    <value>Medicine {0} </value>
+  </data>
+  <data name="CanhBaoVatTu" xml:space="preserve">
+    <value>Material {0} </value>
+  </data>
+  <data name="DangSua" xml:space="preserve">
+    <value>Edit {0}</value>
+  </data>
+  <data name="GoiThauQuaDai" xml:space="preserve">
+    <value>bid package code is longer than 4 characters</value>
+  </data>
+  <data name="HeThongTBKQXLYCCuaFrontendThatBai" xml:space="preserve">
+    <value>Process fails</value>
+  </data>
+  <data name="KhongCoNhaCungCap" xml:space="preserve">
+    <value>No contractors</value>
+  </data>
+  <data name="KhongCoSttThau" xml:space="preserve">
+    <value>missing bid number order </value>
+  </data>
+  <data name="NhomThauQuaDai" xml:space="preserve">
+    <value>bid group code is longer than 4 characters</value>
+  </data>
+  <data name="SaiDinhDangNam" xml:space="preserve">
+    <value>Bid year is invalid</value>
+  </data>
+  <data name="SoLuongKhongDuocAm" xml:space="preserve">
+    <value>the number should not be less than 0  </value>
+  </data>
+  <data name="SttThauQuaDai" xml:space="preserve">
+    <value>bid number order is longer than 20 characters </value>
+  </data>
+  <data name="ThieuTruongDuLieuBatBuoc" xml:space="preserve">
+    <value>The required field has not been entered yet</value>
+  </data>
+  <data name="GoiThauKhongDuDoDai" xml:space="preserve">
+    <value>package code is less than 4 characters long</value>
+  </data>
+  <data name="KhongCoThongTinGoiThau" xml:space="preserve">
+    <value>bid package is empty</value>
+  </data>
+  <data name="KhongCoThongTinNam" xml:space="preserve">
+    <value>bid year is empty</value>
+  </data>
+  <data name="KhongCoThongTinQDThau" xml:space="preserve">
+    <value>bid number is empty</value>
+  </data>
+  <data name="KhongCoThongTinTenThau" xml:space="preserve">
+    <value>bid name is empty </value>
+  </data>
+  <data name="NamKhongDuocLonHonNamHienTai" xml:space="preserve">
+    <value>year is not greater than the current year</value>
+  </data>
+  <data name="KhongCoThongTinLoaiThau" xml:space="preserve">
+    <value>bid type is empty</value>
+  </data>
+  <data name="KhongCoGiaNhap" xml:space="preserve">
+    <value>price is empty</value>
+  </data>
+  <data name="KhongCoSoLuong" xml:space="preserve">
+    <value>amount is empty</value>
+  </data>
+  <data name="GiaKhongDuocAm" xml:space="preserve">
+    <value>prices are not negative</value>
+  </data>
+  <data name="KhongCoVAT" xml:space="preserve">
+    <value>VAT is empty</value>
+  </data>
+  <data name="VATKhongDuocAm" xml:space="preserve">
+    <value>VAT are not negative</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_MATERIAL_TYPE_CODE" xml:space="preserve">
+    <value>BID_MATERIAL_TYPE_CODE</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_MATERIAL_TYPE_NAME" xml:space="preserve">
+    <value>BID_MATERIAL_TYPE_NAME</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__HEIN_SERVICE_BHYT_NAME" xml:space="preserve">
+    <value>HEIN_SERVICE_BHYT_NAME</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__JOIN_BID_MATERIAL_TYPE_CODE" xml:space="preserve">
+    <value>JOIN_BID_MATERIAL_TYPE_CODE</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__SMATERIAL_TYPE_MAP_CODE" xml:space="preserve">
+    <value>MATERIAL_TYPE_MAP_CODE</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__SMATERIAL_TYPE_MAP_CODE_TOOLTIP" xml:space="preserve">
+    <value>MATERIAL_TYPE_MAP_CODE</value>
+  </data>
+  <data name="KhongDuocNhapMaDuThau" xml:space="preserve">
+    <value>Không được nhập mã dự thầu</value>
+  </data>
+  <data name="KhongDuocNhapMaTrungThau" xml:space="preserve">
+    <value>The winning code cannot be entered</value>
+  </data>
+  <data name="KhongDuocNhapMaVatTuKhiNhapMaVatTuTuongDuong" xml:space="preserve">
+    <value>Không được nhập mã vật tư khi nhập mã vật tư tương đương</value>
+  </data>
+  <data name="KhongDuocNhapMaVatTuTuongDuong" xml:space="preserve">
+    <value>Không được nhập mã vật tư tương đương</value>
+  </data>
+  <data name="KhongDuocNhapQuyCachDongGoi" xml:space="preserve">
+    <value>Packing specifications are not allowed</value>
+  </data>
+  <data name="KhongDuocNhapTenBHYT" xml:space="preserve">
+    <value>The name of health insurance cannot be entered</value>
+  </data>
+  <data name="KhongDuocNhapTenTrungThau" xml:space="preserve">
+    <value>The winning name cannot be entered</value>
+  </data>
+  <data name="MaDuThauQuaDai" xml:space="preserve">
+    <value>Bid code longer than 50 characters</value>
+  </data>
+  <data name="MaTrungThauQuaDai" xml:space="preserve">
+    <value>Bidding code cannot be entered</value>
+  </data>
+  <data name="MaVatTuTuongDuongQuaDai" xml:space="preserve">
+    <value>Equivalent material code longer than 25 characters</value>
+  </data>
+  <data name="QuyCachDongGoiQuaDai" xml:space="preserve">
+    <value>Packaging specifications longer than 300 characters</value>
+  </data>
+  <data name="TenBHYTQuaDai" xml:space="preserve">
+    <value>Health insurance name longer than 500 characters</value>
+  </data>
+  <data name="TenTrungThauQuaDai" xml:space="preserve">
+    <value>The winning name is more than 500 characters long</value>
+  </data>
+  <data name="GioTuoiThoQuaDai" xml:space="preserve">
+    <value>Lifespan now more than 19 characters</value>
+  </data>
+  <data name="HangsanxuatQuaDai" xml:space="preserve">
+    <value>Manufacturer longer than 6 characters</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__DAY_LIFESPAN" xml:space="preserve">
+    <value>DAY_LIFESPAN</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__HOUR_LIFESPAN" xml:space="preserve">
+    <value>HOUR_LIFESPAN</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__MEDICINE_REGISTER_NUMBER" xml:space="preserve">
+    <value>MEDICINE_REGISTER_NUMBER</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__MONTH_LIFESPAN" xml:space="preserve">
+    <value>MONTH_LIFESPAN</value>
+  </data>
+  <data name="KhongDuocNhapSoDangKy" xml:space="preserve">
+    <value>Registration number cannot be entered</value>
+  </data>
+  <data name="NgayTuoiThoQuaDai" xml:space="preserve">
+    <value>Date life is longer than 19 characters</value>
+  </data>
+  <data name="NongDoHamLuongQuaDai" xml:space="preserve">
+    <value>Concentration/Concentration longer than 1000 characters</value>
+  </data>
+  <data name="NuocsanxuatQuaDai" xml:space="preserve">
+    <value>Country of manufacture is longer than 100 characters</value>
+  </data>
+  <data name="SoDangKyQuaDai" xml:space="preserve">
+    <value>Registration number longer than 500 characters</value>
+  </data>
+  <data name="ThangTuoiThoQuaDai" xml:space="preserve">
+    <value>Month life is longer than 19 characters</value>
+  </data>
+  <data name="TuoiThoKhongHopLe" xml:space="preserve">
+    <value>Invalid lifespan</value>
+  </data>
+  <data name="GioTuoiThoSaiDinhDang" xml:space="preserve">
+    <value>Lifetime is in the wrong format</value>
+  </data>
+  <data name="NgayTuoiThoSaiDinhDang" xml:space="preserve">
+    <value>Lifespan date wrong format</value>
+  </data>
+  <data name="ThangTuoiThoSaiDinhDang" xml:space="preserve">
+    <value>Lifespan month wrong format</value>
+  </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__BID_EXTRA_CODE" xml:space="preserve">
+    <value>Bid extra code</value>
+  </data>
+  <data name="MaQDThauQuaDai" xml:space="preserve">
+    <value>The bid decision code is longer than 50 characters</value>
+  </data>
+</root>

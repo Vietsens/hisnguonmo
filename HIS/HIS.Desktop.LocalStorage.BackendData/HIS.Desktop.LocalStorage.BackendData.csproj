@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{86709A9C-A149-4EBB-A817-1BF8F4F4BC07}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HIS.Desktop.LocalStorage.BackendData</RootNamespace>
+    <AssemblyName>HIS.Desktop.LocalStorage.BackendData</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ACS.EFMODEL">
+      <HintPath>..\..\..\..\..\RELEASE\ACS\ACS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="ACS.Filter">
+      <HintPath>..\..\..\..\..\RELEASE\ACS\ACS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper">
+      <HintPath>..\ReferencedAssemblies\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIBRARY\DevLib\DevExpress.Data.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIBRARY\DevLib\DevExpress.Utils.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIBRARY\DevLib\DevExpress.XtraEditors.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.Branch">
+      <HintPath>..\..\..\..\..\RELEASE\HIS\HIS.Desktop.LocalStorage.Branch\HIS.Desktop.LocalStorage.Branch.dll</HintPath>
+    </Reference>
+    <Reference Include="HTC.EFMODEL">
+      <HintPath>..\..\..\..\..\RELEASE\HTC\HTC.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="HTC.Filter">
+      <HintPath>..\..\..\..\..\RELEASE\HTC\HTC.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="HTC.SDO">
+      <HintPath>..\..\..\..\..\RELEASE\HTC\HTC.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.ACS_RS">
+      <HintPath>..\..\..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.ACS_RS\IMSys.DbConfig.ACS_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.HIS_RS">
+      <HintPath>..\..\..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.SAR_RS">
+      <HintPath>..\..\..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.SAR_RS\IMSys.DbConfig.SAR_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.SDA_RS">
+      <HintPath>..\..\..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.SDA_RS\IMSys.DbConfig.SDA_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Adapter">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Mapper">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Number">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Number\Inventec.Common.Number.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.RedisCache">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.RedisCache\Inventec.Common.RedisCache.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Repository">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Repository\Inventec.Common.Repository.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Sqlite">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Sqlite\Inventec.Common.Sqlite.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.SQLiteHelper">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.SQLiteHelper\Inventec.Common.SQLiteHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.String">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.TypeConvert">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.WebApiClient">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core">
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.LanguageManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.ClientSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Login, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+    </Reference>
+    <Reference Include="LIS.EFMODEL">
+      <HintPath>..\..\..\..\..\RELEASE\LIS\LIS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="LIS.Filter">
+      <HintPath>..\..\..\..\..\RELEASE\LIS\LIS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\RELEASE\MOS\MOS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.LibraryHein.Bhyt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\RELEASE\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.LibraryHein.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\RELEASE\MOS\MOS.LibraryHein.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.LibraryHein.Config, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\RELEASE\MOS\MOS.LibraryHein.Config.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.LibraryHein.Factory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\RELEASE\MOS\MOS.LibraryHein.Factory.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.LibraryHein.HcmPoorFund, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\RELEASE\MOS\MOS.LibraryHein.HcmPoorFund.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.LibraryHein.Ksk, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\RELEASE\MOS\MOS.LibraryHein.Ksk.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\RELEASE\MOS\MOS.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.ServicePaty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\RELEASE\MOS\MOS.ServicePaty.dll</HintPath>
+    </Reference>
+    <Reference Include="MRS.Filter">
+      <HintPath>..\..\..\..\..\RELEASE\MRS\MRS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="MRS.SDO">
+      <HintPath>..\..\..\..\..\RELEASE\MRS\MRS.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ReferencedAssemblies\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RDCACHE.SDO">
+      <HintPath>..\..\..\..\..\RELEASE\RDCACHE\RDCACHE.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="RDCACHE.URI">
+      <HintPath>..\..\..\..\..\RELEASE\RDCACHE\RDCACHE.URI.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.EFMODEL">
+      <HintPath>..\..\..\..\..\RELEASE\SAR\SAR.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.Filter">
+      <HintPath>..\..\..\..\..\RELEASE\SAR\SAR.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.EFMODEL">
+      <HintPath>..\..\..\..\..\RELEASE\SDA\SDA.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.Filter">
+      <HintPath>..\..\..\..\..\RELEASE\SDA\SDA.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.105.2, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.SQLiteHelper\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ADO\AgeADO.cs" />
+    <Compile Include="ADO\MediOrgADO.cs" />
+    <Compile Include="ADO\RelaytionTypeADO.cs" />
+    <Compile Include="ADO\SereServEkipADO.cs" />
+    <Compile Include="ADO\ServiceSameADO.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ADO\TestDeviceSampleADO.cs" />
+    <Compile Include="ADO\TimeSyncADO.cs" />
+    <Compile Include="ADO\DataADO.cs" />
+    <Compile Include="ADO\CommuneADO.cs" />
+    <Compile Include="ADO\MedicineMaterialTypeComboADO.cs" />
+    <Compile Include="ADO\ServiceComboADO.cs" />
+    <Compile Include="ADO\SereServADO.cs" />
+    <Compile Include="ADO\ServiceADO.cs" />
+    <Compile Include="ADO\ServiceReq1ADO.cs" />
+    <Compile Include="Base\AppConfigKeys.cs" />
+    <Compile Include="Base\HisConfigKeys.cs" />
+    <Compile Include="Core\BackendDataWorker.cs" />
+    <Compile Include="Core\BackendDataWorkerAsync.cs" />
+    <Compile Include="Core\BackendDataWorkerSet.cs" />
+    <Compile Include="Core\Branch\BranchDataWorker.cs" />
+    <Compile Include="Base\BusinessBase.cs" />
+    <Compile Include="Core\CallPatient\CallPatientDataWorker.cs" />
+    <Compile Include="Base\ConvertListToDataTable.cs" />
+    <Compile Include="Base\EncryptUtil.cs" />
+    <Compile Include="Core\CFG\HisConfigCFG.cs" />
+    <Compile Include="Core\BackendDataWorker__CacheMonitorSync.cs" />
+    <Compile Include="Core\BackendDataWorker__SyncTime.cs" />
+    <Compile Include="Core\Get\EmrGetListBehavior.cs" />
+    <Compile Include="Core\Get\SdaCommuneADOGetList1Behavior.cs" />
+    <Compile Include="Core\RelaytionType\RelaytionTypeDataWorker.cs" />
+    <Compile Include="Core\ServiceCombo\ServiceByPatientTypeDataWorker.cs" />
+    <Compile Include="Core\ServiceCombo\ServiceComboDataWorker.cs" />
+    <Compile Include="Core\Get\HeinLiveListAreaBehavior.cs" />
+    <Compile Include="Core\Get\GetDataBehaviorFactory__v2.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\Get\RdCacheGetListBehavior.cs" />
+    <Compile Include="Core\MediOrg\MediOrgDataWorker.cs" />
+    <Compile Include="Core\Get\AcsGetListAsyncBehavior.cs" />
+    <Compile Include="Core\Get\LisGetListAsyncBehavior.cs" />
+    <Compile Include="Core\Get\HtcGetListAsyncBehavior.cs" />
+    <Compile Include="Core\Get\MosGetZipListBehavior.cs" />
+    <Compile Include="Core\Get\SdaGetListAsyncBehavior.cs" />
+    <Compile Include="Core\Get\SarGetListAsyncBehavior.cs" />
+    <Compile Include="Core\Reset\BackendDataReset.cs" />
+    <Compile Include="Core\Reset\GenerateUri.cs" />
+    <Compile Include="Core\TestDeviceSample\TestDeviceSampleDataWorker.cs" />
+    <Compile Include="Core\TranslateWorker.cs" />
+    <Compile Include="Core\Translate\TranslateDataWorker.cs" />
+    <Compile Include="Core\Get\GetDataAsync.cs" />
+    <Compile Include="Core\Get\MedicineMaterialTypeComboGetBehavior.cs" />
+    <Compile Include="Core\Get\MosGetListAsyncBehavior.cs" />
+    <Compile Include="Core\Get\IGetDataTAsync.cs" />
+    <Compile Include="Base\DataKeyConstan.cs" />
+    <Compile Include="Core\Get\AcsGetListBehavior.cs" />
+    <Compile Include="Core\Get\LisGetListBehavior.cs" />
+    <Compile Include="Core\Get\HisAgeGetListBehavior.cs" />
+    <Compile Include="Core\Get\HtcGetListBehavior.cs" />
+    <Compile Include="Core\Get\MosGetListBehavior.cs" />
+    <Compile Include="Core\Get\SarGetListBehavior.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\Get\SdaCommuneADOGetListBehavior.cs" />
+    <Compile Include="Core\Get\SdaGetListBehavior.cs" />
+    <Compile Include="Core\Get\IGetData.cs" />
+    <Compile Include="Core\Get\GetData.cs" />
+    <Compile Include="Core\Get\IGetDataT.cs" />
+    <Compile Include="Core\TypeCollection.cs" />
+    <Compile Include="Core\Util.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Base\TableNameConstan.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
+      <Project>{808C25CD-0925-417F-BBF9-CAF9604DA879}</Project>
+      <Name>HIS.Desktop.ADO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
+      <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
+      <Name>HIS.Desktop.ApiConsumer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Common\HIS.Desktop.Common.csproj">
+      <Project>{59fdcba7-0f9f-4257-b95a-e37a1ccfe107}</Project>
+      <Name>HIS.Desktop.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
+      <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
+      <Name>HIS.Desktop.LocalStorage.ConfigApplication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
+      <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
+      <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
+      <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
+      <Name>HIS.Desktop.LocalStorage.LocalData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.XmlCacheMonitor\HIS.Desktop.XmlCacheMonitor.csproj">
+      <Project>{0e390108-e542-44fe-8711-5e01c5406684}</Project>
+      <Name>HIS.Desktop.XmlCacheMonitor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.XmlRamMonitor\HIS.Desktop.XmlRamMonitor.csproj">
+      <Project>{26c8fac6-4f73-445c-a900-cf89caa75274}</Project>
+      <Name>HIS.Desktop.XmlRamMonitor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Plugins\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
+      <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
+      <Name>HIS.Desktop.Library.CacheClient</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

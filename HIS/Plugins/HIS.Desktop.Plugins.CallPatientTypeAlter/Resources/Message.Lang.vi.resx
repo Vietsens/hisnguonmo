@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BNCoTTDienDoiTuong" xml:space="preserve">
+    <value>Bệnh nhân có thông tin diện đối tượng không đồng nhất. Bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="BNTreEmCanNhapDuTT" xml:space="preserve">
+    <value>Bệnh nhân trẻ em cần nhập đủ thông tin tỉnh, huyện</value>
+  </data>
+  <data name="CapNhatTTDTTB" xml:space="preserve">
+    <value>Cập nhật thông tin đối tượng thất bại. {0}. Vui lòng vào chức năng sửa thông tin bệnh nhân để cập nhật lại.</value>
+  </data>
+  <data name="DaCoThongTinDoiTuongBHYT" xml:space="preserve">
+    <value>Đã có thông tin đối tượng BHYT cho y lệnh {0} không cho phép đổi thời hạn thẻ</value>
+  </data>
+  <data name="DichVuBatBuocChonDieuKien" xml:space="preserve">
+    <value>Dịch vụ {0} bắt buộc chọn Điều kiện.</value>
+  </data>
+  <data name="DoiTuongKhamSucKhoe" xml:space="preserve">
+    <value>"Đối tượng khám sức khỏe phải có hợp đồng khám sức khỏe</value>
+  </data>
+  <data name="DVKhongTheChuyenDoi" xml:space="preserve">
+    <value>Dịch vụ có mã: {0} không thể chuyển đổi do không tìm thấy chính sách</value>
+  </data>
+  <data name="GoiSangCongBHXHTraVeMaLoi" xml:space="preserve">
+    <value>Mã lỗi: {0}</value>
+  </data>
+  <data name="Gov001" xml:space="preserve">
+    <value>Thẻ do BHXH Bộ Quốc phòng quản lý, đề nghị kiểm tra thẻ và thông tin giấy tờ tùy thân</value>
+  </data>
+  <data name="Gov002" xml:space="preserve">
+    <value>Thẻ do BHXH Bộ Công An quản lý, đề nghị kiểm tra thẻ và thông tin giấy tờ tùy thân</value>
+  </data>
+  <data name="Gov010" xml:space="preserve">
+    <value>Thẻ hết giá trị sử dụng</value>
+  </data>
+  <data name="Gov050" xml:space="preserve">
+    <value>Không thấy thông tin thẻ BHYT</value>
+  </data>
+  <data name="Gov051" xml:space="preserve">
+    <value>Mã thẻ không đúng</value>
+  </data>
+  <data name="Gov052" xml:space="preserve">
+    <value>Mã tỉnh cấp thẻ(ký tự thứ 4,5 của mã thẻ)không đúng</value>
+  </data>
+  <data name="Gov053" xml:space="preserve">
+    <value>Mã quyền lợi thẻ(ký tự thứ 3)không đúng</value>
+  </data>
+  <data name="Gov060" xml:space="preserve">
+    <value>Thẻ sai họ tên</value>
+  </data>
+  <data name="Gov061" xml:space="preserve">
+    <value>Thẻ sai họ tên(đúng ký tự đầu)</value>
+  </data>
+  <data name="Gov070" xml:space="preserve">
+    <value>Thẻ sai ngày sinh</value>
+  </data>
+  <data name="Gov080" xml:space="preserve">
+    <value>Thẻ sai giới tính</value>
+  </data>
+  <data name="Gov100" xml:space="preserve">
+    <value>Lỗi khi lấy dữ liệu số thẻ</value>
+  </data>
+  <data name="Gov101" xml:space="preserve">
+    <value>Lỗi Server Gov</value>
+  </data>
+  <data name="Gov110" xml:space="preserve">
+    <value>Thẻ đã thu hồi</value>
+  </data>
+  <data name="Gov120" xml:space="preserve">
+    <value>Thẻ đã báo giảm</value>
+  </data>
+  <data name="Gov121" xml:space="preserve">
+    <value>Thẻ đã báo giảm. Giảm chuyển ngoại tỉnh</value>
+  </data>
+  <data name="Gov122" xml:space="preserve">
+    <value>Thẻ đã báo giảm. Giảm chuyển nội tỉnh</value>
+  </data>
+  <data name="Gov123" xml:space="preserve">
+    <value>Thẻ đã báo giảm. Thu hồi do tăng lại cùng đơn vị</value>
+  </data>
+  <data name="Gov124" xml:space="preserve">
+    <value>Thẻ đã báo giảm. Ngừng tham gia</value>
+  </data>
+  <data name="Gov130" xml:space="preserve">
+    <value>Trẻ em không xuất trình thẻ</value>
+  </data>
+  <data name="GovError" xml:space="preserve">
+    <value>Thẻ không hợp lệ</value>
+  </data>
+  <data name="Gio" xml:space="preserve">
+    <value> giờ</value>
+  </data>
+  <data name="Ma" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="Ngay" xml:space="preserve">
+    <value> ngày</value>
+  </data>
+  <data name="SuaTTBN" xml:space="preserve">
+    <value>. Bạn có muốn sửa thông tin bệnh nhân?</value>
+  </data>
+  <data name="Ten" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="TLTT" xml:space="preserve">
+    <value>Tỉ lệ thanh toán</value>
+  </data>
+  <data name="TongSoTienCuaCacDichVu" xml:space="preserve">
+    <value>Tổng số tiền của các dịch vụ đã chỉ định của bệnh nhân đối thuộc diện điều trị {0} cho BHYT là {1} đã vượt quá mức giới hạn {2}. Bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="Tuoi" xml:space="preserve">
+    <value> tuổi</value>
+  </data>
+  <data name="Thang" xml:space="preserve">
+    <value> tháng</value>
+  </data>
+  <data name="TheBhytKhongHopLeBanCoMuonSuDung" xml:space="preserve">
+    <value>Thẻ BHYT không hợp lệ. Bạn có muốn sử dụng với đối tượng BHYT không?</value>
+  </data>
+  <data name="TheBhytKhongHopLeKhongChoPhepDangKy" xml:space="preserve">
+    <value>Thẻ BHYT không hợp lệ. Không cho phép đăng ký với đối tượng BHYT</value>
+  </data>
+  <data name="TheNayDaDuocSD" xml:space="preserve">
+    <value>Thẻ này đã được sử dụng bởi bệnh nhân: {0}. Bạn có muốn ghép mã không?</value>
+  </data>
+  <data name="TheSapHetHan" xml:space="preserve">
+    <value>Thẻ sắp hết hạn (còn {0} ngày), bạn có muốn sử dụng?</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
+  <data name="ThongBaoKetQuaTimKiemBenhNhanKhiQuetTheDuLieuTraVeNull" xml:space="preserve">
+    <value>Thẻ không hợp lệ</value>
+  </data>
+  <data name="XuLyThatBai" xml:space="preserve">
+    <value>Xử lý thất bại.</value>
+  </data>
+  <data name="ChuyenVien" xml:space="preserve">
+    <value>Chuyển viện</value>
+  </data>
+  <data name="Do" xml:space="preserve">
+    <value>Đỡ</value>
+  </data>
+  <data name="Khoi" xml:space="preserve">
+    <value>Khỏi</value>
+  </data>
+  <data name="KhongThayDoi" xml:space="preserve">
+    <value>Không thay đổi</value>
+  </data>
+  <data name="NangHon" xml:space="preserve">
+    <value>Nặng hơn</value>
+  </data>
+  <data name="RaVien" xml:space="preserve">
+    <value>Ra viện</value>
+  </data>
+  <data name="TrongVien" xml:space="preserve">
+    <value>Trốn viện</value>
+  </data>
+  <data name="TuVong" xml:space="preserve">
+    <value>Tử vong</value>
+  </data>
+  <data name="XinRaVien" xml:space="preserve">
+    <value>Xin ra viện</value>
+  </data>
+</root>

@@ -1,0 +1,1242 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmHisService.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmHisService.bbtnAdd.Caption" xml:space="preserve">
+    <value>Add (Ctrl N)</value>
+  </data>
+  <data name="frmHisService.bbtnEdit.Caption" xml:space="preserve">
+    <value>Edit (Ctrl S)</value>
+  </data>
+  <data name="frmHisService.bbtnFocusDefault.Caption" xml:space="preserve">
+    <value>F2</value>
+  </data>
+  <data name="frmHisService.bbtnReset.Caption" xml:space="preserve">
+    <value>Redo (Ctrl R)</value>
+  </data>
+  <data name="frmHisService.bbtnSearch.Caption" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
+  </data>
+  <data name="frmHisService.btnAdd.Text" xml:space="preserve">
+    <value>Add (Ctrl N)</value>
+  </data>
+  <data name="frmHisService.btnEdit.Text" xml:space="preserve">
+    <value>Edit (Ctrl S)</value>
+  </data>
+  <data name="frmHisService.btnRefresh.Text" xml:space="preserve">
+    <value>Redo (Ctrl C)</value>
+  </data>
+  <data name="frmHisService.btnSearch.Text" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
+  </data>
+  <data name="frmHisService.chkChiDinh.Properties.Caption" xml:space="preserve">
+    <value>Indication \u003e 1</value>
+  </data>
+  <data name="frmHisService.chkCPNgoaiGoi.Properties.Caption" xml:space="preserve">
+    <value>Out-of-package costs</value>
+  </data>
+  <data name="frmHisService.chkUpdateAll.Properties.Caption" xml:space="preserve">
+    <value>Update all</value>
+  </data>
+  <data name="frmHisService.chkUpdateOnly.Properties.Caption" xml:space="preserve">
+    <value>Update the profile without locking the hospital fee</value>
+  </data>
+  <data name="frmHisService.dnNavigation.Text" xml:space="preserve">
+    <value>dataNavigator1</value>
+  </data>
+  <data name="frmHisService.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmHisService.layoutControlItem1.Text" xml:space="preserve">
+    <value>Compulsory phone number:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem11.Text" xml:space="preserve">
+    <value>Surgical methods</value>
+  </data>
+  <data name="frmHisService.layoutControlItem12.Text" xml:space="preserve">
+    <value>Unit:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem13.Text" xml:space="preserve">
+    <value>Service Parent:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem14.Text" xml:space="preserve">
+    <value>Type of insurance service:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem15.Text" xml:space="preserve">
+    <value>Type of service:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem16.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.layoutControlItem17.Text" xml:space="preserve">
+    <value>Health insurance service code:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem18.Text" xml:space="preserve">
+    <value>Name of health insurance service:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem19.Text" xml:space="preserve">
+    <value>Health insurance information:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem20.Text" xml:space="preserve">
+    <value>Old ceiling price:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem21.Text" xml:space="preserve">
+    <value>New ceiling price:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem22.Text" xml:space="preserve">
+    <value>Old ceiling ratio:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem23.Text" xml:space="preserve">
+    <value>Type of college:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem24.Text" xml:space="preserve">
+    <value>Time application:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem24.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Time to apply new ceiling price according to hospital admission date</value>
+  </data>
+  <data name="frmHisService.layoutControlItem25.Text" xml:space="preserve">
+    <value>Explain:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem26.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.layoutControlItem27.Text" xml:space="preserve">
+    <value>PTTT Group:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem28.Text" xml:space="preserve">
+    <value>ICD CM</value>
+  </data>
+  <data name="frmHisService.layoutControlItem29.Text" xml:space="preserve">
+    <value>Update unlocked hospital fee records:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem30.Text" xml:space="preserve">
+    <value>Specify \u003e1:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem31.Text" xml:space="preserve">
+    <value>Type of service:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem32.Text" xml:space="preserve">
+    <value>Specialty code:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem33.Text" xml:space="preserve">
+    <value>Package:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem35.Text" xml:space="preserve">
+    <value>Package price:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem5.Text" xml:space="preserve">
+    <value>Type of contract:</value>
+  </data>
+  <data name="frmHisService.lcEditorInfo.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="frmHisService.lciNumOrder.Text" xml:space="preserve">
+    <value>Order:</value>
+  </data>
+  <data name="frmHisService.lciTypeCode.Text" xml:space="preserve">
+    <value>Code:</value>
+  </data>
+  <data name="frmHisService.lciTypeName.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="frmHisService.spCogss.Text" xml:space="preserve">
+    <value>Cost of capital:</value>
+  </data>
+  <data name="frmHisService.spEstimateDurations.Text" xml:space="preserve">
+    <value>Expected T/G:</value>
+  </data>
+  <data name="frmHisService.Text" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="frmHisService.treeListColumn1.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.treeListColumn1.ToolTip" xml:space="preserve">
+    <value>Lock</value>
+  </data>
+  <data name="frmHisService.treeListColumn10.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="frmHisService.treeListColumn10.ToolTip" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="frmHisService.treeListColumn11.Caption" xml:space="preserve">
+    <value>Creation time</value>
+  </data>
+  <data name="frmHisService.treeListColumn11.ToolTip" xml:space="preserve">
+    <value>Creation time</value>
+  </data>
+  <data name="frmHisService.treeListColumn12.Caption" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="frmHisService.treeListColumn12.ToolTip" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="frmHisService.treeListColumn13.Caption" xml:space="preserve">
+    <value>Repair time</value>
+  </data>
+  <data name="frmHisService.treeListColumn13.ToolTip" xml:space="preserve">
+    <value>Repair time</value>
+  </data>
+  <data name="frmHisService.treeListColumn14.Caption" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="frmHisService.treeListColumn14.ToolTip" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="frmHisService.treeListColumn15.Caption" xml:space="preserve">
+    <value>Bills</value>
+  </data>
+  <data name="frmHisService.treeListColumn16.Caption" xml:space="preserve">
+    <value>Compulsory mobile phone</value>
+  </data>
+  <data name="frmHisService.treeListColumn17.Caption" xml:space="preserve">
+    <value>CP out of package</value>
+  </data>
+  <data name="frmHisService.treeListColumn17.ToolTip" xml:space="preserve">
+    <value>CP out of package</value>
+  </data>
+  <data name="frmHisService.treeListColumn18.Caption" xml:space="preserve">
+    <value>Group of PTTT</value>
+  </data>
+  <data name="frmHisService.treeListColumn18.ToolTip" xml:space="preserve">
+    <value>Group of PTTT</value>
+  </data>
+  <data name="frmHisService.treeListColumn19.Caption" xml:space="preserve">
+    <value>PTT. method</value>
+  </data>
+  <data name="frmHisService.treeListColumn19.ToolTip" xml:space="preserve">
+    <value>PTT. method</value>
+  </data>
+  <data name="frmHisService.treeListColumn2.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.treeListColumn2.ToolTip" xml:space="preserve">
+    <value>Erase</value>
+  </data>
+  <data name="frmHisService.treeListColumn20.Caption" xml:space="preserve">
+    <value>ICD CM</value>
+  </data>
+  <data name="frmHisService.treeListColumn20.ToolTip" xml:space="preserve">
+    <value>ICD CM</value>
+  </data>
+  <data name="frmHisService.treeListColumn21.Caption" xml:space="preserve">
+    <value>Old price</value>
+  </data>
+  <data name="frmHisService.treeListColumn21.ToolTip" xml:space="preserve">
+    <value>Old price</value>
+  </data>
+  <data name="frmHisService.treeListColumn22.Caption" xml:space="preserve">
+    <value>Type of DVD</value>
+  </data>
+  <data name="frmHisService.treeListColumn22.ToolTip" xml:space="preserve">
+    <value>Type of DVD</value>
+  </data>
+  <data name="frmHisService.treeListColumn23.Caption" xml:space="preserve">
+    <value>Time by date specified</value>
+  </data>
+  <data name="frmHisService.treeListColumn23.ToolTip" xml:space="preserve">
+    <value>Time by date specified</value>
+  </data>
+  <data name="frmHisService.treeListColumn24.Caption" xml:space="preserve">
+    <value>Time by date of hospital admission</value>
+  </data>
+  <data name="frmHisService.treeListColumn24.ToolTip" xml:space="preserve">
+    <value>Time by date of hospital admission</value>
+  </data>
+  <data name="frmHisService.treeListColumn25.Caption" xml:space="preserve">
+    <value>New ceiling rate</value>
+  </data>
+  <data name="frmHisService.treeListColumn25.ToolTip" xml:space="preserve">
+    <value>New ceiling rate</value>
+  </data>
+  <data name="frmHisService.treeListColumn26.Caption" xml:space="preserve">
+    <value>Old ceiling ratio</value>
+  </data>
+  <data name="frmHisService.treeListColumn26.ToolTip" xml:space="preserve">
+    <value>Old ceiling ratio</value>
+  </data>
+  <data name="frmHisService.treeListColumn27.Caption" xml:space="preserve">
+    <value>New price</value>
+  </data>
+  <data name="frmHisService.treeListColumn27.ToolTip" xml:space="preserve">
+    <value>New price</value>
+  </data>
+  <data name="frmHisService.treeListColumn28.Caption" xml:space="preserve">
+    <value>Health Insurance No.</value>
+  </data>
+  <data name="frmHisService.treeListColumn28.ToolTip" xml:space="preserve">
+    <value>Health Insurance No.</value>
+  </data>
+  <data name="frmHisService.treeListColumn29.Caption" xml:space="preserve">
+    <value>Package price</value>
+  </data>
+  <data name="frmHisService.treeListColumn29.ToolTip" xml:space="preserve">
+    <value>Package price</value>
+  </data>
+  <data name="frmHisService.treeListColumn3.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="frmHisService.treeListColumn3.ToolTip" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="frmHisService.treeListColumn30.Caption" xml:space="preserve">
+    <value>Package name</value>
+  </data>
+  <data name="frmHisService.treeListColumn30.ToolTip" xml:space="preserve">
+    <value>Package name</value>
+  </data>
+  <data name="frmHisService.treeListColumn31.Caption" xml:space="preserve">
+    <value>Specialty code</value>
+  </data>
+  <data name="frmHisService.treeListColumn31.ToolTip" xml:space="preserve">
+    <value>Specialty code</value>
+  </data>
+  <data name="frmHisService.treeListColumn32.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.treeListColumn33.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.treeListColumn34.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.treeListColumn4.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="frmHisService.treeListColumn5.Caption" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="frmHisService.treeListColumn6.Caption" xml:space="preserve">
+    <value>Name of health insurance service</value>
+  </data>
+  <data name="frmHisService.treeListColumn7.Caption" xml:space="preserve">
+    <value>Cost of capital</value>
+  </data>
+  <data name="frmHisService.treeListColumn8.Caption" xml:space="preserve">
+    <value>Intend time</value>
+  </data>
+  <data name="frmHisService.treeListColumn8.ToolTip" xml:space="preserve">
+    <value>Intend time</value>
+  </data>
+  <data name="frmHisService.treeListColumn9.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmHisService.treeListColumn9.ToolTip" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmHisService.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keyword</value>
+  </data>
+  <data name="frmServiceRati.bar2.Text" xml:space="preserve">
+    <value>Main menu</value>
+  </data>
+  <data name="frmServiceRati.barButtonItem1.Caption" xml:space="preserve">
+    <value>Save(Ctrl S)</value>
+  </data>
+  <data name="frmServiceRati.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmServiceRati.grclCheck.Caption" xml:space="preserve">
+    <value>grclCheck</value>
+  </data>
+  <data name="frmServiceRati.grclCode.Caption" xml:space="preserve">
+    <value>Meal time code</value>
+  </data>
+  <data name="frmServiceRati.grclName.Caption" xml:space="preserve">
+    <value>Time to eat</value>
+  </data>
+  <data name="frmServiceRati.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmServiceRati.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmServiceRati.Text" xml:space="preserve">
+    <value>Set meal time</value>
+  </data>
+  <data name="UC_HisService.btnAdd.Text" xml:space="preserve">
+    <value>Add (Ctrl N)</value>
+  </data>
+  <data name="UC_HisService.btnEdit.Text" xml:space="preserve">
+    <value>Edit (Ctrl S)</value>
+  </data>
+  <data name="UC_HisService.btnEditServiceType.ToolTip" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="UC_HisService.BtnExportExcel.Text" xml:space="preserve">
+    <value>Export Excel</value>
+  </data>
+  <data name="UC_HisService.btnImport.Text" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="UC_HisService.btnMayCuaToi.Text" xml:space="preserve">
+    <value>Update my device cache</value>
+  </data>
+  <data name="UC_HisService.btnRefresh.Text" xml:space="preserve">
+    <value>Redo (Ctrl R)</value>
+  </data>
+  <data name="UC_HisService.btnSearch.Text" xml:space="preserve">
+    <value>Find (Ctrl + F)</value>
+  </data>
+  <data name="UC_HisService.cboFILM_SIZE.ToolTip" xml:space="preserve">
+    <value>Film size used for diagnostic imaging</value>
+  </data>
+  <data name="UC_HisService.CboTestType.ToolTip" xml:space="preserve">
+    <value>Test Type</value>
+  </data>
+  <data name="UC_HisService.chkAllowExpend.Properties.Caption" xml:space="preserve">
+    <value>Allow HP</value>
+  </data>
+  <data name="UC_HisService.chkChiDinh.Properties.Caption" xml:space="preserve">
+    <value>Assign&gt; 1</value>
+  </data>
+  <data name="UC_HisService.chkCPNgoaiGoi.Properties.Caption" xml:space="preserve">
+    <value>Costs outside the package</value>
+  </data>
+  <data name="UC_HisService.chkForPrice.Properties.Caption" xml:space="preserve">
+    <value>For specifying the price</value>
+  </data>
+  <data name="UC_HisService.chkForPrice.ToolTip" xml:space="preserve">
+    <value>Allow price input when specifying service</value>
+  </data>
+  <data name="UC_HisService.chkIS_AUTO_EXPEND.Properties.Caption" xml:space="preserve">
+    <value>Automatically accumulating expenses</value>
+  </data>
+  <data name="UC_HisService.chkIS_AUTO_EXPEND.ToolTip" xml:space="preserve">
+    <value>Automatically accumulate costs when specifying services</value>
+  </data>
+  <data name="UC_HisService.chkIS_NOT_SHOW_TRACKING.Properties.Caption" xml:space="preserve">
+    <value>Not shown on treatment sheet</value>
+  </data>
+  <data name="UC_HisService.chkIS_OUT_OF_MANAGEMENT.Properties.Caption" xml:space="preserve">
+    <value>As an external management service</value>
+  </data>
+  <data name="UC_HisService.chkIsAntibioticResistanc_Lay.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.chkIsAntibioticResistance.Properties.Caption" xml:space="preserve">
+    <value>Antibiotic Resistance</value>
+  </data>
+  <data name="UC_HisService.chkIsBlockDepartment.Properties.Caption" xml:space="preserve">
+    <value>Block transfer</value>
+  </data>
+  <data name="UC_HisService.chkIsBlockDepartment.ToolTip" xml:space="preserve">
+    <value>Block transfer if service has not ended</value>
+  </data>
+  <data name="UC_HisService.chkIsDisAllowanceNoExecute.Properties.Caption" xml:space="preserve">
+    <value>Block does not execute</value>
+  </data>
+  <data name="UC_HisService.chkIsDisAllowanceNoExecute.ToolTip" xml:space="preserve">
+    <value>Block "Do not perform" ticking in the billing statement</value>
+  </data>
+  <data name="UC_HisService.chkIsKidney.Properties.Caption" xml:space="preserve">
+    <value>Kidney</value>
+  </data>
+  <data name="UC_HisService.chkIsOtherSourcePaid.Properties.Caption" xml:space="preserve">
+    <value>Is Other Source Paid</value>
+  </data>
+  <data name="UC_HisService.chkMUST_BE_CONSULTED.Properties.Caption" xml:space="preserve">
+    <value>BBHC is required</value>
+  </data>
+  <data name="UC_HisService.chkNgoaiDinhSuat.Properties.Caption" xml:space="preserve">
+    <value>Out of capitation/DRG</value>
+  </data>
+  <data name="UC_HisService.chkNotChangePaty.Properties.Caption" xml:space="preserve">
+    <value>Will not fix</value>
+  </data>
+  <data name="UC_HisService.chkNotChangePaty.ToolTip" xml:space="preserve">
+    <value>Default surcharge object is not allowed when specifying service</value>
+  </data>
+  <data name="UC_HisService.chkSplitTreatment.Properties.Caption" xml:space="preserve">
+    <value>Separation of command</value>
+  </data>
+  <data name="UC_HisService.chkSplitTreatment.ToolTip" xml:space="preserve">
+    <value>Automatically splits into multiple y orders (and each y command has a count of 1) in the h. field</value>
+  </data>
+  <data name="UC_HisService.chkTachdichvu.Properties.Caption" xml:space="preserve">
+    <value>Separation of service</value>
+  </data>
+  <data name="UC_HisService.chkTachdichvu.ToolTip" xml:space="preserve">
+    <value>Automatically split into multiple service lines, each line has a count of 1 (in the same order)</value>
+  </data>
+  <data name="UC_HisService.chkUpdateAll.Properties.Caption" xml:space="preserve">
+    <value>Update all</value>
+  </data>
+  <data name="UC_HisService.chkUpdateOnly.Properties.Caption" xml:space="preserve">
+    <value>Update Profile no lock fees</value>
+  </data>
+  <data name="UC_HisService.dnNavigation.Text" xml:space="preserve">
+    <value>dataNavigator1</value>
+  </data>
+  <data name="UC_HisService.dtInTime.ToolTip" xml:space="preserve">
+    <value>Time application</value>
+  </data>
+  <data name="UC_HisService.emptySpaceItem1.Text" xml:space="preserve">
+    <value>minute</value>
+  </data>
+  <data name="UC_HisService.emptySpaceItem2.Text" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="UC_HisService.emptySpaceItem4.Text" xml:space="preserve">
+    <value>minute</value>
+  </data>
+  <data name="UC_HisService.emptySpaceItem5.Text" xml:space="preserve">
+    <value>minute</value>
+  </data>
+  <data name="UC_HisService.emptySpaceItem6.Text" xml:space="preserve">
+    <value>day</value>
+  </data>
+  <data name="UC_HisService.emptySpaceItemMaxTotalProcessTime.Text" xml:space="preserve">
+    <value>min</value>
+  </data>
+  <data name="UC_HisService.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UC_HisService.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UC_HisService.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem1.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Default surcharge object</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem1.Text" xml:space="preserve">
+    <value>DTTT mandatory:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem1.ToolTip" xml:space="preserve">
+    <value>Default surcharge object</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem11.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Surgical methods</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem11.Text" xml:space="preserve">
+    <value>Surgical methods</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem12.Text" xml:space="preserve">
+    <value>Unit:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem13.Text" xml:space="preserve">
+    <value>Service Parent:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem14.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Type of insurance service</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem14.Text" xml:space="preserve">
+    <value>Service Type BH:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem15.Text" xml:space="preserve">
+    <value>Type of service:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem16.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem17.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Health insurance service code</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem17.Text" xml:space="preserve">
+    <value>DV insurance code:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem18.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Name of health insurance service</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem18.Text" xml:space="preserve">
+    <value>MI DV name:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem19.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Health insurance number</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem19.Text" xml:space="preserve">
+    <value>No health insurance:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem20.Text" xml:space="preserve">
+    <value>Old ceiling price:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem21.Text" xml:space="preserve">
+    <value>New ceiling price:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem22.Text" xml:space="preserve">
+    <value>TDCN Type:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem23.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Type of diagnostic imaging</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem23.Text" xml:space="preserve">
+    <value>Type of diagnostic imaging:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem24.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Time to apply new ceiling price according to hospital admission date</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem24.Text" xml:space="preserve">
+    <value>TG apply:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem25.Text" xml:space="preserve">
+    <value>TG Daily specify:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem26.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem27.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Surgical and surgical group</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem27.Text" xml:space="preserve">
+    <value>Group D:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem28.Text" xml:space="preserve">
+    <value>ICD CM</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem29.Text" xml:space="preserve">
+    <value>Update Profile no lock fees:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem30.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem31.Text" xml:space="preserve">
+    <value>Type of service:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem32.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Specialty code</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem32.Text" xml:space="preserve">
+    <value>Specialty code:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem33.Text" xml:space="preserve">
+    <value>Package:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem35.Text" xml:space="preserve">
+    <value>Package price:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem37.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Service group code Pacs</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem37.Text" xml:space="preserve">
+    <value>DVPCS group code:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem38.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mandatory minimum time between 2 consecutive sessions on the same patient</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem38.Text" xml:space="preserve">
+    <value>Minimum TG:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem39.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Number of movies used when performing the service (For imaging services)</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem39.Text" xml:space="preserve">
+    <value>Number of movies:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem42.Text" xml:space="preserve">
+    <value>ICD CM:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem44.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Limit the amount spent</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem44.Text" xml:space="preserve">
+    <value>GH HP amount:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem45.Text" xml:space="preserve">
+    <value>Processing module:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem46.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem47.Text" xml:space="preserve">
+    <value>Sex:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem48.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem49.Text" xml:space="preserve">
+    <value>Age from:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem5.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Invoice type</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem5.Text" xml:space="preserve">
+    <value>Type of contract:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem50.Text" xml:space="preserve">
+    <value>arrive:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem51.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ProcessCode</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem51.Text" xml:space="preserve">
+    <value>Process code:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem52.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem54.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem55.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Notice</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem55.Text" xml:space="preserve">
+    <value>Note:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem56.Text" xml:space="preserve">
+    <value>Feed performance symbol:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem58.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Meal group</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem58.Text" xml:space="preserve">
+    <value>Meal group:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem59.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Other sources of payment in case of using this service</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem59.Text" xml:space="preserve">
+    <value>CTK source:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem60.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Enter the comma-separated ICD codes for diseases that other payers accept. If no disease code is entered, it is considered that the source accepts payment for all cases.</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem60.Text" xml:space="preserve">
+    <value>Supported diseases:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem61.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Test Type</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem61.Text" xml:space="preserve">
+    <value>Type XN:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem63.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Automatically split into multiple service lines, each line has a count of 1 (in the same order)</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem64.Text" xml:space="preserve">
+    <value>Part:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem65.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem66.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Test technique</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem66.Text" xml:space="preserve">
+    <value>XN technique:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem67.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mandatory meeting minutes</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem67.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem68.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem69.Text" xml:space="preserve">
+    <value>Index:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem71.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Maximum processing time</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem71.Text" xml:space="preserve">
+    <value>TG handles max:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem73.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem74.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Automatically accumulate costs when specifying services</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem74.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem75.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Block transfer if service has not ended</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem75.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem76.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Sampling time</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem76.Text" xml:space="preserve">
+    <value>TGLM:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem77.Text" xml:space="preserve">
+    <value>minute</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem78.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>The default surcharge only applies in case the payer is in the list declared here. In the case of non-declaration, it is understood that it applies to all payment objects</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem78.Text" xml:space="preserve">
+    <value>DTTT applies:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem79.Text" xml:space="preserve">
+    <value>Default phone:</value>
+  </data>
+  <data name="UC_HisService.lbCapacity.Text" xml:space="preserve">
+    <value>ml</value>
+  </data>
+  <data name="UC_HisService.lbCapacity.ToolTip" xml:space="preserve">
+    <value>mililit</value>
+  </data>
+  <data name="UC_HisService.lcCapacity.Text" xml:space="preserve">
+    <value>Capacity:</value>
+  </data>
+  <data name="UC_HisService.lcDiimType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Type of diagnostic imaging</value>
+  </data>
+  <data name="UC_HisService.lcDiimType.Text" xml:space="preserve">
+    <value>Type image analysation:</value>
+  </data>
+  <data name="UC_HisService.lcEditorInfo.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="UC_HisService.lcFILM_SIZE.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Film size used for diagnostic imaging</value>
+  </data>
+  <data name="UC_HisService.lcFILM_SIZE.Text" xml:space="preserve">
+    <value>Film size:</value>
+  </data>
+  <data name="UC_HisService.lcFuexType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Type TDCN</value>
+  </data>
+  <data name="UC_HisService.lcFuexType.Text" xml:space="preserve">
+    <value>Type TDCN:</value>
+  </data>
+  <data name="UC_HisService.lciAttachAssignPrintTypeCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Printed slip attached when printing service order form</value>
+  </data>
+  <data name="UC_HisService.lciAttachAssignPrintTypeCode.Text" xml:space="preserve">
+    <value>Attached template:</value>
+  </data>
+  <data name="UC_HisService.lciLock.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hide Locked technical services</value>
+  </data>
+  <data name="UC_HisService.lciLock.Text" xml:space="preserve">
+    <value>Lock</value>
+  </data>
+  <data name="UC_HisService.lciLock.ToolTip" xml:space="preserve">
+    <value>View lock data</value>
+  </data>
+  <data name="UC_HisService.lciMaxTotalProcessTime.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Total maximum service processing time from the time the order is issued to the end</value>
+  </data>
+  <data name="UC_HisService.lciMaxTotalProcessTime.Text" xml:space="preserve">
+    <value>Total maximum service processing time:</value>
+  </data>
+  <data name="UC_HisService.lciNumOrder.Text" xml:space="preserve">
+    <value>Order:</value>
+  </data>
+  <data name="UC_HisService.lciSpMinProcess.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Minimum processing time</value>
+  </data>
+  <data name="UC_HisService.lciSpMinProcess.Text" xml:space="preserve">
+    <value>Minimum processing TG:</value>
+  </data>
+  <data name="UC_HisService.lciTaxRateType.Text" xml:space="preserve">
+    <value>Tax rate type:</value>
+  </data>
+  <data name="UC_HisService.lciTypeCode.Text" xml:space="preserve">
+    <value>code:</value>
+  </data>
+  <data name="UC_HisService.lciTypeName.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="UC_HisService.simpleButton2.Text" xml:space="preserve">
+    <value>Update cache of all workstations</value>
+  </data>
+  <data name="UC_HisService.spCogss.Text" xml:space="preserve">
+    <value>COGS:</value>
+  </data>
+  <data name="UC_HisService.spEstimateDurations.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Estimated time of service</value>
+  </data>
+  <data name="UC_HisService.spEstimateDurations.Text" xml:space="preserve">
+    <value>T / G expects:</value>
+  </data>
+  <data name="UC_HisService.treeListColumn1.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.treeListColumn1.ToolTip" xml:space="preserve">
+    <value>Lock</value>
+  </data>
+  <data name="UC_HisService.treeListColumn10.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="UC_HisService.treeListColumn10.ToolTip" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="UC_HisService.treeListColumn11.Caption" xml:space="preserve">
+    <value>Time created</value>
+  </data>
+  <data name="UC_HisService.treeListColumn11.ToolTip" xml:space="preserve">
+    <value>Time created</value>
+  </data>
+  <data name="UC_HisService.treeListColumn12.Caption" xml:space="preserve">
+    <value>creators</value>
+  </data>
+  <data name="UC_HisService.treeListColumn12.ToolTip" xml:space="preserve">
+    <value>creators</value>
+  </data>
+  <data name="UC_HisService.treeListColumn13.Caption" xml:space="preserve">
+    <value>Time correction</value>
+  </data>
+  <data name="UC_HisService.treeListColumn13.ToolTip" xml:space="preserve">
+    <value>Time correction</value>
+  </data>
+  <data name="UC_HisService.treeListColumn14.Caption" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="UC_HisService.treeListColumn14.ToolTip" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="UC_HisService.treeListColumn15.Caption" xml:space="preserve">
+    <value>Bills</value>
+  </data>
+  <data name="UC_HisService.treeListColumn16.Caption" xml:space="preserve">
+    <value>DTTT mandatory</value>
+  </data>
+  <data name="UC_HisService.treeListColumn16.ToolTip" xml:space="preserve">
+    <value>Default surcharge object</value>
+  </data>
+  <data name="UC_HisService.treeListColumn17.Caption" xml:space="preserve">
+    <value>CP outer package</value>
+  </data>
+  <data name="UC_HisService.treeListColumn17.ToolTip" xml:space="preserve">
+    <value>CP outer package</value>
+  </data>
+  <data name="UC_HisService.treeListColumn18.Caption" xml:space="preserve">
+    <value>group D</value>
+  </data>
+  <data name="UC_HisService.treeListColumn18.ToolTip" xml:space="preserve">
+    <value>group D</value>
+  </data>
+  <data name="UC_HisService.treeListColumn19.Caption" xml:space="preserve">
+    <value>ECD method</value>
+  </data>
+  <data name="UC_HisService.treeListColumn19.ToolTip" xml:space="preserve">
+    <value>ECD method</value>
+  </data>
+  <data name="UC_HisService.treeListColumn2.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.treeListColumn2.ToolTip" xml:space="preserve">
+    <value>Erase</value>
+  </data>
+  <data name="UC_HisService.treeListColumn20.Caption" xml:space="preserve">
+    <value>ICD CM</value>
+  </data>
+  <data name="UC_HisService.treeListColumn20.ToolTip" xml:space="preserve">
+    <value>ICD CM</value>
+  </data>
+  <data name="UC_HisService.treeListColumn21.Caption" xml:space="preserve">
+    <value>Old price</value>
+  </data>
+  <data name="UC_HisService.treeListColumn21.ToolTip" xml:space="preserve">
+    <value>Old price</value>
+  </data>
+  <data name="UC_HisService.treeListColumn22.Caption" xml:space="preserve">
+    <value>DV</value>
+  </data>
+  <data name="UC_HisService.treeListColumn22.ToolTip" xml:space="preserve">
+    <value>DV</value>
+  </data>
+  <data name="UC_HisService.treeListColumn23.Caption" xml:space="preserve">
+    <value>Time specified by date</value>
+  </data>
+  <data name="UC_HisService.treeListColumn23.ToolTip" xml:space="preserve">
+    <value>Time specified by date</value>
+  </data>
+  <data name="UC_HisService.treeListColumn24.Caption" xml:space="preserve">
+    <value>Time in days in hospital</value>
+  </data>
+  <data name="UC_HisService.treeListColumn24.ToolTip" xml:space="preserve">
+    <value>Time in days in hospital</value>
+  </data>
+  <data name="UC_HisService.treeListColumn25.Caption" xml:space="preserve">
+    <value>New ceiling rate</value>
+  </data>
+  <data name="UC_HisService.treeListColumn25.ToolTip" xml:space="preserve">
+    <value>New ceiling rate</value>
+  </data>
+  <data name="UC_HisService.treeListColumn26.Caption" xml:space="preserve">
+    <value>Ratio old ceiling</value>
+  </data>
+  <data name="UC_HisService.treeListColumn26.ToolTip" xml:space="preserve">
+    <value>Ratio old ceiling</value>
+  </data>
+  <data name="UC_HisService.treeListColumn27.Caption" xml:space="preserve">
+    <value>New price</value>
+  </data>
+  <data name="UC_HisService.treeListColumn27.ToolTip" xml:space="preserve">
+    <value>New price</value>
+  </data>
+  <data name="UC_HisService.treeListColumn28.Caption" xml:space="preserve">
+    <value>No health insurance</value>
+  </data>
+  <data name="UC_HisService.treeListColumn28.ToolTip" xml:space="preserve">
+    <value>No health insurance</value>
+  </data>
+  <data name="UC_HisService.treeListColumn29.Caption" xml:space="preserve">
+    <value>Price package</value>
+  </data>
+  <data name="UC_HisService.treeListColumn29.ToolTip" xml:space="preserve">
+    <value>Price package</value>
+  </data>
+  <data name="UC_HisService.treeListColumn3.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="UC_HisService.treeListColumn3.ToolTip" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="UC_HisService.treeListColumn30.Caption" xml:space="preserve">
+    <value>package name</value>
+  </data>
+  <data name="UC_HisService.treeListColumn30.ToolTip" xml:space="preserve">
+    <value>package name</value>
+  </data>
+  <data name="UC_HisService.treeListColumn31.Caption" xml:space="preserve">
+    <value>Specialty code</value>
+  </data>
+  <data name="UC_HisService.treeListColumn31.ToolTip" xml:space="preserve">
+    <value>Specialty code</value>
+  </data>
+  <data name="UC_HisService.treeListColumn32.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.treeListColumn33.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.treeListColumn34.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.treeListColumn35.Caption" xml:space="preserve">
+    <value>Service group code</value>
+  </data>
+  <data name="UC_HisService.treeListColumn36.Caption" xml:space="preserve">
+    <value>Machine group code</value>
+  </data>
+  <data name="UC_HisService.treeListColumn37.Caption" xml:space="preserve">
+    <value>Number of movies</value>
+  </data>
+  <data name="UC_HisService.treeListColumn38.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.treeListColumn39.Caption" xml:space="preserve">
+    <value>Age to come</value>
+  </data>
+  <data name="UC_HisService.treeListColumn4.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="UC_HisService.treeListColumn40.Caption" xml:space="preserve">
+    <value>Age from</value>
+  </data>
+  <data name="UC_HisService.treeListColumn41.Caption" xml:space="preserve">
+    <value>Process Code</value>
+  </data>
+  <data name="UC_HisService.treeListColumn41.ToolTip" xml:space="preserve">
+    <value>Process Code</value>
+  </data>
+  <data name="UC_HisService.treeListColumn42.Caption" xml:space="preserve">
+    <value>Not allowed to fix</value>
+  </data>
+  <data name="UC_HisService.treeListColumn42.ToolTip" xml:space="preserve">
+    <value>Don't allow to edit default surcharge object when specifying service</value>
+  </data>
+  <data name="UC_HisService.treeListColumn43.Caption" xml:space="preserve">
+    <value>Index</value>
+  </data>
+  <data name="UC_HisService.treeListColumn5.Caption" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="UC_HisService.treeListColumn6.Caption" xml:space="preserve">
+    <value>Name of health insurance services</value>
+  </data>
+  <data name="UC_HisService.treeListColumn7.Caption" xml:space="preserve">
+    <value>COGS</value>
+  </data>
+  <data name="UC_HisService.treeListColumn8.Caption" xml:space="preserve">
+    <value>Intend time</value>
+  </data>
+  <data name="UC_HisService.treeListColumn8.ToolTip" xml:space="preserve">
+    <value>Intend time</value>
+  </data>
+  <data name="UC_HisService.treeListColumn9.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UC_HisService.treeListColumn9.ToolTip" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UC_HisService.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Keyword search</value>
+  </data>
+  <data name="UC_HisService.txtNotice.ToolTip" xml:space="preserve">
+    <value>Notice</value>
+  </data>
+  <data name="UC_HisService.txtProcessCode.ToolTip" xml:space="preserve">
+    <value>Process Code</value>
+  </data>
+  <data name="UC_HisService.ColumnCode.Text" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="UC_HisService.ColumnName.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="UC_HisService.tol1.Text" xml:space="preserve">
+    <value>Lock</value>
+  </data>
+  <data name="UC_HisService.tol10.Text" xml:space="preserve">
+    <value>Set up service processing room</value>
+  </data>
+  <data name="UC_HisService.tol11.Text" xml:space="preserve">
+    <value>Set up service processing room</value>
+  </data>
+  <data name="UC_HisService.tol12.Text" xml:space="preserve">
+    <value>Set up service processing room</value>
+  </data>
+  <data name="UC_HisService.tol2.Text" xml:space="preserve">
+    <value>Unlock</value>
+  </data>
+  <data name="UC_HisService.tol3.Text" xml:space="preserve">
+    <value>Erase</value>
+  </data>
+  <data name="UC_HisService.tol4.Text" xml:space="preserve">
+    <value>Erase</value>
+  </data>
+  <data name="UC_HisService.tol5.Text" xml:space="preserve">
+    <value>Service pricing policy</value>
+  </data>
+  <data name="UC_HisService.tol6.Text" xml:space="preserve">
+    <value>Service pricing policy</value>
+  </data>
+  <data name="UC_HisService.tol7.Text" xml:space="preserve">
+    <value>Set up the report type group service</value>
+  </data>
+  <data name="UC_HisService.tol8.Text" xml:space="preserve">
+    <value>Set up the report type group service</value>
+  </data>
+  <data name="UC_HisService.tol9.Text" xml:space="preserve">
+    <value>Set up service processing room</value>
+  </data>
+  <data name="UC_HisService.tolPopup.Text" xml:space="preserve">
+    <value>Price ceiling for health insurance services</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem90.Text" xml:space="preserve">
+    <value>Patient Classify:</value>
+  </data>
+</root>

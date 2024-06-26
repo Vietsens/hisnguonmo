@@ -1,0 +1,814 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmContentRefused.btnClose.Text" xml:space="preserve">
+    <value>ပိတ်လိုက်</value>
+  </data>
+  <data name="frmContentRefused.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmContentRefused.layoutControlItem1.Text" xml:space="preserve">
+    <value>မှတ်တမ်းများကို ရှာဖွေရန် ငြင်းဆိုရသည့် အကြောင်းရင်းများ-</value>
+  </data>
+  <data name="frmContentRefused.layoutControlItem2.Text" xml:space="preserve">
+    <value>အကဲဖြတ်ချက်ကို အတည်ပြုရန် ငြင်းဆိုရသည့် အကြောင်းရင်း-</value>
+  </data>
+  <data name="frmContentRefused.Text" xml:space="preserve">
+    <value>ယခင်ခွင့်ပြုချက်ကို ငြင်းဆိုရခြင်း၏ အကြောင်းရင်း</value>
+  </data>
+  <data name="frmChooseStore.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmChooseStore.barButtonItem__Print.Caption" xml:space="preserve">
+    <value>ဘားကုဒ်ကို ပရင့်ထုတ်ပါ။</value>
+  </data>
+  <data name="frmChooseStore.barButtonItem_Save.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmChooseStore.btnSaveData.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmChooseStore.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmChooseStore.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmChooseStore.Text" xml:space="preserve">
+    <value>သိုလှောင်မှု</value>
+  </data>
+  <data name="frmChooseStore.treeListColumn1.Caption" xml:space="preserve">
+    <value>မော်ကွန်း</value>
+  </data>
+  <data name="frmRejectStore.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmRejectStore.barButtonItem__Print.Caption" xml:space="preserve">
+    <value>ဘားကုဒ်ကို ပရင့်ထုတ်ပါ။</value>
+  </data>
+  <data name="frmRejectStore.barButtonItem_Save.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmRejectStore.btnSaveData.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmRejectStore.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmRejectStore.layoutControlItem10.Text" xml:space="preserve">
+    <value>အကြောင်းရင်း-</value>
+  </data>
+  <data name="frmRejectStore.layoutControlItem6.Text" xml:space="preserve">
+    <value>လူနာကုဒ်-</value>
+  </data>
+  <data name="frmRejectStore.layoutControlItem8.Text" xml:space="preserve">
+    <value>ကုသမှုကုဒ်-</value>
+  </data>
+  <data name="frmRejectStore.layoutControlItem9.Text" xml:space="preserve">
+    <value>လူနာ-</value>
+  </data>
+  <data name="frmRejectStore.Text" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းများကို အတည်ပြုရန် ငြင်းဆိုခြင်း။</value>
+  </data>
+  <data name="frmSaveStore.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmSaveStore.barButtonItem__Print.Caption" xml:space="preserve">
+    <value>ဘားကုဒ်ကို ပရင့်ထုတ်ပါ။</value>
+  </data>
+  <data name="frmSaveStore.barButtonItem_Save.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmSaveStore.btnSaveData.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmSaveStore.checkFilterDataStoreByEndInfo.Properties.Caption" xml:space="preserve">
+    <value>အဆုံးဌာန/အခန်းနှင့် သက်ဆိုင်သော အစိုးရအဖွဲ့ဝင်များကိုသာ ပြသပါ။</value>
+  </data>
+  <data name="frmSaveStore.checkFilterDataStoreByTreatmentEndType.Properties.Caption" xml:space="preserve">
+    <value>စွန့်ပစ်ပစ္စည်းအမျိုးအစားအလိုက် ဗီဒိုများကိုသာ ပြသပါ။</value>
+  </data>
+  <data name="frmSaveStore.chkAutoSetStoreCode.Properties.Caption" xml:space="preserve">
+    <value>သိုလှောင်မှုကုဒ်ကို ကိုယ်တိုင်ထည့်ပါ။</value>
+  </data>
+  <data name="frmSaveStore.chkIsTreatmentType.Properties.Caption" xml:space="preserve">
+    <value>ကုသမှုဧရိယာအလိုက်ပြသထားသည်။</value>
+  </data>
+  <data name="frmSaveStore.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmSaveStore.layoutControlItem1.Text" xml:space="preserve">
+    <value>အချိန်:</value>
+  </data>
+  <data name="frmSaveStore.layoutControlItem3.Text" xml:space="preserve">
+    <value>ဆေးဘက်ဆိုင်ရာအဖွဲ့-</value>
+  </data>
+  <data name="frmSaveStore.layoutControlItem5.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ပြင်ပလူနာ ဆေးမှတ်တမ်းများ</value>
+  </data>
+  <data name="frmSaveStore.layoutControlItem5.Text" xml:space="preserve">
+    <value>ပြင်ပလူနာ BA-</value>
+  </data>
+  <data name="frmSaveStore.layoutControlItem6.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmSaveStore.layoutControlItem7.Text" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းအမျိုးအစား</value>
+  </data>
+  <data name="frmSaveStore.layoutControlItem9.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmSaveStore.lciFilterDataStoreByEndInfo.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmSaveStore.lciProgram.Text" xml:space="preserve">
+    <value>အစီအစဉ်-</value>
+  </data>
+  <data name="frmSaveStore.lciShowDataStoreByEndTreatmentType.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmSaveStore.lciStoreCode.Text" xml:space="preserve">
+    <value>မှတ်တမ်းကုဒ်-</value>
+  </data>
+  <data name="frmSaveStore.linkLabel1.Text" xml:space="preserve">
+    <value>ယခင်က လျှောက်လွှာကို ပယ်ချခဲ့သည်။</value>
+  </data>
+  <data name="frmSaveStore.Text" xml:space="preserve">
+    <value>သိုလှောင်မှု</value>
+  </data>
+  <data name="toolTipItem1.Text" xml:space="preserve">
+    <value>ကုဒ်ကို ပရိုဂရမ်တွင် လူနာအား ပေးထားသည်။</value>
+  </data>
+  <data name="TreatmentBorrow.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="TreatmentBorrow.barButtonItem1.Caption" xml:space="preserve">
+    <value>သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="TreatmentBorrow.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="TreatmentBorrow.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="TreatmentBorrow.layoutControlItem1.Text" xml:space="preserve">
+    <value>ချေးငွေဌာန-</value>
+  </data>
+  <data name="TreatmentBorrow.layoutControlItem3.Text" xml:space="preserve">
+    <value>ငွေချေးသည့်အကောင့်-</value>
+  </data>
+  <data name="TreatmentBorrow.layoutControlItem5.Text" xml:space="preserve">
+    <value>ကမ်းလှမ်းသည်။</value>
+  </data>
+  <data name="TreatmentBorrow.layoutControlItem6.Text" xml:space="preserve">
+    <value>ငွေပေးချေရန် ချိန်းဆိုချိန်-</value>
+  </data>
+  <data name="TreatmentBorrow.layoutControlItem7.Text" xml:space="preserve">
+    <value>ချေးယူချိန်-</value>
+  </data>
+  <data name="TreatmentBorrow.layoutControlItem8.Text" xml:space="preserve">
+    <value>အတ်-</value>
+  </data>
+  <data name="TreatmentBorrow.layoutControlItem9.Text" xml:space="preserve">
+    <value>ငွေချေးသူ ဖုန်းနံပါတ်-</value>
+  </data>
+  <data name="TreatmentBorrow.Text" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းများကို ငှားပါ။</value>
+  </data>
+  <data name="UCMedicalStore.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="UCMedicalStore.btnSearch.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn1.Caption" xml:space="preserve">
+    <value>ညောင်ပင်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn10.Caption" xml:space="preserve">
+    <value>ဖန်တီးချိန်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn10.ToolTip" xml:space="preserve">
+    <value>ဖန်တီးချိန်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn11.Caption" xml:space="preserve">
+    <value>ဖန်ဆင်းရှင်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn11.ToolTip" xml:space="preserve">
+    <value>ဖန်ဆင်းရှင်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn12.Caption" xml:space="preserve">
+    <value>ပြုပြင်ချိန်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn12.ToolTip" xml:space="preserve">
+    <value>ပြုပြင်ချိန်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn13.Caption" xml:space="preserve">
+    <value>ပြုပြင်သူ</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn13.ToolTip" xml:space="preserve">
+    <value>ပြုပြင်သူ</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn14.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn15.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn2.Caption" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn3.Caption" xml:space="preserve">
+    <value>စတိုးကုဒ်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn3.ToolTip" xml:space="preserve">
+    <value>စတိုးကုဒ်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn4.Caption" xml:space="preserve">
+    <value>HST ကုဒ်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn4.ToolTip" xml:space="preserve">
+    <value>HST ကုဒ်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn5.Caption" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn5.ToolTip" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn6.Caption" xml:space="preserve">
+    <value>လူနာအမည်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn6.ToolTip" xml:space="preserve">
+    <value>လူနာအမည်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn7.Caption" xml:space="preserve">
+    <value>အသက်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn7.ToolTip" xml:space="preserve">
+    <value>အသက်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn8.Caption" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn8.ToolTip" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn9.Caption" xml:space="preserve">
+    <value>ဒေတာဂိုဒေါင်</value>
+  </data>
+  <data name="UCMedicalStore.gridColumn9.ToolTip" xml:space="preserve">
+    <value>ဒေတာဂိုဒေါင်</value>
+  </data>
+  <data name="UCMedicalStore.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="UCMedicalStore.layoutControlItem4.Text" xml:space="preserve">
+    <value>သိမ်းဆည်းထားသည်-</value>
+  </data>
+  <data name="UCMedicalStore.layoutControlItem8.Text" xml:space="preserve">
+    <value>အခြေအနေ-</value>
+  </data>
+  <data name="UCMedicalStore.lciEndDepartment.Text" xml:space="preserve">
+    <value>သင်တန်းပြီးဆုံးခြင်း-</value>
+  </data>
+  <data name="UCMedicalStore.lciPatientType.Text" xml:space="preserve">
+    <value>ဘာသာရပ်-</value>
+  </data>
+  <data name="UCMedicalStore.lciTreatmentType.Text" xml:space="preserve">
+    <value>ကုသမှုဧရိယာ-</value>
+  </data>
+  <data name="UCMedicalStore.lcStoreTime.Text" xml:space="preserve">
+    <value>အချိန်ကုန်သက်သာသည်-</value>
+  </data>
+  <data name="UCMedicalStore.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
+  </data>
+  <data name="UCMedicalStore.txtSearchTreatment.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ကုသမှုကုဒ် (F2)</value>
+  </data>
+  <data name="UCMedicalStore.txtStoreCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>စတိုးကုဒ်</value>
+  </data>
+  <data name="UCMedicalStore.treeListColumn1.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCMedicalStore.treeListColumn2.Caption" xml:space="preserve">
+    <value>မော်ကွန်း</value>
+  </data>
+  <data name="UCMedicalStore.treeListColumn2.ToolTip" xml:space="preserve">
+    <value>မော်ကွန်း</value>
+  </data>
+  <data name="UCMedicalStoreV2.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="UCMedicalStoreV2.btnExportExcel.Text" xml:space="preserve">
+    <value>excel ကို ထုတ်ယူပါ။</value>
+  </data>
+  <data name="UCMedicalStoreV2.btnImportStore.Text" xml:space="preserve">
+    <value>စာရင်းတင်သွင်းခြင်း (Ctrl I)</value>
+  </data>
+  <data name="UCMedicalStoreV2.btnSaveTreatment.Text" xml:space="preserve">
+    <value>BA (Ctrl S) ကို ဖန်တီးပြီး သိမ်းဆည်းပါ</value>
+  </data>
+  <data name="UCMedicalStoreV2.btnSaveTreatment.ToolTip" xml:space="preserve">
+    <value>သိမ်းဆည်းထားသော ဆေးမှတ်တမ်းများကို ဖန်တီးပြီး သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="UCMedicalStoreV2.btnSearchMediRecord.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl Shirt F)</value>
+  </data>
+  <data name="UCMedicalStoreV2.btnSearchTreatment.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctr F)</value>
+  </data>
+  <data name="UCMedicalStoreV2.checkAutoShowStore.Properties.Caption" xml:space="preserve">
+    <value>မှတ်တမ်းများကိုရွေးချယ်သည့်အခါ သိုလှောင်ခန်းကို အလိုအလျောက်ပြသပါ။</value>
+  </data>
+  <data name="UCMedicalStoreV2.checkJustShowTreatmentLatch.Properties.Caption" xml:space="preserve">
+    <value>ပိတ်ထားသော ပရိုဖိုင်များကိုသာ ပြပါ။</value>
+  </data>
+  <data name="UCMedicalStoreV2.checkJustShowTreatmentLatch.ToolTip" xml:space="preserve">
+    <value>ဌာနမှ အတည်ပြုထားသော မှတ်တမ်းများကိုသာ ပြသပါ။</value>
+  </data>
+  <data name="UCMedicalStoreV2.grdColView.Caption" xml:space="preserve">
+    <value>ကြည့်ပါ။</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn1.Caption" xml:space="preserve">
+    <value>ညောင်ပင်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn10.Caption" xml:space="preserve">
+    <value>ဖန်တီးချိန်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn10.ToolTip" xml:space="preserve">
+    <value>ဖန်တီးချိန်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn11.Caption" xml:space="preserve">
+    <value>ဖန်ဆင်းရှင်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn11.ToolTip" xml:space="preserve">
+    <value>ဖန်ဆင်းရှင်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn12.Caption" xml:space="preserve">
+    <value>ပြုပြင်ချိန်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn12.ToolTip" xml:space="preserve">
+    <value>ပြုပြင်ချိန်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn13.Caption" xml:space="preserve">
+    <value>ပြုပြင်သူ</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn13.ToolTip" xml:space="preserve">
+    <value>ပြုပြင်သူ</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn14.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn15.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn16.Caption" xml:space="preserve">
+    <value>HSBA ချေးငွေ</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn17.Caption" xml:space="preserve">
+    <value>အသေးစိတ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn18.Caption" xml:space="preserve">
+    <value>ကုသမှုအဆုံးအခန်း</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn19.Caption" xml:space="preserve">
+    <value>ရောဂါရှာဖွေပါ။</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn2.Caption" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းများ ပြန်ပေးသည်။</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn20.Caption" xml:space="preserve">
+    <value>ကုသရေးဌာနအဆုံးသတ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn21.Caption" xml:space="preserve">
+    <value>ကုသမှုအဆုံးအခန်း</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn22.Caption" xml:space="preserve">
+    <value>ရောဂါရှာဖွေပါ။</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn23.Caption" xml:space="preserve">
+    <value>ကုသမှုအဆုံးအခန်း</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn24.Caption" xml:space="preserve">
+    <value>လိပ်စာ</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn25.Caption" xml:space="preserve">
+    <value>ထုတ်လွှတ်မှုအမျိုးအစား</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn26.Caption" xml:space="preserve">
+    <value>မွေးရက်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn27.Caption" xml:space="preserve">
+    <value>ပရိုဂရမ်ကုဒ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn27.ToolTip" xml:space="preserve">
+    <value>ကုဒ်ကို ပရိုဂရမ်တွင် လူနာအား ပေးထားသည်။</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn28.Caption" xml:space="preserve">
+    <value>အစီအစဉ်အမည်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn29.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn3.Caption" xml:space="preserve">
+    <value>စတိုးကုဒ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn3.ToolTip" xml:space="preserve">
+    <value>စတိုးကုဒ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn30.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn31.Caption" xml:space="preserve">
+    <value>ညောင်ပင်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn32.Caption" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn33.Caption" xml:space="preserve">
+    <value>gridColumn33</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn34.Caption" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းများကို အတည်ပြုရန် ငြင်းဆို/ပယ်ဖျက်ရန် ငြင်းဆိုခြင်း။</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn34.ToolTip" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းများကို အတည်ပြုရန် ငြင်းဆို/ပယ်ဖျက်ရန် ငြင်းဆိုခြင်း။</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn35.Caption" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn35.ToolTip" xml:space="preserve">
+    <value>HST ကုဒ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn36.Caption" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn36.ToolTip" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn37.Caption" xml:space="preserve">
+    <value>လူနာအမည်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn37.ToolTip" xml:space="preserve">
+    <value>လူနာအမည်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn38.Caption" xml:space="preserve">
+    <value>ငြင်းဆိုရခြင်း အကြောင်းအရင်း</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn39.Caption" xml:space="preserve">
+    <value>ကုသရေးဌာန</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn4.Caption" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn4.ToolTip" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn40.Caption" xml:space="preserve">
+    <value>မွေးရက်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn41.Caption" xml:space="preserve">
+    <value>အသက်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn41.ToolTip" xml:space="preserve">
+    <value>အသက်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn42.Caption" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn42.ToolTip" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn43.Caption" xml:space="preserve">
+    <value>လိပ်စာ</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn44.Caption" xml:space="preserve">
+    <value>ဆေးရုံတက်ရမည့်ရက်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn45.Caption" xml:space="preserve">
+    <value>ဆေးရုံဆင်းမည့်ရက်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn46.Caption" xml:space="preserve">
+    <value>ထုတ်လွှတ်မှုအမျိုးအစား</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn47.Caption" xml:space="preserve">
+    <value>ကုသရေးဌာနအဆုံးသတ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn48.Caption" xml:space="preserve">
+    <value>အဓိကရောဂါကုဒ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn49.Caption" xml:space="preserve">
+    <value>အဓိကရောဂါအမည်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn5.Caption" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn5.ToolTip" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn50.Caption" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းစည်းမျဉ်းများ အကောင်အထည်ဖော်ရန်အတွက် စစ်ဆေးရန်စာရင်း</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn51.Caption" xml:space="preserve">
+    <value>ဆေးရုံတက်တဲ့နေ့</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn57.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn58.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn59.Caption" xml:space="preserve">
+    <value>ညောင်ပင်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn6.Caption" xml:space="preserve">
+    <value>လူနာအမည်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn6.ToolTip" xml:space="preserve">
+    <value>လူနာအမည်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn60.Caption" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn61.Caption" xml:space="preserve">
+    <value>HSBA ချေးငွေ</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn63.Caption" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn63.ToolTip" xml:space="preserve">
+    <value>HST ကုဒ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn64.Caption" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn64.ToolTip" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn65.Caption" xml:space="preserve">
+    <value>လူနာအမည်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn65.ToolTip" xml:space="preserve">
+    <value>လူနာအမည်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn68.Caption" xml:space="preserve">
+    <value>မွေးရက်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn7.Caption" xml:space="preserve">
+    <value>စာရင်းကို တင်သွင်း/ပယ်ဖျက်ပါ။</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn70.Caption" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn70.ToolTip" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn71.Caption" xml:space="preserve">
+    <value>လိပ်စာ</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn72.Caption" xml:space="preserve">
+    <value>ဆေးရုံတက်ရမည့်ရက်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn73.Caption" xml:space="preserve">
+    <value>ဆေးရုံဆင်းမည့်ရက်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn75.Caption" xml:space="preserve">
+    <value>ကုသရေးဌာနအဆုံးသတ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn8.Caption" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn8.ToolTip" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn9.Caption" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းအမျိုးအစား</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn9.ToolTip" xml:space="preserve">
+    <value>ဒေတာဂိုဒေါင်</value>
+  </data>
+  <data name="UCMedicalStoreV2.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="UCMedicalStoreV2.layoutControlItem1.Text" xml:space="preserve">
+    <value>အားလုံး</value>
+  </data>
+  <data name="UCMedicalStoreV2.layoutControlItem3.Text" xml:space="preserve">
+    <value>မသိမ်းရသေး</value>
+  </data>
+  <data name="UCMedicalStoreV2.layoutControlItem4.Text" xml:space="preserve">
+    <value>သိမ်းဆည်းခဲ့သည်။</value>
+  </data>
+  <data name="UCMedicalStoreV2.layoutControlItem8.Text" xml:space="preserve">
+    <value>ကုသရေးဌာန-</value>
+  </data>
+  <data name="UCMedicalStoreV2.lblDanhSachBenhAn.Text" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းများစာရင်း</value>
+  </data>
+  <data name="UCMedicalStoreV2.lblDanhSachHoSoChuaLuuTru.Text" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းမဖန်တီးဘဲ ကုသမှုအစီအစဉ်များစာရင်း</value>
+  </data>
+  <data name="UCMedicalStoreV2.lciEndDepartment.Text" xml:space="preserve">
+    <value>သင်တန်းပြီးဆုံးခြင်း-</value>
+  </data>
+  <data name="UCMedicalStoreV2.lciFilterMediRecordType.Text" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းအမျိုးအစား</value>
+  </data>
+  <data name="UCMedicalStoreV2.lciInTimeFilter.Text" xml:space="preserve">
+    <value>အချိန်-</value>
+  </data>
+  <data name="UCMedicalStoreV2.lciOutTimeFilter.Text" xml:space="preserve">
+    <value>ခဏပွဲရပ်ခြင်း:</value>
+  </data>
+  <data name="UCMedicalStoreV2.lciPatientType.Text" xml:space="preserve">
+    <value>ဘာသာရပ်-</value>
+  </data>
+  <data name="UCMedicalStoreV2.lciProgramFilter.Text" xml:space="preserve">
+    <value>အစီအစဉ်-</value>
+  </data>
+  <data name="UCMedicalStoreV2.lciStatusEnd.Text" xml:space="preserve">
+    <value>အခြေအနေ-</value>
+  </data>
+  <data name="UCMedicalStoreV2.lciStoreTimeFilter.Text" xml:space="preserve">
+    <value>အချိန်ကုန်သက်သာသည်-</value>
+  </data>
+  <data name="UCMedicalStoreV2.lciTreatmentType.Text" xml:space="preserve">
+    <value>ကုသမှုဧရိယာ-</value>
+  </data>
+  <data name="UCMedicalStoreV2.txtKeywordMediRecord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
+  </data>
+  <data name="UCMedicalStoreV2.txtKeywordTreatment.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
+  </data>
+  <data name="UCMedicalStoreV2.txtPatientCodeMediRecord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.txtPatientCodeSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>လူနာကုဒ် (F3)</value>
+  </data>
+  <data name="UCMedicalStoreV2.txtTreatmentCodeMediRecord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
+  <data name="UCMedicalStoreV2.txtTreatmentCodeSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ကုသမှုကုဒ် (F2)</value>
+  </data>
+  <data name="UCMedicalStoreV2.treeListColumn1.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCMedicalStoreV2.treeListColumn1.ToolTip" xml:space="preserve">
+    <value>အားလုံးကို ရွေးပါ။</value>
+  </data>
+  <data name="UCMedicalStoreV2.treeListColumn2.Caption" xml:space="preserve">
+    <value>မော်ကွန်း</value>
+  </data>
+  <data name="UCMedicalStoreV2.treeListColumn2.ToolTip" xml:space="preserve">
+    <value>မော်ကွန်း</value>
+  </data>
+  <data name="frmSaveStore.chkUseEndCode.Properties.Caption" xml:space="preserve">
+    <value>ဆေးရုံဆင်းရမည့်နံပါတ်ကို ရယူပါ။</value>
+    <comment>Lấy số ra viện</comment>
+  </data>
+  <data name="frmSaveStore.chkUseEndCode.ToolTip" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းသိုလှောင်မှုကုဒ်အဖြစ် ဆေးရုံဆင်းရမည့်နံပါတ်ကို အသုံးပြုပါ။</value>
+    <comment>Sử dụng số ra viện làm mã lưu trữ bệnh án</comment>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn53.Caption" xml:space="preserve">
+    <value>HSBA ခွင့်ပြုချက်အချိန်</value>
+    <comment>Thời gian duyệt HSBA</comment>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn53.ToolTip" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းများကို ပြန်လည်သုံးသပ်ရန် အချိန်ဖြစ်သည်။</value>
+    <comment>Thời gian duyệt hồ sơ bệnh án</comment>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn54.Caption" xml:space="preserve">
+    <value>ဆေးရုံဆင်းရမည့်နံပါတ်</value>
+    <comment>Số ra viện</comment>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn55.Caption" xml:space="preserve">
+    <value>ဆေးရုံမှာ စစ်ဆေးတွေ့ရှိခဲ့ပါတယ်။</value>
+    <comment>CĐ vào viện</comment>
+  </data>
+  <data name="UCMedicalStoreV2.gridColumn55.ToolTip" xml:space="preserve">
+    <value>ဆေးရုံမှာ စစ်ဆေးတွေ့ရှိခဲ့ပါတယ်။</value>
+    <comment>Chẩn đoán vào viện</comment>
+  </data>
+</root>

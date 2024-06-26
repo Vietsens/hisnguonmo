@@ -1,0 +1,519 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="UCExpMestAggregate.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl7.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl9.Text" xml:space="preserve">
+    <value>layoutControl9</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl13.Text" xml:space="preserve">
+    <value>layoutControl13</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqStatus.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqStatus.ToolTip" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqCode.Caption" xml:space="preserve">
+    <value>Mã phiếu xuất</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqRoomName.Caption" xml:space="preserve">
+    <value>Kho xuất</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqPatientName.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqUserTime.Caption" xml:space="preserve">
+    <value>Thời gian dùng</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqUserName.Caption" xml:space="preserve">
+    <value>Người chỉ định</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqIntructionTime.Caption" xml:space="preserve">
+    <value>Thời gian y lệnh</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqTreatmentCode.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpReqPatientCode.Caption" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl12.Text" xml:space="preserve">
+    <value>layoutControl12</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpStatus.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpDelete.Caption" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpDelete.ToolTip" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpPrint.Caption" xml:space="preserve">
+    <value>In phiếu tổng hợp</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpPrint.ToolTip" xml:space="preserve">
+    <value>In phiếu tổng hợp</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpMestCode.Caption" xml:space="preserve">
+    <value>Mã phiếu tổng hợp</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpStockName.Caption" xml:space="preserve">
+    <value>Kho xuất</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpCreateTime.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpCreator.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpTimeDisplay.Caption" xml:space="preserve">
+    <value>Thời gian xuất</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpUserName.Caption" xml:space="preserve">
+    <value>Người xuất</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl8.Text" xml:space="preserve">
+    <value>layoutControl8</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl11.Text" xml:space="preserve">
+    <value>layoutControl11</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColMediSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColMediTypeCode.Caption" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColMediTypeName.Caption" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColMediUnitName.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColMediAmount.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColMediBidNumber.Caption" xml:space="preserve">
+    <value>Số lô</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl10.Text" xml:space="preserve">
+    <value>layoutControl10</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColStatus.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColStatus.ToolTip" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColServiceReqCode.Caption" xml:space="preserve">
+    <value>Mã phiếu xuất</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExecuteRoomName.Caption" xml:space="preserve">
+    <value>Kho xuất</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColPatientName.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColExpTime.Caption" xml:space="preserve">
+    <value>Thời gian dùng</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColReqUserName.Caption" xml:space="preserve">
+    <value>Người chỉ định</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColIntructionTime.Caption" xml:space="preserve">
+    <value>Thời gian y lệnh</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColTreatmentCode.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColPatientCode.Caption" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl6.Text" xml:space="preserve">
+    <value>layoutControl6</value>
+  </data>
+  <data name="UCExpMestAggregate.btnAggrExpMest.Text" xml:space="preserve">
+    <value>Tổng hợp (Ctrl T)</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCExpMestAggregate.btnRefresh.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="UCExpMestAggregate.btnSearch.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="UCExpMestAggregate.navBarFilterProcess.Text" xml:space="preserve">
+    <value>navBarControl1</value>
+  </data>
+  <data name="UCExpMestAggregate.navIntructionTime.Caption" xml:space="preserve">
+    <value>Thời gian chỉ định</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl15.Text" xml:space="preserve">
+    <value>layoutControl15</value>
+  </data>
+  <data name="UCExpMestAggregate.barButtonItem1.Caption" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="UCExpMestAggregate.barButtonItem2.Caption" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="UCExpMestAggregate.barButtonItem3.Caption" xml:space="preserve">
+    <value>Tổng hợp (Ctrl T)</value>
+  </data>
+  <data name="UCExpMestAggregate.lciFromIntructionTime.Text" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="UCExpMestAggregate.lciToIntructionTime.Text" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="UCExpMestAggregate.chkNotSynthetic.Properties.Caption" xml:space="preserve">
+    <value>Chưa tổng hợp</value>
+  </data>
+  <data name="UCExpMestAggregate.chkSynthesized.Properties.Caption" xml:space="preserve">
+    <value>Đã tổng hợp</value>
+  </data>
+  <data name="UCExpMestAggregate.lciCheckSynthesized.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCExpMestAggregate.lciCheckNotSynthetic.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControl14.Text" xml:space="preserve">
+    <value>layoutControl14</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControlItem5.Text" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="UCExpMestAggregate.layoutControlItem6.Text" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="UCExpMestAggregate.navBarGroupUserTimeTo.Caption" xml:space="preserve">
+    <value>Thời gian sử dụng</value>
+  </data>
+  <data name="UCExpMestAggregate.navStatus.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCExpMestAggregate.navRoom.Caption" xml:space="preserve">
+    <value>Phòng</value>
+  </data>
+  <data name="UCExpMestAggregate.txtKeywordProcess.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm (F2)</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.bar2.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.barButtonItem1.Caption" xml:space="preserve">
+    <value>barButtonItem1</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.barButtonItem3.Caption" xml:space="preserve">
+    <value>Chọn phòng (Ctrl S)</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.btnSendRequest.Text" xml:space="preserve">
+    <value>Chọn (Ctrl S)</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.chkIsBlood.Properties.Caption" xml:space="preserve">
+    <value>Máu</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.chkIsChemicalSustance.Properties.Caption" xml:space="preserve">
+    <value>Hóa chất</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.chkMaterial.Properties.Caption" xml:space="preserve">
+    <value>Vật tư</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.chkMedicine.Properties.Caption" xml:space="preserve">
+    <value>Thuốc</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn1.Caption" xml:space="preserve">
+    <value>Mã phòng</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn10.Caption" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn11.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn12.Caption" xml:space="preserve">
+    <value>Mã phòng</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn13.Caption" xml:space="preserve">
+    <value>Tên phòng</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn14.Caption" xml:space="preserve">
+    <value>Tên khoa</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn15.Caption" xml:space="preserve">
+    <value>Tên đơn vị tính</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn16.Caption" xml:space="preserve">
+    <value>Mã đường dùng</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn17.Caption" xml:space="preserve">
+    <value>Tên đường dùng</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn3.Caption" xml:space="preserve">
+    <value>Mã đơn vị tính</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn4.Caption" xml:space="preserve">
+    <value>Tên phòng</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn5.Caption" xml:space="preserve">
+    <value>Tên khoa</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn6.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn7.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn8.Caption" xml:space="preserve">
+    <value>Mã khoa</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridColumn9.Caption" xml:space="preserve">
+    <value>Tên khoa</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridViewServiceUnit.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Nhập từ khóa tìm kiếm...</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.gridViewUseForm.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Nhập từ khóa tìm kiếm...</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl13.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl14.Text" xml:space="preserve">
+    <value>layoutControl9</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl15.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl16.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl17.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl18.Text" xml:space="preserve">
+    <value>layoutControl8</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl19.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl20.Text" xml:space="preserve">
+    <value>layoutControl6</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl6.Text" xml:space="preserve">
+    <value>layoutControl6</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControl9.Text" xml:space="preserve">
+    <value>layoutControl9</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControlItem27.Text" xml:space="preserve">
+    <value>Loại:</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControlItem28.Text" xml:space="preserve">
+    <value>Mẫu:</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControlItem30.Text" xml:space="preserve">
+    <value>Tên:</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControlItem31.Text" xml:space="preserve">
+    <value>Định dạng:</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControlItem32.Text" xml:space="preserve">
+    <value>Mô tả:</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControlItem35.Text" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.layoutControlItem36.Text" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.lookUpEdit1.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.lookUpEdit2.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.simpleButton1.Text" xml:space="preserve">
+    <value>Gửi (Ctrl S)</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.simpleButton2.Text" xml:space="preserve">
+    <value>Đặt lịch (Ctrl C)</value>
+  </data>
+  <data name="frmAggregateExpMestPrintFilter.Text" xml:space="preserve">
+    <value>Điều kiện lọc - Phiếu tra đối thuốc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__FRM_AGG_EXP_MEST_FILTER" xml:space="preserve">
+    <value>Điều kiện lọc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__IN_PHIEU_LINH_THUOC" xml:space="preserve">
+    <value>Phiếu lĩnh thuốc, vật tư</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__IN_PHIEU_LINH_NANG_CAO" xml:space="preserve">
+    <value>Phiếu lĩnh nâng cao</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__IN_PHIEU_TONG_HOP" xml:space="preserve">
+    <value>Phiếu tổng hợp</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__IN_TRA_DOI_THUOC" xml:space="preserve">
+    <value>Phiếu tra đồi thuốc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_AGG_EXP_MEST_FILTER__PHIEU_LINH_NANG_CAO" xml:space="preserve">
+    <value>Điều kiện lọc - Phiếu lĩnh nâng cao</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_AGG_EXP_MEST_FILTER__LINH_THUOC_VAT_TU" xml:space="preserve">
+    <value>Điều kiện lọc - Lĩnh thuốc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_AGG_EXP_MEST_FILTER__SUM" xml:space="preserve">
+    <value>Điều kiện lọc - Tổng hợp</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRM_AGG_EXP_MEST_FILTER__TRA_DOI" xml:space="preserve">
+    <value>Điều kiện lọc - Tra đổi</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_EXP_MEST_AGGREGATE__IN_PHIEU_LINH_THUOC_THEO_BENH_NHAN" xml:space="preserve">
+    <value>In phiếu lĩnh theo bệnh nhân</value>
+  </data>
+  <data name="UCExpMestAggregate.lciPatientCode.Text" xml:space="preserve">
+    <value>Mã BN:</value>
+  </data>
+  <data name="UCExpMestAggregate.lciPatientName.Text" xml:space="preserve">
+    <value>Tên BN:</value>
+  </data>
+  <data name="UCExpMestAggregate.lciTreatmentCode.Text" xml:space="preserve">
+    <value>Mã ĐT:</value>
+  </data>
+</root>

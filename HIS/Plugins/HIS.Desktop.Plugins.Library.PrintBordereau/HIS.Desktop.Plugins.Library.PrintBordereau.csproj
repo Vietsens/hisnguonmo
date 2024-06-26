@@ -1,0 +1,412 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3A497F48-6AEE-4534-B372-F4431993C6C4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HIS.Desktop.Plugins.Library.PrintBordereau</RootNamespace>
+    <AssemblyName>HIS.Desktop.Plugins.Library.PrintBordereau</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.ProcessorBase\DevExpress.Data.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v15.2.Drawing, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.ProcessorBase\DevExpress.Pdf.v15.2.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.ProcessorBase\DevExpress.Utils.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.ProcessorBase\DevExpress.XtraGrid.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.ProcessorBase\DevExpress.XtraLayout.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Common.Treatment">
+      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
+      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.MenuPrint">
+      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.MenuPrint\HIS.UC.MenuPrint.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.HIS_RS">
+      <HintPath>..\..\..\..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Adapter">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.BankQrCode">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.BankQrCode\Inventec.Common.BankQrCode.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Controls.EditorLoader">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.DateTime">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.FlexCelPrint">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Mapper">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Resource">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.RichEditor">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.RichEditor\Inventec.Common.RichEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.SignLibrary">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.ThreadCustom">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.ThreadCustom\Inventec.Common.ThreadCustom.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.TypeConvert, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.WebApiClient">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.Controls.ValidationRule">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Controls.ValidationRule\Inventec.Desktop.Common.Controls.ValidationRule.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.LanguageManager">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.LibraryMessage">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.LibraryMessage\Inventec.Desktop.Common.LibraryMessage.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.LocalStorage.Location">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.LocalStorage.Location\Inventec.Desktop.Common.LocalStorage.Location.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.Message">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL">
+      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.Filter">
+      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.LibraryHein.Bhyt">
+      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPS\MPS.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000120.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000120.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000122.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000122.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000124.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000124.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000125.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000125.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000127.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000127.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000128.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000128.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000158.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000158.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000160.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000160.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000162.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000162.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000193.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000193.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000194.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000194.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000196.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000196.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000224.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000224.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000260.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000260.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000261.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000261.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000265.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000265.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000279.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000279.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000281.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000281.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000285.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000285.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000295.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000295.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000302.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000302.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000304.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000304.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000306.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000306.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000312.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000312.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000313.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000313.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000314.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000314.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000321.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000321.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000348.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000348.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000356.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000356.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000359.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000359.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000441.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000441.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000446.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000446.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000463.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000463.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.ProcessorBase">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\..\..\RELEASE\WCF\Sdc.Client\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.EFMODEL">
+      <HintPath>..\..\..\..\..\..\RELEASE\SAR\SAR.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ADO\BordereauInitData.cs" />
+    <Compile Include="ADO\ReloadMenuOption.cs" />
+    <Compile Include="ADO\SereServADO.cs" />
+    <Compile Include="AppConfigKey.cs" />
+    <Compile Include="Base\BordereauPrint.cs" />
+    <Compile Include="Base\GlobalDataStore.cs" />
+    <Compile Include="Base\ILoad.cs" />
+    <Compile Include="Base\MpsDataBase.cs" />
+    <Compile Include="Base\PrintOption.cs" />
+    <Compile Include="Base\SereServProcessor.cs" />
+    <Compile Include="ChooseDepartment\frmBordereauChooseDepartment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChooseDepartment\frmBordereauChooseDepartment.Designer.cs">
+      <DependentUpon>frmBordereauChooseDepartment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChooseDepartment\Validate\frmBordereauChooseDepartment___Validate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChooseServiceType\FormChooseServiceType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChooseServiceType\FormChooseServiceType.Designer.cs">
+      <DependentUpon>FormChooseServiceType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChooseService\frmChonDichVuPhauThuat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChooseService\frmChonDichVuPhauThuat.designer.cs">
+      <DependentUpon>frmChonDichVuPhauThuat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\HisPatientTypeCFG.cs" />
+    <Compile Include="Config\HisTransactionTypeCFG.cs" />
+    <Compile Include="InitMenuProcessor.cs" />
+    <Compile Include="MpsBehavior\Mps000295\Mps000295Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000285\Mps000285Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000265\Mps000265Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000260\Mps000260Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000261\Mps000261Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000162\Mps000162Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000158\Mps000158Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000160\Mps000160Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000249\Mps000249Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000251\Mps000251Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000194\Mps000194Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000196\Mps000196Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000128\Mps000128Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000122\Mps000122Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000120\Mps000120Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000124\Mps000124Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000125\Mps000125Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000127\Mps000127Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000193\Mps000193Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000224\Mps000224Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000279\Mps000279Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000281\Mps000281Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000302\Mps000302Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000304\Mps000304Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000306\Mps000306Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000312\Mps000312Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000313\Mps000313Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000314\Mps000314Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000321\Mps000321Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000348\Mps000348Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000356\Mps000356Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000359\Mps000359Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000441\Mps000441Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000446\Mps000446Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000463\Mps000463Behavior.cs" />
+    <Compile Include="PrintBordereauProcessorPlus.cs" />
+    <Compile Include="PrintBordereauProcessor.cs" />
+    <Compile Include="Base\PrintTypeCodeWorker.cs" />
+    <Compile Include="PrintCustomShow.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\ResourceLanguageManager.cs" />
+    <Compile Include="SdaConfigKey.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
+      <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
+      <Name>HIS.Desktop.ApiConsumer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.Common\HIS.Desktop.Common.csproj">
+      <Project>{59fdcba7-0f9f-4257-b95a-e37a1ccfe107}</Project>
+      <Name>HIS.Desktop.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
+      <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
+      <Name>HIS.Desktop.LocalStorage.BackendData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
+      <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
+      <Name>HIS.Desktop.LocalStorage.ConfigApplication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.ConfigSystem\HIS.Desktop.LocalStorage.ConfigSystem.csproj">
+      <Project>{48d25a6a-11bc-4f0f-8dd7-15e03a2bcada}</Project>
+      <Name>HIS.Desktop.LocalStorage.ConfigSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
+      <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
+      <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
+      <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
+      <Name>HIS.Desktop.LocalStorage.LocalData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
+      <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
+      <Name>HIS.Desktop.LocalStorage.Location</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
+      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
+      <Name>HIS.Desktop.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ChooseDepartment\frmBordereauChooseDepartment.resx">
+      <DependentUpon>frmBordereauChooseDepartment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChooseServiceType\FormChooseServiceType.resx">
+      <DependentUpon>FormChooseServiceType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChooseService\frmChonDichVuPhauThuat.resx">
+      <DependentUpon>frmChonDichVuPhauThuat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.en.resx" />
+    <EmbeddedResource Include="Resources\Lang.vi.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BankQrCode\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

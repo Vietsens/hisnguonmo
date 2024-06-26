@@ -1,0 +1,70 @@
+/* IVT
+ * @Project : hisnguonmo
+ * Copyright (C) 2017 INVENTEC
+ *  
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *  
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+ * GNU General Public License for more details.
+ *  
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MPS.Processor.Mps000274
+{
+    public class SereServADO : MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_15
+    {
+        public string CHILD_ID { get; set; }
+        //public string PARENT_ID { get; set; }
+        public decimal AMOUNT_SUM { get; set; }
+        public int? IS_PARENT { get; set; }
+
+        public string TITLE_CODE { get; set; }
+        public string TITLE_NAME { get; set; }
+        public string BED_ROOM_NAME__BED_NAME { get; set; }
+
+
+        public string BED_ROOM_CODE { get; set; }
+        public string BED_ROOM_NAME { get; set; }
+        public string BED_CODE { get; set; }
+        public string BED_NAME { get; set; }
+
+        public string PATIENT_TYPE_NAME { get; set; }
+        public string PATIENT_CLASSIFY_NAME { get; set; }
+
+        public SereServADO()
+        {
+
+        }
+
+        public SereServADO(MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_15 sereServ)
+        {
+            try
+            {
+                if (sereServ != null)
+                {
+                    System.Reflection.PropertyInfo[] pi = Inventec.Common.Repository.Properties.Get<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_15>();
+                    foreach (var item in pi)
+                    {
+                        item.SetValue(this, item.GetValue(sereServ));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+    }
+}

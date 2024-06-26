@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="UCKidneyShift.btnAddIntoSchedule.Text" xml:space="preserve">
+    <value>Đưa vào lịch (Ctrl A)</value>
+  </data>
+  <data name="UCKidneyShift.btnNextForSearchServiceReqKidneyshift.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCKidneyShift.btnPreviousForSearchServiceReqKidneyshift.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCKidneyShift.btnPrintForSearchServiceReqKidneyshift.Text" xml:space="preserve">
+    <value>In (Ctrl P)</value>
+  </data>
+  <data name="UCKidneyShift.btnSearchForPatientInBedroom.Text" xml:space="preserve">
+    <value>Tìm (Ctrl Shift F)</value>
+  </data>
+  <data name="UCKidneyShift.btnSearchForSearchServiceReqKidneyshift.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="UCKidneyShift.cboBedroomForPatientInBedroom.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCKidneyShift.cboCaForAdd.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCKidneyShift.cboCaForSearchServiceReqKidneyshift.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCKidneyShift.cboDayOfWeekForSearchServiceReqKidneyshift.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCKidneyShift.cboExecuteRoom.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCKidneyShift.cboExpMestTemplateForAdd.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCKidneyShift.cboMarchineForAdd.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCKidneyShift.cboMarchineForSearchServiceReqKidneyshift.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCKidneyShift.cboPatientType.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCKidneyShift.cboServiceForAdd.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCKidneyShift.cboUser.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCKidneyShift.chkSearchAllInDepartment.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCKidneyShift.gridColumn1.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn10.Caption" xml:space="preserve">
+    <value>Ngày sinh</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn11.Caption" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn12.Caption" xml:space="preserve">
+    <value>Ngày vào</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn13.Caption" xml:space="preserve">
+    <value>Đối tượng</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn14.Caption" xml:space="preserve">
+    <value>Gói vật tư</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn15.Caption" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn16.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn17.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn18.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn19.Caption" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn2.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn20.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn21.Caption" xml:space="preserve">
+    <value>Ngày sinh</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn22.Caption" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn23.Caption" xml:space="preserve">
+    <value>Ngày vào</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn24.Caption" xml:space="preserve">
+    <value>Đối tượng</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn25.Caption" xml:space="preserve">
+    <value>Số thẻ BHYT</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn26.Caption" xml:space="preserve">
+    <value>Buồng</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn27.Caption" xml:space="preserve">
+    <value>Giường</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn28.Caption" xml:space="preserve">
+    <value>Chẩn đoán chính</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn3.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn4.Caption" xml:space="preserve">
+    <value>Ngày</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn5.Caption" xml:space="preserve">
+    <value>Ca</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn6.Caption" xml:space="preserve">
+    <value>Máy</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn7.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn8.Caption" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UCKidneyShift.gridColumn9.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="UCKidneyShift.gridColumnDel.Caption" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="UCKidneyShift.gridColumnSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCKidneyShift.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCKidneyShift.layoutControlItem10.Text" xml:space="preserve">
+    <value>Từ khóa tìm kiếm:</value>
+  </data>
+  <data name="UCKidneyShift.layoutControlItem11.Text" xml:space="preserve">
+    <value>Ngày:</value>
+  </data>
+  <data name="UCKidneyShift.layoutControlItem12.Text" xml:space="preserve">
+    <value>Ca:</value>
+  </data>
+  <data name="UCKidneyShift.layoutControlItem13.Text" xml:space="preserve">
+    <value>Máy:</value>
+  </data>
+  <data name="UCKidneyShift.layoutControlItem16.Text" xml:space="preserve">
+    <value>Máy:</value>
+  </data>
+  <data name="UCKidneyShift.layoutControlItem17.Text" xml:space="preserve">
+    <value>Từ khóa tìm kiếm:</value>
+  </data>
+  <data name="UCKidneyShift.layoutControlItem18.Text" xml:space="preserve">
+    <value>Buồng bệnh:</value>
+  </data>
+  <data name="UCKidneyShift.layoutControlItem20.Text" xml:space="preserve">
+    <value>Toàn khoa:</value>
+  </data>
+  <data name="UCKidneyShift.layoutControlItem22.Text" xml:space="preserve">
+    <value>Ngày:</value>
+  </data>
+  <data name="UCKidneyShift.layoutControlItem23.Text" xml:space="preserve">
+    <value>Ca:</value>
+  </data>
+  <data name="UCKidneyShift.layoutControlItem24.Text" xml:space="preserve">
+    <value>Máy:</value>
+  </data>
+  <data name="UCKidneyShift.layoutControlItem26.Text" xml:space="preserve">
+    <value>Gói vật tư:</value>
+  </data>
+  <data name="UCKidneyShift.layoutControlItem28.Text" xml:space="preserve">
+    <value>Ghi chú:</value>
+  </data>
+  <data name="UCKidneyShift.layoutControlItem3.Text" xml:space="preserve">
+    <value>Phòng chạy:</value>
+  </data>
+  <data name="UCKidneyShift.layoutControlItem31.Text" xml:space="preserve">
+    <value>Dịch vụ:</value>
+  </data>
+  <data name="UCKidneyShift.layoutControlItem33.Text" xml:space="preserve">
+    <value>ĐTTT:</value>
+  </data>
+  <data name="UCKidneyShift.layoutControlItem5.Text" xml:space="preserve">
+    <value>Thứ:</value>
+  </data>
+  <data name="UCKidneyShift.layoutControlItem6.Text" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="UCKidneyShift.layoutControlItem7.Text" xml:space="preserve">
+    <value>Tuần từ:</value>
+  </data>
+  <data name="UCKidneyShift.lciFortxtLoginName.Text" xml:space="preserve">
+    <value>Người chỉ định:</value>
+  </data>
+</root>

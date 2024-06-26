@@ -1,0 +1,128 @@
+/* IVT
+ * @Project : hisnguonmo
+ * Copyright (C) 2017 INVENTEC
+ *  
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *  
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+ * GNU General Public License for more details.
+ *  
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HIS.Desktop.LocalStorage.SdaConfigKey
+{
+    public partial class ExtensionConfigKey
+    {
+        public const string MOS__ORGANIZATION_NAME = "MOS.ORGANIZATION_NAME";
+        public const string MOS__PARENT_ORGANIZATION_NAME = "MOS.PARENT_ORGANIZATION_NAME";
+
+        //public const string LOAD_PATIENT_TYPE_DEFAULT_KEY = "EXE.ASSING_SERVICE_MERGER.LOAD_PATIENT_TYPE_DEFAULT";
+        //public const string ASSIGN_SERVICE_REQUEST__OBLIGATE_ICD = "EXE.ASSIGN_SERVICE_REQUEST__OBLIGATE_ICD";
+        //public const string SDA_CONFIG__PATIENT_TYPE_CODE__BHYT = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT";//Doi tuong BHYT
+
+        //public const string TRAN_PATI_TYPE_CODE__IN = "DBCODE.HIS_RS.HIS_TRAN_PATI_TYPE.TRAN_PATI_TYPE_CODE.IN"; //chuyen den
+        //public const string TRAN_PATI_TYPE_CODE__OUT = "DBCODE.HIS_RS.HIS_TRAN_PATI_TYPE.TRAN_PATI_TYPE_CODE.OUT"; //chuyen di
+        //public const string HEIN_SERVICE_TYPE_CODE__HIGHTECH = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.HIGHTECH";//dv ky thuat cao
+        //public const string HEIN_SERVICE_TYPE_CODE__EXAM = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.EXAM";
+        //public const string HEIN_SERVICE_TYPE_CODE__SURGMISU = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.SURGMISU";
+
+        //public const string HEIN_SERVICE_TYPE_CODE__MEDICINE_RATIO = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.MEDICINE_RATIO";//thuoc thanh toan theo ty le
+        //public const string HEIN_SERVICE_TYPE_CODE__MATERIAL_RATIO = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.MATERIAL_RATIO";//vat tu thanh toan theo ty le
+        //public const string HEIN_SERVICE_TYPE_CODE__MATERIAL_VTTT = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.MATERIAL_VTTT";//vat tu thanh toan theo ty le
+
+        //public const string EXE_CREATE_BED_LOG_DEPARTMENT_CODES = "EXE.CREATE_BED_LOG.DEPARTMENT_CODES";//Cau hinh khoa load giuong tu dong ccc
+        //public const string HIS_ROOM_TYPE_CODE__KH = "DBCODE.HIS_RS.HIS_ROOM_TYPE.ROOM_TYPE_CODE.STOCK";//kho
+        //public const string HIS_DEPOSIT__DEFAULT_PRICE_FOR_BHYT_OUT_PATIENT = "HIS_RS.HIS_DEPOSIT.DEFAULT_PRICE_FOR_BHYT_OUT_PATIENT";//tính tiền dịch vụ cần tạm ứng(ct MOS.LibraryHein.Bhyt.BhytPriceCalculator.DefaultPriceForBhytOutPatient) ở chức năng tạm ứng dịch vụ theo dịch vụ.
+        //public const string DBCODE__HIS_RS__HIS_SERVICE_TYPE__SERVICE_TYPE_CODE__BLOOD = "DBCODE.HIS_RS.HIS_SERVICE_TYPE.SERVICE_TYPE_CODE.BLOOD";
+
+        //private const string IS_LOAD_INGREDIENT_NAME_KEY = "EXE.ASSING_SERVICE_MERGER.IS_LOAD_INGREDIENT_NAME";
+        //private const string VIEW_MEDICINE_MATERIAL_OUT_OF_STOCK_KEY = "EXE.ASSING_SERVICE_MERGER.VIEW_MEDICINE_MATERIAL_OUT_OF_STOCK";
+
+        //public const string EXE__HIS_TREATMENT_END_TYPE__TREATMENT_END_TYPE_CODE__CHUYEN_VIEN = "EXE.HIS_TREATMENT_END_TYPE.TREATMENT_END_TYPE_CODE.TRAN_PATI";
+        //public const string EXE__HIS_TREATMENT_END_TYPE__TREATMENT_END_TYPE_CODE__XIN_RA_VIEN = "EXE.HIS_TREATMENT_END_TYPE.TREATMENT_END_TYPE_CODE.P_LEAVE";
+        //public const string EXE__HIS_TREATMENT_END_TYPE__TREATMENT_END_TYPE_CODE__KHAC = "EXE.HIS_TREATMENT_END_TYPE.TREATMENT_END_TYPE_CODE.OTHER";
+        //public const string EXE__HIS_TREATMENT_END_TYPE__TREATMENT_END_TYPE_CODE__RA_VIEN = "EXE.HIS_TREATMENT_END_TYPE.TREATMENT_END_TYPE_CODE.LEAVE";
+        //public const string EXE__HIS_TREATMENT_END_TYPE__TREATMENT_END_TYPE_CODE__TRON_VIEN = "EXE.HIS_TREATMENT_END_TYPE.TREATMENT_END_TYPE_CODE.ESC";
+        //public const string EXE__HIS_TREATMENT_END_TYPE__TREATMENT_END_TYPE_CODE__TU_VONG = "EXE.HIS_TREATMENT_END_TYPE.TREATMENT_END_TYPE_CODE.DEATH";
+        //public const string EXE__HIS_TREATMENT_END_TYPE__TREATMENT_END_TYPE_CODE__HEN_KHAM = "EXE.HIS_TREATMENT_END_TYPE.TREATMENT_END_TYPE_CODE.APPOINTMENT";
+        //public const string EXE__HIS_TREATMENT_END_TYPE__TREATMENT_END_TYPE_CODE__CAP_TOA_CHO_VE = "MRS.HIS_TREATMENT_END_TYPE.TREATMENT_END_TYPE_CODE.HOME";
+
+        //public const string EXE__HIS_TREATMENT_RESULT__TREATMENT_RESULT_CODE__CURED = "EXE.HIS_TREATMENT_RESULT.TREATMENT_RESULT_CODE.CURED";//khỏi
+        //public const string EXE__HIS_TREATMENT_RESULT__TREATMENT_RESULT_CODE__REDUCE = "EXE.HIS_TREATMENT_RESULT.TREATMENT_RESULT_CODE.REDUCE";//Đỡ
+        //public const string EXE__HIS_TREATMENT_RESULT__TREATMENT_RESULT_CODE__CONSTANT = "EXE.HIS_TREATMENT_RESULT.TREATMENT_RESULT_CODE.CONSTANT";//Không đổi
+        //public const string EXE__HIS_TREATMENT_RESULT__TREATMENT_RESULT_CODE__HEAVIER = "EXE.HIS_TREATMENT_RESULT.TREATMENT_RESULT_CODE.HEAVIER";//Nặng hơn
+        //public const string EXE__HIS_TREATMENT_RESULT__TREATMENT_RESULT_CODE__DEATH = "EXE.HIS_TREATMENT_RESULT.TREATMENT_RESULT_CODE.DEATH";//Chết
+
+        //public const string MOS__HIS_HEIN_SERVICE_TYPE__HEIN_SERVICE_TYPE_CODE__DIIM = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.DIIM";//Chuẩn đoán hình ảnh
+        //public const string MOS__HIS_HEIN_SERVICE_TYPE__HEIN_SERVICE_TYPE_CODE__MEDI_MATE_CABINET = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.MEDI_MATE_CABINET";//Thuốc, dịch truyền dùng trong cấp cứu
+        //public const string MOS__HIS_HEIN_SERVICE_TYPE__HEIN_SERVICE_TYPE_CODE__EXAM = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.EXAM";//Khám
+        //public const string MOS__HIS_HEIN_SERVICE_TYPE__HEIN_SERVICE_TYPE_CODE__FUEX = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.FUEX";//Thăm dò chức năng
+        //public const string MOS__HIS_HEIN_SERVICE_TYPE__HEIN_SERVICE_TYPE_CODE__HIGHTECH = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.HIGHTECH";//Dịch vụ kỹ thuật cao
+        //public const string MOS__HIS_HEIN_SERVICE_TYPE__HEIN_SERVICE_TYPE_CODE__MATERIAL_IN = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.MATERIAL_IN";//vật tư trong danh mục
+        //public const string MOS__HIS_HEIN_SERVICE_TYPE__HEIN_SERVICE_TYPE_CODE__MATERIAL_OUT = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.MATERIAL_OUT";//Vật tư ngoài danh mục
+        //public const string MOS__HIS_HEIN_SERVICE_TYPE__HEIN_SERVICE_TYPE_CODE__MEDICINE_CANCER = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.MEDICINE_CANCER";//Thuốc ung thư, chống thải ghép
+        //public const string MOS__HIS_HEIN_SERVICE_TYPE__HEIN_SERVICE_TYPE_CODE__MEDICINE_IN = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.MEDICINE_IN";//thuốc trong danh mục
+        //public const string MOS__HIS_HEIN_SERVICE_TYPE__HEIN_SERVICE_TYPE_CODE__MEDICINE_OUT = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.MEDICINE_OUT";//thuốc ngoài danh mục
+        //public const string MOS__HIS_HEIN_SERVICE_TYPE__HEIN_SERVICE_TYPE_CODE__SURGMISU = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.SURGMISU";//Phẫu thuật thủ thuật
+        //public const string MOS__HIS_HEIN_SERVICE_TYPE__HEIN_SERVICE_TYPE_CODE__TEST = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.TEST";//Xét nghiệm
+        //public const string MOS__HIS_HEIN_SERVICE_TYPE__HEIN_SERVICE_TYPE_CODE__TRANS = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.TRANS";//Dịch vụ vận chuyển
+        //public const string MOS__HIS_HEIN_SERVICE_TYPE__HEIN_SERVICE_TYPE_CODE__MEDICINE_RATIO = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.MEDICINE_RATIO";//Thuốc thanh toán theo tỷ lệ
+        //public const string MOS__HIS_HEIN_SERVICE_TYPE__HEIN_SERVICE_TYPE_CODE__MATERIAL_RATIO = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.MATERIAL_RATIO";//Vật tư thanh toán theo tỷ lệ
+        //public const string MOS__HIS_HEIN_SERVICE_TYPE__HEIN_SERVICE_TYPE_CODE__MATERIAL_VTTT = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.MATERIAL_VTTT";//Vạt tư thay thế
+        //public const string MOS__HIS_HEIN_SERVICE_TYPE__HEIN_SERVICE_TYPE_CODE__BLOOD = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.BLOOD";//Máu và chế phẩm máu
+        //public const string MOS__HIS_HEIN_SERVICE_TYPE__HEIN_SERVICE_TYPE_CODE__BED_INPATIENTS = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.BED_INPATIENTS";//Giường nội trú
+        //public const string MOS__HIS_HEIN_SERVICE_TYPE__HEIN_SERVICE_TYPE_CODE__BED_OUTPATIENTS = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.BED_OUTPATIENTS";//Giường ngoại trú
+
+
+
+        //public const string HIS_TREATMENT__FEE_LOCK_TIME = "HFS.HIS_TREATMENT.FEE_LOCK_TIME_ENABLE_CONTROL";//Enable hay disable control datetime mà hình khóa viện phí
+
+        //public const string HIS_ACCIDENT_HURT_TYPE_CODE__TRAFFIC = "HIS.HIS_ACCIDENT_HURT_TYPE.ACCIDENT_TYPE_CODE.TRAFFIC"; //Tai nạ giao thông
+        //public const string HIS_ACCIDENT_HURT_TYPE_CODE__LIFE = "HIS.HIS_ACCIDENT_HURT_TYPE.ACCIDENT_TYPE_CODE.LIFE"; //Sinh hoạt
+        //public const string HIS_ACCIDENT_HURT_TYPE_CODE__FIGHT = "HIS.HIS_ACCIDENT_HURT_TYPE.ACCIDENT_TYPE_CODE.FIGHT"; //đánh nhau
+        //public const string HIS_ACCIDENT_HURT_TYPE_CODE__LABOR = "HIS.HIS_ACCIDENT_HURT_TYPE.ACCIDENT_TYPE_CODE.LABOR"; //Tai nạ lao động
+        //public const string HIS_ACCIDENT_HURT_TYPE_CODE__FALL = "HIS.HIS_ACCIDENT_HURT_TYPE.ACCIDENT_TYPE_CODE.FALL"; //Ngã
+        //public const string HIS_ACCIDENT_HURT_TYPE_CODE__ANIMAL = "HIS.HIS_ACCIDENT_HURT_TYPE.ACCIDENT_TYPE_CODE.ANIMAL"; //Động vật, súc vật
+        //public const string HIS_ACCIDENT_HURT_TYPE_CODE__UNDERWATER = "HIS.HIS_ACCIDENT_HURT_TYPE.ACCIDENT_TYPE_CODE.UNDERWATER"; //Đuối nước
+        //public const string HIS_ACCIDENT_HURT_TYPE_CODE__BURN = "HIS.HIS_ACCIDENT_HURT_TYPE.ACCIDENT_TYPE_CODE.BURN"; //Bỏng
+        //public const string HIS_ACCIDENT_HURT_TYPE_CODE__POISONING = "HIS.HIS_ACCIDENT_HURT_TYPE.ACCIDENT_TYPE_CODE.POISONING"; //Ngộ độc
+        //public const string HIS_ACCIDENT_HURT_TYPE_CODE__SUICIDAL = "HIS.HIS_ACCIDENT_HURT_TYPE.ACCIDENT_TYPE_CODE.SUICIDAL"; //Tự tử
+        //public const string HIS_ACCIDENT_HURT_TYPE_CODE__VIOLENCE = "HIS.HIS_ACCIDENT_HURT_TYPE.ACCIDENT_TYPE_CODE.VIOLENCE"; //Bạo lực gia đình, xã hội
+        //public const string HIS_ACCIDENT_HURT_TYPE_CODE__OTHER = "HIS.HIS_ACCIDENT_HURT_TYPE.ACCIDENT_TYPE_CODE.OTHER"; //Khác
+
+        //public const string MRS_HIS_REPORT_BHYT_NDS_ICD_CODE__OTHER = "MRS.HIS_REPORT_BHYT_NDS_ICD_CODE__OTHER";
+        //public const string MRS_HIS_REPORT_BHYT_NDS_ICD_CODE__TE = "MRS.HIS_REPORT_BHYT_NDS_ICD_CODE__TE";
+
+        //public const string HEIN_SERVICE_TYPE_CODE__BLOOD = "MOS.HIS_HEIN_SERVICE_TYPE.HEIN_SERVICE_TYPE_CODE.BLOOD";//mau
+        
+        //public const string HIS_Desktop_Plugins_AssignServicePrintTEST = "HIS.Desktop.Plugins.AssignServicePrintTEST";
+
+        //public const string MOS_HIS_DEPARTMENT_IS_CLINICAL_KHONG = "MOS.HIS_DEPARTMENT.IS_CLINICAL.FALSE";
+        //public const string MOS_HIS_DEPARTMENT_IS_CLINICAL_CO = "MOS.HIS_DEPARTMENT.IS_CLINICAL.FALSE";
+        //public const string HIS_DESKTOP_PLUGINS_HOSPITALIZE_HASDON = "HIS.Desktop.Plugins.Hospitalize.HasDon";
+        //public const string HIS_DESKTOP_ALLOW_PRINT_FINISH = "HIS.Desktop.AllowPrint.Finish";
+        //public const string RECEPTION_ROOM = "HIS.Desktop.Plugins.HisReceptionRoom.RoomTypeID";
+        //public const string SAMPLE_ROOM = "HIS.Desktop.Plugins.HisSampleRoom.RoomTypeID";
+        //public const string CASHIER_ROOM = "HIS.Desktop.Plugins.HisCashierRoom.RoomTypeID";
+        //public const string SAMPLE_STT_CODE__SPECIMEN = "HIS.Desktop.Plugins.ExecuteRoomPartialKXN.SPECIMEN_ID";
+        //public const string SAMPLE_STT_CODE__UNSPECIMEN = "HIS.Desktop.Plugins.ExecuteRoomPartialKXN.UNSPECIMEN_ID";
+        //public const string SAMPLE_STT_CODE__RESULT = "HIS.Desktop.Plugins.ExecuteRoomPartialKXN.RESULT_ID";
+        //public const string SAMPLE_STT_CODE__RETURN_RESULT = "HIS.Desktop.Plugins.ExecuteRoomPartialKXN.RETURN_RESULT_ID";
+
+        //public const string BHYT_HEIN_LEVEL_CODE = "HIS.BHYT_HEIN_LEVEL_CODE__CURRENT";
+        //public const string IS_VISIBLE_ASSING_MEDICINE_MATERIAL = "EXE.SURG_EXECUTE_ROOM.IS_VISIBLE_ASSING_MEDICINE_MATERIAL";
+        //public const string HIS_DESKTOP_SURGSERVICEREQEXECUTE_EXECUTE_ROLE_DEFAULT = "HIS.DESKTOP.PLUGINS.SURGSERVICEREQEXECUTE.EXECUTE_ROLE_DEFAULT";
+    }
+}

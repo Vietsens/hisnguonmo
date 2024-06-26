@@ -1,0 +1,351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AmTinh" xml:space="preserve">
+    <value>Âm tính</value>
+  </data>
+  <data name="BenhNhanHivChuaDieuTriArvChuyenToi" xml:space="preserve">
+    <value>Bệnh nhân HIV chưa điều trị ARV chuyển tới</value>
+  </data>
+  <data name="BenhNhanHivChuaDieuTriArvDangKyLai" xml:space="preserve">
+    <value>Bệnh nhân HIV chưa điều trị ARV đăng ký lại</value>
+  </data>
+  <data name="BenhNhanHivDaDieuTriArvChuyenToi" xml:space="preserve">
+    <value>Bệnh nhân HIV đã điều trị ARV chuyển tới</value>
+  </data>
+  <data name="BenhNhanHivDaDieuTriArvNayDieuTriLai" xml:space="preserve">
+    <value>Bệnh nhân HIV đã điều trị ARV nay điều trị lại</value>
+  </data>
+  <data name="BenhNhanHivMoiDangKyLanDau" xml:space="preserve">
+    <value>Bệnh nhân HIV mới đăng ký lần đầu</value>
+  </data>
+  <data name="ChuyenDa" xml:space="preserve">
+    <value>Chuyển dạ</value>
+  </data>
+  <data name="CoBau" xml:space="preserve">
+    <value>Có bầu</value>
+  </data>
+  <data name="DangDieuTriLao" xml:space="preserve">
+    <value>Đang điều trị lao</value>
+  </data>
+  <data name="DieuTriArv" xml:space="preserve">
+    <value>Điều trị ARV</value>
+  </data>
+  <data name="DieuTriDuPhongSauPhoiNhiem" xml:space="preserve">
+    <value>Điều trị dự phòng sau phơi nhiễm</value>
+  </data>
+  <data name="DieuTriDuPhongTruocPhoiNhiem" xml:space="preserve">
+    <value>Điều trị dự phòng trước phơi nhiễm</value>
+  </data>
+  <data name="DieuTriLao" xml:space="preserve">
+    <value>Điều trị lao</value>
+  </data>
+  <data name="DieuTriLaoKhangThuoc" xml:space="preserve">
+    <value>Điều trị lao kháng thuốc</value>
+  </data>
+  <data name="DieuTriLaoTiemAn" xml:space="preserve">
+    <value>Điều trị lao tiềm ẩn</value>
+  </data>
+  <data name="DieuTriViemGanB" xml:space="preserve">
+    <value>Điều trị viêm gan B</value>
+  </data>
+  <data name="Duoi50BanSao" xml:space="preserve">
+    <value>Dưới 50 bản sao/ml</value>
+  </data>
+  <data name="DuongTinh" xml:space="preserve">
+    <value>Dương tính</value>
+  </data>
+  <data name="DuPhongLao" xml:space="preserve">
+    <value>Dự phòng lao</value>
+  </data>
+  <data name="Khac" xml:space="preserve">
+    <value>Khác</value>
+  </data>
+  <data name="KhongCoThongTin" xml:space="preserve">
+    <value>Bệnh nhân không có thông tin điều trị bệnh lao</value>
+  </data>
+  <data name="KhongDieuTriLao" xml:space="preserve">
+    <value>Không điều trị lao</value>
+  </data>
+  <data name="KhongDuocLonHon" xml:space="preserve">
+    <value>{0} không được lớn hơn {1}</value>
+  </data>
+  <data name="KhongPhatHien" xml:space="preserve">
+    <value>Không phát hiện</value>
+  </data>
+  <data name="Lan" xml:space="preserve">
+    <value>Lần</value>
+  </data>
+  <data name="Lan3" xml:space="preserve">
+    <value>Lần 3 (chỉ áp dụng trong lần 1 âm tính và lần 2 dương tính)</value>
+  </data>
+  <data name="NghienChichMaTuy" xml:space="preserve">
+    <value>Nghiện chích ma túy</value>
+  </data>
+  <data name="NghiNgoThatBaiDieuTri" xml:space="preserve">
+    <value>Nghi ngờ thất bại điều trị</value>
+  </data>
+  <data name="NguoiNhiemHIV" xml:space="preserve">
+    <value>Người nhiễm HIV</value>
+  </data>
+  <data name="PhacDo" xml:space="preserve">
+    <value>Phác đồ</value>
+  </data>
+  <data name="PhacDoBac" xml:space="preserve">
+    <value>Phác đồ bậc</value>
+  </data>
+  <data name="PhacDoKhacHIV" xml:space="preserve">
+    <value>Phác đồ khác (HIV)</value>
+  </data>
+  <data name="PhacDoKhacLao" xml:space="preserve">
+    <value>Phác đồ khác (Lao)</value>
+  </data>
+  <data name="PhoiNhiem" xml:space="preserve">
+    <value>Phơi nhiễm</value>
+  </data>
+  <data name="SauSinh" xml:space="preserve">
+    <value>Sau sinh</value>
+  </data>
+  <data name="SoNgayCapThuocKhongDuocLonHon" xml:space="preserve">
+    <value>Số ngày cấp thuốc không được lớn hơn Ngày kết thúc xử trí - Ngày bắt đầu xử trí</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
+  <data name="ThuongQuy" xml:space="preserve">
+    <value>Thường quy</value>
+  </data>
+  <data name="TreDuoi18ThangSinhRaTuMeNhiemHiv" xml:space="preserve">
+    <value>Trẻ dưới 18 tháng sinh ra từ mẹ nhiễm HIV</value>
+  </data>
+  <data name="Tren1000BanSao" xml:space="preserve">
+    <value>Trên 1000 bản sao/ml</value>
+  </data>
+  <data name="TrePhoiNhiemVoiHiv" xml:space="preserve">
+    <value>Trẻ phơi nhiễm với HIV</value>
+  </data>
+  <data name="Tu200DenDuoi1000BanSao" xml:space="preserve">
+    <value>Từ 200 đến 1000 bản sao/ml</value>
+  </data>
+  <data name="Tu50DenDuoi200BanSao" xml:space="preserve">
+    <value>Từ 50 đến dưới 200 bản sao/ml</value>
+  </data>
+  <data name="ViemGan" xml:space="preserve">
+    <value>Viêm gan</value>
+  </data>
+  <data name="BoDieuTri" xml:space="preserve">
+    <value>Bỏ điều trị;</value>
+  </data>
+  <data name="CacDoiTuongKhac" xml:space="preserve">
+    <value>Các đối tượng khác.</value>
+  </data>
+  <data name="ChupXQuangPhoi" xml:space="preserve">
+    <value>Chụp X-quang phổi;</value>
+  </data>
+  <data name="CungSongChungVoiNguoiNhiemHIV" xml:space="preserve">
+    <value>Vợ, chồng và thành viên khác trong gia đình cùng sống chung với người nhiễm HIV; vợ, chồng của đối tượng quy định tại các mã 0, 1, 2 và mã 3 nêu trên;</value>
+  </data>
+  <data name="DangDieuTri" xml:space="preserve">
+    <value>Đang điều trị;</value>
+  </data>
+  <data name="DieuTriViemGanC" xml:space="preserve">
+    <value>Điều trị viêm gan C</value>
+  </data>
+  <data name="GiaiDoan1" xml:space="preserve">
+    <value>Giai đoạn I;</value>
+  </data>
+  <data name="GiaiDoan2" xml:space="preserve">
+    <value>Giai đoạn II;</value>
+  </data>
+  <data name="GiaiDoan3" xml:space="preserve">
+    <value>Giai đoạn III;</value>
+  </data>
+  <data name="GiaiDoan4" xml:space="preserve">
+    <value>Giai đoạn IV;</value>
+  </data>
+  <data name="HoanThanh" xml:space="preserve">
+    <value>Hoàn thành;</value>
+  </data>
+  <data name="KhongDanhGia" xml:space="preserve">
+    <value>Không đánh giá.</value>
+  </data>
+  <data name="KhongSangLoc" xml:space="preserve">
+    <value>Không sàng lọc;</value>
+  </data>
+  <data name="NgungDieuTri" xml:space="preserve">
+    <value>Ngừng điều trị (ghi rõ lý do);</value>
+  </data>
+  <data name="NguoiBanDam" xml:space="preserve">
+    <value>Người bán dâm;</value>
+  </data>
+  <data name="NguoiChuyenDoiGioiTinh" xml:space="preserve">
+    <value>Người chuyển đổi giới tính;</value>
+  </data>
+  <data name="NguoiCoQuanHeTinhDucDongGioi" xml:space="preserve">
+    <value>Người có quan hệ tình dục đồng giới;</value>
+  </data>
+  <data name="NguoiCoQuanHeTinhDucVoiNguoiNhiemHIV" xml:space="preserve">
+    <value>Người có quan hệ tình dục với người nhiễm HIV;</value>
+  </data>
+  <data name="NguoiCoTrieuChungLamSangNghiNgoNhiemHIV" xml:space="preserve">
+    <value>Người có triệu chứng lâm sàng nghi ngờ nhiễm HIV;</value>
+  </data>
+  <data name="NguoiDiBienDong" xml:space="preserve">
+    <value>Người di biến động;</value>
+  </data>
+  <data name="NguoiMacBenhLao" xml:space="preserve">
+    <value>Người mắc bệnh lao;</value>
+  </data>
+  <data name="NguoiMacCacBenhLayTruyenQuaDuongTinhDuc" xml:space="preserve">
+    <value>Người mắc các bệnh lây truyền qua đường tình dục;</value>
+  </data>
+  <data name="NguoiSuDungMaTuy" xml:space="preserve">
+    <value>Người sử dụng ma tuý;</value>
+  </data>
+  <data name="PhacDoMoiTheoHuongDanQuocGia" xml:space="preserve">
+    <value>Phác đồ mới theo hướng dẫn quốc gia;</value>
+  </data>
+  <data name="PhamNhanNguoiBiTamGiam" xml:space="preserve">
+    <value>Phạm nhân, người bị tạm giam, trại viên cơ sở giáo dục bắt buộc, học sinh trường giáo dưỡng, học viên cơ sở cai nghiện ma túy;</value>
+  </data>
+  <data name="SangLocTrieuChung" xml:space="preserve">
+    <value>Sàng lọc triệu chứng;</value>
+  </data>
+  <data name="TacDungPhu" xml:space="preserve">
+    <value>Tác dụng phụ;</value>
+  </data>
+  <data name="ThatBai" xml:space="preserve">
+    <value>Thất bại;</value>
+  </data>
+  <data name="ThatBaiDieuTri" xml:space="preserve">
+    <value>Thất bại điều trị;</value>
+  </data>
+  <data name="ThieuThuoc" xml:space="preserve">
+    <value>Thiếu thuốc;</value>
+  </data>
+  <data name="ToiUuHoaPhacDo" xml:space="preserve">
+    <value>Tối ưu hoá phác đồ;</value>
+  </data>
+  <data name="TuVong" xml:space="preserve">
+    <value>Tử vong;</value>
+  </data>
+  <data name="XetNghiemProteinPhanUngC" xml:space="preserve">
+    <value>Xét nghiệm Protein phản ứng C</value>
+  </data>
+</root>

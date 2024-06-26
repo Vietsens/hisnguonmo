@@ -1,0 +1,504 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmExpMestViewDetail.bar1.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmExpMestViewDetail.bbtnSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmExpMestViewDetail.bbtnNew.Caption" xml:space="preserve">
+    <value>New (Ctrl N)</value>
+  </data>
+  <data name="frmExpMestViewDetail.layoutControl1.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmExpMestViewDetail.layoutControl3.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmExpMestViewDetail.groupControlCommonInformation.Text" xml:space="preserve">
+    <value>Common info</value>
+  </data>
+  <data name="frmExpMestViewDetail.layoutControl4.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmExpMestViewDetail.lbiVirPatientName.Text" xml:space="preserve">
+    <value>Patient name:</value>
+  </data>
+  <data name="frmExpMestViewDetail.lciPatientCode.Text" xml:space="preserve">
+    <value>Patient code:</value>
+  </data>
+  <data name="frmExpMestViewDetail.lciExpiredDate.Text" xml:space="preserve">
+    <value>Expired date:</value>
+  </data>
+  <data name="frmExpMestViewDetail.lciGenderName.Text" xml:space="preserve">
+    <value>Gender name:</value>
+  </data>
+  <data name="frmExpMestViewDetail.lciVirAddress.Text" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="frmExpMestViewDetail.layoutControlItem9.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmExpMestViewDetail.layoutControlItem10.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmExpMestViewDetail.lciUseTimeFromTo.Text" xml:space="preserve">
+    <value>Use time:</value>
+  </data>
+  <data name="frmExpMestViewDetail.lciAdvise.Text" xml:space="preserve">
+    <value>Advise:</value>
+  </data>
+  <data name="frmExpMestViewDetail.lciIcdName.Text" xml:space="preserve">
+    <value>Icd name:</value>
+  </data>
+  <data name="frmExpMestViewDetail.lciIcdCode.Text" xml:space="preserve">
+    <value>Icd code:</value>
+  </data>
+  <data name="frmExpMestViewDetail.lciIcdText.Text" xml:space="preserve">
+    <value>Icd text:</value>
+  </data>
+  <data name="frmExpMestViewDetail.lciRequestRoom.Text" xml:space="preserve">
+    <value>Request room:</value>
+  </data>
+  <data name="frmExpMestViewDetail.lciRequestDepartment.Text" xml:space="preserve">
+    <value>Request department:</value>
+  </data>
+  <data name="frmExpMestViewDetail.layoutControl2.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmExpMestViewDetail.btnApproval.Text" xml:space="preserve">
+    <value>Approval (Ctrl D)</value>
+  </data>
+  <data name="frmExpMestViewDetail.btnExport.Text" xml:space="preserve">
+    <value>Export (Ctrl E)</value>
+  </data>
+  <data name="frmExpMestViewDetail.tabPageRequestMedicine.Text" xml:space="preserve">
+    <value>Request medicine</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMedicineSTT.Caption" xml:space="preserve">
+    <value>Num order</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMedicineMedicineTypeCode.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMedicineMedicineTypeName.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMedicineServiceUnitName.Caption" xml:space="preserve">
+    <value>Service unit</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMedicineIsExpend.Caption" xml:space="preserve">
+    <value>Is expend</value>
+  </data>
+  <data name="frmExpMestViewDetail.repositoryItemPictureEdit1.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMedicineAmount.Caption" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMedicineSumInStock.Caption" xml:space="preserve">
+    <value>Sum in stock</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMedicineImpPrice.Caption" xml:space="preserve">
+    <value>Imp price</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMedicineImpVatRatio.Caption" xml:space="preserve">
+    <value>Imp VAT</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMedicinePrice.Caption" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMedicineExpVatRatio.Caption" xml:space="preserve">
+    <value>Exp VAT</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMedicineDiscount.Caption" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMedicineTotalPrice.Caption" xml:space="preserve">
+    <value>Total price</value>
+  </data>
+  <data name="frmExpMestViewDetail.tabPageRequestMaterial.Text" xml:space="preserve">
+    <value>Request material</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMaterialMateStt.Caption" xml:space="preserve">
+    <value>Num order</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMaterialMaterialTypeCode.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMaterialMaterialTypeName.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMaterialServiceUnitName.Caption" xml:space="preserve">
+    <value>Service unit</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMaterialIsExpend.Caption" xml:space="preserve">
+    <value>Is expend</value>
+  </data>
+  <data name="frmExpMestViewDetail.repositoryItemPictureEdit2.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMaterialAmount.Caption" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMaterialTotalAmount.Caption" xml:space="preserve">
+    <value>Total amount</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMaterialImpPrice.Caption" xml:space="preserve">
+    <value>Imp price</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMaterialImpVatRatio.Caption" xml:space="preserve">
+    <value>VAT </value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMaterialPrice.Caption" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMaterialDiscount.Caption" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMaterialExpVat.Caption" xml:space="preserve">
+    <value>Exp VAT</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMaterialTotalPrice.Caption" xml:space="preserve">
+    <value>Total price</value>
+  </data>
+  <data name="frmExpMestViewDetail.TabPageApprovalMedicine.Text" xml:space="preserve">
+    <value>Approval medicine</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMedicineStt.Caption" xml:space="preserve">
+    <value>Num order</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMedicineMedicineTypeCode.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMedicineMedicineTypeName.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMedicineServiceUnitName.Caption" xml:space="preserve">
+    <value>Service unit</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMedicineIsExpend.Caption" xml:space="preserve">
+    <value>Is expend</value>
+  </data>
+  <data name="frmExpMestViewDetail.repositoryItemPictureEdit4.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMedicineAmount.Caption" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMedicineSumInStock.Caption" xml:space="preserve">
+    <value>Medicine in stock</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMedicineImpPrice.Caption" xml:space="preserve">
+    <value>Imp price</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMedicineImpVatRatio.Caption" xml:space="preserve">
+    <value>VAT</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMedicinePrice.Caption" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMedicineExpVatRatio.Caption" xml:space="preserve">
+    <value>Exp VAT</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMedicineDiscount.Caption" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMedicineTotalPrice.Caption" xml:space="preserve">
+    <value>Total price</value>
+  </data>
+  <data name="frmExpMestViewDetail.TabPageApprovalMaterial.Text" xml:space="preserve">
+    <value>Approval material</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMaterialStt.Caption" xml:space="preserve">
+    <value>Num order</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMaterialMaterialTypeCode.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMaterialMaterialTypeName.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMaterialServiceUnitName.Caption" xml:space="preserve">
+    <value>Service unit</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMaterialIsExpend.Caption" xml:space="preserve">
+    <value>Is expend</value>
+  </data>
+  <data name="frmExpMestViewDetail.repositoryItemPictureEdit5.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMaterialAmount.Caption" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMaterialTotalAmount.Caption" xml:space="preserve">
+    <value>Total amount</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMaterialImpPrice.Caption" xml:space="preserve">
+    <value>Imp price</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMaterialImpVatRatio.Caption" xml:space="preserve">
+    <value>VAT </value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMaterialPrice.Caption" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMaterialDiscount.Caption" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMaterialExpVat.Caption" xml:space="preserve">
+    <value>Exp VAT</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMaterialTotalPrice.Caption" xml:space="preserve">
+    <value>Total price</value>
+  </data>
+  <data name="frmExpMestViewDetail.TabPageRequestBlood.Text" xml:space="preserve">
+    <value>Request blood</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestBloodSTT.Caption" xml:space="preserve">
+    <value>Num order</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestBloodBloodTypeCode.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestBloodBloodTypeName.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestBloodBloodAboCode.Caption" xml:space="preserve">
+    <value>ABO code</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestBloodBloodRhCode.Caption" xml:space="preserve">
+    <value>RH code</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestBloodVolumn.Caption" xml:space="preserve">
+    <value>Volumn</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestBloodServiceUnitName.Caption" xml:space="preserve">
+    <value>Service unit</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestBloodAmount.Caption" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumn34.Caption" xml:space="preserve">
+    <value>Imp price</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumn35.Caption" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumn36.Caption" xml:space="preserve">
+    <value>Exp price</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumn37.Caption" xml:space="preserve">
+    <value>Exp VAT(%)</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumn38.Caption" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumn39.Caption" xml:space="preserve">
+    <value>Total price</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestBloodPatientTypeName.Caption" xml:space="preserve">
+    <value>Patient type name</value>
+  </data>
+  <data name="frmExpMestViewDetail.repositoryItemPictureEdit3.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmExpMestViewDetail.TabPageExportBlood.Text" xml:space="preserve">
+    <value>Export blood</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApproveBloodStt.Caption" xml:space="preserve">
+    <value>Num order</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApproveBloodBloodTypeCode.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApproveBloodBloodTypeName.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApproveBloodServiceUnitName.Caption" xml:space="preserve">
+    <value>Service unit</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApproveBloodBloodAboCode.Caption" xml:space="preserve">
+    <value>ABO</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApproveBloodExpiredDate.Caption" xml:space="preserve">
+    <value>Expired date</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApproveBloodBloodRhCode.Caption" xml:space="preserve">
+    <value>RH</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApproveBloodAmount.Caption" xml:space="preserve">
+    <value>Blood amount</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApproveBloodImpPrice.Caption" xml:space="preserve">
+    <value>Imp price</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApproveBloodImpVatRatio.Caption" xml:space="preserve">
+    <value>VAT </value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApproveBloodPrice.Caption" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApproveBloodExpVatRatio.Caption" xml:space="preserve">
+    <value>Exp VAT</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApproveBloodDiscount.Caption" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApproveBloodTotalPrice.Caption" xml:space="preserve">
+    <value>Total price</value>
+  </data>
+  <data name="frmExpMestViewDetail.cboPrint.Text" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="frmExpMestViewDetail.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmExpMestViewDetail.lciSumPrice.Text" xml:space="preserve">
+    <value>Total price:</value>
+  </data>
+  <data name="frmExpMestViewDetail.lciApprovalUserName.Text" xml:space="preserve">
+    <value>Approval username:</value>
+  </data>
+  <data name="frmExpMestViewDetail.lciDescription.Text" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="frmExpMestViewDetail.lciExpMestSttName.Text" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="frmExpMestViewDetail.lciExpMestReasonName.Text" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApproveBloodBloodCode.Caption" xml:space="preserve">
+    <value>Blood code</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestBloodBloodCode.Caption" xml:space="preserve">
+    <value>Blood code</value>
+  </data>
+  <data name="frmExpMestViewDetail.chkInHDSD.ToolTip" xml:space="preserve">
+    <value>Tự động in hướng dẫn sử dụng đơn thuốc khi thực xuất</value>
+  </data>
+  <data name="frmExpMestViewDetail.layoutControlItem7.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tự động in hướng dẫn sử dụng đơn thuốc khi thực xuất</value>
+  </data>
+  <data name="frmExpMestViewDetail.layoutControlItem7.Text" xml:space="preserve">
+    <value>in HDSD:</value>
+  </data>
+</root>

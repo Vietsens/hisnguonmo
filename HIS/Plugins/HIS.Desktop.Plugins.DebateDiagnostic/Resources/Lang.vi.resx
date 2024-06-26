@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="IVT_LANGUAGE_KEY__CONCENA" xml:space="preserve">
+    <value>Hàm lượng: </value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__DATEUSE" xml:space="preserve">
+    <value>Thời gian dùng: </value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FacultyDepartment" xml:space="preserve">
+    <value>Khoa điều trị: </value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__BTN_PRINT" xml:space="preserve">
+    <value>In ấn</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__BTN_SAVE" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__BTN_SAVE_TEMP" xml:space="preserve">
+    <value>Lưu mẫu (Ctrl T)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__GC_LOGIN_NAME" xml:space="preserve">
+    <value>Tài khoản</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__GC_PRESIDENT" xml:space="preserve">
+    <value>Chủ tọa</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__GC_SECRETARY" xml:space="preserve">
+    <value>Thư ký</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__GC_TITLES" xml:space="preserve">
+    <value>Chức danh - Chức vụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__GC_USER_NAME" xml:space="preserve">
+    <value>Họ và tên</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__GRB_PARTICIPANTS" xml:space="preserve">
+    <value>Thành phần tham gia</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__GRB_RESULT_BODY" xml:space="preserve">
+    <value>Nội dung - kết luận</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__GRB_TRACKINGS" xml:space="preserve">
+    <value>Diễn biến bệnh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__LCI_BEFORE_DIAGNOSTIC" xml:space="preserve">
+    <value>3. Chẩn đoán (Tuyến dưới, KKB, điều trị)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__LCI_CARE_METHOD" xml:space="preserve">
+    <value>4. Chăm sóc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__LCI_CHECK_EDIT" xml:space="preserve">
+    <value>Sửa:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__LCI_CONCLUSION" xml:space="preserve">
+    <value>5. Kết luận</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__LCI_DEBATE_TIME" xml:space="preserve">
+    <value>Thời gian hội chẩn:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__LCI_DIAGNOSTIC" xml:space="preserve">
+    <value>2. Chẩn đoán, nguyên nhân tiên lượng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__LCI_HOSPITALIZATION_STATE" xml:space="preserve">
+    <value>2. Tình trạng lúc vào viện</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__LCI_ICD_MAIN" xml:space="preserve">
+    <value>Chẩn đoán chính:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__LCI_ICD_TEXT" xml:space="preserve">
+    <value>Chẩn đoán phụ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__LCI_PATHOLOGICAL_HISTORY" xml:space="preserve">
+    <value>1. Tóm tắt tiền sử bệnh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__LCI_REQUEST_CONTENT" xml:space="preserve">
+    <value>Người yêu cầu:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__LCI_TREATMENT_METHOD" xml:space="preserve">
+    <value>3. Phương pháp điều trị</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__LCI_TREATMENT_TRACKING" xml:space="preserve">
+    <value>4. Tóm tắt diễn biến bệnh, quá trình điều trị, chăm sóc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__PRINT_BIEN_BAN_HOI_CHAN_THUOC_DAU_SAO" xml:space="preserve">
+    <value>Biên bản hội chẩn thuốc dấu sao</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__PRINT_DEBATE" xml:space="preserve">
+    <value>In biên bản hội chẩn</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__PRINT_SO_HOI_CHAN" xml:space="preserve">
+    <value>In sổ biên bản hội chẩn</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_DEBATE_DIAGNOSTIC__TXT_SECONDARY_ICD__NULL_VALUE" xml:space="preserve">
+    <value>Nhấn F1 để chọn bệnh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__HDSD" xml:space="preserve">
+    <value>HDSD: </value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__InTime" xml:space="preserve">
+    <value>Thời gian điều trị:  Từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__LOCALTION" xml:space="preserve">
+    <value>Địa điểm hội chẩn: </value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__MEDICINE_NAME" xml:space="preserve">
+    <value>Tên thuốc: </value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__OutTime" xml:space="preserve">
+    <value>đến: </value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__USE_FORM" xml:space="preserve">
+    <value>Đường dùng: </value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__YKienThaoLuan" xml:space="preserve">
+    <value>1. Ý kiến thảo luận: </value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_DEPOSIT_SERVICE__TREE_SERE_SERV__COLUMN_INTRUCTION_TIME" xml:space="preserve">
+    <value>Thời gian chỉ định</value>
+  </data>
+</root>

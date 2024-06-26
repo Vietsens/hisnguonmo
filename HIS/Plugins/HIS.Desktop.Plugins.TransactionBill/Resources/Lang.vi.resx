@@ -1,0 +1,684 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmTransactionBill.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmTransactionBill.barButtonItem1.Caption" xml:space="preserve">
+    <value>Tìm(Ctrl F)</value>
+  </data>
+  <data name="frmTransactionBill.bbtnNew.Caption" xml:space="preserve">
+    <value>Mới (Ctrl N)</value>
+  </data>
+  <data name="frmTransactionBill.bbtnRCSave.Caption" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmTransactionBill.bbtnRCSavePrint.Caption" xml:space="preserve">
+    <value>Lưu in (Ctrl I)</value>
+  </data>
+  <data name="frmTransactionBill.bbtnRCSaveSign.Caption" xml:space="preserve">
+    <value>Lưu ký (Ctrl A)</value>
+  </data>
+  <data name="frmTransactionBill.btnNew.Text" xml:space="preserve">
+    <value>Mới (Ctrl N)</value>
+  </data>
+  <data name="frmTransactionBill.btnPosConfig.ToolTip" xml:space="preserve">
+    <value>Cấu hình kết nối thiết bị POS</value>
+  </data>
+  <data name="frmTransactionBill.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmTransactionBill.btnSaveAndSign.Text" xml:space="preserve">
+    <value>Lưu ký (Ctrl A)</value>
+  </data>
+  <data name="frmTransactionBill.btnSavePrint.Text" xml:space="preserve">
+    <value>Lưu in (Ctrl I)</value>
+  </data>
+  <data name="frmTransactionBill.btnSearch.Text" xml:space="preserve">
+    <value>Tìm(Ctrl F)</value>
+  </data>
+  <data name="frmTransactionBill.btnStateForInformationUser.ToolTip" xml:space="preserve">
+    <value>Nếu "Ghim" thì giá trị tại các ô Họ tên, Mã số thuế, Số tài khoản, Đơn vị, Địa chỉ sẽ mặc định hiển thị theo lần nhập trước đó trong cùng phiên làm việc</value>
+  </data>
+  <data name="frmTransactionBill.chkAutoClose.Properties.Caption" xml:space="preserve">
+    <value>:Tự động đóng</value>
+  </data>
+  <data name="frmTransactionBill.chkAutoClose.ToolTip" xml:space="preserve">
+    <value>Tự động đóng chức năng khi 'Lưu in' hoặc 'Lưu ký' hoặc 'In' thành công</value>
+  </data>
+  <data name="frmTransactionBill.chkAutoRepay.Properties.Caption" xml:space="preserve">
+    <value>Tự động hoàn ứng</value>
+  </data>
+  <data name="frmTransactionBill.chkCoKetChuyen.Properties.Caption" xml:space="preserve">
+    <value>Có kết chuyển</value>
+  </data>
+  <data name="frmTransactionBill.chkConnectPOS.ToolTip" xml:space="preserve">
+    <value>Kết nối đến POS thanh toán của ngân hàng khi chọn hình thức thanh toán là "Quẹt thẻ ngân hàng" hoặc "Tiền mặt/Quẹt thẻ</value>
+  </data>
+  <data name="frmTransactionBill.chkHideHddt.Properties.Caption" xml:space="preserve">
+    <value>:Không hiển thị HĐĐT</value>
+  </data>
+  <data name="frmTransactionBill.chkOther.Properties.Caption" xml:space="preserve">
+    <value>Khác</value>
+  </data>
+  <data name="frmTransactionBill.chkPrintBKBHNT.Properties.Caption" xml:space="preserve">
+    <value>: In bảng kê BH ngoại trú</value>
+  </data>
+  <data name="frmTransactionBill.chkPrintBKBHNT.ToolTip" xml:space="preserve">
+    <value>In bổ sung bảng kê trong trường hợp bệnh nhân khám BHYT</value>
+  </data>
+  <data name="frmTransactionBill.chkPrintHddt.Properties.Caption" xml:space="preserve">
+    <value>:In HĐĐT</value>
+  </data>
+  <data name="frmTransactionBill.chkPrintPrescription.Properties.Caption" xml:space="preserve">
+    <value>:In đơn PK</value>
+  </data>
+  <data name="frmTransactionBill.chkPrintPrescription.ToolTip" xml:space="preserve">
+    <value>Tự động in đơn thuốc phòng khám sau khi thanh toán và duyệt khóa viện phí thành công</value>
+  </data>
+  <data name="frmTransactionBill.ddBtnPrint.Text" xml:space="preserve">
+    <value>In</value>
+  </data>
+  <data name="frmTransactionBill.DirectCollection" xml:space="preserve">
+    <value>(Thu trực tiếp)</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Fund_Amount.Caption" xml:space="preserve">
+    <value>Số tiền</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Fund_Budget.Caption" xml:space="preserve">
+    <value>Hạn mức</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Fund_Button.Caption" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Fund_FundCode.Caption" xml:space="preserve">
+    <value>Mã quỹ thanh toán</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Fund_FundName.Caption" xml:space="preserve">
+    <value>Tên quỹ thanh toán</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Fund_Stt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_AccountBookCode.Caption" xml:space="preserve">
+    <value>Mã sổ</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_AccountBookName.Caption" xml:space="preserve">
+    <value>Tên sổ</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_Amount.Caption" xml:space="preserve">
+    <value>Số tiền</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_CashierRoom.Caption" xml:space="preserve">
+    <value>Phòng thu ngân</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_CashierUseName.Caption" xml:space="preserve">
+    <value>Giao dịch viên</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_CreateTime.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_Creator.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_Lock.Caption" xml:space="preserve">
+    <value>Khóa/Mở khóa</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_Modifier.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_ModifyTime.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_NumOrder.Caption" xml:space="preserve">
+    <value>Số</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_PayForm.Caption" xml:space="preserve">
+    <value>Hình thức</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn_Transaction_TransactionCode.Caption" xml:space="preserve">
+    <value>Mã giao dịch</value>
+  </data>
+  <data name="frmTransactionBill.gridColumn1.Caption" xml:space="preserve">
+    <value>FUND_ID</value>
+  </data>
+  <data name="frmTransactionBill.groupControl1.Text" xml:space="preserve">
+    <value>Thông tin người mua</value>
+  </data>
+  <data name="frmTransactionBill.labelControl1.Text" xml:space="preserve">
+    <value>labelControl1</value>
+  </data>
+  <data name="frmTransactionBill.labelControl2.Text" xml:space="preserve">
+    <value>labelControl2</value>
+  </data>
+  <data name="frmTransactionBill.layoutAccountBook.Text" xml:space="preserve">
+    <value>Sổ thu chi:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmTransactionBill.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmTransactionBill.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmTransactionBill.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem11.Text" xml:space="preserve">
+    <value>Không lấy thuốc/vật tư:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem13.Text" xml:space="preserve">
+    <value>Mã bệnh nhân:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem14.Text" xml:space="preserve">
+    <value>Đối tượng:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem15.Text" xml:space="preserve">
+    <value>Tên bệnh nhân:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem16.Text" xml:space="preserve">
+    <value>Địa chỉ:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem20.Text" xml:space="preserve">
+    <value>Ngày sinh:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem21.Text" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem22.Text" xml:space="preserve">
+    <value>Nơi ĐKKCBBĐ:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem23.Text" xml:space="preserve">
+    <value>Số thẻ BH:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem25.Text" xml:space="preserve">
+    <value>Hạn từ:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem26.Text" xml:space="preserve">
+    <value>Hạn đến:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem29.Text" xml:space="preserve">
+    <value>Số tiền BN đưa:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem3.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem31.Text" xml:space="preserve">
+    <value>Số tiền trả BN:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem32.Text" xml:space="preserve">
+    <value>Họ tên:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem33.Text" xml:space="preserve">
+    <value>Mã số thuế:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem34.Text" xml:space="preserve">
+    <value>Số tài khoản:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem36.Text" xml:space="preserve">
+    <value>Địa chỉ:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem37.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>In hóa đơn điện tử</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem37.Text" xml:space="preserve">
+    <value>In HĐ ĐT:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem39.Text" xml:space="preserve">
+    <value>Kết nối POS:</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem42.Text" xml:space="preserve">
+    <value>Hiển thị các dịch vụ không phải trả phí</value>
+  </data>
+  <data name="frmTransactionBill.layoutControlItem44.Text" xml:space="preserve">
+    <value>Đơn vị:</value>
+  </data>
+  <data name="frmTransactionBill.layoutDescription.Text" xml:space="preserve">
+    <value>Ghi chú:</value>
+  </data>
+  <data name="frmTransactionBill.layoutDiscount.Text" xml:space="preserve">
+    <value>Chiết khấu (đ):</value>
+  </data>
+  <data name="frmTransactionBill.layoutDiscountRatio.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chiết khấu theo %</value>
+  </data>
+  <data name="frmTransactionBill.layoutDiscountRatio.Text" xml:space="preserve">
+    <value>Chiết khấu(%):</value>
+  </data>
+  <data name="frmTransactionBill.layoutHienDu.Text" xml:space="preserve">
+    <value>Hiện dư:</value>
+  </data>
+  <data name="frmTransactionBill.layoutPayForm.Text" xml:space="preserve">
+    <value>Hình thức:</value>
+  </data>
+  <data name="frmTransactionBill.layoutReason.Text" xml:space="preserve">
+    <value>Lý do:</value>
+  </data>
+  <data name="frmTransactionBill.layoutReceiveAmount.Text" xml:space="preserve">
+    <value>Cần thu:</value>
+  </data>
+  <data name="frmTransactionBill.layoutTongTuDen.Text" xml:space="preserve">
+    <value>Số chứng từ:</value>
+  </data>
+  <data name="frmTransactionBill.layoutTotalAmount.Text" xml:space="preserve">
+    <value>Số tiền:</value>
+  </data>
+  <data name="frmTransactionBill.layoutTransactionTime.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời gian giao dịch</value>
+  </data>
+  <data name="frmTransactionBill.layoutTransactionTime.Text" xml:space="preserve">
+    <value>Tg giao dịch:</value>
+  </data>
+  <data name="frmTransactionBill.lciAccountBookRepay.Text" xml:space="preserve">
+    <value>Sổ hoàn ứng:</value>
+  </data>
+  <data name="frmTransactionBill.LciBillFund.Text" xml:space="preserve">
+    <value>Quỹ hỗ trợ:</value>
+  </data>
+  <data name="frmTransactionBill.lciCoKetChuyen.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmTransactionBill.lciHeinRatio.Text" xml:space="preserve">
+    <value>Mức hưởng:</value>
+  </data>
+  <data name="frmTransactionBill.lciHideHddt.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>không hiển thị hóa đơn điện tử  vừa phát hành</value>
+  </data>
+  <data name="frmTransactionBill.lciHideHddt.Text" xml:space="preserve">
+    <value>Không hiển thị HĐ ĐT:</value>
+  </data>
+  <data name="frmTransactionBill.lciNumOrderRepay.Text" xml:space="preserve">
+    <value>Số chứng từ:</value>
+  </data>
+  <data name="frmTransactionBill.lciRepayAmount.Text" xml:space="preserve">
+    <value>Số tiền hoàn ứng:</value>
+  </data>
+  <data name="frmTransactionBill.lciReplaceReason.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thông tin thay thế. Tóm tắt nội dung thỏa thuận thay thế.</value>
+  </data>
+  <data name="frmTransactionBill.lciReplaceReason.Text" xml:space="preserve">
+    <value>TT thay thế:</value>
+  </data>
+  <data name="frmTransactionBill.lciRightRoute.Text" xml:space="preserve">
+    <value>Tuyến:</value>
+  </data>
+  <data name="frmTransactionBill.lciServiceGroup.Text" xml:space="preserve">
+    <value>Chọn nhanh:</value>
+  </data>
+  <data name="frmTransactionBill.lciTranferAmount.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số tiền chuyển khoản</value>
+  </data>
+  <data name="frmTransactionBill.lciTranferAmount.Text" xml:space="preserve">
+    <value>Số tiền CK:</value>
+  </data>
+  <data name="frmTransactionBill.radioSGAll.Properties.Caption" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
+  <data name="frmTransactionBill.radioSGCLS.Properties.Caption" xml:space="preserve">
+    <value>Phí CLS + PT</value>
+  </data>
+  <data name="frmTransactionBill.radioSGExam.Properties.Caption" xml:space="preserve">
+    <value>Phí khám</value>
+  </data>
+  <data name="frmTransactionBill.radioSGMedicine.Properties.Caption" xml:space="preserve">
+    <value>Phí thuốc</value>
+  </data>
+  <data name="frmTransactionBill.Text" xml:space="preserve">
+    <value>Thanh toán</value>
+  </data>
+  <data name="frmTransactionBill.txtFindTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Tìm kiếm theo mã điều trị</value>
+  </data>
+  <data name="frmTransactionBill.txtPatientCode.Text" xml:space="preserve">
+    <value>labelControl2</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_BIEN_LAI_PHI_LE_PHI" xml:space="preserve">
+    <value>In biên lai phí lệ phí</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_CHUYEN_DOI_HOA_DON_DIEN_TU" xml:space="preserve">
+    <value>Chuyển đổi hóa đơn điện tử</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_HOA_DON_NHAP" xml:space="preserve">
+    <value>In hóa đơn nháp</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_IN_HOA_DON_DIEN_TU" xml:space="preserve">
+    <value>In hóa đơn điện tử</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_IN_HOAN_UNG_THANH_TOAN" xml:space="preserve">
+    <value>In phiếu hoàn ứng thanh toán ra viện</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_IN_PHIEU_CHI_DINH" xml:space="preserve">
+    <value>In phiếu chỉ định</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_PHIEU_THU_THANH_TOAN" xml:space="preserve">
+    <value>In Phiếu thu thanh toán</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_PHIEU_THU_TT_CHI_TIET_DICH_VU" xml:space="preserve">
+    <value>In phiếu thu thanh toán chi tiết dịch vụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_PHIEU_THU_TT_THEO_YEU_CAU" xml:space="preserve">
+    <value>In phiếu thu thanh toán theo yêu cầu dịch vụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_NEW" xml:space="preserve">
+    <value>Mới (Ctrl N)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_PRINT" xml:space="preserve">
+    <value>In</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_SAVE" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_SAVE_INVOICE_SIGN" xml:space="preserve">
+    <value>Lưu ký (Ctrl A)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_SEARCH" xml:space="preserve">
+    <value>Tìm(Ctrl F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__btnSearch" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__CAPTION" xml:space="preserve">
+    <value>Thanh toán</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__CHK_CO_KET_CHUYEN" xml:space="preserve">
+    <value>Có kết chuyển</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__chkAutoRepay" xml:space="preserve">
+    <value>Tự động hoàn ứng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__chkAutoRepay_ToolTip" xml:space="preserve">
+    <value>Tự động tạo giao dịch hoàn ứng nếu hồ sơ đã kết thúc điều trị và vẫn còn số tiền cần trả lại bệnh nhân sau khi thực hiện thanh toán</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_BILL_FUND__VALID_AMOUNT_GREAT_THAN_ZERO" xml:space="preserve">
+    <value>Số tiền phải lớn hơn không!</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_BILL_FUND__VALID_FUND_NOT_FOUND" xml:space="preserve">
+    <value>Phải chọn quỹ thanh toán!</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_CONTROL__COLUMN_STT" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_FUND__COLUMN_AMOUNT" xml:space="preserve">
+    <value>Số tiền</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_FUND__COLUMN_FUND_CODE" xml:space="preserve">
+    <value>Mã quỹ thanh toán</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GRID_FUND__COLUMN_FUND_NAME" xml:space="preserve">
+    <value>Tên quỹ thanh toán</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_ACCOUNT_BOOK" xml:space="preserve">
+    <value>Sổ thu chi:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_CREATOR" xml:space="preserve">
+    <value>Người tạo:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DESCRIPTION" xml:space="preserve">
+    <value>Ghi chú:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DISCOUNT" xml:space="preserve">
+    <value>Chiết khấu(đ):</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DISCOUNT_RATIO" xml:space="preserve">
+    <value>Chiết khấu(%):</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DISCOUNT_RATIO_TOOLTIP" xml:space="preserve">
+    <value>Chiết khấu %</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DISCOUNT_REASON" xml:space="preserve">
+    <value>Lý do:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_HEIN_RATIO" xml:space="preserve">
+    <value>Mức hưởng:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_HIEN_DU" xml:space="preserve">
+    <value>Hiện dư:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_NUM_ORDER" xml:space="preserve">
+    <value>Số chứng từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_PAY_FORM" xml:space="preserve">
+    <value>Hình thức:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_PIN" xml:space="preserve">
+    <value>4 số PIN:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_RIGHT_ROUTE" xml:space="preserve">
+    <value>Tuyến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_SERE_SERV_EXPEND" xml:space="preserve">
+    <value>Hao phí</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_SWIPE_AMOUNT_TEXT" xml:space="preserve">
+    <value>Số tiền QT:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_SWIPE_AMOUNT_TOOLTIP" xml:space="preserve">
+    <value>Số tiền quẹt thẻ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TONG_TU_DEN" xml:space="preserve">
+    <value>Số chứng từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TOTAL_AMOUNT" xml:space="preserve">
+    <value>Số tiền:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TOTAL_RECEIVE" xml:space="preserve">
+    <value>Cần thu:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TRANSACTION_CODE" xml:space="preserve">
+    <value>Mã giao dịch:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TRANSFER_AMOUNT_TEXT" xml:space="preserve">
+    <value>Số tiền CK:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TRANSFER_AMOUNT_TOOLTIP" xml:space="preserve">
+    <value>Số tiền chuyển khoản</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem13" xml:space="preserve">
+    <value>Mã bệnh nhân:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem14" xml:space="preserve">
+    <value>Đối tượng:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem15" xml:space="preserve">
+    <value>Tên bệnh nhân:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem16" xml:space="preserve">
+    <value>Địa chỉ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem20" xml:space="preserve">
+    <value>Ngày sinh:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem21" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem22" xml:space="preserve">
+    <value>Nơi ĐKKCBBĐ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem23" xml:space="preserve">
+    <value>Số thẻ BH:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem25" xml:space="preserve">
+    <value>Hạn từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__layoutControlItem26" xml:space="preserve">
+    <value>Hạn đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__PRINT_MENU__ITEM_BARCODE" xml:space="preserve">
+    <value>In barcode</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__PRINT_MENU__ITEM_BIEN_BAN_KIEM_NHAP_TU_NCC" xml:space="preserve">
+    <value>In biên bản kiểm nhập từ nhà cung cấp</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__REPOSITORY__BTN_DELETE_BILL_FUND" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__RIGHT_ROUTE_FALSE" xml:space="preserve">
+    <value>Trái tuyến</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__RIGHT_ROUTE_TRUE" xml:space="preserve">
+    <value>Đúng tuyến</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TRANSACTION_TIME" xml:space="preserve">
+    <value>Tg giao dịch:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TRANSACTION_TIME__TOOLTIP" xml:space="preserve">
+    <value>Thời gian giao dịch</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_AMOUNT" xml:space="preserve">
+    <value>SL</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_DISCOUNT" xml:space="preserve">
+    <value>Chiết khấu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_IS_EXPEND" xml:space="preserve">
+    <value>Hao phí</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_SERVICE_CODE" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_SERVICE_NAME" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_SERVICE_REQ_CODE" xml:space="preserve">
+    <value>Mã yêu cầu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_TRANSACTION_CODE" xml:space="preserve">
+    <value>Mã giao dịch</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VAT_RATIO" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VIR_PRICE" xml:space="preserve">
+    <value>Đơn giá</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VIR_TOTAL_HEIN_PRICE" xml:space="preserve">
+    <value>Đồng chi trả</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PATIENT_PRICE" xml:space="preserve">
+    <value>Bệnh nhân trả</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PRICE" xml:space="preserve">
+    <value>Thành tiền</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_DEPA_CREATE__MEDICINE_TREE__COLUMN_DUNG_TICH" xml:space="preserve">
+    <value>Dung tích</value>
+  </data>
+</root>

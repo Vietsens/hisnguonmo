@@ -1,0 +1,1986 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmMedicineTypeCreate.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmMedicineTypeCreate.barButtonItem1.Caption" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.barButtonItem2.Caption" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.bbtnReset.Caption" xml:space="preserve">
+    <value>Làm Lại (Ctrl R)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.bbtnSave.Caption" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.bbtnServicePaty.Caption" xml:space="preserve">
+    <value>Chính sách giá (Ctrl G)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnCancelHDSD.Text" xml:space="preserve">
+    <value>Bỏ qua</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnContraindication.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnGiaTran.Text" xml:space="preserve">
+    <value>Giá trần BHYT</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnHDSD.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnMemoDistributedAmount.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnMemoDosageForm.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnMemoUsedPart.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnNote.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnOKHDSD.Text" xml:space="preserve">
+    <value>Đồng ý</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnRefresh.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnServicePaty.Text" xml:space="preserve">
+    <value>Chính sách giá (Ctrl G)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnTCCL.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.cboImpUnit.ToolTip" xml:space="preserve">
+    <value>Đơn vị tính lúc nhập thuốc nhà cung cấp, đầu kỳ, kiểm kê, khác</value>
+  </data>
+  <data name="frmMedicineTypeCreate.checkEdit67.Properties.Caption" xml:space="preserve">
+    <value>:Tách phần bù</value>
+  </data>
+  <data name="frmMedicineTypeCreate.chkAllowMissingInfoPkg.ToolTip" xml:space="preserve">
+    <value>Không bắt buộc nhập số lô, hạn sử dụng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.chkIS_DRUG_STORE.Properties.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmMedicineTypeCreate.chkIS_DRUG_STORE.ToolTip" xml:space="preserve">
+    <value>Thuốc sử dụng tại kho có tích “Là quầy thuốc”</value>
+  </data>
+  <data name="frmMedicineTypeCreate.chkIsOutHospital.ToolTip" xml:space="preserve">
+    <value>Thuốc không nằm trong danh mục thuốc của nhà thuốc hay kho dược. Chỉ khai báo nhằm hỗ trợ bác sỹ kê thuốc mua ngoài</value>
+  </data>
+  <data name="frmMedicineTypeCreate.dateEdit4.ToolTip" xml:space="preserve">
+    <value>Hạn sử dụng của lô nhập gần nhất</value>
+  </data>
+  <data name="frmMedicineTypeCreate.dateEdit6.ToolTip" xml:space="preserve">
+    <value>Hạn sử dụng của lô nhập gần nhất</value>
+  </data>
+  <data name="frmMedicineTypeCreate.dateEdit8.ToolTip" xml:space="preserve">
+    <value>Hạn sử dụng của lô nhập gần nhất</value>
+  </data>
+  <data name="frmMedicineTypeCreate.dtHSD.ToolTip" xml:space="preserve">
+    <value>Hạn sử dụng của lô nhập gần nhất</value>
+  </data>
+  <data name="frmMedicineTypeCreate.grdColAdd.Caption" xml:space="preserve">
+    <value>gridColumn1</value>
+  </data>
+  <data name="frmMedicineTypeCreate.grdColPatientType.Caption" xml:space="preserve">
+    <value>Đối tượng thanh toán</value>
+  </data>
+  <data name="frmMedicineTypeCreate.grdColPrice.Caption" xml:space="preserve">
+    <value>Giá</value>
+  </data>
+  <data name="frmMedicineTypeCreate.grdColVat.Caption" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.grdViewHisServicePaty.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridBreanch.Caption" xml:space="preserve">
+    <value>Chi nhánh</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn1.Caption" xml:space="preserve">
+    <value>Đối tượng thanh toán</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn10.Caption" xml:space="preserve">
+    <value>gridColumn1</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn11.Caption" xml:space="preserve">
+    <value>Đối tượng thanh toán</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn12.Caption" xml:space="preserve">
+    <value>Chi nhánh</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn13.Caption" xml:space="preserve">
+    <value>Giá</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn14.Caption" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn15.Caption" xml:space="preserve">
+    <value>gridColumn1</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn16.Caption" xml:space="preserve">
+    <value>Áp dụng đến</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn17.Caption" xml:space="preserve">
+    <value>Áp dụng từ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn2.Caption" xml:space="preserve">
+    <value>Chi nhánh</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn3.Caption" xml:space="preserve">
+    <value>Giá</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn4.Caption" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn5.Caption" xml:space="preserve">
+    <value>gridColumn1</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn6.Caption" xml:space="preserve">
+    <value>Đối tượng thanh toán</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn7.Caption" xml:space="preserve">
+    <value>Chi nhánh</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn8.Caption" xml:space="preserve">
+    <value>Giá</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn9.Caption" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridView18.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridView30.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridView43.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox1.Text" xml:space="preserve">
+    <value>Thông tin chung</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox10.Text" xml:space="preserve">
+    <value>Thông tin chung</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox11.Text" xml:space="preserve">
+    <value>Thông tin giá</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox12.Text" xml:space="preserve">
+    <value>Thông tin cấu hình</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox13.Text" xml:space="preserve">
+    <value>Thông tin chung</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox2.Text" xml:space="preserve">
+    <value>Thông tin giá</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox3.Text" xml:space="preserve">
+    <value>Thông tin cấu hình</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox4.Text" xml:space="preserve">
+    <value>Thông tin giá</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox5.Text" xml:space="preserve">
+    <value>Thông tin giá</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox6.Text" xml:space="preserve">
+    <value>Thông tin cấu hình</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox7.Text" xml:space="preserve">
+    <value>Thông tin chung</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox8.Text" xml:space="preserve">
+    <value>Thông tin giá</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox9.Text" xml:space="preserve">
+    <value>Thông tin cấu hình</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl1.Text" xml:space="preserve">
+    <value>Tháng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl10.Text" xml:space="preserve">
+    <value>Tháng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl2.Text" xml:space="preserve">
+    <value>Tháng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl3.Text" xml:space="preserve">
+    <value>Tháng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl4.Text" xml:space="preserve">
+    <value>Tháng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl5.Text" xml:space="preserve">
+    <value>Tháng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl6.Text" xml:space="preserve">
+    <value>Tháng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl7.Text" xml:space="preserve">
+    <value>Tháng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl8.Text" xml:space="preserve">
+    <value>Tháng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl9.Text" xml:space="preserve">
+    <value>Tháng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl10.Text" xml:space="preserve">
+    <value>layoutControl10</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl11.Text" xml:space="preserve">
+    <value>layoutControl10</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl12.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl13.Text" xml:space="preserve">
+    <value>layoutControl8</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl14.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl15.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl16.Text" xml:space="preserve">
+    <value>layoutControl6</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl17.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl18.Text" xml:space="preserve">
+    <value>layoutControl10</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl19.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl20.Text" xml:space="preserve">
+    <value>layoutControl8</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl21.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl22.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl23.Text" xml:space="preserve">
+    <value>layoutControl6</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl24.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl25.Text" xml:space="preserve">
+    <value>layoutControl10</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl26.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl27.Text" xml:space="preserve">
+    <value>layoutControl8</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl28.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl29.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl30.Text" xml:space="preserve">
+    <value>layoutControl6</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl6.Text" xml:space="preserve">
+    <value>layoutControl6</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl7.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl8.Text" xml:space="preserve">
+    <value>layoutControl8</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl9.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem10.Text" xml:space="preserve">
+    <value>Nhóm cha:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem102.Text" xml:space="preserve">
+    <value>Kê lẻ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem103.Text" xml:space="preserve">
+    <value>Là nguyên liệu bào chế thuốc</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem104.Text" xml:space="preserve">
+    <value>Tự động hao phí:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem105.Text" xml:space="preserve">
+    <value>Là vacxin:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem106.Text" xml:space="preserve">
+    <value>Là vitamin A:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem107.Text" xml:space="preserve">
+    <value>Sử dụng cho tiêm chủng:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem108.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem11.Text" xml:space="preserve">
+    <value>Giá trần cũ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem111.Text" xml:space="preserve">
+    <value>Cấp độ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem112.Text" xml:space="preserve">
+    <value>Bắt buộc dự trù:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem113.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Không áp dụng giá trần BHYT với các đầu thẻ đặc biệt được khai báo trong thẻ cấu hình MOS.BHYT.NO_LIMIT_MEDICINE_MATERIAL_PRICE__PREFIX</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem113.Text" xml:space="preserve">
+    <value>Không áp dụng giá trần BHYT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem114.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nhập tuổi lớn hơn 0 !</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem114.Text" xml:space="preserve">
+    <value>Tuổi từ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem115.Text" xml:space="preserve">
+    <value>Tuổi đến:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem118.Text" xml:space="preserve">
+    <value>Mô tả:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem119.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mã dược quốc gia</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem119.Text" xml:space="preserve">
+    <value>Mã dược QG:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem12.Text" xml:space="preserve">
+    <value>Hoạt chất:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem120.Text" xml:space="preserve">
+    <value>Tỉ lệ BHYT cũ (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem121.Text" xml:space="preserve">
+    <value>Tháng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem122.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Áp dụng tỉ lệ bảo hiểm y tế mới theo ngày vào viện</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem122.Text" xml:space="preserve">
+    <value>AD tỉ lệ BHYT mới:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem123.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem124.Text" xml:space="preserve">
+    <value>Tuổi từ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem125.Text" xml:space="preserve">
+    <value>Tháng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem126.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Cảnh báo hạn sử dụng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem126.Text" xml:space="preserve">
+    <value>Cảnh báo HSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem128.Text" xml:space="preserve">
+    <value>SL tối đa/đơn:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem129.Text" xml:space="preserve">
+    <value>Tuổi đến:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem13.Text" xml:space="preserve">
+    <value>Trần tỉ lệ BHYT cũ (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem130.Text" xml:space="preserve">
+    <value>Dừng nhập:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem131.Text" xml:space="preserve">
+    <value>Chi phí ngoài gói:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem132.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Phải nhập hạn sử dụng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem132.Text" xml:space="preserve">
+    <value>Phải nhập HSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem133.Text" xml:space="preserve">
+    <value>Cho kê lẻ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem134.Text" xml:space="preserve">
+    <value>Phải dự trù:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem135.Text" xml:space="preserve">
+    <value>Tự động hao phí:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem136.Text" xml:space="preserve">
+    <value>Cho xuất lẻ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem137.Text" xml:space="preserve">
+    <value>Chạy thận:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem138.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Có nguồn chi trả khác</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem138.Text" xml:space="preserve">
+    <value>CNCTK:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem139.Text" xml:space="preserve">
+    <value>Giá nhập:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem14.Text" xml:space="preserve">
+    <value>Giá trần mới:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem140.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nguyên liệu bào chế</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem140.Text" xml:space="preserve">
+    <value>NLBC:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem141.Text" xml:space="preserve">
+    <value>Cấp độ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem142.Text" xml:space="preserve">
+    <value>Cảnh báo tồn kho:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem144.Text" xml:space="preserve">
+    <value>Chính sách giá bán:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem145.Text" xml:space="preserve">
+    <value>Áp trần theo TT30:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem147.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Không áp trần với thẻ đặc biệt</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem147.Text" xml:space="preserve">
+    <value>Không áp trần :</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem15.Text" xml:space="preserve">
+    <value>Trần tỉ lệ BHYT mới (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem150.Text" xml:space="preserve">
+    <value>Mã/Tên:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem152.Text" xml:space="preserve">
+    <value>Dòng thuốc:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem153.Text" xml:space="preserve">
+    <value>Đơn vị tính:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem155.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nhóm bảo hiểm y tế</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem155.Text" xml:space="preserve">
+    <value>Nhóm BHYT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem156.Text" xml:space="preserve">
+    <value>Nhóm cha:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem158.Text" xml:space="preserve">
+    <value>Hoạt chất:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem160.Text" xml:space="preserve">
+    <value>Đường dùng:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem162.Text" xml:space="preserve">
+    <value>Số đăng ký:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem163.Text" xml:space="preserve">
+    <value>Hàm lượng:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem164.Text" xml:space="preserve">
+    <value>Nhóm thuốc:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem165.Text" xml:space="preserve">
+    <value>Hãng sản xuất:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem167.Text" xml:space="preserve">
+    <value>Quy cách đ/gói:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem168.Text" xml:space="preserve">
+    <value>STT(TT30):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem169.Text" xml:space="preserve">
+    <value>STT(TT40):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem170.Text" xml:space="preserve">
+    <value>STT hiện:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem171.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mã dược quốc gia</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem171.Text" xml:space="preserve">
+    <value>Mã dược QG:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem172.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hướng dẫn sử dụng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem172.Text" xml:space="preserve">
+    <value>HDSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem173.Text" xml:space="preserve">
+    <value>Ghi chú:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem174.Text" xml:space="preserve">
+    <value>Hóa chất:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem175.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thực phẩm chức năng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem175.Text" xml:space="preserve">
+    <value>TPCN:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem176.Text" xml:space="preserve">
+    <value>Thuốc dấu *:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem177.Text" xml:space="preserve">
+    <value>Vaccin:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem178.Text" xml:space="preserve">
+    <value>Vitamin A:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem179.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tiêm chủng mở rộng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem179.Text" xml:space="preserve">
+    <value>TCMR:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem181.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hoạt chất bảo hiểm y tế</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem181.Text" xml:space="preserve">
+    <value>H/C BHYT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem183.Text" xml:space="preserve">
+    <value>Tên BHYT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem184.Text" xml:space="preserve">
+    <value>Chống chỉ định:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem185.Text" xml:space="preserve">
+    <value>Mã ACT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem187.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hạn sử dụng của lô nhập gần nhất</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem187.Text" xml:space="preserve">
+    <value>HSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem188.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Định khoản kế toán</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem188.Text" xml:space="preserve">
+    <value>Định khoản KT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem196.Text" xml:space="preserve">
+    <value>Cập nhật hồ sơ chưa khóa viện phí:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem197.Text" xml:space="preserve">
+    <value>Cập nhật tất cả:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem198.Text" xml:space="preserve">
+    <value>Chọn thuốc:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem2.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chi phí ngoài gói</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem2.Text" xml:space="preserve">
+    <value>CPNG:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem20.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Không áp trần với thẻ đặc biệt</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem20.Text" xml:space="preserve">
+    <value>Không áp trần :</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem201.Text" xml:space="preserve">
+    <value>VAT nhập (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem202.Text" xml:space="preserve">
+    <value>Giá nội bộ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem203.Text" xml:space="preserve">
+    <value>Bán bằng giá nhập:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem204.Text" xml:space="preserve">
+    <value>Chính sách giá bán:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem205.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Giá bán mới nhất</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem205.Text" xml:space="preserve">
+    <value>Giá bán:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem206.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>VAT bán mới nhất</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem206.Text" xml:space="preserve">
+    <value>VAT bán (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem207.Text" xml:space="preserve">
+    <value>Tỉ lệ BHYT (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem208.Text" xml:space="preserve">
+    <value>Tỉ lệ BHYT cũ (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem209.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Áp dụng tỉ lệ bảo hiểm y tế mới theo ngày vào viện</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem209.Text" xml:space="preserve">
+    <value>AD tỉ lệ BHYT mới:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem21.Text" xml:space="preserve">
+    <value>Cập nhật hồ sơ chưa khóa viện phí:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem210.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem211.Text" xml:space="preserve">
+    <value>Tuổi từ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem212.Text" xml:space="preserve">
+    <value>Tháng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem213.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Cảnh báo hạn sử dụng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem213.Text" xml:space="preserve">
+    <value>Cảnh báo HSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem214.Text" xml:space="preserve">
+    <value>SL tối đa/đơn:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem215.Text" xml:space="preserve">
+    <value>Tuổi đến:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem216.Text" xml:space="preserve">
+    <value>Dừng nhập:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem217.Text" xml:space="preserve">
+    <value>Chi phí ngoài gói:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem218.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Phải nhập hạn sử dụng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem218.Text" xml:space="preserve">
+    <value>Phải nhập HSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem219.Text" xml:space="preserve">
+    <value>Cho kê lẻ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem22.Text" xml:space="preserve">
+    <value>Cập nhật tất cả:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem220.Text" xml:space="preserve">
+    <value>Phải dự trù:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem221.Text" xml:space="preserve">
+    <value>Cảnh báo:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem222.Text" xml:space="preserve">
+    <value>Cho xuất lẻ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem223.Text" xml:space="preserve">
+    <value>Chạy thận:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem224.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Có nguồn chi trả khác</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem224.Text" xml:space="preserve">
+    <value>CNCTK:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem225.Text" xml:space="preserve">
+    <value>Kinh doanh:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem226.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nguyên liệu bào chế</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem226.Text" xml:space="preserve">
+    <value>NLBC:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem227.Text" xml:space="preserve">
+    <value>Cấp độ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem228.Text" xml:space="preserve">
+    <value>Cảnh báo tồn kho:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem23.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>VAT bán mới nhất</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem23.Text" xml:space="preserve">
+    <value>VAT bán (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem230.Text" xml:space="preserve">
+    <value>Áp trần theo TT30:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem232.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Không áp trần với thẻ đặc biệt</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem232.Text" xml:space="preserve">
+    <value>Không áp trần :</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem233.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Có đếm số ngày sử dụng thuốc để hiển thị trong tờ điều trị</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem233.Text" xml:space="preserve">
+    <value>Đếm số ngày dùng:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem234.Text" xml:space="preserve">
+    <value>Chặn xuất cho khoa:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem237.Text" xml:space="preserve">
+    <value>Mã/Tên:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem239.Text" xml:space="preserve">
+    <value>Dòng thuốc:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem24.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Là thuốc kinh doanh</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem24.Text" xml:space="preserve">
+    <value>Hãng sản xuất:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem240.Text" xml:space="preserve">
+    <value>Đơn vị tính:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem242.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nhóm bảo hiểm y tế</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem242.Text" xml:space="preserve">
+    <value>Nhóm BHYT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem243.Text" xml:space="preserve">
+    <value>Nhóm cha:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem245.Text" xml:space="preserve">
+    <value>Hoạt chất:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem247.Text" xml:space="preserve">
+    <value>Đường dùng:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem249.Text" xml:space="preserve">
+    <value>Số đăng ký:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem25.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bán bằng giá nhập</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem250.Text" xml:space="preserve">
+    <value>Hàm lượng:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem251.Text" xml:space="preserve">
+    <value>Nhóm thuốc:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem252.Text" xml:space="preserve">
+    <value>Hãng sản xuất:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem254.Text" xml:space="preserve">
+    <value>Quy cách đ/gói:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem255.Text" xml:space="preserve">
+    <value>STT(TT30):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem256.Text" xml:space="preserve">
+    <value>STT(TT40):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem257.Text" xml:space="preserve">
+    <value>STT hiện:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem258.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mã dược quốc gia</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem258.Text" xml:space="preserve">
+    <value>Mã dược QG:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem259.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hướng dẫn sử dụng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem259.Text" xml:space="preserve">
+    <value>HDSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem26.Text" xml:space="preserve">
+    <value>Giá nhập:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem260.Text" xml:space="preserve">
+    <value>Ghi chú:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem261.Text" xml:space="preserve">
+    <value>Hóa chất:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem262.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thực phẩm chức năng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem262.Text" xml:space="preserve">
+    <value>TPCN:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem263.Text" xml:space="preserve">
+    <value>Thuốc dấu *:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem264.Text" xml:space="preserve">
+    <value>Vaccin:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem265.Text" xml:space="preserve">
+    <value>Vitamin A:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem266.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tiêm chủng mở rộng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem266.Text" xml:space="preserve">
+    <value>TCMR:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem268.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hoạt chất bảo hiểm y tế</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem268.Text" xml:space="preserve">
+    <value>H/C BHYT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem27.Text" xml:space="preserve">
+    <value>VAT nhập (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem270.Text" xml:space="preserve">
+    <value>Tên BHYT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem271.Text" xml:space="preserve">
+    <value>Chống chỉ định:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem272.Text" xml:space="preserve">
+    <value>Mã ACT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem274.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hạn sử dụng của lô nhập gần nhất</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem274.Text" xml:space="preserve">
+    <value>HSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem275.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Định khoản kế toán</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem275.Text" xml:space="preserve">
+    <value>Định khoản KT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem283.Text" xml:space="preserve">
+    <value>Cập nhật hồ sơ chưa khóa viện phí:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem284.Text" xml:space="preserve">
+    <value>Cập nhật tất cả:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem285.Text" xml:space="preserve">
+    <value>Chọn thuốc:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem288.Text" xml:space="preserve">
+    <value>Chặn:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem290.Text" xml:space="preserve">
+    <value>Giá nhập:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem291.Text" xml:space="preserve">
+    <value>VAT nhập (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem292.Text" xml:space="preserve">
+    <value>Giá nội bộ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem293.Text" xml:space="preserve">
+    <value>Bán bằng giá nhập:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem294.Text" xml:space="preserve">
+    <value>Chính sách giá bán:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem295.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Giá bán mới nhất</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem295.Text" xml:space="preserve">
+    <value>Giá bán:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem296.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>VAT bán mới nhất</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem296.Text" xml:space="preserve">
+    <value>VAT bán (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem297.Text" xml:space="preserve">
+    <value>Tỉ lệ BHYT (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem298.Text" xml:space="preserve">
+    <value>Tỉ lệ BHYT cũ (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem299.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Áp dụng tỉ lệ bảo hiểm y tế mới theo ngày vào viện</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem299.Text" xml:space="preserve">
+    <value>AD tỉ lệ BHYT mới:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem3.Text" xml:space="preserve">
+    <value>BB nhập HSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem30.Text" xml:space="preserve">
+    <value>Vaccin:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem300.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem301.Text" xml:space="preserve">
+    <value>Tuổi từ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem302.Text" xml:space="preserve">
+    <value>Tháng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem303.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Cảnh báo hạn sử dụng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem303.Text" xml:space="preserve">
+    <value>Cảnh báo HSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem304.Text" xml:space="preserve">
+    <value>SL tối đa/đơn:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem305.Text" xml:space="preserve">
+    <value>Tuổi đến:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem306.Text" xml:space="preserve">
+    <value>Dừng nhập:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem308.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Phải nhập hạn sử dụng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem308.Text" xml:space="preserve">
+    <value>Phải nhập HSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem309.Text" xml:space="preserve">
+    <value>Cho kê lẻ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem31.Text" xml:space="preserve">
+    <value>Vitamin A:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem310.Text" xml:space="preserve">
+    <value>Phải dự trù:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem311.Text" xml:space="preserve">
+    <value>Tự động hao phí:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem312.Text" xml:space="preserve">
+    <value>Chạy thận:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem313.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Có nguồn chi trả khác</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem313.Text" xml:space="preserve">
+    <value>CNCTK:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem314.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nguyên liệu bào chế</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem314.Text" xml:space="preserve">
+    <value>NLBC:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem315.Text" xml:space="preserve">
+    <value>Cấp độ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem316.Text" xml:space="preserve">
+    <value>Cảnh báo tồn kho:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem318.Text" xml:space="preserve">
+    <value>Áp trần theo TT30:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem32.Text" xml:space="preserve">
+    <value>Ghi chú:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem320.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Không áp trần với thẻ đặc biệt</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem320.Text" xml:space="preserve">
+    <value>Không áp trần :</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem321.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Có đếm số ngày sử dụng thuốc để hiển thị trong tờ điều trị</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem321.Text" xml:space="preserve">
+    <value>Đếm số ngày dùng:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem322.Text" xml:space="preserve">
+    <value>Chặn xuất cho khoa:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem323.Text" xml:space="preserve">
+    <value>Không bắt buộc nhập số lô, HSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem324.Text" xml:space="preserve">
+    <value>Cảnh báo:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem325.Text" xml:space="preserve">
+    <value>Chặn:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem327.Text" xml:space="preserve">
+    <value>Cho xuất lẻ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem328.Text" xml:space="preserve">
+    <value>Kinh doanh:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem33.Text" xml:space="preserve">
+    <value>Hóa chất:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem331.Text" xml:space="preserve">
+    <value>Mã/Tên:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem333.Text" xml:space="preserve">
+    <value>Dòng thuốc:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem334.Text" xml:space="preserve">
+    <value>Đơn vị tính:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem336.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nhóm bảo hiểm y tế</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem336.Text" xml:space="preserve">
+    <value>Nhóm BHYT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem337.Text" xml:space="preserve">
+    <value>Nhóm cha:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem339.Text" xml:space="preserve">
+    <value>Hoạt chất:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem34.Text" xml:space="preserve">
+    <value>Giá nội bộ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem341.Text" xml:space="preserve">
+    <value>Đường dùng:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem343.Text" xml:space="preserve">
+    <value>Số đăng ký:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem344.Text" xml:space="preserve">
+    <value>Hàm lượng:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem345.Text" xml:space="preserve">
+    <value>Nhóm thuốc:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem346.Text" xml:space="preserve">
+    <value>Hãng sản xuất:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem348.Text" xml:space="preserve">
+    <value>Quy cách đ/gói:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem349.Text" xml:space="preserve">
+    <value>STT(TT30):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem35.Text" xml:space="preserve">
+    <value>Bán bằng giá nhập:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem350.Text" xml:space="preserve">
+    <value>STT(TT40):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem351.Text" xml:space="preserve">
+    <value>STT hiện:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem352.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mã dược quốc gia</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem352.Text" xml:space="preserve">
+    <value>Mã dược QG:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem353.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hướng dẫn sử dụng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem353.Text" xml:space="preserve">
+    <value>HDSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem354.Text" xml:space="preserve">
+    <value>Ghi chú:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem355.Text" xml:space="preserve">
+    <value>Hóa chất:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem356.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thực phẩm chức năng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem356.Text" xml:space="preserve">
+    <value>TPCN:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem357.Text" xml:space="preserve">
+    <value>Thuốc dấu *:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem358.Text" xml:space="preserve">
+    <value>Vaccin:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem359.Text" xml:space="preserve">
+    <value>Vitamin A:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem36.Text" xml:space="preserve">
+    <value>Chính sách giá bán:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem360.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tiêm chủng mở rộng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem360.Text" xml:space="preserve">
+    <value>TCMR:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem362.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hoạt chất bảo hiểm y tế</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem362.Text" xml:space="preserve">
+    <value>H/C BHYT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem364.Text" xml:space="preserve">
+    <value>Tên BHYT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem365.Text" xml:space="preserve">
+    <value>Chống chỉ định:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem366.Text" xml:space="preserve">
+    <value>Mã ACT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem368.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hạn sử dụng của lô nhập gần nhất</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem368.Text" xml:space="preserve">
+    <value>HSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem369.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Định khoản kế toán</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem369.Text" xml:space="preserve">
+    <value>Định khoản KT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem37.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Giá bán mới nhất</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem37.Text" xml:space="preserve">
+    <value>Giá bán:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem370.Text" xml:space="preserve">
+    <value>Ô xy:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem378.Text" xml:space="preserve">
+    <value>Cập nhật hồ sơ chưa khóa viện phí:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem379.Text" xml:space="preserve">
+    <value>Cập nhật tất cả:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem38.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tiêm chủng mở rộng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem38.Text" xml:space="preserve">
+    <value>TCMR:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem380.Text" xml:space="preserve">
+    <value>Chọn thuốc:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem384.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Điều kiện bảo quản</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem384.Text" xml:space="preserve">
+    <value>ĐK bảo quản:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem385.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Trường hợp chống chỉ định</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem385.Text" xml:space="preserve">
+    <value>Trường hợp CCĐ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem386.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Đơn vị tính lúc nhập thuốc nhà cung cấp, đầu kỳ, kiểm kê, khác</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem386.Text" xml:space="preserve">
+    <value>Đơn vị nhập:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem387.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tỷ lệ quy đổi từ đơn vị nhập sang đơn vị quản lý</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem387.Text" xml:space="preserve">
+    <value>Tỷ lệ QĐ ĐVN:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem393.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ngoài danh mục DRG do Bộ Y Tế ban hành</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem393.Text" xml:space="preserve">
+    <value>Ngoài DRG:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem394.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thuốc không nằm trong danh mục thuốc của nhà thuốc hay kho dược. Chỉ khai báo nhằm hỗ trợ bác sỹ kê thuốc mua ngoài</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem394.Text" xml:space="preserve">
+    <value>Thuốc ngoại viện:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem395.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nguồn chi trả khác trong trường hợp sử dụng dịch vụ này</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem395.Text" xml:space="preserve">
+    <value>Nguồn CTK:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem396.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nhập mã ICD ngăn cách bởi dấu phẩy của các bệnh mà nguồn chi trả khác chấp nhận hỗ trợ. Nếu không nhập mã bệnh nào được hiểu là nguồn chấp nhận chi trả cho mọi trường hợp bệnh.</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem396.Text" xml:space="preserve">
+    <value>Bệnh được hỗ trợ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem398.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thuốc sử dụng tại kho có tích “Là quầy thuốc”</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem398.Text" xml:space="preserve">
+    <value>Thuốc quầy thuốc:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem399.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số thứ tự theo thông tư 20/2022/TT-BHYT</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem399.Text" xml:space="preserve">
+    <value>STT (TT20):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem4.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Giá bán mới nhất</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem4.Text" xml:space="preserve">
+    <value>Giá bán:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem41.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>VAT bán mới nhất</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem41.Text" xml:space="preserve">
+    <value>VAT bán (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem42.Text" xml:space="preserve">
+    <value>Giá nhập:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem43.Text" xml:space="preserve">
+    <value>VAT nhập(%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem44.Text" xml:space="preserve">
+    <value>Giá cũ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem45.Text" xml:space="preserve">
+    <value>Trần tỉ lệ BHYT cũ (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem46.Text" xml:space="preserve">
+    <value>Thời gian áp dụng theo ngày chỉ định:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem47.Text" xml:space="preserve">
+    <value>Thời gian áp dụng theo ngày vào viện:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem48.Text" xml:space="preserve">
+    <value>Tỉ lệ BHYT (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem49.Text" xml:space="preserve">
+    <value>Giá nội bộ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem50.Text" xml:space="preserve">
+    <value>Giá mới:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem51.Text" xml:space="preserve">
+    <value>Trần tỉ lệ BHYT mới (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem52.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bán bằng giá nhập</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem52.Text" xml:space="preserve">
+    <value>BBGN:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem53.Text" xml:space="preserve">
+    <value>Mã:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem54.Text" xml:space="preserve">
+    <value>Tên:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem55.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số lượng tối đa trong 1 đơn thuốc</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem55.Text" xml:space="preserve">
+    <value>Sl tối đa / 1 đơn:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem57.Text" xml:space="preserve">
+    <value>Cha:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem59.Text" xml:space="preserve">
+    <value>Cảnh báo tồn kho:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem6.Text" xml:space="preserve">
+    <value>Áp trần theo TT30:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem61.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Áp dụng tỉ lệ bảo hiểm y tế mới theo ngày vào viện</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem61.Text" xml:space="preserve">
+    <value>AD tỉ lệ BHYT mới:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem62.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem63.Text" xml:space="preserve">
+    <value>Quy cách đ/gói:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem65.Text" xml:space="preserve">
+    <value>Nhóm BHYT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem68.Text" xml:space="preserve">
+    <value>Mã BHYT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem69.Text" xml:space="preserve">
+    <value>Tên biệt dược:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem7.Text" xml:space="preserve">
+    <value>Mã BHYT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem70.Text" xml:space="preserve">
+    <value>Tên BHYT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem71.Text" xml:space="preserve">
+    <value>Mã hoạt chất:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem72.Text" xml:space="preserve">
+    <value>Tên hoạt chất:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem73.Text" xml:space="preserve">
+    <value>Thuốc dấu *(556):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem74.Text" xml:space="preserve">
+    <value>Cảnh báo HSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem75.Text" xml:space="preserve">
+    <value>H/lượng n/độ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem76.Text" xml:space="preserve">
+    <value>Đơn vị tính:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem77.Text" xml:space="preserve">
+    <value>Thời gian dự kiến:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem78.Text" xml:space="preserve">
+    <value>Hướng dẫn sử dụng:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem79.Text" xml:space="preserve">
+    <value>Số thứ tự BHYT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem81.Text" xml:space="preserve">
+    <value>Dạng dùng:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem83.Text" xml:space="preserve">
+    <value>STT theo TT30:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem84.Text" xml:space="preserve">
+    <value>STT theo TT40:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem85.Text" xml:space="preserve">
+    <value>Hãng sản xuất:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem87.Text" xml:space="preserve">
+    <value>STT hiện:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem88.Text" xml:space="preserve">
+    <value>Số đăng ký:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem89.Text" xml:space="preserve">
+    <value>Cập nhật hồ sơ chưa khóa viện phí:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem9.Text" xml:space="preserve">
+    <value>Tên BHYT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem90.Text" xml:space="preserve">
+    <value>Cập nhật tất cả:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem91.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Là thuốc kinh doanh</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem91.Text" xml:space="preserve">
+    <value>Là thuốc KD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem93.Text" xml:space="preserve">
+    <value>Cho phép xuất lẻ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem94.Text" xml:space="preserve">
+    <value>Dừng nhập:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem95.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chi phí ngoài gói</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem95.Text" xml:space="preserve">
+    <value>CPNG:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem96.Text" xml:space="preserve">
+    <value>Nhóm thuốc:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem98.Text" xml:space="preserve">
+    <value>BB nhập HSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem99.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thực phẩm chức năng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem99.Text" xml:space="preserve">
+    <value>TPCN:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcACT.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Là một mã số đặt cho từng loại thuốc theo hệ thống Giải phẫu - Ðiều trị - Hoá học của Tổ chức Y tế thế giới xây dựng (Anatomical therapeutic chemical code)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcACT.Text" xml:space="preserve">
+    <value>Mã ATC:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcAgeFrom.Text" xml:space="preserve">
+    <value>Tuổi từ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcAgeTo.Text" xml:space="preserve">
+    <value>Tuổi đến:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcAlertExpiredDate.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Cảnh báo hạn sử dụng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcAlertExpiredDate.Text" xml:space="preserve">
+    <value>Cảnh báo HSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcAlertMinInStock.Text" xml:space="preserve">
+    <value>Cảnh báo tồn kho:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcCPNG.Text" xml:space="preserve">
+    <value>Chi phí ngoài gói:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcHeinLimitRatio.Text" xml:space="preserve">
+    <value>Tỉ lệ BHYT (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcHeinLimitRatioOld.Text" xml:space="preserve">
+    <value>Tỉ lệ BHYT cũ (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciActiveIngrBhytCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hoạt chất bảo hiểm y tế</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciActiveIngrBhytCode.Text" xml:space="preserve">
+    <value>H/C BHYT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciActiveIngrBhytName.Text" xml:space="preserve">
+    <value>Tên hoạt chất:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciBlockDepartment.Text" xml:space="preserve">
+    <value>Chặn xuất cho khoa:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcichkIsAddictive.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thuốc gây nghiện:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcichkIsAddictive.Text" xml:space="preserve">
+    <value>TGN:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciChkIsAntibiotic.Text" xml:space="preserve">
+    <value>Kháng sinh:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciChkIsStarMark.Text" xml:space="preserve">
+    <value>Thuốc dấu *:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciChkIsStopImp.Text" xml:space="preserve">
+    <value>Dừng nhập:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciConcentra.Text" xml:space="preserve">
+    <value>Hàm lượng:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciContraindication.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ghi chú chống chỉ định</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciContraindication.Text" xml:space="preserve">
+    <value>Ghi chú CCĐ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciDescription.Text" xml:space="preserve">
+    <value>Mô tả:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciDistributedAmount.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số lượng phân bổ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciDistributedAmount.Text" xml:space="preserve">
+    <value>SL phân bổ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciDosageForm.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Dạng bào chế</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciDosageForm.Text" xml:space="preserve">
+    <value>Dạng BC:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciGayTe.Text" xml:space="preserve">
+    <value>Gây tê:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciHeinOrder.Text" xml:space="preserve">
+    <value>Số thứ tự BHYT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciHeinServiceType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nhóm bảo hiểm y tế</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciHeinServiceType.Text" xml:space="preserve">
+    <value>Nhóm BHYT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciHSD.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hạn sử dụng của lô nhập gần nhất</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciHSD.Text" xml:space="preserve">
+    <value>HSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciImpPrice.Text" xml:space="preserve">
+    <value>Giá nhập:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciImpVatRatio.Text" xml:space="preserve">
+    <value>VAT nhập(%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciInternalPrice.Text" xml:space="preserve">
+    <value>Giá nội bộ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciIsAllowOdd.Text" xml:space="preserve">
+    <value>Kê lẻ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciIsKedney.Text" xml:space="preserve">
+    <value>Thuốc chạy thận:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciIsNotTreatmentDayCount.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Không đếm số ngày dùng trong tờ điều trị</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciIsNotTreatmentDayCount.Text" xml:space="preserve">
+    <value>Không đếm số ngày dùng:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciIsOtherSourcePaid.Text" xml:space="preserve">
+    <value>CNCTK:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciIsOxygen.Text" xml:space="preserve">
+    <value>Ô xy:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciIsTreatmentCount.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Có đếm số ngày sử dụng thuốc để hiển thị trong tờ điều trị</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciIsTreatmentCount.Text" xml:space="preserve">
+    <value>Đếm số ngày dùng:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciManufacture.Text" xml:space="preserve">
+    <value>Hãng sản xuất:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciMedicineGroup.Text" xml:space="preserve">
+    <value>Nhóm thuốc:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciMedicineLine.Text" xml:space="preserve">
+    <value>Dòng thuốc:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciMedicineNationalCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mã dược quốc gia</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciMedicineNationalCode.Text" xml:space="preserve">
+    <value>Mã dược QG:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciMedicineTypeCode.Text" xml:space="preserve">
+    <value>Mã/Tên:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciMedicineTypeParent.Text" xml:space="preserve">
+    <value>Nhóm cha:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciMedicineTypeProprietaryName.Text" xml:space="preserve">
+    <value>Tên biệt dược:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciMedicineUseForm.Text" xml:space="preserve">
+    <value>Đường dùng:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcImpPrice.Text" xml:space="preserve">
+    <value>Giá nhập:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcImpVatRatio.Text" xml:space="preserve">
+    <value>VAT nhập (%):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciNational.Text" xml:space="preserve">
+    <value>Quốc gia:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciNguonGoc.Text" xml:space="preserve">
+    <value>Nguồn gốc:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcInternalPrice.Text" xml:space="preserve">
+    <value>Giá nội bộ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciPackingType.Text" xml:space="preserve">
+    <value>Quy cách đ/gói:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciPreprocessing.Text" xml:space="preserve">
+    <value>Sơ chế:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciProcessing.Text" xml:space="preserve">
+    <value>Phức chế:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsAllowExportOdd.Text" xml:space="preserve">
+    <value>Cho xuất lẻ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsAllowOdd.Text" xml:space="preserve">
+    <value>Cho kê lẻ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsBusiness.Text" xml:space="preserve">
+    <value>Kinh doanh:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciScientificName.Text" xml:space="preserve">
+    <value>Tên khoa học:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciServiceUnitCode.Text" xml:space="preserve">
+    <value>Đơn vị tính:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsExpend.Text" xml:space="preserve">
+    <value>Tự động hao phí:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsExpend1.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Không bắt buộc nhập số lô, hạn sử dụng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsExpend1.Text" xml:space="preserve">
+    <value>Không bb nhập số lô, HSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsExprireDate.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Phải nhập hạn sử dụng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsExprireDate.Text" xml:space="preserve">
+    <value>Phải nhập HSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsKedney.Text" xml:space="preserve">
+    <value>Chạy thận:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsMustPrepare.Text" xml:space="preserve">
+    <value>Phải dự trù:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciSpinAlertExpiredDate.Text" xml:space="preserve">
+    <value>Cảnh báo HSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcispinAlertMinInStock.Text" xml:space="preserve">
+    <value>Cảnh báo tồn kho:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciSpinEstimanteDuration.Text" xml:space="preserve">
+    <value>Thời gian dự kiến:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciSpinNumOrder.Text" xml:space="preserve">
+    <value>STT hiện:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciSpinUseOnDay.Text" xml:space="preserve">
+    <value>Sl tối đa / 1 đơn:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsRaw.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nguyên liệu bào chế</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsRaw.Text" xml:space="preserve">
+    <value>NLBC:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsSaleEqualImpPrice.Text" xml:space="preserve">
+    <value>Bán bằng giá nhập:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsStopImp.Text" xml:space="preserve">
+    <value>Dừng nhập:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciTCCL.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tiêu chuẩn chất lượng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciTCCL.Text" xml:space="preserve">
+    <value>TCCL:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciTutorial.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hướng dẫn sử dụng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciTutorial.Text" xml:space="preserve">
+    <value>HDSD:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciTxtBytNumOrder.Text" xml:space="preserve">
+    <value>STT(TT40):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciTxtRegisterNumber.Text" xml:space="preserve">
+    <value>Số đăng ký:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciTxtTcyNumOrder.Text" xml:space="preserve">
+    <value>STT(TT30):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciUsedPart.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bộ phận dùng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciUsedPart.Text" xml:space="preserve">
+    <value>BP dùng:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcMedicineType.Text" xml:space="preserve">
+    <value>Chọn thuốc:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcRank.Text" xml:space="preserve">
+    <value>Cấp độ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcRecordTransaction.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Định khoản kế toán</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcRecordTransaction.Text" xml:space="preserve">
+    <value>Định khoản KT:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcsOtherSourcePaid.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Có nguồn chi trả khác</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcsOtherSourcePaid.Text" xml:space="preserve">
+    <value>CNCTK:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcTachPhanBu.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tách phần bù làm tròn khi kê đơn nội trú không vào tờ điều trị</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcTachPhanBu.Text" xml:space="preserve">
+    <value>Tách phần bù:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcUseOnDay.Text" xml:space="preserve">
+    <value>SL tối đa/đơn:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lkIsFood.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thực phẩm chức năng</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lkIsFood.Text" xml:space="preserve">
+    <value>TPCN:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton1.Text" xml:space="preserve">
+    <value>Cập nhập cache máy của tôi</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton10.Text" xml:space="preserve">
+    <value>Cập nhập cache máy của tôi</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton11.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton12.Text" xml:space="preserve">
+    <value>Cập nhập cache toàn bộ máy trạm</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton13.Text" xml:space="preserve">
+    <value>Giá trần BHYT</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton14.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton15.Text" xml:space="preserve">
+    <value>Cập nhập cache máy của tôi</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton16.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton17.Text" xml:space="preserve">
+    <value>Cập nhập cache toàn bộ máy trạm</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton18.Text" xml:space="preserve">
+    <value>Giá trần BHYT</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton19.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton2.Text" xml:space="preserve">
+    <value>Cập nhập cache toàn bộ máy trạm</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton20.Text" xml:space="preserve">
+    <value>Cập nhập cache máy của tôi</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton21.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton22.Text" xml:space="preserve">
+    <value>Cập nhập cache toàn bộ máy trạm</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton23.Text" xml:space="preserve">
+    <value>Giá trần BHYT</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton3.Text" xml:space="preserve">
+    <value>Cập nhập cache toàn bộ máy trạm</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton4.Text" xml:space="preserve">
+    <value>Cập nhập cache máy của tôi</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton5.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton6.Text" xml:space="preserve">
+    <value>Chính sách giá (Ctrl G)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton7.Text" xml:space="preserve">
+    <value>Hoạt chất (Ctrl H)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton8.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton9.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.spUnitConvertRatio.ToolTip" xml:space="preserve">
+    <value>Tỷ lệ quy đổi từ đơn vị nhập sang đơn vị quản lý</value>
+  </data>
+  <data name="frmMedicineTypeCreate.Text" xml:space="preserve">
+    <value>Loại thuốc</value>
+  </data>
+  <data name="frmMedicineTypeCreate.txtACT_Code.ToolTip" xml:space="preserve">
+    <value>Là một mã số đặt cho từng loại thuốc theo hệ thống Giải phẫu - Ðiều trị - Hoá học của Tổ chức Y tế thế giới xây dựng (Anatomical therapeutic chemical code)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.txtPreprocessingName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Ấn F1 để chọn phương pháp sơ chế</value>
+  </data>
+  <data name="frmMedicineTypeCreate.txtProcessingName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Ấn F1 để chọn phương pháp phức chế</value>
+  </data>
+  <data name="frmMedicineTypeCreate.txtSttTT20.ToolTip" xml:space="preserve">
+    <value>Số thứ tự theo thông tư 20/2022/TT-BHYT</value>
+  </data>
+  <data name="frmProcessingMethod.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmProcessingMethod.barButtonItem1.Caption" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="frmProcessingMethod.btnSave.Text" xml:space="preserve">
+    <value>Chọn (Ctrl S)</value>
+  </data>
+  <data name="frmProcessingMethod.gridColumn1.Caption" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="frmProcessingMethod.gridColumn2.Caption" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="frmProcessingMethod.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmProcessingMethod.Text" xml:space="preserve">
+    <value>Phương pháp chế biến</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__MEDICINE_TYPE_CREAT__SOURCE_MEDICINE" xml:space="preserve">
+    <value>Nguồn Gốc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__MEDICINE_TYPE_CREAT__SOURCE_MEDICINE_THUOCBAC" xml:space="preserve">
+    <value>Thuốc Bắc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__MEDICINE_TYPE_CREAT__SOURCE_MEDICINE_THUOCNAM" xml:space="preserve">
+    <value>Thuốc Nam</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciBiologic.Text" xml:space="preserve">
+    <value>Sinh phẩm:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciGenneric.Text" xml:space="preserve">
+    <value>Generic:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciOriginal.Text" xml:space="preserve">
+    <value>Biệt dược gốc:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcATCGroup.Text" xml:space="preserve">
+    <value>Nhóm ATC:</value>
+  </data>
+</root>

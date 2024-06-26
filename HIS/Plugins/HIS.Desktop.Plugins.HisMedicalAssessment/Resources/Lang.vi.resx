@@ -1,0 +1,351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmHisMedicalAssessment.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmHisMedicalAssessment.barButtonItem1.Caption" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="frmHisMedicalAssessment.btnCan.Text" xml:space="preserve">
+    <value>Bỏ qua</value>
+  </data>
+  <data name="frmHisMedicalAssessment.btnDel.Text" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="frmHisMedicalAssessment.btnOk.Text" xml:space="preserve">
+    <value>Đồng ý</value>
+  </data>
+  <data name="frmHisMedicalAssessment.btnPrint.Text" xml:space="preserve">
+    <value>In ấn</value>
+  </data>
+  <data name="frmHisMedicalAssessment.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmHisMedicalAssessment.gridColumn1.Caption" xml:space="preserve">
+    <value>Họ và tên</value>
+  </data>
+  <data name="frmHisMedicalAssessment.gridColumn2.Caption" xml:space="preserve">
+    <value>Vắng mặt</value>
+  </data>
+  <data name="frmHisMedicalAssessment.gridColumn3.Caption" xml:space="preserve">
+    <value>Ký thay</value>
+  </data>
+  <data name="frmHisMedicalAssessment.gridColumn4.Caption" xml:space="preserve">
+    <value>gridColumn4</value>
+  </data>
+  <data name="frmHisMedicalAssessment.gridColumn5.Caption" xml:space="preserve">
+    <value>Họ và tên</value>
+  </data>
+  <data name="frmHisMedicalAssessment.gridColumn6.Caption" xml:space="preserve">
+    <value>Ý kiến</value>
+  </data>
+  <data name="frmHisMedicalAssessment.gridColumn7.Caption" xml:space="preserve">
+    <value>gridColumn7</value>
+  </data>
+  <data name="frmHisMedicalAssessment.gridColumn8.Caption" xml:space="preserve">
+    <value>Họ và tên</value>
+  </data>
+  <data name="frmHisMedicalAssessment.gridColumn9.Caption" xml:space="preserve">
+    <value>gridColumn9</value>
+  </data>
+  <data name="frmHisMedicalAssessment.groupBox1.Text" xml:space="preserve">
+    <value>KẾT QUẢ KHÁM HIỆN TẠI</value>
+  </data>
+  <data name="frmHisMedicalAssessment.groupBox2.Text" xml:space="preserve">
+    <value>KẾT LUẬN</value>
+  </data>
+  <data name="frmHisMedicalAssessment.label1.Text" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="frmHisMedicalAssessment.label2.Text" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="frmHisMedicalAssessment.label3.Text" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem1.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tên của hội đồng thực hiện giám định y khoa</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem1.Text" xml:space="preserve">
+    <value>Tên hội đồng:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem10.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ngày trên giấy giới thiệu (yêu cầu) giám định y khoa</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem10.Text" xml:space="preserve">
+    <value>Ngày giới thiệu:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem11.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ghi mục đích đề nghị/giới thiệu y khoa (nếu có)</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem11.Text" xml:space="preserve">
+    <value>Mục đích giám định:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem12.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Diện đối tượng của người được giám định y khoa</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem12.Text" xml:space="preserve">
+    <value>Đối tượng giám định:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem13.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chế độ mà đối tượng được giám định đang được hưởng, theo giấy giới thiệu, giấy đề nghị (nếu có)</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem13.Text" xml:space="preserve">
+    <value>Chế độ đang hưởng:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem14.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tỷ lệ tổn thương cơ thể theo chế độ mà đối tượng được giám định đang được hưởng, theo giấy giới thiệu, giấy đề nghị (nếu có)</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem14.Text" xml:space="preserve">
+    <value>Tỷ lệ thương tật tương ứng:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem18.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ghi đầy đủ số và ký tự của văn bản làm căn cứ khám giám định y khoa phù hợp với đối tượng giám định (Ví dụ: Thông tư 34/2012/TTLT-BYT-BLĐTBXH ; Thông tư 28/2013/TTLT-BYT-BLDTBXH; Thông tư 20/2016/TTLT- BYT-BLĐTBXH;). Nếu có nhiều văn bản làm căn cứ giám định, kết luận thì ghi đầy đủ các số hiệu văn bản, giữa các số hiệu văn bản phân cách bằng dấu chấm phẩy ";".</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem18.Text" xml:space="preserve">
+    <value>Căn cứ văn bản:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem2.Text" xml:space="preserve">
+    <value>Loại giám định:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem20.Text" xml:space="preserve">
+    <value>Kết luận:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem21.Text" xml:space="preserve">
+    <value>Dạng khuyết tật:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem22.Text" xml:space="preserve">
+    <value>Mức khuyết tật:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem23.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tổn thương cơ thể do thương tật, bệnh tật, bệnh nghề nghiệp của lần giám định này theo kết luận của Hội đồng giám định y khoa.</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem23.Text" xml:space="preserve">
+    <value>Tỷ lệ thương tật:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem24.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tổng tỷ lệ tổn thương cơ thể, do thương tật, bệnh tật, bệnh nghề nghiệp (nếu có) theo kết luận của Hội đồng giám định y khoa. Lưu ý: chỉ ghi trường thông tin này trong trường hợp khám giám định tổng hợp, khám bổ sung, khám vết thương còn sót.</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem24.Text" xml:space="preserve">
+    <value>Tổng tỷ lệ thương tật:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem27.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nội dung kiến nghị của hội đồng sau khi thực hiện giám định</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem27.Text" xml:space="preserve">
+    <value>Kiến nghị:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem3.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số thứ tự trong biên bản họp hội đồng giám định y khoa</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem3.Text" xml:space="preserve">
+    <value>Số biên bản:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem31.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chủ tịch hội đồng giám định y khoa</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem31.Text" xml:space="preserve">
+    <value>Chủ trì:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem32.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thư ký hội đồng giám định y khoa. Người phụ trách ghi biên bản giám định y khoa</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem32.Text" xml:space="preserve">
+    <value>Thư ký:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem33.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ghi rõ nội dung cần giám định (thương tật, bệnh tật, dị dạng dị tật, bệnh nghề nghiệp, dạng tật/mức độ khuyết tật...) theo đề nghị của cá nhân/tổ chức</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem33.Text" xml:space="preserve">
+    <value>Nội dung cần giám định:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem4.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời gian bắt đầu giám định y khoa</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem4.Text" xml:space="preserve">
+    <value>Giám định từ:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem5.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời gian kết thúc giám định y khoa</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem5.Text" xml:space="preserve">
+    <value>Giám định đến:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem6.Text" xml:space="preserve">
+    <value>Tham gia:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem7.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Đơn vị giới thiệu (yêu cầu) giám định y khoa</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem7.Text" xml:space="preserve">
+    <value>Đơn vị giới thiệu:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem9.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số văn bản của giấy giới thiệu (yêu cầu) giám định y khoa</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem9.Text" xml:space="preserve">
+    <value>Số giấy giới thiệu:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.Text" xml:space="preserve">
+    <value>Giám định y khoa</value>
+  </data>
+  <data name="frmHisMedicalAssessment.txtLegalGroundDocuments.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Tên văn bản</value>
+  </data>
+  <data name="frmHisMedicalAssessment.txtLegalGroundDocuments.ToolTip" xml:space="preserve">
+    <value>Ghi đầy đủ tên văn bản làm căn cứ khám giám định y khoa phù hợp với đối tượng giám định. Nếu có nhiều văn bản làm căn cứ giám định, kết luận thì ghi đầy đủ tên văn bản, giữa các tên văn bản phân cách bằng dấu chấm phẩy ";".</value>
+  </data>
+  <data name="frmHisMedicalAssessment.txtLegalGroundNumbers.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Số văn bản</value>
+  </data>
+  <data name="frmHisMedicalAssessment.txtRequestOrgCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã đơn vị</value>
+  </data>
+  <data name="frmHisMedicalAssessment.txtRequestOrgName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Tên đơn vị</value>
+  </data>
+  <data name="frmHisMedicalAssessment.xtraTabPage1.Text" xml:space="preserve">
+    <value>Thành viên</value>
+  </data>
+  <data name="frmHisMedicalAssessment.xtraTabPage2.Text" xml:space="preserve">
+    <value>Thành phần được mời</value>
+  </data>
+  <data name="frmHisMedicalAssessment.xtraTabPage3.Text" xml:space="preserve">
+    <value>Tiền sử</value>
+  </data>
+  <data name="frmHisMedicalAssessment.xtraTabPage4.Text" xml:space="preserve">
+    <value>Kết quả giám định hiện tại</value>
+  </data>
+  <data name="frmHisMedicalAssessment.xtraTabPage5.Text" xml:space="preserve">
+    <value>Thảo luận</value>
+  </data>
+  <data name="frmHisMedicalAssessment.xtraTabPage6.Text" xml:space="preserve">
+    <value>Ý kiến không nhất trí</value>
+  </data>
+</root>

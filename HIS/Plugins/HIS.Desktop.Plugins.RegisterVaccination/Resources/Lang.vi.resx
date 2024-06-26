@@ -1,0 +1,540 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmPatientChoice.btnClose.Text" xml:space="preserve">
+    <value>Bỏ qua</value>
+  </data>
+  <data name="frmPatientChoice.grdAddress.Caption" xml:space="preserve">
+    <value>Địa chỉ</value>
+  </data>
+  <data name="frmPatientChoice.grdChoose.Caption" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="frmPatientChoice.grdCode.Caption" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="frmPatientChoice.grdDate.Caption" xml:space="preserve">
+    <value>Ngày sinh</value>
+  </data>
+  <data name="frmPatientChoice.grdGender.Caption" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="frmPatientChoice.grdName.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="frmPatientChoice.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmPatientChoice.layoutControlItem3.Text" xml:space="preserve">
+    <value>resources.GetString(layoutControlItem3.Text);</value>
+  </data>
+  <data name="frmPatientChoice.lblDescription.Text" xml:space="preserve">
+    <value>Chọn bệnh nhân bằng cách bấm enter hoặc nháy đúp chuột vào bệnh nhân. Thêm hồ sơ  +</value>
+  </data>
+  <data name="frmPatientChoice.Text" xml:space="preserve">
+    <value>Chọn thông tin bệnh nhân</value>
+  </data>
+  <data name="frmPatientExtend.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmPatientExtend.barButtonItem1.Caption" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmPatientExtend.btnSave.Text" xml:space="preserve">
+    <value>Nhập (Ctrl S)</value>
+  </data>
+  <data name="frmPatientExtend.cboBlood.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmPatientExtend.cboBloodRh.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmPatientExtend.cboCommune.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmPatientExtend.cboDistrict.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmPatientExtend.cboProvince.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmPatientExtend.cboProvinceKS.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmPatientExtend.chkIsHead.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmPatientExtend.groupControl1.Text" xml:space="preserve">
+    <value>Thông tin thường trú</value>
+  </data>
+  <data name="frmPatientExtend.groupControl2.Text" xml:space="preserve">
+    <value>Thông tin hộ khẩu</value>
+  </data>
+  <data name="frmPatientExtend.groupControl3.Text" xml:space="preserve">
+    <value>Thông tin bố mẹ người chăm sóc</value>
+  </data>
+  <data name="frmPatientExtend.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmPatientExtend.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmPatientExtend.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmPatientExtend.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmPatientExtend.layoutControlItem1.Text" xml:space="preserve">
+    <value>Nhóm máu:</value>
+  </data>
+  <data name="frmPatientExtend.layoutControlItem11.Text" xml:space="preserve">
+    <value>Họ tên bố:</value>
+  </data>
+  <data name="frmPatientExtend.layoutControlItem12.Text" xml:space="preserve">
+    <value>Họ tên mẹ:</value>
+  </data>
+  <data name="frmPatientExtend.layoutControlItem13.Text" xml:space="preserve">
+    <value>Người chăm sóc:</value>
+  </data>
+  <data name="frmPatientExtend.layoutControlItem14.Text" xml:space="preserve">
+    <value>Tỉnh:</value>
+  </data>
+  <data name="frmPatientExtend.layoutControlItem16.Text" xml:space="preserve">
+    <value>Huyện:</value>
+  </data>
+  <data name="frmPatientExtend.layoutControlItem18.Text" xml:space="preserve">
+    <value>Xã:</value>
+  </data>
+  <data name="frmPatientExtend.layoutControlItem20.Text" xml:space="preserve">
+    <value>Địa chỉ:</value>
+  </data>
+  <data name="frmPatientExtend.layoutControlItem21.Text" xml:space="preserve">
+    <value>Tỉnh khai sinh:</value>
+  </data>
+  <data name="frmPatientExtend.layoutControlItem23.Text" xml:space="preserve">
+    <value>Quan hệ:</value>
+  </data>
+  <data name="frmPatientExtend.layoutControlItem24.Text" xml:space="preserve">
+    <value>Điện thoại:</value>
+  </data>
+  <data name="frmPatientExtend.layoutControlItem25.Text" xml:space="preserve">
+    <value>Số CMND:</value>
+  </data>
+  <data name="frmPatientExtend.layoutControlItem26.Text" xml:space="preserve">
+    <value>Ngày cấp:</value>
+  </data>
+  <data name="frmPatientExtend.layoutControlItem27.Text" xml:space="preserve">
+    <value>Nơi cấp:</value>
+  </data>
+  <data name="frmPatientExtend.layoutControlItem28.Text" xml:space="preserve">
+    <value>Email:</value>
+  </data>
+  <data name="frmPatientExtend.layoutControlItem6.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmPatientExtend.layoutControlItem9.Text" xml:space="preserve">
+    <value>Rh:</value>
+  </data>
+  <data name="frmPatientExtend.Text" xml:space="preserve">
+    <value>Thông tin bệnh nhân mở rộng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCSERVICEREQUESTREGITER_LCI_PATIENT_DOB" xml:space="preserve">
+    <value>Ngày sinh:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCSERVICEREQUESTREGITER_LCI_PATIENT_DOB_YEAR" xml:space="preserve">
+    <value>Năm sinh:</value>
+  </data>
+  <data name="UCRegister.btnBill.Text" xml:space="preserve">
+    <value>Thanh toán (Ctrl B)</value>
+  </data>
+  <data name="UCRegister.btnCodeFind.Text" xml:space="preserve">
+    <value>Mã BN</value>
+  </data>
+  <data name="UCRegister.btnCodeFind.Text__MaCT" xml:space="preserve">
+    <value>Mã CT</value>
+  </data>
+  <data name="UCRegister.btnCodeFind.Text__MaHK" xml:space="preserve">
+    <value>Mã HK</value>
+  </data>
+  <data name="UCRegister.btnConnectTerminal.Text" xml:space="preserve">
+    <value>Kết nối thiết bị</value>
+  </data>
+  <data name="UCRegister.btnConnectTerminal.Text1" xml:space="preserve">
+    <value>Kết nối thiết bị</value>
+  </data>
+  <data name="UCRegister.btnDepositDetail.Text" xml:space="preserve">
+    <value>Tạm ứng (Ctrl T)</value>
+  </data>
+  <data name="UCRegister.btnNewContinue.Text" xml:space="preserve">
+    <value>Mới (Ctrl N)</value>
+  </data>
+  <data name="UCRegister.btnPatientExtend.Text" xml:space="preserve">
+    <value>Mở rộng</value>
+  </data>
+  <data name="UCRegister.btnPatientNew.Text" xml:space="preserve">
+    <value>Bệnh nhân mới (Ctrl R)</value>
+  </data>
+  <data name="UCRegister.btnPrint.Text" xml:space="preserve">
+    <value>In (Ctrl P)</value>
+  </data>
+  <data name="UCRegister.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="UCRegister.btnSaveAndAssain.Text" xml:space="preserve">
+    <value>Chỉ định (Ctrl D)</value>
+  </data>
+  <data name="UCRegister.btnSaveAndPrint.Text" xml:space="preserve">
+    <value>Lưu in (Ctrl I)</value>
+  </data>
+  <data name="UCRegister.btnTreatmentBedRoom.Text" xml:space="preserve">
+    <value>Vào buồng (Ctrl G)</value>
+  </data>
+  <data name="UCRegister.cboAge.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCRegister.cboCareer.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCRegister.cboCashierRoom.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCRegister.cboCommune.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCRegister.cboDistrict.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCRegister.cboEmergencyTime.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCRegister.cboEthnic.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCRegister.cboGender.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCRegister.CboListPort.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCRegister.cboMilitaryRank.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCRegister.cboNational.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCRegister.cboPatientType.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCRegister.cboProgram.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCRegister.cboProvince.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCRegister.cboTHX.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCRegister.chkEmergency.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCRegister.chkIsNotRequireFee.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCRegister.chkIsNotRequireFee.Tooltip.Text" xml:space="preserve">
+    <value>Nếu được tích chọn, yêu cầu khám sẽ chưa bắt buộc bệnh nhân phải nộp tiền ngay. Bác sĩ tại phòng khám (phòng xử lý) vẫn có thể thực hiện xử lý các yêu cầu khám được chỉ định cho dù hồ sơ thiếu viện phí.</value>
+  </data>
+  <data name="UCRegister.chkPriority.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCRegister.dtIntructionTime.Properties.NullValuePrompt" xml:space="preserve">
+    <value>dd/MM/yyyy HH:mm</value>
+  </data>
+  <data name="UCRegister.dtPatientDob.Properties.NullValuePrompt" xml:space="preserve">
+    <value>dd/MM/yyyy</value>
+  </data>
+  <data name="UCRegister.gboxHeinCardInformation.Text" xml:space="preserve">
+    <value>Thông tin đối tượng (F7)</value>
+  </data>
+  <data name="UCRegister.gboxMoreInformation.Text" xml:space="preserve">
+    <value>Thông tin bổ sung (F4)</value>
+  </data>
+  <data name="UCRegister.gboxPatientInformation.Text" xml:space="preserve">
+    <value>Thông tin bệnh nhân (F2)</value>
+  </data>
+  <data name="UCRegister.gboxRequestOtherInformation.Text" xml:space="preserve">
+    <value>Thông tin yêu cầu khác</value>
+  </data>
+  <data name="UCRegister.gboxServiceRoomInformation.Text" xml:space="preserve">
+    <value>Thông tin đăng ký dịch vụ khám (F3)</value>
+  </data>
+  <data name="UCRegister.layoutControlItem20.Text" xml:space="preserve">
+    <value>layoutControlItem9</value>
+  </data>
+  <data name="UCRegister.layoutControlItem21.Text" xml:space="preserve">
+    <value>layoutControlItem6</value>
+  </data>
+  <data name="UCRegister.layoutControlItem5.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="UCRegister.layoutControlItem6.Text" xml:space="preserve">
+    <value>Mã hộ nghèo:</value>
+  </data>
+  <data name="UCRegister.layoutControlItem8.Text" xml:space="preserve">
+    <value>Mã tắt:</value>
+  </data>
+  <data name="UCRegister.lciAddress.Text" xml:space="preserve">
+    <value>Địa chỉ:</value>
+  </data>
+  <data name="UCRegister.lciAge.Text" xml:space="preserve">
+    <value>Tuổi:</value>
+  </data>
+  <data name="UCRegister.lciCareer.Text" xml:space="preserve">
+    <value>Nghề nghiệp:</value>
+  </data>
+  <data name="UCRegister.lcicboCashierRoom.Text" xml:space="preserve">
+    <value>Phòng thu ngân:</value>
+  </data>
+  <data name="UCRegister.lciCommune.Text" xml:space="preserve">
+    <value>Xã:</value>
+  </data>
+  <data name="UCRegister.lciDistrict.Text" xml:space="preserve">
+    <value>Huyện:</value>
+  </data>
+  <data name="UCRegister.lciEmergencyTime.Text" xml:space="preserve">
+    <value>Thời gian đau:</value>
+  </data>
+  <data name="UCRegister.lciEthnic.Text" xml:space="preserve">
+    <value>Dân tộc:</value>
+  </data>
+  <data name="UCRegister.lciGender.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="UCRegister.lciIntructionTime.Text" xml:space="preserve">
+    <value>Thời gian:</value>
+  </data>
+  <data name="UCRegister.lciIsEmergency.Text" xml:space="preserve">
+    <value>Cấp cứu:</value>
+  </data>
+  <data name="UCRegister.lciIsNotRequireFee.Text" xml:space="preserve">
+    <value>Khám thu sau:</value>
+  </data>
+  <data name="UCRegister.lciNational.Text" xml:space="preserve">
+    <value>Quốc tịch:</value>
+  </data>
+  <data name="UCRegister.lciPatientCode.Text" xml:space="preserve">
+    <value>Mã tìm kiếm:</value>
+  </data>
+  <data name="UCRegister.lciPatientDob.Text" xml:space="preserve">
+    <value>Ngày sinh:</value>
+  </data>
+  <data name="UCRegister.lciPatientName.Text" xml:space="preserve">
+    <value>Họ tên:</value>
+  </data>
+  <data name="UCRegister.lciPatientType.Text" xml:space="preserve">
+    <value>Đối tượng:</value>
+  </data>
+  <data name="UCRegister.lciPhone.Text" xml:space="preserve">
+    <value>Điện thoại:</value>
+  </data>
+  <data name="UCRegister.lciPort.Text" xml:space="preserve">
+    <value>Cổng:</value>
+  </data>
+  <data name="UCRegister.lciPriority.Text" xml:space="preserve">
+    <value>Ưu tiên:</value>
+  </data>
+  <data name="UCRegister.lciProgram.Text" xml:space="preserve">
+    <value>Chương trình:</value>
+  </data>
+  <data name="UCRegister.lciRegisterEditor.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCRegister.lcitxtCorrelated.Text" xml:space="preserve">
+    <value>Quan hệ:</value>
+  </data>
+  <data name="UCRegister.lcitxtHomePerson.Text" xml:space="preserve">
+    <value>Người nhà:</value>
+  </data>
+  <data name="UCRegister.lcitxtMilitaryRankCode.Text" xml:space="preserve">
+    <value>Quân hàm:</value>
+  </data>
+  <data name="UCRegister.lcitxtProvince.Text" xml:space="preserve">
+    <value>Tỉnh:</value>
+  </data>
+  <data name="UCRegister.lcitxtRelativeAddress.Text" xml:space="preserve">
+    <value>Địa chỉ:</value>
+  </data>
+  <data name="UCRegister.lciTreatmentType.Text" xml:space="preserve">
+    <value>Diện điều trị:</value>
+  </data>
+  <data name="UCRegister.btnCallPatient.Text" xml:space="preserve">
+    <value>Gọi (F5)</value>
+  </data>
+  <data name="UCRegister.btnRecallPatient.Text" xml:space="preserve">
+    <value>Gọi lại (F6)</value>
+  </data>
+  <data name="UCRegister.grboxExecuteRoomInfo.Text" xml:space="preserve">
+    <value>Thông tin số lượt khám theo phòng</value>
+  </data>
+  <data name="UCRegister.gridColumn_ExecuteRoomInfo_Amount1.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="UCRegister.gridColumn_ExecuteRoomInfo_Amount2.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="UCRegister.gridColumn_ExecuteRoomInfo_Amount3.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="UCRegister.gridColumn_ExecuteRoomInfo_Amount4.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="UCRegister.gridColumn_ExecuteRoomInfo_Amount5.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="UCRegister.gridColumn_ExecuteRoomInfo_ExcuteRoom1.Caption" xml:space="preserve">
+    <value>Tên phòng</value>
+  </data>
+  <data name="UCRegister.gridColumn_ExecuteRoomInfo_ExecuteRoom2.Caption" xml:space="preserve">
+    <value>Tên phòng</value>
+  </data>
+  <data name="UCRegister.gridColumn_ExecuteRoomInfo_ExecuteRoom3.Caption" xml:space="preserve">
+    <value>Tên phòng</value>
+  </data>
+  <data name="UCRegister.gridColumn_ExecuteRoomInfo_ExecuteRoom4.Caption" xml:space="preserve">
+    <value>Tên phòng</value>
+  </data>
+  <data name="UCRegister.gridColumn_ExecuteRoomInfo_ExecuteRoom5.Caption" xml:space="preserve">
+    <value>Tên phòng</value>
+  </data>
+  <data name="UCRegister.txtGateNumber.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Cổng</value>
+  </data>
+  <data name="UCRegister.txtStepNumber.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Bước nhảy</value>
+  </data>
+  <data name="UCRegister.lciOweType.Text" xml:space="preserve">
+    <value>Nợ viện phí:</value>
+  </data>
+  <data name="UCRegister.btnCodeFind.Text__SoThe" xml:space="preserve">
+    <value>Số thẻ</value>
+  </data>
+  <data name="UCRegister.lciBNManTinh.lciBNManTinh.Text" xml:space="preserve">
+    <value>Mãn tính</value>
+  </data>
+</root>

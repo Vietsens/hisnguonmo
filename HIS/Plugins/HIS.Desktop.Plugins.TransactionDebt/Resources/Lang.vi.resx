@@ -1,0 +1,303 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__BTN_DROP_DOWN__ITEM_PHIEU_THU_THANH_TOAN" xml:space="preserve">
+    <value>In phiếu xác nhận công nợ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__BTN_NEW" xml:space="preserve">
+    <value>Mới (Ctrl N)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__BTN_PRINT" xml:space="preserve">
+    <value>In</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__BTN_SAVE" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__BTN_SAVE_INVOICE_SIGN" xml:space="preserve">
+    <value>Lưu ký (Ctrl A)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__BTN_SEARCH" xml:space="preserve">
+    <value>Tìm(Ctrl F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__CAPTION" xml:space="preserve">
+    <value>Thanh toán</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__GRID_BILL_FUND__VALID_AMOUNT_GREAT_THAN_ZERO" xml:space="preserve">
+    <value>Số tiền phải lớn hơn không!</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__GRID_BILL_FUND__VALID_FUND_NOT_FOUND" xml:space="preserve">
+    <value>Phải chọn quỹ thanh toán!</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__GRID_CONTROL__COLUMN_STT" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__GRID_FUND__COLUMN_AMOUNT" xml:space="preserve">
+    <value>Số tiền</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__GRID_FUND__COLUMN_FUND_CODE" xml:space="preserve">
+    <value>Mã quỹ thanh toán</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__GRID_FUND__COLUMN_FUND_NAME" xml:space="preserve">
+    <value>Tên quỹ thanh toán</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__layoutControlItem13" xml:space="preserve">
+    <value>Mã bệnh nhân:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__layoutControlItem14" xml:space="preserve">
+    <value>Đối tượng:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__layoutControlItem15" xml:space="preserve">
+    <value>Tên bệnh nhân:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__layoutControlItem16" xml:space="preserve">
+    <value>Địa chỉ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__layoutControlItem20" xml:space="preserve">
+    <value>Ngày sinh:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__layoutControlItem21" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__layoutControlItem22" xml:space="preserve">
+    <value>Nơi ĐKKCBBĐ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__layoutControlItem23" xml:space="preserve">
+    <value>Số thẻ BH:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__layoutControlItem25" xml:space="preserve">
+    <value>Hạn từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__layoutControlItem26" xml:space="preserve">
+    <value>Hạn đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_ACCOUNT_BOOK" xml:space="preserve">
+    <value>Sổ thu chi:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_CREATOR" xml:space="preserve">
+    <value>Người tạo:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_DESCRIPTION" xml:space="preserve">
+    <value>Ghi chú:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_DISCOUNT" xml:space="preserve">
+    <value>Chiết khấu:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_DISCOUNT_RATIO" xml:space="preserve">
+    <value>(%):</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_DISCOUNT_REASON" xml:space="preserve">
+    <value>Lý do:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_HIEN_DU" xml:space="preserve">
+    <value>Hiện dư:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_NUM_ORDER" xml:space="preserve">
+    <value>Số chứng từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_PAY_FORM" xml:space="preserve">
+    <value>Hình thức:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_SERE_SERV_EXPEND" xml:space="preserve">
+    <value>Hao phí</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_TONG_TU_DEN" xml:space="preserve">
+    <value>Số chứng từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_TOTAL_AMOUNT" xml:space="preserve">
+    <value>Số nợ cần chốt:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_TOTAL_RECEIVE" xml:space="preserve">
+    <value>Cần thu:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_TRANSACTION_CODE" xml:space="preserve">
+    <value>Mã giao dịch:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__PRINT_MENU__ITEM_BARCODE" xml:space="preserve">
+    <value>In barcode</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__PRINT_MENU__ITEM_BIEN_BAN_KIEM_NHAP_TU_NCC" xml:space="preserve">
+    <value>In biên bản kiểm nhập từ nhà cung cấp</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__REPOSITORY__BTN_DELETE_BILL_FUND" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__TRANSACTION_TIME" xml:space="preserve">
+    <value>Thời gian chốt:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__btnSearch" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_PIN" xml:space="preserve">
+    <value>4 số PIN:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__CHK_CO_KET_CHUYEN" xml:space="preserve">
+    <value>Có kết chuyển</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_HEIN_RATIO" xml:space="preserve">
+    <value>Mức hưởng:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_RIGHT_ROUTE" xml:space="preserve">
+    <value>Tuyến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__RIGHT_ROUTE_FALSE" xml:space="preserve">
+    <value>Trái tuyến</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__RIGHT_ROUTE_TRUE" xml:space="preserve">
+    <value>Đúng tuyến</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__TRANSACTION_TIME__TOOLTIP" xml:space="preserve">
+    <value>Thời gian chốt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_DISCOUNT_RATIO_TOOLTIP" xml:space="preserve">
+    <value>Chiết khấu %</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_TRANSFER_AMOUNT_TEXT" xml:space="preserve">
+    <value>Số tiền CK:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_TRANSFER_AMOUNT_TOOLTIP" xml:space="preserve">
+    <value>Số tiền chuyển khoản</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__LAYOUT_EXEMTION" xml:space="preserve">
+    <value>Miễn giảm:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__GRID_COLUMN_AMOUNT" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__GRID_COLUMN_SERVICE_NAME" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__GRID_COLUMN_TOTAL_DEBT_AMOUNT" xml:space="preserve">
+    <value>Phải trả</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__GRID_COLUMN_TOTAL_PREVIOUS_DEBT_PRICE" xml:space="preserve">
+    <value>Đã chốt nợ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__GRID_COLUMN_VIR_PRICE" xml:space="preserve">
+    <value>Đơn giá</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__GRID_COLUMN_VIR_TOTAL_HEIN_PRICE" xml:space="preserve">
+    <value>Đồng chi trả</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__GRID_COLUMN_VIR_TOTAL_PATIENT_PRICE" xml:space="preserve">
+    <value>Bệnh nhân trả</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEBT__GRID_COLUMN_VIR_TOTAL_PRICE" xml:space="preserve">
+    <value>Thành tiền</value>
+  </data>
+</root>

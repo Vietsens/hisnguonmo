@@ -1,0 +1,1248 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmHisService.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmHisService.bbtnAdd.Caption" xml:space="preserve">
+    <value>Thêm (Ctrl N)</value>
+  </data>
+  <data name="frmHisService.bbtnEdit.Caption" xml:space="preserve">
+    <value>Sửa (Ctrl S)</value>
+  </data>
+  <data name="frmHisService.bbtnFocusDefault.Caption" xml:space="preserve">
+    <value>F2</value>
+  </data>
+  <data name="frmHisService.bbtnReset.Caption" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="frmHisService.bbtnSearch.Caption" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="frmHisService.btnAdd.Text" xml:space="preserve">
+    <value>Thêm (Ctrl N)</value>
+  </data>
+  <data name="frmHisService.btnEdit.Text" xml:space="preserve">
+    <value>Sửa (Ctrl S)</value>
+  </data>
+  <data name="frmHisService.btnRefresh.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl  C)</value>
+  </data>
+  <data name="frmHisService.btnSearch.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="frmHisService.chkChiDinh.Properties.Caption" xml:space="preserve">
+    <value>Chỉ định &gt; 1</value>
+  </data>
+  <data name="frmHisService.chkCPNgoaiGoi.Properties.Caption" xml:space="preserve">
+    <value>Chi phí ngoài gói</value>
+  </data>
+  <data name="frmHisService.chkUpdateAll.Properties.Caption" xml:space="preserve">
+    <value>Cập nhật tất cả</value>
+  </data>
+  <data name="frmHisService.chkUpdateOnly.Properties.Caption" xml:space="preserve">
+    <value>Cập nhật hồ sơ chưa khóa viện phí</value>
+  </data>
+  <data name="frmHisService.dnNavigation.Text" xml:space="preserve">
+    <value>dataNavigator1</value>
+  </data>
+  <data name="frmHisService.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmHisService.layoutControlItem1.Text" xml:space="preserve">
+    <value>ĐTTT bắt buộc:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem11.Text" xml:space="preserve">
+    <value>Phương pháp phẫu thuật thủ thuật</value>
+  </data>
+  <data name="frmHisService.layoutControlItem12.Text" xml:space="preserve">
+    <value>Đơn vị tính:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem13.Text" xml:space="preserve">
+    <value>Dịch vụ cha:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem14.Text" xml:space="preserve">
+    <value>Loại dịch vụ BH:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem15.Text" xml:space="preserve">
+    <value>Loại dịch vụ:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem16.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.layoutControlItem17.Text" xml:space="preserve">
+    <value>Mã DV BHYT:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem18.Text" xml:space="preserve">
+    <value>Tên DV BHYT:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem19.Text" xml:space="preserve">
+    <value>STT BHYT:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem20.Text" xml:space="preserve">
+    <value>Giá trần cũ:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem21.Text" xml:space="preserve">
+    <value>Giá trần mới:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem22.Text" xml:space="preserve">
+    <value>Tỉ lệ trần cũ:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem23.Text" xml:space="preserve">
+    <value>Tỉ lệ trần mới</value>
+  </data>
+  <data name="frmHisService.layoutControlItem24.Text" xml:space="preserve">
+    <value>TG ngày vào viện</value>
+  </data>
+  <data name="frmHisService.layoutControlItem25.Text" xml:space="preserve">
+    <value>TG theo ngày chỉ định:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem26.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.layoutControlItem27.Text" xml:space="preserve">
+    <value>Nhóm PTTT:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem28.Text" xml:space="preserve">
+    <value>ICD CM</value>
+  </data>
+  <data name="frmHisService.layoutControlItem29.Text" xml:space="preserve">
+    <value>Cập nhật hồ sơ chưa khóa viện phí:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem30.Text" xml:space="preserve">
+    <value>Chỉ định &gt;1:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem31.Text" xml:space="preserve">
+    <value>Loại dịch vụ:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem32.Text" xml:space="preserve">
+    <value>Mã chuyên khoa:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem33.Text" xml:space="preserve">
+    <value>Gói:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem35.Text" xml:space="preserve">
+    <value>Giá gói:</value>
+  </data>
+  <data name="frmHisService.layoutControlItem5.Text" xml:space="preserve">
+    <value>Loại hình HĐ:</value>
+  </data>
+  <data name="frmHisService.lcEditorInfo.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="frmHisService.lciNumOrder.Text" xml:space="preserve">
+    <value>Thứ tự:</value>
+  </data>
+  <data name="frmHisService.lciTypeCode.Text" xml:space="preserve">
+    <value>Mã:</value>
+  </data>
+  <data name="frmHisService.lciTypeName.Text" xml:space="preserve">
+    <value>Tên:</value>
+  </data>
+  <data name="frmHisService.spCogss.Text" xml:space="preserve">
+    <value>Giá vốn:</value>
+  </data>
+  <data name="frmHisService.spEstimateDurations.Text" xml:space="preserve">
+    <value>T/G dự kiến:</value>
+  </data>
+  <data name="frmHisService.Text" xml:space="preserve">
+    <value>Danh mục</value>
+  </data>
+  <data name="frmHisService.treeListColumn1.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.treeListColumn1.ToolTip" xml:space="preserve">
+    <value>Lock</value>
+  </data>
+  <data name="frmHisService.treeListColumn10.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="frmHisService.treeListColumn10.ToolTip" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="frmHisService.treeListColumn11.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="frmHisService.treeListColumn11.ToolTip" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="frmHisService.treeListColumn12.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="frmHisService.treeListColumn12.ToolTip" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="frmHisService.treeListColumn13.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="frmHisService.treeListColumn13.ToolTip" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="frmHisService.treeListColumn14.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="frmHisService.treeListColumn14.ToolTip" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="frmHisService.treeListColumn15.Caption" xml:space="preserve">
+    <value>Loại hóa đơn</value>
+  </data>
+  <data name="frmHisService.treeListColumn16.Caption" xml:space="preserve">
+    <value>ĐTTT bắt buộc</value>
+  </data>
+  <data name="frmHisService.treeListColumn17.Caption" xml:space="preserve">
+    <value>CP ngoài gói</value>
+  </data>
+  <data name="frmHisService.treeListColumn17.ToolTip" xml:space="preserve">
+    <value>CP ngoài gói</value>
+  </data>
+  <data name="frmHisService.treeListColumn18.Caption" xml:space="preserve">
+    <value>Nhóm PTTT</value>
+  </data>
+  <data name="frmHisService.treeListColumn18.ToolTip" xml:space="preserve">
+    <value>Nhóm PTTT</value>
+  </data>
+  <data name="frmHisService.treeListColumn19.Caption" xml:space="preserve">
+    <value>Phương pháp PTTT</value>
+  </data>
+  <data name="frmHisService.treeListColumn19.ToolTip" xml:space="preserve">
+    <value>Phương pháp PTTT</value>
+  </data>
+  <data name="frmHisService.treeListColumn2.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.treeListColumn2.ToolTip" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="frmHisService.treeListColumn20.Caption" xml:space="preserve">
+    <value>ICD CM</value>
+  </data>
+  <data name="frmHisService.treeListColumn20.ToolTip" xml:space="preserve">
+    <value>ICD CM</value>
+  </data>
+  <data name="frmHisService.treeListColumn21.Caption" xml:space="preserve">
+    <value>Giá cũ</value>
+  </data>
+  <data name="frmHisService.treeListColumn21.ToolTip" xml:space="preserve">
+    <value>Giá cũ</value>
+  </data>
+  <data name="frmHisService.treeListColumn22.Caption" xml:space="preserve">
+    <value>Loại DV</value>
+  </data>
+  <data name="frmHisService.treeListColumn22.ToolTip" xml:space="preserve">
+    <value>Loại DV</value>
+  </data>
+  <data name="frmHisService.treeListColumn23.Caption" xml:space="preserve">
+    <value>Thời gian theo ngày chỉ định</value>
+  </data>
+  <data name="frmHisService.treeListColumn23.ToolTip" xml:space="preserve">
+    <value>Thời gian theo ngày chỉ định</value>
+  </data>
+  <data name="frmHisService.treeListColumn24.Caption" xml:space="preserve">
+    <value>Thời gian theo ngày vào viện</value>
+  </data>
+  <data name="frmHisService.treeListColumn24.ToolTip" xml:space="preserve">
+    <value>Thời gian theo ngày vào viện</value>
+  </data>
+  <data name="frmHisService.treeListColumn25.Caption" xml:space="preserve">
+    <value>Tỉ lệ trần mới</value>
+  </data>
+  <data name="frmHisService.treeListColumn25.ToolTip" xml:space="preserve">
+    <value>Tỉ lệ trần mới</value>
+  </data>
+  <data name="frmHisService.treeListColumn26.Caption" xml:space="preserve">
+    <value>Tỉ lệ trần cũ</value>
+  </data>
+  <data name="frmHisService.treeListColumn26.ToolTip" xml:space="preserve">
+    <value>Tỉ lệ trần cũ</value>
+  </data>
+  <data name="frmHisService.treeListColumn27.Caption" xml:space="preserve">
+    <value>Giá mới</value>
+  </data>
+  <data name="frmHisService.treeListColumn27.ToolTip" xml:space="preserve">
+    <value>Giá mới</value>
+  </data>
+  <data name="frmHisService.treeListColumn28.Caption" xml:space="preserve">
+    <value>STT BHYT</value>
+  </data>
+  <data name="frmHisService.treeListColumn28.ToolTip" xml:space="preserve">
+    <value>STT BHYT</value>
+  </data>
+  <data name="frmHisService.treeListColumn29.Caption" xml:space="preserve">
+    <value>Giá gói</value>
+  </data>
+  <data name="frmHisService.treeListColumn29.ToolTip" xml:space="preserve">
+    <value>Giá gói</value>
+  </data>
+  <data name="frmHisService.treeListColumn3.Caption" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="frmHisService.treeListColumn3.ToolTip" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="frmHisService.treeListColumn30.Caption" xml:space="preserve">
+    <value>Tên gói</value>
+  </data>
+  <data name="frmHisService.treeListColumn30.ToolTip" xml:space="preserve">
+    <value>Tên gói</value>
+  </data>
+  <data name="frmHisService.treeListColumn31.Caption" xml:space="preserve">
+    <value>Mã chuyên khoa</value>
+  </data>
+  <data name="frmHisService.treeListColumn31.ToolTip" xml:space="preserve">
+    <value>Mã chuyên khoa</value>
+  </data>
+  <data name="frmHisService.treeListColumn32.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.treeListColumn33.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.treeListColumn34.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.treeListColumn4.Caption" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="frmHisService.treeListColumn5.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="frmHisService.treeListColumn6.Caption" xml:space="preserve">
+    <value>Tên dịch vụ BHYT</value>
+  </data>
+  <data name="frmHisService.treeListColumn7.Caption" xml:space="preserve">
+    <value>Giá vốn</value>
+  </data>
+  <data name="frmHisService.treeListColumn8.Caption" xml:space="preserve">
+    <value>Thời gian dự kiến</value>
+  </data>
+  <data name="frmHisService.treeListColumn8.ToolTip" xml:space="preserve">
+    <value>Thời gian dự kiến</value>
+  </data>
+  <data name="frmHisService.treeListColumn9.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmHisService.treeListColumn9.ToolTip" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmHisService.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="frmServiceRati.bar2.Text" xml:space="preserve">
+    <value>Main menu</value>
+  </data>
+  <data name="frmServiceRati.barButtonItem1.Caption" xml:space="preserve">
+    <value>Lưu(Ctrl S)</value>
+  </data>
+  <data name="frmServiceRati.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmServiceRati.grclCheck.Caption" xml:space="preserve">
+    <value>grclCheck</value>
+  </data>
+  <data name="frmServiceRati.grclCode.Caption" xml:space="preserve">
+    <value>Mã thời gian ăn</value>
+  </data>
+  <data name="frmServiceRati.grclName.Caption" xml:space="preserve">
+    <value>Thời gian ăn</value>
+  </data>
+  <data name="frmServiceRati.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmServiceRati.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmServiceRati.Text" xml:space="preserve">
+    <value>Thiết lập thời gian ăn</value>
+  </data>
+  <data name="UC_HisService.btnAdd.Text" xml:space="preserve">
+    <value>Thêm (Ctrl N)</value>
+  </data>
+  <data name="UC_HisService.btnEdit.Text" xml:space="preserve">
+    <value>Sửa (Ctrl S)</value>
+  </data>
+  <data name="UC_HisService.btnEditServiceType.ToolTip" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="UC_HisService.BtnExportExcel.Text" xml:space="preserve">
+    <value>Xuất Excel</value>
+  </data>
+  <data name="UC_HisService.btnImport.Text" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="UC_HisService.btnMayCuaToi.Text" xml:space="preserve">
+    <value>Cập nhập cache máy của tôi</value>
+  </data>
+  <data name="UC_HisService.btnRefresh.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="UC_HisService.btnSearch.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="UC_HisService.cboFILM_SIZE.ToolTip" xml:space="preserve">
+    <value>Kích thước phim sử dụng cho chẩn đoán hình ảnh</value>
+  </data>
+  <data name="UC_HisService.CboTestType.ToolTip" xml:space="preserve">
+    <value>Loại xét nghiệm</value>
+  </data>
+  <data name="UC_HisService.chkAllowExpend.Properties.Caption" xml:space="preserve">
+    <value>Cho phép HP</value>
+  </data>
+  <data name="UC_HisService.chkChiDinh.Properties.Caption" xml:space="preserve">
+    <value>Chỉ định khác 1</value>
+  </data>
+  <data name="UC_HisService.chkCPNgoaiGoi.Properties.Caption" xml:space="preserve">
+    <value>Chi phí ngoài gói</value>
+  </data>
+  <data name="UC_HisService.chkForPrice.Properties.Caption" xml:space="preserve">
+    <value>Cho chỉ định giá</value>
+  </data>
+  <data name="UC_HisService.chkForPrice.ToolTip" xml:space="preserve">
+    <value>Cho phép nhập giá khi chỉ định dịch vụ</value>
+  </data>
+  <data name="UC_HisService.chkIS_AUTO_EXPEND.Properties.Caption" xml:space="preserve">
+    <value>Tự động tích hao phí</value>
+  </data>
+  <data name="UC_HisService.chkIS_AUTO_EXPEND.ToolTip" xml:space="preserve">
+    <value>Tự động tích hao phí khi chỉ định dịch vụ</value>
+  </data>
+  <data name="UC_HisService.chkIS_NOT_SHOW_TRACKING.Properties.Caption" xml:space="preserve">
+    <value>Không hiển thị trên tờ điều trị</value>
+  </data>
+  <data name="UC_HisService.chkIS_OUT_OF_MANAGEMENT.Properties.Caption" xml:space="preserve">
+    <value>Là dịch vụ quản lý ngoài</value>
+  </data>
+  <data name="UC_HisService.chkIsAntibioticResistanc_Lay.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.chkIsAntibioticResistance.Properties.Caption" xml:space="preserve">
+    <value>Kháng sinh đồ</value>
+  </data>
+  <data name="UC_HisService.chkIsBlockDepartment.Properties.Caption" xml:space="preserve">
+    <value>Chặn chuyển khoa</value>
+  </data>
+  <data name="UC_HisService.chkIsBlockDepartment.ToolTip" xml:space="preserve">
+    <value>Chặn chuyển khoa nếu dịch vụ chưa kết thúc</value>
+  </data>
+  <data name="UC_HisService.chkIsDisAllowanceNoExecute.Properties.Caption" xml:space="preserve">
+    <value>Chặn không thực hiện</value>
+  </data>
+  <data name="UC_HisService.chkIsDisAllowanceNoExecute.ToolTip" xml:space="preserve">
+    <value>Chặn không cho phép tích vào “Không thực hiện” ở bảng kê thanh toán</value>
+  </data>
+  <data name="UC_HisService.chkIsKidney.Properties.Caption" xml:space="preserve">
+    <value>Chạy thận</value>
+  </data>
+  <data name="UC_HisService.chkIsOtherSourcePaid.Properties.Caption" xml:space="preserve">
+    <value>Có nguồn chi trả khác</value>
+  </data>
+  <data name="UC_HisService.chkMUST_BE_CONSULTED.Properties.Caption" xml:space="preserve">
+    <value>Bắt buộc có BBHC</value>
+  </data>
+  <data name="UC_HisService.chkNgoaiDinhSuat.Properties.Caption" xml:space="preserve">
+    <value>Ngoài định suất/DRG</value>
+  </data>
+  <data name="UC_HisService.chkNotChangePaty.Properties.Caption" xml:space="preserve">
+    <value>Không sửa</value>
+  </data>
+  <data name="UC_HisService.chkNotChangePaty.ToolTip" xml:space="preserve">
+    <value>Không cho phép sửa đối tượng phụ thu mặc đinh khi chỉ định dịch vụ</value>
+  </data>
+  <data name="UC_HisService.chkSplitTreatment.Properties.Caption" xml:space="preserve">
+    <value>Tách y lệnh</value>
+  </data>
+  <data name="UC_HisService.chkSplitTreatment.ToolTip" xml:space="preserve">
+    <value>Tự động tách thành nhiều y lệnh (và mỗi y lệnh có số lượng bằng 1) trong trường hợp chỉ định số lượng lớn hơn 1</value>
+  </data>
+  <data name="UC_HisService.chkTachdichvu.Properties.Caption" xml:space="preserve">
+    <value>Tách dịch vụ</value>
+  </data>
+  <data name="UC_HisService.chkTachdichvu.ToolTip" xml:space="preserve">
+    <value>Tự động tách thành nhiều dòng dịch vụ, mỗi dòng có số lượng là 1 (trong cùng y lệnh), trong trường hợp người dùng kê số lượng lớn hơn 1</value>
+  </data>
+  <data name="UC_HisService.chkUpdateAll.Properties.Caption" xml:space="preserve">
+    <value>Cập nhật tất cả</value>
+  </data>
+  <data name="UC_HisService.chkUpdateOnly.Properties.Caption" xml:space="preserve">
+    <value>Cập nhật hồ sơ chưa khóa viện phí</value>
+  </data>
+  <data name="UC_HisService.dnNavigation.Text" xml:space="preserve">
+    <value>dataNavigator1</value>
+  </data>
+  <data name="UC_HisService.dtInTime.ToolTip" xml:space="preserve">
+    <value>Thời gian áp dụng giá trần mới theo ngày vào viện</value>
+  </data>
+  <data name="UC_HisService.emptySpaceItem1.Text" xml:space="preserve">
+    <value>phút</value>
+  </data>
+  <data name="UC_HisService.emptySpaceItem2.Text" xml:space="preserve">
+    <value>Tháng</value>
+  </data>
+  <data name="UC_HisService.emptySpaceItem4.Text" xml:space="preserve">
+    <value>phút</value>
+  </data>
+  <data name="UC_HisService.emptySpaceItem5.Text" xml:space="preserve">
+    <value>phút</value>
+  </data>
+  <data name="UC_HisService.emptySpaceItem6.Text" xml:space="preserve">
+    <value>ngày</value>
+  </data>
+  <data name="UC_HisService.emptySpaceItemMaxTotalProcessTime.Text" xml:space="preserve">
+    <value>phút</value>
+  </data>
+  <data name="UC_HisService.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UC_HisService.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UC_HisService.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem1.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Đối tượng phụ thu mặc định</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem1.Text" xml:space="preserve">
+    <value>ĐTPT mặc định:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem1.ToolTip" xml:space="preserve">
+    <value>Đối tượng phụ thu mặc định</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem11.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Phương pháp phẫu thuật thủ thuật</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem11.Text" xml:space="preserve">
+    <value>PPPT:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem12.Text" xml:space="preserve">
+    <value>Đơn vị tính:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem13.Text" xml:space="preserve">
+    <value>Dịch vụ cha:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem14.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Loại dịch vụ bảo hiểm</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem14.Text" xml:space="preserve">
+    <value>Loại dịch vụ BH:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem15.Text" xml:space="preserve">
+    <value>Loại dịch vụ:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem16.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem17.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mã dịch vụ bảo hiểm y tế</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem17.Text" xml:space="preserve">
+    <value>Mã DV BHYT:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem18.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tên dịch vụ bảo hiểm y tế</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem18.Text" xml:space="preserve">
+    <value>Tên DV BHYT:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem19.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số thứ tự bảo hiểm y tế</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem19.Text" xml:space="preserve">
+    <value>STT BHYT:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem20.Text" xml:space="preserve">
+    <value>Giá trần cũ:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem21.Text" xml:space="preserve">
+    <value>Giá trần mới:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem22.Text" xml:space="preserve">
+    <value>Loại TDCN:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem23.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Loại chuẩn đoán hình ảnh</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem23.Text" xml:space="preserve">
+    <value>Loại CĐHA:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem24.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời gian áp dụng giá trần mới theo ngày vào viện</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem24.Text" xml:space="preserve">
+    <value>TG áp dụng:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem25.Text" xml:space="preserve">
+    <value>Diễn giải:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem26.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem27.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nhóm phẫu thuật thủ thuật</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem27.Text" xml:space="preserve">
+    <value>Nhóm PTTT:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem28.Text" xml:space="preserve">
+    <value>ICD CM</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem29.Text" xml:space="preserve">
+    <value>Cập nhật hồ sơ chưa khóa viện phí:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem30.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem31.Text" xml:space="preserve">
+    <value>Loại dịch vụ:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem32.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mã chuyên khoa</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem32.Text" xml:space="preserve">
+    <value>Mã chuyên khoa:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem33.Text" xml:space="preserve">
+    <value>Gói:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem35.Text" xml:space="preserve">
+    <value>Giá gói:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem37.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mã nhóm dịch vụ Pacs</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem37.Text" xml:space="preserve">
+    <value>Mã nhóm DVPACS:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem38.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời gian tối thiểu bắt buộc giữa 2 lần thực hiện liên tiếp trên cùng 1 bệnh nhân</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem38.Text" xml:space="preserve">
+    <value>TG tối thiểu:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem39.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số phim sử  dụng khi thực hiện dịch vụ ( Dành cho các dịch vụ chẩn đoán hình ảnh)</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem39.Text" xml:space="preserve">
+    <value>Số phim:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem42.Text" xml:space="preserve">
+    <value>ICD CM:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem44.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Giới hạn số tiền hao phí</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem44.Text" xml:space="preserve">
+    <value>GH số tiền HP:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem45.Text" xml:space="preserve">
+    <value>Module xử lý:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem46.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem47.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem48.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem49.Text" xml:space="preserve">
+    <value>Tuổi từ:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem5.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Loại hình hóa đơn</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem5.Text" xml:space="preserve">
+    <value>Loại hình HĐ:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem50.Text" xml:space="preserve">
+    <value>đến:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem51.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mã quy trình xử lý</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem51.Text" xml:space="preserve">
+    <value>Mã quy trình:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem52.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem54.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem55.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Lưu ý khi chỉ định</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem55.Text" xml:space="preserve">
+    <value>Ghi chú:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem56.Text" xml:space="preserve">
+    <value>Ký hiệu suất ăn: </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem58.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nhóm suất ăn</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem58.Text" xml:space="preserve">
+    <value>Nhóm suất ăn:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem59.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nguồn chi trả khác trong trường hợp sử dụng dịch vụ này</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem59.Text" xml:space="preserve">
+    <value>Nguồn CTK:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem60.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nhập mã ICD ngăn cách bởi dấu phẩy của các bệnh mà nguồn chi trả khác chấp nhận hỗ trợ. Nếu không nhập mã bệnh nào được hiểu là nguồn chấp nhận chi trả cho mọi trường hợp bệnh.</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem60.Text" xml:space="preserve">
+    <value>Bệnh được hỗ trợ:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem61.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Loại xét nghiệm</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem61.Text" xml:space="preserve">
+    <value>Loại XN:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem63.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tự động tách thành nhiều dòng dịch vụ, mỗi dòng có số lượng là 1 (trong cùng y lệnh), trong trường hợp người dùng kê số lượng lớn hơn 1</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem64.Text" xml:space="preserve">
+    <value>Bộ phận:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem65.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem66.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Kỹ thuật xét nghiệm</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem66.Text" xml:space="preserve">
+    <value>Kỹ thuật XN:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem67.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bắt buộc có biên bản hội chẩn</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem67.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem68.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem69.Text" xml:space="preserve">
+    <value>Chỉ số:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem71.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời gian xử lý tối đa</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem71.Text" xml:space="preserve">
+    <value>TG xử lý tối đa:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem73.Text" xml:space="preserve">
+    <value>   </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem74.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tự động tích hao phí khi chỉ định dịch vụ</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem74.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem75.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chặn chuyển khoa nếu dịch vụ chưa kết thúc</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem75.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem76.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời gian lấy mẫu</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem76.Text" xml:space="preserve">
+    <value>TGLM:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem77.Text" xml:space="preserve">
+    <value>phút</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem78.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chỉ áp dụng đối tượng phụ thu mặc định trong trường hợp đối tượng thanh toán nằm trong danh sách được khai báo tại đây. Trong trường hợp không khai báo, được hiểu là áp dụng cho tất cả các đối tượng thanh toán</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem78.Text" xml:space="preserve">
+    <value>ĐTTT áp dụng:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem79.Text" xml:space="preserve">
+    <value>ĐTTT mặc định:</value>
+  </data>
+  <data name="UC_HisService.lbCapacity.Text" xml:space="preserve">
+    <value>ml</value>
+  </data>
+  <data name="UC_HisService.lbCapacity.ToolTip" xml:space="preserve">
+    <value>mililit</value>
+  </data>
+  <data name="UC_HisService.lcCapacity.Text" xml:space="preserve">
+    <value>Dung tích:</value>
+  </data>
+  <data name="UC_HisService.lcDiimType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Loại chuẩn đoán hình ảnh</value>
+  </data>
+  <data name="UC_HisService.lcDiimType.Text" xml:space="preserve">
+    <value>Loại CĐHA:</value>
+  </data>
+  <data name="UC_HisService.lcEditorInfo.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="UC_HisService.lcFILM_SIZE.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Kích thước phim sử dụng cho chẩn đoán hình ảnh</value>
+  </data>
+  <data name="UC_HisService.lcFILM_SIZE.Text" xml:space="preserve">
+    <value>Cỡ phim:</value>
+  </data>
+  <data name="UC_HisService.lcFuexType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Loại thăm do chức năng</value>
+  </data>
+  <data name="UC_HisService.lcFuexType.Text" xml:space="preserve">
+    <value>Loại TDCN:</value>
+  </data>
+  <data name="UC_HisService.lciAttachAssignPrintTypeCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Phiếu in kèm theo khi in phiếu chỉ định dịch vụ</value>
+  </data>
+  <data name="UC_HisService.lciAttachAssignPrintTypeCode.Text" xml:space="preserve">
+    <value>Mẫu in kèm:</value>
+  </data>
+  <data name="UC_HisService.lciLock.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ẩn Các dịch vụ kỹ thuật bị khóa</value>
+  </data>
+  <data name="UC_HisService.lciLock.Text" xml:space="preserve">
+    <value>Ẩn dịch vụ bị khóa</value>
+  </data>
+  <data name="UC_HisService.lciLock.ToolTip" xml:space="preserve">
+    <value>Ẩn các dịch vụ kỹ thuật bị khóa</value>
+  </data>
+  <data name="UC_HisService.lciMaxTotalProcessTime.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tổng thời gian xử lý dịch vụ tối đa tính từ thời điểm ra y lệnh đến lúc kết thúc</value>
+  </data>
+  <data name="UC_HisService.lciMaxTotalProcessTime.Text" xml:space="preserve">
+    <value>Tổng XL tối đa:</value>
+  </data>
+  <data name="UC_HisService.lciNumOrder.Text" xml:space="preserve">
+    <value>Thứ tự:</value>
+  </data>
+  <data name="UC_HisService.lciSpMinProcess.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời gian xử lý tối thiểu</value>
+  </data>
+  <data name="UC_HisService.lciSpMinProcess.Text" xml:space="preserve">
+    <value>TG xử lý tối thiểu:</value>
+  </data>
+  <data name="UC_HisService.lciTaxRateType.Text" xml:space="preserve">
+    <value>Loại thuế suất:</value>
+  </data>
+  <data name="UC_HisService.lciTypeCode.Text" xml:space="preserve">
+    <value>Mã:</value>
+  </data>
+  <data name="UC_HisService.lciTypeName.Text" xml:space="preserve">
+    <value>Tên:</value>
+  </data>
+  <data name="UC_HisService.simpleButton2.Text" xml:space="preserve">
+    <value>Cập nhập cache toàn bộ máy trạm</value>
+  </data>
+  <data name="UC_HisService.spCogss.Text" xml:space="preserve">
+    <value>Giá vốn:</value>
+  </data>
+  <data name="UC_HisService.spEstimateDurations.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời gian thực hiện dự kiến của dịch vụ</value>
+  </data>
+  <data name="UC_HisService.spEstimateDurations.Text" xml:space="preserve">
+    <value>T/G dự kiến:</value>
+  </data>
+  <data name="UC_HisService.treeListColumn1.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.treeListColumn1.ToolTip" xml:space="preserve">
+    <value>Lock</value>
+  </data>
+  <data name="UC_HisService.treeListColumn10.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UC_HisService.treeListColumn10.ToolTip" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UC_HisService.treeListColumn11.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UC_HisService.treeListColumn11.ToolTip" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UC_HisService.treeListColumn12.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="UC_HisService.treeListColumn12.ToolTip" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="UC_HisService.treeListColumn13.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="UC_HisService.treeListColumn13.ToolTip" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="UC_HisService.treeListColumn14.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="UC_HisService.treeListColumn14.ToolTip" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="UC_HisService.treeListColumn15.Caption" xml:space="preserve">
+    <value>Loại hóa đơn</value>
+  </data>
+  <data name="UC_HisService.treeListColumn16.Caption" xml:space="preserve">
+    <value>ĐTPT mặc định</value>
+  </data>
+  <data name="UC_HisService.treeListColumn16.ToolTip" xml:space="preserve">
+    <value>Đối tượng phụ thu mặc định</value>
+  </data>
+  <data name="UC_HisService.treeListColumn17.Caption" xml:space="preserve">
+    <value>CP ngoài gói</value>
+  </data>
+  <data name="UC_HisService.treeListColumn17.ToolTip" xml:space="preserve">
+    <value>CP ngoài gói</value>
+  </data>
+  <data name="UC_HisService.treeListColumn18.Caption" xml:space="preserve">
+    <value>Nhóm PTTT</value>
+  </data>
+  <data name="UC_HisService.treeListColumn18.ToolTip" xml:space="preserve">
+    <value>Nhóm PTTT</value>
+  </data>
+  <data name="UC_HisService.treeListColumn19.Caption" xml:space="preserve">
+    <value>Phương pháp PTTT</value>
+  </data>
+  <data name="UC_HisService.treeListColumn19.ToolTip" xml:space="preserve">
+    <value>Phương pháp PTTT</value>
+  </data>
+  <data name="UC_HisService.treeListColumn2.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.treeListColumn2.ToolTip" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="UC_HisService.treeListColumn20.Caption" xml:space="preserve">
+    <value>ICD CM</value>
+  </data>
+  <data name="UC_HisService.treeListColumn20.ToolTip" xml:space="preserve">
+    <value>ICD CM</value>
+  </data>
+  <data name="UC_HisService.treeListColumn21.Caption" xml:space="preserve">
+    <value>Giá cũ</value>
+  </data>
+  <data name="UC_HisService.treeListColumn21.ToolTip" xml:space="preserve">
+    <value>Giá cũ</value>
+  </data>
+  <data name="UC_HisService.treeListColumn22.Caption" xml:space="preserve">
+    <value>Loại DV</value>
+  </data>
+  <data name="UC_HisService.treeListColumn22.ToolTip" xml:space="preserve">
+    <value>Loại DV</value>
+  </data>
+  <data name="UC_HisService.treeListColumn23.Caption" xml:space="preserve">
+    <value>Thời gian theo ngày chỉ định</value>
+  </data>
+  <data name="UC_HisService.treeListColumn23.ToolTip" xml:space="preserve">
+    <value>Thời gian theo ngày chỉ định</value>
+  </data>
+  <data name="UC_HisService.treeListColumn24.Caption" xml:space="preserve">
+    <value>Thời gian theo ngày vào viện</value>
+  </data>
+  <data name="UC_HisService.treeListColumn24.ToolTip" xml:space="preserve">
+    <value>Thời gian theo ngày vào viện</value>
+  </data>
+  <data name="UC_HisService.treeListColumn25.Caption" xml:space="preserve">
+    <value>Tỉ lệ trần mới</value>
+  </data>
+  <data name="UC_HisService.treeListColumn25.ToolTip" xml:space="preserve">
+    <value>Tỉ lệ trần mới</value>
+  </data>
+  <data name="UC_HisService.treeListColumn26.Caption" xml:space="preserve">
+    <value>Tỉ lệ trần cũ</value>
+  </data>
+  <data name="UC_HisService.treeListColumn26.ToolTip" xml:space="preserve">
+    <value>Tỉ lệ trần cũ</value>
+  </data>
+  <data name="UC_HisService.treeListColumn27.Caption" xml:space="preserve">
+    <value>Giá mới</value>
+  </data>
+  <data name="UC_HisService.treeListColumn27.ToolTip" xml:space="preserve">
+    <value>Giá mới</value>
+  </data>
+  <data name="UC_HisService.treeListColumn28.Caption" xml:space="preserve">
+    <value>STT BHYT</value>
+  </data>
+  <data name="UC_HisService.treeListColumn28.ToolTip" xml:space="preserve">
+    <value>STT BHYT</value>
+  </data>
+  <data name="UC_HisService.treeListColumn29.Caption" xml:space="preserve">
+    <value>Giá gói</value>
+  </data>
+  <data name="UC_HisService.treeListColumn29.ToolTip" xml:space="preserve">
+    <value>Giá gói</value>
+  </data>
+  <data name="UC_HisService.treeListColumn3.Caption" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="UC_HisService.treeListColumn3.ToolTip" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="UC_HisService.treeListColumn30.Caption" xml:space="preserve">
+    <value>Tên gói</value>
+  </data>
+  <data name="UC_HisService.treeListColumn30.ToolTip" xml:space="preserve">
+    <value>Tên gói</value>
+  </data>
+  <data name="UC_HisService.treeListColumn31.Caption" xml:space="preserve">
+    <value>Mã chuyên khoa</value>
+  </data>
+  <data name="UC_HisService.treeListColumn31.ToolTip" xml:space="preserve">
+    <value>Mã chuyên khoa</value>
+  </data>
+  <data name="UC_HisService.treeListColumn32.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.treeListColumn33.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.treeListColumn34.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.treeListColumn35.Caption" xml:space="preserve">
+    <value>Mã nhóm dịch vụ</value>
+  </data>
+  <data name="UC_HisService.treeListColumn36.Caption" xml:space="preserve">
+    <value>Mã nhóm máy</value>
+  </data>
+  <data name="UC_HisService.treeListColumn37.Caption" xml:space="preserve">
+    <value>Số phim</value>
+  </data>
+  <data name="UC_HisService.treeListColumn38.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.treeListColumn39.Caption" xml:space="preserve">
+    <value>Tuổi đến</value>
+  </data>
+  <data name="UC_HisService.treeListColumn4.Caption" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="UC_HisService.treeListColumn40.Caption" xml:space="preserve">
+    <value>Tuổi từ</value>
+  </data>
+  <data name="UC_HisService.treeListColumn41.Caption" xml:space="preserve">
+    <value>Mã quy trình</value>
+  </data>
+  <data name="UC_HisService.treeListColumn41.ToolTip" xml:space="preserve">
+    <value>Mã quy trình xử lý</value>
+  </data>
+  <data name="UC_HisService.treeListColumn42.Caption" xml:space="preserve">
+    <value>Không cho sửa</value>
+  </data>
+  <data name="UC_HisService.treeListColumn42.ToolTip" xml:space="preserve">
+    <value>Không cho phép sửa đối tượng phụ thu mặc định lúc chỉ định dịch vụ</value>
+  </data>
+  <data name="UC_HisService.treeListColumn43.Caption" xml:space="preserve">
+    <value>Chỉ số</value>
+  </data>
+  <data name="UC_HisService.treeListColumn5.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="UC_HisService.treeListColumn6.Caption" xml:space="preserve">
+    <value>Tên dịch vụ BHYT</value>
+  </data>
+  <data name="UC_HisService.treeListColumn7.Caption" xml:space="preserve">
+    <value>Giá vốn</value>
+  </data>
+  <data name="UC_HisService.treeListColumn8.Caption" xml:space="preserve">
+    <value>Thời gian dự kiến</value>
+  </data>
+  <data name="UC_HisService.treeListColumn8.ToolTip" xml:space="preserve">
+    <value>Thời gian dự kiến</value>
+  </data>
+  <data name="UC_HisService.treeListColumn9.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UC_HisService.treeListColumn9.ToolTip" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UC_HisService.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="UC_HisService.txtNotice.ToolTip" xml:space="preserve">
+    <value>Lưu ý khi chỉ định</value>
+  </data>
+  <data name="UC_HisService.txtProcessCode.ToolTip" xml:space="preserve">
+    <value>Mã quy trình xử lý</value>
+  </data>
+  <data name="UC_HisService.ColumnCode.Text" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="UC_HisService.ColumnName.Text" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="UC_HisService.tol1.Text" xml:space="preserve">
+    <value>Khóa</value>
+  </data>
+  <data name="UC_HisService.tol10.Text" xml:space="preserve">
+    <value>Thiết lập phòng xử lý dịch vụ</value>
+  </data>
+  <data name="UC_HisService.tol11.Text" xml:space="preserve">
+    <value>Thiết lập thời gian ăn</value>
+  </data>
+  <data name="UC_HisService.tol12.Text" xml:space="preserve">
+    <value>Thiết lập thời gian ăn</value>
+  </data>
+  <data name="UC_HisService.tol2.Text" xml:space="preserve">
+    <value>Mở khóa</value>
+  </data>
+  <data name="UC_HisService.tol3.Text" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="UC_HisService.tol4.Text" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="UC_HisService.tol5.Text" xml:space="preserve">
+    <value>Chính sách giá dịch vụ</value>
+  </data>
+  <data name="UC_HisService.tol6.Text" xml:space="preserve">
+    <value>Chính sách giá dịch vụ</value>
+  </data>
+  <data name="UC_HisService.tol7.Text" xml:space="preserve">
+    <value>Thiết lập dịch vụ nhóm loại báo cáo</value>
+  </data>
+  <data name="UC_HisService.tol8.Text" xml:space="preserve">
+    <value>Thiết lập dịch vụ nhóm loại báo cáo</value>
+  </data>
+  <data name="UC_HisService.tol9.Text" xml:space="preserve">
+    <value>Thiết lập phòng xử lý dịch vụ</value>
+  </data>
+  <data name="UC_HisService.tolPopup.Text" xml:space="preserve">
+    <value>Giá trần dịch vụ BHYT</value>
+  </data>
+  <data name="UC_HisService.chkAllowSimultaneity.Properties.Caption" xml:space="preserve">
+    <value>Không chặn thực hiện cùng lúc</value>
+  </data>
+  <data name="UC_HisService.chkAllowSimultaneity.ToolTip" xml:space="preserve">
+    <value>Không chặn trong trường hợp một bác sỹ/ bệnh nhân tham gia nhiều dịch vụ trong cùng 1 thời điểm</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UC_HisService.layoutControlItem90.Text" xml:space="preserve">
+    <value>ĐTCT áp dụng:</value>
+  </data>
+</root>

@@ -1,0 +1,315 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="UCHisRationSum.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCHisRationSum.lblLuuY.Text" xml:space="preserve">
+    <value>Lưu ý: "Duyệt chốt" sẽ duyệt tất cả các yêu cầu</value>
+  </data>
+  <data name="UCHisRationSum.gridSereServColumnSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCHisRationSum.gridSereServColumnServiceName.Caption" xml:space="preserve">
+    <value>Suất ăn</value>
+  </data>
+  <data name="UCHisRationSum.gridSereServColumnPrice.Caption" xml:space="preserve">
+    <value>Đơn giá</value>
+  </data>
+  <data name="UCHisRationSum.gridSereServColumnAmount.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="UCHisRationSum.gridViewColumnSereServIntructionDate.Caption" xml:space="preserve">
+    <value>Ngày đặt</value>
+  </data>
+  <data name="UCHisRationSum.gridColumn2.Caption" xml:space="preserve">
+    <value>Buổi</value>
+  </data>
+  <data name="UCHisRationSum.gridColumn3.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="UCHisRationSum.gridColumn4.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UCHisRationSum.gridColumn5.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="UCHisRationSum.gridColumn6.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="UCHisRationSum.btnSearchRationSum.Text" xml:space="preserve">
+    <value>Tìm (Ctrl Shirf F)</value>
+  </data>
+  <data name="UCHisRationSum.btnSearch.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="UCHisRationSum.cboRequestDepartment.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCHisRationSum.RadioHasSum.Properties.Caption" xml:space="preserve">
+    <value>Đã tổng hợp</value>
+  </data>
+  <data name="UCHisRationSum.radioHasNotSum.Properties.Caption" xml:space="preserve">
+    <value>Chưa tổng hợp</value>
+  </data>
+  <data name="UCHisRationSum.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm (F2)</value>
+  </data>
+  <data name="UCHisRationSum.btnSum.Text" xml:space="preserve">
+    <value>Duyệt chốt (Ctrl D)</value>
+  </data>
+  <data name="UCHisRationSum.cboRationTime.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCHisRationSum.treeListColumnDepartmentName.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCHisRationSum.treeListColumnPrint.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCHisRationSum.gridViewRationSumColumn_STT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCHisRationSum.gridViewRationSumColumn_DELETE.Caption" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="UCHisRationSum.gridViewRationSumColumn_RoomName.Caption" xml:space="preserve">
+    <value>Nhà ăn</value>
+  </data>
+  <data name="UCHisRationSum.gridViewRationSumColumn_IntructionDate.Caption" xml:space="preserve">
+    <value>Ngày đặt</value>
+  </data>
+  <data name="UCHisRationSum.gridViewRationSumColumn_RationTimeName.Caption" xml:space="preserve">
+    <value>Buổi</value>
+  </data>
+  <data name="UCHisRationSum.gridViewRationSumColumn_CreateTime.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UCHisRationSum.gridViewRationSumColumn_Creator.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="UCHisRationSum.gridViewServiceReq_STT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCHisRationSum.gridViewServiceReq_ServiceReqStt.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCHisRationSum.gridColumn8.Caption" xml:space="preserve">
+    <value>Xem chi tiết</value>
+  </data>
+  <data name="UCHisRationSum.gridColumn1.Caption" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="UCHisRationSum.gridColumn1.ToolTip" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="UCHisRationSum.gridColumnServiceReqCode.Caption" xml:space="preserve">
+    <value>Mã yêu cầu</value>
+  </data>
+  <data name="UCHisRationSum.gridViewServiceReq_PatientName.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="UCHisRationSum.gridViewServiceReq_PatientDob.Caption" xml:space="preserve">
+    <value>Năm sinh</value>
+  </data>
+  <data name="UCHisRationSum.gridViewServiceReq_PatientGenDerName.Caption" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="UCHisRationSum.gridViewServiceReq_RequestDepartment.Caption" xml:space="preserve">
+    <value>Khoa chỉ định</value>
+  </data>
+  <data name="UCHisRationSum.gridViewServiceReq_TreatmentCode.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="UCHisRationSum.gridViewServiceReq_PatientCode.Caption" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UCHisRationSum.gridViewServiceReq_CreateTime.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UCHisRationSum.GcCreator.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="UCHisRationSum.GcModifyTime.Caption" xml:space="preserve">
+    <value>Ngày sửa</value>
+  </data>
+  <data name="UCHisRationSum.GcModifier.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="UCHisRationSum.lciIntructionDate.Text" xml:space="preserve">
+    <value>Ngày duyệt:</value>
+  </data>
+  <data name="UCHisRationSum.lciRationTime.Text" xml:space="preserve">
+    <value>Bữa ăn:</value>
+  </data>
+  <data name="UCHisRationSum.lciKeyword.Text" xml:space="preserve">
+    <value>Từ khóa:</value>
+  </data>
+  <data name="UCHisRationSum.lciRadioSumStatus.Text" xml:space="preserve">
+    <value>Tình trạng:</value>
+  </data>
+  <data name="UCHisRationSum.lciRequestDepartmentCode.Text" xml:space="preserve">
+    <value>Khoa CĐ:</value>
+  </data>
+  <data name="UCHisRationSum.lciIntructionDateFrom.Text" xml:space="preserve">
+    <value>Ngày duyệt từ:</value>
+  </data>
+  <data name="UCHisRationSum.lciIntructionDateTo.Text" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_RATION_SUM__POPUP_MENU__ITEM_PHIEU_CHI_TIET" xml:space="preserve">
+    <value>Phiếu chi tiết</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_RATION_SUM__POPUP_MENU__ITEM_PHIEU_TONG_HOP" xml:space="preserve">
+    <value>Phiếu tổng hợp</value>
+  </data>
+  <data name="Plugins_HisRationSum__BanCoMuonXoaDuLieuKhong" xml:space="preserve">
+    <value>Bạn có thực sự muốn xóa dữ liệu?</value>
+  </data>
+  <data name="Plugins_HisRationSum__TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
+  <data name="UCHisRationSum.ToolTipControl.CXL" xml:space="preserve">
+    <value>Chưa xử lý</value>
+  </data>
+  <data name="UCHisRationSum.ToolTipControl.DXL" xml:space="preserve">
+    <value>Đang xử lý</value>
+  </data>
+  <data name="UCHisRationSum.ToolTipControl.KT" xml:space="preserve">
+    <value>Kết thúc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_RATION_SUM__POPUP_MENU__ITEM_CHIA_SUAT_AN" xml:space="preserve">
+    <value>Phiếu chia suât ăn</value>
+  </data>
+  <data name="UCHisRationSum.ToolTipControl.HIS_RATION_SUM_STT.ID__APPROVAL" xml:space="preserve">
+    <value>Duyệt</value>
+  </data>
+  <data name="UCHisRationSum.ToolTipControl.HIS_RATION_SUM_STT.ID__REJECT" xml:space="preserve">
+    <value>Từ chối duyệt</value>
+  </data>
+  <data name="UCHisRationSum.ToolTipControl.HIS_RATION_SUM_STT.ID__REQ" xml:space="preserve">
+    <value>Yêu cầu</value>
+  </data>
+  <data name="Plugins_HisRationSum__HeThongTBCuaSoThongBaoBanCoMuonHuyTongHopKhong" xml:space="preserve">
+    <value>Bạn có thực sự muốn hủy tổng hợp không?</value>
+  </data>
+  <data name="UCHisRationSum.lciRooms.Text" xml:space="preserve">
+    <value>Buồng:</value>
+  </data>
+</root>

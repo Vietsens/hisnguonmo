@@ -1,0 +1,363 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FormHisMedicalContractCreate.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.tabMedicalContractMety.Text" xml:space="preserve">
+    <value>Thuốc</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.MedicalContractMaty.Text" xml:space="preserve">
+    <value>Vật tư</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.tabBidMedicine.Text" xml:space="preserve">
+    <value>Thuốc</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.tabBidMaterial.Text" xml:space="preserve">
+    <value>Vật tư</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.btnImport.Text" xml:space="preserve">
+    <value>Nhập khẩu</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.btnAdd.Text" xml:space="preserve">
+    <value>Bố sung (Ctrl A)</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.chkClearControl.Properties.Caption" xml:space="preserve">
+    <value>Làm trắng sau khi bổ sung</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.cboSupplier.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="FormHisMedicalContractCreate.lciSupplier.Text" xml:space="preserve">
+    <value>Nhà cung cấp:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.cboBid.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="FormHisMedicalContractCreate.lciBid.Text" xml:space="preserve">
+    <value>QĐ thầu:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciMedicalContractCode.Text" xml:space="preserve">
+    <value>Số hợp đồng:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciMedicalContractName.Text" xml:space="preserve">
+    <value>Tên hợp đồng:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciNote.Text" xml:space="preserve">
+    <value>Ghi chú:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.cboDocumentSupplier.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="FormHisMedicalContractCreate.lciDocumentSupplier.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Công ty xuất hóa đơn</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciDocumentSupplier.Text" xml:space="preserve">
+    <value>Cty xuất hóa đơn:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciVentureAgreening.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thỏa thuận liên doanh</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciVentureAgreening.Text" xml:space="preserve">
+    <value>TT liên doanh:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciValidFromDate.Text" xml:space="preserve">
+    <value>Hiệu lực từ:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciValidToDate.Text" xml:space="preserve">
+    <value>Hiệu lực đến:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciAmount.Text" xml:space="preserve">
+    <value>Số lượng:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciImpPrice.Text" xml:space="preserve">
+    <value>Giá nhập:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciImpVat.Text" xml:space="preserve">
+    <value>VAT %:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciExpiredDate.Text" xml:space="preserve">
+    <value>Hạn dùng:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciYearLifespan.Text" xml:space="preserve">
+    <value>Tuổi thọ:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciMonthLifespan.Text" xml:space="preserve">
+    <value>Năm</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciDayLifespan.Text" xml:space="preserve">
+    <value>tháng</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciRegisterNumber.Text" xml:space="preserve">
+    <value>Số đăng ký:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.cboNationalName.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="FormHisMedicalContractCreate.chkEditNational.Properties.Caption" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciConcentra.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nồng độ/hàm lượng</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciConcentra.Text" xml:space="preserve">
+    <value>Nồng độ/HL:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciManufacturerCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hãng sản xuất</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciManufacturerCode.Text" xml:space="preserve">
+    <value>Hãng SX:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.cboManufacturerName.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="FormHisMedicalContractCreate.lblNgay.Text" xml:space="preserve">
+    <value>Ngày</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciPriceVat.Text" xml:space="preserve">
+    <value>Giá sau vat:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciContractPrice.Text" xml:space="preserve">
+    <value>Giá HĐ:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciPnNationalName.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nước sản xuất</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.lciPnNationalName.Text" xml:space="preserve">
+    <value>Nước SX:</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.barBtnAdd.Caption" xml:space="preserve">
+    <value>Ctrl A</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.barBtnSave.Caption" xml:space="preserve">
+    <value>Ctrl S</value>
+  </data>
+  <data name="FormHisMedicalContractCreate.Text" xml:space="preserve">
+    <value>Hợp đồng dược</value>
+  </data>
+  <data name="ThieuTruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Chưa nhập trường dữ liệu bắt buộc</value>
+  </data>
+  <data name="HanSuDungKhongDuocNhoHonNgayHienTai" xml:space="preserve">
+    <value>Hạn sử dụng nhỏ hơn ngày hiện tại bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
+  <data name="CanhBaoThuoc" xml:space="preserve">
+    <value>Thuốc {0}</value>
+  </data>
+  <data name="CanhBaoVatTu" xml:space="preserve">
+    <value>Vật tư {0}</value>
+  </data>
+  <data name="SoLuongKhongDuocAm" xml:space="preserve">
+    <value>Số lượng không được âm</value>
+  </data>
+  <data name="BiTrung" xml:space="preserve">
+    <value>bị lặp lại</value>
+  </data>
+  <data name="DaTonTaiThuocVatTu" xml:space="preserve">
+    <value>Đã tồn tại {0} bạn có muốn thay thế?</value>
+  </data>
+  <data name="GiaNhapHopDongVuotQuaThau" xml:space="preserve">
+    <value>Giá nhập không được lớn hơn giá nhập trong thầu </value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GC_ACTIVE_INGR_BHYT_CODE" xml:space="preserve">
+    <value>Mã hoạt chất</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GC_ACTIVE_INGR_BHYT_NAME" xml:space="preserve">
+    <value>Tên hoạt chất</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GC_MANUFACTURER_NAME" xml:space="preserve">
+    <value>Hãng sản xuất</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GC_NATIONAL_NAME" xml:space="preserve">
+    <value>Quốc gia</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GC_SERVICE_UNIT_NAME" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GC_STT" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GV_MATERIAL__GC_MATERIAL_TYPE_CODE" xml:space="preserve">
+    <value>Mã vật tư</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GV_MATERIAL__GC_MATERIAL_TYPE_NAME" xml:space="preserve">
+    <value>Tên vật tư</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GV_MEDICINE__GC_MEDICINE_TYPE_CODE" xml:space="preserve">
+    <value>Mã thuốc </value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GV_MEDICINE__GC_MEDICINE_TYPE_NAME" xml:space="preserve">
+    <value>Tên thuốc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GV_MEDICINE__GC_MEDICINE_USE_FROM_NAME" xml:space="preserve">
+    <value>Đường dùng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__KEY_WORD_NULL_VALUE" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_IMP_MEST_CREATE__TREE_MEDICINE__COLUMN_VAT_IN_BID" xml:space="preserve">
+    <value>VAT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_IMP_MEST_CREATE__TREE_MEDICINE__COLUMN_AMOUNT_IN_BID" xml:space="preserve">
+    <value>Số lượng thầu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_IMP_MEST_CREATE__TREE_MEDICINE__COLUMN_IMP_PRICE_IN_BID" xml:space="preserve">
+    <value>Giá nhập</value>
+  </data>
+  <data name="SoLuongHopDongVuotQuaSoLuongThau" xml:space="preserve">
+    <value>Số lượng hợp đồng vượt quá số lượng thầu</value>
+  </data>
+  <data name="VatNhapHopDongVuotQuaThau" xml:space="preserve">
+    <value>VAT nhập không được lớn hơn VAT nhập trong thầu</value>
+  </data>
+  <data name="HieuLucDenLonHonHieuLucTu" xml:space="preserve">
+    <value>Thời gian hiệu lực đến phải lớn hơn hoặc bằng thời gian hiệu lực từ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_IMP_MEST_CREATE__TREE_MEDICINE__COLUMN_AMOUNT_IN_CONTRACT" xml:space="preserve">
+    <value>Số lượng HĐ</value>
+  </data>
+  <data name="NhapQuaMaxlength" xml:space="preserve">
+    <value>Nhập quá giá trị cho phép: {0}</value>
+  </data>
+  <data name="GiaHopDongVuotQuaThau" xml:space="preserve">
+    <value>Giá hợp đồng không được lớn hơn giá sau VAT trong thầu</value>
+  </data>
+  <data name="ChiHienThiThuocVatTuKD" xml:space="preserve">
+    <value>Chỉ hiển thị thuốc/vật tư KD</value>
+  </data>
+  <data name="ChiHienThiThuocVatTuKhongKD" xml:space="preserve">
+    <value>Chỉ hiển thị thuốc/vật tư không KD</value>
+  </data>
+  <data name="ChiHienThiThuocVatTuKhongKinhDoanh" xml:space="preserve">
+    <value>Chỉ hiển thị thuốc/vật tư không kinh doanh</value>
+  </data>
+  <data name="ChiHienThiThuocVatTuKinhDoanh" xml:space="preserve">
+    <value>Chỉ hiển thị thuốc/vật tư kinh doanh</value>
+  </data>
+</root>

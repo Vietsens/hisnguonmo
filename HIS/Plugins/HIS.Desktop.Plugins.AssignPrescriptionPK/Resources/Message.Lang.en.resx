@@ -1,0 +1,626 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="_KhongDuKhaDungTrongKho" xml:space="preserve">
+    <value>Not available in stock</value>
+  </data>
+  <data name="_KhongNhapSoLuongKe" xml:space="preserve">
+    <value>Do not enter the millet quantity</value>
+  </data>
+  <data name="BanCoMuonNhapThongTinKetThucDieuTriKhong" xml:space="preserve">
+    <value>Do you want to enter treatment termination information?</value>
+  </data>
+  <data name="BanCoMuonTaoYeuCauKhong" xml:space="preserve">
+    <value>Need to create a request form for antibiotics: {0}. Do you want to perform request generation?</value>
+  </data>
+  <data name="BanCoMuonTiepTuc" xml:space="preserve">
+    <value>{0} {1}. Do you want to continued?</value>
+  </data>
+  <data name="BanDangChonKeDonChoNBenhNhanBanCoChacMuonThucHien" xml:space="preserve">
+    <value>You are choosing to prescribe {0} patients.</value>
+  </data>
+  <data name="BenhNhanChuaSuDungHetCacThuocSau" xml:space="preserve">
+    <value>Patient is not used medicines:\n</value>
+  </data>
+  <data name="BenhNhanChuaThanhToanTienCongKham" xml:space="preserve">
+    <value>The patient has not yet paid the examination fee. Do you want to pay the examination fee?</value>
+  </data>
+  <data name="BenhNhanChuongTrinhChuaDuocTaoVoBenhAn" xml:space="preserve">
+    <value>The program patient has not yet created a Case Case</value>
+  </data>
+  <data name="BenhNhanChuongTrinhChuaDuocTaoVoBenhAnBanCoMuonTaoVBDHayKhong" xml:space="preserve">
+    <value>The patient in the program has not yet created a Case Case.</value>
+  </data>
+  <data name="BenhNhanDangNoTienKhogChoPhepChiDinhDV" xml:space="preserve">
+    <value>Patient is in debt, no prescription allowed</value>
+  </data>
+  <data name="BenhNhanDangThieuVienPhi" xml:space="preserve">
+    <value>The patient is short of hospital fees ({0} dong).</value>
+  </data>
+  <data name="BenhNhanDangThieuVienPhi_0D" xml:space="preserve">
+    <value>The patient is short of hospital fees ({0} dong).</value>
+  </data>
+  <data name="BenhNhanDiKamSomTruocXNgay" xml:space="preserve">
+    <value>Patient went to the doctor's office before {0} days</value>
+  </data>
+  <data name="BenhNhanDiUngVoiThuocXBanCOmuonTiepTuc" xml:space="preserve">
+    <value>The patient is allergic to the drug {0}.</value>
+  </data>
+  <data name="BenhNhanNghiNgoDiUngVoiThuocXBanCoMuonTiepTuc" xml:space="preserve">
+    <value>Warning Suspicion of drug allergy:</value>
+  </data>
+  <data name="BenhNhanNoiTruChuaDuocChiDinhDichVuGiuong" xml:space="preserve">
+    <value>Inpatient who has not been assigned a bed service</value>
+  </data>
+  <data name="BenhNhanSapHetHanTheBHYT_SoNgayThuocToiDa_BanCoMuonTiepTuc" xml:space="preserve">
+    <value>The patient's health insurance card is about to expire (maximum drug days {0}).</value>
+  </data>
+  <data name="CacBenhNhanSaukeDonThatBai" xml:space="preserve">
+    <value>The following patients failed prescriptions:</value>
+  </data>
+  <data name="CacPhieuChiDinhSauChuaKetThucKhongChoPhepKetThuc" xml:space="preserve">
+    <value>The following nominations are not closed: {0}</value>
+  </data>
+  <data name="CacThuocCoCUngHoatChat_BanCoMuonTiepTuc" xml:space="preserve">
+    <value>Drugs with the same active ingredient: ({0}) Do you want to continue?</value>
+  </data>
+  <data name="CacThuocCoCungMaATC_BanCoMuonTiepTuc" xml:space="preserve">
+    <value>Duplicate drug group: 
+	{0}</value>
+  </data>
+	<data name="CacThuocCoCungMaGroupATC_BanCoMuonTiepTuc" xml:space="preserve">
+    <value>Duplicate drug group:
+	{0}</value>
+  </data>
+  <data name="CacThuocTrungDuocTinh_BanCoMuonTiepTuc" xml:space="preserve">
+    <value>Same drug: {0}{1}{2} Do you want to continue?</value>
+  </data>
+  <data name="CanhBaoBenhNhanDaKeThuocTrongNgay" xml:space="preserve">
+    <value>Patients were prescribed drugs during the day</value>
+  </data>
+  <data name="CanhBaoChongChiDinh" xml:space="preserve">
+    <value>Contraindication warning:</value>
+  </data>
+  <data name="CanhBaoDiUngThuoc" xml:space="preserve">
+    <value>Drug allergy warning:</value>
+  </data>
+  <data name="CanhBaoNgayHenLaChuNhat" xml:space="preserve">
+    <value>The current appointment date is Sunday, do you want to continue?</value>
+  </data>
+  <data name="CanhBaoNgayHenLaThuBay" xml:space="preserve">
+    <value>The current appointment date is Saturday, do you want to continue?</value>
+  </data>
+  <data name="CanhBaoSaiThongTinTheBHYT" xml:space="preserve">
+    <value>Patient has incorrect health insurance information, needs to be rechecked</value>
+  </data>
+  <data name="CanhBaoThoiGianHenKhamSoVoiThoiGianKetThucDieuTri" xml:space="preserve">
+    <value>Appointment time must be greater than treatment end time</value>
+  </data>
+  <data name="CanhBaoThuocKeVuotQuaSoNGaySuDung" xml:space="preserve">
+    <value>The drug {0} with active ingredient {1} was prescribed on {2} more than the number of days of use.</value>
+  </data>
+  <data name="CapNhatThatBai_KhongDuSoLuongKhaDung" xml:space="preserve">
+    <value>Update failed.</value>
+  </data>
+  <data name="ChanChongChiDinh" xml:space="preserve">
+    <value>Block contraindications:</value>
+  </data>
+  <data name="ChuaLinhHetThuoc" xml:space="preserve">
+    <value>Haven't received all the medicine yet</value>
+  </data>
+  <data name="ChuaNhapThoiGianHenKham" xml:space="preserve">
+    <value>You have not selected an appointment time, please check again</value>
+  </data>
+  <data name="ChuaNhapThongTinChuyenVien" xml:space="preserve">
+    <value>You have not entered the hospital transfer information completely, please check again</value>
+  </data>
+  <data name="ChuaNhapThongTinTuVong" xml:space="preserve">
+    <value>You have not entered the complete death information, please check again</value>
+  </data>
+  <data name="ChuaThucHienXongDichVuCLS" xml:space="preserve">
+    <value>Patients who have not completed CLS services, do not allow prescriptions.</value>
+  </data>
+  <data name="ChucNangDangPhatTrienVuiLongThuLaiSau" xml:space="preserve">
+    <value>The function is not supported in the current version, please try again later</value>
+  </data>
+  <data name="DanhSachThuocDaKeDaCoThuocTheoXKhongTheBoSungThemThuocYZ" xml:space="preserve">
+    <value>The list of prescribed drugs/supplies already contains drugs/supplies ({0}) according to {1}, cannot add more drugs/supplies {2} according to {3}</value>
+  </data>
+  <data name="DanhSachThuocVatTuTonTai2KhoXuat" xml:space="preserve">
+    <value>The list of drugs/supplies exists in 2 warehouses</value>
+  </data>
+  <data name="DichVuTrongCauHinhThuocCHuaDuocCauHinhChanDoanICD" xml:space="preserve">
+    <value>{0} {1} The service in the drug configuration has not been diagnostic configured (ICD)</value>
+  </data>
+  <data name="DichVuTrongCauHinhThuocCHuaDuocCauHinhChanDoanICDBanCoMuonTiepTuc" xml:space="preserve">
+    <value>{0} {1} The service in the drug profile has not been configured for diagnostics (ICD).</value>
+  </data>
+  <data name="DonThuocCoCacThuocThuocNhomKhangSinhBanCOMuonTiepTuc" xml:space="preserve">
+    <value>Prescription containing drugs in the antibiotic group: {0}.</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonBoSung" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong" xml:space="preserve">
+    <value>Are you sure you want to destroy the data?</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong" xml:space="preserve">
+    <value>Do you want to delete data?</value>
+  </data>
+  <data name="HoSoDangNoTienKhongChoPhepKeDon" xml:space="preserve">
+    <value>The record is in debt and does not allow prescriptions</value>
+  </data>
+  <data name="IcdKhongDung" xml:space="preserve">
+    <value>You entered the incorrect diagnostic code.</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_ICD__LCI_CHECK_EDIT_ICD" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_ICD__LCI_ICD_MAIN" xml:space="preserve">
+    <value>Main College:</value>
+  </data>
+  <data name="KhongChonPhongLamViec" xml:space="preserve">
+    <value>Please do not select a working warehouse</value>
+  </data>
+  <data name="KhongCoThuocVatTuNaoConDuSoluongKhaDungTrongKho" xml:space="preserve">
+    <value>No medicine found - supplies are still available in stock for inventory</value>
+  </data>
+  <data name="KhongTimThayChinhSachGiaCuaDichVu" xml:space="preserve">
+    <value>No suitable payment object was found for the service</value>
+  </data>
+  <data name="KhongTimThayIcdTuongUngVoiCacMaSau" xml:space="preserve">
+    <value>Disease code {0} is not in the list, please check again.</value>
+  </data>
+  <data name="KhongTimThayThongTinICD" xml:space="preserve">
+    <value>ICD information not found</value>
+  </data>
+  <data name="KhongTimThayThuocVatTuDuocCauHinhChanDoanICD" xml:space="preserve">
+    <value>No drugs found, unconfigured ICD diagnostic supplies</value>
+  </data>
+  <data name="MabenhPhuDaDuocSuDungChoMaBenhChinh" xml:space="preserve">
+    <value>Sub-code {0} has been used for primary code, please check again.</value>
+  </data>
+  <data name="NgayChuaCoToDieuTri" xml:space="preserve">
+    <value>Date {0} no treatment sheet. Do you want to continue?</value>
+  </data>
+  <data name="NgayCoNhieuHon1ToDieuTri" xml:space="preserve">
+    <value>Date {0} has more than one tracking</value>
+  </data>
+  <data name="NgayKhongNamTrongNgaykeDon" xml:space="preserve">
+    <value>Tracking date {0} is not within the prescription date</value>
+  </data>
+  <data name="NhapQuaKyTuBenhPhu" xml:space="preserve">
+    <value>Sub-case code or sub-case name is too long (\u003e500 characters)</value>
+  </data>
+  <data name="PhongKhamCoSoLuongKhamVuotSoLuotChoPhep" xml:space="preserve">
+    <value>The clinic has more appointments than allowed: {0}.</value>
+  </data>
+  <data name="Plugin_AssignPrescription__AcinInteractive__OverGrade" xml:space="preserve">
+    <value>{0} Activity of {1} medicine conflicts with {2} activity of {3} medicine.</value>
+  </data>
+  <data name="Plugin_AssignPrescription__BanCoMuonBoSungKhongNeuCoVuiLongNhapLyDo" xml:space="preserve">
+    <value>Do you want to add? (in case of addition, please enter reason)</value>
+  </data>
+  <data name="Plugin_AssignPrescription__BenhNhanDoiTuongTTBhytBatBuocPhaiNhapDuongDung" xml:space="preserve">
+    <value>Health Insurance Object must be input....</value>
+  </data>
+  <data name="Plugin_AssignPrescription__BuoiChieu" xml:space="preserve">
+    <value>afternoon</value>
+  </data>
+  <data name="Plugin_AssignPrescription__BuoiSang" xml:space="preserve">
+    <value>Morning</value>
+  </data>
+  <data name="Plugin_AssignPrescription__BuoiToi" xml:space="preserve">
+    <value>Night</value>
+  </data>
+  <data name="Plugin_AssignPrescription__BuoiTrua" xml:space="preserve">
+    <value>Lunch</value>
+  </data>
+  <data name="Plugin_AssignPrescription__CanhBaoDaKeTrongNgay" xml:space="preserve">
+    <value>ordered for the day</value>
+  </data>
+  <data name="Plugin_AssignPrescription__CanhBaoThuocDaKeTrongNgay" xml:space="preserve">
+    <value>Medicine's indecated today</value>
+  </data>
+  <data name="Plugin_AssignPrescription__CanhBaoVatTuDaKeTrongNgay" xml:space="preserve">
+    <value>Supplies ordered for the day</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Chieu" xml:space="preserve">
+    <value>Dimension {0} {1}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ChuaChonNgayChiDinh" xml:space="preserve">
+    <value>Please select indecated time</value>
+  </data>
+  <data name="Plugin_AssignPrescription__DoiTuongBHYTBatBuocPhaiNhapHDSD" xml:space="preserve">
+    <value>Insured objects must enter the tutorial</value>
+  </data>
+  <data name="Plugin_AssignPrescription__HDSDVuotQuaKyTu" xml:space="preserve">
+    <value>Instructions for use exceed the allowed length</value>
+  </data>
+  <data name="Plugin_AssignPrescription__KhongCoDoiTuongThanhToan" xml:space="preserve">
+    <value>No payment object selected</value>
+  </data>
+  <data name="Plugin_AssignPrescription__KhongNhapSoLuong" xml:space="preserve">
+    <value>Please input quantity</value>
+  </data>
+  <data name="Plugin_AssignPrescription__KhongThuocNhomThuoc" xml:space="preserve">
+    <value>{0} does not belong to the drug class.</value>
+  </data>
+  <data name="Plugin_AssignPrescription__KhongTimThayDoiTuongThanhToanTrongThoiGianYLenh" xml:space="preserve">
+    <value>Object not found, please contact system administrator for assistance</value>
+  </data>
+  <data name="Plugin_AssignPrescription__KhongTimThayIcdTuongUngVoiCacMaSau" xml:space="preserve">
+    <value>The following ICD code does not exist or is formatted incorrectly: {0}. The software only accepts a semicolon separated list of ICD codes. Please check again</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Message__VuotQuaSoLuongKhaDungTrongKho" xml:space="preserve">
+    <value>Not enough or out of stock.</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Message__VuotQuaSoLuongKhaDungTrongKho__CoMuonTiepTuc" xml:space="preserve">
+    <value>Not enough or out of stock. Do you want to continue?</value>
+  </data>
+  <data name="Plugin_AssignPrescription__NgayChiDinhTuLonHonNgayChiDinhDen" xml:space="preserve">
+    <value>The specified date from cannot be greater than the specified date to</value>
+  </data>
+  <data name="Plugin_AssignPrescription__NgayDuTruKhongDuocNhoHonThoiGianChiDinh" xml:space="preserve">
+    <value>The estimated date should not be less than the specified time</value>
+  </data>
+  <data name="Plugin_AssignPrescription__NgayUong" xml:space="preserve">
+    <value>Day {0} {1} {2} Split {3} lần,</value>
+  </data>
+  <data name="Plugin_AssignPrescription__NgayUongTemp2" xml:space="preserve">
+    <value>Date {0}{1} {2} {3} times</value>
+  </data>
+  <data name="Plugin_AssignPrescription__NgayUongTemp3" xml:space="preserve">
+    <value>{0} {1}/time * {2} times/day</value>
+  </data>
+  <data name="Plugin_AssignPrescription__NgayUongTemp4" xml:space="preserve">
+    <value>{0}{1} days.</value>
+  </data>
+  <data name="Plugin_AssignPrescription__NgayXVienBuoiYZ" xml:space="preserve">
+    <value>Day {0} {1} {2} {3}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__PopupMenu_HuyPhaTruyen" xml:space="preserve">
+    <value>Cancel Mixed Infusion</value>
+  </data>
+  <data name="Plugin_AssignPrescription__PopupMenu_LoaiHaoPhi" xml:space="preserve">
+    <value>Waste of money for bed</value>
+  </data>
+  <data name="Plugin_AssignPrescription__PopupMenu_PhaTruyenCungNhau" xml:space="preserve">
+    <value>Mixed Infusion</value>
+  </data>
+  <data name="Plugin_AssignPrescription__PopupMenu_SuaSoNgay" xml:space="preserve">
+    <value>Edit number of days</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Sang" xml:space="preserve">
+    <value>A.m {0} {1}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__SoLuongXuatLonHonSpoLuongKhadungTrongKho" xml:space="preserve">
+    <value>Indecated quantity is exceeded availiablity.</value>
+  </data>
+  <data name="Plugin_AssignPrescription__SoTienDaKeChoBHYTDaVuotquaMucGioiHan" xml:space="preserve">
+    <value>The fees {0} for Health insurance exceeded limit</value>
+  </data>
+  <data name="Plugin_AssignPrescription__SuaDonThuocDuLieuTruyenVaoKhongHopLe" xml:space="preserve">
+    <value>Fixed data of prescription is not avalid. Please contact Administrator</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThongBaoTatForm" xml:space="preserve">
+    <value>You have selected medicine/supplies but not saved.</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Thuoc" xml:space="preserve">
+    <value>{0} Medicine</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocDaChonTrongKhoKhongDuKe_BanComuonKeThuocNgoaiKho" xml:space="preserve">
+    <value>The selected drug and other drugs with the same active ingredient in stock are not enough to prescribe.</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocDaduocKe" xml:space="preserve">
+    <value>The medicine has been indecated, are you sure to continue?</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocDaduocKeVaoDanhSachThuocChobenNhanBanCoMuonChuyenSangBNKhac" xml:space="preserve">
+    <value>Medication has been listed on the waiting list for patients, do you want to switch to another patient?</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocKeSoLuongVuotQuaSoLuongCanhBaoTonKho" xml:space="preserve">
+    <value>Quantity of {0} Medicnes {1} exceeded the number of inventory alerts.</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocKhongCoHoatChat" xml:space="preserve">
+    <value>{0} Medicine has no active ingredients</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocKhongCoTrongKho" xml:space="preserve">
+    <value>The medicine is out of stock</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocTuongtacVoiThuocNhungVanKeDo" xml:space="preserve">
+    <value>Drugs {0} and drugs {1} interact with each other but still prescribe interactions due to</value>
+  </data>
+  <data name="Plugin_AssignPrescription__ThuocVatuTrongDanhMuc" xml:space="preserve">
+    <value>In category</value>
+  </data>
+  <data name="Plugin_AssignPrescription__TienBHYTDaKeVuotQuaMucGioiHan" xml:space="preserve">
+    <value>The prescribed health insurance premium exceeds the limit</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Toi" xml:space="preserve">
+    <value>Night {0} {1}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__TongTienHaoPhiVuotQuaDinhMucHaoPhiKhongTheChonDichVuNay" xml:space="preserve">
+    <value>Total amount of waste {0} has exceeded the amount of consumption norms of service {1} {2}.</value>
+  </data>
+  <data name="Plugin_AssignPrescription__TongTienTheoDoiTuongDieuTriChoBHYTDaVuotquaMucGioiHan" xml:space="preserve">
+    <value>The total amount of identified services for patients covered by the {0} health insurance {1} exceeds the limit of {2}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__Trua" xml:space="preserve">
+    <value>Lunch {0} {1}</value>
+  </data>
+  <data name="Plugin_AssignPrescription__TruongSoLuongNhapSaiDinhDang" xml:space="preserve">
+    <value>Quantity must be number (0-9),decimal,seleprator,fraction sympol ("," "." "/" eg: 0,5;3/4)</value>
+  </data>
+  <data name="Plugin_AssignPrescription__TruongThongTinCoDoDaiVuotQuaGioiHan" xml:space="preserve">
+    <value>The length of the data field should not exceed 2000 characters</value>
+  </data>
+  <data name="Plugin_AssignPrescription__VatTu" xml:space="preserve">
+    <value>{0} Material</value>
+  </data>
+  <data name="Plugin_AssignPrescription__VatTuDaduocKe" xml:space="preserve">
+    <value>The material has been indecated, are you sure to continue?</value>
+  </data>
+  <data name="Plugin_AssignPrescription__VatTuKhongDuKeBanCoMuonKeVatTuMuaNgoai" xml:space="preserve">
+    <value>Supplies {0} are not enough to stock.</value>
+  </data>
+  <data name="SereServConditionAlert__DVChuaDuocNhapDieuKien" xml:space="preserve">
+    <value>Medicines/supplies {0} not yet entered condition</value>
+  </data>
+  <data name="SereServOtherpaySourceAlert__DVChuaDuocNhapNguonChiTra" xml:space="preserve">
+    <value>You have not selected \</value>
+  </data>
+  <data name="SoLuongBiLePhanThapPhanToiDaX" xml:space="preserve">
+    <value>The maximum number of decimal places is 6. {0}/{1} \u003d {2}</value>
+  </data>
+  <data name="SoNgayGiuongLonHonSoNgayDieuTri" xml:space="preserve">
+    <value>The number of bed days {0} is greater than the number of days of treatment {1}.</value>
+  </data>
+  <data name="SoNgayGiuongNhoHonSoNgayDieuTri" xml:space="preserve">
+    <value>The number of bed days {0} is less than the number of days of treatment {1}.</value>
+  </data>
+  <data name="SoNgayHenKhamToiDaChoPhepLaXXX" xml:space="preserve">
+    <value>The maximum number of appointments allowed is {0} days.</value>
+  </data>
+  <data name="SoNgayHenKhamToiDaChoPhepLaXXX__BanCoMuonTiepTuc" xml:space="preserve">
+    <value>The maximum number of appointments allowed is {0} days.</value>
+  </data>
+  <data name="SuaDonThuocKhongChoPhepTachDonThuocTrongKhoVaNgoaiKho" xml:space="preserve">
+    <value>Editing prescriptions does not allow separation of in-store and out-of-store prescriptions.</value>
+  </data>
+  <data name="TaiKhoanKhongCoQuyenThucHienChucNang" xml:space="preserve">
+    <value>The account does not have permission to perform the function</value>
+  </data>
+  <data name="TakeBeanForUpdateThatBai" xml:space="preserve">
+    <value>Split Availability failed!</value>
+  </data>
+  <data name="TakeBeanThatBai" xml:space="preserve">
+    <value>Handling failure</value>
+  </data>
+  <data name="ThoiGianKetThucNhoHoiThoiGianYLenhCuaCacMaYeuCauSau" xml:space="preserve">
+    <value>The end time is less than the command time of the request codes: {0}</value>
+  </data>
+  <data name="ThoiGianTuVongKhongDuocBeHonThoiGianVaoVien" xml:space="preserve">
+    <value>Time of death must not be less than time of hospitalization {0}</value>
+  </data>
+  <data name="ThoiGianTuVongKhongDuocLonHonThoiGianHienTai" xml:space="preserve">
+    <value>Death time cannot be greater than current time {0}</value>
+  </data>
+  <data name="ThoiGianYLenhKhongNamTrongThoiGianBNHienDienTaiKhoa" xml:space="preserve">
+    <value>The time of the order is not within the time the patient is present at the department ({0})</value>
+  </data>
+  <data name="ThoVoiTocDoXTrongYGio" xml:space="preserve">
+    <value>Breathe at a rate of {0} liters/min for {1} hours</value>
+  </data>
+  <data name="ThuocChayThanKhongCapChoBNMangVeKeNgoaiKho" xml:space="preserve">
+    <value>Dialysis drugs, not given to patients to take home.</value>
+  </data>
+  <data name="ThuocChiDinhDungChoBenhNhanChuaQuaYTuoi" xml:space="preserve">
+    <value>Drug {0} indicated for use in patients not more than {1} {2}</value>
+  </data>
+  <data name="ThuocChiDinhDungChoBenhNhanTuXDenYTuoi" xml:space="preserve">
+    <value>The drug {0} is indicated for use in patients from {1} {2} to {3} {4}</value>
+  </data>
+  <data name="ThuocChiDinhDungChoBenhNhanTuXTuoi" xml:space="preserve">
+    <value>Drug {0} indicated for use in patients from {1} {2}</value>
+  </data>
+  <data name="ThuocCoDauCanHoiChan_BanCoMuonHoiChan" xml:space="preserve">
+    <value>The appointing faculty has not yet created a minutes of consultation for the drug(s): {0}.</value>
+  </data>
+  <data name="ThuocCoDauCanHoiChan_ChuaTaoHetVoiHoatChat_BanCoMuonHoiChan" xml:space="preserve">
+    <value>The indicated department has not created a meeting minutes for drugs {0} due to the following active ingredients of the drug: {1}</value>
+  </data>
+  <data name="ThuocCoGioiHanChiDinhThanhToanBHYTDeNghiBSXemXetTruocKhiKe" xml:space="preserve">
+    <value>Medicines have limited indications for health insurance payment.</value>
+  </data>
+  <data name="ThuocVatTu__SoLuong__Kho" xml:space="preserve">
+    <value>Medicine / material: {0} - quantity: {1} - medistock: {2}</value>
+  </data>
+  <data name="ThuocVatTuChiSuDungChoGioiTinhX" xml:space="preserve">
+    <value>Drugs/supplies {0} are for gender {1} use only.</value>
+  </data>
+  <data name="ThuocVatTuDaBiLamTronSoLuongLenDoSoLuongCuBiKeLe" xml:space="preserve">
+    <value>Medicines/supplies have been rounded up due to the old number of prescriptions</value>
+  </data>
+  <data name="ThuocVatTuKhongChiemKhaDung" xml:space="preserve">
+    <value>Unavailable drugs/supplies</value>
+  </data>
+  <data name="ThuocVatTuTachBeanThatBai" xml:space="preserve">
+    <value>Remain on medicine / material not added to the temporary list due to separation bean failure. Details of the following medicine / materials: {0}</value>
+  </data>
+  <data name="ThuocXChongChiDinhVoiBenhNhanY" xml:space="preserve">
+    <value>Drug '{0}' is contraindicated for patient '{1}'</value>
+  </data>
+  <data name="ThuocXKeQuaSoLuongChoPhepBanCoMuonBoSung" xml:space="preserve">
+    <value>Drugs {0} over-prescribed ({1} {2}). Do you want to add? In case “Yes” is selected, please enter the reason.</value>
+  </data>
+  <data name="ThuocXKeQuaSoLuongChoPhepCoChan" xml:space="preserve">
+    <value>Drugs {0} over-prescribed ({1} {2}). </value>
+  </data>
+  <data name="TongTienDichVuHaoPhiVuotQuaMucGiaTriDuocCauHinh" xml:space="preserve">
+    <value>Total amount of wasted service exceeds the configured value {0}</value>
+  </data>
+  <data name="Trong1LanKeDonChiDuocKeTheoLoHoacTheoLoai" xml:space="preserve">
+    <value>In a single prescription, it is only prescribed by batch or by type, it is not allowed to prescribe both at the same time</value>
+  </data>
+  <data name="TrongNgayDaCoThuocKhangSinhBanCoMuonTiepTuc" xml:space="preserve">
+    <value>During the day antibiotics were available: {0}.</value>
+  </data>
+  <data name="TruongDuLieuVuotQuaKyTu" xml:space="preserve">
+    <value>Input field is too long</value>
+  </data>
+  <data name="VatTuTSDKhongChoPhepSua" xml:space="preserve">
+    <value>Reusable supplies are not allowed to be repaired</value>
+  </data>
+  <data name="VatTuXKeQuaSoLuongChoPhepBanCoMuonBoSung" xml:space="preserve">
+    <value>Supplies {0} exceed the allowed quantity ({1} {2}). Do you want to add? In case “Yes” is selected, please enter the reason.</value>
+  </data>
+  <data name="VuiLongKeThuocVatTu" xml:space="preserve">
+    <value>Please prescribe medicine and supplies</value>
+  </data>
+  <data name="WarnKeDonCoSoLuongQuyDoiLe" xml:space="preserve">
+    <value>The number of millets is odd \</value>
+  </data>
+  <data name="WarnThuocVatTuCoHanSuDungNhoHonThoiGianYLenh" xml:space="preserve">
+    <value>Medicines/supplies ({0} - {1}) have an expiry date less than the order period.</value>
+  </data>
+  <data name="ThuocVatTuChuaNhapLyDoKeQuaSoLuongToiDaTrongDon" xml:space="preserve">
+    <value>Medicines/supplies {0} have not entered the reason for the prescription exceeding the maximum quantity in the prescription.</value>
+  </data>
+  <data name="ThuocXKeQuaSoLuongChoPhepTrongNgayBanCoMuonBoSung" xml:space="preserve">
+    <value>Medicines {0} over-prescribed ({1} {2}). Do you want to add or not? In case “Yes” is selected, please enter the reason.</value>
+  </data>
+  <data name="VatTuXKeQuaSoLuongChoPhepTrongNgayBanCoMuonBoSung" xml:space="preserve">
+    <value>Supplies {0} exceed the allowable quantity for the day ({1} {2}). Do you want to add or not? In case “Yes” is selected, please enter the reason.</value>
+  </data>
+  <data name="ThuocVatTuChuaNhapLyDoKeQuaSoLuongToiDaTrongNgay" xml:space="preserve">
+    <value>Medicines/supplies {0} have not entered the reason for the prescription exceeding the maximum amount of the day.</value>
+  </data>
+  <data name="DsThuocKeQuaSoLuongChoPhepCoChan" xml:space="preserve">
+    <value>Medicine {0} is prescribed more than the allowed amount of the day.</value>
+  </data>
+  <data name="BanCoMuonBoSungKhong" xml:space="preserve">
+    <value>Do you want to add?</value>
+  </data>
+  <data name="TruongDuLieuVuotQuaKyTuChoPhep" xml:space="preserve">
+    <value>The data field exceeds the allowed characters</value>
+  </data>
+  <data name="TrongTruongHopCoVuiLongNhapLyDo" xml:space="preserve">
+    <value>In case “Yes” is selected, please enter the reason.”</value>
+  </data>
+</root>

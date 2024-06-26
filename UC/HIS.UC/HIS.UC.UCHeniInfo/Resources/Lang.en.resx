@@ -1,0 +1,504 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmPatientChoice.btnClose.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="frmPatientChoice.grdAddress.Caption" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="frmPatientChoice.grdChoose.Caption" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="frmPatientChoice.grdCode.Caption" xml:space="preserve">
+    <value>Patient code</value>
+  </data>
+  <data name="frmPatientChoice.grdDate.Caption" xml:space="preserve">
+    <value>Birthday</value>
+  </data>
+  <data name="frmPatientChoice.grdGender.Caption" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="frmPatientChoice.grdName.Caption" xml:space="preserve">
+    <value>Patient name</value>
+  </data>
+  <data name="frmPatientChoice.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmPatientChoice.layoutControlItem3.Text" xml:space="preserve">
+    <value>resources.GetString(layoutControlItem3.Text);</value>
+  </data>
+  <data name="frmPatientChoice.lblDescription.Text" xml:space="preserve">
+    <value>ENTER or DOUBLE CLICK to handle patent</value>
+  </data>
+  <data name="frmPatientChoice.Text" xml:space="preserve">
+    <value>Select patient's info</value>
+  </data>
+  <data name="HIS.UC.UCHeniInfo.Message.MaHoNgheoKhongHopLe" xml:space="preserve">
+    <value>Code must include 9 to 12 character. Case of 12 charater, Code must end with "VCN"</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_AIA_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_AIA_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_AIA_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Number of cards:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BCV_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BCV_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BCV_LAYOUT_NOT_CHECK_HSD" xml:space="preserve">
+    <value>Uncheck Expire:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BCV_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Card No.</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT__LCI_HNCODE" xml:space="preserve">
+    <value>Poor code:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT__LCI_IN_CODE" xml:space="preserve">
+    <value>Referrals:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LAYOUT_CONTROL_ITEM1" xml:space="preserve">
+    <value>Icd sub:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LAYOUT_CONTROL_ITEM12" xml:space="preserve">
+    <value>CD online:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LAYOUT_CONTROL_ITEM13" xml:space="preserve">
+    <value>CV online:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LAYOUT_CONTROL_ITEM6" xml:space="preserve">
+    <value>Inappropriate levels</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LAYOUT_CONTROL_ITEM7" xml:space="preserve">
+    <value>Appropriate levels</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_CAPTION_ADDRESS" xml:space="preserve">
+    <value>Address cards:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_CAPTION_HAS_DOB_CERTIFICATE" xml:space="preserve">
+    <value>CoB</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_HEINCARD_FROM_DATE" xml:space="preserve">
+    <value>Term from:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_HEINCARD_MEDIORG" xml:space="preserve">
+    <value>Regiter Place:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_HEINCARD_NUMBER" xml:space="preserve">
+    <value>Number of cards:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_HEINCARD_TO_DATE" xml:space="preserve">
+    <value>Come:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_MEDI_RECOORD_DIAGNOSE_ICD" xml:space="preserve">
+    <value>Monitoring diagnosis:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_MEDI_RECORD_BENEFIT_SYMBOL" xml:space="preserve">
+    <value>Benefit level:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_MEDI_RECORD_LIVE_AREA" xml:space="preserve">
+    <value>Area:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_MEDI_RECORD_MEDI_ORG_FORM" xml:space="preserve">
+    <value>Deliver place:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_MEDI_RECORD_TRANS_PATI_FORM" xml:space="preserve">
+    <value>Trans pati form:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_MEDI_RECORD_TRANS_PATI_REASON" xml:space="preserve">
+    <value>Trans pati reason:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LBL_RIGHT_ROUTE_TYPE" xml:space="preserve">
+    <value>Case:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LCI_JOIN_5_YEAR" xml:space="preserve">
+    <value>5 years:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BHYT_LCI_PAID_6_MONTH" xml:space="preserve">
+    <value>6 months:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BIC_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BIC_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BIC_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Health insurance card:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BVTM_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BVTM_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_BVTM_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Number of cards:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_DAII_CHI_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_DAII_CHI_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_DAII_CHI_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Number of cards:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_GEL_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Number of cards:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_GELI_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_GELI_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_GENERALI_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_GENERALI_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_GENERALI_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Number of cards:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_INSMART_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_INSMART_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_INSMART_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Number of cards:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_KSK_CONTRACT_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>KSK Contract:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_LIBERTY_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_LIBERTY_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_LIBERTY_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Number of cards:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_PRUD_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_PRUD_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_PRUD_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Number of cards:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_PTI_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_PTI_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_PTI_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Number of cards:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_PVI_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_PVI_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_PVI_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Number of cards:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_TMN_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_TMN_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_TMN_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Number of cards:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_VCLI_LAYOUT_CONTROL_ITEM3" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_VCLI_LAYOUT_CONTROL_ITEM4" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCHEIN_VCLI_LBL_CAPTION_KSK_CONTRACT" xml:space="preserve">
+    <value>Number of cards:</value>
+  </data>
+  <data name="lblEditIcd.Text" xml:space="preserve">
+    <value>Edit:</value>
+  </data>
+  <data name="lciFreeCoPainTime.Text" xml:space="preserve">
+    <value>Free paid time:</value>
+  </data>
+  <data name="lciIcdMain.Text" xml:space="preserve">
+    <value>Pri/Primary/Main diagnosis:</value>
+  </data>
+  <data name="lcirdoRightRoute.Text" xml:space="preserve">
+    <value>Right route:</value>
+  </data>
+  <data name="lcirdoWrongRoute.Text" xml:space="preserve">
+    <value>Wrong route:</value>
+  </data>
+  <data name="toolTipItem1.Text" xml:space="preserve">
+    <value>Cumulative co-payment for 6 months of minimum salary</value>
+  </data>
+  <data name="toolTipItem2.Text" xml:space="preserve">
+    <value>Paying health insurance for 5 consecutive years</value>
+  </data>
+  <data name="toolTipItem3.Text" xml:space="preserve">
+    <value>Press Ctrl F to open the patient card list</value>
+  </data>
+  <data name="toolTipItem4.Text" xml:space="preserve">
+    <value>Create your own health insurance card for children under 6 years old with birth certificates</value>
+  </data>
+  <data name="txtFreeCoPainTime.Tooltip" xml:space="preserve">
+    <value>Free paid time</value>
+  </data>
+  <data name="txtIcdExtraCodes.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Sub diagnosis</value>
+  </data>
+  <data name="txtIcdExtraNames.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Press F1 to select diagnosis</value>
+  </data>
+  <data name="UCHeinInfo.btnCheckInfoBHYT.ToolTip" xml:space="preserve">
+    <value>Check health insurance card information</value>
+  </data>
+  <data name="UCHeinInfo.cboHeinRightRoute.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Line</value>
+  </data>
+  <data name="UCHeinInfo.cboNoiSong.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Habitat</value>
+  </data>
+  <data name="UCHeinInfo.chkHasAbsentLetter.Properties.Caption" xml:space="preserve">
+    <value>Certificate of temporary residence, temporary absence</value>
+  </data>
+  <data name="UCHeinInfo.chkHasAbsentLetter.ToolTip" xml:space="preserve">
+    <value>In case the patient has a different health insurance card from the original clinic but has a registration certificate,</value>
+  </data>
+  <data name="UCHeinInfo.chkHasWorkingLetter.Properties.Caption" xml:space="preserve">
+    <value>Business trip paper, admission decision</value>
+  </data>
+  <data name="UCHeinInfo.chkHasWorkingLetter.ToolTip" xml:space="preserve">
+    <value>In case the patient has a health insurance card different from the original medical center but has a work permit</value>
+  </data>
+  <data name="UCHeinInfo.chkIsBhytHolded.Properties.Caption" xml:space="preserve">
+    <value>Keep your health insurance card</value>
+  </data>
+  <data name="UCHeinInfo.chkIsTt46.Properties.Caption" xml:space="preserve">
+    <value>TT 46</value>
+  </data>
+  <data name="UCHeinInfo.chkIsTt46.ToolTip" xml:space="preserve">
+    <value>For patients with long-term treatment who have a different health insurance card from the place of initial treatment, they are still entitled</value>
+  </data>
+  <data name="UCHeinInfo.dtHeinCardToTime.Properties.NullValuePrompt" xml:space="preserve">
+    <value>dd/MM/yyyy</value>
+  </data>
+  <data name="UCHeinInfo.gboxHeinCardInformation.Text" xml:space="preserve">
+    <value>Health insurance (F3)</value>
+  </data>
+  <data name="UCHeinInfo.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCHeinInfo.layoutControlItem2.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Time to participate in insurance is full 5 years</value>
+  </data>
+  <data name="UCHeinInfo.layoutControlItem2.Text" xml:space="preserve">
+    <value>Full 5N electricity:</value>
+  </data>
+  <data name="UCHeinInfo.lciFreeCoPainTime.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Exemption time with co-pay</value>
+  </data>
+  <data name="UCHeinInfo.lciFreeCoPainTime.Text" xml:space="preserve">
+    <value>MCCT Corporation:</value>
+  </data>
+  <data name="UCHeinInfo.lciHasAbsentLetter.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCHeinInfo.lciHasDobCertificate.Text" xml:space="preserve">
+    <value>Temporary card:</value>
+  </data>
+  <data name="UCHeinInfo.lciHasWorkingLetter.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCHeinInfo.lciHeinCardAddress.Text" xml:space="preserve">
+    <value>Card address:</value>
+  </data>
+  <data name="UCHeinInfo.lciHeinCardFromTime.Text" xml:space="preserve">
+    <value>Word term:</value>
+  </data>
+  <data name="UCHeinInfo.lciHeinCardNumber.Text" xml:space="preserve">
+    <value>Card number:</value>
+  </data>
+  <data name="UCHeinInfo.lciHeinCardToTime.Text" xml:space="preserve">
+    <value>Due date:</value>
+  </data>
+  <data name="UCHeinInfo.lciHeinRightRoute.Text" xml:space="preserve">
+    <value>Type:</value>
+  </data>
+  <data name="UCHeinInfo.lciIsBhytHolded.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCHeinInfo.lciIsTt46.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCHeinInfo.lciJoin5Year.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Fully insured for 5 years</value>
+  </data>
+  <data name="UCHeinInfo.lciJoin5Year.Text" xml:space="preserve">
+    <value>5N:</value>
+  </data>
+  <data name="UCHeinInfo.lciKCBBĐ.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>The place of primary medical care</value>
+  </data>
+  <data name="UCHeinInfo.lciKCBBĐ.Text" xml:space="preserve">
+    <value>Place of medical examination and treatment:</value>
+  </data>
+  <data name="UCHeinInfo.lciKhongKTHSD.Text" xml:space="preserve">
+    <value>No KT HSD:</value>
+  </data>
+  <data name="UCHeinInfo.lciKV.Text" xml:space="preserve">
+    <value>Area:</value>
+  </data>
+  <data name="UCHeinInfo.lciPaid6Month.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Insurance co-payment has reached 6 months of minimum salary</value>
+  </data>
+  <data name="UCHeinInfo.lciPaid6Month.Text" xml:space="preserve">
+    <value>6T:</value>
+  </data>
+  <data name="UCHeinInfo.txtDu5Nam.ToolTip" xml:space="preserve">
+    <value>Time to complete 5 consecutive years</value>
+  </data>
+  <data name="UCHeinInfo.txtFreeCoPainTime.ToolTip" xml:space="preserve">
+    <value>Exemption time with co-pay</value>
+  </data>
+  <data name="UCHeinInfo.txtNote.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Note</value>
+  </data>
+</root>

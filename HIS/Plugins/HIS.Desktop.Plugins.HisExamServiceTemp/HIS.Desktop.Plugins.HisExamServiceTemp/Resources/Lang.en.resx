@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmHisExamServiceTemp.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmHisExamServiceTemp.bbtnAdd.Caption" xml:space="preserve">
+    <value>Add (Ctrl N)</value>
+  </data>
+  <data name="frmHisExamServiceTemp.bbtnEdit.Caption" xml:space="preserve">
+    <value>Edit (Ctrl S)</value>
+  </data>
+  <data name="frmHisExamServiceTemp.bbtnFocusDefault.Caption" xml:space="preserve">
+    <value>F2</value>
+  </data>
+  <data name="frmHisExamServiceTemp.bbtnReset.Caption" xml:space="preserve">
+    <value>Redo (Ctrl R)</value>
+  </data>
+  <data name="frmHisExamServiceTemp.bbtnSearch.Caption" xml:space="preserve">
+    <value>Find (Ctrl + F)</value>
+  </data>
+  <data name="frmHisExamServiceTemp.btnAdd.Text" xml:space="preserve">
+    <value>Add (Ctrl N)</value>
+  </data>
+  <data name="frmHisExamServiceTemp.btnCancel.Text" xml:space="preserve">
+    <value>Redo (Ctrl R)</value>
+  </data>
+  <data name="frmHisExamServiceTemp.btnEdit.Text" xml:space="preserve">
+    <value>Edit (Ctrl S)</value>
+  </data>
+  <data name="frmHisExamServiceTemp.btnSearch.Text" xml:space="preserve">
+    <value>Find (Ctrl + F)</value>
+  </data>
+  <data name="frmHisExamServiceTemp.btnSelect.Text" xml:space="preserve">
+    <value>Choose (F2)</value>
+  </data>
+  <data name="frmHisExamServiceTemp.chkPublic.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmHisExamServiceTemp.dnNavigation.Text" xml:space="preserve">
+    <value>dataNavigator1</value>
+  </data>
+  <data name="frmHisExamServiceTemp.gcolGSelect.Caption" xml:space="preserve">
+    <value>Place</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColCreateTime.Caption" xml:space="preserve">
+    <value>Time created</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColCreateTime.ToolTip" xml:space="preserve">
+    <value>CREATE_TIME</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColCreator.Caption" xml:space="preserve">
+    <value>creators</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColCreator.ToolTip" xml:space="preserve">
+    <value>CREATOR</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColExamServiceTempCode.Caption" xml:space="preserve">
+    <value>Ghost</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColExamServiceTempCode.ToolTip" xml:space="preserve">
+    <value>Ghost</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColExamServiceTempName.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColExamServiceTempName.ToolTip" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColFullExam.Caption" xml:space="preserve">
+    <value>FULL_EXAM</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColFullExam.ToolTip" xml:space="preserve">
+    <value>FULL_EXAM</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColHospitalizationReason.Caption" xml:space="preserve">
+    <value>HOSPITALIZATION_REASON</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColHospitalizationReason.ToolTip" xml:space="preserve">
+    <value>HOSPITALIZATION_REASON</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColModifier.Caption" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColModifier.ToolTip" xml:space="preserve">
+    <value>MODIFIER</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColModifyTime.Caption" xml:space="preserve">
+    <value>Time correction</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColModifyTime.ToolTip" xml:space="preserve">
+    <value>MODIFY_TIME</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExam.Caption" xml:space="preserve">
+    <value>PART_EXAM</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExam.ToolTip" xml:space="preserve">
+    <value>PART_EXAM</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamCirculation.Caption" xml:space="preserve">
+    <value>PART_EXAM_CIRCULATION</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamCirculation.ToolTip" xml:space="preserve">
+    <value>PART_EXAM_CIRCULATION</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamDigestion.Caption" xml:space="preserve">
+    <value>PART_EXAM_DIGESTION</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamDigestion.ToolTip" xml:space="preserve">
+    <value>PART_EXAM_DIGESTION</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamEnt.Caption" xml:space="preserve">
+    <value>PART_EXAM_ENT</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamEnt.ToolTip" xml:space="preserve">
+    <value>PART_EXAM_ENT</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamEye.Caption" xml:space="preserve">
+    <value>PART_EXAM_EYE</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamEye.ToolTip" xml:space="preserve">
+    <value>PART_EXAM_EYE</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamKidneyUrology.Caption" xml:space="preserve">
+    <value>PART_EXAM_KIDNEY_UROLOGY</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamKidneyUrology.ToolTip" xml:space="preserve">
+    <value>PART_EXAM_KIDNEY_UROLOGY</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamMental.Caption" xml:space="preserve">
+    <value>PART_EXAM_MENTAL</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamMental.ToolTip" xml:space="preserve">
+    <value>PART_EXAM_MENTAL</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamMotion.Caption" xml:space="preserve">
+    <value>PART_EXAM_MOTION</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamMotion.ToolTip" xml:space="preserve">
+    <value>PART_EXAM_MOTION</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamMuscleBone.Caption" xml:space="preserve">
+    <value>PART_EXAM_MUSCLE_BONE</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamMuscleBone.ToolTip" xml:space="preserve">
+    <value>PART_EXAM_MUSCLE_BONE</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamNeurological.Caption" xml:space="preserve">
+    <value>PART_EXAM_NEUROLOGICAL</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamNeurological.ToolTip" xml:space="preserve">
+    <value>PART_EXAM_NEUROLOGICAL</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamNutrition.Caption" xml:space="preserve">
+    <value>PART_EXAM_NUTRITION</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamNutrition.ToolTip" xml:space="preserve">
+    <value>PART_EXAM_NUTRITION</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamObstetric.Caption" xml:space="preserve">
+    <value>PART_EXAM_OBSTETRIC</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamObstetric.ToolTip" xml:space="preserve">
+    <value>PART_EXAM_OBSTETRIC</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamOend.Caption" xml:space="preserve">
+    <value>PART_EXAM_OEND</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamOend.ToolTip" xml:space="preserve">
+    <value>PART_EXAM_OEND</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamRespiratory.Caption" xml:space="preserve">
+    <value>PART_EXAM_RESPIRATORY</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamRespiratory.ToolTip" xml:space="preserve">
+    <value>PART_EXAM_RESPIRATORY</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamStomatology.Caption" xml:space="preserve">
+    <value>PART_EXAM_STOMATOLOGY</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPartExamStomatology.ToolTip" xml:space="preserve">
+    <value>PART_EXAM_STOMATOLOGY</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPathologicalHistory.Caption" xml:space="preserve">
+    <value>PATHOLOGICAL_HISTORY</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPathologicalHistory.ToolTip" xml:space="preserve">
+    <value>PATHOLOGICAL_HISTORY</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPathologicalHistoryFamily.Caption" xml:space="preserve">
+    <value>PATHOLOGICAL_HISTORY_FAMILY</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPathologicalHistoryFamily.ToolTip" xml:space="preserve">
+    <value>PATHOLOGICAL_HISTORY_FAMILY</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPathologicalProcess.Caption" xml:space="preserve">
+    <value>PATHOLOGICAL_PROCESS</value>
+  </data>
+  <data name="frmHisExamServiceTemp.grdColPathologicalProcess.ToolTip" xml:space="preserve">
+    <value>PATHOLOGICAL_PROCESS</value>
+  </data>
+  <data name="frmHisExamServiceTemp.gridColumn1.Caption" xml:space="preserve">
+    <value>Public</value>
+  </data>
+  <data name="frmHisExamServiceTemp.gridColumnDelete.ToolTip" xml:space="preserve">
+    <value>Milk</value>
+  </data>
+  <data name="frmHisExamServiceTemp.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmHisExamServiceTemp.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmHisExamServiceTemp.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmHisExamServiceTemp.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="frmHisExamServiceTemp.layoutControl6.Text" xml:space="preserve">
+    <value>layoutControl6</value>
+  </data>
+  <data name="frmHisExamServiceTemp.layoutControl7.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="frmHisExamServiceTemp.layoutControlItem13.Text" xml:space="preserve">
+    <value>layoutControlItem6</value>
+  </data>
+  <data name="frmHisExamServiceTemp.layoutControlItem15.Text" xml:space="preserve">
+    <value>Public:</value>
+  </data>
+  <data name="frmHisExamServiceTemp.lcEditorInfo.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="frmHisExamServiceTemp.lciExamServiceTempCode.Text" xml:space="preserve">
+    <value>Ghost:</value>
+  </data>
+  <data name="frmHisExamServiceTemp.lciExamServiceTempName.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="frmHisExamServiceTemp.lciHospitalizationReason.Text" xml:space="preserve">
+    <value>Reason for admission:</value>
+  </data>
+  <data name="frmHisExamServiceTemp.STT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmHisExamServiceTemp.Text" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="frmHisExamServiceTemp.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Keyword search</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage10.Text" xml:space="preserve">
+    <value>Nerve</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage11.Text" xml:space="preserve">
+    <value>Musculoskeletal</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage12.Text" xml:space="preserve">
+    <value>TMH</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage13.Text" xml:space="preserve">
+    <value>RHM</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage14.Text" xml:space="preserve">
+    <value>Cool</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage15.Text" xml:space="preserve">
+    <value>Endocrine</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage16.Text" xml:space="preserve">
+    <value>Mental</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage17.Text" xml:space="preserve">
+    <value>Nutrition</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage18.Text" xml:space="preserve">
+    <value>Motor</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage19.Text" xml:space="preserve">
+    <value>Gynecology</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage4.Text" xml:space="preserve">
+    <value>Examination body</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage5.Text" xml:space="preserve">
+    <value>Check parts</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage6.Text" xml:space="preserve">
+    <value>Cyclic</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage7.Text" xml:space="preserve">
+    <value>Respiratory</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage8.Text" xml:space="preserve">
+    <value>Digest</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage9.Text" xml:space="preserve">
+    <value>Kidney Urinary</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage__HuongDieuTri.Text" xml:space="preserve">
+    <value>Treatments</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage__PhuongPhapDieuTri.Text" xml:space="preserve">
+    <value>Treatments</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage__QuaTrinhBenhLy.Text" xml:space="preserve">
+    <value>Pathological process</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage__TienSuBenhBenhNhan.Text" xml:space="preserve">
+    <value>Patient medical history</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage__TienSuBenhGiaDinh.Text" xml:space="preserve">
+    <value>Family medical history</value>
+  </data>
+  <data name="frmHisExamServiceTemp.xtraTabPage__TomTatCLS.Text" xml:space="preserve">
+    <value>Summary clinical approach</value>
+  </data>
+</root>

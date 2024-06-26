@@ -1,0 +1,1243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmHisService.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmHisService.bbtnAdd.Caption" xml:space="preserve">
+    <value>ထည့်ပါ (Ctrl N)</value>
+  </data>
+  <data name="frmHisService.bbtnEdit.Caption" xml:space="preserve">
+    <value>တည်းဖြတ်ရန် (Ctrl S)</value>
+  </data>
+  <data name="frmHisService.bbtnFocusDefault.Caption" xml:space="preserve">
+    <value>F2</value>
+  </data>
+  <data name="frmHisService.bbtnReset.Caption" xml:space="preserve">
+    <value>ပြန်လုပ်ပါ (Ctrl R)</value>
+  </data>
+  <data name="frmHisService.bbtnSearch.Caption" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="frmHisService.btnAdd.Text" xml:space="preserve">
+    <value>ထည့်ပါ (Ctrl N)</value>
+  </data>
+  <data name="frmHisService.btnEdit.Text" xml:space="preserve">
+    <value>တည်းဖြတ်ရန် (Ctrl S)</value>
+  </data>
+  <data name="frmHisService.btnRefresh.Text" xml:space="preserve">
+    <value>ပြန်လုပ်ပါ (Ctrl C)</value>
+  </data>
+  <data name="frmHisService.btnSearch.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="frmHisService.chkChiDinh.Properties.Caption" xml:space="preserve">
+    <value>ညွှန်ပြချက် \u003e ၁</value>
+  </data>
+  <data name="frmHisService.chkCPNgoaiGoi.Properties.Caption" xml:space="preserve">
+    <value>အထုပ်ပြင်ပကုန်ကျစရိတ်</value>
+  </data>
+  <data name="frmHisService.chkUpdateAll.Properties.Caption" xml:space="preserve">
+    <value>အားလုံးကို အပ်ဒိတ်လုပ်ပါ။</value>
+  </data>
+  <data name="frmHisService.chkUpdateOnly.Properties.Caption" xml:space="preserve">
+    <value>ဆေးရုံအခကြေးငွေမပိတ်ဘဲ ပရိုဖိုင်ကို အပ်ဒိတ်လုပ်ပါ။</value>
+  </data>
+  <data name="frmHisService.dnNavigation.Text" xml:space="preserve">
+    <value>dataNavigator ၁</value>
+  </data>
+  <data name="frmHisService.layoutControl4.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="frmHisService.layoutControlItem1.Text" xml:space="preserve">
+    <value>မသင်မနေရ ဖုန်းနံပါတ်-</value>
+  </data>
+  <data name="frmHisService.layoutControlItem11.Text" xml:space="preserve">
+    <value>ခွဲစိတ်နည်းများ</value>
+  </data>
+  <data name="frmHisService.layoutControlItem12.Text" xml:space="preserve">
+    <value>ယူနစ်-</value>
+  </data>
+  <data name="frmHisService.layoutControlItem13.Text" xml:space="preserve">
+    <value>အဖေ-</value>
+  </data>
+  <data name="frmHisService.layoutControlItem14.Text" xml:space="preserve">
+    <value>အာမခံဝန်ဆောင်မှုအမျိုးအစား</value>
+  </data>
+  <data name="frmHisService.layoutControlItem15.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမျိုးအစား</value>
+  </data>
+  <data name="frmHisService.layoutControlItem16.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.layoutControlItem17.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံဝန်ဆောင်မှုကုဒ်-</value>
+  </data>
+  <data name="frmHisService.layoutControlItem18.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံဝန်ဆောင်မှုအမည်-</value>
+  </data>
+  <data name="frmHisService.layoutControlItem19.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံအချက်အလက်-</value>
+  </data>
+  <data name="frmHisService.layoutControlItem20.Text" xml:space="preserve">
+    <value>မျက်နှာကျက်ဟောင်းစျေးနှုန်း</value>
+  </data>
+  <data name="frmHisService.layoutControlItem21.Text" xml:space="preserve">
+    <value>မျက်နှာကျက်စျေးနှုန်းအသစ်</value>
+  </data>
+  <data name="frmHisService.layoutControlItem22.Text" xml:space="preserve">
+    <value>မျက်နှာကျက်ဟောင်းအချိုး</value>
+  </data>
+  <data name="frmHisService.layoutControlItem23.Text" xml:space="preserve">
+    <value>ကောလိပ်အမျိုးအစား</value>
+  </data>
+  <data name="frmHisService.layoutControlItem24.Text" xml:space="preserve">
+    <value>အချိန်လျှောက်လွှာ</value>
+  </data>
+  <data name="frmHisService.layoutControlItem24.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးရုံတက်မည့်ရက်စွဲအတိုင်း မျက်နှာကျက်စျေးနှုန်းအသစ် လျှောက်ထားရမည့်အချိန်</value>
+  </data>
+  <data name="frmHisService.layoutControlItem25.Text" xml:space="preserve">
+    <value>ရှင်းပြပါ။</value>
+  </data>
+  <data name="frmHisService.layoutControlItem26.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.layoutControlItem27.Text" xml:space="preserve">
+    <value>PTTT အဖွဲ့-</value>
+  </data>
+  <data name="frmHisService.layoutControlItem28.Text" xml:space="preserve">
+    <value>ICD CM</value>
+  </data>
+  <data name="frmHisService.layoutControlItem29.Text" xml:space="preserve">
+    <value>လော့ခ်ဖွင့်ထားသော ဆေးရုံအခကြေးငွေမှတ်တမ်းများကို အပ်ဒိတ်လုပ်ပါ-</value>
+  </data>
+  <data name="frmHisService.layoutControlItem30.Text" xml:space="preserve">
+    <value>သတ်မှတ်ပါ \u003e1-</value>
+  </data>
+  <data name="frmHisService.layoutControlItem31.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမျိုးအစား</value>
+  </data>
+  <data name="frmHisService.layoutControlItem32.Text" xml:space="preserve">
+    <value>အထူးကုဒ်-</value>
+  </data>
+  <data name="frmHisService.layoutControlItem33.Text" xml:space="preserve">
+    <value>အထုပ်-</value>
+  </data>
+  <data name="frmHisService.layoutControlItem35.Text" xml:space="preserve">
+    <value>ပက်ကေ့ခ်ျစျေးနှုန်း-</value>
+  </data>
+  <data name="frmHisService.layoutControlItem5.Text" xml:space="preserve">
+    <value>စာချုပ်အမျိုးအစား-</value>
+  </data>
+  <data name="frmHisService.lcEditorInfo.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၅</value>
+  </data>
+  <data name="frmHisService.lciNumOrder.Text" xml:space="preserve">
+    <value>အော်ဒါ-</value>
+  </data>
+  <data name="frmHisService.lciTypeCode.Text" xml:space="preserve">
+    <value>ကုဒ်:</value>
+  </data>
+  <data name="frmHisService.lciTypeName.Text" xml:space="preserve">
+    <value>အမည်-</value>
+  </data>
+  <data name="frmHisService.spCogss.Text" xml:space="preserve">
+    <value>အရင်းအနှီးကုန်ကျစရိတ်</value>
+  </data>
+  <data name="frmHisService.spEstimateDurations.Text" xml:space="preserve">
+    <value>မျှော်လင့်ထားသည့် T/G-</value>
+  </data>
+  <data name="frmHisService.Text" xml:space="preserve">
+    <value>အမျိုးအစား</value>
+  </data>
+  <data name="frmHisService.treeListColumn1.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.treeListColumn1.ToolTip" xml:space="preserve">
+    <value>သော့ခတ်</value>
+  </data>
+  <data name="frmHisService.treeListColumn10.Caption" xml:space="preserve">
+    <value>အဆင့်အတန်း</value>
+  </data>
+  <data name="frmHisService.treeListColumn10.ToolTip" xml:space="preserve">
+    <value>အဆင့်အတန်း</value>
+  </data>
+  <data name="frmHisService.treeListColumn11.Caption" xml:space="preserve">
+    <value>ဖန်တီးချိန်</value>
+  </data>
+  <data name="frmHisService.treeListColumn11.ToolTip" xml:space="preserve">
+    <value>ဖန်တီးချိန်</value>
+  </data>
+  <data name="frmHisService.treeListColumn12.Caption" xml:space="preserve">
+    <value>ဖန်ဆင်းရှင်</value>
+  </data>
+  <data name="frmHisService.treeListColumn12.ToolTip" xml:space="preserve">
+    <value>ဖန်ဆင်းရှင်</value>
+  </data>
+  <data name="frmHisService.treeListColumn13.Caption" xml:space="preserve">
+    <value>ပြုပြင်ချိန်</value>
+  </data>
+  <data name="frmHisService.treeListColumn13.ToolTip" xml:space="preserve">
+    <value>ပြုပြင်ချိန်</value>
+  </data>
+  <data name="frmHisService.treeListColumn14.Caption" xml:space="preserve">
+    <value>ပြုပြင်သူ</value>
+  </data>
+  <data name="frmHisService.treeListColumn14.ToolTip" xml:space="preserve">
+    <value>ပြုပြင်သူ</value>
+  </data>
+  <data name="frmHisService.treeListColumn15.Caption" xml:space="preserve">
+    <value>ဥပဒေကြမ်းများ</value>
+  </data>
+  <data name="frmHisService.treeListColumn16.Caption" xml:space="preserve">
+    <value>မသင်မနေရ မိုဘိုင်းလ်ဖုန်း</value>
+  </data>
+  <data name="frmHisService.treeListColumn17.Caption" xml:space="preserve">
+    <value>အထုပ်ထဲက CP</value>
+  </data>
+  <data name="frmHisService.treeListColumn17.ToolTip" xml:space="preserve">
+    <value>အထုပ်ထဲက CP</value>
+  </data>
+  <data name="frmHisService.treeListColumn18.Caption" xml:space="preserve">
+    <value>PTTT အဖွဲ့</value>
+  </data>
+  <data name="frmHisService.treeListColumn18.ToolTip" xml:space="preserve">
+    <value>PTTT အဖွဲ့</value>
+  </data>
+  <data name="frmHisService.treeListColumn19.Caption" xml:space="preserve">
+    <value>PTT.နည်းလမ်း</value>
+  </data>
+  <data name="frmHisService.treeListColumn19.ToolTip" xml:space="preserve">
+    <value>PTT.နည်းလမ်း</value>
+  </data>
+  <data name="frmHisService.treeListColumn2.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.treeListColumn2.ToolTip" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="frmHisService.treeListColumn20.Caption" xml:space="preserve">
+    <value>ICD CM</value>
+  </data>
+  <data name="frmHisService.treeListColumn20.ToolTip" xml:space="preserve">
+    <value>ICD CM</value>
+  </data>
+  <data name="frmHisService.treeListColumn21.Caption" xml:space="preserve">
+    <value>စျေးဟောင်း</value>
+  </data>
+  <data name="frmHisService.treeListColumn21.ToolTip" xml:space="preserve">
+    <value>စျေးဟောင်း</value>
+  </data>
+  <data name="frmHisService.treeListColumn22.Caption" xml:space="preserve">
+    <value>DVD အမျိုးအစား</value>
+  </data>
+  <data name="frmHisService.treeListColumn22.ToolTip" xml:space="preserve">
+    <value>DVD အမျိုးအစား</value>
+  </data>
+  <data name="frmHisService.treeListColumn23.Caption" xml:space="preserve">
+    <value>ရက်စွဲအလိုက် အချိန်သတ်မှတ်ထားသည်။</value>
+  </data>
+  <data name="frmHisService.treeListColumn23.ToolTip" xml:space="preserve">
+    <value>ရက်စွဲအလိုက် အချိန်သတ်မှတ်ထားသည်။</value>
+  </data>
+  <data name="frmHisService.treeListColumn24.Caption" xml:space="preserve">
+    <value>ဆေးရုံတက်ရမည့်ရက်စွဲဖြင့် အချိန်</value>
+  </data>
+  <data name="frmHisService.treeListColumn24.ToolTip" xml:space="preserve">
+    <value>ဆေးရုံတက်ရမည့်ရက်စွဲဖြင့် အချိန်</value>
+  </data>
+  <data name="frmHisService.treeListColumn25.Caption" xml:space="preserve">
+    <value>မျက်နှာကျက်နှုန်းအသစ်</value>
+  </data>
+  <data name="frmHisService.treeListColumn25.ToolTip" xml:space="preserve">
+    <value>မျက်နှာကျက်နှုန်းအသစ်</value>
+  </data>
+  <data name="frmHisService.treeListColumn26.Caption" xml:space="preserve">
+    <value>မျက်နှာကျက်အချိုးအစားဟောင်း</value>
+  </data>
+  <data name="frmHisService.treeListColumn26.ToolTip" xml:space="preserve">
+    <value>မျက်နှာကျက်အချိုးအစားဟောင်း</value>
+  </data>
+  <data name="frmHisService.treeListColumn27.Caption" xml:space="preserve">
+    <value>စျေးနှုန်းအသစ်</value>
+  </data>
+  <data name="frmHisService.treeListColumn27.ToolTip" xml:space="preserve">
+    <value>စျေးနှုန်းအသစ်</value>
+  </data>
+  <data name="frmHisService.treeListColumn28.Caption" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံအမှတ်၊</value>
+  </data>
+  <data name="frmHisService.treeListColumn28.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံအမှတ်၊</value>
+  </data>
+  <data name="frmHisService.treeListColumn29.Caption" xml:space="preserve">
+    <value>Package စျေးနှုန်း</value>
+  </data>
+  <data name="frmHisService.treeListColumn29.ToolTip" xml:space="preserve">
+    <value>Package စျေးနှုန်း</value>
+  </data>
+  <data name="frmHisService.treeListColumn3.Caption" xml:space="preserve">
+    <value>ကုဒ်</value>
+  </data>
+  <data name="frmHisService.treeListColumn3.ToolTip" xml:space="preserve">
+    <value>ကုဒ်</value>
+  </data>
+  <data name="frmHisService.treeListColumn30.Caption" xml:space="preserve">
+    <value>အထုပ်အမည်</value>
+  </data>
+  <data name="frmHisService.treeListColumn30.ToolTip" xml:space="preserve">
+    <value>အထုပ်အမည်</value>
+  </data>
+  <data name="frmHisService.treeListColumn31.Caption" xml:space="preserve">
+    <value>အထူးကုဒ်</value>
+  </data>
+  <data name="frmHisService.treeListColumn31.ToolTip" xml:space="preserve">
+    <value>အထူးကုဒ်</value>
+  </data>
+  <data name="frmHisService.treeListColumn32.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.treeListColumn33.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.treeListColumn34.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisService.treeListColumn4.Caption" xml:space="preserve">
+    <value>နာမည်</value>
+  </data>
+  <data name="frmHisService.treeListColumn5.Caption" xml:space="preserve">
+    <value>ယူနစ်</value>
+  </data>
+  <data name="frmHisService.treeListColumn6.Caption" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံဝန်ဆောင်မှုအမည်</value>
+  </data>
+  <data name="frmHisService.treeListColumn7.Caption" xml:space="preserve">
+    <value>အရင်းအနှီးကုန်ကျစရိတ်</value>
+  </data>
+  <data name="frmHisService.treeListColumn8.Caption" xml:space="preserve">
+    <value>အချိန်ဆွဲပါ။</value>
+  </data>
+  <data name="frmHisService.treeListColumn8.ToolTip" xml:space="preserve">
+    <value>အချိန်ဆွဲပါ။</value>
+  </data>
+  <data name="frmHisService.treeListColumn9.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmHisService.treeListColumn9.ToolTip" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmHisService.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
+  </data>
+  <data name="frmServiceRati.bar2.Text" xml:space="preserve">
+    <value>ပင်မမီနူး</value>
+  </data>
+  <data name="frmServiceRati.barButtonItem1.Caption" xml:space="preserve">
+    <value>Save(Ctrl S)</value>
+  </data>
+  <data name="frmServiceRati.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmServiceRati.grclCheck.Caption" xml:space="preserve">
+    <value>grclCheck</value>
+  </data>
+  <data name="frmServiceRati.grclCode.Caption" xml:space="preserve">
+    <value>အစားအသောက်အချိန်ကုဒ်</value>
+  </data>
+  <data name="frmServiceRati.grclName.Caption" xml:space="preserve">
+    <value>ထမင်းစားချိန်</value>
+  </data>
+  <data name="frmServiceRati.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmServiceRati.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmServiceRati.Text" xml:space="preserve">
+    <value>ထမင်းစားချိန် သတ်မှတ်ပါ။</value>
+  </data>
+  <data name="UC_HisService.btnAdd.Text" xml:space="preserve">
+    <value>ထည့်ပါ (Ctrl N)</value>
+  </data>
+  <data name="UC_HisService.btnEdit.Text" xml:space="preserve">
+    <value>တည်းဖြတ်ရန် (Ctrl S)</value>
+  </data>
+  <data name="UC_HisService.btnEditServiceType.ToolTip" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="UC_HisService.BtnExportExcel.Text" xml:space="preserve">
+    <value>Excel ကို ထုတ်ယူပါ။</value>
+  </data>
+  <data name="UC_HisService.btnImport.Text" xml:space="preserve">
+    <value>သွင်းကုန်</value>
+  </data>
+  <data name="UC_HisService.btnMayCuaToi.Text" xml:space="preserve">
+    <value>ကျွန်ုပ်၏စက်ပစ္စည်း ကက်ရှ်ကို အပ်ဒိတ်လုပ်ပါ။</value>
+  </data>
+  <data name="UC_HisService.btnRefresh.Text" xml:space="preserve">
+    <value>ပြန်လုပ်ပါ (Ctrl R)</value>
+  </data>
+  <data name="UC_HisService.btnSearch.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="UC_HisService.cboFILM_SIZE.ToolTip" xml:space="preserve">
+    <value>ရောဂါရှာဖွေရေးပုံရိပ်အတွက် အသုံးပြုသည့် ရုပ်ရှင်အရွယ်အစား</value>
+  </data>
+  <data name="UC_HisService.CboTestType.ToolTip" xml:space="preserve">
+    <value>စမ်းသပ်မှုအမျိုးအစား</value>
+  </data>
+  <data name="UC_HisService.chkAllowExpend.Properties.Caption" xml:space="preserve">
+    <value>HP ကိုခွင့်ပြုပါ။</value>
+  </data>
+  <data name="UC_HisService.chkChiDinh.Properties.Caption" xml:space="preserve">
+    <value>အခြားညွှန်ပြချက် ၁</value>
+  </data>
+  <data name="UC_HisService.chkCPNgoaiGoi.Properties.Caption" xml:space="preserve">
+    <value>အထုပ်ပြင်ပကုန်ကျစရိတ်</value>
+  </data>
+  <data name="UC_HisService.chkForPrice.Properties.Caption" xml:space="preserve">
+    <value>စျေးနှုန်းသတ်မှတ်ခြင်းအတွက်</value>
+  </data>
+  <data name="UC_HisService.chkForPrice.ToolTip" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုသတ်မှတ်ရာတွင် စျေးနှုန်းထည့်သွင်းမှုကို ခွင့်ပြုပါ။</value>
+  </data>
+  <data name="UC_HisService.chkIS_AUTO_EXPEND.Properties.Caption" xml:space="preserve">
+    <value>ကုန်ကျစရိတ်များကို အလိုအလျောက် စုဆောင်းသည်။</value>
+  </data>
+  <data name="UC_HisService.chkIS_AUTO_EXPEND.ToolTip" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုများကို သတ်မှတ်ရာတွင် ကုန်ကျစရိတ်များကို အလိုအလျောက် စုဆောင်းပါ။</value>
+  </data>
+  <data name="UC_HisService.chkIS_NOT_SHOW_TRACKING.Properties.Caption" xml:space="preserve">
+    <value>ကုသမှုစာရွက်တွင်မပြပါ။</value>
+  </data>
+  <data name="UC_HisService.chkIS_OUT_OF_MANAGEMENT.Properties.Caption" xml:space="preserve">
+    <value>ပြင်ပစီမံခန့်ခွဲမှုဝန်ဆောင်မှုအဖြစ်</value>
+  </data>
+  <data name="UC_HisService.chkIsAntibioticResistanc_Lay.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.chkIsAntibioticResistance.Properties.Caption" xml:space="preserve">
+    <value>ပဋိဇီဝဆေးဇယား</value>
+  </data>
+  <data name="UC_HisService.chkIsBlockDepartment.Properties.Caption" xml:space="preserve">
+    <value>လွှဲပြောင်းခြင်းကို ပိတ်ဆို့ပါ။</value>
+  </data>
+  <data name="UC_HisService.chkIsBlockDepartment.ToolTip" xml:space="preserve">
+    <value>ဝန်ဆောင်မှု မပြီးဆုံးပါက လွှဲပြောင်းခြင်းကို ပိတ်ပါ။</value>
+  </data>
+  <data name="UC_HisService.chkIsDisAllowanceNoExecute.Properties.Caption" xml:space="preserve">
+    <value>Block သည် execute မလုပ်ပါ။</value>
+  </data>
+  <data name="UC_HisService.chkIsDisAllowanceNoExecute.ToolTip" xml:space="preserve">
+    <value>ငွေပေးချေမှုစာရင်းရှင်းတမ်းတွင် \</value>
+  </data>
+  <data name="UC_HisService.chkIsKidney.Properties.Caption" xml:space="preserve">
+    <value>ကျောက်ကပ်ဆေး</value>
+  </data>
+  <data name="UC_HisService.chkIsOtherSourcePaid.Properties.Caption" xml:space="preserve">
+    <value>အခြားငွေပေးချေမှုအရင်းအမြစ် ရှိပါသလား။</value>
+  </data>
+  <data name="UC_HisService.chkMUST_BE_CONSULTED.Properties.Caption" xml:space="preserve">
+    <value>BBHC လိုအပ်သည်။</value>
+  </data>
+  <data name="UC_HisService.chkNgoaiDinhSuat.Properties.Caption" xml:space="preserve">
+    <value>ခေါင်းစဉ်တပ်ခြင်း/DRG</value>
+  </data>
+  <data name="UC_HisService.chkNotChangePaty.Properties.Caption" xml:space="preserve">
+    <value>ပြင်မည်မဟုတ်ပါ။</value>
+  </data>
+  <data name="UC_HisService.chkNotChangePaty.ToolTip" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုသတ်မှတ်ရာတွင် မူရင်းအပိုပိုငွေကို တည်းဖြတ်ရန် ခွင့်မပြုပါနှင့်</value>
+  </data>
+  <data name="UC_HisService.chkSplitTreatment.Properties.Caption" xml:space="preserve">
+    <value>အမိန့်ခွဲထုတ်ခြင်း။</value>
+  </data>
+  <data name="UC_HisService.chkSplitTreatment.ToolTip" xml:space="preserve">
+    <value>y အမှာစာများစွာသို့ အလိုအလျောက် ပိုင်းခြားသည် (နှင့် y ညွှန်ကြားချက်တစ်ခုစီတွင် 1 အရေအတွက်ရှိသည်) 1 ထက်ကြီးသောပမာဏကို သတ်မှတ်သည့်အခါ၊</value>
+  </data>
+  <data name="UC_HisService.chkTachdichvu.Properties.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကိုခွဲခြား</value>
+  </data>
+  <data name="UC_HisService.chkTachdichvu.ToolTip" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုလိုင်းများစွာသို့ အလိုအလျောက် ပိုင်းခြားပြီး၊ လိုင်းတစ်ခုစီတွင် 1 ပမာဏ (တူညီသောအမိန့်တော်ရှိ) တွင် အသုံးပြုသူသည် 1 ထက်များသောပမာဏကို စာရင်းပြုစုပါက၊</value>
+  </data>
+  <data name="UC_HisService.chkUpdateAll.Properties.Caption" xml:space="preserve">
+    <value>အားလုံးကို အပ်ဒိတ်လုပ်ပါ။</value>
+  </data>
+  <data name="UC_HisService.chkUpdateOnly.Properties.Caption" xml:space="preserve">
+    <value>ဆေးရုံအခကြေးငွေမပိတ်ဘဲ ပရိုဖိုင်ကို အပ်ဒိတ်လုပ်ပါ။</value>
+  </data>
+  <data name="UC_HisService.dnNavigation.Text" xml:space="preserve">
+    <value>dataNavigator ၁</value>
+  </data>
+  <data name="UC_HisService.dtInTime.ToolTip" xml:space="preserve">
+    <value>ဆေးရုံတက်မည့်ရက်စွဲအတိုင်း မျက်နှာကျက်စျေးနှုန်းအသစ် လျှောက်ထားရမည့်အချိန်</value>
+  </data>
+  <data name="UC_HisService.emptySpaceItem1.Text" xml:space="preserve">
+    <value>မိနစ်</value>
+  </data>
+  <data name="UC_HisService.emptySpaceItem2.Text" xml:space="preserve">
+    <value>လ</value>
+  </data>
+  <data name="UC_HisService.emptySpaceItem4.Text" xml:space="preserve">
+    <value>မိနစ်</value>
+  </data>
+  <data name="UC_HisService.emptySpaceItem5.Text" xml:space="preserve">
+    <value>မိနစ်</value>
+  </data>
+  <data name="UC_HisService.emptySpaceItem6.Text" xml:space="preserve">
+    <value>နေ့</value>
+  </data>
+  <data name="UC_HisService.emptySpaceItemMaxTotalProcessTime.Text" xml:space="preserve">
+    <value>မိနစ်</value>
+  </data>
+  <data name="UC_HisService.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="UC_HisService.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="UC_HisService.layoutControl4.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem1.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ပုံသေ အပိုပိုပစ္စည်းများ</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem1.Text" xml:space="preserve">
+    <value>မူရင်းမိုဘိုင်းလ်ဖုန်း-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem1.ToolTip" xml:space="preserve">
+    <value>ပုံသေ အပိုပိုပစ္စည်းများ</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem11.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ခွဲစိတ်နည်းများ</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem11.Text" xml:space="preserve">
+    <value>PPPT-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem12.Text" xml:space="preserve">
+    <value>ယူနစ်-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem13.Text" xml:space="preserve">
+    <value>ဖခင်ဝန်ဆောင်မှု-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem14.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အာမခံဝန်ဆောင်မှုအမျိုးအစား</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem14.Text" xml:space="preserve">
+    <value>အာမခံဝန်ဆောင်မှုအမျိုးအစား</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem15.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမျိုးအစား</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem16.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem17.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံဝန်ဆောင်မှုကုဒ်</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem17.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံဝန်ဆောင်မှုကုဒ်-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem18.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံဝန်ဆောင်မှုအမည်</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem18.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံဝန်ဆောင်မှုအမည်-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem19.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးအာမခံနံပါတ်</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem19.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံအချက်အလက်-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem20.Text" xml:space="preserve">
+    <value>မျက်နှာကျက်ဟောင်းစျေးနှုန်း</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem21.Text" xml:space="preserve">
+    <value>မျက်နှာကျက်စျေးနှုန်းအသစ်</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem22.Text" xml:space="preserve">
+    <value>TDCN အမျိုးအစား-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem23.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ရောဂါရှာဖွေရေးပုံရိပ်အမျိုးအစား</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem23.Text" xml:space="preserve">
+    <value>ကောလိပ်အမျိုးအစား</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem24.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးရုံတက်မည့်ရက်စွဲအတိုင်း မျက်နှာကျက်စျေးနှုန်းအသစ် လျှောက်ထားရမည့်အချိန်</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem24.Text" xml:space="preserve">
+    <value>အချိန်လျှောက်လွှာ</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem25.Text" xml:space="preserve">
+    <value>ရှင်းပြပါ-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem26.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem27.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ခွဲစိတ်အဖွဲ့</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem27.Text" xml:space="preserve">
+    <value>PTTT အဖွဲ့-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem28.Text" xml:space="preserve">
+    <value>ICD CM</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem29.Text" xml:space="preserve">
+    <value>လော့ခ်ဖွင့်ထားသော ဆေးရုံအခကြေးငွေမှတ်တမ်းများကို အပ်ဒိတ်လုပ်ပါ-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem30.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem31.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမျိုးအစား</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem32.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အထူးကုဒ်</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem32.Text" xml:space="preserve">
+    <value>စတော့ကုဒ်-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem33.Text" xml:space="preserve">
+    <value>အထုပ်-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem35.Text" xml:space="preserve">
+    <value>ပက်ကေ့ခ်ျစျေးနှုန်း-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem37.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအုပ်စုကုဒ် Pacs</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem37.Text" xml:space="preserve">
+    <value>DVPCS အဖွဲ့ကုဒ်-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem38.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>လူနာတစ်ဦးတည်းတွင် 2 ကြိမ်ဆက်တိုက် ဆက်တိုက်ကြားရမည့် အနည်းဆုံးအချိန်</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem38.Text" xml:space="preserve">
+    <value>အနည်းဆုံး TG-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem39.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကို လုပ်ဆောင်ရာတွင် အသုံးပြုသည့် ရုပ်ရှင်အရေအတွက် (ပုံရိပ်ဖော်ခြင်းဝန်ဆောင်မှုများအတွက်)</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem39.Text" xml:space="preserve">
+    <value>ရုပ်ရှင်အရေအတွက်-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem42.Text" xml:space="preserve">
+    <value>ICD CM-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem44.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>သုံးစွဲသည့်ပမာဏကို ကန့်သတ်ပါ။</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem44.Text" xml:space="preserve">
+    <value>GH HP ပမာဏ-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem45.Text" xml:space="preserve">
+    <value>လုပ်ဆောင်နေသည့် မော်ဂျူး-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem46.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem47.Text" xml:space="preserve">
+    <value>လိင်-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem48.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem49.Text" xml:space="preserve">
+    <value>အသက်-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem5.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ပြေစာအမျိုးအစား</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem5.Text" xml:space="preserve">
+    <value>စာချုပ်အမျိုးအစား-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem50.Text" xml:space="preserve">
+    <value>ရောက်ရှိလာ:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem51.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>လုပ်ငန်းစဉ်ကုဒ်</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem51.Text" xml:space="preserve">
+    <value>လုပ်ငန်းစဉ်ကုဒ်-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem52.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem54.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem55.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>သတ်မှတ်သည့်အခါ မှတ်သားပါ။</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem55.Text" xml:space="preserve">
+    <value>မှတ်စု:</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem56.Text" xml:space="preserve">
+    <value>ဖိဒ်စွမ်းဆောင်ရည်သင်္ကေတ-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem58.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အစားအသောက်အဖွဲ့</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem58.Text" xml:space="preserve">
+    <value>အစားအစာအုပ်စု-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem59.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဤဝန်ဆောင်မှုကိုအသုံးပြုသည့်အခါ အခြားငွေပေးချေမှုရင်းမြစ်များ</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem59.Text" xml:space="preserve">
+    <value>CTK အရင်းအမြစ်-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem60.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အခြားဝန်ဆောင်မှုပေးသူများက လက်ခံထားသော ရောဂါများအတွက် ကော်မာ-ခြားထားသော ICD ကုဒ်များကို ထည့်ပါ။</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem60.Text" xml:space="preserve">
+    <value>ပံ့ပိုးထားသောရောဂါများ</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem61.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>စမ်းသပ်မှုအမျိုးအစား</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem61.Text" xml:space="preserve">
+    <value>XN အမျိုးအစား-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem63.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုလိုင်းများစွာသို့ အလိုအလျောက် ပိုင်းခြားပြီး၊ လိုင်းတစ်ခုစီတွင် အရေအတွက် 1 ရှိသည် (တူညီသောအစီအစဥ်တွင်)</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem64.Text" xml:space="preserve">
+    <value>အပိုင်း-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem65.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem66.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>စမ်းသပ်နည်းပညာ</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem66.Text" xml:space="preserve">
+    <value>XN နည်းပညာ-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem67.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>မဖြစ်မနေ အစည်းအဝေးမှတ်တမ်းများ</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem67.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem68.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem69.Text" xml:space="preserve">
+    <value>အညွှန်း-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem71.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အများဆုံးလုပ်ဆောင်ချိန်</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem71.Text" xml:space="preserve">
+    <value>TG သည် အများဆုံးကိုင်တွယ်သည်-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem73.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem74.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုများကို သတ်မှတ်ရာတွင် ကုန်ကျစရိတ်များကို အလိုအလျောက် စုဆောင်းပါ။</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem74.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem75.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဝန်ဆောင်မှု မပြီးဆုံးပါက လွှဲပြောင်းခြင်းကို ပိတ်ပါ။</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem75.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.layoutControlItem76.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နမူနာယူချိန်</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem76.Text" xml:space="preserve">
+    <value>TGLM-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem77.Text" xml:space="preserve">
+    <value>မိနစ်</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem78.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ငွေပေးချေသူသည် ဤနေရာတွင် ကြေညာထားသောစာရင်းတွင် ပါရှိသည့်အခါတွင်သာ မူရင်းအပိုကြေးကို အကျုံးဝင်ပါသည်။ ကြေငြာခြင်းမဟုတ်သည့်ကိစ္စတွင်၊ ၎င်းသည် ငွေပေးချေမှုအရာဝတ္ထုအားလုံးနှင့် သက်ဆိုင်သည်ဟု နားလည်ထားသည်။</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem78.Text" xml:space="preserve">
+    <value>DTTT အကျုံးဝင်သည်-</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem79.Text" xml:space="preserve">
+    <value>မူရင်းဖုန်း-</value>
+  </data>
+  <data name="UC_HisService.lbCapacity.Text" xml:space="preserve">
+    <value>ml</value>
+  </data>
+  <data name="UC_HisService.lbCapacity.ToolTip" xml:space="preserve">
+    <value>မီလီလီတာ</value>
+  </data>
+  <data name="UC_HisService.lcCapacity.Text" xml:space="preserve">
+    <value>စွမ်းရည်-</value>
+  </data>
+  <data name="UC_HisService.lcDiimType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ရောဂါရှာဖွေရေးပုံရိပ်အမျိုးအစား</value>
+  </data>
+  <data name="UC_HisService.lcDiimType.Text" xml:space="preserve">
+    <value>ကောလိပ်အမျိုးအစား</value>
+  </data>
+  <data name="UC_HisService.lcEditorInfo.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၅</value>
+  </data>
+  <data name="UC_HisService.lcFILM_SIZE.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ရောဂါရှာဖွေရေးပုံရိပ်အတွက် အသုံးပြုသည့် ရုပ်ရှင်အရွယ်အစား</value>
+  </data>
+  <data name="UC_HisService.lcFILM_SIZE.Text" xml:space="preserve">
+    <value>ရုပ်ရှင်အရွယ်အစား-</value>
+  </data>
+  <data name="UC_HisService.lcFuexType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>လုပ်ဆောင်ချက်ကြောင့် လာရောက်လည်ပတ်မှု အမျိုးအစား</value>
+  </data>
+  <data name="UC_HisService.lcFuexType.Text" xml:space="preserve">
+    <value>TDCN အမျိုးအစား-</value>
+  </data>
+  <data name="UC_HisService.lciAttachAssignPrintTypeCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုပေးသည့်ပုံစံကို ရိုက်နှိပ်သည့်အခါ ပုံနှိပ်စလစ်ဖြင့် ပူးတွဲပါရှိသည်။</value>
+  </data>
+  <data name="UC_HisService.lciAttachAssignPrintTypeCode.Text" xml:space="preserve">
+    <value>ပူးတွဲပါ နမူနာပုံစံ-</value>
+  </data>
+  <data name="UC_HisService.lciLock.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>လော့ခ်ချထားသော နည်းပညာဝန်ဆောင်မှုများကို ဝှက်ထားပါ။</value>
+  </data>
+  <data name="UC_HisService.lciLock.Text" xml:space="preserve">
+    <value>လော့ခ်ချထားသော ဝန်ဆောင်မှုကို ဖျောက်ပါ။</value>
+  </data>
+  <data name="UC_HisService.lciLock.ToolTip" xml:space="preserve">
+    <value>သော့ခတ်ထားသော နည်းပညာဝန်ဆောင်မှုများကို ဝှက်ထားပါ။</value>
+  </data>
+  <data name="UC_HisService.lciMaxTotalProcessTime.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အမိန့်ထုတ်သည့်အချိန်မှ အဆုံးအထိ ဝန်ဆောင်မှုအများဆုံးလုပ်ဆောင်ချိန် စုစုပေါင်း</value>
+  </data>
+  <data name="UC_HisService.lciMaxTotalProcessTime.Text" xml:space="preserve">
+    <value>စုစုပေါင်း XL-</value>
+  </data>
+  <data name="UC_HisService.lciNumOrder.Text" xml:space="preserve">
+    <value>အော်ဒါ-</value>
+  </data>
+  <data name="UC_HisService.lciSpMinProcess.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အနိမ့်ဆုံးလုပ်ဆောင်ချိန်</value>
+  </data>
+  <data name="UC_HisService.lciSpMinProcess.Text" xml:space="preserve">
+    <value>အနိမ့်ဆုံးလုပ်ဆောင်ခြင်း TG-</value>
+  </data>
+  <data name="UC_HisService.lciTaxRateType.Text" xml:space="preserve">
+    <value>အခွန်နှုန်း အမျိုးအစား-</value>
+  </data>
+  <data name="UC_HisService.lciTypeCode.Text" xml:space="preserve">
+    <value>ကုဒ်:</value>
+  </data>
+  <data name="UC_HisService.lciTypeName.Text" xml:space="preserve">
+    <value>အမည်-</value>
+  </data>
+  <data name="UC_HisService.simpleButton2.Text" xml:space="preserve">
+    <value>အလုပ်ရုံအားလုံး၏ ကက်ရှ်ကို အပ်ဒိတ်လုပ်ပါ။</value>
+  </data>
+  <data name="UC_HisService.spCogss.Text" xml:space="preserve">
+    <value>အရင်းအနှီးကုန်ကျစရိတ်</value>
+  </data>
+  <data name="UC_HisService.spEstimateDurations.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအချိန်ခန့်မှန်း</value>
+  </data>
+  <data name="UC_HisService.spEstimateDurations.Text" xml:space="preserve">
+    <value>မျှော်လင့်ထားသည့် T/G-</value>
+  </data>
+  <data name="UC_HisService.treeListColumn1.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.treeListColumn1.ToolTip" xml:space="preserve">
+    <value>သော့ခတ်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn10.Caption" xml:space="preserve">
+    <value>အဆင့်အတန်း</value>
+  </data>
+  <data name="UC_HisService.treeListColumn10.ToolTip" xml:space="preserve">
+    <value>အဆင့်အတန်း</value>
+  </data>
+  <data name="UC_HisService.treeListColumn11.Caption" xml:space="preserve">
+    <value>ဖန်တီးချိန်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn11.ToolTip" xml:space="preserve">
+    <value>ဖန်တီးချိန်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn12.Caption" xml:space="preserve">
+    <value>ဖန်ဆင်းရှင်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn12.ToolTip" xml:space="preserve">
+    <value>ဖန်ဆင်းရှင်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn13.Caption" xml:space="preserve">
+    <value>ပြုပြင်ချိန်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn13.ToolTip" xml:space="preserve">
+    <value>ပြုပြင်ချိန်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn14.Caption" xml:space="preserve">
+    <value>ပြုပြင်သူ</value>
+  </data>
+  <data name="UC_HisService.treeListColumn14.ToolTip" xml:space="preserve">
+    <value>ပြုပြင်သူ</value>
+  </data>
+  <data name="UC_HisService.treeListColumn15.Caption" xml:space="preserve">
+    <value>ဥပဒေကြမ်းများ</value>
+  </data>
+  <data name="UC_HisService.treeListColumn16.Caption" xml:space="preserve">
+    <value>မူရင်းမိုဘိုင်းဖုန်း</value>
+  </data>
+  <data name="UC_HisService.treeListColumn16.ToolTip" xml:space="preserve">
+    <value>ပုံသေ အပိုပိုပစ္စည်းများ</value>
+  </data>
+  <data name="UC_HisService.treeListColumn17.Caption" xml:space="preserve">
+    <value>အထုပ်ထဲက CP</value>
+  </data>
+  <data name="UC_HisService.treeListColumn17.ToolTip" xml:space="preserve">
+    <value>အထုပ်ထဲက CP</value>
+  </data>
+  <data name="UC_HisService.treeListColumn18.Caption" xml:space="preserve">
+    <value>PTTT အဖွဲ့</value>
+  </data>
+  <data name="UC_HisService.treeListColumn18.ToolTip" xml:space="preserve">
+    <value>PTTT အဖွဲ့</value>
+  </data>
+  <data name="UC_HisService.treeListColumn19.Caption" xml:space="preserve">
+    <value>PTT.နည်းလမ်း</value>
+  </data>
+  <data name="UC_HisService.treeListColumn19.ToolTip" xml:space="preserve">
+    <value>PTT.နည်းလမ်း</value>
+  </data>
+  <data name="UC_HisService.treeListColumn2.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.treeListColumn2.ToolTip" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="UC_HisService.treeListColumn20.Caption" xml:space="preserve">
+    <value>ICD CM</value>
+  </data>
+  <data name="UC_HisService.treeListColumn20.ToolTip" xml:space="preserve">
+    <value>ICD CM</value>
+  </data>
+  <data name="UC_HisService.treeListColumn21.Caption" xml:space="preserve">
+    <value>စျေးဟောင်း</value>
+  </data>
+  <data name="UC_HisService.treeListColumn21.ToolTip" xml:space="preserve">
+    <value>စျေးဟောင်း</value>
+  </data>
+  <data name="UC_HisService.treeListColumn22.Caption" xml:space="preserve">
+    <value>DVD အမျိုးအစား</value>
+  </data>
+  <data name="UC_HisService.treeListColumn22.ToolTip" xml:space="preserve">
+    <value>DVD အမျိုးအစား</value>
+  </data>
+  <data name="UC_HisService.treeListColumn23.Caption" xml:space="preserve">
+    <value>ရက်စွဲအလိုက် အချိန်သတ်မှတ်ထားသည်။</value>
+  </data>
+  <data name="UC_HisService.treeListColumn23.ToolTip" xml:space="preserve">
+    <value>ရက်စွဲအလိုက် အချိန်သတ်မှတ်ထားသည်။</value>
+  </data>
+  <data name="UC_HisService.treeListColumn24.Caption" xml:space="preserve">
+    <value>ဆေးရုံတက်ရမည့်ရက်စွဲဖြင့် အချိန်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn24.ToolTip" xml:space="preserve">
+    <value>ဆေးရုံတက်ရမည့်ရက်စွဲဖြင့် အချိန်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn25.Caption" xml:space="preserve">
+    <value>မျက်နှာကျက်နှုန်းအသစ်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn25.ToolTip" xml:space="preserve">
+    <value>မျက်နှာကျက်နှုန်းအသစ်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn26.Caption" xml:space="preserve">
+    <value>မျက်နှာကျက်အချိုးအစားဟောင်း</value>
+  </data>
+  <data name="UC_HisService.treeListColumn26.ToolTip" xml:space="preserve">
+    <value>မျက်နှာကျက်အချိုးအစားဟောင်း</value>
+  </data>
+  <data name="UC_HisService.treeListColumn27.Caption" xml:space="preserve">
+    <value>စျေးနှုန်းအသစ်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn27.ToolTip" xml:space="preserve">
+    <value>စျေးနှုန်းအသစ်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn28.Caption" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံအမှတ်၊</value>
+  </data>
+  <data name="UC_HisService.treeListColumn28.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံအမှတ်၊</value>
+  </data>
+  <data name="UC_HisService.treeListColumn29.Caption" xml:space="preserve">
+    <value>Package စျေးနှုန်း</value>
+  </data>
+  <data name="UC_HisService.treeListColumn29.ToolTip" xml:space="preserve">
+    <value>Package စျေးနှုန်း</value>
+  </data>
+  <data name="UC_HisService.treeListColumn3.Caption" xml:space="preserve">
+    <value>ကုဒ်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn3.ToolTip" xml:space="preserve">
+    <value>ကုဒ်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn30.Caption" xml:space="preserve">
+    <value>အထုပ်အမည်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn30.ToolTip" xml:space="preserve">
+    <value>အထုပ်အမည်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn31.Caption" xml:space="preserve">
+    <value>အထူးကုဒ်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn31.ToolTip" xml:space="preserve">
+    <value>အထူးကုဒ်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn32.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.treeListColumn33.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.treeListColumn34.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.treeListColumn35.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအဖွဲ့ကုဒ်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn36.Caption" xml:space="preserve">
+    <value>စက်အဖွဲ့ကုဒ်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn37.Caption" xml:space="preserve">
+    <value>ရုပ်ရှင်အရေအတွက်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn38.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisService.treeListColumn39.Caption" xml:space="preserve">
+    <value>လာမည့်ခေတ်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn4.Caption" xml:space="preserve">
+    <value>နာမည်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn40.Caption" xml:space="preserve">
+    <value>အသက်အရွယ်မှ</value>
+  </data>
+  <data name="UC_HisService.treeListColumn41.Caption" xml:space="preserve">
+    <value>လုပ်ငန်းစဉ်ကုဒ်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn41.ToolTip" xml:space="preserve">
+    <value>လုပ်ငန်းစဉ်ကုဒ်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn42.Caption" xml:space="preserve">
+    <value>ပြင်ခွင့်မပေးဘူး။</value>
+  </data>
+  <data name="UC_HisService.treeListColumn42.ToolTip" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုတာဝန်ပေးမှုတွင် ပုံသေအပိုအပိုအရာဝတ္ထုကို တည်းဖြတ်၍မရပါ။</value>
+  </data>
+  <data name="UC_HisService.treeListColumn43.Caption" xml:space="preserve">
+    <value>အညွှန်း</value>
+  </data>
+  <data name="UC_HisService.treeListColumn5.Caption" xml:space="preserve">
+    <value>ယူနစ်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn6.Caption" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံဝန်ဆောင်မှုအမည်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn7.Caption" xml:space="preserve">
+    <value>အရင်းအနှီးကုန်ကျစရိတ်</value>
+  </data>
+  <data name="UC_HisService.treeListColumn8.Caption" xml:space="preserve">
+    <value>အချိန်ဆွဲပါ။</value>
+  </data>
+  <data name="UC_HisService.treeListColumn8.ToolTip" xml:space="preserve">
+    <value>အချိန်ဆွဲပါ။</value>
+  </data>
+  <data name="UC_HisService.treeListColumn9.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UC_HisService.treeListColumn9.ToolTip" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UC_HisService.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
+  </data>
+  <data name="UC_HisService.txtNotice.ToolTip" xml:space="preserve">
+    <value>သတ်မှတ်သည့်အခါ မှတ်သားပါ။</value>
+  </data>
+  <data name="UC_HisService.txtProcessCode.ToolTip" xml:space="preserve">
+    <value>လုပ်ငန်းစဉ်ကုဒ်</value>
+  </data>
+  <data name="UC_HisService.ColumnCode.Text" xml:space="preserve">
+    <value>ကုဒ်</value>
+  </data>
+  <data name="UC_HisService.ColumnName.Text" xml:space="preserve">
+    <value>နာမည်</value>
+  </data>
+  <data name="UC_HisService.tol1.Text" xml:space="preserve">
+    <value>သော့ခတ်</value>
+  </data>
+  <data name="UC_HisService.tol10.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုလုပ်ဆောင်ခြင်းအခန်းကို သတ်မှတ်ပါ။</value>
+  </data>
+  <data name="UC_HisService.tol11.Text" xml:space="preserve">
+    <value>ထမင်းစားချိန် သတ်မှတ်ပါ။</value>
+  </data>
+  <data name="UC_HisService.tol12.Text" xml:space="preserve">
+    <value>ထမင်းစားချိန် သတ်မှတ်ပါ။</value>
+  </data>
+  <data name="UC_HisService.tol2.Text" xml:space="preserve">
+    <value>သော့ဖွင့်ပါ။</value>
+  </data>
+  <data name="UC_HisService.tol3.Text" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="UC_HisService.tol4.Text" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="UC_HisService.tol5.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုစျေးနှုန်းမူဝါဒ</value>
+  </data>
+  <data name="UC_HisService.tol6.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုစျေးနှုန်းမူဝါဒ</value>
+  </data>
+  <data name="UC_HisService.tol7.Text" xml:space="preserve">
+    <value>အစီရင်ခံစာအမျိုးအစား အုပ်စုဝန်ဆောင်မှုကို သတ်မှတ်ပါ။</value>
+  </data>
+  <data name="UC_HisService.tol8.Text" xml:space="preserve">
+    <value>အစီရင်ခံစာအမျိုးအစား အုပ်စုဝန်ဆောင်မှုကို သတ်မှတ်ပါ။</value>
+  </data>
+  <data name="UC_HisService.tol9.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုလုပ်ဆောင်ခြင်းအခန်းကို သတ်မှတ်ပါ။</value>
+  </data>
+  <data name="UC_HisService.tolPopup.Text" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံ ဝန်ဆောင်မှုများအတွက် စျေးနှုန်းမျက်နှာကျက်</value>
+  </data>
+  <data name="UC_HisService.layoutControlItem90.Text" xml:space="preserve">
+    <value>ĐTCT áp dụng:
+</value>
+  </data>
+</root>

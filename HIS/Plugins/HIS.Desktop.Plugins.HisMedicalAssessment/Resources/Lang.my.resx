@@ -1,0 +1,351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmHisMedicalAssessment.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmHisMedicalAssessment.barButtonItem1.Caption" xml:space="preserve">
+    <value>သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="frmHisMedicalAssessment.btnCan.Text" xml:space="preserve">
+    <value>ကျော်သွားပါ။</value>
+  </data>
+  <data name="frmHisMedicalAssessment.btnDel.Text" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="frmHisMedicalAssessment.btnOk.Text" xml:space="preserve">
+    <value>သဘောတူတယ်။</value>
+  </data>
+  <data name="frmHisMedicalAssessment.btnPrint.Text" xml:space="preserve">
+    <value>ပုံနှိပ်ခြင်း။</value>
+  </data>
+  <data name="frmHisMedicalAssessment.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmHisMedicalAssessment.gridColumn1.Caption" xml:space="preserve">
+    <value>ပထမနှင့်နောက်ဆုံးအမည်</value>
+  </data>
+  <data name="frmHisMedicalAssessment.gridColumn2.Caption" xml:space="preserve">
+    <value>လာခဲ့ပါ။</value>
+  </data>
+  <data name="frmHisMedicalAssessment.gridColumn3.Caption" xml:space="preserve">
+    <value>အစားဝင်ပါ။</value>
+  </data>
+  <data name="frmHisMedicalAssessment.gridColumn4.Caption" xml:space="preserve">
+    <value>gridColumn4</value>
+  </data>
+  <data name="frmHisMedicalAssessment.gridColumn5.Caption" xml:space="preserve">
+    <value>ပထမနှင့်နောက်ဆုံးအမည်</value>
+  </data>
+  <data name="frmHisMedicalAssessment.gridColumn6.Caption" xml:space="preserve">
+    <value>ထင်မြင်ချက်</value>
+  </data>
+  <data name="frmHisMedicalAssessment.gridColumn7.Caption" xml:space="preserve">
+    <value>gridColumn7</value>
+  </data>
+  <data name="frmHisMedicalAssessment.gridColumn8.Caption" xml:space="preserve">
+    <value>ပထမနှင့်နောက်ဆုံးအမည်</value>
+  </data>
+  <data name="frmHisMedicalAssessment.gridColumn9.Caption" xml:space="preserve">
+    <value>ဇယားကွက် ၉</value>
+  </data>
+  <data name="frmHisMedicalAssessment.groupBox1.Text" xml:space="preserve">
+    <value>လက်ရှိ စာမေးပွဲရလဒ်များ</value>
+  </data>
+  <data name="frmHisMedicalAssessment.groupBox2.Text" xml:space="preserve">
+    <value>နိဂုံးချုပ်ပါ။</value>
+  </data>
+  <data name="frmHisMedicalAssessment.label1.Text" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="frmHisMedicalAssessment.label2.Text" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="frmHisMedicalAssessment.label3.Text" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControl3.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem1.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးဘက်ဆိုင်ရာအကဲဖြတ်မှုပြုလုပ်သောဘုတ်အဖွဲ့အမည်</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem1.Text" xml:space="preserve">
+    <value>ဘုတ်အဖွဲ့အမည်-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem10.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>လွှဲပြောင်းပေးသည့်ရက်စွဲ (လိုအပ်သည်) ဆေးဘက်ဆိုင်ရာ အကဲဖြတ်ချက်</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem10.Text" xml:space="preserve">
+    <value>မိတ်ဆက်ရက်စွဲ-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem11.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးဘက်ဆိုင်ရာ အကြံပြုချက်/ရည်ညွှန်းချက်၏ ရည်ရွယ်ချက်ကို ထည့်သွင်းပါ (ရှိပါက)</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem11.Text" xml:space="preserve">
+    <value>စစ်ဆေးရေးရည်ရွယ်ချက်-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem12.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးဘက်ဆိုင်ရာအကဲဖြတ်ခြင်းခံရသူ၏ဘာသာရပ်နယ်ပယ်</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem12.Text" xml:space="preserve">
+    <value>စစ်ဆေးရေးအရာ-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem13.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အကဲဖြတ်သည့် ဘာသာရပ်ကို ခံစားခွင့်ရှိသော စစ်အစိုးရသည် ထောက်ခံချက်ပေးစာအရ အဆိုပြုချက် (ရှိပါက)၊</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem13.Text" xml:space="preserve">
+    <value>လက်ရှိမုဒ်-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem14.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အဆိုပြုချက် (ရှိပါက) လွှဲပြောင်းမှုအရ၊</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem14.Text" xml:space="preserve">
+    <value>သက်ဆိုင်ရာ ထိခိုက်ဒဏ်ရာရနှုန်း-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem18.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အကဲဖြတ်သည့်အရာအတွက် သင့်လျော်သော ဆေးဘက်ဆိုင်ရာ စစ်ဆေးမှုနှင့် အကဲဖြတ်မှုအတွက် အခြေခံအဖြစ် စာရွက်စာတမ်း၏ နံပါတ်နှင့် အက္ခရာအပြည့်အစုံကို ဖြည့်သွင်းပါ (ဥပမာ- မြို့ပတ်  34/2012/TTLT-BYT-BLDTBXH ; Circular 28/2013/TTLT-BYT -BLDTBXH; Circular 20/2016/TTLT-BYT-BLTDBXH;)။ အကဲဖြတ်ရန်နှင့် နိဂုံးချုပ်ရန်အတွက် အခြေခံအဖြစ် စာရွက်စာတမ်းများစွာရှိပါက၊ semicolon ";" ခြားထားသော စာရွက်စာတမ်းနံပါတ်များကြားတွင် စာရွက်စာတမ်းနံပါတ်များအားလုံးကို ရေးပါ။</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem18.Text" xml:space="preserve">
+    <value>စာသားအခြေခံ-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem2.Text" xml:space="preserve">
+    <value>စစ်ဆေးခြင်းအမျိုးအစား-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem20.Text" xml:space="preserve">
+    <value>နိဂုံးချုပ်ပါ-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem21.Text" xml:space="preserve">
+    <value>မသန်စွမ်းမှုအမျိုးအစား-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem22.Text" xml:space="preserve">
+    <value>မသန်စွမ်းမှုအဆင့်-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem23.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးဘက်ဆိုင်ရာ အကဲဖြတ်ကောင်စီ၏ နိဂုံးချုပ်အရ ဤအကဲဖြတ်မှု၏ ဒဏ်ရာ၊ နာမကျန်းမှု သို့မဟုတ် လုပ်ငန်းခွင်ရောဂါကြောင့် ခန္ဓာကိုယ် ထိခိုက်ဒဏ်ရာရခြင်း။</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem23.Text" xml:space="preserve">
+    <value>ဒဏ်ရာနှုန်း</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem24.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးဘက်ဆိုင်ရာ အကဲဖြတ်ကောင်စီ၏ နိဂုံးချုပ်အရ စုစုပေါင်း ခန္ဓာကိုယ်ထိခိုက်မှု၊ ထိခိုက်ဒဏ်ရာရမှု၊ နာမကျန်းမှု သို့မဟုတ် လုပ်ငန်းခွင်ရောဂါ (ရှိပါက) စုစုပေါင်းနှုန်း။ မှတ်ချက်- အထွေထွေစစ်ဆေးမှု၊ ထပ်လောင်းစစ်ဆေးမှု၊ ကျန်နေသောဒဏ်ရာစစ်ဆေးမှုများတွင်သာ ဤအချက်အလက်များကို ထည့်သွင်းပါ။</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem24.Text" xml:space="preserve">
+    <value>စုစုပေါင်း ထိခိုက်ဒဏ်ရာရနှုန်း- </value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem27.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အကဲဖြတ်ပြီးနောက် ကောင်စီ၏ အကြံပြုချက်ပါ အကြောင်းအရာများ</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem27.Text" xml:space="preserve">
+    <value>တောင်းဆိုချက်ကို:</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem3.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးဘက်ဆိုင်ရာ အကဲဖြတ်ကောင်စီ အစည်းအဝေး မှတ်တမ်းတွင် ညွှန်ကြားချက်အမှတ်</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem3.Text" xml:space="preserve">
+    <value>မိနစ်အရေအတွက်-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem31.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးစာမေးပွဲကောင်စီဥက္ကဋ္ဌ</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem31.Text" xml:space="preserve">
+    <value>သဘာပတိ-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem32.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးစစ်ရေးအဖွဲ့ အတွင်းရေးမှူး။</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem32.Text" xml:space="preserve">
+    <value>အတွင်းရေးမှူး-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem33.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>တစ်ဦးချင်း/အဖွဲ့အစည်း၏ တောင်းဆိုချက်အရ အကဲဖြတ်ရမည့် အကြောင်းအရာများ (ဒဏ်ရာ၊ နာမကျန်းမှု၊ ပုံပျက်မှု၊ လုပ်ငန်းခွင်ရောဂါ၊ အမျိုးအစား/မသန်စွမ်းမှု ဒီဂရီ...) ကို သတ်မှတ်ပါ။</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem33.Text" xml:space="preserve">
+    <value>စစ်ဆေးရမည့် အကြောင်းအရာ-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem4.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးစစ်မှုစတင်ရန်အချိန်</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem4.Text" xml:space="preserve">
+    <value>အကျဉ်းထောင်စစ်ဆေးခြင်း-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem5.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးစစ်မှုပြီးဆုံးချိန်</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem5.Text" xml:space="preserve">
+    <value>စစ်ဆေးခြင်း-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem6.Text" xml:space="preserve">
+    <value>ပါဝင်ရန်-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem7.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ရည်ညွှန်းချက် (လိုအပ်သည်) ဆေးဘက်ဆိုင်ရာ အကဲဖြတ်ချက်</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem7.Text" xml:space="preserve">
+    <value>ယူနစ်မိတ်ဆက်ခြင်း-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem9.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးဘက်ဆိုင်ရာ အကဲဖြတ် လွှဲပြောင်းပေးပို့မှု စာရွက်စာတမ်း နံပါတ် (တောင်းဆိုချက်)</value>
+  </data>
+  <data name="frmHisMedicalAssessment.layoutControlItem9.Text" xml:space="preserve">
+    <value>ရည်ညွှန်းနံပါတ်-</value>
+  </data>
+  <data name="frmHisMedicalAssessment.Text" xml:space="preserve">
+    <value>ဆေးစစ်ချက်</value>
+  </data>
+  <data name="frmHisMedicalAssessment.txtLegalGroundDocuments.Properties.NullValuePrompt" xml:space="preserve">
+    <value>စာရွက်စာတမ်းအမည်</value>
+  </data>
+  <data name="frmHisMedicalAssessment.txtLegalGroundDocuments.ToolTip" xml:space="preserve">
+    <value>အကဲဖြတ်သည့်ဘာသာရပ်နှင့် သင့်လျော်သော ဆေးစစ်မှုနှင့် အကဲဖြတ်မှုများအတွက် အခြေခံအဖြစ် စာရွက်စာတမ်း၏ အမည်အပြည့်အစုံကို ဖြည့်စွက်ပါ။</value>
+  </data>
+  <data name="frmHisMedicalAssessment.txtLegalGroundNumbers.Properties.NullValuePrompt" xml:space="preserve">
+    <value>စာသားနံပါတ်</value>
+  </data>
+  <data name="frmHisMedicalAssessment.txtRequestOrgCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ယူနစ်ကုဒ်</value>
+  </data>
+  <data name="frmHisMedicalAssessment.txtRequestOrgName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ယူနစ်အမည်</value>
+  </data>
+  <data name="frmHisMedicalAssessment.xtraTabPage1.Text" xml:space="preserve">
+    <value>အဖွဲ့ဝင်</value>
+  </data>
+  <data name="frmHisMedicalAssessment.xtraTabPage2.Text" xml:space="preserve">
+    <value>ဖိတ်ကြားထားသော အဖွဲ့ဝင်များ</value>
+  </data>
+  <data name="frmHisMedicalAssessment.xtraTabPage3.Text" xml:space="preserve">
+    <value>သမိုင်းမတင်မီ</value>
+  </data>
+  <data name="frmHisMedicalAssessment.xtraTabPage4.Text" xml:space="preserve">
+    <value>လက်ရှိအကဲဖြတ်ရလဒ်များ</value>
+  </data>
+  <data name="frmHisMedicalAssessment.xtraTabPage5.Text" xml:space="preserve">
+    <value>ဆွေးနွေးပါ။</value>
+  </data>
+  <data name="frmHisMedicalAssessment.xtraTabPage6.Text" xml:space="preserve">
+    <value>သဘောထားကွဲလွဲမှုများ</value>
+  </data>
+</root>

@@ -1,0 +1,414 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="UCBloodList.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCBloodList.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCBloodList.cboBloodType.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCBloodList.btnRefresh.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="UCBloodList.btnSearch.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="UCBloodList.navBarControl1.Text" xml:space="preserve">
+    <value>navBarControl1</value>
+  </data>
+  <data name="UCBloodList.navBarGroupImpTime.Caption" xml:space="preserve">
+    <value>Ngày nhập</value>
+  </data>
+  <data name="UCBloodList.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="UCBloodList.lciImpTimeFrom.Text" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="UCBloodList.lciImpTimeTo.Text" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="UCBloodList.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="UCBloodList.txtBloodCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã vạch (F2)</value>
+  </data>
+  <data name="UCBloodList.lciBloodType.Text" xml:space="preserve">
+    <value>Loại máu:</value>
+  </data>
+  <data name="UCBloodList.Gc_Stt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCBloodList.gridColumn8.Caption" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="UCBloodList.Gc_Lock.Caption" xml:space="preserve">
+    <value>Khóa</value>
+  </data>
+  <data name="UCBloodList.Gc_bloodPaty.Caption" xml:space="preserve">
+    <value>chính sách giá máu</value>
+  </data>
+  <data name="UCBloodList.Gc_bloodTypeCode.Caption" xml:space="preserve">
+    <value>Mã loại máu</value>
+  </data>
+  <data name="UCBloodList.Gc_bloodTypeCode.ToolTip" xml:space="preserve">
+    <value>Mã loại máu</value>
+  </data>
+  <data name="UCBloodList.Gc_bloodTypeName.Caption" xml:space="preserve">
+    <value>Tên loại máu</value>
+  </data>
+  <data name="UCBloodList.Gc_bloodTypeName.ToolTip" xml:space="preserve">
+    <value>Tên loại máu</value>
+  </data>
+  <data name="UCBloodList.Gc_Amount.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="UCBloodList.Gc_ImpPrice.Caption" xml:space="preserve">
+    <value>Đơn giá</value>
+  </data>
+  <data name="UCBloodList.Gc_ImpPrice.ToolTip" xml:space="preserve">
+    <value>Đơn giá</value>
+  </data>
+  <data name="UCBloodList.Gc_ImpVatRatio.Caption" xml:space="preserve">
+    <value>VAT</value>
+  </data>
+  <data name="UCBloodList.Gc_ExpriedDate.Caption" xml:space="preserve">
+    <value>Hạn sử dụng</value>
+  </data>
+  <data name="UCBloodList.Gc_PackgeNumber.Caption" xml:space="preserve">
+    <value>Số lô</value>
+  </data>
+  <data name="UCBloodList.Gc_BidNumOrder.Caption" xml:space="preserve">
+    <value>STT thầu</value>
+  </data>
+  <data name="UCBloodList.Gc_BidNumber.Caption" xml:space="preserve">
+    <value>Số thầu</value>
+  </data>
+  <data name="UCBloodList.Gc_BidName.Caption" xml:space="preserve">
+    <value>Tên thầu</value>
+  </data>
+  <data name="UCBloodList.Gc_NationalName.Caption" xml:space="preserve">
+    <value>Quốc gia</value>
+  </data>
+  <data name="UCBloodList.Gc_SupplierName.Caption" xml:space="preserve">
+    <value>Nhà cung cấp</value>
+  </data>
+  <data name="UCBloodList.Gc_ManufacturerName.Caption" xml:space="preserve">
+    <value>Nhà sản xuất</value>
+  </data>
+  <data name="UCBloodList.Gc_bloodRegisterNumber.Caption" xml:space="preserve">
+    <value>Số đăng ký</value>
+  </data>
+  <data name="UCBloodList.Gc_Concentra.Caption" xml:space="preserve">
+    <value>Hàm lượng</value>
+  </data>
+  <data name="UCBloodList.Gc_ActiveIngrBhytCode.Caption" xml:space="preserve">
+    <value>Mã hoạt chất</value>
+  </data>
+  <data name="UCBloodList.Gc_ActiveIngrBhytName.Caption" xml:space="preserve">
+    <value>Tên hoạt chất</value>
+  </data>
+  <data name="UCBloodList.Gc_bloodUseFromName.Caption" xml:space="preserve">
+    <value>Đường dùng</value>
+  </data>
+  <data name="UCBloodList.Gc_ImpTime.Caption" xml:space="preserve">
+    <value>Thời gian nhập</value>
+  </data>
+  <data name="UCBloodList.Gc_CreateTime.Caption" xml:space="preserve">
+    <value>Ngày tạo</value>
+  </data>
+  <data name="UCBloodList.Gc_Creator.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="UCBloodList.Gc_ModifyTime.Caption" xml:space="preserve">
+    <value>Ngày sửa</value>
+  </data>
+  <data name="UCBloodList.Gc_Modifier.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="UCBloodList.gridColumn1.Caption" xml:space="preserve">
+    <value>Dung tích</value>
+  </data>
+  <data name="UCBloodList.gridColumn1.ToolTip" xml:space="preserve">
+    <value>Dung tích</value>
+  </data>
+  <data name="UCBloodList.gridColumn2.Caption" xml:space="preserve">
+    <value>Thành phần</value>
+  </data>
+  <data name="UCBloodList.gridColumn2.ToolTip" xml:space="preserve">
+    <value>Thành phần</value>
+  </data>
+  <data name="UCBloodList.gridColumn3.Caption" xml:space="preserve">
+    <value>Abo</value>
+  </data>
+  <data name="UCBloodList.gridColumn3.ToolTip" xml:space="preserve">
+    <value>Abo</value>
+  </data>
+  <data name="UCBloodList.gridColumn4.Caption" xml:space="preserve">
+    <value>Rh</value>
+  </data>
+  <data name="UCBloodList.gridColumn4.ToolTip" xml:space="preserve">
+    <value>Rh</value>
+  </data>
+  <data name="UCBloodList.gridColumn5.Caption" xml:space="preserve">
+    <value>Người cho</value>
+  </data>
+  <data name="UCBloodList.gridColumn5.ToolTip" xml:space="preserve">
+    <value>Người cho</value>
+  </data>
+  <data name="UCBloodList.gridColumn6.Caption" xml:space="preserve">
+    <value>Nguồn nhập</value>
+  </data>
+  <data name="UCBloodList.gridColumn6.ToolTip" xml:space="preserve">
+    <value>Nguồn nhập</value>
+  </data>
+  <data name="UCBloodList.gridColumn7.Caption" xml:space="preserve">
+    <value>Thời gian đóng gói</value>
+  </data>
+  <data name="UCBloodList.gridColumn7.ToolTip" xml:space="preserve">
+    <value>Thời gian đóng gói</value>
+  </data>
+  <data name="UCBloodList.gridColumn9.Caption" xml:space="preserve">
+    <value>Kho nhập</value>
+  </data>
+  <data name="UCBloodList.gridColumn9.ToolTip" xml:space="preserve">
+    <value>Kho nhập</value>
+  </data>
+  <data name="UCBloodList.gridColumn10.Caption" xml:space="preserve">
+    <value>gridColumn10</value>
+  </data>
+  <data name="UCBloodList.gridColumn11.Caption" xml:space="preserve">
+    <value>gridColumn11</value>
+  </data>
+  <data name="UCBloodList.gridColumn12.Caption" xml:space="preserve">
+    <value>Mã vạch</value>
+  </data>
+  <data name="UCBloodList.gridColumn12.ToolTip" xml:space="preserve">
+    <value>Mã vạch</value>
+  </data>
+  <data name="frmBloodList.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmBloodList.Text" xml:space="preserve">
+    <value>Danh sách máu</value>
+  </data>
+  <data name="frmBloodUpdate.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmBloodUpdate.barButtonItem1.Caption" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmBloodUpdate.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmBloodUpdate.cboBid.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmBloodUpdate.cboBloodAbo.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmBloodUpdate.cboBloodRh.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmBloodUpdate.cboBloodType.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmBloodUpdate.cboImpSource.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmBloodUpdate.cboSupplier.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmBloodUpdate.chkInfect.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmBloodUpdate.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmBloodUpdate.layoutControlItem1.Text" xml:space="preserve">
+    <value>Mã vạch:</value>
+  </data>
+  <data name="frmBloodUpdate.layoutControlItem10.Text" xml:space="preserve">
+    <value>VAT nhập (%):</value>
+  </data>
+  <data name="frmBloodUpdate.layoutControlItem11.Text" xml:space="preserve">
+    <value>Nhiễm bệnh:</value>
+  </data>
+  <data name="frmBloodUpdate.layoutControlItem13.Text" xml:space="preserve">
+    <value>Thời gian đóng gói:</value>
+  </data>
+  <data name="frmBloodUpdate.layoutControlItem14.Text" xml:space="preserve">
+    <value>Hạn sử dụng:</value>
+  </data>
+  <data name="frmBloodUpdate.layoutControlItem15.Text" xml:space="preserve">
+    <value>Nhà cung cấp:</value>
+  </data>
+  <data name="frmBloodUpdate.layoutControlItem16.Text" xml:space="preserve">
+    <value>Số lô:</value>
+  </data>
+  <data name="frmBloodUpdate.layoutControlItem18.Text" xml:space="preserve">
+    <value>Giá nội bộ:</value>
+  </data>
+  <data name="frmBloodUpdate.layoutControlItem2.Text" xml:space="preserve">
+    <value>Abo:</value>
+  </data>
+  <data name="frmBloodUpdate.layoutControlItem3.Text" xml:space="preserve">
+    <value>Rh:</value>
+  </data>
+  <data name="frmBloodUpdate.layoutControlItem4.Text" xml:space="preserve">
+    <value>Thầu:</value>
+  </data>
+  <data name="frmBloodUpdate.layoutControlItem5.Text" xml:space="preserve">
+    <value>Nguồn nhập:</value>
+  </data>
+  <data name="frmBloodUpdate.layoutControlItem6.Text" xml:space="preserve">
+    <value>Loại máu:</value>
+  </data>
+  <data name="frmBloodUpdate.layoutControlItem7.Text" xml:space="preserve">
+    <value>Mã người cho:</value>
+  </data>
+  <data name="frmBloodUpdate.layoutControlItem8.Text" xml:space="preserve">
+    <value>Tên người cho:</value>
+  </data>
+  <data name="frmBloodUpdate.layoutControlItem9.Text" xml:space="preserve">
+    <value>Giá nhập:</value>
+  </data>
+  <data name="frmBloodUpdate.Text" xml:space="preserve">
+    <value>Sửa máu</value>
+  </data>
+  <data name="UCBloodList.chkAll.Text" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
+  <data name="UCBloodList.chkLock.Text" xml:space="preserve">
+    <value>Bị khóa</value>
+  </data>
+  <data name="UCBloodList.chkUnLock.Text" xml:space="preserve">
+    <value>Không bị khóa</value>
+  </data>
+  <data name="frmBloodUpdate.chkAtPermanentAddress.Properties.Caption" xml:space="preserve">
+    <value>Tại địa chỉ thường trú</value>
+  </data>
+  <data name="frmBloodUpdate.chkAtUnit.Properties.Caption" xml:space="preserve">
+    <value>Tại đơn vị</value>
+  </data>
+</root>

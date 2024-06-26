@@ -1,0 +1,1020 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="((Telerik.WinControls.UI.RadApplicationMenuButtonElement)(UcTelerikFullWord.richTextEditorRibbonBar1.GetChildAt(0).GetChildAt(5))).Text" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="((Telerik.WinControls.UI.RadRibbonBarElement)(UcTelerikFullWord.richTextEditorRibbonBar1.GetChildAt(0))).Text" xml:space="preserve">
+    <value>richTextEditorRibbonBar1</value>
+  </data>
+  <data name="((Telerik.WinControls.UI.RichTextEditorRibbonUI.RichTextEditorRibbonTab)(UcTelerikFullWord.richTextEditorRibbonBar1.GetChildAt(0).GetChildAt(4).GetChildAt(0).GetChildAt(0).GetChildAt(5))).Text" xml:space="preserve">
+    <value>Review</value>
+  </data>
+  <data name="((Telerik.WinControls.UI.RichTextEditorRibbonUI.RichTextEditorRibbonTab)(UcTelerikFullWord.richTextEditorRibbonBar1.GetChildAt(0).GetChildAt(4).GetChildAt(0).GetChildAt(0).GetChildAt(6))).Text" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="FormHistoryCLS.Gc_EndTime.Caption" xml:space="preserve">
+    <value>Thời gian kết thúc</value>
+  </data>
+  <data name="FormHistoryCLS.Gc_IntructionTime.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormHistoryCLS.Gc_ServiceName.Caption" xml:space="preserve">
+    <value>Dịch vụ</value>
+  </data>
+  <data name="FormHistoryCLS.Gc_Vỉew.Caption" xml:space="preserve">
+    <value>Xem</value>
+  </data>
+  <data name="FormHistoryCLS.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormHistoryCLS.Text" xml:space="preserve">
+    <value>Lịch sử kết quả</value>
+  </data>
+  <data name="FormImageTemp.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormImageTemp.barBtnSave.Caption" xml:space="preserve">
+    <value>Ctrl S</value>
+  </data>
+  <data name="FormImageTemp.barBtnSearch.Caption" xml:space="preserve">
+    <value>Crtl F</value>
+  </data>
+  <data name="FormImageTemp.btnSave.Text" xml:space="preserve">
+    <value>Chọn (Ctrl S)</value>
+  </data>
+  <data name="FormImageTemp.btnSearch.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="FormImageTemp.gridColumn1.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="FormImageTemp.gridColumn3.Caption" xml:space="preserve">
+    <value>Tiêu đề</value>
+  </data>
+  <data name="FormImageTemp.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormImageTemp.Text" xml:space="preserve">
+    <value>Mẫu lược đồ phẫu thuật thủ thuật</value>
+  </data>
+  <data name="FormImageTemp.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="FormPtttTemp.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormPtttTemp.barBtnSave.Caption" xml:space="preserve">
+    <value>Ctrl S</value>
+  </data>
+  <data name="FormPtttTemp.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="FormPtttTemp.chkPublic.Properties.Caption" xml:space="preserve">
+    <value>Công khai toàn viện</value>
+  </data>
+  <data name="FormPtttTemp.chkPublicDepartment.Properties.Caption" xml:space="preserve">
+    <value>Công khai trong khoa</value>
+  </data>
+  <data name="FormPtttTemp.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormPtttTemp.layoutControlItem3.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormPtttTemp.lciPtttTempCode.Text" xml:space="preserve">
+    <value>Mã:</value>
+  </data>
+  <data name="FormPtttTemp.lciPtttTempName.Text" xml:space="preserve">
+    <value>Tên:</value>
+  </data>
+  <data name="FormPtttTemp.Text" xml:space="preserve">
+    <value>Mẫu phẫu thuật thủ thuật</value>
+  </data>
+  <data name="FormViewImage.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormViewImage.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="FormViewImage.PictureEdit.Properties.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormViewImage.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormViewImage.tileControl.Text" xml:space="preserve">
+    <value>tileControl1</value>
+  </data>
+  <data name="FormViewImageV2.gc_Caption.Caption" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
+  <data name="FormViewImageV2.gc_Check.Caption" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="FormViewImageV2.gc_Image.Caption" xml:space="preserve">
+    <value>Ảnh</value>
+  </data>
+  <data name="FormViewImageV2.gc_Stt.Caption" xml:space="preserve">
+    <value>Stt</value>
+  </data>
+  <data name="FormViewImageV2.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormViewImageV2.layoutViewCard1.Text" xml:space="preserve">
+    <value>TemplateCard</value>
+  </data>
+  <data name="FormViewImageV2.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmCamera.KetNoiCongSvideo" xml:space="preserve">
+    <value>Cổng SVideo</value>
+  </data>
+  <data name="frmCamera.KetNoiCongUsb" xml:space="preserve">
+    <value>Cổng Usb</value>
+  </data>
+  <data name="frmClsInfo.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmClsInfo.barButtonItem1.Caption" xml:space="preserve">
+    <value>In</value>
+  </data>
+  <data name="frmClsInfo.bbtnSaveShortcut.Caption" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="frmClsInfo.btnAddImageLuocDoPTTT.ToolTip" xml:space="preserve">
+    <value>Bổ sung ảnh lược đồ phẫu thuật thủ thuật</value>
+  </data>
+  <data name="frmClsInfo.btnChooseLuocDoPTTT.ToolTip" xml:space="preserve">
+    <value>Chọn mẫu lược đồ phẫu thuật thủ thuật</value>
+  </data>
+  <data name="frmClsInfo.btnPrint.Text" xml:space="preserve">
+    <value>In (Ctrl P)</value>
+  </data>
+  <data name="frmClsInfo.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmClsInfo.btnSavePtttTemp.ToolTip" xml:space="preserve">
+    <value> Lưu mẫu Phẫu thuật thủ thuật</value>
+  </data>
+  <data name="frmClsInfo.chkIcdCm.Properties.Caption" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="frmClsInfo.chkPreView.Properties.Caption" xml:space="preserve">
+    <value>Xem trước in</value>
+  </data>
+  <data name="frmClsInfo.chkPrint.Properties.Caption" xml:space="preserve">
+    <value>In</value>
+  </data>
+  <data name="frmClsInfo.chkSign.Properties.Caption" xml:space="preserve">
+    <value>Ký</value>
+  </data>
+  <data name="frmClsInfo.gridColumn1.Caption" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="frmClsInfo.gridColumn2.Caption" xml:space="preserve">
+    <value>ảnh</value>
+  </data>
+  <data name="frmClsInfo.gridColumn3.Caption" xml:space="preserve">
+    <value>gridColumn2</value>
+  </data>
+  <data name="frmClsInfo.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem1.Text" xml:space="preserve">
+    <value>Loại gói:</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem11.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mẫu phẫu thuật thủ thuật</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem11.Text" xml:space="preserve">
+    <value>Mẫu PTTT:</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem14.Text" xml:space="preserve">
+    <value>Phân loại:</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem15.Text" xml:space="preserve">
+    <value>Kíp mẫu:</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem2.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ghi chú của bác sĩ chỉ định phẫu thuật thủ thuật</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem2.Text" xml:space="preserve">
+    <value>Ghi chú BS:</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem21.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Phương pháp 2:</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem21.Text" xml:space="preserve">
+    <value>Phương pháp 2:</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem28.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Kết quả vô cảm</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem28.Text" xml:space="preserve">
+    <value>KQ vô cảm:</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem30.Text" xml:space="preserve">
+    <value>Khoa:</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem33.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán chính theo danh mục ICD9-CM</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem33.Text" xml:space="preserve">
+    <value>CĐ ICM9-CM chính:</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem37.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số người thực hiện</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem37.Text" xml:space="preserve">
+    <value>Số người TH:</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem43.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán phụ theo danh mục ICD9-CM</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem43.Text" xml:space="preserve">
+    <value>CĐ ICD9-CM phụ:</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem5.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem9.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Phương pháp thực tế</value>
+  </data>
+  <data name="frmClsInfo.layoutControlItem9.Text" xml:space="preserve">
+    <value>Phương pháp TT:</value>
+  </data>
+  <data name="frmClsInfo.layoutControlRight.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmClsInfo.lciBanMo.Text" xml:space="preserve">
+    <value>Bàn mổ:</value>
+  </data>
+  <data name="frmClsInfo.lciCachThuc.Text" xml:space="preserve">
+    <value>Cách thức:</value>
+  </data>
+  <data name="frmClsInfo.lciHinhThucPTTT.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hình thức phẫu thuật</value>
+  </data>
+  <data name="frmClsInfo.lciHinhThucPTTT.Text" xml:space="preserve">
+    <value>Hình thức:</value>
+  </data>
+  <data name="frmClsInfo.lciKTC.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mổ kỹ thuật cao</value>
+  </data>
+  <data name="frmClsInfo.lciKTC.Text" xml:space="preserve">
+    <value>KTC:</value>
+  </data>
+  <data name="frmClsInfo.lciMachine.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Máy thủ thuật</value>
+  </data>
+  <data name="frmClsInfo.lciMachine.Text" xml:space="preserve">
+    <value>Máy thực hiện:</value>
+  </data>
+  <data name="frmClsInfo.lciNhomMau.Text" xml:space="preserve">
+    <value>Nhóm máu:</value>
+  </data>
+  <data name="frmClsInfo.lciPhanLoai.Text" xml:space="preserve">
+    <value>Phân loại:</value>
+  </data>
+  <data name="frmClsInfo.lciPhuongPhap.Text" xml:space="preserve">
+    <value>Phương pháp:</value>
+  </data>
+  <data name="frmClsInfo.lciRh.Text" xml:space="preserve">
+    <value>Rh:</value>
+  </data>
+  <data name="frmClsInfo.lciTaiBien.Text" xml:space="preserve">
+    <value>Tai biến:</value>
+  </data>
+  <data name="frmClsInfo.lciTinhTrang.Text" xml:space="preserve">
+    <value>Tình trạng:</value>
+  </data>
+  <data name="frmClsInfo.lciTuVongTrong.Text" xml:space="preserve">
+    <value>Tử vong trong:</value>
+  </data>
+  <data name="frmClsInfo.lciVoCam.Text" xml:space="preserve">
+    <value>Vô cảm:</value>
+  </data>
+  <data name="frmClsInfo.Text" xml:space="preserve">
+    <value>Thông tin thực hiện CLS</value>
+  </data>
+  <data name="frmClsInfo.tileViewColumn1.Caption" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="frmClsInfo.tileViewColumn2.Caption" xml:space="preserve">
+    <value>ảnh</value>
+  </data>
+  <data name="frmClsInfo.tileViewColumn3.Caption" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="frmClsInfo.tileViewColumn4.Caption" xml:space="preserve">
+    <value>tileViewColumn4</value>
+  </data>
+  <data name="frmClsInfo.tileViewColumn5.Caption" xml:space="preserve">
+    <value>tileViewColumnSTTImage</value>
+  </data>
+  <data name="frmClsInfo.txtIcdCmSubName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Nhấn F1 để chọn bệnh</value>
+  </data>
+  <data name="frmClsInfo.xtraTabPage1.Text" xml:space="preserve">
+    <value>Mô tả</value>
+  </data>
+  <data name="frmClsInfo.xtraTabPage3.Text" xml:space="preserve">
+    <value>Lược đồ</value>
+  </data>
+  <data name="frmEkipTemp.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmEkipTemp.barButtonItem1.Caption" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmEkipTemp.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmEkipTemp.chkPublic.Properties.Caption" xml:space="preserve">
+    <value>Công khai toàn viện</value>
+  </data>
+  <data name="frmEkipTemp.labelControl1.Text" xml:space="preserve">
+    <value>Công khai trong khoa</value>
+  </data>
+  <data name="frmEkipTemp.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmEkipTemp.layoutControlItem1.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEkipTemp.layoutControlItem2.Text" xml:space="preserve">
+    <value>Tên:</value>
+  </data>
+  <data name="frmEkipTemp.layoutControlItem4.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEkipTemp.Text" xml:space="preserve">
+    <value>Kíp thực hiện mẫu</value>
+  </data>
+  <data name="frmSTTNumber.btnOK.Text" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="frmSTTNumber.Text" xml:space="preserve">
+    <value>Sửa số thứ tự sắp xếp</value>
+  </data>
+  <data name="HIS.Desktop.Plugins.ServiceExecute.FormHistoryCLS.Text" xml:space="preserve">
+    <value>Lịch sử kết quả</value>
+  </data>
+  <data name="HIS.Desktop.Plugins.ServiceExecute.lciForlblNumberOfImageSelected" xml:space="preserve">
+    <value>Chọn:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__AGE" xml:space="preserve">
+    <value>tuổi</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_ADD_IMAGE" xml:space="preserve">
+    <value>Sửa ảnh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_ASSIGN_PAAN_TEXT" xml:space="preserve">
+    <value>Chỉ định GPBL</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_ASSIGN_PAAN_TOOLTIP" xml:space="preserve">
+    <value>Chỉ định giải phẫu bệnh lý</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_ASSIGN_PRESCRIPTION" xml:space="preserve">
+    <value>Kê đơn (F8)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_ASSIGN_SERVICE" xml:space="preserve">
+    <value>Chỉ định (F9)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_CAMERA" xml:space="preserve">
+    <value>Camera</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_CAMERA_TOOLTIP" xml:space="preserve">
+    <value>Kết nối camera (Ctrl D)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_CHANGE_IMAGE" xml:space="preserve">
+    <value>Đổi ảnh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_CHANGE_OPTION" xml:space="preserve">
+    <value>Tùy chọn</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_CHOOSE_IMAGE" xml:space="preserve">
+    <value>Chọn ảnh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_DELETE_IMAGE" xml:space="preserve">
+    <value>Xóa ảnh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_END" xml:space="preserve">
+    <value>Kết thúc (Ctrl E)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_LOAD_IMAGE" xml:space="preserve">
+    <value>Làm mới ảnh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_PRINT" xml:space="preserve">
+    <value>In (Ctrl P)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_SAVE" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_SAVE_N_CLOSE" xml:space="preserve">
+    <value>Lưu và đóng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_SERE_SERV_CONTENT_LIBRARY" xml:space="preserve">
+    <value>Thư viện nội dung</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_SERE_SERV_TEMP_LIST" xml:space="preserve">
+    <value>Danh mục mẫu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_SERVICE_REQ_MATY" xml:space="preserve">
+    <value>Vật tư hao phí</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_TU_TRUC" xml:space="preserve">
+    <value>Tủ trực</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__CHECK_ALL_IN_ONE" xml:space="preserve">
+    <value>In gộp kết quả</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__CHK_SAVE_IMAGE_TO_FILE" xml:space="preserve">
+    <value>Lưu ảnh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__CHK_SAVE_IMAGE_TO_FILE__TOOL_TIP" xml:space="preserve">
+    <value>Lưu ảnh chụp ra file</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__CHK_SIGN" xml:space="preserve">
+    <value>Ký</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__CHK_SIGN__TOOL_TIP" xml:space="preserve">
+    <value>Tự động thực hiện ký và lưu bệnh án điện tử sau khi thực hiện "Lưu" thành công</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__CHK_UPPER__TOOL_TIP" xml:space="preserve">
+    <value>Mặc định hiển thị dưới dạng in hoa nội dung "Kết luận"</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__CHUA_NHAP_EKIP" xml:space="preserve">
+    <value>Bạn chưa nhập kíp thực hiện!</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__CHUA_NHAP_VAITRO" xml:space="preserve">
+    <value>Bạn cần nhập tên cho vai trò</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__COMBO_MACHINE_OPTION_BLOCK" xml:space="preserve">
+    <value>Bắt buộc nhập</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__COMBO_MACHINE_OPTION_WARNING" xml:space="preserve">
+    <value>Cảnh báo</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__DAY_OLDS" xml:space="preserve">
+    <value>ngày tuổi</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_BTN_ADD" xml:space="preserve">
+    <value>Thêm</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_BTN_DELETE" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_BTN_SEND_SANCY" xml:space="preserve">
+    <value>Gửi chỉ định</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_BTN_SERVICE_REQ_MATY" xml:space="preserve">
+    <value>Khai báo vật tư hao phí</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_MACHINE_ID" xml:space="preserve">
+    <value>Máy xử lý</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_ROLE" xml:space="preserve">
+    <value>Vai trò</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_SERVICE_CODE" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_SERVICE_NAME" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__GC_USER_NAME" xml:space="preserve">
+    <value>Họ và tên</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__HOURS_OLDS" xml:space="preserve">
+    <value>giờ tuổi</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_BEGIN_TIME" xml:space="preserve">
+    <value>Bắt đầu:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_BEGIN_TIME_TOOL_TIP" xml:space="preserve">
+    <value>Thời gian bắt đầu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_END_TIME" xml:space="preserve">
+    <value>Kết thúc:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_END_TIME_TOOL_TIP" xml:space="preserve">
+    <value>Thời gian kết thúc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_NUMBER_OF_FILM" xml:space="preserve">
+    <value>Số phim:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_SERE_SERV_TEMP_CODE" xml:space="preserve">
+    <value>Mẫu:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__LCI_SIZE_OF_FILM" xml:space="preserve">
+    <value>Cỡ phim:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__MONTH_OLDS" xml:space="preserve">
+    <value>tháng tuổi</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__OLDS" xml:space="preserve">
+    <value>tuổi</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__TXT_CONCLUDE__NULL_VALUE" xml:space="preserve">
+    <value>Kết luận</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__TXT_NOTE__NULL_VALUE" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
+  <data name="tileViewItemElement1.Text" xml:space="preserve">
+    <value>tileViewColumn2</value>
+  </data>
+  <data name="tileViewItemElement2.Text" xml:space="preserve">
+    <value>tileViewColumnName</value>
+  </data>
+  <data name="tileViewItemElement3.Text" xml:space="preserve">
+    <value>tileViewColumn2</value>
+  </data>
+  <data name="tileViewItemElement4.Text" xml:space="preserve">
+    <value>tileViewColumnName</value>
+  </data>
+  <data name="UCEkipUser.gridColumn1.Caption" xml:space="preserve">
+    <value>Vai trò</value>
+  </data>
+  <data name="UCEkipUser.gridColumn2.Caption" xml:space="preserve">
+    <value>Họ tên</value>
+  </data>
+  <data name="UCEkipUser.gridColumn3.Caption" xml:space="preserve">
+    <value>Khoa</value>
+  </data>
+  <data name="UCEkipUser.gridColumn4.Caption" xml:space="preserve">
+    <value>gridColumn4</value>
+  </data>
+  <data name="UCEkipUser.gridColumn5.Caption" xml:space="preserve">
+    <value>gridColumn5</value>
+  </data>
+  <data name="UCEkipUser.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCEkipUser.lciInformationSurg.Text" xml:space="preserve">
+    <value>Kíp thực hiện:</value>
+  </data>
+  <data name="UCServiceExecute.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="UCServiceExecute.btnAssignPrescription.Text" xml:space="preserve">
+    <value>Kê đơn (F8)</value>
+  </data>
+  <data name="UCServiceExecute.btnAssignService.Text" xml:space="preserve">
+    <value>Chỉ định (F9)</value>
+  </data>
+  <data name="UCServiceExecute.btnBoQua.Text" xml:space="preserve">
+    <value>Bỏ qua</value>
+  </data>
+  <data name="UCServiceExecute.btnCamera.ToolTip" xml:space="preserve">
+    <value>Kết nối camera</value>
+  </data>
+  <data name="UCServiceExecute.btnCapture.ToolTip" xml:space="preserve">
+    <value>Chụp hình (F2/F11)</value>
+  </data>
+  <data name="UCServiceExecute.BtnChangeImage.ToolTip" xml:space="preserve">
+    <value>Đổi ảnh</value>
+  </data>
+  <data name="UCServiceExecute.BtnChooseImage.ToolTip" xml:space="preserve">
+    <value>Chọn ảnh</value>
+  </data>
+  <data name="UCServiceExecute.btnDeleteImage.ToolTip" xml:space="preserve">
+    <value>Xóa ảnh</value>
+  </data>
+  <data name="UCServiceExecute.btnDongY.Text" xml:space="preserve">
+    <value>Đồng ý</value>
+  </data>
+  <data name="UCServiceExecute.BtnEmr.Text" xml:space="preserve">
+    <value>Ký</value>
+  </data>
+  <data name="UCServiceExecute.BtnEmr.ToolTip" xml:space="preserve">
+    <value>Thực hiện ký và lưu vào bệnh án điện tử</value>
+  </data>
+  <data name="UCServiceExecute.btnFinish.Text" xml:space="preserve">
+    <value>Kết thúc (Ctrl E)</value>
+  </data>
+  <data name="UCServiceExecute.btnKhaiBaoVTTH.ToolTip" xml:space="preserve">
+    <value>Thiết lập kho tiêu hao</value>
+  </data>
+  <data name="UCServiceExecute.btnLoadImage.ToolTip" xml:space="preserve">
+    <value>Làm mới ảnh</value>
+  </data>
+  <data name="UCServiceExecute.btnPrint.Text" xml:space="preserve">
+    <value>In (Ctrl P)</value>
+  </data>
+  <data name="UCServiceExecute.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="UCServiceExecute.btnSaveEkipTemp.ToolTip" xml:space="preserve">
+    <value>Lưu kíp mẫu</value>
+  </data>
+  <data name="UCServiceExecute.btnShowConfig.ToolTip" xml:space="preserve">
+    <value>Tùy chỉnh ẩn/hiện thuộc tính Camera.</value>
+  </data>
+  <data name="UCServiceExecute.btnTuTruc.Text" xml:space="preserve">
+    <value>Tủ trực</value>
+  </data>
+  <data name="UCServiceExecute.btnTuTruc.ToolTip" xml:space="preserve">
+    <value>Kê đơn tủ trực</value>
+  </data>
+  <data name="UCServiceExecute.CheckAllInOne.Properties.Caption" xml:space="preserve">
+    <value>Gộp kết quả</value>
+  </data>
+  <data name="UCServiceExecute.Checked.Caption" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="UCServiceExecute.chkAttachImage.Properties.Caption" xml:space="preserve">
+    <value>Đính kèm ảnh</value>
+  </data>
+  <data name="UCServiceExecute.chkAutoCapture.ToolTip" xml:space="preserve">
+    <value>Tự động chụp</value>
+  </data>
+  <data name="UCServiceExecute.ChkAutoFinish.Properties.Caption" xml:space="preserve">
+    <value>KT</value>
+  </data>
+  <data name="UCServiceExecute.ChkAutoFinish.ToolTip" xml:space="preserve">
+    <value>Tự động kết thúc y lệnh sau khi thực hiện lưu thành công</value>
+  </data>
+  <data name="UCServiceExecute.chkClose.Properties.Caption" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
+  <data name="UCServiceExecute.chkClose.ToolTip" xml:space="preserve">
+    <value>Tự động đóng màn hình sau khi thực hiện lưu thành công</value>
+  </data>
+  <data name="UCServiceExecute.chkForPreview.Properties.Caption" xml:space="preserve">
+    <value>Xem trước in</value>
+  </data>
+  <data name="UCServiceExecute.chkForPreview.ToolTip" xml:space="preserve">
+    <value>Hiển thị màn hình để xem nội dung trước khi thực hiện in</value>
+  </data>
+  <data name="UCServiceExecute.chkKeTieuHao.Properties.Caption" xml:space="preserve">
+    <value>Kê tiêu hao</value>
+  </data>
+  <data name="UCServiceExecute.chkKeTieuHao.ToolTip" xml:space="preserve">
+    <value>Khi thực hiện “Lưu”, phần mềm sẽ tự động tạo phiếu thuốc/vật tư tiêu hao theo thiết lập định mức tương ứng với dịch vụ đang đang được xử lý</value>
+  </data>
+  <data name="UCServiceExecute.chkPrint.Properties.Caption" xml:space="preserve">
+    <value>In</value>
+  </data>
+  <data name="UCServiceExecute.chkPrint.ToolTip" xml:space="preserve">
+    <value>Tự động in phiếu sau khi thực hiện lưu thành công</value>
+  </data>
+  <data name="UCServiceExecute.chkSaveImageToFile.Properties.Caption" xml:space="preserve">
+    <value>Lưu ảnh</value>
+  </data>
+  <data name="UCServiceExecute.chkSaveImageToFile.ToolTip" xml:space="preserve">
+    <value>Lưu ảnh vào file</value>
+  </data>
+  <data name="UCServiceExecute.chkSign.Properties.Caption" xml:space="preserve">
+    <value>Ký</value>
+  </data>
+  <data name="UCServiceExecute.chkSign.ToolTip" xml:space="preserve">
+    <value>Tự động thực hiện ký và lưu bệnh án điện tử sau khi thực hiện "Lưu" thành công</value>
+  </data>
+  <data name="UCServiceExecute.chkUpper.Properties.Caption" xml:space="preserve">
+    <value>In hoa</value>
+  </data>
+  <data name="UCServiceExecute.chkUpper.ToolTip" xml:space="preserve">
+    <value>Mặc định hiển thị dưới dạng in hoa nội dung "Kết luận"</value>
+  </data>
+  <data name="UCServiceExecute.dropDownButton.Text" xml:space="preserve">
+    <value>Khác</value>
+  </data>
+  <data name="UCServiceExecute.Gc_CreateTime.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UCServiceExecute.Gc_Creator.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="UCServiceExecute.Gc_ImageStt.Caption" xml:space="preserve">
+    <value>gridColumn3</value>
+  </data>
+  <data name="UCServiceExecute.Gc_MachineId.Caption" xml:space="preserve">
+    <value>Máy xử lý</value>
+  </data>
+  <data name="UCServiceExecute.Gc_Modifier.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="UCServiceExecute.Gc_ModifyTime.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="UCServiceExecute.Gc_SendSancy.Caption" xml:space="preserve">
+    <value>Gửi chỉ định</value>
+  </data>
+  <data name="UCServiceExecute.Gc_SereServTraKQ.Caption" xml:space="preserve">
+    <value>gridColumn1</value>
+  </data>
+  <data name="UCServiceExecute.Gc_ServiceCode.Caption" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="UCServiceExecute.Gc_ServiceName.Caption" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="UCServiceExecute.Gc_Stt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCServiceExecute.gridColAdd.Caption" xml:space="preserve">
+    <value>Thêm</value>
+  </data>
+  <data name="UCServiceExecute.gridColDelete.Caption" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="UCServiceExecute.gridColTitles.Caption" xml:space="preserve">
+    <value>Vai trò</value>
+  </data>
+  <data name="UCServiceExecute.gridColumn1.Caption" xml:space="preserve">
+    <value>In phiếu kê khai thuốc vật tư</value>
+  </data>
+  <data name="UCServiceExecute.gridColumn18.Caption" xml:space="preserve">
+    <value>Số phiếu</value>
+  </data>
+  <data name="UCServiceExecute.gridColumn2.Caption" xml:space="preserve">
+    <value>gridColumn2</value>
+  </data>
+  <data name="UCServiceExecute.gridColumn3.Caption" xml:space="preserve">
+    <value>Khoa</value>
+  </data>
+  <data name="UCServiceExecute.gridColumnImage.Caption" xml:space="preserve">
+    <value>ảnh</value>
+  </data>
+  <data name="UCServiceExecute.gridColUserName.Caption" xml:space="preserve">
+    <value>Họ và tên</value>
+  </data>
+  <data name="UCServiceExecute.label1.Text" xml:space="preserve">
+    <value>Giây</value>
+  </data>
+  <data name="UCServiceExecute.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCServiceExecute.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCServiceExecute.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="UCServiceExecute.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="UCServiceExecute.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="UCServiceExecute.layoutControlGroup2.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCServiceExecute.layoutControlItem19.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Cổng kết nối</value>
+  </data>
+  <data name="UCServiceExecute.layoutControlItem19.Text" xml:space="preserve">
+    <value>Cổng KN:</value>
+  </data>
+  <data name="UCServiceExecute.layoutControlItem24.Text" xml:space="preserve">
+    <value>Cỡ phim:</value>
+  </data>
+  <data name="UCServiceExecute.layoutControlItem27.Text" xml:space="preserve">
+    <value>Xem trước khi in:</value>
+  </data>
+  <data name="UCServiceExecute.layoutControlItem34.Text" xml:space="preserve">
+    <value>Mã y lệnh (F5):</value>
+  </data>
+  <data name="UCServiceExecute.layoutControlItem39.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCServiceExecute.layoutControlItem40.Text" xml:space="preserve">
+    <value>Tổng số ảnh:</value>
+  </data>
+  <data name="UCServiceExecute.layoutControlItem41.Text" xml:space="preserve">
+    <value>Thời gian chụp 1 ảnh:</value>
+  </data>
+  <data name="UCServiceExecute.lblNumberOfImageSelected.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="UCServiceExecute.lcgImage.Text" xml:space="preserve">
+    <value>Hình ảnh</value>
+  </data>
+  <data name="UCServiceExecute.LcgPatientInfo.Text" xml:space="preserve">
+    <value>Thông tin hành chính</value>
+  </data>
+  <data name="UCServiceExecute.LciAddress.Text" xml:space="preserve">
+    <value>Địa chỉ:</value>
+  </data>
+  <data name="UCServiceExecute.LciBeginTime.Text" xml:space="preserve">
+    <value>Bắt đầu:</value>
+  </data>
+  <data name="UCServiceExecute.lciContentLibrary.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="UCServiceExecute.lciEkipDepartment.Text" xml:space="preserve">
+    <value>Khoa:</value>
+  </data>
+  <data name="UCServiceExecute.lciEkipUserTemp.Text" xml:space="preserve">
+    <value>Kíp mẫu:</value>
+  </data>
+  <data name="UCServiceExecute.LciEndTime.Text" xml:space="preserve">
+    <value>Kết thúc:</value>
+  </data>
+  <data name="UCServiceExecute.LciExecuteName.Text" xml:space="preserve">
+    <value>Bác sĩ:</value>
+  </data>
+  <data name="UCServiceExecute.lciForlblNumberOfImageSelected.Text" xml:space="preserve">
+    <value>Chọn:</value>
+  </data>
+  <data name="UCServiceExecute.LciGender.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="UCServiceExecute.LciHeinCardNumber.Text" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="UCServiceExecute.LciKtv.Text" xml:space="preserve">
+    <value>Kỹ thuật viên:</value>
+  </data>
+  <data name="UCServiceExecute.lciMunberOfFilm.Text" xml:space="preserve">
+    <value>Số phim:</value>
+  </data>
+  <data name="UCServiceExecute.LciNurse.Text" xml:space="preserve">
+    <value>Y tá phụ:</value>
+  </data>
+  <data name="UCServiceExecute.LciPatientDob.Text" xml:space="preserve">
+    <value>Ngày sinh:</value>
+  </data>
+  <data name="UCServiceExecute.LciPatientName.Text" xml:space="preserve">
+    <value>Bệnh nhân:</value>
+  </data>
+  <data name="UCServiceExecute.LciPatientType.Text" xml:space="preserve">
+    <value>Đối tượng:</value>
+  </data>
+  <data name="UCServiceExecute.lciSereServTempCode.Text" xml:space="preserve">
+    <value>Mẫu:</value>
+  </data>
+  <data name="UCServiceExecute.LciTreatmentType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Diện điều trị</value>
+  </data>
+  <data name="UCServiceExecute.LciTreatmentType.Text" xml:space="preserve">
+    <value>Diện ĐT:</value>
+  </data>
+  <data name="UCServiceExecute.repositoryItemPictureStt.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCServiceExecute.simpleButton1.Text" xml:space="preserve">
+    <value>Lịch sử</value>
+  </data>
+  <data name="UCServiceExecute.tileViewColumn2.Caption" xml:space="preserve">
+    <value>ảnh</value>
+  </data>
+  <data name="UCServiceExecute.tileViewColumn4.Caption" xml:space="preserve">
+    <value>tileViewColumn4</value>
+  </data>
+  <data name="UCServiceExecute.tileViewColumnName.Caption" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="UCServiceExecute.tileViewColumnSTTImage.Caption" xml:space="preserve">
+    <value>tileViewColumnSTTImage</value>
+  </data>
+  <data name="UCServiceExecute.tileViewIsChecked.Caption" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="UCServiceExecute.txtConclude.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Kết luận</value>
+  </data>
+  <data name="UCServiceExecute.txtNote.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
+  <data name="UCServiceExecute.txtServiceReqCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã y lệnh</value>
+  </data>
+  <data name="UCServiceExecute.xtraTabPageConclude.Text" xml:space="preserve">
+    <value>Kết luận, ghi chú</value>
+  </data>
+  <data name="UCServiceExecute.xtraTabPageEkip.Text" xml:space="preserve">
+    <value>Kíp thực hiện</value>
+  </data>
+  <data name="UcTelerikFullWord.richTextEditorRibbonBar1.ExitButton.Text" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="UcTelerikFullWord.richTextEditorRibbonBar1.OptionsButton.Text" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="UcTelerikFullWord.richTextEditorRibbonBar1.Text" xml:space="preserve">
+    <value>richTextEditorRibbonBar1</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SERE_SERV_EXECUTE__BTN_TRACKING_LIST" xml:space="preserve">
+    <value>Danh sách tờ điều trị</value>
+  </data>
+</root>

@@ -1,0 +1,465 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmHisImportMestMedicine.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmMessage.btnCancel.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmMessage.btnOK.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmMessage.labelControl1.Text" xml:space="preserve">
+    <value>Do you want to actually enter data?</value>
+  </data>
+  <data name="frmMessage.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmMessage.layoutControlItem1.Text" xml:space="preserve">
+    <value>Entry time:</value>
+  </data>
+  <data name="frmMessage.Text" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="UCHisImpMestList.btnRefresh.Text" xml:space="preserve">
+    <value>Redo (Ctrl R)</value>
+  </data>
+  <data name="UCHisImpMestList.btnSearch.Text" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
+  </data>
+  <data name="UCHisImpMestList.gridColumn1.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="UCHisImpMestList.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCHisImpMestList.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCHisImpMestList.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="UCHisImpMestList.layoutControlItem10.Text" xml:space="preserve">
+    <value>Arrive:</value>
+  </data>
+  <data name="UCHisImpMestList.layoutControlItem11.Text" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="UCHisImpMestList.layoutControlItem12.Text" xml:space="preserve">
+    <value>Input Type:</value>
+  </data>
+  <data name="UCHisImpMestList.layoutControlItem9.Text" xml:space="preserve">
+    <value>Time created from:</value>
+  </data>
+  <data name="UCHisImpMestList.txtImpCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Input Code (F2)</value>
+  </data>
+  <data name="UCHisImpMestList.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keyword</value>
+  </data>
+  <data name="UCHisImportMestMedicine.btnExport.Text" xml:space="preserve">
+    <value>Recommended codes</value>
+  </data>
+  <data name="UCHisImportMestMedicine.btnRefresh.Text" xml:space="preserve">
+    <value>Redo (Ctrl R)</value>
+  </data>
+  <data name="UCHisImportMestMedicine.btnSearch.Text" xml:space="preserve">
+    <value>Find (Ctrl + F)</value>
+  </data>
+  <data name="UCHisImportMestMedicine.checkEditHasDocumentNumber.Properties.Caption" xml:space="preserve">
+    <value>Have</value>
+  </data>
+  <data name="UCHisImportMestMedicine.checkEditMediStock.Properties.Caption" xml:space="preserve">
+    <value>In stock</value>
+  </data>
+  <data name="UCHisImportMestMedicine.checkEditNoDocumentNumber.Properties.Caption" xml:space="preserve">
+    <value>Are not</value>
+  </data>
+  <data name="UCHisImportMestMedicine.EVENT_LOG_TYPE_ID.Caption" xml:space="preserve">
+    <value>Realtime Import</value>
+  </data>
+  <data name="UCHisImportMestMedicine.Gc_PayStt.Caption" xml:space="preserve">
+    <value>Pay</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCApprovalLoginName.Caption" xml:space="preserve">
+    <value>Approver</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCApprovalTime.Caption" xml:space="preserve">
+    <value>Time Spent</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCCreateTime.Caption" xml:space="preserve">
+    <value>Time created</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCCreator.Caption" xml:space="preserve">
+    <value>Creators</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCImpLoginName.Caption" xml:space="preserve">
+    <value>Who actually imported</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCImpMestCode.Caption" xml:space="preserve">
+    <value>Import code</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCImpMestTypeName.Caption" xml:space="preserve">
+    <value>Import type</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCMediStockName.Caption" xml:space="preserve">
+    <value>Import warehouse</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCModifier.Caption" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCModifyTime.Caption" xml:space="preserve">
+    <value>Time correction</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCNationalImpMestCode.Caption" xml:space="preserve">
+    <value>Country code</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCReqDepartmentCode.Caption" xml:space="preserve">
+    <value>Faculty code request</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCReqDepartmentName.Caption" xml:space="preserve">
+    <value>Scientific name request</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gCReqLoginName.Caption" xml:space="preserve">
+    <value>Petitioner</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn1.Caption" xml:space="preserve">
+    <value>Offer details</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn10.Caption" xml:space="preserve">
+    <value>Edit the entries NCC</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn10.ToolTip" xml:space="preserve">
+    <value>Edit the entries NCC</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn11.Caption" xml:space="preserve">
+    <value>Finish</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn11.ToolTip" xml:space="preserve">
+    <value>Finish</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn12.Caption" xml:space="preserve">
+    <value>Create NCC bill pay</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn12.ToolTip" xml:space="preserve">
+    <value>Create NCC bill pay</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn13.Caption" xml:space="preserve">
+    <value>Operation history</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn14.Caption" xml:space="preserve">
+    <value>Some bills</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn14.ToolTip" xml:space="preserve">
+    <value>Invoice and voucher number</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn15.Caption" xml:space="preserve">
+    <value>Supplier</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn2.Caption" xml:space="preserve">
+    <value>Destroy</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn3.Caption" xml:space="preserve">
+    <value>Browser</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn4.Caption" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn5.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn6.Caption" xml:space="preserve">
+    <value>Repair</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn7.Caption" xml:space="preserve">
+    <value>Actually imported</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn8.Caption" xml:space="preserve">
+    <value>Refuse approval</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumn9.Caption" xml:space="preserve">
+    <value>Import type</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumnImpMestSubCode.Caption" xml:space="preserve">
+    <value>Secondary code</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumnImpMestSubCode2.Caption" xml:space="preserve">
+    <value>Secondary Code (2)</value>
+  </data>
+  <data name="UCHisImportMestMedicine.groupBoxInfo.Text" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="UCHisImportMestMedicine.groupBoxNgayChungTu.Text" xml:space="preserve">
+    <value>Day vouchers</value>
+  </data>
+  <data name="UCHisImportMestMedicine.groupBoxSoChungTu.Text" xml:space="preserve">
+    <value>Voucher</value>
+  </data>
+  <data name="UCHisImportMestMedicine.IMP_MEST_STT_NAME.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControl6.Text" xml:space="preserve">
+    <value>layoutControl6</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControl7.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControl8.Text" xml:space="preserve">
+    <value>layoutControl8</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem11.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Word creation time</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem11.Text" xml:space="preserve">
+    <value>Time generated from:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem12.Text" xml:space="preserve">
+    <value>Come:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem22.Text" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem23.Text" xml:space="preserve">
+    <value>Come:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem24.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem25.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem26.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Real-time input from</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem26.Text" xml:space="preserve">
+    <value>Real TG imported from:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem27.Text" xml:space="preserve">
+    <value>Arrive:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem29.Text" xml:space="preserve">
+    <value>Bidding decision:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem30.Text" xml:space="preserve">
+    <value>Contractor group:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem33.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Invoicing company</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem33.Text" xml:space="preserve">
+    <value>Invoicing company:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem31.Text" xml:space="preserve">
+    <value>Some contracts:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem34.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem35.Text" xml:space="preserve">
+    <value>Supplier:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem36.Text" xml:space="preserve">
+    <value>Deliver:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem37.Text" xml:space="preserve">
+    <value>Discount (%):</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem38.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Invoice and voucher number</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem38.Text" xml:space="preserve">
+    <value>Document number:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem39.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Invoice and voucher date</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem39.Text" xml:space="preserve">
+    <value>Day vouchers:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem40.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Amount of invoices and vouchers</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem40.Text" xml:space="preserve">
+    <value>Amount vouchers:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem41.Text" xml:space="preserve">
+    <value>Treatment code:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem42.Text" xml:space="preserve">
+    <value>Patient's name:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem43.Text" xml:space="preserve">
+    <value>Package:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem44.Text" xml:space="preserve">
+    <value>Birthday:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem45.Text" xml:space="preserve">
+    <value>Sex:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem46.Text" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem8.Text" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem9.Text" xml:space="preserve">
+    <value>Import type:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.STT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCHisImportMestMedicine.txtDocumentNumber.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Number of vouchers</value>
+  </data>
+  <data name="UCHisImportMestMedicine.txtExpMestCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Voucher code</value>
+  </data>
+  <data name="UCHisImportMestMedicine.txtImpCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Import code (F2)</value>
+  </data>
+  <data name="UCHisImportMestMedicine.txtImpMestSubCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Secondary code</value>
+  </data>
+  <data name="UCHisImportMestMedicine.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Keyword search</value>
+  </data>
+  <data name="UCHisImportMestMedicine.txtMedicineType.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Drug code</value>
+  </data>
+  <data name="UCHisImportMestMedicine.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+</root>

@@ -1,0 +1,729 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmServiceType.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmServiceType.barButtonItem1.Caption" xml:space="preserve">
+    <value>bbtnPrint</value>
+  </data>
+  <data name="frmServiceType.btnPrint.Text" xml:space="preserve">
+    <value>In (Ctrl P)</value>
+  </data>
+  <data name="frmServiceType.btnPrintMergeXN.Text" xml:space="preserve">
+    <value>In gộp</value>
+  </data>
+  <data name="frmServiceType.btnSplitServiceReq.Text" xml:space="preserve">
+    <value>In tách y lệnh</value>
+  </data>
+  <data name="frmServiceType.gridColumn1.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmServiceType.gridColumn2.Caption" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="frmServiceType.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmServiceType.Text" xml:space="preserve">
+    <value>Loại dịch vụ</value>
+  </data>
+  <data name="UCTreatmentList.a.Text" xml:space="preserve">
+    <value>Mã bệnh nhân:</value>
+  </data>
+  <data name="UCTreatmentList.AREA.Caption" xml:space="preserve">
+    <value>Phạm vi</value>
+  </data>
+  <data name="UCTreatmentList.btnCodeFind.Text" xml:space="preserve">
+    <value>Trong ngày</value>
+  </data>
+  <data name="UCTreatmentList.btnDelete.Text" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="UCTreatmentList.btnFind.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="UCTreatmentList.btnGuiHS.Text" xml:space="preserve">
+    <value>Gửi HS</value>
+  </data>
+  <data name="UCTreatmentList.btnGuiHS.ToolTip" xml:space="preserve">
+    <value>Gửi hồ sơ sang hệ thống tích hợp</value>
+  </data>
+  <data name="UCTreatmentList.btnImportKsk.Text" xml:space="preserve">
+    <value>Nhập khẩu hồ sơ KSK</value>
+  </data>
+  <data name="UCTreatmentList.btnImportKsk.ToolTip" xml:space="preserve">
+    <value>Nhập khẩu hồ sơ khám sức khỏe</value>
+  </data>
+  <data name="UCTreatmentList.btnPrintfKSK.Text" xml:space="preserve">
+    <value>In KSK</value>
+  </data>
+  <data name="UCTreatmentList.btnPrintfKSK.ToolTip" xml:space="preserve">
+    <value>Phiếu Kiểm tra khám sức khỏe định kì</value>
+  </data>
+  <data name="UCTreatmentList.BtnPrintHuongDan.Text" xml:space="preserve">
+    <value>In hướng dẫn</value>
+  </data>
+  <data name="UCTreatmentList.btnPrintServiceReq.Text" xml:space="preserve">
+    <value>In y lệnh</value>
+  </data>
+  <data name="UCTreatmentList.btnRefresh.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="UCTreatmentList.btnXuatXML.Text" xml:space="preserve">
+    <value>XML ĐK</value>
+  </data>
+  <data name="UCTreatmentList.btnXuatXML.ToolTip" xml:space="preserve">
+    <value>Xuất XML đăng ký</value>
+  </data>
+  <data name="UCTreatmentList.cboOutOfHospital.Text" xml:space="preserve">
+    <value>Trong ngày</value>
+  </data>
+  <data name="UCTreatmentList.chkIsRejectStore.Properties.Caption" xml:space="preserve">
+    <value>Từ chối duyệt BA</value>
+  </data>
+  <data name="UCTreatmentList.chkIsRejectStore.ToolTip" xml:space="preserve">
+    <value>Từ chối duyệt bệnh án</value>
+  </data>
+  <data name="UCTreatmentList.frModifier.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="UCTreatmentList.frModifier.ToolTip" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="UCTreatmentList.grAccidentHurt.Caption" xml:space="preserve">
+    <value>tai nạn thương tích</value>
+  </data>
+  <data name="UCTreatmentList.grAccidentHurt.ToolTip" xml:space="preserve">
+    <value>tai nạn thương tích</value>
+  </data>
+  <data name="UCTreatmentList.grBedRoomIn.Caption" xml:space="preserve">
+    <value>Chuyển vào buồng</value>
+  </data>
+  <data name="UCTreatmentList.grClinicalInTimeSt.Caption" xml:space="preserve">
+    <value>Thời gian nhập viện</value>
+  </data>
+  <data name="UCTreatmentList.grClinicalInTimeSt.ToolTip" xml:space="preserve">
+    <value>Thời gian nhập viện</value>
+  </data>
+  <data name="UCTreatmentList.grColPrint.Caption" xml:space="preserve">
+    <value>In ấn</value>
+  </data>
+  <data name="UCTreatmentList.grCreateTimeSt.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UCTreatmentList.grCreateTimeSt.ToolTip" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UCTreatmentList.grCreator.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="UCTreatmentList.grCreator.ToolTip" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="UCTreatmentList.grDobSt.Caption" xml:space="preserve">
+    <value>Ngày sinh</value>
+  </data>
+  <data name="UCTreatmentList.grDobSt.ToolTip" xml:space="preserve">
+    <value>Ngày sinh</value>
+  </data>
+  <data name="UCTreatmentList.grEditTreatment.ToolTip" xml:space="preserve">
+    <value>Sửa hồ sơ điều trị</value>
+  </data>
+  <data name="UCTreatmentList.grFeeInfo.Caption" xml:space="preserve">
+    <value>Tổng hợp viện phí</value>
+  </data>
+  <data name="UCTreatmentList.grFinish.Caption" xml:space="preserve">
+    <value>Kết thúc điều trị</value>
+  </data>
+  <data name="UCTreatmentList.grFixTreatment.Caption" xml:space="preserve">
+    <value>Sửa hồ sơ điều trị</value>
+  </data>
+  <data name="UCTreatmentList.grGenderName.Caption" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="UCTreatmentList.grGenderName.ToolTip" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="UCTreatmentList.grIcdMainText.Caption" xml:space="preserve">
+    <value>Chẩn đoán chính</value>
+  </data>
+  <data name="UCTreatmentList.grIcdMainText.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán chính</value>
+  </data>
+  <data name="UCTreatmentList.grIcdText.Caption" xml:space="preserve">
+    <value>Chẩn đoán phụ</value>
+  </data>
+  <data name="UCTreatmentList.grIcdText.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán phụ</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn_Treatment_SentIntegrateHis.Caption" xml:space="preserve">
+    <value>Đã gửi sang hệ thống cũ</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn1.Caption" xml:space="preserve">
+    <value>Số ra viện</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn10.Caption" xml:space="preserve">
+    <value>Từ chối duyệt bệnh án</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn11.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn12.Caption" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn13.Caption" xml:space="preserve">
+    <value>Họ và tên</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn14.Caption" xml:space="preserve">
+    <value>Năm sinh nam</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn15.Caption" xml:space="preserve">
+    <value>Năm sinh nữ</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn16.Caption" xml:space="preserve">
+    <value>Tên chức vụ</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn17.Caption" xml:space="preserve">
+    <value>Tên Đoàn</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn18.Caption" xml:space="preserve">
+    <value>Số nhà</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn19.Caption" xml:space="preserve">
+    <value>Số CMND</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn2.Caption" xml:space="preserve">
+    <value>Diện điều trị</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn2.ToolTip" xml:space="preserve">
+    <value>Diện điều trị</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn20.Caption" xml:space="preserve">
+    <value>Chiều cao</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn21.Caption" xml:space="preserve">
+    <value>Cân nặng</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn22.Caption" xml:space="preserve">
+    <value>BMI</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn23.Caption" xml:space="preserve">
+    <value>Mạch</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn24.Caption" xml:space="preserve">
+    <value>Huyết áp</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn25.Caption" xml:space="preserve">
+    <value>Tuần hoàn</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn26.Caption" xml:space="preserve">
+    <value>Tiêu hóa</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn27.Caption" xml:space="preserve">
+    <value>Nội tiết</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn28.Caption" xml:space="preserve">
+    <value>Cơ xương khớp</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn29.Caption" xml:space="preserve">
+    <value>Thần kinh</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn3.Caption" xml:space="preserve">
+    <value>Số hợp đồng</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn30.Caption" xml:space="preserve">
+    <value>Tâm thần</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn31.Caption" xml:space="preserve">
+    <value>Da liễu</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn32.Caption" xml:space="preserve">
+    <value>Thận tiết niệu</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn33.Caption" xml:space="preserve">
+    <value>Ngoại khoa</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn34.Caption" xml:space="preserve">
+    <value>Mắt</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn35.Caption" xml:space="preserve">
+    <value>Tai mũi họng</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn36.Caption" xml:space="preserve">
+    <value>Răng hàm mặt</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn37.Caption" xml:space="preserve">
+    <value>Nhận xét CTM</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn38.Caption" xml:space="preserve">
+    <value>Nhận xét sinh hóa</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn39.Caption" xml:space="preserve">
+    <value>Siêu âm tiền liệt tuyến</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn4.Caption" xml:space="preserve">
+    <value>Mã lưu trữ</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn40.Caption" xml:space="preserve">
+    <value>Siêu âm ổ bụng tổng quát</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn41.Caption" xml:space="preserve">
+    <value>XQ tổng quát</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn42.Caption" xml:space="preserve">
+    <value>Phân loại sức khỏe</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn43.Caption" xml:space="preserve">
+    <value>Bệnh tật khác</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn44.Caption" xml:space="preserve">
+    <value>Hướng giải quyết</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn45.Caption" xml:space="preserve">
+    <value>Kết luận khám</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn46.Caption" xml:space="preserve">
+    <value>Kết luận chung</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn47.Caption" xml:space="preserve">
+    <value>Nhiệt độ</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn48.Caption" xml:space="preserve">
+    <value>Nhịp thở</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn49.Caption" xml:space="preserve">
+    <value>Mã KCB</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn5.Caption" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn5.ToolTip" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn6.Caption" xml:space="preserve">
+    <value>Kết quả điều trị</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn7.Caption" xml:space="preserve">
+    <value>STT hồ sơ Ksk</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn8.Caption" xml:space="preserve">
+    <value>Tự động miễn giảm</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn9.Caption" xml:space="preserve">
+    <value>TL tự động miễn giảm</value>
+  </data>
+  <data name="UCTreatmentList.gridColumn9.ToolTip" xml:space="preserve">
+    <value>Tỷ lệ tự động miễn giảm</value>
+  </data>
+  <data name="UCTreatmentList.grInDepartmentName.Caption" xml:space="preserve">
+    <value>Khoa nhập viện</value>
+  </data>
+  <data name="UCTreatmentList.grInfantInformation.Caption" xml:space="preserve">
+    <value>Thông tin trẻ sơ sinh</value>
+  </data>
+  <data name="UCTreatmentList.grInOrder.Caption" xml:space="preserve">
+    <value>Số vào viện</value>
+  </data>
+  <data name="UCTreatmentList.grInTimeStr.Caption" xml:space="preserve">
+    <value>Thời gian vào</value>
+  </data>
+  <data name="UCTreatmentList.grInTimeStr.ToolTip" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UCTreatmentList.grIsChronicStr.Caption" xml:space="preserve">
+    <value>Mãn tính</value>
+  </data>
+  <data name="UCTreatmentList.grMergePatient.Caption" xml:space="preserve">
+    <value>Ghép mã bệnh nhân</value>
+  </data>
+  <data name="UCTreatmentList.grMergePatient.ToolTip" xml:space="preserve">
+    <value>Ghép mã bệnh nhân</value>
+  </data>
+  <data name="UCTreatmentList.grModifyTimeSt.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="UCTreatmentList.grModifyTimeSt.ToolTip" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="UCTreatmentList.grOrder.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCTreatmentList.grOrder.ToolTip" xml:space="preserve">
+    <value>Số thứ tự</value>
+  </data>
+  <data name="UCTreatmentList.grOutTimeSt.Caption" xml:space="preserve">
+    <value>Thời gian ra</value>
+  </data>
+  <data name="UCTreatmentList.grOutTimeSt.ToolTip" xml:space="preserve">
+    <value>Thời gian ra</value>
+  </data>
+  <data name="UCTreatmentList.grPatientCode.Caption" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UCTreatmentList.grPatientCode.ToolTip" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UCTreatmentList.grPaySereServ.Caption" xml:space="preserve">
+    <value>Bảng kê thanh toán</value>
+  </data>
+  <data name="UCTreatmentList.grPaySereServ.ToolTip" xml:space="preserve">
+    <value>Bảng kê thanh toán</value>
+  </data>
+  <data name="UCTreatmentList.grSarPrintList.Caption" xml:space="preserve">
+    <value>Biểu mẫu khác</value>
+  </data>
+  <data name="UCTreatmentList.grServicePackgeView.Caption" xml:space="preserve">
+    <value>Xem gói dịch vụ</value>
+  </data>
+  <data name="UCTreatmentList.grServiceReq.Caption" xml:space="preserve">
+    <value>Chỉ định dịch vụ</value>
+  </data>
+  <data name="UCTreatmentList.grServiceReq.ToolTip" xml:space="preserve">
+    <value>Chỉ định dịch vụ</value>
+  </data>
+  <data name="UCTreatmentList.grServiceReqList.Caption" xml:space="preserve">
+    <value>Danh sách yêu cầu</value>
+  </data>
+  <data name="UCTreatmentList.grSocialInsuranceNumber.Caption" xml:space="preserve">
+    <value>Mã BHXH</value>
+  </data>
+  <data name="UCTreatmentList.grSocialInsuranceNumber.ToolTip" xml:space="preserve">
+    <value>Mã bảo hểm xã hội</value>
+  </data>
+  <data name="UCTreatmentList.grStatus.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCTreatmentList.grStatus.ToolTip" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCTreatmentList.grTdlHeinCardNumber.Caption" xml:space="preserve">
+    <value>Số thẻ BHYT</value>
+  </data>
+  <data name="UCTreatmentList.grTdlHeinCardNumber.ToolTip" xml:space="preserve">
+    <value>Số thẻ BHYT</value>
+  </data>
+  <data name="UCTreatmentList.grTimeLine.ToolTip" xml:space="preserve">
+    <value>Dòng thời gian</value>
+  </data>
+  <data name="UCTreatmentList.grTreatmentCode.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="UCTreatmentList.grTreatmentCode.ToolTip" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="UCTreatmentList.grTreatmentEndTypeName.Caption" xml:space="preserve">
+    <value>Loại ra viện</value>
+  </data>
+  <data name="UCTreatmentList.grTreatmentRecord.Caption" xml:space="preserve">
+    <value>Thông tin bệnh án</value>
+  </data>
+  <data name="UCTreatmentList.grTreatmentRecord.ToolTip" xml:space="preserve">
+    <value>Thông tin bệnh án</value>
+  </data>
+  <data name="UCTreatmentList.grTreatmentSumary.Caption" xml:space="preserve">
+    <value>Lịch sử điều trị</value>
+  </data>
+  <data name="UCTreatmentList.grUnfinish.Caption" xml:space="preserve">
+    <value>Mở lại điều trị</value>
+  </data>
+  <data name="UCTreatmentList.grVirAddress.Caption" xml:space="preserve">
+    <value>Địa chỉ</value>
+  </data>
+  <data name="UCTreatmentList.grVirAddress.ToolTip" xml:space="preserve">
+    <value>Địa chỉ</value>
+  </data>
+  <data name="UCTreatmentList.grVirPatientName.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="UCTreatmentList.grVirPatientName.ToolTip" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="UCTreatmentList.InDepartment.Text" xml:space="preserve">
+    <value>Đã từng ở khoa</value>
+  </data>
+  <data name="UCTreatmentList.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCTreatmentList.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCTreatmentList.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="UCTreatmentList.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="UCTreatmentList.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="UCTreatmentList.layoutControl6.Text" xml:space="preserve">
+    <value>layoutControl6</value>
+  </data>
+  <data name="UCTreatmentList.layoutControlItem10.Text" xml:space="preserve">
+    <value>Diện điều trị:</value>
+  </data>
+  <data name="UCTreatmentList.layoutControlItem12.Text" xml:space="preserve">
+    <value>layoutControlItem2</value>
+  </data>
+  <data name="UCTreatmentList.layoutControlItem13.Text" xml:space="preserve">
+    <value>Từ khóa:</value>
+  </data>
+  <data name="UCTreatmentList.layoutControlItem16.Text" xml:space="preserve">
+    <value>Hợp đồng:</value>
+  </data>
+  <data name="UCTreatmentList.layoutControlItem18.Text" xml:space="preserve">
+    <value>Hợp đồng:</value>
+  </data>
+  <data name="UCTreatmentList.layoutControlItem2.Text" xml:space="preserve">
+    <value>Mã điều trị:</value>
+  </data>
+  <data name="UCTreatmentList.layoutControlItem21.Text" xml:space="preserve">
+    <value>Khoa kết thúc:</value>
+  </data>
+  <data name="UCTreatmentList.layoutControlItem24.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreatmentList.layoutControlItem35.Text" xml:space="preserve">
+    <value>Khoa vào viện:</value>
+  </data>
+  <data name="UCTreatmentList.layoutControlItem39.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Gửi hồ sơ sang hệ thống tích hợp</value>
+  </data>
+  <data name="UCTreatmentList.layoutControlItem5.Text" xml:space="preserve">
+    <value>Trạng thái:</value>
+  </data>
+  <data name="UCTreatmentList.layoutControlItem9.Text" xml:space="preserve">
+    <value>Kiểu bệnh nhân:</value>
+  </data>
+  <data name="UCTreatmentList.layoutCreateTimeFrom.Text" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="UCTreatmentList.layoutInDateCome.Text" xml:space="preserve">
+    <value>đến ngày:</value>
+  </data>
+  <data name="UCTreatmentList.layoutOutDateCome.Text" xml:space="preserve">
+    <value>đến ngày:</value>
+  </data>
+  <data name="UCTreatmentList.layoutOutTimeFrom.Text" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn1.Caption" xml:space="preserve">
+    <value>Số thứ tự</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn10.Caption" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn11.Caption" xml:space="preserve">
+    <value>Địa chỉ</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn12.Caption" xml:space="preserve">
+    <value>Thời gian vào</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn13.Caption" xml:space="preserve">
+    <value>Thời gian nhập viện</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn14.Caption" xml:space="preserve">
+    <value>Thời gian ra</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn15.Caption" xml:space="preserve">
+    <value>Chẩn đoán chính</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn16.Caption" xml:space="preserve">
+    <value>Chẩn đoán phụ</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn17.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn18.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn19.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn2.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn20.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn6.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn7.Caption" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn8.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="UCTreatmentList.layoutViewColumn9.Caption" xml:space="preserve">
+    <value>Ngày sinh</value>
+  </data>
+  <data name="UCTreatmentList.n.Text" xml:space="preserve">
+    <value>navBarControl1</value>
+  </data>
+  <data name="UCTreatmentList.navBarGroupCreateTime.Caption" xml:space="preserve">
+    <value>Thời gian vào viện</value>
+  </data>
+  <data name="UCTreatmentList.navBarGroupOutTime.Caption" xml:space="preserve">
+    <value>Thời gian ra viện</value>
+  </data>
+  <data name="UCTreatmentList.navBarGroupRejectStore.Caption" xml:space="preserve">
+    <value>Lưu trữ bệnh án</value>
+  </data>
+  <data name="UCTreatmentList.navBarPaytientType.Caption" xml:space="preserve">
+    <value>Đối tượng bệnh nhân</value>
+  </data>
+  <data name="UCTreatmentList.radioButton1.Text" xml:space="preserve">
+    <value>Toàn viện</value>
+  </data>
+  <data name="UCTreatmentList.radioButtonAtDepartment.Text" xml:space="preserve">
+    <value>Đang điều trị tại khoa</value>
+  </data>
+  <data name="UCTreatmentList.repositoryItembtnStatus.Caption.Text" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCTreatmentList.txtInCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Số vào viện</value>
+  </data>
+  <data name="UCTreatmentList.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="UCTreatmentList.txtOutCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Số ra viện</value>
+  </data>
+  <data name="UCTreatmentList.txtPatient.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UCTreatmentList.txtPatientName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="UCTreatmentList.txtSocialInsuranceNumber.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã BHXH</value>
+  </data>
+  <data name="UCTreatmentList.txtSocialInsuranceNumber.ToolTip" xml:space="preserve">
+    <value>Mã bảo hiểm xã hội</value>
+  </data>
+  <data name="UCTreatmentList.txtStoreCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Số lưu trữ</value>
+  </data>
+  <data name="UCTreatmentList.txtTreatment.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+</root>

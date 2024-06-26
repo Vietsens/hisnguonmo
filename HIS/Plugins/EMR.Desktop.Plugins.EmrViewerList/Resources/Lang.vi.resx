@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Duyet" xml:space="preserve">
+    <value>Duyệt</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonTuChoiKhong" xml:space="preserve">
+    <value>Bạn có muốn từ chối không</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__BAR_CREATE_TIME" xml:space="preserve">
+    <value>Ngày tạo</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__BAR_STT" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__BAR_YEU_CAU" xml:space="preserve">
+    <value>Yêu cầu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__BTN_REFRESH" xml:space="preserve">
+    <value>Làm lại(Ctrl R)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__BTN_SEARCH" xml:space="preserve">
+    <value>Tìm(Ctrl F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__CHK_STT_DUYET" xml:space="preserve">
+    <value>Duyệt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__CHK_STT_TU_CHOI" xml:space="preserve">
+    <value>Từ chối duyệt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__CHK_STT_YEU_CAU" xml:space="preserve">
+    <value>Yêu cầu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__CHK_YEU_CAU" xml:space="preserve">
+    <value>Tôi yêu cầu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_APPROVAL" xml:space="preserve">
+    <value>Duyệt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_APPROVAL_TIME" xml:space="preserve">
+    <value>Ngày duyệt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_APPROVAL_USERNAME" xml:space="preserve">
+    <value>Người duyệt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_CLINICAL_IN_TIME" xml:space="preserve">
+    <value>Thời gian nhập viện</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_DEPARTMENT_NAME" xml:space="preserve">
+    <value>Khoa yêu cầu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_DIS_APPROVAL" xml:space="preserve">
+    <value>Từ chối duyệt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_DOB" xml:space="preserve">
+    <value>Ngày sinh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_FINISH_TIME" xml:space="preserve">
+    <value>Thời gian được duyệt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_GENDER" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_HEIN_CAR_NUMBER" xml:space="preserve">
+    <value>Thẻ BHYT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_ICD_CODE" xml:space="preserve">
+    <value>Mã bệnh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_ICD_NAME" xml:space="preserve">
+    <value>Bệnh chính</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_ICD_TEXT" xml:space="preserve">
+    <value>Bệnh phụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_IN_TIME" xml:space="preserve">
+    <value>Thời gian vào</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_OUT_TIME" xml:space="preserve">
+    <value>Thời gian ra</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_PATIENT_CODE" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_PATIENT_NAME" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_REQUEST_FINISH_TIME" xml:space="preserve">
+    <value>Thời gian yêu cầu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_REQUEST_NAME" xml:space="preserve">
+    <value>Người yêu cầu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_STT" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_TRANG_THAI" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_TREATMENT_CODE" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__LCI_TIME_FROM" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__LCI_TIME_TO" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__RP_BTN_APPROVAL" xml:space="preserve">
+    <value>Duyệt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__RP_BTN_CANCEL_APPROVAL" xml:space="preserve">
+    <value>Hủy duyệt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__RP_BTN_CANCEL_DIS_APPROVAL" xml:space="preserve">
+    <value>Hủy từ chối duyệt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__RP_BTN_DIS_APPROVAL" xml:space="preserve">
+    <value>Từ chối duyệt</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__TXT_KEYWORD_NULL_VALUE" xml:space="preserve">
+    <value>Từ khóa tim kiếm</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
+  <data name="TuChoiDuyet" xml:space="preserve">
+    <value>Từ chối duyệt</value>
+  </data>
+  <data name="YeuCau" xml:space="preserve">
+    <value>Yêu cầu</value>
+  </data>
+</root>

@@ -1,0 +1,328 @@
+﻿namespace HIS.Desktop.Plugins.ServiceReqPatient
+{
+    partial class ServiceReqPatientForm
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any Resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed Resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
+            this.gridControl1 = new DevExpress.XtraGrid.GridControl();
+            this.bandedGridView1 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridView();
+            this.grblSTT = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
+            this.grclStt = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            this.grblMed = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
+            this.grclMed = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            this.grblUnit = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
+            this.grclUntit = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            this.grblDay = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
+            this.grblSum = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
+            this.grclSum = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            this.grblNote = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
+            this.grclNote = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            this.grclLT = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            this.bandedGridColumn1 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            this.bandedGridColumn2 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
+            this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
+            this.layoutControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bandedGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // layoutControl1
+            // 
+            this.layoutControl1.Controls.Add(this.layoutControl2);
+            this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutControl1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl1.Name = "layoutControl1";
+            this.layoutControl1.Root = this.layoutControlGroup1;
+            this.layoutControl1.Size = new System.Drawing.Size(1100, 561);
+            this.layoutControl1.TabIndex = 0;
+            this.layoutControl1.Text = "layoutControl1";
+            // 
+            // layoutControl2
+            // 
+            this.layoutControl2.Controls.Add(this.gridControl1);
+            this.layoutControl2.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl2.Name = "layoutControl2";
+            this.layoutControl2.Root = this.Root;
+            this.layoutControl2.Size = new System.Drawing.Size(1100, 561);
+            this.layoutControl2.TabIndex = 4;
+            this.layoutControl2.Text = "layoutControl2";
+            // 
+            // gridControl1
+            // 
+            this.gridControl1.Location = new System.Drawing.Point(2, 2);
+            this.gridControl1.MainView = this.bandedGridView1;
+            this.gridControl1.Name = "gridControl1";
+            this.gridControl1.Size = new System.Drawing.Size(1096, 557);
+            this.gridControl1.TabIndex = 5;
+            this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.bandedGridView1});
+            // 
+            // bandedGridView1
+            // 
+            this.bandedGridView1.Bands.AddRange(new DevExpress.XtraGrid.Views.BandedGrid.GridBand[] {
+            this.grblSTT,
+            this.grblMed,
+            this.grblUnit,
+            this.grblDay,
+            this.grblSum,
+            this.grblNote});
+            this.bandedGridView1.Columns.AddRange(new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn[] {
+            this.grclStt,
+            this.grclMed,
+            this.grclUntit,
+            this.grclSum,
+            this.grclNote,
+            this.grclLT,
+            this.bandedGridColumn1,
+            this.bandedGridColumn2});
+            this.bandedGridView1.GridControl = this.gridControl1;
+            this.bandedGridView1.GroupCount = 1;
+            this.bandedGridView1.Name = "bandedGridView1";
+            this.bandedGridView1.OptionsView.ShowGroupPanel = false;
+            this.bandedGridView1.OptionsView.ShowGroupPanelColumnsAsSingleRow = true;
+            this.bandedGridView1.SortInfo.AddRange(new DevExpress.XtraGrid.Columns.GridColumnSortInfo[] {
+            new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.grclLT, DevExpress.Data.ColumnSortOrder.Ascending)});
+            // 
+            // grblSTT
+            // 
+            this.grblSTT.Caption = "STT";
+            this.grblSTT.Columns.Add(this.grclStt);
+            this.grblSTT.Name = "grblSTT";
+            this.grblSTT.VisibleIndex = 0;
+            this.grblSTT.Width = 54;
+            // 
+            // grclStt
+            // 
+            this.grclStt.Caption = "STT";
+            this.grclStt.FieldName = "STT";
+            this.grclStt.Name = "grclStt";
+            this.grclStt.OptionsColumn.ShowCaption = false;
+            this.grclStt.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grclStt.Visible = true;
+            this.grclStt.Width = 54;
+            // 
+            // grblMed
+            // 
+            this.grblMed.Caption = "Tên thuốc, hàm lượng";
+            this.grblMed.Columns.Add(this.grclMed);
+            this.grblMed.Name = "grblMed";
+            this.grblMed.VisibleIndex = 1;
+            this.grblMed.Width = 172;
+            // 
+            // grclMed
+            // 
+            this.grclMed.Caption = "Tên thuốc, hàm lượng";
+            this.grclMed.FieldName = "MEDICINE_TYPE_NAME";
+            this.grclMed.Name = "grclMed";
+            this.grclMed.OptionsColumn.ShowCaption = false;
+            this.grclMed.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grclMed.Visible = true;
+            this.grclMed.Width = 172;
+            // 
+            // grblUnit
+            // 
+            this.grblUnit.Caption = "Đơn vị";
+            this.grblUnit.Columns.Add(this.grclUntit);
+            this.grblUnit.Name = "grblUnit";
+            this.grblUnit.VisibleIndex = 2;
+            this.grblUnit.Width = 77;
+            // 
+            // grclUntit
+            // 
+            this.grclUntit.Caption = "Đơn vị";
+            this.grclUntit.FieldName = "SERVICE_UNIT_NAME";
+            this.grclUntit.Name = "grclUntit";
+            this.grclUntit.OptionsColumn.ShowCaption = false;
+            this.grclUntit.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grclUntit.Visible = true;
+            this.grclUntit.Width = 77;
+            // 
+            // grblDay
+            // 
+            this.grblDay.Caption = "Ngày tháng";
+            this.grblDay.Name = "grblDay";
+            this.grblDay.VisibleIndex = 3;
+            this.grblDay.Width = 75;
+            // 
+            // grblSum
+            // 
+            this.grblSum.Caption = "Tổng";
+            this.grblSum.Columns.Add(this.grclSum);
+            this.grblSum.Name = "grblSum";
+            this.grblSum.VisibleIndex = 4;
+            this.grblSum.Width = 89;
+            // 
+            // grclSum
+            // 
+            this.grclSum.Caption = "Tổng";
+            this.grclSum.FieldName = "grclSum";
+            this.grclSum.Name = "grclSum";
+            this.grclSum.OptionsColumn.ShowCaption = false;
+            this.grclSum.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grclSum.Visible = true;
+            this.grclSum.Width = 89;
+            // 
+            // grblNote
+            // 
+            this.grblNote.Caption = "Ghi chú";
+            this.grblNote.Columns.Add(this.grclNote);
+            this.grblNote.Name = "grblNote";
+            this.grblNote.VisibleIndex = 5;
+            this.grblNote.Width = 105;
+            // 
+            // grclNote
+            // 
+            this.grclNote.Caption = "Ghi chú";
+            this.grclNote.FieldName = "grclNote";
+            this.grclNote.Name = "grclNote";
+            this.grclNote.OptionsColumn.ShowCaption = false;
+            this.grclNote.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grclNote.Visible = true;
+            this.grclNote.Width = 105;
+            // 
+            // grclLT
+            // 
+            this.grclLT.Caption = "Lĩnh thường";
+            this.grclLT.Name = "grclLT";
+            // 
+            // bandedGridColumn1
+            // 
+            this.bandedGridColumn1.Caption = "bandedGridColumn1";
+            this.bandedGridColumn1.Name = "bandedGridColumn1";
+            this.bandedGridColumn1.Visible = true;
+            // 
+            // bandedGridColumn2
+            // 
+            this.bandedGridColumn2.Caption = "bandedGridColumn2";
+            this.bandedGridColumn2.Name = "bandedGridColumn2";
+            this.bandedGridColumn2.Visible = true;
+            // 
+            // Root
+            // 
+            this.Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.Root.GroupBordersVisible = false;
+            this.Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlItem2});
+            this.Root.Location = new System.Drawing.Point(0, 0);
+            this.Root.Name = "Root";
+            this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.Root.Size = new System.Drawing.Size(1100, 561);
+            this.Root.TextVisible = false;
+            // 
+            // layoutControlItem2
+            // 
+            this.layoutControlItem2.Control = this.gridControl1;
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem2.Name = "layoutControlItem2";
+            this.layoutControlItem2.Size = new System.Drawing.Size(1100, 561);
+            this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem2.TextVisible = false;
+            // 
+            // layoutControlGroup1
+            // 
+            this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.layoutControlGroup1.GroupBordersVisible = false;
+            this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlItem1});
+            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroup1.Name = "layoutControlGroup1";
+            this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1100, 561);
+            this.layoutControlGroup1.TextVisible = false;
+            // 
+            // layoutControlItem1
+            // 
+            this.layoutControlItem1.Control = this.layoutControl2;
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem1.Name = "layoutControlItem1";
+            this.layoutControlItem1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1100, 561);
+            this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem1.TextVisible = false;
+            // 
+            // ServiceReqPatientForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1100, 561);
+            this.Controls.Add(this.layoutControl1);
+            this.Name = "ServiceReqPatientForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "ServiceReqPatientForm";
+            this.Load += new System.EventHandler(this.ServiceReqPatientForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
+            this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
+            this.layoutControl2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bandedGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        private DevExpress.XtraLayout.LayoutControl layoutControl1;
+        private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
+        private DevExpress.XtraLayout.LayoutControl layoutControl2;
+        private DevExpress.XtraLayout.LayoutControlGroup Root;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
+        private DevExpress.XtraGrid.GridControl gridControl1;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridView bandedGridView1;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn grclStt;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn grclMed;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn grclUntit;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn grclSum;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn grclNote;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn grclLT;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn1;
+        private DevExpress.XtraGrid.Views.BandedGrid.GridBand grblSTT;
+        private DevExpress.XtraGrid.Views.BandedGrid.GridBand grblMed;
+        private DevExpress.XtraGrid.Views.BandedGrid.GridBand grblUnit;
+        private DevExpress.XtraGrid.Views.BandedGrid.GridBand grblDay;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn2;
+        private DevExpress.XtraGrid.Views.BandedGrid.GridBand grblSum;
+        private DevExpress.XtraGrid.Views.BandedGrid.GridBand grblNote;
+    }
+}

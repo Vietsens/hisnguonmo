@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BanChiDuocChonMotAnh" xml:space="preserve">
+    <value>ဓာတ်ပုံ 1 ပုံသာ ရွေးချယ်နိုင်ပါသည်။</value>
+  </data>
+  <data name="BanChuaChonAnh" xml:space="preserve">
+    <value>ဓာတ်ပုံတစ်ပုံကို သင်မရွေးချယ်ရသေးပါ။</value>
+  </data>
+  <data name="BanChuaChonDuongDanLuuAnh" xml:space="preserve">
+    <value>ပုံအား သိမ်းဆည်းရန် လမ်းကြောင်းကို သင် မရွေးချယ်ရသေးပါ။</value>
+  </data>
+  <data name="BanChuaChonKipThucHien" xml:space="preserve">
+    <value>သင်သည် အကောင်အထည်ဖော်ရေးအဖွဲ့သို့ မ၀င်ပါ။</value>
+  </data>
+  <data name="BanCoMuonInKetQua" xml:space="preserve">
+    <value>ရလဒ်စာရွက်ကို ရိုက်နှိပ်လိုပါသလား။</value>
+  </data>
+  <data name="BanCoMuonSuaThoiGianYLenhBangThoiGianBatDauPTTT" xml:space="preserve">
+    <value>သင်သည် PTTT စတင်ချိန်ဖြင့် အမိန့် y အချိန်ကို ပြင်လိုပါသလား။</value>
+  </data>
+  <data name="BanCoMuonTiepTucKhong" xml:space="preserve">
+    <value>{0} ဆက်လုပ်လိုပါသလား။</value>
+  </data>
+  <data name="BatBuocThoiGianKetThuc" xml:space="preserve">
+    <value>ကျေးဇူးပြု၍ ကုန်ဆုံးချိန်ကို ရွေးပါ။</value>
+  </data>
+  <data name="CanhBaoMayVuotQuaSoluongXuLy" xml:space="preserve">
+    <value>စက် {0} သည် တစ်ရက်လျှင် အများဆုံး လုပ်ဆောင်နေသည့် ဝန်ဆောင်မှုအရေအတွက် ({1})</value>
+  </data>
+  <data name="ChangeStt" xml:space="preserve">
+    <value>ပုံကို တည်းဖြတ်ပါ။</value>
+  </data>
+  <data name="ChuaCauHinhDiaChiLayKetQua" xml:space="preserve">
+    <value>ရလဒ်များရယူရန် လိပ်စာကို သတ်မှတ်မထားပါ။</value>
+  </data>
+  <data name="ChuaCauHinhDiaChiPACS" xml:space="preserve">
+    <value>PACS လိပ်စာကို သတ်မှတ်မထားပါ။</value>
+  </data>
+  <data name="ChuaXuLyHetDichVu" xml:space="preserve">
+    <value>သင်သည် ဝန်ဆောင်မှုကို မပြီးမြောက်သေးပါ။</value>
+  </data>
+  <data name="ChuoiKyTuQuaDai" xml:space="preserve">
+    <value>ကြိုးက အရမ်းရှည်တယ်။</value>
+  </data>
+  <data name="CopyImage" xml:space="preserve">
+    <value>ကော်ပီ</value>
+  </data>
+  <data name="DichVuChuaCoMay" xml:space="preserve">
+    <value>ဝန်ဆောင်မှု {0} တွင် ဓာတ်ခွဲခန်းအချက်အလက် မရှိသေးပါ။</value>
+  </data>
+  <data name="DichVuChuaCoNhomPttt" xml:space="preserve">
+    <value>ဝန်ဆောင်မှု {0} တွင် အဖွဲ့အချက်အလက် PTTT မရှိပါ။</value>
+  </data>
+  <data name="DichVuChuaKeThuocVatTu" xml:space="preserve">
+    <value>ညွှန်းဆေး/ထောက်ပံ့ပစ္စည်းများမပါဘဲ {0} ဝန်ဆောင်မှုများ</value>
+  </data>
+  <data name="HuyPhieuThuocVatTuTieuHaoDaKe" xml:space="preserve">
+    <value>ဆေးညွှန်း/ စားသုံးနိုင်သော ဘောက်ချာကို ပယ်ဖျက်ပါ။</value>
+  </data>
+  <data name="KeKhaiThuocHaoPhi" xml:space="preserve">
+    <value>စားသုံးနိုင်သော ဆေးဝါးကြေညာလွှာ</value>
+  </data>
+  <data name="KeThuocVatTuTieuHao" xml:space="preserve">
+    <value>ဆေးဝါးများ/ စားသုံးနိုင်သောပစ္စည်းများကို ညွှန်ကြားခြင်း။</value>
+  </data>
+  <data name="KhaiBaoThuocVTTH" xml:space="preserve">
+    <value>မူးယစ်ဆေးဝါး/VTTH ကို ကြေညာပါ (တင်ပို့သည့် ဖြတ်ပိုင်းများ မဖန်တီးပါနှင့်)</value>
+  </data>
+  <data name="KhongCapNhatDuocTrangThaiXuLyCuaYLenh" xml:space="preserve">
+    <value>ညွှန်ကြားချက်သည် လုပ်ဆောင်နေသည့် အခြေအနေအား အပ်ဒိတ်မလုပ်ပါ၊ အကူအညီအတွက် ကျေးဇူးပြု၍ စနစ်စီမံခန့်ခွဲသူကို ဆက်သွယ်ပါ။</value>
+  </data>
+  <data name="KhongTimThayDULieuTheoMaYLenh" xml:space="preserve">
+    <value>ကုဒ် y command {0} ဖြင့် ဒေတာမတွေ့ပါ။</value>
+  </data>
+  <data name="KhongTimThayICDTuongUng" xml:space="preserve">
+    <value>အောက်ပါကုဒ်များနှင့် သက်ဆိုင်သော icd ကို ရှာမတွေ့ပါ- {0}</value>
+  </data>
+  <data name="KhongXacDinhDuocMay" xml:space="preserve">
+    <value>စက်ပစ္စည်းကို ခွဲခြား၍မရပါ။</value>
+  </data>
+  <data name="KhongXacDinhDuocVungChuaAnh" xml:space="preserve">
+    <value>ရုပ်ပုံသိမ်းဆည်းမှုဧရိယာ မမှန်ပါ။</value>
+  </data>
+  <data name="MaYLenhKhongHopLe" xml:space="preserve">
+    <value>မမှန်ကန်သော အမိန့်ကုဒ်</value>
+  </data>
+  <data name="NgayIn" xml:space="preserve">
+    <value>ပုံနှိပ်ရက်စွဲ- {0}</value>
+  </data>
+  <data name="PhieuPhauThuatThuThuat" xml:space="preserve">
+    <value>ခွဲစိတ်မှု ကတ်ပြား</value>
+  </data>
+  <data name="TaiKhoanDuocGanNhieuVaiTro" xml:space="preserve">
+    <value>အကောင့် {0} ကို အခန်းကဏ္ဍ {1} ဖြင့် တည်ဆောက်ထားသည်</value>
+  </data>
+  <data name="TaiKhoanKhongCoQuyenThucHienChucNang" xml:space="preserve">
+    <value>အကောင့်သည် လုပ်ဆောင်ချက်ကို လုပ်ဆောင်ရန် ခွင့်ပြုချက် မရှိပါ။</value>
+  </data>
+  <data name="ThieuThongTinKip" xml:space="preserve">
+    <value>ကျေးဇူးပြု၍ သင်္ဘောသားနှင့်ပတ်သက်သော အချက်အလက်အပြည့်အစုံကို ထည့်သွင်းပါ။</value>
+  </data>
+  <data name="ThoiGianBatDauKhongDuocLonHonThoiGianKetThuc" xml:space="preserve">
+    <value>စတင်ချိန်သည် ပြီးဆုံးချိန်ထက် မပိုနိုင်ပါ။</value>
+  </data>
+  <data name="ThoiGianBatDauPhaiLonHonThoiGianYLenh" xml:space="preserve">
+    <value>စတင်ချိန်သည် အမိန့်ပေးချိန်ထက် ပိုနေရပါမည်။</value>
+  </data>
+  <data name="ThoiGianBatDauThoiGianKetThuc" xml:space="preserve">
+    <value>စတင်ချိန်နှင့် ပြီးဆုံးချိန် သတ်မှတ်မှု မမှန်ကန်ပါ။</value>
+  </data>
+  <data name="ThoiGianBatDauThoiGianKetThucKhongDuocNhoHonThoiGianYLenh" xml:space="preserve">
+    <value>စတင်ချိန်၊ ပြီးဆုံးချိန်သည် အမိန့်ပေးချိန်ထက် မနည်းရပါ။</value>
+  </data>
+  <data name="ThoiGianBatDauThoiGianRaVien" xml:space="preserve">
+    <value>စတင်သည့်အချိန်သည် ထွက်ခွာချိန်ထက် မပိုသင့်ပါ။</value>
+  </data>
+  <data name="ThoiGianBatDauThoiGianVaoVien" xml:space="preserve">
+    <value>စတင်သည့်အချိန်သည် ဝင်ခွင့်အချိန်ထက် မနည်းစေရပါ။</value>
+  </data>
+  <data name="ThoiGianKetThuc" xml:space="preserve">
+    <value>အဆုံး T/g- {0}</value>
+  </data>
+  <data name="ThoiGianKetThucKhongDuocLonHonThoiGianHeThong" xml:space="preserve">
+    <value>ကုန်ဆုံးချိန်သည် လက်ရှိအချိန်ထက် မပိုနိုင်ပါ။</value>
+  </data>
+  <data name="ThoiGianKetThucKhongDuocNhoHonThoiGianBatDau" xml:space="preserve">
+    <value>ပြီးဆုံးချိန်သည် စတင်ချိန်ထက် မနည်းစေရပါ။</value>
+  </data>
+  <data name="ThoiGianKetThucKhongDuocNhoHonThoiGianYLenh" xml:space="preserve">
+    <value>ပြီးဆုံးချိန်သည် အမိန့်ပေးချိန်ထက် မနည်းသင့်ပါ။</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>အကြောင်းကြားပါ။</value>
+  </data>
+  <data name="ThucHienCls" xml:space="preserve">
+    <value>CLS. အကောင်အထည်ဖော်မှု အချက်အလက်</value>
+  </data>
+  <data name="TieuDeChonAnh" xml:space="preserve">
+    <value>ပုံ</value>
+  </data>
+  <data name="TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>လိုအပ်သောအကွက်များကို မထည့်ရသေးပါ။</value>
+  </data>
+  <data name="TruongDuLieuVuotQuaKyTu" xml:space="preserve">
+    <value>ထည့်သွင်းမှုအကွက်သည် ရှည်လွန်းသည်။</value>
+  </data>
+</root>

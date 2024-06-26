@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ChiDinhThuoc_SoLuongXuatLonHonSpoLuongKhadungTrongKho" xml:space="preserve">
+    <value>Không đủ khả dụng</value>
+  </data>
+  <data name="ChucNangDangPhatTrienVuiLongThuLaiSau" xml:space="preserve">
+    <value>Chức năng không được hỗ trợ ở phiên bản hiện tại, vui lòng thử lại sau</value>
+  </data>
+  <data name="Common_BanCoDongYThemHayKhong" xml:space="preserve">
+    <value>Bạn có đồng ý thêm hay không?</value>
+  </data>
+  <data name="Common__SoLuongPhaiLonHonKhong" xml:space="preserve">
+    <value>Số lượng phải lớn hơn 0</value>
+  </data>
+  <data name="DuLieuDangKhoa" xml:space="preserve">
+    <value>Khóa</value>
+  </data>
+  <data name="DuLieuDangMo" xml:space="preserve">
+    <value>Mở</value>
+  </data>
+  <data name="DuLieuDocTuFileExcelRong" xml:space="preserve">
+    <value>Dữ liệu đọc từ file excel rỗng</value>
+  </data>
+  <data name="DungLuongFileDinhKemQuaLon" xml:space="preserve">
+    <value>File đính kèm dung lượng quá lớn</value>
+  </data>
+  <data name="HeThongTBBanQuyenKhongHopLe" xml:space="preserve">
+    <value>Bản quyền không hợp lệ</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonBoKhoaDuLieuKhong" xml:space="preserve">
+    <value>Bạn có chắc muốn bỏ khóa dữ liệu?</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong" xml:space="preserve">
+    <value>Bạn có chắc muốn hủy dữ liệu?</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonKhoaDuLieuKhong" xml:space="preserve">
+    <value>Bạn có chắc muốn khóa dữ liệu?</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong" xml:space="preserve">
+    <value>Bạn có chắc muốn xóa dữ liệu?</value>
+  </data>
+  <data name="HeThongTBKetNoiDenMayChuKhongOnDinh" xml:space="preserve">
+    <value>Kết nối đến máy chủ không ổn định</value>
+  </data>
+  <data name="HeThongTBKetNoiDenMayChuKhongTot" xml:space="preserve">
+    <value>Kết nối tới máy chủ không tốt</value>
+  </data>
+  <data name="HeThongTBKetNoiDenMayChuNotStability" xml:space="preserve">
+    <value>Kết nối tới máy chủ không ổn định</value>
+  </data>
+  <data name="HeThongTBKetNoiDenMayChuThatBai" xml:space="preserve">
+    <value>Kết nối tới máy chủ thất bại</value>
+  </data>
+  <data name="HeThongTBKetNoiDenMayChuTot" xml:space="preserve">
+    <value>Kết nối tới máy chủ tốt</value>
+  </data>
+  <data name="HeThongTBKhongTimThayPluginsCuaChucNangNay" xml:space="preserve">
+    <value>Chức năng không được hỗ trợ ở phiên bản hiện tại, vui lòng liên hệ với quản trị hệ thống để được hỗ trợ</value>
+  </data>
+  <data name="HeThongTBKQXLYCCuaFrontendThanhCong" xml:space="preserve">
+    <value>Xử lý thành công</value>
+  </data>
+  <data name="HeThongTBKQXLYCCuaFrontendThatBai" xml:space="preserve">
+    <value>Xử lý thất bại</value>
+  </data>
+  <data name="HeThongTBNguoiDungDaHetPhienLamViecVuiLongDangNhapLai" xml:space="preserve">
+    <value>Phiên làm việc bị hết hiệu lực, có thể do bạn đã ngừng sử dụng phần mềm trong một khoảng thời gian dài hoặc kết nối đến hệ thống máy chủ bị gián đoạn tạm thời. Phần mềm sẽ tự động đăng xuất. Vui lòng đăng nhập lại để tiếp tục sử dụng.</value>
+  </data>
+  <data name="HeThongTBXuatHienExceptionChuaKiemDuocSoat" xml:space="preserve">
+    <value>Xử lý thất bại. Vui lòng liên hệ với quản trị hệ thống để được hỗ trợ</value>
+  </data>
+  <data name="HeThongThongBaoMoTaChoUpdatingDialogForm" xml:space="preserve">
+    <value>Hệ thống đang kiểm tra phiên bản cập nhật ...</value>
+  </data>
+  <data name="HeThongThongBaoMoTaChoWaitDialogForm" xml:space="preserve">
+    <value>Đang xử lý, vui lòng đợi...</value>
+  </data>
+  <data name="HeThongThongBaoThoiGianDenBeHonThoiGianTu" xml:space="preserve">
+    <value>Thời gian đến bé hơn thời gian từ</value>
+  </data>
+  <data name="HeThongThongBaoTienDoHoanThanhTaiCauHinhHeThong" xml:space="preserve">
+    <value>{0}%...</value>
+  </data>
+  <data name="HeThongThongBaoTieuDeChoWaitDialogForm" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
+  <data name="HeThongThongBaoTieuDeChoWaitDialogFormIsPleaseWaiting" xml:space="preserve">
+    <value>Vui lòng đợi</value>
+  </data>
+  <data name="NguoiDungChuaNhapMatKhauDeDangNhap" xml:space="preserve">
+    <value>Bạn chưa nhập mật khẩu</value>
+  </data>
+  <data name="NguoiDungChuaNhapTaiKhoanDeDangNhap" xml:space="preserve">
+    <value>Bạn chưa nhập tài khoản</value>
+  </data>
+  <data name="NguoiDungDoiMatKhauMatKhauXacNhanKhongChinhXac" xml:space="preserve">
+    <value>Mật khẩu xác nhận không chính xác</value>
+  </data>
+  <data name="NguoiDungNhapDuLieuKhongHopLe" xml:space="preserve">
+    <value>Dữ liệu không hợp lệ</value>
+  </data>
+  <data name="NguoiDungNhapNamKhongHopLe" xml:space="preserve">
+    <value>Năm  không hợp lệ, vui lòng nhập lại</value>
+  </data>
+  <data name="NguoiDungNhapNamSinhKhongHopLe" xml:space="preserve">
+    <value>Năm sinh không hợp lệ, vui lòng nhập lại</value>
+  </data>
+  <data name="NguoiDungNhapNgayKhongHopLe" xml:space="preserve">
+    <value>Ngày  không hợp lệ, vui lòng nhập lại</value>
+  </data>
+  <data name="NguoiDungNhapNgayPhaiNhoHonNgayHienTai" xml:space="preserve">
+    <value>Thời gian phải nhỏ hơn ngày hiện tại</value>
+  </data>
+  <data name="NguoiDungNhapNgaySinhKhongHopLe" xml:space="preserve">
+    <value>Ngày sinh không hợp lệ, vui lòng nhập lại</value>
+  </data>
+  <data name="NguoiDungNhapNgaySinhLonHonHienTai" xml:space="preserve">
+    <value>Ngày tuổi phải nhỏ hơn ngày hiện tại</value>
+  </data>
+  <data name="NguoiDungNhapNguoiDungChuaDuocCauHinhVaoPhongLamViec" xml:space="preserve">
+    <value>Tài khoản của bạn chưa được cấu hình vào phòng làm việc nào, vui lòng liên hệ quản trị hệ thống để được hỗ trợ.</value>
+  </data>
+  <data name="NguoiDungNhapNguoiDungDuocCauHinhVaoPhongKhongDuocGanQuyenVuiLongKiemTraLaiCauHinh" xml:space="preserve">
+    <value>Người dùng được cấu hình làm việc ở phòng nhưng không được gán quyền vào phòng đó, vui lòng chọn phòng khác hoặc kiểm tra lại cấu hình phần mềm.</value>
+  </data>
+  <data name="NguoiDungNhapNguoiDungKhongDuocGanQuyenVaoPhong" xml:space="preserve">
+    <value>Người dùng không được gán quyền vào phòng làm việc, vui lòng liên hệ với quản trị hệ thống để được hỗ trợ</value>
+  </data>
+  <data name="NguoiDungNhapTaiKhoanHoacMatKhauKhongChinhXacDeDangNhap" xml:space="preserve">
+    <value>Tài khoản hoặc mật khẩu không chính xác</value>
+  </data>
+  <data name="NguoiDungNhapThangKhongHopLe" xml:space="preserve">
+    <value>Tháng  không hợp lệ, vui lòng nhập lại</value>
+  </data>
+  <data name="NguoiDungNhapThangSinhKhongHopLe" xml:space="preserve">
+    <value>Tháng sinh không hợp lệ, vui lòng nhập lại</value>
+  </data>
+  <data name="NguoiDungNhapThangSinhLonHonHienTai" xml:space="preserve">
+    <value>Tháng tuổi phải nhỏ hơn ngày hiện tại</value>
+  </data>
+  <data name="PhanMemKhongKetNoiDuocToiMayChuHeThong" xml:space="preserve">
+    <value>Phần mềm không kết nối được tới máy chủ hệ thống. Vui lòng kiểm tra lại cấu hình và kết nối</value>
+  </data>
+  <data name="Plugins_HisDesktop__KhongKhoiTaoDuocModule" xml:space="preserve">
+    <value>Không khởi tạo được module, vui lòng liên hệ với quản trị hệ thống để được hỗ trợ.</value>
+  </data>
+  <data name="SoLuongKhongDuocBeHonKhong" xml:space="preserve">
+    <value>Số lượng không được nhỏ hơn 0</value>
+  </data>
+  <data name="TaiKhoanKhongCoQuyenThucHienChucNang" xml:space="preserve">
+    <value>Tài khoản không có quyền thực hiện chức năng</value>
+  </data>
+  <data name="ThieuTruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Thiếu trường dữ liệu bắt buộc</value>
+  </data>
+  <data name="ThongBaoDuLieuTrong" xml:space="preserve">
+    <value>Không có kết quả</value>
+  </data>
+  <data name="ThongBaoTaiTruocCacDuLieuCauHinhVeMayTram" xml:space="preserve">
+    <value>Để tăng hiệu năng xử lý trong quá trình sử dụng, 
+phần mềm thực hiện tải trước các dữ liệu cấu hình 
+về máy trạm.
+Xin bạn vui lòng chờ trong giây lát...</value>
+  </data>
+  <data name="TieuDeCuaSoThongBaoLaCanhBao" xml:space="preserve">
+    <value>Cảnh báo</value>
+  </data>
+  <data name="TieuDeCuaSoThongBaoLaLoi" xml:space="preserve">
+    <value>Lỗi</value>
+  </data>
+  <data name="TieuDeCuaSoThongBaoLaThongBao" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
+  <data name="TieuDeThongTinHienThiPhanTrang" xml:space="preserve">
+    <value>Trang</value>
+  </data>
+  <data name="TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Trường dữ liệu bắt buộc</value>
+  </data>
+  <data name="TruongDuLieuKhongNhanGiaTriAm" xml:space="preserve">
+    <value>Trường dữ liệu không được âm</value>
+  </data>
+  <data name="TruongDuLieuLaVAT" xml:space="preserve">
+    <value>Giá trị nằm trong khoảng 0 - 100</value>
+  </data>
+  <data name="HeThongTBKhongTimThayPluginsCuaChucNangNayVoiMa" xml:space="preserve">
+    <value>Có sự cố xảy ra khi tải chức năng {0}, vui lòng liên hệ với quản trị hệ thống để được hỗ trợ!</value>
+  </data>
+  <data name="HeThongTBKhongKhoiTaoDuocPluginsCuaChucNangNayVoiMa" xml:space="preserve">
+    <value>Chức năng {0} không được hỗ trợ ở phiên bản hiện tại, vui lòng liên hệ với quản trị hệ thống để được hỗ trợ!</value>
+  </data>
+  <data name="HeThongTBTruyCapVaoPhanMemThanhCong" xml:space="preserve">
+    <value>Truy cập vào phần mềm {0}</value>
+  </data>
+  <data name="AlertHospitalFeeNotBHYT" xml:space="preserve">
+    <value>Bệnh nhân đã tạm ứng {0} đồng, bạn có muốn tiếp tục không.</value>
+  </data>
+  <data name="AlertWarningHeinFee" xml:space="preserve">
+    <value>Chi phí BHYT phải trả của hồ sơ vượt quá {0}. Bạn có muốn thực hiện?</value>
+  </data>
+  <data name="SoTienDaKeXChoBHYTDaVuotMucGioiHanYLaZ" xml:space="preserve">
+    <value>Số tiền đã kê {0} cho BHYT đã vượt mức giới hạn {1} là {2}{3}</value>
+  </data>
+</root>

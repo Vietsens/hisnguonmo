@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="IVT_LANGUAGE_KEY_LANGUAGEFRMASSIGNSERVICE_MERGER_PRINT_IN_BIEU_MAU_KHAC" xml:space="preserve">
+    <value>Tạo biểu mẫu khác</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_LANGUAGEFRMASSIGNSERVICE_MERGER_PRINT_IN_PHIEU_XET_NGHIEM_DOM_SOI" xml:space="preserve">
+    <value>In phiếu xét nghiệm đờm soi</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_LANGUAGEFRMASSIGNSERVICE_MERGER_PRINT_IN_PHIEU_YEU_CAU" xml:space="preserve">
+    <value>In phiếu yêu cầu</value>
+  </data>
+  <data name="frmAssignService.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmAssignService.barbtnNew.Caption" xml:space="preserve">
+    <value>Làm lại (Ctrl N)</value>
+  </data>
+  <data name="frmAssignService.barbtnPrintShortcut.Caption" xml:space="preserve">
+    <value>In(Ctrl P)</value>
+  </data>
+  <data name="frmAssignService.barbtnSaveAndPrintShortcut.Caption" xml:space="preserve">
+    <value>Lưu và in(Ctrl I)</value>
+  </data>
+  <data name="frmAssignService.barbtnSaveShortcut.Caption" xml:space="preserve">
+    <value>Lưu(Ctrl S)</value>
+  </data>
+  <data name="frmAssignService.btnExpendAll.Text" xml:space="preserve">
+    <value>Mở tất cả</value>
+  </data>
+  <data name="frmAssignService.btnNew.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl N)</value>
+  </data>
+  <data name="frmAssignService.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmAssignService.btnSaveAndPrint.Text" xml:space="preserve">
+    <value>Lưu In (Ctrl I)</value>
+  </data>
+  <data name="frmAssignService.btnSereservInTreatmentPreview.Text" xml:space="preserve">
+    <value>Dich vụ đã chỉ định</value>
+  </data>
+  <data name="frmAssignService.btnServiceReqList.Text" xml:space="preserve">
+    <value>Yêu cầu dịch vụ</value>
+  </data>
+  <data name="frmAssignService.btnShowDetail.Text" xml:space="preserve">
+    <value>Phiếu vừa chỉ định</value>
+  </data>
+  <data name="frmAssignService.btnTomLuocVienPhi.Text" xml:space="preserve">
+    <value>Tóm lược viện phí</value>
+  </data>
+  <data name="frmAssignService.btnUnExpendAll.Text" xml:space="preserve">
+    <value>Đóng tất cả</value>
+  </data>
+  <data name="frmAssignService.cboExecuteGroup.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignService.cboIcdServiceReq.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignService.cboServiceGroup.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignService.chkEmergency.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignService.chkExpendAll.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignService.chkIcdServiceReq.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignService.chkPriority.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignService.grcAmount_TabService.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="frmAssignService.grcChecked_TabService.Caption" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="frmAssignService.grcChecked_TabService.ToolTip" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="frmAssignService.grcExpend_TabService.Caption" xml:space="preserve">
+    <value>Hao phí</value>
+  </data>
+  <data name="frmAssignService.grcPrice_ServicePatyPrpo.Caption" xml:space="preserve">
+    <value>Giá gói</value>
+  </data>
+  <data name="frmAssignService.grcPrice_TabService.Caption" xml:space="preserve">
+    <value>Đơn giá</value>
+  </data>
+  <data name="frmAssignService.grcServiceCode_TabService.Caption" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="frmAssignService.grcServiceName_TabService.Caption" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="frmAssignService.gridColumn34.Caption" xml:space="preserve">
+    <value>IS_MULTI_REQUEST</value>
+  </data>
+  <data name="frmAssignService.gridColumnChiPhiNgoaiGoi_TabService.Caption" xml:space="preserve">
+    <value>CP ngoài gói</value>
+  </data>
+  <data name="frmAssignService.gridColumnEstimateDuration.Caption" xml:space="preserve">
+    <value>Thời gian dự kiến</value>
+  </data>
+  <data name="frmAssignService.gridColumnExecuteRoomName__TabService.Caption" xml:space="preserve">
+    <value>Phòng xử lý</value>
+  </data>
+  <data name="frmAssignService.gridColumnIsKH__TabService.Caption" xml:space="preserve">
+    <value>Kết hợp BHYT</value>
+  </data>
+  <data name="frmAssignService.gridColumnPatientTypeName__TabService.Caption" xml:space="preserve">
+    <value>ĐT thanh toán</value>
+  </data>
+  <data name="frmAssignService.gridColumnServiceTypeName.Caption" xml:space="preserve">
+    <value>Loại dịch vụ</value>
+  </data>
+  <data name="frmAssignService.gridViewServiceProcess.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm...</value>
+  </data>
+  <data name="frmAssignService.layoutControlItem12.Text" xml:space="preserve">
+    <value>Sửa:</value>
+  </data>
+  <data name="frmAssignService.layoutControlItem16.Text" xml:space="preserve">
+    <value>Nhóm dịch vụ:</value>
+  </data>
+  <data name="frmAssignService.layoutControlItem21.Text" xml:space="preserve">
+    <value>Ghi chú:</value>
+  </data>
+  <data name="frmAssignService.layoutControlItem9.Text" xml:space="preserve">
+    <value>Thời gian chỉ định:</value>
+  </data>
+  <data name="frmAssignService.lcEditorInfo.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmAssignService.lcichkExpendAll.Text" xml:space="preserve">
+    <value>Hao phí:</value>
+  </data>
+  <data name="frmAssignService.lcichkPriority.Text" xml:space="preserve">
+    <value>Ưu tiên:</value>
+  </data>
+  <data name="frmAssignService.lciDob.Text" xml:space="preserve">
+    <value>Ngày sinh:</value>
+  </data>
+  <data name="frmAssignService.lciEmergency.Text" xml:space="preserve">
+    <value>Thu sau:</value>
+  </data>
+  <data name="frmAssignService.lciExecuteGroup.Text" xml:space="preserve">
+    <value>Nhóm xử lý:</value>
+  </data>
+  <data name="frmAssignService.lciGenderName.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="frmAssignService.lciIcdMain.Text" xml:space="preserve">
+    <value>Chẩn đoán chính:</value>
+  </data>
+  <data name="frmAssignService.lciIcdMainTextWithSereServ.Text" xml:space="preserve">
+    <value>Dịch vụ chính:</value>
+  </data>
+  <data name="frmAssignService.lciPatientName.Text" xml:space="preserve">
+    <value>Bệnh nhân:</value>
+  </data>
+  <data name="frmAssignService.lciPatientTypeName.Text" xml:space="preserve">
+    <value>Đối tượng:</value>
+  </data>
+  <data name="frmAssignService.lciTotalServicePrice.Text" xml:space="preserve">
+    <value>Tổng tiền:</value>
+  </data>
+  <data name="frmAssignService.lcitxtIcdExtraCodes.Text" xml:space="preserve">
+    <value>Chẩn đoán phụ:</value>
+  </data>
+  <data name="frmAssignService.lcitxtIcdExtraNames.Text" xml:space="preserve">
+    <value>Chẩn đoán phụ:</value>
+  </data>
+  <data name="frmAssignService.repositoryItemBtnChecked__TabService.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmAssignService.repositoryItemcboExcuteRoom_TabService.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignService.repositoryItemcboPatientType_TabService.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignService.repositoryItemcboPatientType_TabService1.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmAssignService.Text" xml:space="preserve">
+    <value>Chỉ định dịch vụ kỹ thuật</value>
+  </data>
+  <data name="frmAssignService.treeListPrice.Caption" xml:space="preserve">
+    <value>Giá</value>
+  </data>
+  <data name="frmAssignService.treeListServiceReqCode.Caption" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="frmAssignService.treeListServiceReqName.Caption" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="frmAssignService.treeService.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Nhập chuỗi tìm kiếm ...</value>
+  </data>
+  <data name="frmAssignService.txtIcdExtraCodes.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã bệnh</value>
+  </data>
+  <data name="frmAssignService.txtIcdExtraNames.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Nhấn F1 để chọn bệnh</value>
+  </data>
+  <data name="frmDetail.grcCreator_TabService.Caption" xml:space="preserve">
+    <value>Người yêu cầu</value>
+  </data>
+  <data name="frmDetail.grcExecuteRoomName_TabService.Caption" xml:space="preserve">
+    <value>Phòng xử lý</value>
+  </data>
+  <data name="frmDetail.grcIntructionTime_TabService.Caption" xml:space="preserve">
+    <value>Thời gian yêu cầu</value>
+  </data>
+  <data name="frmDetail.grcServiceReqCode_TabService.Caption" xml:space="preserve">
+    <value>Mã yêu cầu</value>
+  </data>
+  <data name="frmDetail.grcServiceReqTypeName_TabService.Caption" xml:space="preserve">
+    <value>Loại yêu cầu</value>
+  </data>
+  <data name="frmDetail.grcStt__TabService.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmDetail.grcTotalAmount_TabService.Caption" xml:space="preserve">
+    <value>Số lượng dịch vụ</value>
+  </data>
+  <data name="frmDetail.grcTotalPrice_TabService.Caption" xml:space="preserve">
+    <value>Tổng tiền</value>
+  </data>
+  <data name="frmDetail.gridColumn7.Caption" xml:space="preserve">
+    <value>In phiếu cầu</value>
+  </data>
+  <data name="frmDetail.gridColumn7.ToolTip" xml:space="preserve">
+    <value>In phiếu yêu cầu</value>
+  </data>
+  <data name="frmDetail.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmDetail.repositoryItemButtonTabServiceViewReq_Print.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmDetail.Text" xml:space="preserve">
+    <value>Chi tiết</value>
+  </data>
+  <data name="frmAssignService.toggleSwitchDataChecked.Properties.OffText" xml:space="preserve">
+    <value>Tất cả dịch vụ</value>
+  </data>
+  <data name="frmAssignService.toggleSwitchDataChecked.Properties.OnText" xml:space="preserve">
+    <value>Dịch vụ đã chọn</value>
+  </data>
+  <data name="frmAssignService.lciPreServiceReq.Text" xml:space="preserve">
+    <value>Chỉ định cũ:</value>
+  </data>
+  <data name="frmAssignService.gridColumnShareCount.Caption" xml:space="preserve">
+    <value>Số nằm ghép</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>String</value>
+  </data>
+</root>

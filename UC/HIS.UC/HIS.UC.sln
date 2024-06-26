@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.UC.UserPrintList", "HIS.UC.UserPrintList\HIS.UC.UserPrintList.csproj", "{AE330E37-F548-461B-9DFB-484BD8E4A9A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.UC.ServiceTree", "HIS.UC.ServiceTree\HIS.UC.ServiceTree.csproj", "{6E07F106-9C95-412B-8EFF-E2EC7B757817}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AE330E37-F548-461B-9DFB-484BD8E4A9A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE330E37-F548-461B-9DFB-484BD8E4A9A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE330E37-F548-461B-9DFB-484BD8E4A9A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE330E37-F548-461B-9DFB-484BD8E4A9A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E07F106-9C95-412B-8EFF-E2EC7B757817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E07F106-9C95-412B-8EFF-E2EC7B757817}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E07F106-9C95-412B-8EFF-E2EC7B757817}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E07F106-9C95-412B-8EFF-E2EC7B757817}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

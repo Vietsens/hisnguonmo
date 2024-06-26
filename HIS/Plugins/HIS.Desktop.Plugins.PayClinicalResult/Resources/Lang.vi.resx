@@ -1,0 +1,360 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="UCExecuteRoom.btnAggrHospitalFees.Text" xml:space="preserve">
+    <value>Viện phí</value>
+  </data>
+  <data name="UCExecuteRoom.btnBordereau.Text" xml:space="preserve">
+    <value>Bảng kê (F5)</value>
+  </data>
+  <data name="UCExecuteRoom.btnDepositReq.Text" xml:space="preserve">
+    <value>Yêu cầu tạm ứng</value>
+  </data>
+  <data name="UCExecuteRoom.btnExecute.Text" xml:space="preserve">
+    <value>Xử lý (Ctrl X)</value>
+  </data>
+  <data name="UCExecuteRoom.btnFind.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="UCExecuteRoom.btnRoomTran.Text" xml:space="preserve">
+    <value>Chuyển phòng</value>
+  </data>
+  <data name="UCExecuteRoom.btnServiceReqList.Text" xml:space="preserve">
+    <value>Danh sách y lệnh</value>
+  </data>
+  <data name="UCExecuteRoom.btnSummaryInforTreatmentRecords.Text" xml:space="preserve">
+    <value>Thông tin bệnh án</value>
+  </data>
+  <data name="UCExecuteRoom.btnTreatmentHistory.Text" xml:space="preserve">
+    <value>Lịch sử điều trị</value>
+  </data>
+  <data name="UCExecuteRoom.btnTreatmentHistory2.Text" xml:space="preserve">
+    <value>Chi tiết y lệnh</value>
+  </data>
+  <data name="UCExecuteRoom.btnUnStart.Text" xml:space="preserve">
+    <value>Hủy bắt đầu</value>
+  </data>
+  <data name="UCExecuteRoom.gcolSERVICE_REQ_STT_ID.Caption" xml:space="preserve">
+    <value>TRANGTHAI</value>
+  </data>
+  <data name="UCExecuteRoom.gcolSERVICE_REQ_STT_NAME.Caption" xml:space="preserve">
+    <value>SERVICE_REQ_STT_NAME</value>
+  </data>
+  <data name="UCExecuteRoom.grdColNUM_ORDER.Caption" xml:space="preserve">
+    <value>#</value>
+  </data>
+  <data name="UCExecuteRoom.grdColPatientCode.Caption" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UCExecuteRoom.grdColPRIORIRY_DISPLAY.Caption" xml:space="preserve">
+    <value>*</value>
+  </data>
+  <data name="UCExecuteRoom.grdColPRIORIRY_DISPLAY.ToolTip" xml:space="preserve">
+    <value>Trạng thái của các yêu cầu kèm theo</value>
+  </data>
+  <data name="UCExecuteRoom.grdColRequestDate.Caption" xml:space="preserve">
+    <value>Thời gian yêu cầu</value>
+  </data>
+  <data name="UCExecuteRoom.grdColServiceReqCode.Caption" xml:space="preserve">
+    <value>Mã yêu cầu</value>
+  </data>
+  <data name="UCExecuteRoom.grdColServiceReqTypeName.Caption" xml:space="preserve">
+    <value>Loại yêu cầu</value>
+  </data>
+  <data name="UCExecuteRoom.grdColTRANGTHAI_IMG.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCExecuteRoom.grdColTreatmentCode.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="UCExecuteRoom.grdColVirPatientName.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn1.Caption" xml:space="preserve">
+    <value>Trạng thái của các yêu cầu kèm theo</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn2.Caption" xml:space="preserve">
+    <value>Call Patient</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn3.Caption" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn4.Caption" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn5.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn6.Caption" xml:space="preserve">
+    <value>Loại</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn7.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn8.Caption" xml:space="preserve">
+    <value>Giá</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlGroup4.Text" xml:space="preserve">
+    <value>Dịch vụ yêu cầu</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlGroup6.Text" xml:space="preserve">
+    <value>Thông tin bệnh nhân</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlGroupTreeSereServ.Text" xml:space="preserve">
+    <value>Dịch vụ chỉ định</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem13.Text" xml:space="preserve">
+    <value>Tên bệnh nhân:</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem14.Text" xml:space="preserve">
+    <value>Ngày sinh:</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem15.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem16.Text" xml:space="preserve">
+    <value>Địa chỉ:</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem4.Text" xml:space="preserve">
+    <value>Mã bệnh nhân:</value>
+  </data>
+  <data name="UCExecuteRoom.lciCreatefrom.Text" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="UCExecuteRoom.lciCreateTo.Text" xml:space="preserve">
+    <value>đến:</value>
+  </data>
+  <data name="UCExecuteRoom.lciPatientTypeName.Text" xml:space="preserve">
+    <value>Đối tượng:</value>
+  </data>
+  <data name="UCExecuteRoom.repositoryItemPictureEdit1.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCExecuteRoom.repositoryItemPictureEdit2.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCExecuteRoom.txtSearchKey.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Nhập từ khóa tìm kiếm(F2)</value>
+  </data>
+  <data name="UCExecuteRoom.btnBenhAnNgoaiTru.Text" xml:space="preserve">
+    <value>Bệnh án ngoại trú</value>
+  </data>
+  <data name="UCExecuteRoom.btnBienBanHoiChan.Text" xml:space="preserve">
+    <value>Biên bản hội chẩn</value>
+  </data>
+  <data name="UCExecuteRoom.btnBieuMauKhac.Text" xml:space="preserve">
+    <value>Biểu mẫu khác</value>
+  </data>
+  <data name="UCExecuteRoom.btnUnFinish.Text" xml:space="preserve">
+    <value>Hủy kết thúc</value>
+  </data>
+  <data name="UCExecuteRoom.btnVatTuHaoPhi.Text" xml:space="preserve">
+    <value>Khai báo số vật tư hao phí</value>
+  </data>
+  <data name="UCExecuteRoom.CallPatientTooltip.Text" xml:space="preserve">
+    <value>Gọi bệnh nhân</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.NotReady" xml:space="preserve">
+    <value>Chưa sẵn sàng</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.PRIORIRY" xml:space="preserve">
+    <value>Ưu tiên</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.Ready" xml:space="preserve">
+    <value>Sẵn sàng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__COLUMN_NOTE" xml:space="preserve">
+    <value>Chú ý</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__COLUMN_SERVICE_CODE" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__COLUMN_SERVICE_NAME" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXECUTE_ROOM__TREE_SERE_SERV__COLUMN_SERVICE_REQ_CODE" xml:space="preserve">
+    <value>Mã y lệnh</value>
+  </data>
+  <data name="UCExecuteRoom.cboFind.All" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
+  <data name="UCExecuteRoom.cboFind.Finish" xml:space="preserve">
+    <value>Kết thúc</value>
+  </data>
+  <data name="UCExecuteRoom.cboFind.NotFinished" xml:space="preserve">
+    <value>Chưa kết thúc</value>
+  </data>
+  <data name="UCExecuteRoom.cboFind.NotYetProcessed" xml:space="preserve">
+    <value>Chưa xử lý</value>
+  </data>
+  <data name="UCExecuteRoom.cboFind.Processing" xml:space="preserve">
+    <value>Đang xử lý</value>
+  </data>
+  <data name="UCExecuteRoom.btnAssignPaan.Text" xml:space="preserve">
+    <value>Chỉ định giải phẫu bệnh lý</value>
+  </data>
+  <data name="UCExecuteRoom.grdColDob.Caption" xml:space="preserve">
+    <value>Năm sinh</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumnGender.Caption" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumnTreatmentCode.Caption" xml:space="preserve">
+    <value>Mà điều trị</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.FinishCLS" xml:space="preserve">
+    <value>Hoàn thành CLS</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.UnFinishCLS" xml:space="preserve">
+    <value>Chưa kết thúc CLS</value>
+  </data>
+  <data name="UCExecuteRoom.ThoiGianBatDauThoiGianKetThuc" xml:space="preserve">
+    <value>Đặt thời gian bắt đầu và thời gian kết thúc không đúng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__REQUEST_DEPARTMENT_NAME" xml:space="preserve">
+    <value>Khoa yêu cầu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__REQUEST_SOPHIEU" xml:space="preserve">
+    <value>Số phiếu</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.CXL" xml:space="preserve">
+    <value>Chưa xử lý</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.DXL" xml:space="preserve">
+    <value>Đang xử lý</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.KT" xml:space="preserve">
+    <value>Kết thúc</value>
+  </data>
+</root>

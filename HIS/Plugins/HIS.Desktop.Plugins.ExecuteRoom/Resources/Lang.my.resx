@@ -1,0 +1,936 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FormKeThuoc.btnDongY.Text" xml:space="preserve">
+    <value>သဘောတူသည်။</value>
+  </data>
+  <data name="FormKeThuoc.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="FormKeThuoc.layoutControlItem1.Text" xml:space="preserve">
+    <value>အမှား-</value>
+  </data>
+  <data name="FormKeThuoc.layoutControlItem4.Text" xml:space="preserve">
+    <value>စာရင်း-</value>
+  </data>
+  <data name="FormKeThuoc.layoutControlItem6.Text" xml:space="preserve">
+    <value>စာရင်းသွင်းသည်-</value>
+  </data>
+  <data name="FormKeThuoc.Text" xml:space="preserve">
+    <value>လူသုံးကုန်များ ဆေးညွှန်း</value>
+  </data>
+  <data name="frmNumberFilmInput.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmNumberFilmInput.barButtonItem_Save.Caption" xml:space="preserve">
+    <value>သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="frmNumberFilmInput.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmNumberFilmInput.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmNumberFilmInput.layoutControlItem2.Text" xml:space="preserve">
+    <value>ရုပ်ရှင်အရွယ်အစား-</value>
+  </data>
+  <data name="frmNumberFilmInput.lciMunberOfFilm.Text" xml:space="preserve">
+    <value>ရုပ်ရှင်အရေအတွက်-</value>
+  </data>
+  <data name="frmNumberFilmInput.LciNumberFailFilm.Text" xml:space="preserve">
+    <value>ပျက်စီးနေသော ရုပ်ရှင်အရေအတွက်-</value>
+  </data>
+  <data name="frmNumberFilmInput.Text" xml:space="preserve">
+    <value>ရုပ်ရှင်အချက်အလက်ကို ထည့်ပါ။</value>
+  </data>
+  <data name="ImageCodeView.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__COLUMN_NOTE" xml:space="preserve">
+    <value>အာရုံ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__COLUMN_SERVICE_CODE" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကုဒ်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__COLUMN_SERVICE_NAME" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမည်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__REQUEST_DEPARTMENT_NAME" xml:space="preserve">
+    <value>ဘာသာရပ်လိုအပ်သည်။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__REQUEST_SOPHIEU" xml:space="preserve">
+    <value>မဲများ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__STT" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXECUTE_ROOM__BLOCK_CAPTION" xml:space="preserve">
+    <value>BLOCK</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXECUTE_ROOM__TREE_SERE_SERV__COLUMN_ROOM_NAME" xml:space="preserve">
+    <value>အခန်းတောင်းပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXECUTE_ROOM__TREE_SERE_SERV__COLUMN_SERVICE_REQ_CODE" xml:space="preserve">
+    <value>အမိန့်ကုဒ်</value>
+  </data>
+  <data name="SwapService.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="SwapService.barBtnPrint.Caption" xml:space="preserve">
+    <value>ctrl P</value>
+  </data>
+  <data name="SwapService.barBtnSave.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="SwapService.btnPrint.Text" xml:space="preserve">
+    <value>ပရင့်ထုတ်ခြင်း (Ctrl P)</value>
+  </data>
+  <data name="SwapService.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="SwapService.gc_Amount.Caption" xml:space="preserve">
+    <value>ပမာဏ</value>
+  </data>
+  <data name="SwapService.gc_Expend.Caption" xml:space="preserve">
+    <value>HP</value>
+  </data>
+  <data name="SwapService.gc_Expend.ToolTip" xml:space="preserve">
+    <value>ငွေဖြုန်းတီးခြင်း။</value>
+  </data>
+  <data name="SwapService.gc_OutParentFee.Caption" xml:space="preserve">
+    <value>အထုပ်ထဲက CP</value>
+  </data>
+  <data name="SwapService.gc_OutParentFee.ToolTip" xml:space="preserve">
+    <value>အထုပ်ပြင်ပကုန်ကျစရိတ်</value>
+  </data>
+  <data name="SwapService.gc_PatientTypeId.Caption" xml:space="preserve">
+    <value>DTTT</value>
+  </data>
+  <data name="SwapService.gc_PatientTypeId.ToolTip" xml:space="preserve">
+    <value>ငွေပေးချေမှု ရှိကြပါတယ်။</value>
+  </data>
+  <data name="SwapService.gc_Price.Caption" xml:space="preserve">
+    <value>တစ်ခုချင်းစျေးနှုန်း</value>
+  </data>
+  <data name="SwapService.gc_PrimaryPatientTypeId.Caption" xml:space="preserve">
+    <value>DTPT</value>
+  </data>
+  <data name="SwapService.gc_PrimaryPatientTypeId.ToolTip" xml:space="preserve">
+    <value>နောက်ဆက်တွဲ ဘာသာရပ်များ</value>
+  </data>
+  <data name="SwapService.gc_Selected.Caption" xml:space="preserve">
+    <value>ရွေးချယ်ခဲ့သည်။</value>
+  </data>
+  <data name="SwapService.gc_ServiceCode.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကုဒ်</value>
+  </data>
+  <data name="SwapService.gc_ServiceName.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမည်</value>
+  </data>
+  <data name="SwapService.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="SwapService.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုပြောင်းရန် တောင်းဆိုခြင်း။</value>
+  </data>
+  <data name="UCExecuteRoom.btnAggrHospitalFees.Text" xml:space="preserve">
+    <value>ဆေးရုံကြေး</value>
+  </data>
+  <data name="UCExecuteRoom.btnAssignPaan.Text" xml:space="preserve">
+    <value>ရောဂါဗေဒအတွက်ညွှန်ပြချက်များ</value>
+  </data>
+  <data name="UCExecuteRoom.btnBenhAnNgoaiTru.Text" xml:space="preserve">
+    <value>ပြင်ပလူနာ ဆေးမှတ်တမ်းများ</value>
+  </data>
+  <data name="UCExecuteRoom.btnBienBanHoiChan.Text" xml:space="preserve">
+    <value>ဆွေးနွေးပွဲမှတ်တမ်းများ</value>
+  </data>
+  <data name="UCExecuteRoom.btnBieuMauKhac.Text" xml:space="preserve">
+    <value>အခြားပုံစံများ</value>
+  </data>
+  <data name="UCExecuteRoom.btnBordereau.Text" xml:space="preserve">
+    <value>စာရင်း (F5)</value>
+  </data>
+  <data name="UCExecuteRoom.btnCallPatient.Text" xml:space="preserve">
+    <value>ဖုန်းခေါ်ဆိုမှု (F6)</value>
+  </data>
+  <data name="UCExecuteRoom.btnCodeFind.Text" xml:space="preserve">
+    <value>နေ့</value>
+  </data>
+  <data name="UCExecuteRoom.btnDepositReq.Text" xml:space="preserve">
+    <value>ကြိုတင်မေတ္တာရပ်ခံအပ်ပါသည်။</value>
+  </data>
+  <data name="UCExecuteRoom.btnExecute.Text" xml:space="preserve">
+    <value>ကိုင်တွယ် (Ctrl X)</value>
+  </data>
+  <data name="UCExecuteRoom.btnExecuteHT.Text" xml:space="preserve">
+    <value>တောင်းဆိုချက်အရေအတွက်ကို ဆောင်ရွက်ပြီးပါပြီ။/မက်တယ်။: </value>
+  </data>
+  <data name="UCExecuteRoom.btnFind.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="UCExecuteRoom.btnInKetQuaDaKy.Text" xml:space="preserve">
+    <value>လက်မှတ်ရေးထိုးထားသော ရလဒ်စာရွက်ကို ပရင့်ထုတ်ပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.btnitemServiceExecuteGroup.Text" xml:space="preserve">
+    <value>စုစည်းမှုရလဒ်များကို ပြန်ပေးပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.btnKeThuocVatTu.Text" xml:space="preserve">
+    <value>ရွေးချယ်ထားသော ညွှန်ကိန်းများအတွက် ဆေးဝါးများ/ စားသုံးနိုင်သောပစ္စည်းများကို ညွှန်ကြားပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.btnMissCall.Text" xml:space="preserve">
+    <value>လွတ်သွားသော လူနာခေါ်ဆိုမှု</value>
+  </data>
+  <data name="UCExecuteRoom.btnMissCall.ToolTip" xml:space="preserve">
+    <value>လွတ်သွားသော လူနာခေါ်ဆိုမှု</value>
+  </data>
+  <data name="UCExecuteRoom.btnNotEnter.Text" xml:space="preserve">
+    <value>လူနာမဝင်ဘူး။</value>
+  </data>
+  <data name="UCExecuteRoom.btnNotEnter.ToolTip" xml:space="preserve">
+    <value>လူနာမဝင်ဘူး။</value>
+  </data>
+  <data name="UCExecuteRoom.btnPhieuVoBenhAn.Text" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းစာရွက်</value>
+  </data>
+  <data name="UCExecuteRoom.btnRecallPatient.Text" xml:space="preserve">
+    <value>ပြန်ခေါ်ရန် (F7)</value>
+  </data>
+  <data name="UCExecuteRoom.btnRefesh.ToolTip" xml:space="preserve">
+    <value>အလိုအလျောက်ပြန်တင်ပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.btnRoomTran.Text" xml:space="preserve">
+    <value>အခန်းပြောင်းပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.btnServiceReqList.Text" xml:space="preserve">
+    <value>ဆေးစာရင်း</value>
+  </data>
+  <data name="UCExecuteRoom.btnSummaryInforTreatmentRecords.Text" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းအချက်အလက်</value>
+  </data>
+  <data name="UCExecuteRoom.btnThietlapkhotieuhao.Text" xml:space="preserve">
+    <value>အသုံးအဆောင်ပစ္စည်းများကို တပ်ဆင်ပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.btnThongTinChuyenDen.Text" xml:space="preserve">
+    <value>သတင်းအချက်အလက်လွှဲပြောင်း</value>
+  </data>
+  <data name="UCExecuteRoom.btnTreatmentHistory.Text" xml:space="preserve">
+    <value>ကုသမှုမှတ်တမ်း</value>
+  </data>
+  <data name="UCExecuteRoom.btnTreatmentHistory2.Text" xml:space="preserve">
+    <value>အော်ဒါအသေးစိတ်</value>
+  </data>
+  <data name="UCExecuteRoom.btnUnFinish.Text" xml:space="preserve">
+    <value>ဇာတ်သိမ်းမှုကို ပယ်ဖျက်ပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.btnUnStart.Text" xml:space="preserve">
+    <value>စတင်ပယ်ဖျက်ပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.btnVatTuHaoPhi.Text" xml:space="preserve">
+    <value>လူသုံးကုန် အရေအတွက်ကို ကြေညာပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.CallPatientNhoTooltip.Text" xml:space="preserve">
+    <value>လွတ်သွားသောခေါ်ဆိုမှု</value>
+  </data>
+  <data name="UCExecuteRoom.CallPatientTooltip.Text" xml:space="preserve">
+    <value>လူနာကိုခေါ်ပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.cboContract.Text" xml:space="preserve">
+    <value>စာချုပ်ကုဒ်</value>
+  </data>
+  <data name="UCExecuteRoom.cboDaKe1.Text" xml:space="preserve">
+    <value>ဆေးစာ/စားသုံးရန်မလုံလောက်ပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.cboDaKe2.Text" xml:space="preserve">
+    <value>လုံလောက်သောဆေးညွှန်း/စားသုံးရန်မလုံလောက်ပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.cboFind.All" xml:space="preserve">
+    <value>အားလုံး</value>
+  </data>
+  <data name="UCExecuteRoom.cboFind.Finish" xml:space="preserve">
+    <value>အဆုံး</value>
+  </data>
+  <data name="UCExecuteRoom.cboFind.MissedCall" xml:space="preserve">
+    <value>လွတ်သွားသောခေါ်ဆိုမှု</value>
+  </data>
+  <data name="UCExecuteRoom.cboFind.NotFinished" xml:space="preserve">
+    <value>မပြီး</value>
+  </data>
+  <data name="UCExecuteRoom.cboFind.NotYetProcessed" xml:space="preserve">
+    <value>လုပ်ငန်းစဉ်မရှိပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.cboFind.Processing" xml:space="preserve">
+    <value>လုပ်ဆောင်နေသည်</value>
+  </data>
+  <data name="UCExecuteRoom.cboInDebt1.Text" xml:space="preserve">
+    <value>ဆေးရုံစရိတ်မရှိပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.cboInDebt2.Text" xml:space="preserve">
+    <value>ဆေးရုံစရိတ်အတွက် အကြွေးတင်နေပါသည်။</value>
+  </data>
+  <data name="UCExecuteRoom.cboPatientType.Properties.NullText" xml:space="preserve">
+    <value>အားလုံး</value>
+  </data>
+  <data name="UCExecuteRoom.cboServiceRoom1.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကုဒ်</value>
+  </data>
+  <data name="UCExecuteRoom.cboServiceRoom2.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမည်</value>
+  </data>
+  <data name="UCExecuteRoom.cboTreatmentType1.Text" xml:space="preserve">
+    <value>စာမေးပွဲ</value>
+  </data>
+  <data name="UCExecuteRoom.cboTreatmentType2.Text" xml:space="preserve">
+    <value>အတွင်းလူနာကုသမှု</value>
+  </data>
+  <data name="UCExecuteRoom.cboTreatmentType3.Text" xml:space="preserve">
+    <value>ပြင်ပလူနာကုသမှု</value>
+  </data>
+  <data name="UCExecuteRoom.chkCPA.ToolTip" xml:space="preserve">
+    <value>ရှာဖွေမှုတွင် ရလဒ် 1 ခုသာ ရှိပါက၊ ဤ checkbox ကို အမှန်ခြစ်ထားပါက၊ ဆော့ဖ်ဝဲသည် ထိုလူနာကို အလိုအလျောက် ရွေးချယ်မည်ဖြစ်သည်။ checkbox ကို အမှန်ခြစ်မထားပါက၊ ဆော့ဖ်ဝဲသည် လူနာနှင့်သက်ဆိုင်သည့် ကုသမှုမျက်နှာပြင်ကို အလိုအလျောက်ဖွင့်ပေးမည်ဖြစ်သည်။</value>
+  </data>
+  <data name="UCExecuteRoom.ckKQCLS.ToolTip" xml:space="preserve">
+    <value>CLS ရလဒ်များ အလုံအလောက်ရှိပြီးသား မှာယူမှုများကို ဦးစားပေးပြသပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.Gc_MedisoftHistory.Caption" xml:space="preserve">
+    <value>Medisoft ကုသမှုမှတ်တမ်း</value>
+  </data>
+  <data name="UCExecuteRoom.gc_PatientClassify.Caption" xml:space="preserve">
+    <value>BN အမျိုးအစားခွဲခြားခြင်း။</value>
+  </data>
+  <data name="UCExecuteRoom.gc_PatientClassify.ToolTip" xml:space="preserve">
+    <value>လူနာအမျိုးအစားခွဲခြားခြင်း။</value>
+  </data>
+  <data name="UCExecuteRoom.gcolSERVICE_REQ_STT_ID.Caption" xml:space="preserve">
+    <value>TRANGTHAI</value>
+  </data>
+  <data name="UCExecuteRoom.gcolSERVICE_REQ_STT_NAME.Caption" xml:space="preserve">
+    <value>SERVICE_REQ_STT_NAME</value>
+  </data>
+  <data name="UCExecuteRoom.grdColDob.Caption" xml:space="preserve">
+    <value>မွေးသည့်နှစ်</value>
+  </data>
+  <data name="UCExecuteRoom.grdColFinishTime.Caption" xml:space="preserve">
+    <value>ကုန်ဆုံးချိန်</value>
+  </data>
+  <data name="UCExecuteRoom.grdColNUM_ORDER.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCExecuteRoom.grdColPatientCode.Caption" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="UCExecuteRoom.grdColPatientType.Caption" xml:space="preserve">
+    <value>ဘာသာရပ် BN</value>
+  </data>
+  <data name="UCExecuteRoom.grdColPatientType.ToolTip" xml:space="preserve">
+    <value>လူနာရှိကြပါတယ်။</value>
+  </data>
+  <data name="UCExecuteRoom.grdColPRIORIRY_DISPLAY.Caption" xml:space="preserve">
+    <value>*</value>
+  </data>
+  <data name="UCExecuteRoom.grdColPRIORIRY_DISPLAY.ToolTip" xml:space="preserve">
+    <value>ပူးတွဲပါတောင်းဆိုမှုများ၏အခြေအနေ</value>
+  </data>
+  <data name="UCExecuteRoom.grdColRequestDate.Caption" xml:space="preserve">
+    <value>အချိန်တောင်းပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.grdColServiceReqCode.Caption" xml:space="preserve">
+    <value>အမိန့်ကုဒ်</value>
+  </data>
+  <data name="UCExecuteRoom.grdColServiceReqTypeName.Caption" xml:space="preserve">
+    <value>တောင်းဆိုချက်အမျိုးအစား</value>
+  </data>
+  <data name="UCExecuteRoom.grdColTRANGTHAI_IMG.Caption" xml:space="preserve">
+    <value>အဆင့်အတန်း</value>
+  </data>
+  <data name="UCExecuteRoom.grdColTreatmentCode.Caption" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
+  <data name="UCExecuteRoom.grdColVirPatientName.Caption" xml:space="preserve">
+    <value>လူနာအမည်</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn1.Caption" xml:space="preserve">
+    <value>ပူးတွဲပါတောင်းဆိုမှုများ၏အခြေအနေ</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn10.Caption" xml:space="preserve">
+    <value>သတ်မှတ်ထားသောအခန်း</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn11.Caption" xml:space="preserve">
+    <value>ကုသမှုဧရိယာ (သင်္ကေတ)</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn12.Caption" xml:space="preserve">
+    <value>ဆက်စပ်နံပါတ်</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn13.Caption" xml:space="preserve">
+    <value>ဝင်ခွင့်နံပါတ်ကို ကြည့်ပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn14.Caption" xml:space="preserve">
+    <value>a</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn15.Caption" xml:space="preserve">
+    <value>gridColumn15</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn16.Caption" xml:space="preserve">
+    <value>ဇယားကွက် ၁၆</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn17.Caption" xml:space="preserve">
+    <value>စတင်ချိန်</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn2.Caption" xml:space="preserve">
+    <value>လူနာကိုခေါ်ပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn3.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကုဒ်</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn4.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမည်</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn5.Caption" xml:space="preserve">
+    <value>ယူနစ်</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn6.Caption" xml:space="preserve">
+    <value>ရိုက်ပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn7.Caption" xml:space="preserve">
+    <value>ပမာဏ</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn8.Caption" xml:space="preserve">
+    <value>စျေးနှုန်း</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumn9.Caption" xml:space="preserve">
+    <value>သတ်မှတ်ထားသောဌာန</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumnBusyCount.Caption" xml:space="preserve">
+    <value>ဇယားကွက် ၉</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumnGender.Caption" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumnInstructionNote.Caption" xml:space="preserve">
+    <value>စီစဉ်သူ၏မှတ်စုများ</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumnInstructionTime.Caption" xml:space="preserve">
+    <value>အော်ဒါမှာတယ်။</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumnSereServServiceReqBlock.Caption" xml:space="preserve">
+    <value>BLOCK</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumnServiceReqBlock.Caption" xml:space="preserve">
+    <value>BLOCK</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumnSoPhieu.Caption" xml:space="preserve">
+    <value>မဲများ</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumnStt.Caption" xml:space="preserve">
+    <value>ဇယားကွက် ၁၁</value>
+  </data>
+  <data name="UCExecuteRoom.gridColumnTreatmentCode.Caption" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
+  <data name="UCExecuteRoom.labelControl10.Text" xml:space="preserve">
+    <value>oC</value>
+  </data>
+  <data name="UCExecuteRoom.labelControl11.Text" xml:space="preserve">
+    <value>အကြိမ်/မိနစ်</value>
+  </data>
+  <data name="UCExecuteRoom.labelControl12.Text" xml:space="preserve">
+    <value>mmHG</value>
+  </data>
+  <data name="UCExecuteRoom.labelControl13.Text" xml:space="preserve">
+    <value>ကီလိုဂရမ်</value>
+  </data>
+  <data name="UCExecuteRoom.labelControl14.Text" xml:space="preserve">
+    <value>စင်တီမီတာ</value>
+  </data>
+  <data name="UCExecuteRoom.labelControl9.Text" xml:space="preserve">
+    <value>အကြိမ်/မိနစ်</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControl3.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControl4.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControl5.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၅</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControl6.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၆</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControl7.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၇</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlGroup4.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုတောင်းဆိုမှု</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlGroup6.Text" xml:space="preserve">
+    <value>လူနာအချက်အလက်</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlGroupTreeSereServ.Text" xml:space="preserve">
+    <value>သတ်မှတ်ထားသောဝန်ဆောင်မှု</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem13.Text" xml:space="preserve">
+    <value>လူနာအမည်-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem14.Text" xml:space="preserve">
+    <value>မွေးရက်:</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem15.Text" xml:space="preserve">
+    <value>လိင်-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem16.Text" xml:space="preserve">
+    <value>လိပ်စာ-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem17.Text" xml:space="preserve">
+    <value>စာမေးပွဲအတွက်အကြောင်းပြချက်</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem20.Text" xml:space="preserve">
+    <value>KCBD-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem33.Text" xml:space="preserve">
+    <value>စကားလုံးအသုံးအနှုန်း-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem34.Text" xml:space="preserve">
+    <value>နောက်ဆုံးရက်:</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem35.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဝန်ဆောင်မှု အရေအတွက်</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem35.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှု အရေအတွက်</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem4.Text" xml:space="preserve">
+    <value>လူနာကုဒ်-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem40.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ရလဒ်များ ရရှိနိုင်ပါသည်။</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem40.Text" xml:space="preserve">
+    <value>ရလဒ်များ ရှိပြီးသားဖြစ်သည်-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem42.Text" xml:space="preserve">
+    <value>standby မျက်နှာပြင်ကို အလိုအလျောက်ဖွင့်ပါ-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem45.Text" xml:space="preserve">
+    <value>ရောဂါဗေဒဖြစ်စဉ်-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem46.Text" xml:space="preserve">
+    <value>Anamnesis-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem47.Text" xml:space="preserve">
+    <value>ခန္ဓာကိုယ် အပြည့်အစုံ စစ်ဆေးခြင်း</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem52.Text" xml:space="preserve">
+    <value>အစိတ်အပိုင်းများ စစ်ဆေးခြင်း-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem53.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>သတ်မှတ်ထားသော အချိန်နှင့် တာတမံဝန်ဆောင်မှု ပြီးမြောက်ရန် အချိန်အလိုက် ဦးစားပေးအလိုက် အမှာစာများကို စီပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem53.Text" xml:space="preserve">
+    <value>ဦးစားပေးလုပ်ဆောင်ခြင်း TG</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem54.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ရှာဖွေမှုတွင် ရလဒ် 1 ခုသာ ရှိပါက၊ ဤ checkbox ကို အမှန်ခြစ်ထားပါက၊ ဆော့ဖ်ဝဲသည် ထိုလူနာကို အလိုအလျောက် ရွေးချယ်မည်ဖြစ်သည်။ checkbox ကို အမှန်ခြစ်မထားပါက၊ ဆော့ဖ်ဝဲသည် လူနာနှင့်သက်ဆိုင်သည့် ကုသမှုမျက်နှာပြင်ကို အလိုအလျောက်ဖွင့်ပေးမည်ဖြစ်သည်။</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem57.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>subclinical ရလဒ်များ၏အကျဉ်းချုပ်</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem57.Text" xml:space="preserve">
+    <value>CLS ရလဒ်အကျဉ်းချုပ်-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem58.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ပဏာမရောဂါလက္ခဏာ</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem58.Text" xml:space="preserve">
+    <value>ပဏာမကောလိပ်-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem59.Text" xml:space="preserve">
+    <value>ကုသမှုလမ်းညွှန်-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem61.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကနဦးရောဂါလက္ခဏာ</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem61.Text" xml:space="preserve">
+    <value>ကနဦးကောလိပ်-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem63.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ပြင်ပအကြောင်းတရားများ</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem63.Text" xml:space="preserve">
+    <value>ပုဂ္ဂိုလ်/ပြင်ပပုဂ္ဂိုလ်-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem65.Text" xml:space="preserve">
+    <value>ဒုတိယရောဂါများ</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem75.Text" xml:space="preserve">
+    <value>ပတ်လမ်း-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem76.Text" xml:space="preserve">
+    <value>အပူချိန်</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem77.Text" xml:space="preserve">
+    <value>သွေးပေါင်ချိန်:</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem79.Text" xml:space="preserve">
+    <value>အသက်ရှုခြင်း-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem80.Text" xml:space="preserve">
+    <value>အလေးချိန်-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem81.Text" xml:space="preserve">
+    <value>အမြင့်-</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem82.Text" xml:space="preserve">
+    <value>BMI-</value>
+  </data>
+  <data name="UCExecuteRoom.lcCkhCPA.Text" xml:space="preserve">
+    <value>လူနာခေါ်ခြင်း-</value>
+  </data>
+  <data name="UCExecuteRoom.lcgPatientInfo.Text" xml:space="preserve">
+    <value>လူနာအချက်အလက်</value>
+  </data>
+  <data name="UCExecuteRoom.lcgServiceReq.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုတောင်းဆိုမှု</value>
+  </data>
+  <data name="UCExecuteRoom.lcgTreeSereServ.Text" xml:space="preserve">
+    <value>သတ်မှတ်ထားသောဝန်ဆောင်မှု</value>
+  </data>
+  <data name="UCExecuteRoom.lciCreatefrom.Text" xml:space="preserve">
+    <value>မှဖြစ်ကြသည်-</value>
+  </data>
+  <data name="UCExecuteRoom.lciCreateTo.Text" xml:space="preserve">
+    <value>ရောက်ရှိလာ:</value>
+  </data>
+  <data name="UCExecuteRoom.lciExamEndType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>လတ်တလော ကုသမှုအချက်အလက်</value>
+  </data>
+  <data name="UCExecuteRoom.lciExamEndType.Text" xml:space="preserve">
+    <value>ကုသမှု TT</value>
+  </data>
+  <data name="UCExecuteRoom.lciExamTreatmentEndType.Text" xml:space="preserve">
+    <value>ထုတ်လွှတ်မှုအမျိုးအစား-</value>
+  </data>
+  <data name="UCExecuteRoom.lciExamTreatmentResult.Text" xml:space="preserve">
+    <value>ဆေးရုံမှ ရလဒ်များ</value>
+  </data>
+  <data name="UCExecuteRoom.LciGroupEmrDocument.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCExecuteRoom.lciIntructionDateTo.Text" xml:space="preserve">
+    <value>ရောက်သည်။</value>
+  </data>
+  <data name="UCExecuteRoom.lciPatientTypeName.Text" xml:space="preserve">
+    <value>ဘာသာရပ်-</value>
+  </data>
+  <data name="UCExecuteRoom.lciPhoneNumber.Text" xml:space="preserve">
+    <value>ဖုန်းနံပါတ်:</value>
+  </data>
+  <data name="UCExecuteRoom.lciRequestAndMaxRequest.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆောင်ရွက်ပြီးသော ကျန်းမာရေးအာမခံတောင်းဆိုမှုအရေအတွက်/ အများဆုံးနံပါတ်</value>
+  </data>
+  <data name="UCExecuteRoom.lciRequestAndMaxRequest.Text" xml:space="preserve">
+    <value>SLYC ကျန်းမာရေးအာမခံလုပ်ငန်းဆောင်ရွက်ပြီး/အမြင့်ဆုံး SL-</value>
+  </data>
+  <data name="UCExecuteRoom.MAX_BHYT_SERVICE_REQ_PER_DAY.HasValue.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံ တောင်းဆိုချက် အရေအတွက်ကို ဆောင်ရွက်ပြီးပါပြီ။/မက်တယ်: </value>
+  </data>
+  <data name="UCExecuteRoom.MAX_BHYT_SERVICE_REQ_PER_DAY.NotValue.Text" xml:space="preserve">
+    <value>တောင်းဆိုချက်အရေအတွက်ကို ဆောင်ရွက်ပြီးပါပြီ။/မက်တယ်။: </value>
+  </data>
+  <data name="UCExecuteRoom.menu1.Text" xml:space="preserve">
+    <value>ကုသမှုမှတ်တမ်းများ</value>
+  </data>
+  <data name="UCExecuteRoom.menu2.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးမှတ်တမ်း စစ်ဆေးမှုအချက်အလက်</value>
+  </data>
+  <data name="UCExecuteRoom.menu3.Text" xml:space="preserve">
+    <value>စာမေးပွဲအတွက် တောင်းဆိုချက်ကို တည်းဖြတ်ပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.menu4.Text" xml:space="preserve">
+    <value>ဓာတ်မတည့်ကတ်</value>
+  </data>
+  <data name="UCExecuteRoom.repositoryItemPictureEdit1.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCExecuteRoom.repositoryItemPictureEdit2.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCExecuteRoom.repositoryItemPictureEdit3.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCExecuteRoom.repositoryItemPictureEdit4.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCExecuteRoom.repositoryItemPictureEdit5.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCExecuteRoom.repositoryItemPictureEdit6.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCExecuteRoom.s.Text" xml:space="preserve">
+    <value>ကတ်နံပါတ်:</value>
+  </data>
+  <data name="UCExecuteRoom.ThoiGianBatDauThoiGianKetThuc" xml:space="preserve">
+    <value>စတင်ချိန်နှင့် ပြီးဆုံးချိန် သတ်မှတ်မှု မမှန်ကန်ပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.CXL" xml:space="preserve">
+    <value>လုပ်ငန်းစဉ်မရှိပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.DangGoiBenhNhan" xml:space="preserve">
+    <value>လူနာခေါ်တယ်။</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.DangGoiBenhNhanNho" xml:space="preserve">
+    <value>လူနာခေါ်သံပျောက်နေသည်။</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.DXL" xml:space="preserve">
+    <value>လုပ်ဆောင်နေသည်</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.FinishCLS" xml:space="preserve">
+    <value>CLS ကို ပြီးအောင်လုပ်ပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.GoiBenhNhan" xml:space="preserve">
+    <value>လူနာကိုခေါ်ပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.GoiBenhNhanNho" xml:space="preserve">
+    <value>လွတ်သွားသော လူနာခေါ်ဆိုမှု</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.HaveResultCLS" xml:space="preserve">
+    <value>လုံလောက်တဲ့ ဓာတ်ခွဲခန်းရလဒ်တွေ ရှိပါတယ်။</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.Kham" xml:space="preserve">
+    <value>နောက်ထပ်စစ်ဆေးမှုကုသမှု</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.KT" xml:space="preserve">
+    <value>အဆုံး</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.NotReady" xml:space="preserve">
+    <value>အဆင်သင့်မဖြစ်သေးပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.PRIORIRY" xml:space="preserve">
+    <value>ဦးစားပေး</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.Ready" xml:space="preserve">
+    <value>အဆင်သင့်</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.TreatmentType_DtNgoaiTru" xml:space="preserve">
+    <value>ပြင်ပလူနာကုသမှု</value>
+  </data>
+  <data name="UCExecuteRoom.ToolTipControl.UnFinishCLS" xml:space="preserve">
+    <value>CLS မပြီးသေးပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.txtBMI.Text" xml:space="preserve">
+    <value>၀ယ်တယ်။</value>
+  </data>
+  <data name="UCExecuteRoom.txtGateNumber.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ဂိတ်</value>
+  </data>
+  <data name="UCExecuteRoom.txtSearchKey.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ရှာဖွေမှုသော့ချက်စာလုံး (F2) ထည့်ပါ</value>
+  </data>
+  <data name="UCExecuteRoom.txtStepNumber.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ခုန်ပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>သတ်မှတ်ကုဒ် (F3)</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabDocumentReq.Text" xml:space="preserve">
+    <value>မဲများသတ်မှတ်ပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabDocumentResult.Text" xml:space="preserve">
+    <value>ရလဒ်စာရွက်</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabPage1.Text" xml:space="preserve">
+    <value>အားလုံး</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabPage10.Text" xml:space="preserve">
+    <value>အိပ်ရာဝင်</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabPage11.Text" xml:space="preserve">
+    <value>Endoscopic</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabPage12.Text" xml:space="preserve">
+    <value>အသံထက်</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabPage13.Text" xml:space="preserve">
+    <value>တခြား</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabPage14.Text" xml:space="preserve">
+    <value>လုပ်ဆောင်ချက်ကို ပြန်လည်ရယူပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabPage15.Text" xml:space="preserve">
+    <value>သွေး</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabPage16.Text" xml:space="preserve">
+    <value>ရောဂါဗေဒခန္ဓာဗေဒ</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabPage17.Text" xml:space="preserve">
+    <value>သတ်မှတ်သည်။</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabPage18.Text" xml:space="preserve">
+    <value>စာမေးပွဲ</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabPage2.Text" xml:space="preserve">
+    <value>ဆေးစစ်ချက်</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabPage3.Text" xml:space="preserve">
+    <value>ခွဲစိတ်မှု</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabPage4.Text" xml:space="preserve">
+    <value>စမ်း</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabPage5.Text" xml:space="preserve">
+    <value>ရုပ်ပုံ ခွဲခြမ်းစိတ်ဖြာခြင်း။</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabPage6.Text" xml:space="preserve">
+    <value>အကြံပြုချက်များ</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabPage7.Text" xml:space="preserve">
+    <value>လုပ်ဆောင်ချက်အလိုက် သွားရောက်ကြည့်ရှုပါ။</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabPage8.Text" xml:space="preserve">
+    <value>ဆေးဝါး</value>
+  </data>
+  <data name="UCExecuteRoom.xtraTabPage9.Text" xml:space="preserve">
+    <value>ပစ္စည်းများ</value>
+  </data>
+  <data name="UcViewEmrDocument.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="UcViewEmrDocument.typeCodeFind__InMonth.Text" xml:space="preserve">
+    <value>လ</value>
+  </data>
+  <data name="UcViewEmrDocument.typeCodeFind__KeyWork_InDate.Text" xml:space="preserve">
+    <value>နေ့</value>
+  </data>
+  <data name="UcViewEmrDocument.typeCodeFind_InDate.Text" xml:space="preserve">
+    <value>နေ့</value>
+  </data>
+  <data name="UcViewEmrDocument.typeCodeFind_RangeDate.Text" xml:space="preserve">
+    <value>တစ်ရက်လောက်ပေါ့။</value>
+  </data>
+  <data name="UCExecuteRoom.btnHivTreatment.Text" xml:space="preserve">
+    <value>HIV/AIDS ကုသမှုဆိုင်ရာ အချက်အလက်</value>
+  </data>
+</root>

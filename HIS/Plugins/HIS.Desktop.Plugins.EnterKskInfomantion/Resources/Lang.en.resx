@@ -1,0 +1,774 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmEnterKskInfomantion.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmEnterKskInfomantion.bbtnF2.Caption" xml:space="preserve">
+    <value>F2</value>
+  </data>
+  <data name="frmEnterKskInfomantion.bbtnFinish.Caption" xml:space="preserve">
+    <value>End (Ctrl D)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.bbtnSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.bbtnSearch.Caption" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.bbtnUnfinish.Caption" xml:space="preserve">
+    <value>Cancel KT (Ctrl O)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.BMIDISPLAY.NORMAL" xml:space="preserve">
+    <value>(Normal)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.BMIDISPLAY.OBESITY.I" xml:space="preserve">
+    <value>(Obesity I)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.BMIDISPLAY.OBESITY.II" xml:space="preserve">
+    <value>(Obesity II)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.BMIDISPLAY.OBESITY.III" xml:space="preserve">
+    <value>(Obesity III)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.BMIDISPLAY.OVERWEIGHT" xml:space="preserve">
+    <value>(Overweight)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.btnChooseResult.Text" xml:space="preserve">
+    <value>Select result</value>
+  </data>
+  <data name="frmEnterKskInfomantion.btnFinish.Text" xml:space="preserve">
+    <value>End (Ctrl D)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.btnPrint.Text" xml:space="preserve">
+    <value>Print coupons</value>
+  </data>
+  <data name="frmEnterKskInfomantion.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.btnSearch.Text" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.btnUnfinish.Text" xml:space="preserve">
+    <value>Cancel KT (Ctrl O)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.btnUnfinish.ToolTip" xml:space="preserve">
+    <value>Cancel ending</value>
+  </data>
+  <data name="frmEnterKskInfomantion.emptySpaceItem14.Text" xml:space="preserve">
+    <value>emptySpaceItem4</value>
+  </data>
+  <data name="frmEnterKskInfomantion.emptySpaceItem15.Text" xml:space="preserve">
+    <value>emptySpaceItem2</value>
+  </data>
+  <data name="frmEnterKskInfomantion.emptySpaceItem16.Text" xml:space="preserve">
+    <value>emptySpaceItem7</value>
+  </data>
+  <data name="frmEnterKskInfomantion.emptySpaceItem19.Text" xml:space="preserve">
+    <value>emptySpaceItem9</value>
+  </data>
+  <data name="frmEnterKskInfomantion.emptySpaceItem20.Text" xml:space="preserve">
+    <value>emptySpaceItem10</value>
+  </data>
+  <data name="frmEnterKskInfomantion.emptySpaceItem22.Text" xml:space="preserve">
+    <value>emptySpaceItem12</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColBirthDate.Caption" xml:space="preserve">
+    <value>Date of birth</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColExecuteDepartmentName.Caption" xml:space="preserve">
+    <value>Department of implementation</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColExecuteRoomName.Caption" xml:space="preserve">
+    <value>Implementation room</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColGender.Caption" xml:space="preserve">
+    <value>Sex</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColInstrctionTime.Caption" xml:space="preserve">
+    <value>Order time</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColPatientCode.Caption" xml:space="preserve">
+    <value>Patient code</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColPatientName.Caption" xml:space="preserve">
+    <value>Patient's name</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColServiceReqCode.Caption" xml:space="preserve">
+    <value>Command code</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColStatus.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColStatus.ToolTip" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmEnterKskInfomantion.grdColTreatmentCode.Caption" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="frmEnterKskInfomantion.gridViewServiceReq.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Enter the search string...</value>
+  </data>
+  <data name="frmEnterKskInfomantion.groupBoxPatientInfo.Text" xml:space="preserve">
+    <value>Patient information</value>
+  </data>
+  <data name="frmEnterKskInfomantion.label1.Text" xml:space="preserve">
+    <value>mmHG</value>
+  </data>
+  <data name="frmEnterKskInfomantion.label2.Text" xml:space="preserve">
+    <value>kg</value>
+  </data>
+  <data name="frmEnterKskInfomantion.label3.Text" xml:space="preserve">
+    <value>°C</value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl1.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl10.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl11.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl12.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl13.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl14.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl17.Text" xml:space="preserve">
+    <value>II.</value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl19.Text" xml:space="preserve">
+    <value>I. CLINICAL EXAMINATION RESULTS</value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl2.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl6.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl7.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.labelControl9.Text" xml:space="preserve">
+    <value>III.</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlGroup8.Text" xml:space="preserve">
+    <value>Root</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem100.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Urinary kidney</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem100.Text" xml:space="preserve">
+    <value>9. Kidney TN:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem101.Text" xml:space="preserve">
+    <value>11. Eyes:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem102.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Dentomaxillofacial</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem102.Text" xml:space="preserve">
+    <value>13. RHM:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem103.Text" xml:space="preserve">
+    <value>8. Dermatology:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem104.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ear, nose and throat</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem104.Text" xml:space="preserve">
+    <value>12. TMH:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem105.Text" xml:space="preserve">
+    <value>10. Surgery:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem106.Text" xml:space="preserve">
+    <value>layoutControlItem49</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem107.Text" xml:space="preserve">
+    <value>layoutControlItem50</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem108.Text" xml:space="preserve">
+    <value>layoutControlItem51</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem109.Text" xml:space="preserve">
+    <value>layoutControlItem53</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem11.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Auto end exam when saving</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem11.Text" xml:space="preserve">
+    <value>Auto end:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem110.Text" xml:space="preserve">
+    <value>layoutControlItem54</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem111.Text" xml:space="preserve">
+    <value>layoutControlItem55</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem112.Text" xml:space="preserve">
+    <value>layoutControlItem56</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem113.Text" xml:space="preserve">
+    <value>layoutControlItem57</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem114.Text" xml:space="preserve">
+    <value>layoutControlItem58</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem115.Text" xml:space="preserve">
+    <value>layoutControlItem59</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem116.Text" xml:space="preserve">
+    <value>layoutControlItem60</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem117.Text" xml:space="preserve">
+    <value>layoutControlItem61</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem118.Text" xml:space="preserve">
+    <value>layoutControlItem52</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem119.Text" xml:space="preserve">
+    <value>layoutControlItem17</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem120.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>General conclusion</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem120.Text" xml:space="preserve">
+    <value>4. General volume:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem121.Text" xml:space="preserve">
+    <value>15. Mucous membrane:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem122.Text" xml:space="preserve">
+    <value>16. Hematopoietic system:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem123.Text" xml:space="preserve">
+    <value>17. Movement:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem124.Text" xml:space="preserve">
+    <value>18. Cardiovascular:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem125.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Lymph nodes</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem125.Text" xml:space="preserve">
+    <value>19. Lymph nodes, BH:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem126.Text" xml:space="preserve">
+    <value>layoutControlItem68</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem127.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Health classification</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem127.Text" xml:space="preserve">
+    <value>1. PL health:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem128.Text" xml:space="preserve">
+    <value>2. Illness \u003cbr\u003e (if any):</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem129.Text" xml:space="preserve">
+    <value>3. Solution to decide:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem130.Text" xml:space="preserve">
+    <value>14. Nails:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem131.Text" xml:space="preserve">
+    <value>20. Capillaries:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem139.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem140.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem141.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Subclinical results</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem141.Text" xml:space="preserve">
+    <value>II.</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem143.Text" xml:space="preserve">
+    <value>17. Nutrition:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem145.Text" xml:space="preserve">
+    <value>Conclusion date:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem146.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Doctor concludes</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem146.Text" xml:space="preserve">
+    <value>BS concludes:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem147.Text" xml:space="preserve">
+    <value>File number:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem148.Text" xml:space="preserve">
+    <value>Department:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem149.Text" xml:space="preserve">
+    <value>Clinic:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem18.Text" xml:space="preserve">
+    <value>Height:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem19.Text" xml:space="preserve">
+    <value>Weight:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem20.Text" xml:space="preserve">
+    <value>KSK contract:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem21.Text" xml:space="preserve">
+    <value>BMI:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem22.Text" xml:space="preserve">
+    <value>Circuit:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem23.Text" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem24.Text" xml:space="preserve">
+    <value>times/minute</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem25.Text" xml:space="preserve">
+    <value>Blood pressure:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem29.Text" xml:space="preserve">
+    <value>Temperature:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem30.Text" xml:space="preserve">
+    <value>Breathing:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem31.Text" xml:space="preserve">
+    <value>14. Product:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem32.Text" xml:space="preserve">
+    <value>times/minute</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem34.Text" xml:space="preserve">
+    <value>1. Cycle:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem35.Text" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem36.Text" xml:space="preserve">
+    <value>2. Respiration:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem37.Text" xml:space="preserve">
+    <value>3. Digestion:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem38.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Expiration of health insurance card</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem38.Text" xml:space="preserve">
+    <value>Date of birth:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem39.Text" xml:space="preserve">
+    <value>4. Interior:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem40.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Musculoskeletal</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem40.Text" xml:space="preserve">
+    <value>5. CXK:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem41.Text" xml:space="preserve">
+    <value>6. Nervous:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem42.Text" xml:space="preserve">
+    <value>7. Mental:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem43.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Urinary kidney</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem43.Text" xml:space="preserve">
+    <value>9. Kidney TN:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem44.Text" xml:space="preserve">
+    <value>11. Eyes:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem45.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Dentomaxillofacial</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem45.Text" xml:space="preserve">
+    <value>13. RHM:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem46.Text" xml:space="preserve">
+    <value>8. Dermatology:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem47.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ear, nose and throat</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem47.Text" xml:space="preserve">
+    <value>12. TMH:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem48.Text" xml:space="preserve">
+    <value>10. Surgery:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem65.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Physiotherapy - Rehabilitation</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem65.Text" xml:space="preserve">
+    <value>15. VLTL - rehabilitation:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem67.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Traditional medicine</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem67.Text" xml:space="preserve">
+    <value>16. Traditional Medicine:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem69.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Health classification</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem69.Text" xml:space="preserve">
+    <value>1. PL health:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem7.Text" xml:space="preserve">
+    <value>Sex:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem70.Text" xml:space="preserve">
+    <value>2. Illnesses (if any):</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem71.Text" xml:space="preserve">
+    <value>3. Solution:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem72.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Clinical conclusion</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem72.Text" xml:space="preserve">
+    <value>1. Conclusion LS:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem73.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Subclinical conclusion</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem73.Text" xml:space="preserve">
+    <value>2. Conclusion of CLS:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem74.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Occupational disease</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem74.Text" xml:space="preserve">
+    <value>3. Occupational diseases:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem75.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Conclusion of the standard meeting</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem75.Text" xml:space="preserve">
+    <value>4. Conclusion HC:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem76.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Implementing the quadrants</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem76.Text" xml:space="preserve">
+    <value>5. Diagnose the problem:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem77.Text" xml:space="preserve">
+    <value>6. Conclusion of examination:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem78.Text" xml:space="preserve">
+    <value>7. General conclusion:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem79.Text" xml:space="preserve">
+    <value>Height:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem80.Text" xml:space="preserve">
+    <value>Weight:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem81.Text" xml:space="preserve">
+    <value>BMI:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem82.Text" xml:space="preserve">
+    <value>Circuit:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem83.Text" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem84.Text" xml:space="preserve">
+    <value>times/minute</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem85.Text" xml:space="preserve">
+    <value>Blood pressure:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem86.Text" xml:space="preserve">
+    <value>layoutControlItem26</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem87.Text" xml:space="preserve">
+    <value>kg</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem88.Text" xml:space="preserve">
+    <value>mmHG</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem89.Text" xml:space="preserve">
+    <value>Temperature:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem90.Text" xml:space="preserve">
+    <value>Breathing:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem91.Text" xml:space="preserve">
+    <value>oC</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem92.Text" xml:space="preserve">
+    <value>times/minute</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem93.Text" xml:space="preserve">
+    <value>1. Cycle:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem94.Text" xml:space="preserve">
+    <value>2. Respiration:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem95.Text" xml:space="preserve">
+    <value>3. Digestion:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem96.Text" xml:space="preserve">
+    <value>4. Interior:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem97.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>There are bones and joints</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem97.Text" xml:space="preserve">
+    <value>5. CXK:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem98.Text" xml:space="preserve">
+    <value>6. Nervous:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlItem99.Text" xml:space="preserve">
+    <value>7. Mental:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlPatientInfo.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlTab1.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlTab2.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmEnterKskInfomantion.layoutControlTab3.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lblBmiDisplayTextTab1.Text" xml:space="preserve">
+    <value>      </value>
+  </data>
+  <data name="frmEnterKskInfomantion.lblBmiDisplayTextTab3.Text" xml:space="preserve">
+    <value>      </value>
+  </data>
+  <data name="frmEnterKskInfomantion.lblKetQuaKhamLamSang.Text" xml:space="preserve">
+    <value>I. CLINICAL EXAMINATION RESULTS</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lciAddress.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Examination time</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lciAddress.Text" xml:space="preserve">
+    <value>Medical examination:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lciDOB.Text" xml:space="preserve">
+    <value>Patient code:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lciIntructionDate.Text" xml:space="preserve">
+    <value>Day of the examination:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lciKSKContract.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Health check contract</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lciKSKContract.Text" xml:space="preserve">
+    <value>Contract:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lciPatientCode.Text" xml:space="preserve">
+    <value>Command code:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lciPatientName.Text" xml:space="preserve">
+    <value>Treatment code:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.lciTreatmentType.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="frmEnterKskInfomantion.SKINNY.I" xml:space="preserve">
+    <value>(Skinny I)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.SKINNY.II" xml:space="preserve">
+    <value>(Skinny II)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.SKINNY.III" xml:space="preserve">
+    <value>(Skinny III)</value>
+  </data>
+  <data name="frmEnterKskInfomantion.Text" xml:space="preserve">
+    <value>Health check information</value>
+  </data>
+  <data name="frmEnterKskInfomantion.ToolTipControl.CXL" xml:space="preserve">
+    <value>Not processed yet</value>
+  </data>
+  <data name="frmEnterKskInfomantion.ToolTipControl.DXL" xml:space="preserve">
+    <value>Processing</value>
+  </data>
+  <data name="frmEnterKskInfomantion.ToolTipControl.KT" xml:space="preserve">
+    <value>Finished</value>
+  </data>
+  <data name="frmEnterKskInfomantion.txtExamOccupationalTherapy.ToolTip" xml:space="preserve">
+    <value>Physiotherapy - Rehabilitation</value>
+  </data>
+  <data name="frmEnterKskInfomantion.txtExamTraditional.ToolTip" xml:space="preserve">
+    <value>Traditional medicine</value>
+  </data>
+  <data name="frmEnterKskInfomantion.txtPatientCodeForSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Patient code</value>
+  </data>
+  <data name="frmEnterKskInfomantion.txtServiceReqCodeForSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Command code</value>
+  </data>
+  <data name="frmEnterKskInfomantion.txtTreatmentCodeForSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="frmEnterKskInfomantion.xtraTabPage1.Text" xml:space="preserve">
+    <value>General examination</value>
+  </data>
+  <data name="frmEnterKskInfomantion.xtraTabPage2.Text" xml:space="preserve">
+    <value>Conclude</value>
+  </data>
+  <data name="frmEnterKskInfomantion.xtraTabPage3.Text" xml:space="preserve">
+    <value>Occupational disease</value>
+  </data>
+  <data name="frmEnterKskInfomantion.xtraTabPage4.Text" xml:space="preserve">
+    <value>College - TDCN</value>
+  </data>
+  <data name="frmEnterKskInfomantion.xtraTabPage6.Text" xml:space="preserve">
+    <value>XN Blood count</value>
+  </data>
+  <data name="frmEnterKskInfomantion.xtraTabPage7.Text" xml:space="preserve">
+    <value>Urine Test</value>
+  </data>
+  <data name="frmEnterKskInfomantion.xtraTabPage8.Text" xml:space="preserve">
+    <value>Other XN</value>
+  </data>
+</root>

@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BenhNhanCoHenKhamVaoNgayTaiPhongKhamY" xml:space="preserve">
+    <value>လူနာသည် ဆေးခန်း \</value>
+  </data>
+  <data name="GoiSangCongBHXHTraVeMaLoi" xml:space="preserve">
+    <value>အမှားကုဒ်- {0}</value>
+  </data>
+  <data name="Gov001" xml:space="preserve">
+    <value>ကတ်ကို ကာကွယ်ရေး ဝန်ကြီးဌာန လူမှုဖူလုံရေး က စီမံခန့်ခွဲပြီး ကတ်နှင့် သက်သေခံ အချက်အလက်များကို စစ်ဆေးပါ။</value>
+  </data>
+  <data name="Gov002" xml:space="preserve">
+    <value>ကတ်ကို ပြည်သူ့လုံခြုံရေးဝန်ကြီးဌာန၏ လူမှုဖူလုံရေးက စီမံခန့်ခွဲသည်၊ ကျေးဇူးပြု၍ ကတ်နှင့် မှတ်ပုံတင်အချက်အလက်ကို စစ်ဆေးပါ။</value>
+  </data>
+  <data name="Gov010" xml:space="preserve">
+    <value>ကတ်သက်တမ်းကုန်သွားပါပြီ။</value>
+  </data>
+  <data name="Gov050" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံကတ် အချက်အလက်ကို မမြင်ရပါ။</value>
+  </data>
+  <data name="Gov051" xml:space="preserve">
+    <value>ကတ်ကုဒ် မမှန်ပါ။</value>
+  </data>
+  <data name="Gov052" xml:space="preserve">
+    <value>ကတ်ထုတ်ပေးသည့်ပြည်နယ်ကုဒ် (ကတ်ကုဒ်၏ နံပါတ် ၄ နှင့် ၅ အက္ခရာ) မမှန်ပါ။</value>
+  </data>
+  <data name="Gov053" xml:space="preserve">
+    <value>ကတ်အကျိုးခံစားခွင့်ကုဒ် (နံပါတ် ၃ စာလုံး) မမှန်ပါ။</value>
+  </data>
+  <data name="Gov060" xml:space="preserve">
+    <value>အမည်မှားပါသောကတ်\</value>
+  </data>
+  <data name="Gov061" xml:space="preserve">
+    <value>အမည်မှားပါသောကတ် (ပထမစာလုံးအမှန်)</value>
+  </data>
+  <data name="Gov070" xml:space="preserve">
+    <value>မွေးသက္ကရာဇ် မှားနေတယ်။</value>
+  </data>
+  <data name="Gov080" xml:space="preserve">
+    <value>ကျားမမှားသောကတ်</value>
+  </data>
+  <data name="Gov100" xml:space="preserve">
+    <value>ကတ်နံပါတ်ဒေတာရယူရာတွင် အမှားအယွင်းရှိနေသည်။</value>
+  </data>
+  <data name="Gov101" xml:space="preserve">
+    <value>ဆာဗာ အုပ်ချုပ်ရေးမှူး အမှား</value>
+  </data>
+  <data name="Gov110" xml:space="preserve">
+    <value>ကတ်ကို ရုပ်သိမ်းလိုက်ပါပြီ။</value>
+  </data>
+  <data name="Gov120" xml:space="preserve">
+    <value>လျှော့ကတ်</value>
+  </data>
+  <data name="Gov121" xml:space="preserve">
+    <value>လျှော့ကတ်။</value>
+  </data>
+  <data name="Gov122" xml:space="preserve">
+    <value>လျှော့ကတ်။</value>
+  </data>
+  <data name="Gov123" xml:space="preserve">
+    <value>လျှော့ကတ်။</value>
+  </data>
+  <data name="Gov124" xml:space="preserve">
+    <value>လျှော့ကတ်။</value>
+  </data>
+  <data name="Gov130" xml:space="preserve">
+    <value>ကလေးတွေက ကတ်ကို မပြဘူး။</value>
+  </data>
+  <data name="GovError" xml:space="preserve">
+    <value>ကတ်မမှန်ကန်ပါ။</value>
+  </data>
+  <data name="Plugin_Register_BanChuaChonDichVuKham" xml:space="preserve">
+    <value>စာမေးပွဲဝန်ဆောင်မှုကို သင်ရွေးချယ်မထားပါ။</value>
+  </data>
+  <data name="Plugin_Register_BanChuaChonHinhThucGiaoDich" xml:space="preserve">
+    <value>ငွေပေးငွေယူနည်းလမ်းကို သင်မရွေးချယ်ရသေးပါ။</value>
+  </data>
+  <data name="Plugin_Register_BanChuaChonPhongThuNgan" xml:space="preserve">
+    <value>ငွေကိုင်အခန်းကို သင်မရွေးချယ်ရသေးပါ။</value>
+  </data>
+  <data name="Plugin_Register_BanChuaChonSoTamUng" xml:space="preserve">
+    <value>သင်ကြိုတင်စာအုပ်ကို မရွေးချယ်ရသေးပါ။</value>
+  </data>
+  <data name="Plugin_Register_BanChuaDuocCapSoHoaDon" xml:space="preserve">
+    <value>သင့်အား ပြေစာ/ပြေစာစာအုပ်ကို ပေးအပ်ထားခြင်းမရှိပါ။</value>
+  </data>
+  <data name="Plugin_Register_BanCoMuonNhapThongTinKhuVuc" xml:space="preserve">
+    <value>'ဒေသ' အချက်အလက်ကို သင်ထည့်သွင်းလိုသည်မှာ သေချာပါသလား။</value>
+  </data>
+  <data name="Plugin_Register_BanCoMuonThayDoiThongTinBenhNhanTheoCmndCccdHayKhong" xml:space="preserve">
+    <value>ID/CCCD အရ လူနာအချက်အလက်ကို ပြောင်းလဲလိုပါသလား။</value>
+  </data>
+  <data name="Plugin_Register_BanCoMuonThayDoiThongTinNgayCapNoiCapTheoCmndCccdHayKhong" xml:space="preserve">
+    <value>သင့် ID/CCCD အရ ထုတ်ပေးသည့်ရက်စွဲ/နေရာကို ရယူလိုပါသလား။</value>
+  </data>
+  <data name="Plugin_Register_BenhNhanChuaChonCongKham" xml:space="preserve">
+    <value>လူနာက စာမေးပွဲကို မရွေးချယ်ရသေးဘူး၊ ဆက်လုပ်ချင်လား။</value>
+  </data>
+  <data name="Plugin_Register_CanhBaoDichVuDaDuocChiDinhTrongKhoangThoiGianCauHinh" xml:space="preserve">
+    <value>အောက်ပါဝန်ဆောင်မှုများသည် ခွင့်မပြုသောကာလအတွင်း သတ်မှတ်ထားသောအချိန်ရှိသည်- {0}.ဆက်လက်လုပ်ဆောင်လိုပါသလား။</value>
+  </data>
+  <data name="Plugin_Register_CanhBaoTheBhytSapHatHan" xml:space="preserve">
+    <value>ကတ်သည် သက်တမ်းကုန်ဆုံးတော့မည် ({0} ရက် ကျန်သေးသည်)၊ ၎င်းကို သင်အသုံးပြုလိုပါသလား။</value>
+  </data>
+  <data name="Plugin_Register_CapMaMSThatBaiBanCoMuonTiepTuc" xml:space="preserve">
+    <value>MS ကုဒ်အဆင့် မအောင်မြင်ပါ။</value>
+  </data>
+  <data name="Plugin_Register_ChonPhongThuNganTruocKhiMoTinhNangNay" xml:space="preserve">
+    <value>ဤလုပ်ဆောင်ချက်ကို မဖွင့်မီ ငွေကိုင်အခန်းကို ရွေးချယ်ရပါမည်။</value>
+  </data>
+  <data name="Plugin_Register_ChuaCoThongTinBacSiKham" xml:space="preserve">
+    <value>ဆရာဝန် အချက်အလက် မရှိပါ။</value>
+  </data>
+  <data name="Plugin_Register_ChuaNhapAnhChupCMNDMatTruocMatSauKhiDaCheckCapMaMS" xml:space="preserve">
+    <value>MS ကုဒ်ကို ထုတ်ပေးရန်အတွက် စစ်ဆေးရွေးချယ်ရာတွင်၊ ID ကတ်၏ ရှေ့နှင့်နောက်ဘက် ဓာတ်ပုံတစ်ပုံကို မဖြစ်မနေ ရိုက်ယူရမည်ဖြစ်သည်။</value>
+  </data>
+  <data name="Plugin_Register_ChuaNhapCMNDNumberKhiDaCheckCapMaMS" xml:space="preserve">
+    <value>MS ကုဒ်တစ်ခုထုတ်ရန် စိစစ်ရွေးချယ်ရာတွင်၊ ID နံပါတ်ကို ထည့်သွင်းရန် မဖြစ်မနေ လိုအပ်ပါသည်။</value>
+  </data>
+  <data name="Plugin_Register_ChucNangNayChuaDuocHoTroTrongPhienBanNay" xml:space="preserve">
+    <value>ဤလုပ်ဆောင်ချက်ကို ဤဗားရှင်းတွင် မပံ့ပိုးပါ။</value>
+  </data>
+  <data name="Plugin_Register_DichVuDinhKemDichVuChuaCoChinhSachGia" xml:space="preserve">
+    <value>ဝန်ဆောင်မှု {0} ဝန်ဆောင်မှု {1} တွင် စျေးနှုန်းမူဝါဒ မရှိသေးပါ။</value>
+  </data>
+  <data name="Plugin_Register_DoiDichVuHenKhamSeDoiSttDaCap" xml:space="preserve">
+    <value>လူနာတွင် ဆေးခန်း သို့မဟုတ် ဆေးခန်းမဟုတ်သော စစ်ဆေးမှုဝန်ဆောင်မှု၊ ချိန်းဆိုထားသည့်အချိန်တွင် မှတ်ပုံတင်ထားသော စစ်ဆေးမှုဝန်ဆောင်မှု ({0} - {1}) ရှိပါသည်။</value>
+  </data>
+  <data name="Plugin_Register_DoiTuongBenhNhanLaBHYTBatBuocPhaiChonLaDungTuyen" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံဖြင့် လူနာသည် မှန်ကန်သောလမ်းကြောင်းကို ရွေးချယ်ရမည်။</value>
+  </data>
+  <data name="Plugin_Register_DotDieuTriGanNhatCuaBenhNhanCoNgayRaLaHomNay" xml:space="preserve">
+    <value>ကုသမှုမှတ်တမ်းပါ လူနာ- {0} ယနေ့ သက်သာလာပါသည်။</value>
+  </data>
+  <data name="Plugin_Register_DotKhamTruocCuaBenhNhanConNoTienVienPhi" xml:space="preserve">
+    <value>လူနာ၏ယခင်စစ်ဆေးမှု/ကုသမှုသည် ဆေးရုံအခကြေးငွေပေးဆောင်ဆဲဖြစ်သည်။</value>
+  </data>
+  <data name="Plugin_Register_DotKhamTruocCuaBenhNhanCoThuocChuaUongHet" xml:space="preserve">
+    <value>လူနာ၏ယခင်စစ်ဆေးမှု/ကုသမှုတွင် ကုသမှုမှတ်တမ်းကုဒ်များ {0} ပါရှိပြီး {1} {2} {3} ၏ ဆေးကို မယူရသေးပါ</value>
+  </data>
+  <data name="Plugin_Register_DuLieuRong" xml:space="preserve">
+    <value>ဒေတာဗလာ</value>
+  </data>
+  <data name="Plugin_Register_HeThongTBKetQuaTraVeCuaServerKhongHopLe" xml:space="preserve">
+    <value>ဆာဗာသည် မမှန်ကန်သောရလဒ်များကို ပြန်ပေးခဲ့သည်။</value>
+  </data>
+  <data name="Plugin_Register_HoDemBNVuotQuaMaxLength" xml:space="preserve">
+    <value>Padding မိသားစုသည် အများဆုံးအရှည် (စာလုံး {0} လုံး) ထက် ကျော်လွန်နေသည်</value>
+  </data>
+  <data name="Plugin_Register_MaBenhNhanKhongTontai" xml:space="preserve">
+    <value>သက်ဆိုင်ရာကုဒ်ပါသော လူနာအချက်အလက်ကို ရှာမတွေ့ပါ။</value>
+  </data>
+  <data name="Plugin_Register_MaChuongTrinhKhongTontai" xml:space="preserve">
+    <value>ပရိုဂရမ်ကုဒ်ဖြင့် လူနာအချက်အလက်ကို ရှာမတွေ့ပါ။</value>
+  </data>
+  <data name="Plugin_Register_MaHenKhamKhongTontai" xml:space="preserve">
+    <value>ရက်ချိန်းကုဒ်ပါသော လူနာအချက်အလက်ကို ရှာမတွေ့ပါ။</value>
+  </data>
+  <data name="Plugin_Register_MaHoNgheoKhongHopLe" xml:space="preserve">
+    <value>ညံ့ဖျင်းသော အိမ်သုံးကုဒ်သည် အက္ခရာ 9 လုံး သို့မဟုတ် 12 လုံးဖြစ်ရမည်၊ စာလုံး 12 လုံးရှိပါက ၎င်းသည် \</value>
+  </data>
+  <data name="Plugin_Register_MotSoThongTinVungThongTinKhacNhapKhongDungDinhDang" xml:space="preserve">
+    <value>အသုံးပြုသူထည့်သွင်းလိုက်သော \</value>
+  </data>
+  <data name="Plugin_Register_NgaySinhKhongDuocNhoHon7" xml:space="preserve">
+    <value>အသက် နံပါတ် 7 ထက် မနည်းသင့်ပါ။</value>
+  </data>
+  <data name="Plugin_Register_NguoiDungInPhieuYeCauKhamKhongCoDuLieuDangKyKham" xml:space="preserve">
+    <value>စာမေးပွဲလျှောက်လွှာပုံစံကို ရိုက်နှိပ်ရန် စာမေးပွဲစာရင်းအချက်အလက် မရှိပါ။</value>
+  </data>
+  <data name="Plugin_Register_NhapGioSinhKhongDung" xml:space="preserve">
+    <value>မွေးသက္ကရာဇ်/မွေးသက္ကရာဇ် မမှန်ကန်ပါ။</value>
+  </data>
+  <data name="Plugin_Register_NhapNgaySinhKhongDungDinhDang" xml:space="preserve">
+    <value>မွေးသက္ကရာဇ်ကို မှားယွင်းဖော်မတ်ဖြင့် ထည့်ပါ။</value>
+  </data>
+  <data name="Plugin_Register_NoVienPhi" xml:space="preserve">
+    <value>လူနာ၏ယခင်စစ်ဆေးမှု/ကုသမှုသည် ဆေးရုံအခကြေးငွေပေးဆောင်ဆဲဖြစ်သည်။</value>
+  </data>
+  <data name="Plugin_Register_QuaGioiHanKiemTraTheQuaCongBHXH" xml:space="preserve">
+    <value>လူမှုဖူလုံရေးအာမခံပေါ်တယ်မှတဆင့် ကျန်းမာရေးအာမခံကတ်ကို စစ်ဆေးရန် အချိန်ကန့်သတ်ချက်ကို ကျော်လွန်ပါ။</value>
+  </data>
+  <data name="Plugin_Register_SoTheBHYTKhongHopLe" xml:space="preserve">
+    <value>တဂ်နံပါတ် {0} သည် မမှန်ကန်ပါ။</value>
+  </data>
+  <data name="Plugin_Register_SoTheDaDuocSuDung" xml:space="preserve">
+    <value>တဂ်နံပါတ် {0} ကို အသုံးပြုပြီးဖြစ်သည်။</value>
+  </data>
+  <data name="Plugin_Register_SoTheKhongTontai" xml:space="preserve">
+    <value>ကတ်နံပါတ်ပါသော လူနာအချက်အလက်ကို ရှာမတွေ့ပါ။</value>
+  </data>
+  <data name="Plugin_Register_TenBNVuotQuaMaxLength" xml:space="preserve">
+    <value>အမည်သည် အများဆုံးအရှည်ထက် ကျော်လွန်နေသည် (အက္ခရာ {0} လုံး)</value>
+  </data>
+  <data name="Plugin_Register_TheBhytChuaDenHanSuDung" xml:space="preserve">
+    <value>ကတ်သက်တမ်းမကုန်သေးပါ။</value>
+  </data>
+  <data name="Plugin_Register_TheBhytDaHetHanSuDung" xml:space="preserve">
+    <value>ကတ်သက်တမ်းကုန်သွားပါပြီ။</value>
+  </data>
+  <data name="Plugin_Register_TheDaDuocSuDungTrongNgay" xml:space="preserve">
+    <value>ကတ်ကို နေ့စဥ်သုံးသည်။</value>
+  </data>
+  <data name="Plugin_Register_ThieuTruongDuLieuBatBuoc" xml:space="preserve">
+    <value>လိုအပ်သောအကွက်များ ပျောက်ဆုံးနေပါသည်။</value>
+  </data>
+  <data name="Plugin_Register_ThoiGianYLenhLonHonThoiGianHanDenCuaTheBHYT" xml:space="preserve">
+    <value>မှာယူသည့်အချိန်သည် ကျန်းမာရေးအာမခံကတ်၏ သက်တမ်းကုန်ဆုံးချိန်ထက် ပိုကြီးသည်။</value>
+  </data>
+  <data name="Plugin_Register_ThongBao" xml:space="preserve">
+    <value>အကြောင်းကြားပါ။</value>
+  </data>
+  <data name="Plugin_Register_ThongTinNgaySinhPhaiNhoHonNgayHienTai" xml:space="preserve">
+    <value>မွေးသက္ကရာဇ်အချက်အလက်သည် လက်ရှိရက်စွဲထက် နည်းနေရမည်။</value>
+  </data>
+  <data name="Plugin_Register_ThuocCoThoiSuDungDen" xml:space="preserve">
+    <value>{0} တွင် {1} အထိ ဆေးစာပါရှိသည်</value>
+  </data>
+  <data name="Plugin_Register_TieuDeCuaSoThongBaoLaCanhBao" xml:space="preserve">
+    <value>သတိပေးချက်</value>
+  </data>
+  <data name="Plugin_Register_TieuDeCuaSoThongBaoLaThongBao" xml:space="preserve">
+    <value>အကြောင်းကြားပါ။</value>
+  </data>
+  <data name="Plugin_Register_TimDuocMotBenhNhanTheoThongTinNguoiDungNhapNeuKhongPhaiBNCuVuiLongNhanNutBNMoi" xml:space="preserve">
+    <value>ဖြည့်သွင်းထားသော အချက်အလက်အရ လူနာ 1 ဦးကို ရှာပါ၊ လူနာဟောင်းမဟုတ်ပါက \</value>
+  </data>
+  <data name="Plugin_Register_TimDuocMotBNTheoThongTinNhap" xml:space="preserve">
+    <value>လူနာ ၁ ယောက်တွေ့တယ်။</value>
+  </data>
+  <data name="Plugin_Register_Title_InBangKiemTruocTiemChung" xml:space="preserve">
+    <value>ကာကွယ်ဆေးမထိုးမီ စစ်ဆေးရန်စာရင်း</value>
+  </data>
+  <data name="Plugin_Register_Title_InBienLaiHoaDon" xml:space="preserve">
+    <value>ပြေစာ/ပြေစာ ထုတ်ယူပါ။</value>
+  </data>
+  <data name="Plugin_Register_Title_InDichVuKham" xml:space="preserve">
+    <value>ပုံနှိပ်စာမေးပွဲဝန်ဆောင်မှု</value>
+  </data>
+  <data name="Plugin_Register_Title_InPhieuYeuCauKham" xml:space="preserve">
+    <value>ဆေးစစ်ချက်တောင်းခံလွှာကို ရိုက်နှိပ်ပါ။</value>
+  </data>
+  <data name="Plugin_Register_Title_InTheBenhNhan" xml:space="preserve">
+    <value>လူနာကတ်ကို ရိုက်နှိပ်ပါ။</value>
+  </data>
+  <data name="Plugin_Register_TreEmCoGiayKhaiSinhPhaiNhapThongTinHanhChinh" xml:space="preserve">
+    <value>မွေးစာရင်းပါသော ကလေးများသည် စီမံခန့်ခွဲရေးဆိုင်ရာ အချက်အလက်များကို ထည့်သွင်းရပါမည်။</value>
+  </data>
+  <data name="Plugin_Register_TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>လိုအပ်သောအကွက်။</value>
+  </data>
+  <data name="Plugin_Register_VuotQuaLuotKhamBHYTTrongNgay" xml:space="preserve">
+    <value>အခန်း {0} သည် တစ်ရက်အတွင်း ကျန်းမာရေးအာမခံလာရောက်လည်ပတ်မှု {1} ခု ကျော်လွန်သွားပါသည်။</value>
+  </data>
+  <data name="Plugin_Register_XuLyThatBai" xml:space="preserve">
+    <value>ကိုင်တွယ်မှု မအောင်မြင်။</value>
+  </data>
+  <data name="Plugin_Register_YeuCauNhapDayDuNgayThangNamSinhVoiBNDuoi6Tuoi" xml:space="preserve">
+    <value>အသက် 6 နှစ်အောက် လူနာများအတွက် မွေးရက်/လ/နှစ် အပြည့်အစုံ လိုအပ်ပါသည်။</value>
+  </data>
+  <data name="ThongBaoKetQuaTimKiemBenhNhanKhiQuetTheDuLieuTraVeNull" xml:space="preserve">
+    <value>ကတ်မမှန်ကန်ပါ။</value>
+  </data>
+</root>

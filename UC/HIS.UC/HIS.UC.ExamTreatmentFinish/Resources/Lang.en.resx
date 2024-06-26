@@ -1,0 +1,696 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FormAppointment.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormAppointment.barButtonItemSave.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="FormAppointment.bbtnChonKhungGio.ToolTip" xml:space="preserve">
+    <value>Choose a time frame</value>
+  </data>
+  <data name="FormAppointment.btnSave.Text" xml:space="preserve">
+    <value>Agree (Ctrl S)</value>
+  </data>
+  <data name="FormAppointment.btnServiceAppoint.Text" xml:space="preserve">
+    <value>DV for appointment</value>
+  </data>
+  <data name="FormAppointment.btnServiceAppoint.ToolTip" xml:space="preserve">
+    <value>Appointment service</value>
+  </data>
+  <data name="FormAppointment.gridColumn2.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="FormAppointment.gridColumn3.Caption" xml:space="preserve">
+    <value>Clinic name</value>
+  </data>
+  <data name="FormAppointment.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem1.Text" xml:space="preserve">
+    <value>Number of days:</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem10.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem11.Text" xml:space="preserve">
+    <value>STT:</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem4.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Next time clinic</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem4.Text" xml:space="preserve">
+    <value>PK next time:</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem5.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem6.Text" xml:space="preserve">
+    <value>Doctor's advice:</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem9.Text" xml:space="preserve">
+    <value>Room:</value>
+  </data>
+  <data name="FormAppointment.lblStt.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="FormAppointment.lciTimeAppointments.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Appointment time</value>
+  </data>
+  <data name="FormAppointment.lciTimeAppointments.Text" xml:space="preserve">
+    <value>TG make an appointment:</value>
+  </data>
+  <data name="FormAppointment.lciTimeFrame.Text" xml:space="preserve">
+    <value>Time slot:</value>
+  </data>
+  <data name="FormAppointment.Text" xml:space="preserve">
+    <value>See you again</value>
+  </data>
+  <data name="FormAppointment.txtAdvise.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Doctor's advice</value>
+  </data>
+  <data name="FormAppointment.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keyword</value>
+  </data>
+  <data name="FormTransfer.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormTransfer.barButtonItemSave.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="FormTransfer.btnSave.Text" xml:space="preserve">
+    <value>Agree (Ctrl S)</value>
+  </data>
+  <data name="FormTransfer.btnSaveTranPatiTemp.Text" xml:space="preserve">
+    <value>Save template</value>
+  </data>
+  <data name="FormTransfer.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem1.Text" xml:space="preserve">
+    <value>Drugs used</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem2.Text" xml:space="preserve">
+    <value>Professional reasons:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem3.Text" xml:space="preserve">
+    <value>Professional reasons:</value>
+  </data>
+  <data name="FormTransfer.lciClinicalNote.Text" xml:space="preserve">
+    <value>Clinical signs</value>
+  </data>
+  <data name="FormTransfer.lciHuongDieuTri.Text" xml:space="preserve">
+    <value>Direction of treatment</value>
+  </data>
+  <data name="FormTransfer.lciMediOrg.Text" xml:space="preserve">
+    <value>Destination:</value>
+  </data>
+  <data name="FormTransfer.lciMediOrgAddress.Text" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="FormTransfer.lciNguoiHoTong.Text" xml:space="preserve">
+    <value>Full name, title, professional qualifications of escorts</value>
+  </data>
+  <data name="FormTransfer.lciPhuongPhapSuDung.Text" xml:space="preserve">
+    <value>Treatments</value>
+  </data>
+  <data name="FormTransfer.lciPhuongTienVanChuyen.Text" xml:space="preserve">
+    <value>Transportation</value>
+  </data>
+  <data name="FormTransfer.lciSubclinicalResult.Text" xml:space="preserve">
+    <value>Laboratory and subclinical results</value>
+  </data>
+  <data name="FormTransfer.lciTinhTrangNguoiBenh.Text" xml:space="preserve">
+    <value>Patient's condition</value>
+  </data>
+  <data name="FormTransfer.lciTranPatiForm.Text" xml:space="preserve">
+    <value>Form:</value>
+  </data>
+  <data name="FormTransfer.lciTranPatiReason.Text" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
+  <data name="FormTransfer.lciTranPatiTemp.Text" xml:space="preserve">
+    <value>Sample:</value>
+  </data>
+  <data name="FormTransfer.Text" xml:space="preserve">
+    <value>Hospital transfer information</value>
+  </data>
+  <data name="frmICDInformation.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmICDInformation.bbtnSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmICDInformation.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmICDInformation.chkEditIcd.Properties.Caption" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="frmICDInformation.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmICDInformation.lciICDCode.Text" xml:space="preserve">
+    <value>Main College:</value>
+  </data>
+  <data name="frmICDInformation.lciICDSubCode.Text" xml:space="preserve">
+    <value>Secondary College:</value>
+  </data>
+  <data name="frmICDInformation.Text" xml:space="preserve">
+    <value>Diagnostic information displayed on discharge paper</value>
+  </data>
+  <data name="frmICDInformation.txtIcdText.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Press F1 to select disease</value>
+  </data>
+  <data name="frmPopUpSick.btnOke.Text" xml:space="preserve">
+    <value>Agree</value>
+  </data>
+  <data name="frmPopUpSick.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmPopUpSick.Text" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="frmSecondaryIcd.bar2.Text" xml:space="preserve">
+    <value>Main menu</value>
+  </data>
+  <data name="frmSecondaryIcd.bbtnChoose.Caption" xml:space="preserve">
+    <value>Select (Ctrl S)</value>
+  </data>
+  <data name="frmSecondaryIcd.bbtnClose.Caption" xml:space="preserve">
+    <value>Close (Esc)</value>
+  </data>
+  <data name="frmSecondaryIcd.btnChoose.Text" xml:space="preserve">
+    <value>Select (Ctrl S)</value>
+  </data>
+  <data name="frmSecondaryIcd.grdColCode.Caption" xml:space="preserve">
+    <value>Disease code</value>
+  </data>
+  <data name="frmSecondaryIcd.grdColName.Caption" xml:space="preserve">
+    <value>Name of disease</value>
+  </data>
+  <data name="frmSecondaryIcd.gridColumn1.Caption" xml:space="preserve">
+    <value>gridColumn1</value>
+  </data>
+  <data name="frmSecondaryIcd.gridViewSecondaryDisease.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Search keywords...</value>
+  </data>
+  <data name="frmSecondaryIcd.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmSecondaryIcd.lblIcdText.Text" xml:space="preserve">
+    <value>Secondary diseases:</value>
+  </data>
+  <data name="frmSecondaryIcd.Text" xml:space="preserve">
+    <value>Find and choose disease</value>
+  </data>
+  <data name="frmSecondaryIcd.txtIcdCodes.Properties.NullValuePrompt" xml:space="preserve">
+    <value>List of disease codes</value>
+  </data>
+  <data name="frmSecondaryIcd.txtIcdNames.Properties.NullValuePrompt" xml:space="preserve">
+    <value>List of disease names</value>
+  </data>
+  <data name="frmSecondaryIcd.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keyword</value>
+  </data>
+  <data name="frmSecondaryIcdFull.bar2.Text" xml:space="preserve">
+    <value>Main menu</value>
+  </data>
+  <data name="frmSecondaryIcdFull.bbtnChoose.Caption" xml:space="preserve">
+    <value>Select (Ctrl S)</value>
+  </data>
+  <data name="frmSecondaryIcdFull.bbtnClose.Caption" xml:space="preserve">
+    <value>Close (Esc)</value>
+  </data>
+  <data name="frmSecondaryIcdFull.btnChoose.Text" xml:space="preserve">
+    <value>Select (Ctrl S)</value>
+  </data>
+  <data name="frmSecondaryIcdFull.grdColCode.Caption" xml:space="preserve">
+    <value>Disease code</value>
+  </data>
+  <data name="frmSecondaryIcdFull.grdColName.Caption" xml:space="preserve">
+    <value>Name of disease</value>
+  </data>
+  <data name="frmSecondaryIcdFull.gridColumn1.Caption" xml:space="preserve">
+    <value>gridColumn1</value>
+  </data>
+  <data name="frmSecondaryIcdFull.gridViewSecondaryDisease.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Search keywords...</value>
+  </data>
+  <data name="frmSecondaryIcdFull.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmSecondaryIcdFull.lblIcdText.Text" xml:space="preserve">
+    <value>Secondary diseases:</value>
+  </data>
+  <data name="frmSecondaryIcdFull.Text" xml:space="preserve">
+    <value>Find and choose disease</value>
+  </data>
+  <data name="frmSecondaryIcdFull.txtIcdCodes.Properties.NullValuePrompt" xml:space="preserve">
+    <value>List of disease codes</value>
+  </data>
+  <data name="frmSecondaryIcdFull.txtIcdNames.Properties.NullValuePrompt" xml:space="preserve">
+    <value>List of disease names</value>
+  </data>
+  <data name="frmSecondaryIcdFull.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keyword</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenLaChuNhat" xml:space="preserve">
+    <value>The current appointment date is Sunday, do you want to continue?</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenLaThuBay" xml:space="preserve">
+    <value>The current appointment date is Saturday, do you want to continue?</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenToiDa" xml:space="preserve">
+    <value>The maximum number of appointment days allowed is {0} days.</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_CanhBaoThoiGianHenKhamSoVoiThoiGianKetThucDieuTri" xml:space="preserve">
+    <value>Appointment time must be greater than treatment end time</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_ChuaNhapThoiGianHenKham" xml:space="preserve">
+    <value>You have not selected an appointment time, please check again</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_ChuaNhapThongTinChuyenVien" xml:space="preserve">
+    <value>You have not entered the hospital transfer information completely, please check again</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_ChuaNhapThongTinTuVong" xml:space="preserve">
+    <value>You have not entered the complete death information, please check again</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_KhungGioVuotQuaSoLuong" xml:space="preserve">
+    <value>This time frame has exceeded the allowed number of appointments.</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_PhongKhamCoSoLuotKhamVuotDinhMuc" xml:space="preserve">
+    <value>The clinic has more appointments than allowed: {0}.</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_ThongBao" xml:space="preserve">
+    <value>Notify</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Required fields have not been entered</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_TruongDuLieuVuotQuaKyTu" xml:space="preserve">
+    <value>Data length exceeds {0}</value>
+  </data>
+  <data name="UcAdvise.gridColumn2.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="UcAdvise.gridColumn3.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="UcAdvise.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UcAdvise.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UcAdvise.layoutControlItem1.Text" xml:space="preserve">
+    <value>Doctor's advice:</value>
+  </data>
+  <data name="UcAdvise.layoutControlItem2.Text" xml:space="preserve">
+    <value>PK next time:</value>
+  </data>
+  <data name="UcAdvise.layoutControlItem3.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UcAdvise.txtAdvise.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Doctor's advice</value>
+  </data>
+  <data name="UcAdvise.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keyword</value>
+  </data>
+  <data name="UCAppointmentAdvise.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCAppointmentAdvise.layoutControlItem1.Text" xml:space="preserve">
+    <value>Doctor's advice:</value>
+  </data>
+  <data name="UCAppointmentAdvise.txtAdvise.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Doctor's advice</value>
+  </data>
+  <data name="UCExamTreatmentFinish.BMIDISPLAY.NORMAL" xml:space="preserve">
+    <value>(Normal)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.BMIDISPLAY.OBESITY.I" xml:space="preserve">
+    <value>(Obesity I)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.BMIDISPLAY.OBESITY.II" xml:space="preserve">
+    <value>(Obesity II)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.BMIDISPLAY.OBESITY.III" xml:space="preserve">
+    <value>(Obesity III)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.BMIDISPLAY.OVERWEIGHT" xml:space="preserve">
+    <value>(OverWeight)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl10.Text" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl12.Text" xml:space="preserve">
+    <value> m²</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl3.Text" xml:space="preserve">
+    <value>turn/minute</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl4.Text" xml:space="preserve">
+    <value>mmHg</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl5.Text" xml:space="preserve">
+    <value>kg</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl6.Text" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl7.Text" xml:space="preserve">
+    <value>snails</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl8.Text" xml:space="preserve">
+    <value>turn/ minute</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl9.Text" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem1.Text" xml:space="preserve">
+    <value>Circuit:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem10.Text" xml:space="preserve">
+    <value>BMI:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem11.Text" xml:space="preserve">
+    <value>Surface area:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem17.Text" xml:space="preserve">
+    <value>turn/minute</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem2.Text" xml:space="preserve">
+    <value>Temperature:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem3.Text" xml:space="preserve">
+    <value>Blood pressure:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem5.Text" xml:space="preserve">
+    <value>Breathing:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem6.Text" xml:space="preserve">
+    <value>Weight:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem7.Text" xml:space="preserve">
+    <value>Height:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem8.Text" xml:space="preserve">
+    <value>Bust:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem9.Text" xml:space="preserve">
+    <value>Waist circumference:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.SKINNY.I" xml:space="preserve">
+    <value>(Skinny I)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.SKINNY.II" xml:space="preserve">
+    <value>(Skinny II)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.SKINNY.III" xml:space="preserve">
+    <value>(Skinny III)</value>
+  </data>
+  <data name="UCTreatmentFinish.btnICDInformation.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCTreatmentFinish.btnICDInformation.ToolTip" xml:space="preserve">
+    <value>Additional diagnostic information displayed on discharge paper</value>
+  </data>
+  <data name="UCTreatmentFinish.chkEditIcd.Properties.Caption" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="UCTreatmentFinish.chkInPhieuTrichLuc.Properties.Caption" xml:space="preserve">
+    <value>:Print</value>
+  </data>
+  <data name="UCTreatmentFinish.chkKyPhieuTrichLuc.Properties.Caption" xml:space="preserve">
+    <value>:Sign</value>
+  </data>
+  <data name="UCTreatmentFinish.chkPrintAppoinment.Properties.Caption" xml:space="preserve">
+    <value>:Print</value>
+  </data>
+  <data name="UCTreatmentFinish.chkPrintBHXH.Properties.Caption" xml:space="preserve">
+    <value>:Print</value>
+  </data>
+  <data name="UCTreatmentFinish.chkPrintBordereau.Properties.Caption" xml:space="preserve">
+    <value>:Print</value>
+  </data>
+  <data name="UCTreatmentFinish.chkPrintHosTransfer.Properties.Caption" xml:space="preserve">
+    <value>:Print</value>
+  </data>
+  <data name="UCTreatmentFinish.chkPrintPrescription.Properties.Caption" xml:space="preserve">
+    <value>:Print</value>
+  </data>
+  <data name="UCTreatmentFinish.chkSignAppoinment.Properties.Caption" xml:space="preserve">
+    <value>:Sign</value>
+  </data>
+  <data name="UCTreatmentFinish.chkSignBHXH.Properties.Caption" xml:space="preserve">
+    <value>:Sign</value>
+  </data>
+  <data name="UCTreatmentFinish.chkSignBordereau.Properties.Caption" xml:space="preserve">
+    <value>:Sign</value>
+  </data>
+  <data name="UCTreatmentFinish.chkTraditionalIcd.Properties.Caption" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="UCTreatmentFinish.labelControl1.Text" xml:space="preserve">
+    <value>Appointment service appointment</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem1.Text" xml:space="preserve">
+    <value>Time in:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem10.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hospital transfer number</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem10.Text" xml:space="preserve">
+    <value>CV number:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem12.Text" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem14.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Additional information</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem14.Text" xml:space="preserve">
+    <value>Additional TT:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem2.Text" xml:space="preserve">
+    <value>Time out:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem20.Text" xml:space="preserve">
+    <value>Result:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem23.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Medical examination result sheet (extract)</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem23.Text" xml:space="preserve">
+    <value>Quotation sheet:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem27.Text" xml:space="preserve">
+    <value>Prescription:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem28.Text" xml:space="preserve">
+    <value>Transfer card:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem3.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Diagnosing discharge from the hospital of traditional medicine</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem3.Text" xml:space="preserve">
+    <value>College of Traditional Medicine:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem4.Text" xml:space="preserve">
+    <value>Discharge type:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem5.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Print a leave slip for social insurance benefits</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem5.Text" xml:space="preserve">
+    <value>Social insurance bank card:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem6.Text" xml:space="preserve">
+    <value>Appointment card:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem7.Text" xml:space="preserve">
+    <value>List:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem8.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Diagnosis of hospitalization with traditional medicine</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem8.Text" xml:space="preserve">
+    <value>College admitted to Traditional Medicine Hospital (attached):</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem9.Text" xml:space="preserve">
+    <value>Hospital discharge number:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciBANT.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Print outpatient medical records</value>
+  </data>
+  <data name="UCTreatmentFinish.lciBANT.Text" xml:space="preserve">
+    <value>Print outpatient BA:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciCareer.Text" xml:space="preserve">
+    <value>Job:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciChkCapSoLuuTruBA.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Create outpatient medical records</value>
+  </data>
+  <data name="UCTreatmentFinish.lciChkCapSoLuuTruBA.Text" xml:space="preserve">
+    <value>Create an outpatient BA:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciIcdText.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Diagnosing hospital discharge</value>
+  </data>
+  <data name="UCTreatmentFinish.lciIcdText.Text" xml:space="preserve">
+    <value>College discharge:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciIsExpXml4210Collinear.Text" xml:space="preserve">
+    <value>Export xml online:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciPatientProgram.Text" xml:space="preserve">
+    <value>Program:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciSoLuuTruBA.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Outpatient record storage number</value>
+  </data>
+  <data name="UCTreatmentFinish.lciSoLuuTruBA.Text" xml:space="preserve">
+    <value>Outpatient LTBA number:</value>
+  </data>
+  <data name="UCTreatmentFinish.txtIcdText.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Press F1 to select disease</value>
+  </data>
+  <data name="UCTreatmentFinish.xtraTabPage1.Text" xml:space="preserve">
+    <value>Advice</value>
+  </data>
+  <data name="UCTreatmentFinish.xtraTabPage2.Text" xml:space="preserve">
+    <value>Conclusion</value>
+  </data>
+</root>

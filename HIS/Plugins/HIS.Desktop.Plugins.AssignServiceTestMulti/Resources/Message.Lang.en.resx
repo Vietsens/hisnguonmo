@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Plugin_AssignService__CacDichVuKhongCoChinhSachGiaHoacKhongCoCauHinhSeKhongDuocChon" xml:space="preserve">
+    <value>Note: services that do not have pricing policies or configurations used in the room will not be selected.</value>
+  </data>
+  <data name="Plugin_AssignService__CanhBaoDichVu" xml:space="preserve">
+    <value>Service {0}</value>
+  </data>
+  <data name="Plugin_AssignService__CanhBaoDichVuDaChiDinhTrongNgay" xml:space="preserve">
+    <value>Specified Services today</value>
+  </data>
+  <data name="Plugin_AssignService__ChuaChonNgayChiDinh" xml:space="preserve">
+    <value>Please select specified date</value>
+  </data>
+  <data name="Plugin_AssignService__DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep" xml:space="preserve">
+    <value>Intruction time service not allow: {0} . Do you want to continued?</value>
+  </data>
+  <data name="Plugin_AssignService__KhongChonPhongXuLyDichVu" xml:space="preserve">
+    <value>Please select execute room</value>
+  </data>
+  <data name="Plugin_AssignService__KhongCoDoiTuongThanhToan" xml:space="preserve">
+    <value>No payment object selected</value>
+  </data>
+  <data name="Plugin_AssignService__KhongNhapSoLuong" xml:space="preserve">
+    <value>Please input quantity</value>
+  </data>
+  <data name="Plugin_AssignService__KhongTimThayDoiTuongThanhToanTrongThoiGianYLenh" xml:space="preserve">
+    <value>Patient type not found, please contact your system administrator for assistance</value>
+  </data>
+  <data name="Plugin_AssignService__KhongTimThayIcdTuongUngVoiCacMaSau" xml:space="preserve">
+    <value>No ICD match code: {0}</value>
+  </data>
+  <data name="Plugin_AssignService__NhomDichVuChiTiet" xml:space="preserve">
+    <value>{0} (Services with code: {1})</value>
+  </data>
+  <data name="Plugin_AssignService__NhomDichVuCoDichVuDuocCauHinhTrongNhomNhungKhongCoCauHinhChinhSach" xml:space="preserve">
+    <value>There is no service in the group but there is no pricing policy or no configuration service room or group service with no service. Detail:</value>
+  </data>
+  <data name="Plugin_AssignService__NhomDichVuCoDichVuKhongCoCauHinh" xml:space="preserve">
+    <value>Service group with unconfigured service, policy: {0}</value>
+  </data>
+  <data name="Plugin_AssignService__NhomDichVuKhongCoDichVu" xml:space="preserve">
+    <value>Service group not available: {0}</value>
+  </data>
+  <data name="Plugin_AssignService__SoLuongXuatLonHonSpoLuongKhadungTrongKho" xml:space="preserve">
+    <value>Exported quantity is more than availabe amount in stock</value>
+  </data>
+  <data name="Plugin_AssignService__TongTienChoBHYTDaVuotquaMucGioiHan" xml:space="preserve">
+    <value>Total service cost of Health insurance was over limited</value>
+  </data>
+  <data name="Plugin_AssignService__TongTienHaoPhiVuotQuaDinhMucHaoPhiKhongTheChonDichVuNay" xml:space="preserve">
+    <value>phuongdt2312@gmail.com
+Language key
+Language key
+ 
+Hải tượng ẩn danh
+ Nhận xét Chia sẻ
+TệpChỉnh sửaXemChènĐịnh dạngDữ liệuCông cụTiện ích bổ sungTrợ giúpChỉnh sửa lần cuối được thực hiện cách đây 4 giờ bởi ẩn danh
+     $%  123  Arial  
+10
+     
+ 
+  
+ 
+                         
+Total cost of Consumption {0} is out of {2} service's quota {1}
+Để bật chế độ hỗ trợ đọc màn hình, nhấn Ctrl+Alt+Z Để tìm hiểu thêm về các phím tắt, nhấn Ctrl+dấu gạch chéo
+ 
+ 
+ 	  	Sửa thầu(BidUpdate)
+ Màn hình chờ phòng xử lý(CallPatient)
+ Tạm ứng theo yêu cầu (DepositRequest)
+ Cảnh báo viện phí (FeeHospitalWarning)
+ Khai báo vật tư hao phí (HisServiceReqMaty)
+ Kho bệnh án(MedicalStore)
+ Hồ sơ bệnh nhân(Patient)
+ Sửa thông tin bệnh nhân(PatientUpdate)
+ Cập nhật thông tin thẻ bệnh nhân(PatientUpdateCard)
+ Chi tiết dự trù(AnticipateList)
+ CauHinhMay-LoaiIn(ConfigPrinter)
+ Tiếp đón (Register)
+ Chỉ định dịch vụ (AssignService)
+ Xuất Chuyển Kho (ExpMestChmsCreate)
+ Chỉ Định GP Bệnh (AssignPaan)
+ Chỉ định máu (HisAssignBlood)
+ Kê đơn (AssignPrescription)
+ Chọn phòng (ChooseRoom)
+ HIS.UC.UCHein (tiếp đón)
+ HIS.UC.RoomExamService (tiếp đón)
+ HIS.Desktop.Plugins.TransactionBill (thanh toán)
+ HIS.Desktop.Plugins.SecondaryIcd (chọn bệnh)
+ Dịch vụ đã chỉ định (SereservInTreatment)
+ HIS.Desktop.TreatmentList
+ HIS.Desktop (khung)
+ Inventec.Desktop.Common.LibraryMessage (thông báo)
+ HIS.Desktop.LibraryMessage (thư viện thông báo)
+ AggrImpMestList(Danh sách phiếu trả)
+ AnticipateCreate(Tạo dự trù)
+ ApprovalExportPrescription(Thực xuất thuốc)
+ AssignServiceEdit(Sửa chỉ định dịch vụ)
+ BedAssign(gán giường)
+ BedHistory(lịch sử giường)
+ BidCreate(Tạo Thầu)
+ BidDetail(Chi tiết thầu)
+ TreatmentFinish(Kết thúc điều trị)
+ 	  	
+ 
+Khám phá
+
+Total cost of Consumption {0} is out of {2} service's quota {1}
+
+Cá heo ẩn danh đã rời khỏi tài liệu.</value>
+  </data>
+  <data name="Plugin_AssignService__VuotQuaSoLuongKhaDungTrongKho__CoMuonTiepTuc" xml:space="preserve">
+    <value>Not enough or out of stock. Do you want to continue?</value>
+  </data>
+</root>

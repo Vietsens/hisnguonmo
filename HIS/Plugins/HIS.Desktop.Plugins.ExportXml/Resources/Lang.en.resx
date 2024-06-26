@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__BTN_EXPORT_XML" xml:space="preserve">
+    <value>Xml Export (Ctrl + E)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__BTN_FIND" xml:space="preserve">
+    <value>Find (Ctrl + F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__COMBO_FILTER__ITEM_ALL" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__COMBO_FILTER__ITEM_IN_LIST" xml:space="preserve">
+    <value>In the list</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__COMBO_FILTER__ITEM_OUT_LIST" xml:space="preserve">
+    <value>Apart list</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__GRID_HEIN_APPROVAL__COLUMN_ADDRESS" xml:space="preserve">
+    <value>Residential address</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__GRID_HEIN_APPROVAL__COLUMN_HAS_BIRTH_CERTIFICATE" xml:space="preserve">
+    <value>Obtain KS</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__GRID_HEIN_APPROVAL__COLUMN_HEIN_APPROVAL_CODE" xml:space="preserve">
+    <value>Hs code browser</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__GRID_HEIN_APPROVAL__COLUMN_HEIN_CARD_FROM_TIME" xml:space="preserve">
+    <value>term from</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__GRID_HEIN_APPROVAL__COLUMN_HEIN_CARD_NUMBER" xml:space="preserve">
+    <value>card number</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__GRID_HEIN_APPROVAL__COLUMN_HEIN_CARD_TO_TIME" xml:space="preserve">
+    <value>limited to</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__GRID_HEIN_APPROVAL__COLUMN_HEIN_MEDI_ORG_CODE" xml:space="preserve">
+    <value>code KCBBD</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__GRID_HEIN_APPROVAL__COLUMN_HEIN_MEDI_ORG_NAME" xml:space="preserve">
+    <value>name KCBBD</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__GRID_HEIN_APPROVAL__COLUMN_LIVE_AREA_CODE" xml:space="preserve">
+    <value>Area code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__GRID_HEIN_APPROVAL__COLUMN_RIGHT_ROUTE_CODE" xml:space="preserve">
+    <value>online</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__GRID_HEIN_APPROVAL__COLUMN_RIGHT_ROUTE_TYPE_CODE" xml:space="preserve">
+    <value>linear_type</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__GRID_HEIN_APPROVAL__COLUMN_STT" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__GRID_HEIN_APPROVAL__COLUMN_TREATMENT_CODE" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__GRID_HEIN_APPROVAL__COLUMN_UP_TO_STANDARD_CODE" xml:space="preserve">
+    <value>5 years 6 months</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__GRID_HEIN_APPROVAL__COLUMN_VIR_PATIENT_NAME" xml:space="preserve">
+    <value>Patient's</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__HEIN_CARD__HAS_BIRTH_CERTIFICATE" xml:space="preserve">
+    <value>Neck</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__HEIN_CARD__NOT_BIRTH_CERTIFICATE" xml:space="preserve">
+    <value>Do not have</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__HEIN_CARD__RIGHT_ROUTE_CODE__DT" xml:space="preserve">
+    <value>true online</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__HEIN_CARD__RIGHT_ROUTE_CODE__TT" xml:space="preserve">
+    <value>left defensive</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__HEIN_CARD__RIGHT_ROUTE_TYPE_CODE__CC" xml:space="preserve">
+    <value>Emergency</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__HEIN_CARD__RIGHT_ROUTE_TYPE_CODE__GT" xml:space="preserve">
+    <value>Introduce</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__HEIN_CARD__UP_TO_STANDARD_CODE__DAT" xml:space="preserve">
+    <value>Land</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__HEIN_CARD__UP_TO_STANDARD_CODE__KHONG_DAT" xml:space="preserve">
+    <value>Not achieved</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__LAYOUT_FROM_EXECUTE_TIME" xml:space="preserve">
+    <value>Browse MI from:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__LAYOUT_TO_EXECUTE_TIME" xml:space="preserve">
+    <value>Come:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__LCI_CBO_BRANCH" xml:space="preserve">
+    <value>Branch:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__TREE_SERE_SERV__COLUMN_AMOUNT" xml:space="preserve">
+    <value>SL</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__TREE_SERE_SERV__COLUMN_DISCOUNT" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__TREE_SERE_SERV__COLUMN_IS_EXPEND" xml:space="preserve">
+    <value>expend</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__TREE_SERE_SERV__COLUMN_SERVICE_CODE" xml:space="preserve">
+    <value>Service code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__TREE_SERE_SERV__COLUMN_SERVICE_NAME" xml:space="preserve">
+    <value>service name</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__TREE_SERE_SERV__COLUMN_SERVICE_REQ_CODE" xml:space="preserve">
+    <value>Code requirements</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__TREE_SERE_SERV__COLUMN_TRANSACTION_CODE" xml:space="preserve">
+    <value>Trading code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__TREE_SERE_SERV__COLUMN_VAT_RATIO" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__TREE_SERE_SERV__COLUMN_VIR_PRICE" xml:space="preserve">
+    <value>Unit price</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__TREE_SERE_SERV__COLUMN_VIR_TOTAL_HEIN_PRICE" xml:space="preserve">
+    <value>Co-payment</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PATIENT_PRICE" xml:space="preserve">
+    <value>Patients pay</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PRICE" xml:space="preserve">
+    <value>amount</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__TXT_HEIN_CARD_NUMBER__NULL_VALUE" xml:space="preserve">
+    <value>Card number (F3)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__TXT_KEYWORD__NULL_VALUE" xml:space="preserve">
+    <value>List of top health insurance card numbers separated by, (comma)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXPORT_XML__TXT_TREATMENT_CODE_HEIN_CARD__NULL_VALUE" xml:space="preserve">
+    <value>Treatment or card number code (F2)</value>
+  </data>
+</root>

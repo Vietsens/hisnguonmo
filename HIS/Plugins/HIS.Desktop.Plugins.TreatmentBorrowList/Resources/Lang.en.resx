@@ -1,0 +1,484 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmTreatmentBorrowList.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+    <comment>layoutControl1</comment>
+  </data>
+  <data name="frmTreatmentBorrowList.Text" xml:space="preserve">
+    <value>List of treatmentBorrow</value>
+    <comment>Danh sách máu</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+    <comment>Tools</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.barButtonItem1.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+    <comment>Lưu (Ctrl S)</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+    <comment>Lưu (Ctrl S)</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.cboBid.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmTreatmentBorrowUpdate.cboTreatmentBorrowAbo.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmTreatmentBorrowUpdate.cboTreatmentBorrowRh.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmTreatmentBorrowUpdate.cboTreatmentBorrowType.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmTreatmentBorrowUpdate.cboImpSource.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmTreatmentBorrowUpdate.cboSupplier.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmTreatmentBorrowUpdate.chkInfect.Properties.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="frmTreatmentBorrowUpdate.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+    <comment>layoutControl1</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.layoutControlItem1.Text" xml:space="preserve">
+    <value>Barcode:</value>
+    <comment>Mã vạch:</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.layoutControlItem10.Text" xml:space="preserve">
+    <value>Import VAT (%):</value>
+    <comment>VAT nhập (%):</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.layoutControlItem11.Text" xml:space="preserve">
+    <value>Infection:</value>
+    <comment>Nhiễm bệnh:</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.layoutControlItem13.Text" xml:space="preserve">
+    <value>Time packaging:</value>
+    <comment>Thời gian đóng gói:</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.layoutControlItem14.Text" xml:space="preserve">
+    <value>Expiry date:</value>
+    <comment>Hạn sử dụng:</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.layoutControlItem15.Text" xml:space="preserve">
+    <value>Supplier:</value>
+    <comment>Nhà cung cấp:</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.layoutControlItem16.Text" xml:space="preserve">
+    <value>Lot number:</value>
+    <comment>Số lô:</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.layoutControlItem18.Text" xml:space="preserve">
+    <value>Internal:</value>
+    <comment>Giá nội bộ:</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.layoutControlItem2.Text" xml:space="preserve">
+    <value>abo:</value>
+    <comment>Abo:</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.layoutControlItem3.Text" xml:space="preserve">
+    <value>Rh:</value>
+    <comment>Rh:</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.layoutControlItem4.Text" xml:space="preserve">
+    <value>contractor:</value>
+    <comment>Thầu:</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.layoutControlItem5.Text" xml:space="preserve">
+    <value>Import sources:</value>
+    <comment>Nguồn nhập:</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.layoutControlItem6.Text" xml:space="preserve">
+    <value>TreatmentBorrow Type:</value>
+    <comment>Loại máu:</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.layoutControlItem7.Text" xml:space="preserve">
+    <value>Ma people for:</value>
+    <comment>Mã người cho:</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.layoutControlItem8.Text" xml:space="preserve">
+    <value>Name for:</value>
+    <comment>Tên người cho:</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.layoutControlItem9.Text" xml:space="preserve">
+    <value>Import prices:</value>
+    <comment>Giá nhập:</comment>
+  </data>
+  <data name="frmTreatmentBorrowUpdate.Text" xml:space="preserve">
+    <value>Fixed treatmentBorrow</value>
+    <comment>Sửa máu</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.btnRefresh.Text" xml:space="preserve">
+    <value>Redo (Ctrl R)</value>
+    <comment>Làm lại (Ctrl R)</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.btnSearch.Text" xml:space="preserve">
+    <value>Find (Ctrl + F)</value>
+    <comment>Tìm (Ctrl F)</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.cboTreatmentBorrowType.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_ActiveIngrBhytCode.Caption" xml:space="preserve">
+    <value>Active code</value>
+    <comment>Mã hoạt chất</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_ActiveIngrBhytName.Caption" xml:space="preserve">
+    <value>Active substances</value>
+    <comment>Tên hoạt chất</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_Amount.Caption" xml:space="preserve">
+    <value>Amount</value>
+    <comment>Số lượng</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_BidName.Caption" xml:space="preserve">
+    <value>contractor name</value>
+    <comment>Tên thầu</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_BidNumber.Caption" xml:space="preserve">
+    <value>number of bids</value>
+    <comment>Số thầu</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_BidNumOrder.Caption" xml:space="preserve">
+    <value>No bid</value>
+    <comment>STT thầu</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_treatmentBorrowPaty.Caption" xml:space="preserve">
+    <value>treatmentBorrow price policy</value>
+    <comment>chính sách giá máu</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_treatmentBorrowRegisterNumber.Caption" xml:space="preserve">
+    <value>Registration number</value>
+    <comment>Số đăng ký</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_treatmentBorrowTypeCode.Caption" xml:space="preserve">
+    <value>TreatmentBorrow type code</value>
+    <comment>Mã loại máu</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_treatmentBorrowTypeCode.ToolTip" xml:space="preserve">
+    <value>TreatmentBorrow type code</value>
+    <comment>Mã loại máu</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_treatmentBorrowTypeName.Caption" xml:space="preserve">
+    <value>TreatmentBorrow type name</value>
+    <comment>Tên loại máu</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_treatmentBorrowTypeName.ToolTip" xml:space="preserve">
+    <value>TreatmentBorrow type name</value>
+    <comment>Tên loại máu</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_treatmentBorrowUseFromName.Caption" xml:space="preserve">
+    <value>route of administration</value>
+    <comment>Đường dùng</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_Concentra.Caption" xml:space="preserve">
+    <value>Content</value>
+    <comment>Hàm lượng</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_CreateTime.Caption" xml:space="preserve">
+    <value>Date created</value>
+    <comment>Ngày tạo</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_Creator.Caption" xml:space="preserve">
+    <value>creators</value>
+    <comment>Người tạo</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_ExpriedDate.Caption" xml:space="preserve">
+    <value>Shelf</value>
+    <comment>Hạn sử dụng</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_ImpPrice.Caption" xml:space="preserve">
+    <value>Unit price</value>
+    <comment>Đơn giá</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_ImpPrice.ToolTip" xml:space="preserve">
+    <value>Unit price</value>
+    <comment>Đơn giá</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_ImpTime.Caption" xml:space="preserve">
+    <value>Entry time</value>
+    <comment>Thời gian nhập</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_ImpVatRatio.Caption" xml:space="preserve">
+    <value>VAT</value>
+    <comment>VAT</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_Lock.Caption" xml:space="preserve">
+    <value>lock up</value>
+    <comment>Khóa</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_ManufacturerName.Caption" xml:space="preserve">
+    <value>Producer</value>
+    <comment>Nhà sản xuất</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_Modifier.Caption" xml:space="preserve">
+    <value>Repairer</value>
+    <comment>Người sửa</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_ModifyTime.Caption" xml:space="preserve">
+    <value>modification date</value>
+    <comment>Ngày sửa</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_NationalName.Caption" xml:space="preserve">
+    <value>nation</value>
+    <comment>Quốc gia</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_PackgeNumber.Caption" xml:space="preserve">
+    <value>Lot number</value>
+    <comment>Số lô</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_Stt.Caption" xml:space="preserve">
+    <value>STT</value>
+    <comment>STT</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.Gc_SupplierName.Caption" xml:space="preserve">
+    <value>Supplier</value>
+    <comment>Nhà cung cấp</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn1.Caption" xml:space="preserve">
+    <value>Capacity</value>
+    <comment>Dung tích</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn1.ToolTip" xml:space="preserve">
+    <value>Capacity</value>
+    <comment>Dung tích</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn10.Caption" xml:space="preserve">
+    <value>gridColumn10</value>
+    <comment>gridColumn10</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn11.Caption" xml:space="preserve">
+    <value>gridColumn11</value>
+    <comment>gridColumn11</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn12.Caption" xml:space="preserve">
+    <value>Barcode</value>
+    <comment>Mã vạch</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn12.ToolTip" xml:space="preserve">
+    <value>Barcode</value>
+    <comment>Mã vạch</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn2.Caption" xml:space="preserve">
+    <value>Ingredient</value>
+    <comment>Thành phần</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn2.ToolTip" xml:space="preserve">
+    <value>Ingredient</value>
+    <comment>Thành phần</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn3.Caption" xml:space="preserve">
+    <value>abo</value>
+    <comment>Abo</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn3.ToolTip" xml:space="preserve">
+    <value>abo</value>
+    <comment>Abo</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn4.Caption" xml:space="preserve">
+    <value>rh</value>
+    <comment>Rh</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn4.ToolTip" xml:space="preserve">
+    <value>rh</value>
+    <comment>Rh</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn5.Caption" xml:space="preserve">
+    <value>people</value>
+    <comment>Người cho</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn5.ToolTip" xml:space="preserve">
+    <value>people</value>
+    <comment>Người cho</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn6.Caption" xml:space="preserve">
+    <value>import sources</value>
+    <comment>Nguồn nhập</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn6.ToolTip" xml:space="preserve">
+    <value>import sources</value>
+    <comment>Nguồn nhập</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn7.Caption" xml:space="preserve">
+    <value>Time packing</value>
+    <comment>Thời gian đóng gói</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn7.ToolTip" xml:space="preserve">
+    <value>Time packing</value>
+    <comment>Thời gian đóng gói</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn8.Caption" xml:space="preserve">
+    <value>Repair</value>
+    <comment>Sửa</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn9.Caption" xml:space="preserve">
+    <value>import warehouse</value>
+    <comment>Kho nhập</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.gridColumn9.ToolTip" xml:space="preserve">
+    <value>import warehouse</value>
+    <comment>Kho nhập</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+    <comment>layoutControl1</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+    <comment>layoutControl2</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+    <comment>layoutControl3</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.lciTreatmentBorrowType.Text" xml:space="preserve">
+    <value>TreatmentBorrow Type:</value>
+    <comment>Loại máu:</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.lciImpTimeFrom.Text" xml:space="preserve">
+    <value>From:</value>
+    <comment>Từ:</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.lciImpTimeTo.Text" xml:space="preserve">
+    <value>Come:</value>
+    <comment>Đến:</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.navBarControl1.Text" xml:space="preserve">
+    <value>navBarControl1</value>
+    <comment>navBarControl1</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.navBarGroupImpTime.Caption" xml:space="preserve">
+    <value>Date Added</value>
+    <comment>Ngày nhập</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.txtTreatmentBorrowCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Bar code (F2)</value>
+    <comment>Mã vạch (F2)</comment>
+  </data>
+  <data name="UCTreatmentBorrowList.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Keyword search</value>
+    <comment>Từ khóa tìm kiếm</comment>
+  </data>
+</root>

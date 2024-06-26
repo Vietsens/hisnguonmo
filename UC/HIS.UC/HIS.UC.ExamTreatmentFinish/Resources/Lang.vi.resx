@@ -1,0 +1,699 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FormAppointment.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormAppointment.barButtonItemSave.Caption" xml:space="preserve">
+    <value>Ctrl S</value>
+  </data>
+  <data name="FormAppointment.bbtnChonKhungGio.ToolTip" xml:space="preserve">
+    <value>Chọn khung giờ khám</value>
+  </data>
+  <data name="FormAppointment.btnSave.Text" xml:space="preserve">
+    <value>Đồng ý (Ctrl S)</value>
+  </data>
+  <data name="FormAppointment.btnServiceAppoint.Text" xml:space="preserve">
+    <value>DV hẹn khám</value>
+  </data>
+  <data name="FormAppointment.btnServiceAppoint.ToolTip" xml:space="preserve">
+    <value>Dịch vụ hẹn khám</value>
+  </data>
+  <data name="FormAppointment.gridColumn2.Caption" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="FormAppointment.gridColumn3.Caption" xml:space="preserve">
+    <value>Tên phòng khám</value>
+  </data>
+  <data name="FormAppointment.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem1.Text" xml:space="preserve">
+    <value>Số ngày:</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem10.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormAppointment.layoutControlItem11.Text" xml:space="preserve">
+    <value>STT:</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem4.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Phòng khám lần sau</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem4.Text" xml:space="preserve">
+    <value>PK lần sau:</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem5.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormAppointment.layoutControlItem6.Text" xml:space="preserve">
+    <value>Lời dặn bác sĩ:</value>
+  </data>
+  <data name="FormAppointment.layoutControlItem9.Text" xml:space="preserve">
+    <value>Phòng:</value>
+  </data>
+  <data name="FormAppointment.lblStt.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="FormAppointment.lciTimeAppointments.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời gian hẹn khám</value>
+  </data>
+  <data name="FormAppointment.lciTimeAppointments.Text" xml:space="preserve">
+    <value>TG hẹn khám:</value>
+  </data>
+  <data name="FormAppointment.lciTimeFrame.Text" xml:space="preserve">
+    <value>Khung giờ:</value>
+  </data>
+  <data name="FormAppointment.Text" xml:space="preserve">
+    <value>Hẹn khám lại</value>
+  </data>
+  <data name="FormAppointment.txtAdvise.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Lời dặn bác sĩ</value>
+  </data>
+  <data name="FormAppointment.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="FormTransfer.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormTransfer.barButtonItemSave.Caption" xml:space="preserve">
+    <value>Ctrl S</value>
+  </data>
+  <data name="FormTransfer.btnSave.Text" xml:space="preserve">
+    <value>Đồng ý (Ctrl S)</value>
+  </data>
+  <data name="FormTransfer.btnSaveTranPatiTemp.Text" xml:space="preserve">
+    <value>Lưu mẫu</value>
+  </data>
+  <data name="FormTransfer.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem1.Text" xml:space="preserve">
+    <value>Thuốc đã dùng</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem2.Text" xml:space="preserve">
+    <value>Lý do chuyên môn:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem3.Text" xml:space="preserve">
+    <value>Lý do chuyên môn:</value>
+  </data>
+  <data name="FormTransfer.lciClinicalNote.Text" xml:space="preserve">
+    <value>Dấu hiệu lâm sàng</value>
+  </data>
+  <data name="FormTransfer.lciHuongDieuTri.Text" xml:space="preserve">
+    <value>Hướng điều trị</value>
+  </data>
+  <data name="FormTransfer.lciMediOrg.Text" xml:space="preserve">
+    <value>Nơi đến:</value>
+  </data>
+  <data name="FormTransfer.lciMediOrgAddress.Text" xml:space="preserve">
+    <value>Địa chỉ:</value>
+  </data>
+  <data name="FormTransfer.lciNguoiHoTong.Text" xml:space="preserve">
+    <value>Họ tên, chức danh, trình độ chuyên môn của người hộ tống</value>
+  </data>
+  <data name="FormTransfer.lciPhuongPhapSuDung.Text" xml:space="preserve">
+    <value>Phương pháp điều trị</value>
+  </data>
+  <data name="FormTransfer.lciPhuongTienVanChuyen.Text" xml:space="preserve">
+    <value>Phương tiện vận chuyển</value>
+  </data>
+  <data name="FormTransfer.lciSubclinicalResult.Text" xml:space="preserve">
+    <value>Kết quả xét nghiệm, cận lâm sàng</value>
+  </data>
+  <data name="FormTransfer.lciTinhTrangNguoiBenh.Text" xml:space="preserve">
+    <value>Tình trạng người bệnh</value>
+  </data>
+  <data name="FormTransfer.lciTranPatiForm.Text" xml:space="preserve">
+    <value>Hình thức:</value>
+  </data>
+  <data name="FormTransfer.lciTranPatiReason.Text" xml:space="preserve">
+    <value>Lý do:</value>
+  </data>
+  <data name="FormTransfer.lciTranPatiTemp.Text" xml:space="preserve">
+    <value>Mẫu:</value>
+  </data>
+  <data name="FormTransfer.Text" xml:space="preserve">
+    <value>Thông tin chuyển viện</value>
+  </data>
+  <data name="frmICDInformation.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmICDInformation.bbtnSave.Caption" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmICDInformation.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmICDInformation.chkEditIcd.Properties.Caption" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="frmICDInformation.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmICDInformation.lciICDCode.Text" xml:space="preserve">
+    <value>CĐ chính:</value>
+  </data>
+  <data name="frmICDInformation.lciICDSubCode.Text" xml:space="preserve">
+    <value>CĐ phụ:</value>
+  </data>
+  <data name="frmICDInformation.Text" xml:space="preserve">
+    <value>Thông tin chuẩn đoán hiển thị trên giấy ra viện</value>
+  </data>
+  <data name="frmICDInformation.txtIcdText.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Nhấn F1 để chọn bệnh</value>
+  </data>
+  <data name="frmPopUpSick.btnOke.Text" xml:space="preserve">
+    <value>Đồng ý</value>
+  </data>
+  <data name="frmPopUpSick.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmPopUpSick.Text" xml:space="preserve">
+    <value>Thông tin</value>
+  </data>
+  <data name="frmSecondaryIcd.bar2.Text" xml:space="preserve">
+    <value>Main menu</value>
+  </data>
+  <data name="frmSecondaryIcd.bbtnChoose.Caption" xml:space="preserve">
+    <value>Chọn (Ctrl S)</value>
+  </data>
+  <data name="frmSecondaryIcd.bbtnClose.Caption" xml:space="preserve">
+    <value>Đóng (Esc)</value>
+  </data>
+  <data name="frmSecondaryIcd.btnChoose.Text" xml:space="preserve">
+    <value>Chọn (Ctrl S)</value>
+  </data>
+  <data name="frmSecondaryIcd.grdColCode.Caption" xml:space="preserve">
+    <value>Mã bệnh</value>
+  </data>
+  <data name="frmSecondaryIcd.grdColName.Caption" xml:space="preserve">
+    <value>Tên bệnh</value>
+  </data>
+  <data name="frmSecondaryIcd.gridColumn1.Caption" xml:space="preserve">
+    <value>gridColumn1</value>
+  </data>
+  <data name="frmSecondaryIcd.gridViewSecondaryDisease.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm...</value>
+  </data>
+  <data name="frmSecondaryIcd.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmSecondaryIcd.lblIcdText.Text" xml:space="preserve">
+    <value>Bệnh phụ:</value>
+  </data>
+  <data name="frmSecondaryIcd.Text" xml:space="preserve">
+    <value>Tìm chọn bệnh</value>
+  </data>
+  <data name="frmSecondaryIcd.txtIcdCodes.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Danh sách mã bệnh</value>
+  </data>
+  <data name="frmSecondaryIcd.txtIcdNames.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Danh sách tên bệnh</value>
+  </data>
+  <data name="frmSecondaryIcd.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="frmSecondaryIcdFull.bar2.Text" xml:space="preserve">
+    <value>Main menu</value>
+  </data>
+  <data name="frmSecondaryIcdFull.bbtnChoose.Caption" xml:space="preserve">
+    <value>Chọn (Ctrl S)</value>
+  </data>
+  <data name="frmSecondaryIcdFull.bbtnClose.Caption" xml:space="preserve">
+    <value>Đóng (Esc)</value>
+  </data>
+  <data name="frmSecondaryIcdFull.btnChoose.Text" xml:space="preserve">
+    <value>Chọn (Ctrl S)</value>
+  </data>
+  <data name="frmSecondaryIcdFull.grdColCode.Caption" xml:space="preserve">
+    <value>Mã bệnh</value>
+  </data>
+  <data name="frmSecondaryIcdFull.grdColName.Caption" xml:space="preserve">
+    <value>Tên bệnh</value>
+  </data>
+  <data name="frmSecondaryIcdFull.gridColumn1.Caption" xml:space="preserve">
+    <value>gridColumn1</value>
+  </data>
+  <data name="frmSecondaryIcdFull.gridViewSecondaryDisease.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm...</value>
+  </data>
+  <data name="frmSecondaryIcdFull.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmSecondaryIcdFull.lblIcdText.Text" xml:space="preserve">
+    <value>Bệnh phụ:</value>
+  </data>
+  <data name="frmSecondaryIcdFull.Text" xml:space="preserve">
+    <value>Tìm chọn bệnh</value>
+  </data>
+  <data name="frmSecondaryIcdFull.txtIcdCodes.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Danh sách mã bệnh</value>
+  </data>
+  <data name="frmSecondaryIcdFull.txtIcdNames.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Danh sách tên bệnh</value>
+  </data>
+  <data name="frmSecondaryIcdFull.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenLaChuNhat" xml:space="preserve">
+    <value>Ngày hẹn khám hiện tại là ngày chủ nhật bạn có muốn tiếp tục không</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenLaThuBay" xml:space="preserve">
+    <value>Ngày hẹn khám hiện tại là ngày thứ bảy bạn có muốn tiếp tục không</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenToiDa" xml:space="preserve">
+    <value>Số ngày hẹn khám tối đa cho phép là {0} ngày.</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_CanhBaoThoiGianHenKhamSoVoiThoiGianKetThucDieuTri" xml:space="preserve">
+    <value>Thời gian hẹn khám phải lớn hơn thời gian kết thúc điều trị</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_ChuaNhapThoiGianHenKham" xml:space="preserve">
+    <value>Bạn chưa chọn thời gian hẹn khám, vui lòng kiểm tra lại</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_ChuaNhapThongTinChuyenVien" xml:space="preserve">
+    <value>Bạn chưa nhập đầy đủ thông tin chuyển viện, vui lòng kiểm tra lại</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_ChuaNhapThongTinTuVong" xml:space="preserve">
+    <value>Bạn chưa nhập đầy đủ thông tin tử vong, vui lòng kiểm tra lại</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_KhungGioVuotQuaSoLuong" xml:space="preserve">
+    <value>Khung giờ này đã vượt quá số lượt hẹn khám cho phép. Bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_PhongKhamCoSoLuotKhamVuotDinhMuc" xml:space="preserve">
+    <value>Phòng khám có số lượt hẹn khám vượt số lượt cho phép: {0}. Bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_ThongBao" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Chưa nhập trường dữ liệu bắt buộc</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_TruongDuLieuVuotQuaKyTu" xml:space="preserve">
+    <value>Dữ liệu có độ dài vượt quá {0}</value>
+  </data>
+  <data name="UcAdvise.gridColumn2.Caption" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="UcAdvise.gridColumn3.Caption" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="UcAdvise.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UcAdvise.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UcAdvise.layoutControlItem1.Text" xml:space="preserve">
+    <value>Lời dặn bác sĩ:</value>
+  </data>
+  <data name="UcAdvise.layoutControlItem2.Text" xml:space="preserve">
+    <value>PK lần sau:</value>
+  </data>
+  <data name="UcAdvise.layoutControlItem3.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UcAdvise.txtAdvise.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Lời dặn bác sĩ</value>
+  </data>
+  <data name="UcAdvise.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="UCAppointmentAdvise.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCAppointmentAdvise.layoutControlItem1.Text" xml:space="preserve">
+    <value>Lời dặn bác sĩ:</value>
+  </data>
+  <data name="UCAppointmentAdvise.txtAdvise.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Lời dặn bác sĩ</value>
+  </data>
+  <data name="UCExamTreatmentFinish.BMIDISPLAY.NORMAL" xml:space="preserve">
+    <value>(Bình thường)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.BMIDISPLAY.OBESITY.I" xml:space="preserve">
+    <value>(Béo phì độ I)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.BMIDISPLAY.OBESITY.II" xml:space="preserve">
+    <value>(Béo phì độ II)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.BMIDISPLAY.OBESITY.III" xml:space="preserve">
+    <value>(Béo phì độ III)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.BMIDISPLAY.OVERWEIGHT" xml:space="preserve">
+    <value>(Thừa cân)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl10.Text" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl12.Text" xml:space="preserve">
+    <value> m²</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl3.Text" xml:space="preserve">
+    <value>lần/phút</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl4.Text" xml:space="preserve">
+    <value>mmHG</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl5.Text" xml:space="preserve">
+    <value>kg</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl6.Text" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl7.Text" xml:space="preserve">
+    <value>oC</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl8.Text" xml:space="preserve">
+    <value>lần/phút</value>
+  </data>
+  <data name="UCExamTreatmentFinish.labelControl9.Text" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem1.Text" xml:space="preserve">
+    <value>Mạch:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem10.Text" xml:space="preserve">
+    <value>BMI:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem11.Text" xml:space="preserve">
+    <value>Diện tích da:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem17.Text" xml:space="preserve">
+    <value>lần/phút</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem2.Text" xml:space="preserve">
+    <value>Nhiệt độ:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem3.Text" xml:space="preserve">
+    <value>Huyết áp:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem5.Text" xml:space="preserve">
+    <value>Nhịp thở:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem6.Text" xml:space="preserve">
+    <value>Cân nặng:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem7.Text" xml:space="preserve">
+    <value>Chiều cao:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem8.Text" xml:space="preserve">
+    <value>Vòng ngực:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.layoutControlItem9.Text" xml:space="preserve">
+    <value>Vòng bụng:</value>
+  </data>
+  <data name="UCExamTreatmentFinish.SKINNY.I" xml:space="preserve">
+    <value>(Gầy độ I)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.SKINNY.II" xml:space="preserve">
+    <value>(Gầy độ II)</value>
+  </data>
+  <data name="UCExamTreatmentFinish.SKINNY.III" xml:space="preserve">
+    <value>(Gầy độ III)</value>
+  </data>
+  <data name="UCTreatmentFinish.btnICDInformation.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreatmentFinish.btnICDInformation.ToolTip" xml:space="preserve">
+    <value>Bổ sung thông tin chẩn đoán hiển thị trên giấy ra viện</value>
+  </data>
+  <data name="UCTreatmentFinish.chkEditIcd.Properties.Caption" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="UCTreatmentFinish.chkInPhieuTrichLuc.Properties.Caption" xml:space="preserve">
+    <value>:In</value>
+  </data>
+  <data name="UCTreatmentFinish.chkKyPhieuTrichLuc.Properties.Caption" xml:space="preserve">
+    <value>:Ký</value>
+  </data>
+  <data name="UCTreatmentFinish.chkPrintAppoinment.Properties.Caption" xml:space="preserve">
+    <value>:In</value>
+  </data>
+  <data name="UCTreatmentFinish.chkPrintBHXH.Properties.Caption" xml:space="preserve">
+    <value>:In</value>
+  </data>
+  <data name="UCTreatmentFinish.chkPrintBordereau.Properties.Caption" xml:space="preserve">
+    <value>:In</value>
+  </data>
+  <data name="UCTreatmentFinish.chkPrintHosTransfer.Properties.Caption" xml:space="preserve">
+    <value>:In</value>
+  </data>
+  <data name="UCTreatmentFinish.chkPrintPrescription.Properties.Caption" xml:space="preserve">
+    <value>:In</value>
+  </data>
+  <data name="UCTreatmentFinish.chkSignAppoinment.Properties.Caption" xml:space="preserve">
+    <value>:Ký</value>
+  </data>
+  <data name="UCTreatmentFinish.chkSignBHXH.Properties.Caption" xml:space="preserve">
+    <value>:Ký</value>
+  </data>
+  <data name="UCTreatmentFinish.chkSignBordereau.Properties.Caption" xml:space="preserve">
+    <value>:Ký</value>
+  </data>
+  <data name="UCTreatmentFinish.chkTraditionalIcd.Properties.Caption" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="UCTreatmentFinish.labelControl1.Text" xml:space="preserve">
+    <value>Chỉ định dịch vụ hẹn khám</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem1.Text" xml:space="preserve">
+    <value>Thời gian vào:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem10.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số chuyển viện</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem10.Text" xml:space="preserve">
+    <value>Số CV:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem12.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem14.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thông tin bổ sung</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem14.Text" xml:space="preserve">
+    <value>TT bổ sung:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem2.Text" xml:space="preserve">
+    <value>Thời gian ra:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem20.Text" xml:space="preserve">
+    <value>Kết quả:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem23.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Phiếu kết quả khám bệnh (trích lục)</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem23.Text" xml:space="preserve">
+    <value>Phiếu trích lục:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem27.Text" xml:space="preserve">
+    <value>Đơn thuốc:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem28.Text" xml:space="preserve">
+    <value>Phiếu chuyển viện:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem3.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán ra viện y học cổ truyền</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem3.Text" xml:space="preserve">
+    <value>CĐ ra viện YHCT:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem4.Text" xml:space="preserve">
+    <value>Loại ra viện:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem5.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>In phiếu nghỉ hưởng bảo hiểm xã hội</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem5.Text" xml:space="preserve">
+    <value>Phiếu NH BHXH:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem6.Text" xml:space="preserve">
+    <value>Phiếu hẹn khám:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem7.Text" xml:space="preserve">
+    <value>Bảng kê:</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem8.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán nhập viện y học cổ truyền kèm theo</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem8.Text" xml:space="preserve">
+    <value>CĐ nhập viện YHCT (kèm theo):</value>
+  </data>
+  <data name="UCTreatmentFinish.layoutControlItem9.Text" xml:space="preserve">
+    <value>Số ra viện:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciBANT.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>In bệnh án ngoại trú</value>
+  </data>
+  <data name="UCTreatmentFinish.lciBANT.Text" xml:space="preserve">
+    <value>In BA ngoại trú:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciCareer.Text" xml:space="preserve">
+    <value>Nghề nghiệp:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciChkCapSoLuuTruBA.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tạo hồ sơ bệnh án ngoại trú</value>
+  </data>
+  <data name="UCTreatmentFinish.lciChkCapSoLuuTruBA.Text" xml:space="preserve">
+    <value>Tạo BA ngoại trú:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciIcdText.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán ra viện</value>
+  </data>
+  <data name="UCTreatmentFinish.lciIcdText.Text" xml:space="preserve">
+    <value>CĐ ra viện:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciIsExpXml4210Collinear.Text" xml:space="preserve">
+    <value>Xuất xml thông tuyến:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciPatientProgram.Text" xml:space="preserve">
+    <value>Chương trình:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciSoLuuTruBA.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số lưu trữ bệnh án ngoại trú</value>
+  </data>
+  <data name="UCTreatmentFinish.lciSoLuuTruBA.Text" xml:space="preserve">
+    <value>Số LTBA ngoại trú:</value>
+  </data>
+  <data name="UCTreatmentFinish.txtIcdText.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Nhấn F1 để chọn bệnh</value>
+  </data>
+  <data name="UCTreatmentFinish.xtraTabPage1.Text" xml:space="preserve">
+    <value>Lời dặn</value>
+  </data>
+  <data name="UCTreatmentFinish.xtraTabPage2.Text" xml:space="preserve">
+    <value>Kết luận</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__TXT_ICD_TEXT__NULL_VALUE" xml:space="preserve">
+    <value>Nhấn F1 để chọn bệnh</value>
+  </data>
+</root>

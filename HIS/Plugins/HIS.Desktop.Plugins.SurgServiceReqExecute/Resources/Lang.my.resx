@@ -1,0 +1,2328 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FormEkipUser.btnSave.Text" xml:space="preserve">
+    <value>သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="FormEkipUser.gridColumn1.Caption" xml:space="preserve">
+    <value>ပထမနှင့်နောက်ဆုံးအမည်</value>
+  </data>
+  <data name="FormEkipUser.gridColumn2.Caption" xml:space="preserve">
+    <value>အခန်းကဏ္ဍ</value>
+  </data>
+  <data name="FormEkipUser.gridColumn3.Caption" xml:space="preserve">
+    <value>gridColumn၃</value>
+  </data>
+  <data name="FormEkipUser.gridColumn4.Caption" xml:space="preserve">
+    <value>gridColumn4</value>
+  </data>
+  <data name="FormEkipUser.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="FormEkipUser.layoutControlItem2.Text" xml:space="preserve">
+    <value>နမူနာအစုံ-</value>
+  </data>
+  <data name="FormEkipUser.Text" xml:space="preserve">
+    <value>အကောင်အထည်ဖော်ရေးအဖွဲ့</value>
+  </data>
+  <data name="FormImageTemp.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="FormImageTemp.barBtnSave.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="FormImageTemp.barBtnSearch.Caption" xml:space="preserve">
+    <value>Crtl F</value>
+  </data>
+  <data name="FormImageTemp.btnSave.Text" xml:space="preserve">
+    <value>(Ctrl S) ကို ရွေးပါ</value>
+  </data>
+  <data name="FormImageTemp.btnSearch.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="FormImageTemp.gridColumn1.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="FormImageTemp.gridColumn3.Caption" xml:space="preserve">
+    <value>ခေါင်းစဥ်</value>
+  </data>
+  <data name="FormImageTemp.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="FormImageTemp.Text" xml:space="preserve">
+    <value>ခွဲစိတ်မှုပုံစံဇယားပုံစံ</value>
+  </data>
+  <data name="FormImageTemp.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
+  </data>
+  <data name="FormPtttMethod.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="FormPtttMethod.barBtnSearch.Caption" xml:space="preserve">
+    <value>Ctrl F</value>
+  </data>
+  <data name="FormPtttMethod.btnChoose.Text" xml:space="preserve">
+    <value>ရွေးပါ။</value>
+  </data>
+  <data name="FormPtttMethod.btnSearch.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="FormPtttMethod.gc_amount.Caption" xml:space="preserve">
+    <value>ပမာဏ</value>
+  </data>
+  <data name="FormPtttMethod.gc_icon.Caption" xml:space="preserve">
+    <value>ဇယားကွက် ၁</value>
+  </data>
+  <data name="FormPtttMethod.gc_MethodCode.Caption" xml:space="preserve">
+    <value>ကုဒ်</value>
+  </data>
+  <data name="FormPtttMethod.gc_MethodName.Caption" xml:space="preserve">
+    <value>နာမည်</value>
+  </data>
+  <data name="FormPtttMethod.gc_PTTT.Caption" xml:space="preserve">
+    <value>PTTT ဟုရိုက်ပါ။</value>
+  </data>
+  <data name="FormPtttMethod.gc_PTTT.ToolTip" xml:space="preserve">
+    <value>ခွဲစိတ်မှုပုံစံ</value>
+  </data>
+  <data name="FormPtttMethod.gridColumn1.Caption" xml:space="preserve">
+    <value>ဇယားကွက် ၁</value>
+  </data>
+  <data name="FormPtttMethod.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="FormPtttMethod.Text" xml:space="preserve">
+    <value>လက်တွေ့ကျသောနည်းလမ်း</value>
+  </data>
+  <data name="FormPtttMethod.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
+  </data>
+  <data name="FormPtttTemp.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="FormPtttTemp.barBtnSave.Caption" xml:space="preserve">
+    <value>Ctrl WILL</value>
+  </data>
+  <data name="FormPtttTemp.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="FormPtttTemp.chkPublic.Properties.Caption" xml:space="preserve">
+    <value>ဆေးရုံတစ်ခုလုံး ဖွင့်ထားရတယ်။</value>
+  </data>
+  <data name="FormPtttTemp.chkPublicDepartment.Properties.Caption" xml:space="preserve">
+    <value>ဌာနတွင်း ကြော်ငြာခြင်း။</value>
+  </data>
+  <data name="FormPtttTemp.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="FormPtttTemp.layoutControlItem3.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormPtttTemp.lciPtttTempCode.Text" xml:space="preserve">
+    <value>ကုဒ်:</value>
+  </data>
+  <data name="FormPtttTemp.lciPtttTempName.Text" xml:space="preserve">
+    <value>အမည်-</value>
+  </data>
+  <data name="FormPtttTemp.Text" xml:space="preserve">
+    <value>နမူနာခွဲစိတ်မှု</value>
+  </data>
+  <data name="FormViewImage.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="FormViewImage.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="FormViewImage.PictureEdit.Properties.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormViewImage.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormViewImage.tileControl.Text" xml:space="preserve">
+    <value>tileControl1</value>
+  </data>
+  <data name="frmEkipTemp.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmEkipTemp.barButtonItem1.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmEkipTemp.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmEkipTemp.chkDepartment.Properties.Caption" xml:space="preserve">
+    <value>တက္ကသိုလ်အချက်အလက်များကိုသိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="frmEkipTemp.chkDepartment.ToolTip" xml:space="preserve">
+    <value>အဖွဲ့၀င်များ၏ သင်ကြားရေးအချက်အလက်များကို သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="frmEkipTemp.chkPublic.Properties.Caption" xml:space="preserve">
+    <value>ဆေးရုံတစ်ခုလုံး ဖွင့်ထားရတယ်။</value>
+  </data>
+  <data name="frmEkipTemp.chkPublicDepartment.Properties.Caption" xml:space="preserve">
+    <value>ဌာနတွင်း ကြော်ငြာခြင်း။</value>
+  </data>
+  <data name="frmEkipTemp.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmEkipTemp.layoutControlItem1.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEkipTemp.layoutControlItem2.Text" xml:space="preserve">
+    <value>အမည်-</value>
+  </data>
+  <data name="frmEkipTemp.layoutControlItem4.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEkipTemp.layoutControlItem5.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEkipTemp.Text" xml:space="preserve">
+    <value>နမူနာဖန်တီးရေးအဖွဲ့</value>
+  </data>
+  <data name="frmInputDetail.btnDelete.Text" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit1.Properties.Caption" xml:space="preserve">
+    <value>ဖေါင်ဖြတ်ခြင်း။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit10.Properties.Caption" xml:space="preserve">
+    <value>Compressionတိပ်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit100.Properties.Caption" xml:space="preserve">
+    <value>အိပ်မက်ခန္ဓာကို လေ့လာခြင်း။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit101.Properties.Caption" xml:space="preserve">
+    <value>မီးလောင် hemostasis</value>
+  </data>
+  <data name="frmInputDetail.checkEdit102.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit103.Properties.Caption" xml:space="preserve">
+    <value>မျက်နှာတွင် ထုံကျင်ခြင်း။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit104.Properties.Caption" xml:space="preserve">
+    <value>စိတ်အားထက်သန်တယ်။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit105.Properties.Caption" xml:space="preserve">
+    <value>10-12 မီလီမီတာ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit107.Properties.Caption" xml:space="preserve">
+    <value>မျက်ဖြူဖောက်ခြင်း။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit109.Properties.Caption" xml:space="preserve">
+    <value>တိုက်ရိုက်အရွယ်အစားသို့ဖြတ်ပါ။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit11.Properties.Caption" xml:space="preserve">
+    <value>တခြား</value>
+  </data>
+  <data name="frmInputDetail.checkEdit110.Properties.Caption" xml:space="preserve">
+    <value>တိုင်းပြည်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit111.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit113.Properties.Caption" xml:space="preserve">
+    <value>မျက်ကြည်လွှာ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit114.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit115.Properties.Caption" xml:space="preserve">
+    <value>နိုင်လွန် 10-O</value>
+  </data>
+  <data name="frmInputDetail.checkEdit117.Properties.Caption" xml:space="preserve">
+    <value>5mm</value>
+  </data>
+  <data name="frmInputDetail.checkEdit118.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit119.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit12.Properties.Caption" xml:space="preserve">
+    <value>အလယ်တန်းခွဲစိတ်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit120.Properties.Caption" xml:space="preserve">
+    <value>7mm</value>
+  </data>
+  <data name="frmInputDetail.checkEdit122.Properties.Caption" xml:space="preserve">
+    <value>8mm</value>
+  </data>
+  <data name="frmInputDetail.checkEdit123.Properties.Caption" xml:space="preserve">
+    <value>ဆီလီကွန်နဖူးကို မြှင့်တင်ပေးခြင်း</value>
+  </data>
+  <data name="frmInputDetail.checkEdit124.Properties.Caption" xml:space="preserve">
+    <value>6mm</value>
+  </data>
+  <data name="frmInputDetail.checkEdit125.Properties.Caption" xml:space="preserve">
+    <value>နဖူးကြွက်သားများကို ချည်မျှင်ဖြင့် ဆွဲထားသည်။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit126.Properties.Caption" xml:space="preserve">
+    <value>နဖူးကြွက်သားများကို ပေါင်ကြွက်သားဖြင့် ဆွဲထားသည်။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit127.Properties.Caption" xml:space="preserve">
+    <value>မျက်ခမ်းကို မြှောက်ရန် ကြွက်သားများကို ခေါက်ပါ။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit128.Properties.Caption" xml:space="preserve">
+    <value>Levator ကြွက်သားကို အတိုချုံးပါ။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit129.Properties.Caption" xml:space="preserve">
+    <value>ထုံကျင်တဲ့နေရာ၊</value>
+  </data>
+  <data name="frmInputDetail.checkEdit13.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit130.Properties.Caption" xml:space="preserve">
+    <value>မေ့ဆေး</value>
+  </data>
+  <data name="frmInputDetail.checkEdit131.Properties.Caption" xml:space="preserve">
+    <value>IV ကို ခေါက်သိမ်းပါ။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit132.Properties.Caption" xml:space="preserve">
+    <value>အဆင့် II ပြိုကျ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit133.Properties.Caption" xml:space="preserve">
+    <value>ခေါက်သိမ်းပါ။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit135.Properties.Caption" xml:space="preserve">
+    <value>အဆင့် III ပြိုကျ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit136.Properties.Caption" xml:space="preserve">
+    <value>အုံ့ဆိုင်းနေသည်။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit137.Properties.Caption" xml:space="preserve">
+    <value>ခေါက်သိမ်းပါ။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit138.Properties.Caption" xml:space="preserve">
+    <value>အဆင့် III ပြိုကျ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit139.Properties.Caption" xml:space="preserve">
+    <value>IV ကို ခေါက်သိမ်းပါ။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit140.Properties.Caption" xml:space="preserve">
+    <value>အဆင့် II ပြိုကျ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit141.Properties.Caption" xml:space="preserve">
+    <value>အုံ့ဆိုင်းနေသည်။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit142.Properties.Caption" xml:space="preserve">
+    <value>3mm</value>
+  </data>
+  <data name="frmInputDetail.checkEdit144.Properties.Caption" xml:space="preserve">
+    <value>Compressionတိပ်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit15.Properties.Caption" xml:space="preserve">
+    <value>နှာတံ ဖွာ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit171.Properties.Caption" xml:space="preserve">
+    <value>ငါ့အရေပြား</value>
+  </data>
+  <data name="frmInputDetail.checkEdit173.Properties.Caption" xml:space="preserve">
+    <value>မျက်မြှေး</value>
+  </data>
+  <data name="frmInputDetail.checkEdit174.Properties.Caption" xml:space="preserve">
+    <value>မျက်ရည်မှတ်ခလုတ်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit175.Properties.Caption" xml:space="preserve">
+    <value>ခဏနားတယ်။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit176.Properties.Caption" xml:space="preserve">
+    <value>အရေပြားအောက်တစ်ရှူး</value>
+  </data>
+  <data name="frmInputDetail.checkEdit177.Properties.Caption" xml:space="preserve">
+    <value>အရေပြား</value>
+  </data>
+  <data name="frmInputDetail.checkEdit178.Properties.Caption" xml:space="preserve">
+    <value>လက်စွပ်ပုံသဏ္ဍာန်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit179.Properties.Caption" xml:space="preserve">
+    <value>လက်စွပ်ပုံသဏ္ဍာန်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit18.Properties.Caption" xml:space="preserve">
+    <value>အပ်ချုပ်ညှစ်စက်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit180.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit181.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit182.Properties.Caption" xml:space="preserve">
+    <value>မချိုးရ။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit183.Properties.Caption" xml:space="preserve">
+    <value>မျက်ရည်အိတ်ဧရိယာ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit184.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit185.Properties.Caption" xml:space="preserve">
+    <value>မျက်ခွံတလျှောက် မျက်ရည်တပေါက်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit186.Properties.Caption" xml:space="preserve">
+    <value>မီနီမိုနိုကာ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit187.Properties.Caption" xml:space="preserve">
+    <value>အလယ်တန်း ၁/၃</value>
+  </data>
+  <data name="frmInputDetail.checkEdit188.Properties.Caption" xml:space="preserve">
+    <value>1 စည်းမျဉ်း</value>
+  </data>
+  <data name="frmInputDetail.checkEdit189.Properties.Caption" xml:space="preserve">
+    <value>1/3 လက်မ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit190.Properties.Caption" xml:space="preserve">
+    <value>1/3 ဆိုပြီး</value>
+  </data>
+  <data name="frmInputDetail.checkEdit191.Properties.Caption" xml:space="preserve">
+    <value>နှာခေါင်း</value>
+  </data>
+  <data name="frmInputDetail.checkEdit192.Properties.Caption" xml:space="preserve">
+    <value>အပေါက်အောက်မှာ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit193.Properties.Caption" xml:space="preserve">
+    <value>မျက်နှာတွင် ထုံကျင်ခြင်း။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit194.Properties.Caption" xml:space="preserve">
+    <value>စိတ်အားထက်သန်တယ်။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit197.Properties.Caption" xml:space="preserve">
+    <value>လက်စွပ်ပုံသဏ္ဍာန် ဆီလီကွန်ပြွန်ကို ထားပါ။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit2.Properties.Caption" xml:space="preserve">
+    <value>ဖေါင်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit20.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit200.Properties.Caption" xml:space="preserve">
+    <value>1-ရာခိုင်နှုန်း ဆီလီကွန်ပြွန်ကို ထားပါ။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit201.Properties.Caption" xml:space="preserve">
+    <value>အပေါ်ပိုင်းထိန်းချုပ်မှုအချိုးကိုချိုးဖျက်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit204.Properties.Caption" xml:space="preserve">
+    <value>အထက်ပိုင်းနှင့် အောက်ပိုင်း စီမံခန့်ခွဲမှုများ ပျက်ပြားနေပါသည်။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit205.Properties.Caption" xml:space="preserve">
+    <value>စီမံခန့်ခွဲမှု နိမ့်ကျသည်။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit206.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit21.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit22.Properties.Caption" xml:space="preserve">
+    <value>Vicryl</value>
+  </data>
+  <data name="frmInputDetail.checkEdit23.Properties.Caption" xml:space="preserve">
+    <value>အနည်းငယ်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit24.Properties.Caption" xml:space="preserve">
+    <value>နိုင်လွန်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit25.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit255.Properties.Caption" xml:space="preserve">
+    <value>၁၃ နာရီ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit256.Properties.Caption" xml:space="preserve">
+    <value>၁၁ နာရီ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit257.Properties.Caption" xml:space="preserve">
+    <value>ပြီးနောက်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit258.Properties.Caption" xml:space="preserve">
+    <value>မီ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit26.Properties.Caption" xml:space="preserve">
+    <value>တိုင်းပြည်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit261.Properties.Caption" xml:space="preserve">
+    <value>5mj</value>
+  </data>
+  <data name="frmInputDetail.checkEdit264.Properties.Caption" xml:space="preserve">
+    <value>4mj</value>
+  </data>
+  <data name="frmInputDetail.checkEdit266.Properties.Caption" xml:space="preserve">
+    <value>MP Glaucoma၊ ထောင့်ကျဉ်းအခန်း</value>
+  </data>
+  <data name="frmInputDetail.checkEdit267.Properties.Caption" xml:space="preserve">
+    <value>MT သည် Glaucoma, ထောင့်ကျဉ်းအခန်းကိုသံသယရှိနေသည်။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit268.Properties.Caption" xml:space="preserve">
+    <value>MT Glam၊ ထောင့်ကျဉ်းအခန်း</value>
+  </data>
+  <data name="frmInputDetail.checkEdit269.Properties.Caption" xml:space="preserve">
+    <value>အမတ်သည် ရေတိမ်ကို သံသယဝင်၍ ထောင့်ကျဉ်းအခန်း၊</value>
+  </data>
+  <data name="frmInputDetail.checkEdit27.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit28.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit29.Properties.Caption" xml:space="preserve">
+    <value>ရာထူးတွေရော</value>
+  </data>
+  <data name="frmInputDetail.checkEdit3.Properties.Caption" xml:space="preserve">
+    <value>အဆီ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit30.Properties.Caption" xml:space="preserve">
+    <value>ဦးထုပ်အောက်မှာ CM</value>
+  </data>
+  <data name="frmInputDetail.checkEdit31.Properties.Caption" xml:space="preserve">
+    <value>ဦးထုပ်ပေါ်တွင် CM</value>
+  </data>
+  <data name="frmInputDetail.checkEdit319.Properties.Caption" xml:space="preserve">
+    <value>ကြက်ခြေခတ်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit32.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit320.Properties.Caption" xml:space="preserve">
+    <value>စက်ဝိုင်း</value>
+  </data>
+  <data name="frmInputDetail.checkEdit321.Properties.Caption" xml:space="preserve">
+    <value>ပြီးနောက်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit322.Properties.Caption" xml:space="preserve">
+    <value>မီ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit325.Properties.Caption" xml:space="preserve">
+    <value>2mj</value>
+  </data>
+  <data name="frmInputDetail.checkEdit328.Properties.Caption" xml:space="preserve">
+    <value>1.5mj</value>
+  </data>
+  <data name="frmInputDetail.checkEdit329.Properties.Caption" xml:space="preserve">
+    <value>ခွဲစိတ်ပြီးနောက် posterior capsule TTT ဖောက်ထွင်းခြင်း။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit33.Properties.Caption" xml:space="preserve">
+    <value>ဖေါင်ဇုန်တည်နေရာ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit333.Properties.Caption" xml:space="preserve">
+    <value>MP TTT ပြီးနောက် ခွဲစိတ်မှုအပြီးတွင် perforated posterior capsule</value>
+  </data>
+  <data name="frmInputDetail.checkEdit34.Properties.Caption" xml:space="preserve">
+    <value>ဖေါင်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit35.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit36.Properties.Caption" xml:space="preserve">
+    <value>ရေမြှေး</value>
+  </data>
+  <data name="frmInputDetail.checkEdit37.Properties.Caption" xml:space="preserve">
+    <value>Olcogen</value>
+  </data>
+  <data name="frmInputDetail.checkEdit38.Properties.Caption" xml:space="preserve">
+    <value>MMC</value>
+  </data>
+  <data name="frmInputDetail.checkEdit39.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit4.Properties.Caption" xml:space="preserve">
+    <value>CNC</value>
+  </data>
+  <data name="frmInputDetail.checkEdit40.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit41.Properties.Caption" xml:space="preserve">
+    <value>ဖောင်ရှေ့</value>
+  </data>
+  <data name="frmInputDetail.checkEdit42.Properties.Caption" xml:space="preserve">
+    <value>5FU</value>
+  </data>
+  <data name="frmInputDetail.checkEdit43.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit44.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit5.Properties.Caption" xml:space="preserve">
+    <value>KM အောက်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit6.Properties.Caption" xml:space="preserve">
+    <value>ကာနယ်ကို ခွဲလိုက်ပါ။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit64.Properties.Caption" xml:space="preserve">
+    <value>အမတ်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit69.Properties.Caption" xml:space="preserve">
+    <value>အပေါ်က</value>
+  </data>
+  <data name="frmInputDetail.checkEdit7.Properties.Caption" xml:space="preserve">
+    <value>ဖေါင်ဖွင့်သည်။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit70.Properties.Caption" xml:space="preserve">
+    <value>အောက်မှာ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit71.Properties.Caption" xml:space="preserve">
+    <value>MT</value>
+  </data>
+  <data name="frmInputDetail.checkEdit8.Properties.Caption" xml:space="preserve">
+    <value>တခြား</value>
+  </data>
+  <data name="frmInputDetail.checkEdit80.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit83.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit84.Properties.Caption" xml:space="preserve">
+    <value>ချည်ဖြင့်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit85.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit86.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit87.Properties.Caption" xml:space="preserve">
+    <value>ပေါင်ကြွက်သားစကေး</value>
+  </data>
+  <data name="frmInputDetail.checkEdit88.Properties.Caption" xml:space="preserve">
+    <value>ဆီလီကွန်မှာ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit89.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit9.Properties.Caption" xml:space="preserve">
+    <value>မျက်ဝန်းကိုဖြတ်ပါ။</value>
+  </data>
+  <data name="frmInputDetail.checkEdit90.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.checkEdit91.Properties.Caption" xml:space="preserve">
+    <value>18-24 မီလီမီတာ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit92.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit95.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit96.Properties.Caption" xml:space="preserve">
+    <value>Vycryl7-O</value>
+  </data>
+  <data name="frmInputDetail.checkEdit98.Properties.Caption" xml:space="preserve">
+    <value>\u003e 24mm</value>
+  </data>
+  <data name="frmInputDetail.checkEdit99.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.chkCloseSkin.Properties.Caption" xml:space="preserve">
+    <value>ပိတ်လိုက်</value>
+  </data>
+  <data name="frmInputDetail.chkDamageTypeAll.Properties.Caption" xml:space="preserve">
+    <value>စုစုပေါင်း</value>
+  </data>
+  <data name="frmInputDetail.chkDamageTypePart.Properties.Caption" xml:space="preserve">
+    <value>သန့်ရှင်းရေးအပိုင်း</value>
+  </data>
+  <data name="frmInputDetail.chkDiscloseSkin.Properties.Caption" xml:space="preserve">
+    <value>အသာလေး</value>
+  </data>
+  <data name="frmInputDetail.chkPostureSide.Properties.Caption" xml:space="preserve">
+    <value>ပိန်တယ်။</value>
+  </data>
+  <data name="frmInputDetail.chkPostureTummy.Properties.Caption" xml:space="preserve">
+    <value>ဝမ်းနဲ</value>
+  </data>
+  <data name="frmInputDetail.chkPostureUp.Properties.Caption" xml:space="preserve">
+    <value>မျက်နှာများ</value>
+  </data>
+  <data name="frmInputDetail.chkShapingSkin.Properties.Caption" xml:space="preserve">
+    <value>နေတတ်တဲ့ နေရာမှာ</value>
+  </data>
+  <data name="frmInputDetail.chkShapingSkinOther.Properties.Caption" xml:space="preserve">
+    <value>တခြား</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raCoDinhNhanCauChiGiacMac.Properties.Caption" xml:space="preserve">
+    <value>မျက်ကြည်လွှာသာ</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raCoDinhNhanCauCoTruc.Properties.Caption" xml:space="preserve">
+    <value>တိုက်ရိုက်ကြွက်သားမျှသာ</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raCoDinhNhanCauDayCungDo.Properties.Caption" xml:space="preserve">
+    <value>တူညီသောမြေပုံ၏အောက်ခြေ</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raCoDinhNhanCauDayVungRia.Properties.Caption" xml:space="preserve">
+    <value>အစွန်းအောက်ခြေ</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raCoDinhNhanCauVanhMi.Properties.Caption" xml:space="preserve">
+    <value>မျက်တောင်</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGiaDoanBenhGanTuyet.Properties.Caption" xml:space="preserve">
+    <value>ကြီးသလောက်</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGiaDoanBenhSoPhat.Properties.Caption" xml:space="preserve">
+    <value>ပဏာမ</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGiaDoanBenhTiemTang.Properties.Caption" xml:space="preserve">
+    <value>အလားအလာ</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGiaDoanBenhTienTrien.Properties.Caption" xml:space="preserve">
+    <value>ဆင့်ကဲဖြစ်စဉ်</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGiaDoanBenhTranTrong.Properties.Caption" xml:space="preserve">
+    <value>လေးနက်တယ်။</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGiaDoanBenhTuyetDoi.Properties.Caption" xml:space="preserve">
+    <value>ပကတိ</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGloocomBamSinh.Properties.Caption" xml:space="preserve">
+    <value>မွေးရာပါရေတိမ်</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGloocomGocDong.Properties.Caption" xml:space="preserve">
+    <value>ထောင့်ပိတ်ရေတိမ်</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGloocomGocMo.Properties.Caption" xml:space="preserve">
+    <value>ထောင့်ဖွင့်ရေတိမ်</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGloocomThuPhat.Properties.Caption" xml:space="preserve">
+    <value>Secondary Glaucoma</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raPPVoCamCNC.Properties.Caption" xml:space="preserve">
+    <value>CNC</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raPPVoCamGayMe.Properties.Caption" xml:space="preserve">
+    <value>စိတ်အားထက်သန်တယ်။</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raPPVoCamTeTaiMat.Properties.Caption" xml:space="preserve">
+    <value>မျက်နှာတွင် ထုံကျင်ခြင်း။</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raPPVoCamViTriBaoTenon.Properties.Caption" xml:space="preserve">
+    <value>အိတ်အောက်မှာ</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raTinhTrangBaoTenonBT.Properties.Caption" xml:space="preserve">
+    <value>ပုံမှန်</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raTinhTrangBaoTenonGay.Properties.Caption" xml:space="preserve">
+    <value>အထူ</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raTinhTrangBaoTenonSo.Properties.Caption" xml:space="preserve">
+    <value>နှမ</value>
+  </data>
+  <data name="frmInputDetail.labelControl1.Text" xml:space="preserve">
+    <value>ml</value>
+  </data>
+  <data name="frmInputDetail.labelControl10.Text" xml:space="preserve">
+    <value>ခွဲစိတ်မှုပုံစံ</value>
+  </data>
+  <data name="frmInputDetail.labelControl11.Text" xml:space="preserve">
+    <value>CM flap-</value>
+  </data>
+  <data name="frmInputDetail.labelControl12.Text" xml:space="preserve">
+    <value>CM အဖုံးကို ချုပ်ပါ။</value>
+  </data>
+  <data name="frmInputDetail.labelControl13.Text" xml:space="preserve">
+    <value>လူနာက ထိုင်ပြီး ဦးခေါင်းကို Yag လေဆာ လေဆာစက်နဲ့ ပြုပြင်ပေးတယ်။</value>
+  </data>
+  <data name="frmInputDetail.labelControl14.Text" xml:space="preserve">
+    <value>မီလီမီတာ</value>
+  </data>
+  <data name="frmInputDetail.labelControl15.Text" xml:space="preserve">
+    <value>နာရီ</value>
+  </data>
+  <data name="frmInputDetail.labelControl16.Text" xml:space="preserve">
+    <value>နာရီ</value>
+  </data>
+  <data name="frmInputDetail.labelControl17.Text" xml:space="preserve">
+    <value>ml</value>
+  </data>
+  <data name="frmInputDetail.labelControl18.Text" xml:space="preserve">
+    <value>တည်နေရာ-</value>
+  </data>
+  <data name="frmInputDetail.labelControl19.Text" xml:space="preserve">
+    <value>သင်္ကန်း</value>
+  </data>
+  <data name="frmInputDetail.labelControl2.Text" xml:space="preserve">
+    <value>နာရီ</value>
+  </data>
+  <data name="frmInputDetail.labelControl20.Text" xml:space="preserve">
+    <value>KM အပိုင်းကို အစွန်းနှင့် နီးကပ်စွာ ရယူပါ-</value>
+  </data>
+  <data name="frmInputDetail.labelControl21.Text" xml:space="preserve">
+    <value>မီလီမီတာ</value>
+  </data>
+  <data name="frmInputDetail.labelControl22.Text" xml:space="preserve">
+    <value>ဆွဲထားသောမျဉ်းတစ်လျှောက်တွင် ခွဲစိတ်မှုပြုလုပ်ပါ။</value>
+  </data>
+  <data name="frmInputDetail.labelControl23.Text" xml:space="preserve">
+    <value>ဂရုတစိုက် သွေးခြေဥခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.labelControl24.Text" xml:space="preserve">
+    <value>ခွဲစိတ်နည်း-</value>
+  </data>
+  <data name="frmInputDetail.labelControl25.Text" xml:space="preserve">
+    <value>ml</value>
+  </data>
+  <data name="frmInputDetail.labelControl26.Text" xml:space="preserve">
+    <value>ml</value>
+  </data>
+  <data name="frmInputDetail.labelControl27.Text" xml:space="preserve">
+    <value>2.5ml</value>
+  </data>
+  <data name="frmInputDetail.labelControl28.Text" xml:space="preserve">
+    <value>အဝတ်ဖြင့်လျှော်ပါ။</value>
+  </data>
+  <data name="frmInputDetail.labelControl29.Text" xml:space="preserve">
+    <value>လူနာ၏ ဦးခေါင်းနှင့် မျက်လုံးကို တည်ငြိမ်အောင်ထားပါ။</value>
+  </data>
+  <data name="frmInputDetail.labelControl3.Text" xml:space="preserve">
+    <value>ခွဲစိတ်တည်နေရာ-</value>
+  </data>
+  <data name="frmInputDetail.labelControl30.Text" xml:space="preserve">
+    <value>ABRAHAM.မျက်မှန်ဖြင့် မျက်လုံးကို ပြုပြင်ခြင်း။</value>
+  </data>
+  <data name="frmInputDetail.labelControl31.Text" xml:space="preserve">
+    <value>အဝတ်ဖြင့်လျှော်ပါ။</value>
+  </data>
+  <data name="frmInputDetail.labelControl32.Text" xml:space="preserve">
+    <value>PT မတိုင်မီ ရောဂါရှာဖွေခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.labelControl33.Text" xml:space="preserve">
+    <value>နှာခေါင်း</value>
+  </data>
+  <data name="frmInputDetail.labelControl34.Text" xml:space="preserve">
+    <value>ml</value>
+  </data>
+  <data name="frmInputDetail.labelControl35.Text" xml:space="preserve">
+    <value>1. လဲလျောင်းအနေအထား-</value>
+  </data>
+  <data name="frmInputDetail.labelControl36.Text" xml:space="preserve">
+    <value>4. ဒဏ်ရာကိုင်တွယ်မှု-</value>
+  </data>
+  <data name="frmInputDetail.labelControl37.Text" xml:space="preserve">
+    <value>လူနာက ထိုင်ပြီး ဦးခေါင်းကို Yag လေဆာ လေဆာစက်နဲ့ ပြုပြင်ပေးတယ်။</value>
+  </data>
+  <data name="frmInputDetail.labelControl38.Text" xml:space="preserve">
+    <value>အာရုံစူးစိုက်မှုကို ချိန်ညှိပါ။</value>
+  </data>
+  <data name="frmInputDetail.labelControl39.Text" xml:space="preserve">
+    <value>လူနာ၏ ဦးခေါင်းနှင့် မျက်လုံးကို တည်ငြိမ်အောင်ထားပါ။</value>
+  </data>
+  <data name="frmInputDetail.labelControl4.Text" xml:space="preserve">
+    <value>နာရီ</value>
+  </data>
+  <data name="frmInputDetail.labelControl40.Text" xml:space="preserve">
+    <value>ABRAHAM.မျက်မှန်ဖြင့် မျက်လုံးကို ပြုပြင်ခြင်း။</value>
+  </data>
+  <data name="frmInputDetail.labelControl41.Text" xml:space="preserve">
+    <value>PT မတိုင်မီ ရောဂါရှာဖွေခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.labelControl42.Text" xml:space="preserve">
+    <value>အာရုံစူးစိုက်မှု</value>
+  </data>
+  <data name="frmInputDetail.labelControl43.Text" xml:space="preserve">
+    <value>6. ဘေးကင်းသောခွဲစိတ်မှု၊ နောက်ဆက်တွဲလွှဲပြောင်းမှု။</value>
+  </data>
+  <data name="frmInputDetail.labelControl44.Text" xml:space="preserve">
+    <value>5. ဒဏ်ရာများကို ဆေးကြောသန့်စင်ပါ၊ ပိုးသတ်ပါ။</value>
+  </data>
+  <data name="frmInputDetail.labelControl5.Text" xml:space="preserve">
+    <value>မီလီမီတာ</value>
+  </data>
+  <data name="frmInputDetail.labelControl50.Text" xml:space="preserve">
+    <value>အာရုံစူးစိုက်မှု</value>
+  </data>
+  <data name="frmInputDetail.labelControl52.Text" xml:space="preserve">
+    <value>PT မတိုင်မီ ရောဂါရှာဖွေခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.labelControl53.Text" xml:space="preserve">
+    <value>အပေါ်မျက်ခွံအရိုးနုကို ထုတ်ခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.labelControl6.Text" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="frmInputDetail.labelControl7.Text" xml:space="preserve">
+    <value>mmHg</value>
+  </data>
+  <data name="frmInputDetail.labelControl8.Text" xml:space="preserve">
+    <value>9. ပရောပရည်လုပ်ခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.labelControl9.Text" xml:space="preserve">
+    <value>3. ထိခိုက်ဒဏ်ရာရမှု ဆုံးဖြတ်ခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControl_TabOther.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
+  </data>
+  <data name="frmInputDetail.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmInputDetail.layoutControl10.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁၀</value>
+  </data>
+  <data name="frmInputDetail.layoutControl11.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁၁</value>
+  </data>
+  <data name="frmInputDetail.layoutControl12.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁၂</value>
+  </data>
+  <data name="frmInputDetail.layoutControl13.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁၃</value>
+  </data>
+  <data name="frmInputDetail.layoutControl14.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁၄</value>
+  </data>
+  <data name="frmInputDetail.layoutControl15.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁၅</value>
+  </data>
+  <data name="frmInputDetail.layoutControl16.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁၆</value>
+  </data>
+  <data name="frmInputDetail.layoutControl17.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁၇</value>
+  </data>
+  <data name="frmInputDetail.layoutControl18.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်မှု ၁၈</value>
+  </data>
+  <data name="frmInputDetail.layoutControl19.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်မှု ၁၉</value>
+  </data>
+  <data name="frmInputDetail.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmInputDetail.layoutControl20.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်မှု ၂၀</value>
+  </data>
+  <data name="frmInputDetail.layoutControl21.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်မှု ၂၁</value>
+  </data>
+  <data name="frmInputDetail.layoutControl22.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂၂</value>
+  </data>
+  <data name="frmInputDetail.layoutControl23.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂၃</value>
+  </data>
+  <data name="frmInputDetail.layoutControl24.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂၄</value>
+  </data>
+  <data name="frmInputDetail.layoutControl25.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂၅</value>
+  </data>
+  <data name="frmInputDetail.layoutControl4.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="frmInputDetail.layoutControl5.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၅</value>
+  </data>
+  <data name="frmInputDetail.layoutControl6.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၆</value>
+  </data>
+  <data name="frmInputDetail.layoutControl7.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၇</value>
+  </data>
+  <data name="frmInputDetail.layoutControl8.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၈</value>
+  </data>
+  <data name="frmInputDetail.layoutControl9.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၉</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem104.Text" xml:space="preserve">
+    <value>PT မတိုင်မီ ရောဂါရှာဖွေခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem106.Text" xml:space="preserve">
+    <value>ခွဲစိတ်မှု-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem109.Text" xml:space="preserve">
+    <value>ရောဂါအဆင့်-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem115.Text" xml:space="preserve">
+    <value>အာရုံမခံနိုင်သောနည်းလမ်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem117.Text" xml:space="preserve">
+    <value>ထုံဆေးအမျိုးအစား</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem119.Text" xml:space="preserve">
+    <value>ပုံသေဘောလုံးကွင်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem121.Text" xml:space="preserve">
+    <value>tenon အိတ်အခြေအနေ</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem122.Text" xml:space="preserve">
+    <value>tenon အိတ်ကို ကျုံ့လိုက်ပါ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem128.Text" xml:space="preserve">
+    <value>3. KM အစွန်းကိုဖွင့်ပါ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem130.Text" xml:space="preserve">
+    <value>ခတ်ထားသော KM- Meridian-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem132.Text" xml:space="preserve">
+    <value>ပဏာမတားမြစ်ချက်-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem135.Text" xml:space="preserve">
+    <value>အချိန်:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem136.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၄၀</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem138.Text" xml:space="preserve">
+    <value>အရွယ်အစား</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem14.Text" xml:space="preserve">
+    <value>ခွဲစိတ်မှုအတွက် ညွှန်ပြချက်များ</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem141.Text" xml:space="preserve">
+    <value>၆။</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem143.Text" xml:space="preserve">
+    <value>ဖေါင်အပိုင်းပိုင်းဖြတ်ပါ</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem144.Text" xml:space="preserve">
+    <value>မျက်ဝန်းဖြတ်ခြင်း</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem145.Text" xml:space="preserve">
+    <value>မြို့တော်ပြန်လည်ထူထောင်ရေး-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem146.Text" xml:space="preserve">
+    <value>ငွေထုတ်ခြင်းသာ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem147.Text" xml:space="preserve">
+    <value>Lidocaine ထုံဆေးထိုးခြင်း</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem148.Text" xml:space="preserve">
+    <value>pterygium မျက်ကြည်လွှာကို ဖယ်ရှားခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem152.Text" xml:space="preserve">
+    <value>၇။</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem153.Text" xml:space="preserve">
+    <value>Poke TP-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem157.Text" xml:space="preserve">
+    <value>ပုံသဏ္ဍာန်</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem158.Text" xml:space="preserve">
+    <value>နှာခေါင်းတံတား</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem159.Text" xml:space="preserve">
+    <value>ပဋိဇီဝဆေးများကို ရှာဖွေပါ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem162.Text" xml:space="preserve">
+    <value>DC မြန်နှုန်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem168.Text" xml:space="preserve">
+    <value>ကြိုးအမျိုးအစား-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem169.Text" xml:space="preserve">
+    <value>အရွယ်အစား</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem170.Text" xml:space="preserve">
+    <value>KM ချုပ်ရိုး-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem173.Text" xml:space="preserve">
+    <value>conjunctival အပိုင်းကို ဖုံးအုပ်ထားသော KM ချုပ်ရိုး၊</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem174.Text" xml:space="preserve">
+    <value>ခွဲစိတ်နေစဉ်အတွင်း ဖြစ်ပေါ်သည့် အခြားသောတိုးတက်မှုများ</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem175.Text" xml:space="preserve">
+    <value>မျက်လုံးထိုးဆေး</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem176.Text" xml:space="preserve">
+    <value>ရောဂါလက္ခဏာများ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem177.Text" xml:space="preserve">
+    <value>amniotic အမြှေးပါးကို ဖယ်ရှားခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem180.Text" xml:space="preserve">
+    <value>အမတ်-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem182.Text" xml:space="preserve">
+    <value>ဆေးဝါး:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem184.Text" xml:space="preserve">
+    <value>အာရုံမခံနိုင်သောနည်းလမ်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem185.Text" xml:space="preserve">
+    <value>မျက်စဉ်းဆေးများ</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem187.Text" xml:space="preserve">
+    <value>အကြောင်းမှာ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem199.Text" xml:space="preserve">
+    <value>ချုပ်ရိုးအရေအတွက်-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem20.Text" xml:space="preserve">
+    <value>အာရုံမခံနိုင်သောနည်းလမ်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem201.Text" xml:space="preserve">
+    <value>MT-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem202.Text" xml:space="preserve">
+    <value>ထုံဆေးအမျိုးအစား</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem209.Text" xml:space="preserve">
+    <value>တိပ်နှိပ်ခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem211.Text" xml:space="preserve">
+    <value>အာရုံမခံနိုင်သောနည်းလမ်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem212.Text" xml:space="preserve">
+    <value>ချုပ်ရိုးအရေအတွက်-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem214.Text" xml:space="preserve">
+    <value>ထုံဆေးအမျိုးအစား</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem216.Text" xml:space="preserve">
+    <value>1. ဘောလုံးကွင်းကို ပြုပြင်ခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem218.Text" xml:space="preserve">
+    <value>လွတ်နေသောအစွန်းမှ ခွဲစိတ်မျဉ်း၏ အနေအထားကို တိုင်းတာပြီး ဆွဲချပါ။</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem219.Text" xml:space="preserve">
+    <value>မျက်တောင် sphincter ကို ဖြတ်ပါ။</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem22.Text" xml:space="preserve">
+    <value>ထုံဆေးအမျိုးအစား</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem225.Text" xml:space="preserve">
+    <value>ကြိမ်ဒဏ်သတ်မှတ်ပါ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem226.Text" xml:space="preserve">
+    <value>အရွယ်အစား</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem228.Text" xml:space="preserve">
+    <value>ဆံကျစ်ခေါင်းကို ဖြတ်လိုက်ပါ။</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem230.Text" xml:space="preserve">
+    <value>ချည်အပိုင်းအစကို ချုပ်ပါ။</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem233.Text" xml:space="preserve">
+    <value>အရွယ်အစား</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem235.Text" xml:space="preserve">
+    <value>Local anesthetic ထုံဆေးအမျိုးအစား</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem237.Text" xml:space="preserve">
+    <value>ကျန်နေသောအရေပြားကို လေ့လာခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem24.Text" xml:space="preserve">
+    <value>1. ဘောလုံးကွင်းကို ပြုပြင်ခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem242.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၄၀</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem244.Text" xml:space="preserve">
+    <value>ကိုင်တွယ်နည်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem245.Text" xml:space="preserve">
+    <value>အခြားတိုးတက်မှုများ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem247.Text" xml:space="preserve">
+    <value>ဆွဲထားသောမျဉ်းတစ်လျှောက်တွင် ခွဲစိတ်မှုပြုလုပ်ပါ။</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem248.Text" xml:space="preserve">
+    <value>ဆေးအမျိုးအစား</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem250.Text" xml:space="preserve">
+    <value>Levator ကြွက်သားကို အနီးစပ်ဆုံး တိုစေသည်-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem253.Text" xml:space="preserve">
+    <value>10. T3 ကို စုပ်ယူသည်-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem254.Text" xml:space="preserve">
+    <value>ပဉ္စဂံရှိ Thread သို့မဟုတ် Silicon</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem26.Text" xml:space="preserve">
+    <value>2. T3 အခြေအနေ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem260.Text" xml:space="preserve">
+    <value>Levator ကြွက်သားကို မျက်မြှေးနှင့် အရေပြားအောက်ရှိ ကြွက်သားမှ whitnall အရွတ်သို့ ခွဲထုတ်ပါ</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem261.Text" xml:space="preserve">
+    <value>နဖူးမျက်တောင်ကြွခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem262.Text" xml:space="preserve">
+    <value>Levator ကြွက်သားကို အနီးစပ်ဆုံး ဆန့်ထုတ်ပါ။</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem270.Text" xml:space="preserve">
+    <value>စွမ်းအင်-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem271.Text" xml:space="preserve">
+    <value>U-shaped nodules 3 ခုပေါ်တွင် vicryl thread ဖြင့် မျက်ခွံ၏ အပေါ်ဘက်သုံးပုံတစ်ပုံ၏ အပေါ်ဘက်သုံးပုံတစ်ပုံကို လေဗိုကြွက်သားအား ညှပ်ပါ</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem275.Text" xml:space="preserve">
+    <value>PD ကိုကြည့်ပါ</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem281.Text" xml:space="preserve">
+    <value>ခွဲစိတ်နည်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem285.Text" xml:space="preserve">
+    <value>အရွယ်အစား</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem286.Text" xml:space="preserve">
+    <value>ရေနုတ်မြောင်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem287.Text" xml:space="preserve">
+    <value>မျက်တောင်အရေခွံ ၂ လွှာကို ချည်မျှင်ဖြင့် ပြုလုပ်ပါ</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem289.Text" xml:space="preserve">
+    <value>Wick:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem291.Text" xml:space="preserve">
+    <value>အခြား-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem293.Text" xml:space="preserve">
+    <value>ငွေထုတ်ရက်စွဲ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem295.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကြိုးဖြတ်စေသည်။</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem295.Text" xml:space="preserve">
+    <value>CC ရက်စွဲ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem306.Text" xml:space="preserve">
+    <value>PT မတိုင်မီ ရောဂါရှာဖွေခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem311.Text" xml:space="preserve">
+    <value>ခွဲစိတ်နည်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem317.Text" xml:space="preserve">
+    <value>အာရုံမခံနိုင်သောနည်းလမ်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem319.Text" xml:space="preserve">
+    <value>PT အကြိမ်များ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem32.Text" xml:space="preserve">
+    <value>3. KM အစွန်းကိုဖွင့်ပါ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem321.Text" xml:space="preserve">
+    <value>1. ဘောလုံးကွင်းကို ပြုပြင်ခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem323.Text" xml:space="preserve">
+    <value>ဖောက်ထွင်းမှုကိုရှာပါ</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem324.Text" xml:space="preserve">
+    <value>ပုံသေ ဆီလီကွန်-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem325.Text" xml:space="preserve">
+    <value>တည်နေရာ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem327.Text" xml:space="preserve">
+    <value>စည်းကမ်းသတ်မှတ်ပါ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem330.Text" xml:space="preserve">
+    <value>3. KM အစွန်းကိုဖွင့်ပါ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem331.Text" xml:space="preserve">
+    <value>နိုင်ငံခြားအလောင်းများအတွက် ဒဏ်ရာကို စစ်ဆေးခြင်း။</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem332.Text" xml:space="preserve">
+    <value>ဒုတိယနာရီ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem334.Text" xml:space="preserve">
+    <value>4. မြို့ကိုဖွင့်:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem335.Text" xml:space="preserve">
+    <value>ကောင်းမွန်သောစီမံခန့်ခွဲမှုကိုစစ်ဆေးပါ</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem337.Text" xml:space="preserve">
+    <value>ကျိုးနေသော မျက်ရည်ပြွန်၏ အစွန်းနှစ်ဖက်- အပေါ်၊ အောက်၊ နှင့် အနောက်ကို vicryl thread ဖြင့် ချိတ်ဆက်ပါ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem34.Text" xml:space="preserve">
+    <value>4. မြို့ကိုဖွင့်:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem340.Text" xml:space="preserve">
+    <value>ထုံဆေးအမျိုးအစား</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem342.Text" xml:space="preserve">
+    <value>အပြင်ဘက်ပိုင်းကို ရှာပါ</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem343.Text" xml:space="preserve">
+    <value>၆။</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem354.Text" xml:space="preserve">
+    <value>ထောင့်မျက်တောင်များကို အလွှာ 3 ခုဖြင့် ပြန်လည်တည်ဆောက်ပါ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem355.Text" xml:space="preserve">
+    <value>အမြှောက်အလှည့်-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem359.Text" xml:space="preserve">
+    <value>အခြားတိုးတက်မှုများ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem364.Text" xml:space="preserve">
+    <value>နိုင်လွန်ကြိုးဖြင့်</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem38.Text" xml:space="preserve">
+    <value>5. အိတ်ဆေးဆိုးခြင်း</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem387.Text" xml:space="preserve">
+    <value>ပဋိဇီဝဆေးများကို ရှာဖွေပါ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem39.Text" xml:space="preserve">
+    <value>Meridian-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem395.Text" xml:space="preserve">
+    <value>ရောဂါရှာဖွေခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem400.Text" xml:space="preserve">
+    <value>စွမ်းအင်ကို ချိန်ညှိပါ</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem406.Text" xml:space="preserve">
+    <value>ပေါက်ကွဲအမှတ် ချိန်ညှိမှု-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem41.Text" xml:space="preserve">
+    <value>Meridian-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem410.Text" xml:space="preserve">
+    <value>Peripheral iris resection အနေအထား-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem42.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၄၀</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem421.Text" xml:space="preserve">
+    <value>အခြား-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem426.Text" xml:space="preserve">
+    <value>အခြား-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem44.Text" xml:space="preserve">
+    <value>အရွယ်အစား</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem47.Text" xml:space="preserve">
+    <value>၆။</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem484.Text" xml:space="preserve">
+    <value>PT မတိုင်မီ ရောဂါရှာဖွေခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem489.Text" xml:space="preserve">
+    <value>စွမ်းအင်ကို ချိန်ညှိပါ</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem495.Text" xml:space="preserve">
+    <value>ပေါက်ကွဲအမှတ် ချိန်ညှိမှု-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem499.Text" xml:space="preserve">
+    <value>ပုံသဏ္ဍာန်နှင့်အညီ နောက်ဖုံးကိုဖွင့်ပါ။</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem51.Text" xml:space="preserve">
+    <value>၇။</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem518.Text" xml:space="preserve">
+    <value>အခြား-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem52.Text" xml:space="preserve">
+    <value>8. Push kernel:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem53.Text" xml:space="preserve">
+    <value>အမြှောက်အလှည့်-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem573.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်ရေးပစ္စည်း ၂၃</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem58.Text" xml:space="preserve">
+    <value>10. T3 ကို စုပ်ယူသည်-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem59.Text" xml:space="preserve">
+    <value>11. IOL သတ်မှတ်ပါ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem64.Text" xml:space="preserve">
+    <value>12. Posterior Sheath ၏ မျက်ရည်၊</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem67.Text" xml:space="preserve">
+    <value>- နောက်ဖုံးကို ဖြတ်ပါ။</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem69.Text" xml:space="preserve">
+    <value>- Peripheral iris ဖယ်ရှားခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem72.Text" xml:space="preserve">
+    <value>စွမ်းအင်-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem73.Text" xml:space="preserve">
+    <value>အဆုတ်တည်နေရာ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem74.Text" xml:space="preserve">
+    <value>စုပ်ယူအား-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem75.Text" xml:space="preserve">
+    <value>အရွယ်အစား</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem79.Text" xml:space="preserve">
+    <value>DC မြန်နှုန်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem80.Text" xml:space="preserve">
+    <value>အဆုတ်တည်နေရာ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem81.Text" xml:space="preserve">
+    <value>ဆေးအမျိုးအစား</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem82.Text" xml:space="preserve">
+    <value>13. ခွဲစိတ်ကုသခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem84.Text" xml:space="preserve">
+    <value>14. မျက်လုံးဆေးထိုးခြင်း</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem89.Text" xml:space="preserve">
+    <value>15. မျက်လုံးချင်း</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem9.Text" xml:space="preserve">
+    <value>ရောဂါရှာဖွေခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem92.Text" xml:space="preserve">
+    <value>ဆေးအမျိုးအစား</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem93.Text" xml:space="preserve">
+    <value>16. အခြားတိုးတက်မှုများ-</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem96.Text" xml:space="preserve">
+    <value>ရေခဲ</value>
+  </data>
+  <data name="frmInputDetail.lciCloseSkin.Text" xml:space="preserve">
+    <value>အရေပြားပိတ်ခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.lciDamageType.Text" xml:space="preserve">
+    <value>ဖြတ်-</value>
+  </data>
+  <data name="frmInputDetail.lciPosture.Text" xml:space="preserve">
+    <value>1. လဲလျောင်းအနေအထား-</value>
+  </data>
+  <data name="frmInputDetail.lciShapingSkin.Text" xml:space="preserve">
+    <value>ပုံသွင်းခြင်း-</value>
+  </data>
+  <data name="frmInputDetail.lciSkinDamage.Text" xml:space="preserve">
+    <value>ဒဏ်ရာ-</value>
+  </data>
+  <data name="frmInputDetail.lciSkinDamageAmount.Text" xml:space="preserve">
+    <value>ပမာဏ-</value>
+  </data>
+  <data name="frmInputDetail.lciSkinDamagePosition.Text" xml:space="preserve">
+    <value>တည်နေရာ-</value>
+  </data>
+  <data name="frmInputDetail.lciTreatSkinOther.Text" xml:space="preserve">
+    <value>အခြား-</value>
+  </data>
+  <data name="frmInputDetail.raCatBao.Properties.Caption" xml:space="preserve">
+    <value>အိတ်ဖြတ်</value>
+  </data>
+  <data name="frmInputDetail.raChiCoTruc.Properties.Caption" xml:space="preserve">
+    <value>တိုက်ရိုက်ကြွက်သားမျှသာ</value>
+  </data>
+  <data name="frmInputDetail.raDatIOLBangPince.Properties.Caption" xml:space="preserve">
+    <value>pince အားဖြင့်</value>
+  </data>
+  <data name="frmInputDetail.raDatIOLBangSung.Properties.Caption" xml:space="preserve">
+    <value>သေနတ်နဲ့</value>
+  </data>
+  <data name="frmInputDetail.raDatIOLCoDinhCM.Properties.Caption" xml:space="preserve">
+    <value>ပုံသေ CM</value>
+  </data>
+  <data name="frmInputDetail.raDatIOLCung.Properties.Caption" xml:space="preserve">
+    <value>ခက်တယ်။</value>
+  </data>
+  <data name="frmInputDetail.raDatIOLMem.Properties.Caption" xml:space="preserve">
+    <value>ပျော့ပျောင်းသည်။</value>
+  </data>
+  <data name="frmInputDetail.raDayNhanBangChatNhay.Properties.Caption" xml:space="preserve">
+    <value>ချွဲနှင့်</value>
+  </data>
+  <data name="frmInputDetail.raDayNhanBangNuoc.Properties.Caption" xml:space="preserve">
+    <value>ရေအားဖြင့်</value>
+  </data>
+  <data name="frmInputDetail.raDayNhanCo.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.raDayNhanKhong.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.raDoI.Properties.Caption" xml:space="preserve">
+    <value>အသင်းအဖွဲ့</value>
+  </data>
+  <data name="frmInputDetail.raDoII.Properties.Caption" xml:space="preserve">
+    <value>ဘွဲ့ II</value>
+  </data>
+  <data name="frmInputDetail.raDoIII.Properties.Caption" xml:space="preserve">
+    <value>အဆင့် III</value>
+  </data>
+  <data name="frmInputDetail.raDoIV.Properties.Caption" xml:space="preserve">
+    <value>အဆင့် IV</value>
+  </data>
+  <data name="frmInputDetail.raDoV.Properties.Caption" xml:space="preserve">
+    <value>VU</value>
+  </data>
+  <data name="frmInputDetail.raDucT3BamSinh.Properties.Caption" xml:space="preserve">
+    <value>မွေးရာပါ T3 အတွင်းတိမ်</value>
+  </data>
+  <data name="frmInputDetail.raDucT3BenhLy.Properties.Caption" xml:space="preserve">
+    <value>Pathological T3 အတွင်းတိမ်</value>
+  </data>
+  <data name="frmInputDetail.raDucT3Gia.Properties.Caption" xml:space="preserve">
+    <value>T3 သံချပ်အတု</value>
+  </data>
+  <data name="frmInputDetail.raHutChatT3IA.Properties.Caption" xml:space="preserve">
+    <value>IA</value>
+  </data>
+  <data name="frmInputDetail.raHutChatT3Kim2Nong.Properties.Caption" xml:space="preserve">
+    <value>နှစ်လုံးပြူး</value>
+  </data>
+  <data name="frmInputDetail.raKhongCoT3.Properties.Caption" xml:space="preserve">
+    <value>T3 မရှိပါ။</value>
+  </data>
+  <data name="frmInputDetail.raLechT3.Properties.Caption" xml:space="preserve">
+    <value>သွေဖည် T3</value>
+  </data>
+  <data name="frmInputDetail.raLechTTT.Properties.Caption" xml:space="preserve">
+    <value>TTT. သွေဖည်</value>
+  </data>
+  <data name="frmInputDetail.raMe.Properties.Caption" xml:space="preserve">
+    <value>စိတ်အားထက်သန်တယ်။</value>
+  </data>
+  <data name="frmInputDetail.raMoKMRiaCo.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.raMoKMRiaKhong.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.raMP.Properties.Caption" xml:space="preserve">
+    <value>အမတ်</value>
+  </data>
+  <data name="frmInputDetail.raMT.Properties.Caption" xml:space="preserve">
+    <value>MT</value>
+  </data>
+  <data name="frmInputDetail.raMVTPCungMac.Properties.Caption" xml:space="preserve">
+    <value>မျက်ခွံ</value>
+  </data>
+  <data name="frmInputDetail.raMVTPGiacMac.Properties.Caption" xml:space="preserve">
+    <value>မျက်ကြည်လွှာ</value>
+  </data>
+  <data name="frmInputDetail.raMVTPRia.Properties.Caption" xml:space="preserve">
+    <value>အစွန်းဇုန်</value>
+  </data>
+  <data name="frmInputDetail.raNgoaiBao.Properties.Caption" xml:space="preserve">
+    <value>အိတ်ထဲက</value>
+  </data>
+  <data name="frmInputDetail.raNhuomBaoCo.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.raNhuomBaoKhong.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.raPhaco.Properties.Caption" xml:space="preserve">
+    <value>ဖာကို</value>
+  </data>
+  <data name="frmInputDetail.raPhucHoiVetMoBomPhu.Properties.Caption" xml:space="preserve">
+    <value>အပေါ်ယံပန့်</value>
+  </data>
+  <data name="frmInputDetail.raPhucHoiVetMoKhauVat.Properties.Caption" xml:space="preserve">
+    <value>အပ်ချုပ်ညှစ်စက်</value>
+  </data>
+  <data name="frmInputDetail.raPTDucThuyTInhThe.Properties.Caption" xml:space="preserve">
+    <value>PT အတွင်းတိမ်</value>
+  </data>
+  <data name="frmInputDetail.raPTGlocom.Properties.Caption" xml:space="preserve">
+    <value>PT ရေတိမ်</value>
+  </data>
+  <data name="frmInputDetail.raPTMong.Properties.Caption" xml:space="preserve">
+    <value>PT မိုင်း</value>
+  </data>
+  <data name="frmInputDetail.raPTSupMi.Properties.Caption" xml:space="preserve">
+    <value>PT ပြိုကျသည်။</value>
+  </data>
+  <data name="frmInputDetail.raPTTaiTaoLeQuan.Properties.Caption" xml:space="preserve">
+    <value>PT Reinventing စည်းမျဉ်းများ</value>
+  </data>
+  <data name="frmInputDetail.raRachBaoSauCo.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.raRachBaoSauKhong.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.raRBSCBSCatBangKeo.Properties.Caption" xml:space="preserve">
+    <value>ကတ်ကြေး</value>
+  </data>
+  <data name="frmInputDetail.raRBSCBSCo.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.raRBSCBSKhong.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.raRBSCBSMayCatDK.Properties.Caption" xml:space="preserve">
+    <value>အေးမြသော DK ဖြတ်တောက်ခြင်း။</value>
+  </data>
+  <data name="frmInputDetail.raRBSCMMNVCo.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.raRBSCMMNVKhong.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.raTeTaiMat.Properties.Caption" xml:space="preserve">
+    <value>မျက်နှာတွင် ထုံကျင်ခြင်း။</value>
+  </data>
+  <data name="frmInputDetail.raTiemMatCNC.Properties.Caption" xml:space="preserve">
+    <value>CNC</value>
+  </data>
+  <data name="frmInputDetail.raTiemMatCo.Properties.Caption" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmInputDetail.raTiemMatDuoiKM.Properties.Caption" xml:space="preserve">
+    <value>KM အောက်</value>
+  </data>
+  <data name="frmInputDetail.raTiemMatKhong.Properties.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmInputDetail.raTiemMatTienPhong.Properties.Caption" xml:space="preserve">
+    <value>အခန်းခ</value>
+  </data>
+  <data name="frmInputDetail.raTraMatDD.Properties.Caption" xml:space="preserve">
+    <value>DD</value>
+  </data>
+  <data name="frmInputDetail.raTraMatMo.Properties.Caption" xml:space="preserve">
+    <value>အဆီ</value>
+  </data>
+  <data name="frmInputDetail.raTreoCungMac.Properties.Caption" xml:space="preserve">
+    <value>scleral suspension</value>
+  </data>
+  <data name="frmInputDetail.raTrongBao.Properties.Caption" xml:space="preserve">
+    <value>အိတ်ထဲမှာ</value>
+  </data>
+  <data name="frmInputDetail.raTTLaser.Properties.Caption" xml:space="preserve">
+    <value>လေဆာ YAG</value>
+  </data>
+  <data name="frmInputDetail.raTTMongMat.Properties.Caption" xml:space="preserve">
+    <value>TT Iris</value>
+  </data>
+  <data name="frmInputDetail.raVanhMi.Properties.Caption" xml:space="preserve">
+    <value>မျက်တောင်</value>
+  </data>
+  <data name="frmInputDetail.raXeBaoTruocT3.Properties.Caption" xml:space="preserve">
+    <value>အရှေ့ဘက် ဆေးတောင့် T3 ကို ဆုတ်ပါ။</value>
+  </data>
+  <data name="frmInputDetail.raXMoBaoHinhTemThu.Properties.Caption" xml:space="preserve">
+    <value>စာပို့အဖုံးကိုဖွင့်ပါ။</value>
+  </data>
+  <data name="frmInputDetail.raXoayNhanDeDang.Properties.Caption" xml:space="preserve">
+    <value>လွယ်လွယ်လေးပါ။</value>
+  </data>
+  <data name="frmInputDetail.raXoayNhanKhoKhan.Properties.Caption" xml:space="preserve">
+    <value>ခက်တယ်။</value>
+  </data>
+  <data name="frmInputDetail.simpleButton2.Text" xml:space="preserve">
+    <value>သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="frmInputDetail.tabPageGlocom.Text" xml:space="preserve">
+    <value>Glocom</value>
+  </data>
+  <data name="frmInputDetail.tabPagePTDucTTT.Text" xml:space="preserve">
+    <value>PT တူးဖော်ခြင်း TTT</value>
+  </data>
+  <data name="frmInputDetail.tabPagePTMong.Text" xml:space="preserve">
+    <value>PT မိုင်း</value>
+  </data>
+  <data name="frmInputDetail.TabPagePTSupMi.Text" xml:space="preserve">
+    <value>PT ပြုတ်ကျ</value>
+  </data>
+  <data name="frmInputDetail.TabPageTaiTaoLeQuan.Text" xml:space="preserve">
+    <value>မျိုးဆက်သစ် အုပ်ချုပ်မှု</value>
+  </data>
+  <data name="frmInputDetail.TabPageTTMongMat.Text" xml:space="preserve">
+    <value>TT Iris</value>
+  </data>
+  <data name="frmInputDetail.TabPageTTTLaser.Text" xml:space="preserve">
+    <value>TTT လေဆာ</value>
+  </data>
+  <data name="frmInputDetail.Text" xml:space="preserve">
+    <value>နောက်ထပ်အချက်အလက်များ</value>
+  </data>
+  <data name="frmInputDetail.xtraTabEye.Text" xml:space="preserve">
+    <value>မျက်လုံး</value>
+  </data>
+  <data name="frmInputDetail.xtraTabOther.Text" xml:space="preserve">
+    <value>တခြား</value>
+  </data>
+  <data name="frmInputDetail.xtraTabSkin.Text" xml:space="preserve">
+    <value>အရေပြားရောဂါ</value>
+  </data>
+  <data name="Plugin_SurgServiceReqExecute__ThoiGianBatDauThoiGianKetThuc" xml:space="preserve">
+    <value>စတင်ချိန်နှင့် ပြီးဆုံးချိန် သတ်မှတ်မှု မမှန်ကန်ပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecute.ButtonOther.ChuanBiTruocMo" xml:space="preserve">
+    <value>ခွဲစိတ်ရန်ပြင်ဆင်ခြင်း။</value>
+  </data>
+  <data name="SurgServiceReqExecute.ButtonOther.ToDieuTri" xml:space="preserve">
+    <value>ကုသမှုစာရွက်</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.BangGayMeHoiSuc" xml:space="preserve">
+    <value>မေ့ဆေးနှင့် ကယ်ဆယ်ရေးဇယား</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.BangKiemAnToanPTTT" xml:space="preserve">
+    <value>ခွဲစိတ်မှုဘေးကင်းရေးစာရင်း</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.BieuMauKhac" xml:space="preserve">
+    <value>အခြားပုံစံများ</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.BieuMauKhacPhieuPTTT" xml:space="preserve">
+    <value>ခွဲစိတ်မှု ကတ်ပြား</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.CachThucPTTT" xml:space="preserve">
+    <value>ခွဲစိတ်မှုလုပ်ထုံးလုပ်နည်း</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.ChiPhiChayThanNhanTao" xml:space="preserve">
+    <value>hemodialysis ကုန်ကျစရိတ်</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.GiayCamDoan" xml:space="preserve">
+    <value>ခွဲစိတ်မှုနှင့် မေ့ဆေးလက်ခံကြောင်း လက်မှတ်</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.GIAYCHUNGNHANPTTT" xml:space="preserve">
+    <value>ခွဲစိတ်မှုဆိုင်ရာ လက်မှတ်</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.Mps000390" xml:space="preserve">
+    <value>အတွင်းတိမ်ခွဲစိတ်မှုအစီရင်ခံစာကတ်</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.Mps000391" xml:space="preserve">
+    <value>အိပ်မက်ခွဲစိတ်မှုအစီရင်ခံစာကတ်</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.Mps000392" xml:space="preserve">
+    <value>အသံအိုးပြန်လည်တည်ဆောက်ရေး ခွဲစိတ်မှုမှတ်တမ်းကတ်</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.Mps000393" xml:space="preserve">
+    <value>မျက်ခွံခွဲစိတ်မှုမှတ်တမ်းကတ်</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.Mps000394" xml:space="preserve">
+    <value>Glocom ခွဲစိတ်မှုအစီရင်ခံစာကတ်</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.Mps000395" xml:space="preserve">
+    <value>Laser Yag ဖြင့် အနောက်ဆေးတောင့်ကိုဖွင့်ခြင်း လုပ်ငန်းစဉ်အပေါ် အစီရင်ခံလွှာ</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.Mps000396" xml:space="preserve">
+    <value>မျက်ဝန်းဖြင့် ဆေးတောင့်အဖွင့်အစီရင်ခံလွှာ</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PHIEU_PHAU_THUAT_GLOCOM" xml:space="preserve">
+    <value>Glocom ခွဲစိတ်မှုအစီရင်ခံစာကတ်</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PHIEU_PHAU_THUAT_MONG" xml:space="preserve">
+    <value>အိပ်မက်ခွဲစိတ်မှုအစီရင်ခံစာကတ်</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PhieuGayMeHoiSuc" xml:space="preserve">
+    <value>မေ့ဆေး ကယ်ဆယ်ရေးကတ်</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PhieuKeKhaiThuocVatTu" xml:space="preserve">
+    <value>ဆေးဝါးကြေညာလွှာ</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PhieuKhamGayMeTruocMo" xml:space="preserve">
+    <value>ခွဲစိတ်မှုမပြုမီ မေ့ဆေးစစ်ဆေးမှုကတ်</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PhieuKiemKeDungCuVtyt" xml:space="preserve">
+    <value>PTTT လူနာများအတွက် ဆေးဘက်ဆိုင်ရာပစ္စည်းများ စစ်ဆေးခြင်းစာရင်း</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PhieuPhauThuat" xml:space="preserve">
+    <value>ခွဲစိတ်ကတ်</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PhieuSuDungVatTuGiaTriLon" xml:space="preserve">
+    <value>တန်ဖိုးကြီးပစ္စည်းများကို အသုံးပြုရန်အတွက် ဘောက်ချာ</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PhieuThanhToanThuThuatPhauThuat" xml:space="preserve">
+    <value>ငွေပေးချေမှု ဘောက်ချာ ခွဲစိတ်မှု - လုပ်ထုံးလုပ်နည်း</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PhieuThuThuat" xml:space="preserve">
+    <value>အကြံပြုချက်စာရွက်</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.ThuThuatPhauThuat" xml:space="preserve">
+    <value>ခွဲစိတ်မှု ကတ်ပြား</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnAss.Text" xml:space="preserve">
+    <value>အတူတူ အဖွဲ့သားတွေနဲ့ ချိန်းတယ်။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnAssignBlood.Text" xml:space="preserve">
+    <value>သွေးပြောင်းဆန်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnAssignOutKip.Text" xml:space="preserve">
+    <value>အခြားညွှန်ပြချက်များ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnAssignPre.Text" xml:space="preserve">
+    <value>ဆေးညွှန်း</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnChonMauPTCHuyenKhoaMat.Text" xml:space="preserve">
+    <value>နောက်ထပ်အချက်အလက်များ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnChoosePtttMethods.ToolTip" xml:space="preserve">
+    <value>လက်တွေ့နည်းလမ်းများစာရင်း</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnCoppyInfo.Text" xml:space="preserve">
+    <value>လုပ်ဆောင်နေသည့် အချက်အလက်ကို ကူးယူပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnCoppyInfo.ToolTip" xml:space="preserve">
+    <value>ယခင်လုပ်ဆောင်ခဲ့သည့် ဝန်ဆောင်မှု၏ လုပ်ဆောင်နေသည့် အချက်အလက်ကို လက်ရှိဝန်ဆောင်မှုသို့ ကူးယူပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnCreateImageLuuDo.Text" xml:space="preserve">
+    <value>ရိုးရှင်းသောခလုတ် ၁</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnDepartmentTran.Text" xml:space="preserve">
+    <value>ရာထူးအပြောင်းအရွှေ့</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnFinish.Text" xml:space="preserve">
+    <value>လုပ်ဆောင်ခြင်းကို အပြီးသတ်ပါ (Ctrl E)</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnImagePublic.ToolTip" xml:space="preserve">
+    <value>ခွဲစိတ်မှုဆိုင်ရာ လုပ်ငန်းစဉ်ဇယား နမူနာပုံစံကို ရွေးချယ်ပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnKTDT.Text" xml:space="preserve">
+    <value>ကုသမှုပြီးဆုံး</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnOther.Text" xml:space="preserve">
+    <value>တခြား</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnPrint.Text" xml:space="preserve">
+    <value>ပုံနှိပ်ခြင်း။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnSaveEkipTemp.Text" xml:space="preserve">
+    <value>နမူနာအဖွဲ့ကို သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnSavePtttTemp.ToolTip" xml:space="preserve">
+    <value>ခွဲစိတ်မှုပုံစံပုံစံကို သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnServiceReqMaty.Text" xml:space="preserve">
+    <value>လူသုံးကုန်များ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnSwapService.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှု အပြောင်းအလဲ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnTuTruc.Text" xml:space="preserve">
+    <value>တာဝန်ကျ အစိုးရအဖွဲ့ဝင်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.Checked.Caption" xml:space="preserve">
+    <value>ရွေးပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.chkIcd.Properties.Caption" xml:space="preserve">
+    <value>အိုင်စီဒီ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.chkIcd1.Properties.Caption" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.chkIcd2.Properties.Caption" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.chkIcd3.Properties.Caption" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.chkIcdAfter.Properties.Caption" xml:space="preserve">
+    <value>အိုင်စီဒီ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.chkIcdBefore.Properties.Caption" xml:space="preserve">
+    <value>အိုင်စီဒီ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.chkIcdCm.Properties.Caption" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.chkIcdCm.Text" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.ddbPhatSinh.Text" xml:space="preserve">
+    <value>နည်းပညာဆိုင်ရာဝန်ဆောင်မှုကိုသတ်မှတ်ခြင်း။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.ddbPhatSinh.ToolTip" xml:space="preserve">
+    <value>ဤ PTTT ဝန်ဆောင်မှုမှ ဖြစ်ပေါ်လာသော ဝန်ဆောင်မှုများကို သတ်မှတ်ပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.dropDownButtonGPBL.DVKhongPhatSinh" xml:space="preserve">
+    <value>DV မပေါ်ဘူး။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.dropDownButtonGPBL.DVPhatSinh" xml:space="preserve">
+    <value>DV ပေါ်လာသည်။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.dropDownButtonGPBL.Text" xml:space="preserve">
+    <value>GPBL သတ်မှတ်ခြင်း။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.dropDownButtonGPBL.ToolTip" xml:space="preserve">
+    <value>ရောဂါဗေဒဝန်ဆောင်မှုများခန့်အပ်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.grdColNumber.Caption" xml:space="preserve">
+    <value>ပမာဏ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.grdColObjectPay.Caption" xml:space="preserve">
+    <value>ငွေပေးချေမှု ရှိကြပါတယ်။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.grdColServiceCode.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကုဒ်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.grdColServiceName.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမည်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.grdColSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.grdColUnit.Caption" xml:space="preserve">
+    <value>ယူနစ်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColAdd.Caption" xml:space="preserve">
+    <value>နောက်ထပ်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColAmount.Caption" xml:space="preserve">
+    <value>ပမာဏ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColSereServAttachAmount.Caption" xml:space="preserve">
+    <value>ပမာဏ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColSereServAttachServiceCode.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကုဒ်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColSereServAttachServiceName.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမည်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColSereServAttachUnit.Caption" xml:space="preserve">
+    <value>ယူနစ်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColServiceCode_InEkip.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကုဒ်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColServiceName_InEKip.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမည်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColTitles.Caption" xml:space="preserve">
+    <value>အခန်းကဏ္ဍ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumn1.Caption" xml:space="preserve">
+    <value>ဇယားကွက် ၁</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumn2.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumn3.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကုဒ်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumn4.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမည်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumn5.Caption" xml:space="preserve">
+    <value>အော်ဒါမှာတယ်။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumn7.Caption" xml:space="preserve">
+    <value>ဇယားကွက် ၂</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumn8.Caption" xml:space="preserve">
+    <value>ကော်ပီ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumn8.ToolTip" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကိုင်တွယ်သည့်အကြောင်းအရာကို ကူးယူပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumnImage.Caption" xml:space="preserve">
+    <value>ပုံ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumnMaty.Caption" xml:space="preserve">
+    <value>ဇယားကွက် ၂</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColUnit_InEkip.Caption" xml:space="preserve">
+    <value>ယူနစ်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColUserName.Caption" xml:space="preserve">
+    <value>ပထမနှင့်နောက်ဆုံးအမည်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridViewSereServAttach.GroupPanelText" xml:space="preserve">
+    <value>ပူးတွဲပါဝန်ဆောင်မှုများစာရင်း</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridViewServServInEkip.GroupPanelText" xml:space="preserve">
+    <value>တူညီသောအဖွဲ့သားနှင့်အတူဝန်ဆောင်မှုများ၏စာရင်း</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlGroup1.Text" xml:space="preserve">
+    <value>သမုဒယ ဝန်ဆောင်မှု</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlGroup2.Text" xml:space="preserve">
+    <value>အမှုထမ်းများနှင့်အတူဝန်ဆောင်မှု</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem1.Text" xml:space="preserve">
+    <value>Package အမျိုးအစား-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem11.Text" xml:space="preserve">
+    <value>နည်းလမ်း-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem13.Text" xml:space="preserve">
+    <value>အမျိုးအစားခွဲရန်-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem14.Text" xml:space="preserve">
+    <value>အမျိုးအစားခွဲရန်-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem15.Text" xml:space="preserve">
+    <value>အာရုံမခံနိုင်မှု-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem17.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ခွဲစိတ်မှုအမျိုးအစား</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem17.Text" xml:space="preserve">
+    <value>ပုံစံ-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem19.Text" xml:space="preserve">
+    <value>Rh-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem2.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ခွဲစိတ်ကုသနည်းကို ဖော်ပြသော ဆရာဝန်မှတ်စု</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem2.Text" xml:space="preserve">
+    <value>BSc အတွက်မှတ်စုများ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem21.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နည်းလမ်း 2-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem21.Text" xml:space="preserve">
+    <value>နည်းလမ်း 2-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem23.Text" xml:space="preserve">
+    <value>ကပ်ဆိုး-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem25.Text" xml:space="preserve">
+    <value>သေဆုံးခြင်း-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem27.Text" xml:space="preserve">
+    <value>ဖော်ပြပါ-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem28.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ခံစားချက်မဲ့ရလဒ်များ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem28.Text" xml:space="preserve">
+    <value>စွဲမက်ဖွယ်ရလဒ်များ-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem3.Text" xml:space="preserve">
+    <value>ဒုတိယရောဂါရှာဖွေခြင်း-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem38.Text" xml:space="preserve">
+    <value>နည်းလမ်း-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem39.Text" xml:space="preserve">
+    <value>မိနစ်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem42.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အဆုံးအချိန်ကို အလိုအလျောက် ထည့်သွင်းပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem42.Text" xml:space="preserve">
+    <value>TG လက်ကိုင်များ-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem43.Text" xml:space="preserve">
+    <value>အဆုံး:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem5.Text" xml:space="preserve">
+    <value>အကြိုရောဂါရှာဖွေခြင်း-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem55.Text" xml:space="preserve">
+    <value>တူညီသောကုဒ်ဖြင့် ဝန်ဆောင်မှုများကိုသာ ပြသပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem56.Text" xml:space="preserve">
+    <value>အကောင်အထည်ဖော်ရေးအဖွဲ့-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem58.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကုန်ဆုံးချိန်သို့ဝင်ရောက်သည့်အခါ အလိုအလျောက်အဆုံးသတ်ပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem58.Text" xml:space="preserve">
+    <value>အဆုံး:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem7.Text" xml:space="preserve">
+    <value>အောက်ပါရောဂါလက္ခဏာများ-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem9.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>လက်တွေ့ကျသောနည်းလမ်း</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem9.Text" xml:space="preserve">
+    <value>TT နည်းလမ်း-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlLeft.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlRight.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciBanMo.Text" xml:space="preserve">
+    <value>လည်ပတ်မှုဇယား-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciCachThuc.Text" xml:space="preserve">
+    <value>နည်းလမ်း-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciChkGroup.Text" xml:space="preserve">
+    <value>ပေါင်းစပ်လုပ်ဆောင်ခြင်း-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciChuanDoanPhu.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဒုတိယရောဂါလက္ခဏာ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciChuanDoanPhu.Text" xml:space="preserve">
+    <value>အလယ်တန်းကောလိပ်-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciDepartment.Text" xml:space="preserve">
+    <value>ဌာန-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciEkipTemp.Text" xml:space="preserve">
+    <value>နမူနာအစုံ-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcd1.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အဓိကရောဂါလက္ခဏာ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcd1.Text" xml:space="preserve">
+    <value>ပင်မကောလိပ်-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcd2.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ခွဲစိတ်မှုမပြုလုပ်မီ ရောဂါရှာဖွေခြင်း။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcd2.Text" xml:space="preserve">
+    <value>ကောလိပ်မတိုင်မီ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcd3.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ခွဲစိတ်မှုအပြီးတွင် ရောဂါရှာဖွေခြင်း။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcd3.Text" xml:space="preserve">
+    <value>အောက်ပါကောလိပ်များ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcdCmCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ICD9-CM.အမျိုးအစားအလိုက် အဓိကရောဂါရှာဖွေခြင်း။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcdCmCode.Text" xml:space="preserve">
+    <value>ပင်မ ICD9-CM ကောလိပ်-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcdCmSubCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ICD9-CM. အမျိုးအစားအလိုက် ရောဂါအမည်ခွဲများ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcdCmSubCode.Text" xml:space="preserve">
+    <value>အလယ်တန်း ICD9-CM ကောလိပ်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciInformationSurg.Text" xml:space="preserve">
+    <value>အကောင်အထည်ဖော်ရေးအဖွဲ့-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciKetLuan.Text" xml:space="preserve">
+    <value>နိဂုံး-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciKTC.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နည်းပညာမြင့် ခွဲစိတ်မှု</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciKTC.Text" xml:space="preserve">
+    <value>KTC-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciMachine.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>လှည့်ကွက်စက်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciMachine.Text" xml:space="preserve">
+    <value>စက်က:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciNhomMau.Text" xml:space="preserve">
+    <value>သွေးအုပ်စု:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciPhanLoai.Text" xml:space="preserve">
+    <value>အမျိုးအစားခွဲရန်-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciPhuongPhap.Text" xml:space="preserve">
+    <value>နည်းလမ်း-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciPtttTemp.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နမူနာခွဲစိတ်မှု</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciPtttTemp.Text" xml:space="preserve">
+    <value>PTTT ပုံစံ-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciRh.Text" xml:space="preserve">
+    <value>Rh-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciStartTime.Text" xml:space="preserve">
+    <value>အစ:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciTaiBien.Text" xml:space="preserve">
+    <value>ကပ်ဆိုး-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciThoiGianKetThuc.Text" xml:space="preserve">
+    <value>အဆုံး:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciTinhTrang.Text" xml:space="preserve">
+    <value>အခြေအနေ-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciTruongHop.Text" xml:space="preserve">
+    <value>ကိစ္စ-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciTuVongTrong.Text" xml:space="preserve">
+    <value>သေဆုံးခြင်း-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciTypePackage.Text" xml:space="preserve">
+    <value>Package အမျိုးအစား-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciVoCam.Text" xml:space="preserve">
+    <value>အာရုံမခံနိုင်မှု-</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.tileViewColumn2.Caption" xml:space="preserve">
+    <value>ပုံ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.tileViewColumn4.Caption" xml:space="preserve">
+    <value>tile ViewColumn4</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.tileViewColumnName.Caption" xml:space="preserve">
+    <value>နာမည်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.tileViewColumnSTTImage.Caption" xml:space="preserve">
+    <value>tile ViewColumnSTTImage</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.tileViewIsChecked.Caption" xml:space="preserve">
+    <value>ရွေးပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.txtIcdCmSubCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ကုဒ်ထည့်ပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.txtIcdCmSubName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ရောဂါခွဲများကိုရွေးချယ်ရန် F1 ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.txtIcdExtraCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ရောဂါခွဲကုဒ်ကို ထည့်ပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.txtIcdText.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ရောဂါခွဲများကိုရွေးချယ်ရန် F1 ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.xtraTabPage1.Text" xml:space="preserve">
+    <value>မျှဝေခဲ့သည်။</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.xtraTabPageGhiChu.Text" xml:space="preserve">
+    <value>မှတ်ချက်</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.xtraTabPageLuocDo.Text" xml:space="preserve">
+    <value>ပုံကြမ်း</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.xtraTabPageMoTa.Text" xml:space="preserve">
+    <value>ဖော်ပြပါ။</value>
+  </data>
+  <data name="tileViewItemElement1.Text" xml:space="preserve">
+    <value>tile ViewColumn ၂</value>
+  </data>
+  <data name="tileViewItemElement2.Text" xml:space="preserve">
+    <value>tile ViewColumnName</value>
+  </data>
+  <data name="toolTipItem1.Text" xml:space="preserve">
+    <value>ခွဲစိတ်ခန်းနှင့် လုပ်ထုံးလုပ်နည်းပုံများ ၏နောက်ထပ်ဓာတ်ပုံများ</value>
+  </data>
+  <data name="toolTipItem2.Text" xml:space="preserve">
+    <value>နမူနာအဖွဲ့ကို သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="UCEkipUser.gridColumn1.Caption" xml:space="preserve">
+    <value>အခန်းကဏ္ဍ</value>
+  </data>
+  <data name="UCEkipUser.gridColumn2.Caption" xml:space="preserve">
+    <value>နာမည်အပြည့်အစုံ</value>
+  </data>
+  <data name="UCEkipUser.gridColumn3.Caption" xml:space="preserve">
+    <value>ဌာန</value>
+  </data>
+  <data name="UCEkipUser.gridColumn4.Caption" xml:space="preserve">
+    <value>gridColumn4</value>
+  </data>
+  <data name="UCEkipUser.gridColumn5.Caption" xml:space="preserve">
+    <value>gridColumn5</value>
+  </data>
+  <data name="UCEkipUser.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="UCEkipUser.lciInformationSurg.Text" xml:space="preserve">
+    <value>အကောင်အထည်ဖော်ရေးအဖွဲ့-</value>
+  </data>
+</root>
