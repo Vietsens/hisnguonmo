@@ -63,19 +63,6 @@ namespace MPS.Processor.Mps000321
                     + NVL((patyAlter.HEIN_CARD_FROM_TIME ?? 0).ToString()) + "|"
                     + NVL((patyAlter.HEIN_CARD_TO_TIME ?? 0).ToString());
 
-                if (patyAlter.LEVEL_CODE == MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.PROVINCE
-                    && patyAlter.RIGHT_ROUTE_CODE == MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.FALSE
-                    && treatmentTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
-                {
-                    if (s.TDL_INTRUCTION_DATE < 20210101000000)
-                    {
-                        key += "|false";
-                    }
-                    else
-                    {
-                        key += "|true";
-                    }
-                }
                 return key;
             }
             return null;

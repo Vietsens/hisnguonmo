@@ -749,6 +749,8 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                             }
 
                         }
+                        sereServ.ASSIGN_NUM_ORDER = current.ASSIGN_NUM_ORDER;
+                        sereServ.AssignNumOrder = current.ASSIGN_NUM_ORDER;
                         List<long> hasPatyPatientTypeIds = Base.GlobalStore.HisPatientTypes.Where(o =>
                         Base.GlobalStore.HisVServicePatys != null
                         && Base.GlobalStore.HisVServicePatys.Any(a =>
@@ -806,7 +808,23 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                 WaitingManager.Hide();
             }
         }
-
+        private void SetAssignNumOrder(HisSereServADO sereServ)
+        {
+            try
+            {
+                if (!sereServ.IsChecked)
+                {
+                    sereServ.AssignNumOrder = 0;
+                    return;
+                }
+                var ss = sereServWithTreatment.Where(o => o.SERVICE_ID == sereServ.SERVICE_ID && o.TDL_INTRUCTION_TIME <= instructionTime).ToList();
+                sereServ.AssignNumOrder = sereServ.ASSIGN_NUM_ORDER == null || sereServ.ASSIGN_NUM_ORDER == 0 ? ss != null && ss.Count > 0 ? ss.Count + 1 : 1 : sereServ.ASSIGN_NUM_ORDER;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private string convertToUnSign3(string s)
         {
             if (String.IsNullOrWhiteSpace(s))
@@ -1056,17 +1074,29 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                         }
                         if (dataCombo != null && dataCombo.Count > 0)
                         {
-                            if (HisConfigCFG.IsSetPrimaryPatientType != "1"
+                            if (this.currentWorkingRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.HasValue
+                                         && this.currentWorkingRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.Value != HisPatientTypeCFG.PATIENT_TYPE_ID__BHYT
+                                         && dataCombo.Exists(e => e.ID == this.currentWorkingRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.Value))
+                            {
+                                result = dataCombo.FirstOrDefault(o => o.ID == this.currentWorkingRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.Value);
+                                Inventec.Common.Logging.LogSystem.Debug("2.1_______Loai dich vụ mặc định với phòng có cấu hình đối tượng thanh toán: " + this.currentWorkingRoom.DEFAULT_INSTR_PATIENT_TYPE_ID + " data: " + Inventec.Common.Logging.LogUtil.TraceData("_result", result));
+                            }
+                            else if (HisConfigCFG.IsSetPrimaryPatientType != "1"
                                && this.currentDepartment.DEFAULT_INSTR_PATIENT_TYPE_ID.HasValue
                                && this.currentDepartment.DEFAULT_INSTR_PATIENT_TYPE_ID.Value != HisPatientTypeCFG.PATIENT_TYPE_ID__BHYT
                                && dataCombo.Exists(e => e.ID == this.currentDepartment.DEFAULT_INSTR_PATIENT_TYPE_ID.Value))
                             {
                                 result = dataCombo.FirstOrDefault(o => o.ID == this.currentDepartment.DEFAULT_INSTR_PATIENT_TYPE_ID.Value);
+                                Inventec.Common.Logging.LogSystem.Debug("1.1_______Loai dich vụ mặc định với phòng không có cấu hình đối tượng thanh toán: " + this.currentWorkingRoom.DEFAULT_INSTR_PATIENT_TYPE_ID + " data: " + Inventec.Common.Logging.LogUtil.TraceData("_result", result));
                             }
                             else
                             {
                                 result = (dataCombo != null ? (dataCombo.FirstOrDefault(o => o.ID == patientTypeId) ?? dataCombo[0]) : null);
+                                Inventec.Common.Logging.LogSystem.Debug("1.2_______Loai dich vụ mặc định với phòng không có cấu hình đối tượng thanh toán: " + this.currentWorkingRoom.DEFAULT_INSTR_PATIENT_TYPE_ID + " data: " + Inventec.Common.Logging.LogUtil.TraceData("_result", result));
                             }
+                            Inventec.Common.Logging.LogSystem.Debug("1.3_______Loai dich vụ mặc định với phòng không có cấu hình đối tượng thanh toán: " + result.PATIENT_TYPE_NAME);
+                            
+                            
                             if (sereServADO.DEFAULT_PATIENT_TYPE_ID != null && dataCombo.FirstOrDefault(o => o.ID == sereServADO.DEFAULT_PATIENT_TYPE_ID.Value) != null && !sereServADO.IsNotLoadDefaultPatientType)
                             {
                                 result = dataCombo.FirstOrDefault(o => o.ID == sereServADO.DEFAULT_PATIENT_TYPE_ID.Value);
@@ -1529,6 +1559,13 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                             else
                                 e.RepositoryItem = repositoryItemCheckIsNotUseBhytDis;
                         }
+                        else if (e.Column.FieldName == "AssignNumOrder")
+                        {
+                            if (data.IsChecked)
+                                e.RepositoryItem = repositoryItemSpinAmount;
+                            else
+                                e.RepositoryItem = repositoryItemSpinAmountDisable;
+                        }
                     }
                 }
             }
@@ -1610,7 +1647,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                                 item.IsChecked = true;
                                 if (item.AMOUNT == 0)
                                     item.AMOUNT = 1;
-
+                                this.SetAssignNumOrder(item);
                                 ChoosePatientTypeDefaultlService(this.currentHisPatientTypeAlter.PATIENT_TYPE_ID, item.SERVICE_ID, item);
                             }
 
@@ -1622,6 +1659,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                                     item.IsChecked = false;
                                     item.AMOUNT = 0;
                                     item.PATIENT_TYPE_ID = 0;
+                                    item.AssignNumOrder = null;
                                 }
                             }
                         }
@@ -1636,6 +1674,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                                     item.PATIENT_TYPE_ID = 0;
                                     item.IsExpend = false;
                                     item.IsNotUseBhyt = false;
+                                    item.AssignNumOrder = null;
                                 }
                             }
 
@@ -1896,7 +1935,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                             ChoosePatientTypeDefaultlService(this.currentHisPatientTypeAlter.PATIENT_TYPE_ID, row.SERVICE_ID, row);
                         }
                         this.ValidServiceDetailProcessing(row);
-
+                        this.SetAssignNumOrder(row);
                         if (!VerifyCheckFeeWhileAssign())
                         {
                             row.IsChecked = false;
@@ -1904,6 +1943,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                             row.PRIMARY_PATIENT_TYPE_ID = null;
                             row.PATIENT_TYPE_ID = 0;
 
+                            row.AssignNumOrder = null;
                             GridControlService.RefreshDataSource();
 
                             return;
@@ -2145,6 +2185,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                         serviceReqDetail.IsOutParentFee = IS_TRUE;
                     }
                     serviceReqDetail.InstructionNote = item.Instruction_Note;
+                    serviceReqDetail.AssignNumOrder = item.AssignNumOrder;
                     serviceReqUpdate.InsertServices.Add(serviceReqDetail);
                 }
 
@@ -2176,6 +2217,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                     }
                     serviceReqDetail.IsNotUseBhyt = item.IsNotUseBhyt;
                     serviceReqDetail.InstructionNote = item.Instruction_Note;
+                    serviceReqDetail.AssignNumOrder = item.AssignNumOrder;
                     serviceReqUpdate.UpdateServices.Add(serviceReqDetail);
                 }
             }
@@ -2958,6 +3000,10 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                 var row = (ADO.HisSereServADO)GridViewService.GetFocusedRow();
                 if (row != null)
                 {
+                    if(e.Column.FieldName == this.gc_Check.FieldName)
+                    {
+                        this.SetAssignNumOrder(row);
+                    }    
                     if (e.Column.FieldName == this.gc_Check.FieldName
                         || e.Column.FieldName == this.Gc_PatientTypeName.FieldName
                         )

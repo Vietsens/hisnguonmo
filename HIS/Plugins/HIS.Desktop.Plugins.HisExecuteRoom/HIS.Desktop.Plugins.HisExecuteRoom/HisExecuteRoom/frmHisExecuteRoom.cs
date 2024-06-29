@@ -75,6 +75,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
         List<ACS_MODULE> listAcsModule;
         HIS_DEPARTMENT department = new HIS_DEPARTMENT();
         List<HIS_MEDI_STOCK> defaultDrugSelecteds;
+        List<HIS_PATIENT_TYPE> listPatientTypeIds = new List<HIS_PATIENT_TYPE>();
         #endregion
 
         #region Construct
@@ -405,6 +406,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 InitComboAccountBook();
                 //
                 InitComboDefaultService();
+                InitComboDefaultsCLS();
             }
             catch (Exception ex)
             {
@@ -533,6 +535,50 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void InitComboDefaultsCLS()
+        {
+            try
+            {
+                HIS_PATIENT_TYPE currentDefaultsCLS = new HIS_PATIENT_TYPE();
+
+                CommonParam param = new CommonParam();
+                HisPatientFilter filter = new HisPatientFilter();
+                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                listPatientTypeIds = new BackendAdapter(param).Get<List<HIS_PATIENT_TYPE>>("api/HisPatientType/Get", ApiConsumers.MosConsumer, filter, null).ToList();
+                var filteredList = listPatientTypeIds.Select(item => new
+                {
+                    ID = item.ID,
+                    PATIENT_TYPE_CODE = item.PATIENT_TYPE_CODE,
+                    PATIENT_TYPE_NAME = item.PATIENT_TYPE_NAME
+                }).ToList();
+                //var filteredList = listPatientTypeIds.Select(item => item.PATIENT_TYPE_NAME).ToList();
+
+                if (filteredList != null)
+                {
+
+                    cboDefaultsCLS.Properties.DataSource = filteredList;
+                    cboDefaultsCLS.Properties.DisplayMember = "PATIENT_TYPE_NAME";
+                    cboDefaultsCLS.Properties.ValueMember = "ID";
+
+                    DevExpress.XtraGrid.Columns.GridColumn col2 = cboDefaultsCLS.Properties.View.Columns.AddField("PATIENT_TYPE_CODE");
+                    col2.VisibleIndex = 1;
+                    col2.Width = 100;
+                    col2.Caption = "";
+                    DevExpress.XtraGrid.Columns.GridColumn col3 = cboDefaultsCLS.Properties.View.Columns.AddField("PATIENT_TYPE_NAME");
+                    col3.VisibleIndex = 2;
+                    col3.Width = 200;
+                    col3.Caption = "";
+                }
+                cboDefaultsCLS.Properties.View.OptionsView.ShowColumnHeaders = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+
 
         private void InitComboRoomGroup()
         {
@@ -878,6 +924,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                         cboAccountBook.EditValue = room.BILL_ACCOUNT_BOOK_ID;
                         cboAccountBook.Properties.Buttons[1].Visible = room.BILL_ACCOUNT_BOOK_ID.HasValue;
                         cboDefaultService.EditValue = room.DEFAULT_SERVICE_ID;
+                        cboDefaultsCLS.EditValue = room.DEFAULT_INSTR_PATIENT_TYPE_ID;
                         var bhyt = BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(p => p.ID == room.ID);
                         if (bhyt != null)
                         {
@@ -2082,9 +2129,9 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    cboDefaultDrug.Focus();
+                    cboDefaultsCLS.Focus();
                     //chkIsEmergency.Focus();
-                    cboDefaultDrug.ShowPopup();
+                    cboDefaultsCLS.ShowPopup();
                 }
             }
             catch (Exception ex)
@@ -3481,5 +3528,63 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void cboDefaultsCLS_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboDefaultsCLS.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboDefaultsCLS_KeyUp(object sender, KeyEventArgs e)
+        {
+
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    cboDefaultDrug.Focus();
+                    //chkIsEmergency.Focus();
+                    cboDefaultDrug.ShowPopup();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        //private void frmHisExecuteRoom_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.Control && e.KeyCode == Keys.F)
+        //        {
+        //            FillDataToGridControl();
+        //        }
+        //        else if (e.Control && e.KeyCode == Keys.N || e.Control && e.KeyCode == Keys.S)
+        //        {
+        //            SaveProcess();
+        //        }
+        //        else
+        //            if (e.Control && e.KeyCode == Keys.R)
+        //            {
+        //                btnCancel_Click(null, null);
+        //            }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+
+        //}
     }
 }

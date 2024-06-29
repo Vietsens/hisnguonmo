@@ -58,6 +58,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit.ADO
 
         public bool IsNotLoadDefaultPatientType { get; set; }
         public long? DEFAULT_PATIENT_TYPE_ID { get; set; }
+        public long? AssignNumOrder { get; set; }
         public HisSereServADO()
         {
             this.IsChecked = false;

@@ -731,7 +731,55 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
                 gridViewAccountBook.EndUpdate();
             }
         }
-
+        #region show and update EINVOICE_PAGE_SIZE
+        private string getEINVOICE(string code)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                string rs = "";
+                HisAccountBookFilter filter = new HisAccountBookFilter();
+                filter.KEY_WORD = code;
+                List<HIS_ACCOUNT_BOOK> result = new BackendAdapter(param).Get<List<HIS_ACCOUNT_BOOK>>(HisRequestUriStore.HIS_ACCOUNT_BOOK_GET, ApiConsumers.MosConsumer, filter, param);
+                if (result != null)
+                {
+                    var data = result.FirstOrDefault(o => o.ACCOUNT_BOOK_CODE == code);
+                    rs = data.EINVOICE_PAGE_SIZE;
+                }
+                return rs;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public bool UpdateEINVOICE(V_HIS_ACCOUNT_BOOK data)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                bool sucess = false;
+                HisAccountBookFilter filter = new HisAccountBookFilter();
+                filter.KEY_WORD = data.ACCOUNT_BOOK_NAME;
+                var result = new BackendAdapter(param).Get<List<HIS_ACCOUNT_BOOK>>(HisRequestUriStore.HIS_ACCOUNT_BOOK_GET, ApiConsumers.MosConsumer, filter, param);
+                if (result != null)
+                {
+                    var dataUpdate = result.FirstOrDefault(s => s.ACCOUNT_BOOK_CODE == data.ACCOUNT_BOOK_CODE);
+                    if (!string.IsNullOrEmpty(txtKhoGiay.Text.Trim())) dataUpdate.EINVOICE_PAGE_SIZE = txtKhoGiay.Text.Trim();
+                    var resultAPI = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_ACCOUNT_BOOK>(HisRequestUriStore.HIS_ACCOUNT_BOOK_UPDATE, ApiConsumers.MosConsumer, dataUpdate, param);
+                    if (resultAPI != null)
+                    {
+                        sucess = true;
+                    }
+                }
+                return sucess;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        #endregion
         private void FillDataToControl(V_HIS_ACCOUNT_BOOK data)
         {
             try
@@ -747,6 +795,11 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
                     spinNumOrder.EditValue = data.NUM_ORDER;
                     dtReleaseTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.RELEASE_TIME ?? 0);
                     cboWorkingShift.EditValue = data.WORKING_SHIFT_ID;
+                    if (data.ACCOUNT_BOOK_CODE != null)
+                    {
+                        txtKhoGiay.Text = getEINVOICE(data.ACCOUNT_BOOK_CODE);
+                    }
+                    else txtKhoGiay.Text = "";
                     if (data.WORKING_SHIFT_ID != null)
                     {
                         cboWorkingShift.EditValue = data.WORKING_SHIFT_ID;

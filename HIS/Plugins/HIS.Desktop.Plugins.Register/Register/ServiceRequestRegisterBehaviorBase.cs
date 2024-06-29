@@ -603,7 +603,7 @@ namespace HIS.Desktop.Plugins.Register.Register
                     filter.COMMUNE_NAME = this.patientProfile.HisPatient.COMMUNE_NAME;
                     filter.DISTRICT_NAME = this.patientProfile.HisPatient.DISTRICT_NAME;
                     filter.PROVINCE_NAME = this.patientProfile.HisPatient.PROVINCE_NAME;
-                    filter.CAREER_NAME = (this.patientProfile.HisPatient.CAREER_ID > 0 ? (BackendDataWorker.Get<HIS_CAREER>().FirstOrDefault(o => o.ID == this.patientProfile.HisPatient.CAREER_ID) ?? new HIS_CAREER()).CAREER_NAME : "");
+                    filter.CAREER_NAME = (this.patientProfile.HisPatient.CAREER_ID > 0 ? (BackendDataWorker.Get<HIS_CAREER>().FirstOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.ID == this.patientProfile.HisPatient.CAREER_ID) ?? new HIS_CAREER()).CAREER_NAME : "");
                     filter.DOB = this.patientProfile.HisPatient.DOB;//(*)
                     filter.GENDER_ID = this.patientProfile.HisPatient.GENDER_ID;//(*)
                     filter.FIRST_NAME = this.patientProfile.HisPatient.FIRST_NAME;

@@ -294,7 +294,8 @@ namespace HIS.Desktop.LocalStorage.BackendData
                         }
                     }
                 }
-                else if (typeof(T) is MOS.EFMODEL.DataModels.V_HIS_USER_ROOM
+                else if (typeof(T) == typeof(MOS.EFMODEL.DataModels.V_HIS_USER_ROOM)
+                    || typeof(T) == typeof(MOS.EFMODEL.DataModels.HIS_USER_ROOM)
                     || typeof(T) == typeof(MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE_TUT))
                 {
                     if (filter == null)
@@ -303,12 +304,18 @@ namespace HIS.Desktop.LocalStorage.BackendData
                         dfilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                         string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                         dfilter.LOGINNAME__EXACT = loginName;
+                        dfilter.LOGINNAME = loginName;
                         filter = dfilter;
                     }
                     else
                     {
                         string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                        PropertyInfo piLoginName = typeof(T).GetProperty("LOGINNAME__EXACT");
+                        PropertyInfo piLoginNameExact = typeof(T).GetProperty("LOGINNAME__EXACT");
+                        if (piLoginNameExact != null)
+                        {
+                            piLoginNameExact.SetValue(filter, loginName);
+                        }
+                        PropertyInfo piLoginName = typeof(T).GetProperty("LOGINNAME");
                         if (piLoginName != null)
                         {
                             piLoginName.SetValue(filter, loginName);

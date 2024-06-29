@@ -103,7 +103,7 @@ namespace HIS.Desktop.Plugins.BedMapView
 					this.CurrentRoom = room;
 					HisBedRoomView1Filter filter = new HisBedRoomView1Filter();
 					filter.DEPARTMENT_ID = room.DEPARTMENT_ID;
-
+                    filter.IS_ACTIVE = 1;
 					 ListBedRoom = new Inventec.Common.Adapter.BackendAdapter(new Inventec.Core.CommonParam()).Get<List<V_HIS_BED_ROOM_1>>("api/HisBedRoom/GetView1", ApiConsumer.ApiConsumers.MosConsumer, filter, SessionManager.ActionLostToken, null);
 
 					if (ListBedRoom != null && ListBedRoom.Count > 0)
@@ -215,7 +215,8 @@ namespace HIS.Desktop.Plugins.BedMapView
 				this.xtraScrollablePanel.Controls.Clear();
 				if (bedRoomId > 0)
 				{
-					var lstBed = ListBed.Where(o => o.BED_ROOM_ID == bedRoomId).ToList();
+                    var lstBed = ListBed.Where(o => o.BED_ROOM_ID == bedRoomId).ToList();
+                    //var lstBed = lstBedData.Where(o => o.IS_ACTIVE == 1).ToList();
 					if (lstBed != null && lstBed.Count > 0)
 					{
 						List<V_HIS_BED_LOG_4> listbedcurr = new List<V_HIS_BED_LOG_4>();

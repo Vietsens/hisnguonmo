@@ -47,7 +47,7 @@
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="His.Bhyt.InsuranceExpertise">
-      <HintPath>..\..\..\..\..\..\HISUTIL\His.Bhyt\His.Bhyt.InsuranceExpertise\bin\Debug\His.Bhyt.InsuranceExpertise.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\x64\x64\ReferencedAssemblies\His.Bhyt.InsuranceExpertise.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.CheckHeinGOV">
       <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.Desktop.Plugins.Library.CheckHeinGOV\HIS.Desktop.Plugins.Library.CheckHeinGOV.dll</HintPath>
@@ -151,6 +151,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\HisConfigCHECKHEINCARD.cs" />
     <Compile Include="ADO\PatientTypeAlterADO.cs" />
     <Compile Include="BHXHLoginCFG.cs" />
     <Compile Include="frmCheckInfoBHYT___BHYT.cs">

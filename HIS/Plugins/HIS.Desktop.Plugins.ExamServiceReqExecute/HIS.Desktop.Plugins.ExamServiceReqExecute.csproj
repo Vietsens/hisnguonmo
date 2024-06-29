@@ -87,9 +87,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.FormMedicalRecord">
-      <HintPath>..\..\..\..\..\..\..\HIS_TEST\ReferencedAssemblies\HIS.Desktop.Plugins.Library.FormMedicalRecord.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.FormOtherServiceReq, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.Desktop.Plugins.Library.FormOtherServiceReq\HIS.Desktop.Plugins.Library.FormOtherServiceReq.dll</HintPath>
@@ -128,6 +125,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.DHST\HIS.UC.DHST.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.ExamFinish">
+      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.UC.ExamFinish.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.ExamTreatmentFinish">
+      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.UC.ExamTreatmentFinish.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.HisExamServiceAdd">
+      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.UC.HisExamServiceAdd.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.Hospitalize">
+      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.UC.Hospitalize.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.Icd, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\RELEASE\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
@@ -148,7 +157,7 @@
       <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.TreeSereServ7\HIS.UC.TreeSereServ7.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCTransPati">
-      <HintPath>..\..\..\UC\HIS.UC\HIS.UC.UCTransPati\obj\Debug\HIS.UC.UCTransPati.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.TranPati\HIS.UC.UCTransPati.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -334,6 +343,9 @@
     <Reference Include="MPS.Processor.Mps000174.PDO">
       <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000174.PDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000178.PDO">
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000178.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.Processor.Mps000268.PDO">
       <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000268.PDO.dll</HintPath>
     </Reference>
@@ -484,6 +496,9 @@
     <Compile Include="Print\ExamServiceReqExcuteControl__Print___DonPhongKhamTongHop.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Print\ExamServiceReqExcuteControl__Print___Mps000178.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Print\ExamServiceReqExcuteControl__Print___Mps000478.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -616,22 +631,6 @@
     <Folder Include="Image\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.ExamFinish\HIS.UC.ExamFinish.csproj">
-      <Project>{ab8458a6-f1b9-4c87-8756-b45089890357}</Project>
-      <Name>HIS.UC.ExamFinish</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.ExamServiceAdd\HIS.UC.HisExamServiceAdd.csproj">
-      <Project>{7c454da4-accb-4481-aa0c-28ee90e90827}</Project>
-      <Name>HIS.UC.HisExamServiceAdd</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.ExamTreatmentFinish\HIS.UC.ExamTreatmentFinish.csproj">
-      <Project>{bfbc4f29-fbeb-4ea0-896a-1a7362ae75af}</Project>
-      <Name>HIS.UC.ExamTreatmentFinish</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.Hospitalize\HIS.UC.Hospitalize.csproj">
-      <Project>{f213257a-dd11-4db9-854d-773d01fe1097}</Project>
-      <Name>HIS.UC.Hospitalize</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>
@@ -700,6 +699,10 @@
       <Project>{2e5f2fa1-1b7d-40e4-b0c5-069231fb7746}</Project>
       <Name>HIS.Desktop.Plugins.Library.CheckIcd</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.FormMedicalRecord\HIS.Desktop.Plugins.Library.FormMedicalRecord.csproj">
+      <Project>{c154dfeb-1051-4c3d-a0a8-04ae3b1b2b2a}</Project>
+      <Name>HIS.Desktop.Plugins.Library.FormMedicalRecord</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Plugins.Library.PrintPrescription\HIS.Desktop.Plugins.Library.PrintPrescription.csproj">
       <Project>{e34c646c-1959-4b1e-9ebd-6cc75a5470fa}</Project>
       <Name>HIS.Desktop.Plugins.Library.PrintPrescription</Name>
@@ -720,8 +723,33 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>echo PREBUILDSTEP for $(ProjectName)
+
+echo Copying files from $(ProjectDir)bin\$(Configuration) to $(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies
+
+if not exist "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" mkdir "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies"
+
+xcopy "$(ProjectDir)bin\$(Configuration)\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" /i /d /y
+xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\Debug\Plugins\Module" /Y /I
+
+if not exist "$(ProjectDir)bin\$(Configuration)\vi" mkdir "$(ProjectDir)bin\$(Configuration)\vi"
+if not exist "$(ProjectDir)bin\$(Configuration)\en" mkdir "$(ProjectDir)bin\$(Configuration)\en"
+xcopy "$(ProjectDir)bin\$(Configuration)\vi\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\vi" /Y /I
+xcopy "$(ProjectDir)bin\$(Configuration)\en\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\en" /Y /I
+
+if errorlevel 1 goto BuildEventFailed
+
+if errorlevel 1 goto BuildEventFailed
+
+REM Exit properly because the build will not fail
+REM unless the final step exits with an error code
+
+goto BuildEventOK
+:BuildEventFailed
+echo PREBUILDSTEP for $(ProjectName) FAILED
+exit 1
+:BuildEventOK
+echo PREBUILDSTEP for $(ProjectName) COMPLETED OK</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

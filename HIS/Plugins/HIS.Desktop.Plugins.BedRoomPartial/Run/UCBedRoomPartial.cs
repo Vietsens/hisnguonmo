@@ -160,6 +160,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 InitComboPatientFilter();
                 InitComboPATIENT_CLASSIFY();
                 InitComboTreatmentType();
+                InitComboEmployee();
                 InitComboTreatmentStatus();
                 InitComboFilterByDepartment();
                 SetTreeListDateTimeProperties();
@@ -463,6 +464,24 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void InitComboEmployee()
+        {
+            try
+            {
+                var data = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_DOCTOR == 1).ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("LOGINNAME","Tên đăng nhập", 150, 1));
+                columnInfos.Add(new ColumnInfo("TDL_USERNAME", "Họ và tên", 250, 1));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("TDL_USERNAME", "LOGINNAME", columnInfos, false, 400);
+                ControlEditorLoader.Load(cboEmployee, data, controlEditorADO);
+                cboEmployee.Properties.ImmediatePopup = true;
+                cboEmployee.Properties.PopupFormMinSize = new Size(400, cboEmployee.Properties.PopupFormMinSize.Height);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void InitComboFilterByDepartment()
         {
             try
@@ -678,6 +697,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     grdColSTT.Width = 50;
                     grdColRoomName.GroupIndex = -1;
                 }
+                if (RowCellClickBedRoom != null && RowCellClickBedRoom.ID > 0 && _TreatmentBedRoomADOs != null && _TreatmentBedRoomADOs.Count > 0)
+                {
+                    var rowCell = _TreatmentBedRoomADOs.Exists(o => o.ID == RowCellClickBedRoom.ID);
+                    RowCellClickBedRoom = rowCell ? _TreatmentBedRoomADOs.FirstOrDefault(o => o.ID == RowCellClickBedRoom.ID) : null;
+                }
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -804,6 +828,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 if (chkDuDkRavien.Checked)
                 {
                     treatFilter.IS_APPROVE_FINISH = true;
+                }
+                if(cboEmployee.EditValue != null)
+                {
+                    treatFilter.DOCTOR_LOGINNAME = cboEmployee.EditValue.ToString();
                 }
             }
             catch (Exception ex)
@@ -1622,6 +1650,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         ProcessDeleteServiceReq(data);
                     }
                 }
+                else
+                {
+                    ProcessDeleteServiceReq(data);
+                }
             }
             catch (Exception ex)
             {
@@ -1644,6 +1676,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 if (success)
                 {
                     LoadDataSereServByTreatmentId(this.rowClickByDate);
+                    if(data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G)
+                    {
+                        FillDataToGridTreatmentBedRoom();
+                    }
                 }
                 WaitingManager.Hide();
                 #region Show message
@@ -2024,6 +2060,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         List<object> listArgs = new List<object>();
                         listArgs.Add(RowCellClickBedRoom);
                         listArgs.Add(RowCellClickBedRoom.TREATMENT_ID);
+                        //listArgs.Add((RefeshReference)Refesh);
                         listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId));
                         var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId), listArgs);
                         if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
@@ -2790,6 +2827,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             }
         }
 
+        private void cboEmployee_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            if (cboEmployee.EditValue != null && e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                cboEmployee.EditValue = null;
+        }
+
         private string GetPathDefault()
         {
             string imageDefaultPath = string.Empty;
@@ -2860,6 +2903,16 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                        HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongThongBaoTieuDeChoWaitDialogForm),
                        MessageBoxButtons.OK) == DialogResult.OK)
                                 return false;
+                        }
+                    }
+                    if (string.IsNullOrEmpty(RowCellClickBedRoom.BED_CODE))
+                    {
+                        var treatmentType = BackendDataWorker.Get<HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.ID == RowCellClickBedRoom.TDL_TREATMENT_TYPE_ID).IS_REQUIRED_SERVICE_BED == 1;
+                        if (treatmentType)
+                        {
+                            DevExpress.XtraEditors.XtraMessageBox.Show("Bệnh nhân chưa chỉ định giường không cho phép kê đơn, chỉ định",
+                       HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongThongBaoTieuDeChoWaitDialogForm));
+                            return false;
                         }
                     }
                 }

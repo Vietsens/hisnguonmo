@@ -57,6 +57,12 @@ namespace MPS.Processor.Mps000111
                 ProcessSereServADO();
                 ProcessGroupData();
 
+                var data = rdo._ListTranSaction.FirstOrDefault(o => o.ID == (rdo._Transaction.RELATE_TRANSACTION_ID ?? 0));
+                if(data != null)
+                {
+                    AddObjectKeyIntoListkeyWithPrefix<V_HIS_TRANSACTION>(data, "RELATE_", true);
+                }
+
                 objectTag.AddObjectData(store, "SereServ", _SereServADOs ?? new List<SereServADO>());
                 objectTag.AddObjectData(store, "ServiceType", listType);
                 objectTag.AddObjectData(store, "ServiceTypeGroup", listgroupType);
@@ -64,7 +70,6 @@ namespace MPS.Processor.Mps000111
 
                 objectTag.AddObjectData(store, "ListTransaction", rdo._ListTranSaction != null && rdo._ListTranSaction.Count > 0 ? rdo._ListTranSaction.Where(o => o.IS_CANCEL != 1 && o.SALE_TYPE_ID == null).ToList() : new List<V_HIS_TRANSACTION>());
                 objectTag.AddObjectData(store, "SSGroupByType", listTypeSvt);
-
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
                 result = true;

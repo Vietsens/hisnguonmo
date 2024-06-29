@@ -180,7 +180,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             bool result = false;
             try
             {
-                var nam = Int64.Parse(treatment.IN_TIME.ToString().Substring(0, 4)) - Int64.Parse(treatment.TDL_PATIENT_DOB.ToString().Substring(0,4));
+                var nam = Int64.Parse(treatment.IN_TIME.ToString().Substring(0, 4)) - Int64.Parse(treatment.TDL_PATIENT_DOB.ToString().Substring(0, 4));
                 if (nam < 16)
                 {
                     result = true;
@@ -250,7 +250,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     txtPART_EXAM_EAR_RIGHT_NORMAL.Text = IsCheckLockInfor(txtPART_EXAM_EAR_RIGHT_NORMAL.Text, status) ? examServiceTemp.PART_EXAM_EAR_RIGHT_NORMAL : txtPART_EXAM_EAR_RIGHT_NORMAL.Text;
                     txtPART_EXAM_EAR_RIGHT_WHISPER.Text = IsCheckLockInfor(txtPART_EXAM_EAR_RIGHT_WHISPER.Text, status) ? examServiceTemp.PART_EXAM_EAR_RIGHT_WHISPER : txtPART_EXAM_EAR_RIGHT_WHISPER.Text;
                     txtPART_EXAM_EAR_LEFT_NORMAL.Text = IsCheckLockInfor(txtPART_EXAM_EAR_LEFT_NORMAL.Text, status) ? examServiceTemp.PART_EXAM_EAR_LEFT_NORMAL : txtPART_EXAM_EAR_LEFT_NORMAL.Text;
-                    txtPART_EXAM_EAR_LEFT_WHISPER.Text = IsCheckLockInfor(txtPART_EXAM_EAR_LEFT_WHISPER.Text, status) ? examServiceTemp.PART_EXAM_EAR_LEFT_WHISPER : txtPART_EXAM_EAR_LEFT_WHISPER.Text;                 
+                    txtPART_EXAM_EAR_LEFT_WHISPER.Text = IsCheckLockInfor(txtPART_EXAM_EAR_LEFT_WHISPER.Text, status) ? examServiceTemp.PART_EXAM_EAR_LEFT_WHISPER : txtPART_EXAM_EAR_LEFT_WHISPER.Text;
                     txtPART_EXAM_UPPER_JAW.Text = IsCheckLockInfor(txtPART_EXAM_UPPER_JAW.Text, status) ? examServiceTemp.PART_EXAM_UPPER_JAW : txtPART_EXAM_UPPER_JAW.Text;
                     txtPART_EXAM_LOWER_JAW.Text = IsCheckLockInfor(txtPART_EXAM_LOWER_JAW.Text, status) ? examServiceTemp.PART_EXAM_LOWER_JAW : txtPART_EXAM_LOWER_JAW.Text;
 
@@ -402,6 +402,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     .Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatment, param).FirstOrDefault();
                 if (this.treatment != null)
                 {
+                    
                     UpdateNeedSickLeaveCertControl(this.treatment.NEED_SICK_LEAVE_CERT);
                     this.icdDefaultFinish.ICD_CODE = this.treatment.ICD_CODE;
                     this.icdDefaultFinish.ICD_NAME = this.treatment.ICD_NAME;
@@ -412,13 +413,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 }
 
                 EnableControlFastCreateTracking();
-            //CommonParam param = new CommonParam();
-            //HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
-            //treatmentFilter.PATIENT_ID = this.HisServiceReqView.TDL_PATIENT_ID;
-            //this.treatmentByPatients = new BackendAdapter(param)
-            //    .Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, param);
+                //CommonParam param = new CommonParam();
+                //HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
+                //treatmentFilter.PATIENT_ID = this.HisServiceReqView.TDL_PATIENT_ID;
+                //this.treatmentByPatients = new BackendAdapter(param)
+                //    .Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, param);
 
-            //this.treatment = this.treatmentByPatients.FirstOrDefault(o => o.ID == this.HisServiceReqView.TREATMENT_ID);
+                //this.treatment = this.treatmentByPatients.FirstOrDefault(o => o.ID == this.HisServiceReqView.TREATMENT_ID);
             }
             catch (Exception ex)
             {
@@ -520,7 +521,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 // Tự động hiển thị thông tin khám theo lần khám trước đó trong trường hợp điều trị ngoại trú (TH xử lý khám đầu tiên START_TIME = MODIFY_TIME hoặc START_TIME + 1 = MODIFY_TIME)
                 AutoMapper.Mapper.CreateMap<V_HIS_SERVICE_REQ, HIS_SERVICE_REQ>();
                 HIS_SERVICE_REQ serviceReq = AutoMapper.Mapper.Map<V_HIS_SERVICE_REQ, HIS_SERVICE_REQ>(HisServiceReqView);
-                if (this.HisServiceReqView != null 
+                if (this.HisServiceReqView != null
                     && Config.HisConfigCFG.IsAutoSetExamInforByPreviousTreatmentInCaseOfOutPatient
                     && serviceReq.START_TIME != null
                     && (serviceReq.START_TIME == serviceReq.MODIFY_TIME || serviceReq.START_TIME + 1 == serviceReq.MODIFY_TIME))
@@ -536,7 +537,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         {
                             V_HIS_SERVICE_REQ serviceReq_KhamChinh = GetServiceReq_KhamChinh_ByTreatmentID(previousTreatment.ID);
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("serviceReq_KhamChinh", serviceReq_KhamChinh));
-                            if (serviceReq_KhamChinh !=null)
+                            if (serviceReq_KhamChinh != null)
                             {
                                 SetExamInforByPreviousTreatmentInCaseOfOutPatient(serviceReq_KhamChinh);
                             }
@@ -668,7 +669,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 HisTreatmentFilter filter = new HisTreatmentFilter();
                 filter.PATIENT_ID = patientID;
                 var apiResult = new BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filter, new CommonParam());
-                if (apiResult !=null && apiResult.Count()>0)
+                if (apiResult != null && apiResult.Count() > 0)
                 {
                     result = apiResult.Where(o => o.ID != currentTreatmentID).OrderByDescending(s => s.OUT_TIME).First();
                 }
@@ -749,7 +750,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-     
+
         private void FillDataToControlEditor()
         {
             try
@@ -763,7 +764,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     {
                         refreshClick(this.treatment.ID);
                     }
-                    
+
                     if (string.IsNullOrEmpty(txtHospitalizationReason.Text.Trim()) && !string.IsNullOrEmpty(this.HisServiceReqView.HOSPITALIZATION_REASON))
                         txtHospitalizationReason.Text = this.HisServiceReqView.HOSPITALIZATION_REASON;
                     //else if (this.treatment != null && !string.IsNullOrEmpty(this.treatment.HOSPITALIZATION_REASON))
@@ -963,14 +964,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         }
         private decimal? HeightBeforeCallApi { get; set; }
         private decimal? WeightBeforeCallApi { get; set; }
-        public  async Task LoadDHSTByPatient()
+        public async Task LoadDHSTByPatient()
         {
             try
             {
                 HIS_DHST currentDhst = new HIS_DHST();
                 if (IsCheckedGetLastDHSTByPatient)
                 {
-                     WaitingManager.Show();
+                    WaitingManager.Show();
                     CommonParam param = new CommonParam();
                     var Dhst = await new BackendAdapter(param)
                 .GetAsync<MOS.EFMODEL.DataModels.V_HIS_DHST_1>("api/HisDhst/GetLastByPatient", ApiConsumers.MosConsumer, this.HisServiceReqView.TDL_PATIENT_ID, param);
@@ -990,7 +991,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
             catch (Exception ex)
             {
-                
+
                 throw;
             }
         }
@@ -998,6 +999,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
+                List<MOS.EFMODEL.DataModels.HIS_DHST> listDHST = null;
+
+                HIS_DHST currentDhst = new HIS_DHST();
                 if (this.HisServiceReqView.DHST_ID.HasValue)
                 {
                     WaitingManager.Show();
@@ -1005,14 +1009,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     dhstFilter.ID = this.HisServiceReqView.DHST_ID;
                     dhstFilter.ORDER_FIELD = "EXECUTE_TIME";
                     dhstFilter.ORDER_DIRECTION = "DESC";
-                    HIS_DHST currentDhst = new HIS_DHST();
                     CommonParam param = new CommonParam();
-                    var listDHST = await new BackendAdapter(param)
+                    listDHST = await new BackendAdapter(param)
                 .GetAsync<List<MOS.EFMODEL.DataModels.HIS_DHST>>("api/HisDHST/Get", ApiConsumers.MosConsumer, dhstFilter, param);
-                    currentDhst = listDHST != null ? listDHST.FirstOrDefault() : null;
                     WaitingManager.Hide();
-                    //dhstProcessor.SetValue(ucDHST, currentDhst);
-                    this.DHSTSetValue(currentDhst);
                     Inventec.Common.Logging.LogSystem.Debug("Get dhst from HisServiceReq");
                 }
                 else if (this.treatment != null)
@@ -1022,16 +1022,46 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     dhstFilter.TREATMENT_ID = this.treatment.ID;
                     dhstFilter.ORDER_FIELD = "EXECUTE_TIME";
                     dhstFilter.ORDER_DIRECTION = "DESC";
-                    HIS_DHST currentDhst = new HIS_DHST();
                     CommonParam param = new CommonParam();
-                    var listDHST = await new BackendAdapter(param)
+                    listDHST = await new BackendAdapter(param)
                 .GetAsync<List<MOS.EFMODEL.DataModels.HIS_DHST>>("api/HisDHST/Get", ApiConsumers.MosConsumer, dhstFilter, param);
-                    currentDhst = listDHST != null ? listDHST.FirstOrDefault() : null;
                     WaitingManager.Hide();
-                    //dhstProcessor.SetValue(ucDHST, currentDhst);
-                    this.DHSTSetValue(currentDhst);
                     Inventec.Common.Logging.LogSystem.Debug("Get dhst from treatment");
                 }
+                if (listDHST != null && listDHST.Count > 0)
+                {
+                    listDHST = listDHST.OrderByDescending(o => o.EXECUTE_TIME).ThenByDescending(o => o.ID).ToList();
+                    var firstDhst = listDHST[0];
+                    if (firstDhst.WEIGHT.HasValue && firstDhst.HEIGHT.HasValue && firstDhst.TEMPERATURE.HasValue && firstDhst.BREATH_RATE.HasValue && firstDhst.CHEST.HasValue && firstDhst.BELLY.HasValue && firstDhst.BLOOD_PRESSURE_MAX.HasValue && firstDhst.BLOOD_PRESSURE_MIN.HasValue && firstDhst.PULSE.HasValue && firstDhst.SPO2.HasValue)
+                    {
+                        currentDhst = firstDhst;
+                    }
+                    else
+                    {
+                        currentDhst = firstDhst;
+                        foreach (var item in listDHST)
+                        {
+                            if (currentDhst != null && currentDhst.WEIGHT.HasValue && !currentDhst.HEIGHT.HasValue && item.HEIGHT.HasValue)
+                            {
+                                currentDhst.HEIGHT = item.HEIGHT;
+                            }
+                            else if (currentDhst != null && currentDhst.HEIGHT.HasValue && !currentDhst.WEIGHT.HasValue && item.WEIGHT.HasValue)
+                            {
+                                currentDhst.WEIGHT = item.WEIGHT;
+                            }
+                            else if (currentDhst != null && !currentDhst.HEIGHT.HasValue && !currentDhst.WEIGHT.HasValue)
+                            {
+                                currentDhst.WEIGHT = item.WEIGHT;
+                                currentDhst.HEIGHT = item.HEIGHT;
+                            }
+                            MapInformationDhstEmpty(ref currentDhst, item);                         
+                        }
+                    }
+                }
+                else
+                    currentDhst = null;
+
+                this.DHSTSetValue(currentDhst);
                 if (IsCheckedGetLastDHSTByPatient)
                 {
                     LoadDHSTByPatient();
@@ -1043,7 +1073,34 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
         }
 
-
+        private void MapInformationDhstEmpty(ref HIS_DHST currentDhst, HIS_DHST item)
+        {
+            try
+            {
+                if (!currentDhst.TEMPERATURE.HasValue && item.TEMPERATURE.HasValue)
+                    currentDhst.TEMPERATURE = item.TEMPERATURE;
+                if (!currentDhst.BREATH_RATE.HasValue && item.BREATH_RATE.HasValue)
+                    currentDhst.BREATH_RATE = item.BREATH_RATE;
+                if (!currentDhst.CHEST.HasValue && item.CHEST.HasValue)
+                    currentDhst.CHEST = item.CHEST;
+                if (!currentDhst.BELLY.HasValue && item.BELLY.HasValue)
+                    currentDhst.BELLY = item.BELLY;
+                if (!currentDhst.BLOOD_PRESSURE_MAX.HasValue && item.BLOOD_PRESSURE_MAX.HasValue)
+                    currentDhst.BLOOD_PRESSURE_MAX = item.BLOOD_PRESSURE_MAX;
+                if (!currentDhst.BLOOD_PRESSURE_MIN.HasValue && item.BLOOD_PRESSURE_MIN.HasValue)
+                    currentDhst.BLOOD_PRESSURE_MIN = item.BLOOD_PRESSURE_MIN;
+                if (!currentDhst.PULSE.HasValue && item.PULSE.HasValue)
+                    currentDhst.PULSE = item.PULSE;
+                if (!currentDhst.SPO2.HasValue && item.SPO2.HasValue)
+                    currentDhst.SPO2 = item.SPO2;
+                if (!currentDhst.URINE.HasValue && item.URINE.HasValue)
+                    currentDhst.URINE = item.URINE;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void LoadNextTreatmentIntructionToControl(string nextTreaIntrCode, string nextTreaIntrName)
         {
             try

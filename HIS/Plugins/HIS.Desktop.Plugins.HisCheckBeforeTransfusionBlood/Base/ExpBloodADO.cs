@@ -66,5 +66,6 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.Base
         public decimal? AC_SELF_ENVIDENCE_SECOND { get; set; }
         public string SERVICE_RESULT { get; set; }
         public long EXP_MEST_ID { get; set; }
+        public string PREPARATIONS_BLOOD_NAME { set; get; }
     }
 }

@@ -153,5 +153,6 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.ADO
         public int PROCESSING_CODE_ERROR { get; set; }
         public int ALERT_MAX_IN_DAY_STR_ERROR { get; set; }
         public int IS_BLOCK_MAX_IN_DAY_STR_ERROR { get; set; }
+        public string ACTIVE_INGREDIENT_CODE_STR { get; set; }
     }
 }

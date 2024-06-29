@@ -235,6 +235,9 @@
     <Reference Include="MPS.Processor.Mps000470.PDO">
       <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000470.PDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000496.PDO">
+      <HintPath>..\..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000496.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.ProcessorBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>

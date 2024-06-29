@@ -18,6 +18,7 @@
 using ACS.EFMODEL.DataModels;
 using ACS.SDO;
 using DevExpress.Data;
+using DevExpress.Office.Utils;
 using DevExpress.Utils;
 using DevExpress.Utils.Menu;
 using DevExpress.XtraBars;
@@ -70,6 +71,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Markup;
 
 namespace HIS.Desktop.Plugins.ServiceExecute
 {
@@ -367,7 +369,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         V_HIS_SERE_SERV_SUIN ss = new V_HIS_SERE_SERV_SUIN();
                         if (listHisssSuin != null && listHisssSuin.Count > 0)
                         {
-                            ss = listHisssSuin.FirstOrDefault(o=>o.SUIM_INDEX_ID == item.SUIM_INDEX_ID);
+                            ss = listHisssSuin.FirstOrDefault(o => o.SUIM_INDEX_ID == item.SUIM_INDEX_ID);
                         }
                         else
                         {
@@ -1699,7 +1701,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        List<SereServFileADO> currentSsPdf = new List<SereServFileADO>();
         private bool ProcessLoadSereServFile(List<long> sereServId)
         {
             bool result = false;
@@ -1708,6 +1710,13 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 var currentSereServFiles = GetSereServFilesBySereServId(sereServId);
                 if (currentSereServFiles != null && currentSereServFiles.Count > 0)
                 {
+                    var dataPdf = currentSereServFiles.Where(o => o.FILE_TYPE == 2).ToList();
+                    if (dataPdf != null && dataPdf.Count > 0)
+                    {
+                        AutoMapper.Mapper.CreateMap<HIS_SERE_SERV_FILE, SereServFileADO>();
+                        currentSsPdf = AutoMapper.Mapper.Map<List<SereServFileADO>>(dataPdf);
+                    }
+                    currentSereServFiles = currentSereServFiles.Where(o => o.FILE_TYPE == 1).ToList();
                     result = true;
                     this.listImage = new List<ADO.ImageADO>();
                     foreach (MOS.EFMODEL.DataModels.HIS_SERE_SERV_FILE item in currentSereServFiles)
@@ -3972,6 +3981,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         file.Content = converterImageToByte(item.streamImage);
                         file.BodyPartId = item.BODY_PART_ID;
                         file.Caption = item.CAPTION;
+                        file.NumOrder = item.STTImage;
+                        file.FileType = 1;
                         result.Add(file);
                     }
                 }
@@ -3982,7 +3993,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             }
             return result;
         }
-
         private byte[] converterImageToByte(Stream stream)
         {
             byte[] xByte = null;
@@ -4143,6 +4153,12 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 {
                     data.Files = ProcessImageList(this.listImage.Where(o => o.IsChecked).ToList());
                 }
+                if (this.currentSsPdf != null && this.currentSsPdf.Count > 0)
+                {
+                    if (data.Files == null)
+                        data.Files = new List<FileSDO>();
+                    data.Files.AddRange(ProcessPdfList(currentSsPdf));
+                }
 
                 Inventec.Common.Logging.LogSystem.Debug("INPUT DATA: ___ " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
                 MOS.SDO.HisSereServExtWithFileSDO apiResult = new Inventec.Common.Adapter.BackendAdapter(param).Post
@@ -4213,7 +4229,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     gridControlSereServ.DataSource = listServiceADO;
                     btnPrint.Enabled = true;
                     BtnEmr.Enabled = true;
-
+                    ProcessLoadSereServFile(listServiceADO.Select(s => s.ID).Distinct().ToList());
                     //ẩn trước khi lưu đóng tránh bị dừng pm
                     Inventec.Desktop.Common.Message.WaitingManager.Hide();
                     //lưu và ký và đóng
@@ -4265,6 +4281,31 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 Inventec.Desktop.Common.Message.WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private List<FileSDO> ProcessPdfList(List<SereServFileADO> currentSsPdf)
+        {
+            List<FileSDO> result = new List<FileSDO>();
+            try
+            {
+                foreach (var item in currentSsPdf)
+                {
+                    if (item.ID <= 0)
+                    {
+                        FileSDO file = new FileSDO();
+                        file.FileName = item.SERE_SERV_FILE_NAME;
+                        file.Content = Utils.FileToByte(item.URL);
+                        file.FileType = 2;
+                        file.NumOrder = item.NUM_ORDER;
+                        result.Add(file);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         private bool CheckMachine(ServiceADO sereServ)
@@ -4439,7 +4480,12 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     {
                         data.Files = ProcessImageList(this.listImage.Where(o => o.IsChecked).ToList());
                     }
-
+                    if (this.currentSsPdf != null && this.currentSsPdf.Count > 0)
+                    {
+                        if (data.Files == null)
+                            data.Files = new List<FileSDO>();
+                        data.Files.AddRange(ProcessPdfList(currentSsPdf));
+                    }
                     apiResult = new Inventec.Common.Adapter.BackendAdapter(param).Post
                         <MOS.SDO.HisSereServExtWithFileSDO>
                         (sereServExt.ID == 0 ?
@@ -4651,7 +4697,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     inputADO.DocumentName = (String.Format("{0} (Mã điều trị: {1})", dicSarPrint[sereServExt.ID].TITLE, currentServiceReq.TDL_TREATMENT_CODE));
                     if (!String.IsNullOrWhiteSpace(dicSarPrint[sereServExt.ID].ADDITIONAL_INFO) && dicSarPrint[sereServExt.ID].ADDITIONAL_INFO.Contains("SERE_SERV_TEMP_CODE"))
                     {
-                        string TEMP_CODE = dicSarPrint[sereServExt.ID].ADDITIONAL_INFO.Replace("SERE_SERV_TEMP_CODE:","").Trim();
+                        string TEMP_CODE = dicSarPrint[sereServExt.ID].ADDITIONAL_INFO.Replace("SERE_SERV_TEMP_CODE:", "").Trim();
                         var temp = listTemplate.FirstOrDefault(o => o.SERE_SERV_TEMP_CODE == TEMP_CODE);
                         if (temp != null)
                         {
@@ -4699,29 +4745,83 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 }
 
                 ProcessColumnMaping(SereServTemp, ref inputADO);
-                if (chkSign.Checked && sender == null)
+                if (chkSign.Checked)
                 {
                     string base64File = "";
+                    string pdfAddFile = Utils.GenerateTempFileWithin();
+                    string OutputFile = Utils.GenerateTempFileWithin();
+
+                    List<string> joinStreams = new List<string>();
                     using (MemoryStream pdfData = new MemoryStream())
                     {
                         printDocument.ExportToPdf(pdfData);
                         pdfData.Position = 0;
-                        base64File = System.Convert.ToBase64String(Utils.StreamToByte(pdfData));
+                        Utils.ByteToFile(Utils.StreamToByte(pdfData), pdfAddFile);
+                        joinStreams.Add(pdfAddFile);
                     }
 
+                    if (currentSsPdf != null && currentSsPdf.Count > 0)
+                    {
+                        var dataPdf = currentSsPdf.OrderBy(o => o.NUM_ORDER).ToList();
+                        foreach (var item in dataPdf)
+                        {
+                            var stream = Inventec.Fss.Client.FileDownload.GetFile(item.URL);
+
+                            if (stream != null && stream.Length > 0)
+                            {
+                                stream.Position = 0;
+                                string pdfFile = Utils.GenerateTempFileWithin();
+                                Utils.ByteToFile(Utils.StreamToByte(stream), pdfFile);
+                                joinStreams.Add(pdfFile);
+                            }
+                        }
+                    }
+                    Stream currentStream = File.Open(OutputFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+
+                    var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(currentStream);
+
+                    var pages = new List<int>();
+
+                    foreach (var file in joinStreams)
+                    {
+                        iTextSharp.text.pdf.PdfReader pdfReader = null;
+                        pdfReader = new iTextSharp.text.pdf.PdfReader(file);
+                        pages = new List<int>();
+                        for (int i = 0; i <= pdfReader.NumberOfPages; i++)
+                        {
+                            pages.Add(i);
+                        }
+                        pdfReader.SelectPages(pages);
+                        pdfConcat.AddPages(pdfReader);
+                        pdfReader.Close();
+                    }
+                    try
+                    {
+                        pdfConcat.Close();
+                    }
+                    catch { }
+
+                    foreach (var file in joinStreams)
+                    {
+                        try
+                        {
+                            File.Delete(file);
+                        }
+                        catch { }
+                    }
                     SignLibraryGUIProcessor libraryProcessor = new SignLibraryGUIProcessor();
 
                     if (chkPrint.Checked)
                     {
-                        var signNow = libraryProcessor.SignAndPrintNow(base64File, FileType.Pdf, inputADO);//truyền vào đường dẫn file cần ký, các định dạng hỗ trợ là: pdf,doc,docx,xls,xlsx,rdlc,...
+                        var signNow = libraryProcessor.SignAndPrintNow(Utils.FileToBase64String(OutputFile), FileType.Pdf, inputADO);//truyền vào đường dẫn file cần ký, các định dạng hỗ trợ là: pdf,doc,docx,xls,xlsx,rdlc,...
                     }
                     else if (chkForPreview.Checked)
                     {
-                        var signNow = libraryProcessor.SignAndShowPrintPreview(base64File, FileType.Pdf, inputADO);//truyền vào đường dẫn file cần ký, các định dạng hỗ trợ là: pdf,doc,docx,xls,xlsx,rdlc,...
+                        var signNow = libraryProcessor.SignAndShowPrintPreview(Utils.FileToBase64String(OutputFile), FileType.Pdf, inputADO);//truyền vào đường dẫn file cần ký, các định dạng hỗ trợ là: pdf,doc,docx,xls,xlsx,rdlc,...
                     }
                     else
                     {
-                        var signNow = libraryProcessor.SignNow(base64File, FileType.Pdf, inputADO);//truyền vào đường dẫn file cần ký, các định dạng hỗ trợ là: pdf,doc,docx,xls,xlsx,rdlc,...
+                        var signNow = libraryProcessor.SignNow(Utils.FileToBase64String(OutputFile), FileType.Pdf, inputADO);//truyền vào đường dẫn file cần ký, các định dạng hỗ trợ là: pdf,doc,docx,xls,xlsx,rdlc,...
                     }
                     //if (!signNow.Success && !String.IsNullOrWhiteSpace(signNow.Message))
                     //{
@@ -7326,6 +7426,25 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void btnPdf_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                frmAttackPdf frm = new frmAttackPdf(currentSsPdf, list =>
+                {
+                    currentSsPdf = list;
+                    currentSsPdf.ForEach(s => { s.IsNow = false; });
+                });
+                frm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         private void xtraTabControl1_CustomHeaderButtonClick(object sender, DevExpress.XtraTab.ViewInfo.CustomHeaderButtonEventArgs e)

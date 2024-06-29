@@ -30,6 +30,9 @@ namespace HIS.Desktop.Plugins.BedHistory.ADO
         public long BED_CODE_ID { get; set; }
         public long AMOUNT { get; set; }
         public List<long> TREATMENT_BED_ROOM_IDs { get; set; }
+        public List<long> BedLogStartIds { get; set; }
+        public List<long> BedLogFinishIds { get; set; }
+        public List<long> BedLogAllIds { get; set; }
         public HisBedADO() { }
 
         public HisBedADO(MOS.EFMODEL.DataModels.V_HIS_BED data)

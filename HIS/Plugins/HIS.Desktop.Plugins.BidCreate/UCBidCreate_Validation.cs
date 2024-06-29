@@ -229,7 +229,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             {
                 ValidateMaxLength validateMaxLength = new ValidateMaxLength();
                 validateMaxLength.textEdit = txtTenTT;
-                validateMaxLength.maxLength = 500;
+                validateMaxLength.maxLength = 1500;
                 validateMaxLength.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                 dxValidationProviderLeft.SetValidationRule(txtTenTT, validateMaxLength);
             }
@@ -261,7 +261,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             {
                 ValidateMaxLength validateMaxLength = new ValidateMaxLength();
                 validateMaxLength.textEdit = txtTenBHYT;
-                validateMaxLength.maxLength = 500;
+                validateMaxLength.maxLength = 1500;
                 validateMaxLength.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                 dxValidationProviderLeft.SetValidationRule(txtTenBHYT, validateMaxLength);
             }

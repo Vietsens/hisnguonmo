@@ -27,23 +27,9 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise.Config
 {
     class AutoLockAfterApprovalBHYTCFG
     {
-        private const string CONFIG_KEY = "MOS.HIS_TREATMENT.AUTO_LOCK_AFTER_HEIN_APPROVAL";
-
+    
         private const string IS_AUTO = "1";
-
-        private static bool? isAutoLockAfterApproval;
-        public static bool IsAutoLockAfterApprovalBHYT
-        {
-            get
-            {
-                if (!isAutoLockAfterApproval.HasValue)
-                {
-                    isAutoLockAfterApproval = Get(HisConfigCFG.GetValue(CONFIG_KEY));
-                    
-                }
-                return isAutoLockAfterApproval.Value;
-            }
-        }
+        public static bool IsAutoLockAfterApprovalBHYT { get; set; }
 
         static bool Get(string code)
         {

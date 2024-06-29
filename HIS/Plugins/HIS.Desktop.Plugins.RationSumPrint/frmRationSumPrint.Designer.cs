@@ -71,6 +71,8 @@ namespace HIS.Desktop.Plugins.RationSumPrint
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.btnPrintGroup = new DevExpress.XtraEditors.SimpleButton();
+            this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlRationGroup)).BeginInit();
@@ -85,10 +87,12 @@ namespace HIS.Desktop.Plugins.RationSumPrint
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.btnPrintGroup);
             this.layoutControl1.Controls.Add(this.btnInTem);
             this.layoutControl1.Controls.Add(this.btnInPhieuChiTiet);
             this.layoutControl1.Controls.Add(this.gridControlRationGroup);
@@ -104,7 +108,7 @@ namespace HIS.Desktop.Plugins.RationSumPrint
             // 
             // btnInTem
             // 
-            this.btnInTem.Location = new System.Drawing.Point(106, 239);
+            this.btnInTem.Location = new System.Drawing.Point(72, 239);
             this.btnInTem.Name = "btnInTem";
             this.btnInTem.Size = new System.Drawing.Size(85, 22);
             this.btnInTem.StyleController = this.layoutControl1;
@@ -114,9 +118,9 @@ namespace HIS.Desktop.Plugins.RationSumPrint
             // 
             // btnInPhieuChiTiet
             // 
-            this.btnInPhieuChiTiet.Location = new System.Drawing.Point(195, 239);
+            this.btnInPhieuChiTiet.Location = new System.Drawing.Point(161, 239);
             this.btnInPhieuChiTiet.Name = "btnInPhieuChiTiet";
-            this.btnInPhieuChiTiet.Size = new System.Drawing.Size(115, 22);
+            this.btnInPhieuChiTiet.Size = new System.Drawing.Size(83, 22);
             this.btnInPhieuChiTiet.StyleController = this.layoutControl1;
             this.btnInPhieuChiTiet.TabIndex = 8;
             this.btnInPhieuChiTiet.Text = "In phiếu chi tiết";
@@ -212,9 +216,9 @@ namespace HIS.Desktop.Plugins.RationSumPrint
             // 
             // btnInPhieuTongHop
             // 
-            this.btnInPhieuTongHop.Location = new System.Drawing.Point(314, 239);
+            this.btnInPhieuTongHop.Location = new System.Drawing.Point(248, 239);
             this.btnInPhieuTongHop.Name = "btnInPhieuTongHop";
-            this.btnInPhieuTongHop.Size = new System.Drawing.Size(108, 22);
+            this.btnInPhieuTongHop.Size = new System.Drawing.Size(94, 22);
             this.btnInPhieuTongHop.StyleController = this.layoutControl1;
             this.btnInPhieuTongHop.TabIndex = 7;
             this.btnInPhieuTongHop.Text = "In phiếu tổng hợp";
@@ -230,7 +234,8 @@ namespace HIS.Desktop.Plugins.RationSumPrint
             this.layoutControlItem3,
             this.layoutControlItem4,
             this.layoutControlItem1,
-            this.layoutControlItem5});
+            this.layoutControlItem5,
+            this.layoutControlItem6});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -242,15 +247,15 @@ namespace HIS.Desktop.Plugins.RationSumPrint
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 237);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(104, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(70, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.btnInPhieuTongHop;
-            this.layoutControlItem2.Location = new System.Drawing.Point(312, 237);
+            this.layoutControlItem2.Location = new System.Drawing.Point(246, 237);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(112, 26);
+            this.layoutControlItem2.Size = new System.Drawing.Size(98, 26);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -275,16 +280,16 @@ namespace HIS.Desktop.Plugins.RationSumPrint
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.btnInPhieuChiTiet;
-            this.layoutControlItem1.Location = new System.Drawing.Point(193, 237);
+            this.layoutControlItem1.Location = new System.Drawing.Point(159, 237);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(119, 26);
+            this.layoutControlItem1.Size = new System.Drawing.Size(87, 26);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.btnInTem;
-            this.layoutControlItem5.Location = new System.Drawing.Point(104, 237);
+            this.layoutControlItem5.Location = new System.Drawing.Point(70, 237);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.Size = new System.Drawing.Size(89, 26);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
@@ -294,10 +299,6 @@ namespace HIS.Desktop.Plugins.RationSumPrint
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnRCPrint});
@@ -326,8 +327,8 @@ namespace HIS.Desktop.Plugins.RationSumPrint
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(424, 29);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(424, 0);
             // 
             // barDockControlBottom
             // 
@@ -349,6 +350,25 @@ namespace HIS.Desktop.Plugins.RationSumPrint
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(424, 29);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 263);
+            // 
+            // btnPrintGroup
+            // 
+            this.btnPrintGroup.Location = new System.Drawing.Point(346, 239);
+            this.btnPrintGroup.Name = "btnPrintGroup";
+            this.btnPrintGroup.Size = new System.Drawing.Size(76, 22);
+            this.btnPrintGroup.StyleController = this.layoutControl1;
+            this.btnPrintGroup.TabIndex = 10;
+            this.btnPrintGroup.Text = "In phiếu gộp";
+            this.btnPrintGroup.Click += new System.EventHandler(this.btnPrintGroup_Click);
+            // 
+            // layoutControlItem6
+            // 
+            this.layoutControlItem6.Control = this.btnPrintGroup;
+            this.layoutControlItem6.Location = new System.Drawing.Point(344, 237);
+            this.layoutControlItem6.Name = "layoutControlItem6";
+            this.layoutControlItem6.Size = new System.Drawing.Size(80, 26);
+            this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem6.TextVisible = false;
             // 
             // frmRationSumPrint
             // 
@@ -383,6 +403,7 @@ namespace HIS.Desktop.Plugins.RationSumPrint
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -416,5 +437,7 @@ namespace HIS.Desktop.Plugins.RationSumPrint
         private DevExpress.XtraEditors.SimpleButton btnInPhieuChiTiet;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
+        private DevExpress.XtraEditors.SimpleButton btnPrintGroup;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
     }
 }

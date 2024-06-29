@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
 using Inventec.Core;
 using Inventec.Desktop.Core;
 using Inventec.Desktop.Core.Tools;
@@ -36,6 +37,7 @@ namespace HIS.Desktop.Plugins.BedHistory.BedHistory
         Inventec.Desktop.Common.Modules.Module moduleData = null;
         MOS.EFMODEL.DataModels.L_HIS_TREATMENT_BED_ROOM listBedRoom = new MOS.EFMODEL.DataModels.L_HIS_TREATMENT_BED_ROOM();
         MOS.EFMODEL.DataModels.V_HIS_TREATMENT_BED_ROOM listBedRoomView = new MOS.EFMODEL.DataModels.V_HIS_TREATMENT_BED_ROOM();
+        RefeshReference rf;
         internal BedHistoryBehavior()
             : base()
         {
@@ -70,6 +72,9 @@ namespace HIS.Desktop.Plugins.BedHistory.BedHistory
                         else if (item is bool)
                         {
                             isDisable = (bool)item;
+                        }else if(item is RefeshReference)
+                        {
+                            rf = (RefeshReference)item;
                         }
                     }
                 }
@@ -91,7 +96,7 @@ namespace HIS.Desktop.Plugins.BedHistory.BedHistory
                         return null;
                     }
 
-                    return new FormBedHistory(listBedRoom, moduleData, isDisable);
+                    return new FormBedHistory(listBedRoom, moduleData, isDisable, rf);
                 }
                 else
                 {

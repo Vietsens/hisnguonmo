@@ -38,7 +38,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 this.ValidateLookupWithTextEdit(cboGender, this.txtGenderCode, this.dxValidationProviderControl);
                 if (lciCboCareer.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
                 {
-                    this.ValidateLookupWithTextEdit(this.cboCareer, this.txtCareerCode, this.dxValidationProviderPlusInfomation);
+                    this.ValidateGridLookupWithTextEdit(this.cboCareer, this.txtCareerCode, this.dxValidationProviderPlusInfomation);
                     //this.ValidateCareer(this.dxValidationProviderPlusInfomation);
                 }
                 this.ValidateGridLookupWithTextEdit(this.cboPatientType, this.txtPatientTypeCode, this.dxValidationProviderControl);
@@ -292,23 +292,6 @@ namespace HIS.Desktop.Plugins.Register.Run
                 validRule.ErrorText = ResourceMessage.TruongDuLieuBatBuoc;
                 validRule.ErrorType = ErrorType.Warning;
                 dxValidationProviderEditor.SetValidationRule(textEdit, validRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void ValidateCareer(DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditor)
-        {
-            try
-            {
-                Career__ValidationRule validRule = new Career__ValidationRule();
-                validRule.txtCareerCode = this.txtCareerCode;
-                validRule.cboCareer = this.cboCareer;
-                validRule.ErrorText = ResourceMessage.TruongDuLieuBatBuoc;
-                validRule.ErrorType = ErrorType.Warning;
-                dxValidationProviderEditor.SetValidationRule(this.txtCareerCode, validRule);
             }
             catch (Exception ex)
             {

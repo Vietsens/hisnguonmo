@@ -50,7 +50,6 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord;
 using HIS.Desktop.Plugins.TreatmentList.Config;
 using HIS.UC.UCCauseOfDeath.ADO;
-using static DevExpress.Data.Helpers.ExpressiveSortInfo;
 
 namespace HIS.Desktop.Plugins.TreatmentList
 {

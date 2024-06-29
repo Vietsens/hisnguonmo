@@ -54,7 +54,6 @@ namespace MPS.Processor.Mps000302
                                                   rdo.PatientTypeCFG, rdo.HisConfigValue, rdo.HisServiceUnit, rdo.Treatment, ListPta,
                                                   rdo.ListPatientType, false, rdo.ListSereServBills, rdo.ListSereServDeposits, rdo.ListSeseDepoRepays));
 
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServADOTemps), sereServADOTemps));
                     //sereServ la bhyt, gom nhom
                     //bỏ công khám cùng chuyên khoa - công khám 0đ
                     var sereServBHYTGroups = sereServADOTemps
@@ -106,7 +105,6 @@ namespace MPS.Processor.Mps000302
                                                         rdo.Services, rdo.Rooms, rdo.medicineTypes, rdo.MedicineLines, rdo.materialTypes,
                                                         rdo.PatientTypeCFG, rdo.HisConfigValue, rdo.HisServiceUnit, rdo.Treatment, ListPta,
                                                         rdo.ListPatientType, true, rdo.ListSereServBills, rdo.ListSereServDeposits, rdo.ListSeseDepoRepays));
-
                     sereServADOSAs = new List<SereServADO>();
                     var sereServBHYTGroupSuatAns = sereServADOTempsSuatAn
                        .Where(o =>
@@ -312,7 +310,7 @@ namespace MPS.Processor.Mps000302
                 var sereServBHYTGroups = sereServAdos.OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999999)
                     .ThenBy(o => o.TDL_INTRUCTION_TIME).GroupBy(o => new { o.HEIN_SERVICE_TYPE_ID, o.KEY_PATY_ALTER }).ToList();
 
-                List<long> parentIdVTs = sereServAdos.Where(o => o.HEIN_SERVICE_TYPE_ID == o.PARENT_ID).Select(p => p.PARENT_ID ?? 0).Distinct().ToList();
+                List<long> parentIdVTs = sereServAdos.Where(o => (o.HEIN_SERVICE_TYPE_ID  ?? 99999999) == o.PARENT_ID).Select(p => p.PARENT_ID ?? 0).Distinct().ToList();
 
                 int indexGoiVatTuYTe = 1;
                 foreach (var sereServBHYTGroup in sereServBHYTGroups)
@@ -331,14 +329,13 @@ namespace MPS.Processor.Mps000302
                     heinServiceType.TOTAL_PATIENT_PRICE_LEFT = sereServBHYTGroup.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
                     heinServiceType.TOTAL_PRICE_VP = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_VP);
 
-                    heinServiceType.TOTAL_BHYT_PRICE = heinServiceType.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE + heinServiceType.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE;
+                    heinServiceType.TOTAL_BHYT_PRICE = (heinServiceType.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE ?? 0) + (heinServiceType.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE ?? 0);
                     heinServiceType.TOTAL_PRICE = heinServiceType.TOTAL_PRICE_HEIN_SERVICE_TYPE;
                     heinServiceType.TOTAL_HEIN_PRICE = heinServiceType.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE;
                     heinServiceType.TOTAL_PATIENT_PRICE_SELF = heinServiceType.TOTAL_PATIENT_PRICE_SELF_HEIN_SERVICE_TYPE;
-
                     if (sereServBHYT.HEIN_SERVICE_TYPE_ID.HasValue)
                     {
-                        if (parentIdVTs.Contains(sereServBHYT.HEIN_SERVICE_TYPE_ID.Value))
+                        if (parentIdVTs != null && parentIdVTs.Count > 0 && parentIdVTs.Contains(sereServBHYT.HEIN_SERVICE_TYPE_ID.Value))
                         {
                             //thêm 1 dòng 10. gói vật tư y tế cộng dồn các gói lại
                             HeinServiceTypeADO goi = heinServiceTypeADOs.FirstOrDefault(o => o.KEY_PATY_ALTER == heinServiceType.KEY_PATY_ALTER && o.ID == HeinServiceTypeExt.GOI_VT_Y_TE__ID);
@@ -378,7 +375,6 @@ namespace MPS.Processor.Mps000302
                                 goi.TOTAL_PRICE_VP = heinServiceType.TOTAL_PRICE_VP;
                                 heinServiceTypeADOs.Add(goi);
                             }
-
                             //chi tiết gói không kèm stent 2 trở đi
                             var sereServNoStent = sereServBHYTGroup.Where(o => !o.STENT_ORDER.HasValue).ToList();
                             var stent = sereServBHYTGroup.Where(o => o.STENT_ORDER.HasValue).OrderBy(o => o.STENT_ORDER).FirstOrDefault();
@@ -386,7 +382,6 @@ namespace MPS.Processor.Mps000302
                             {
                                 sereServNoStent.Add(stent);
                             }
-
                             heinServiceType.TOTAL_PRICE = sereServNoStent.Sum(s => s.VIR_TOTAL_PRICE_NO_EXPEND ?? 0);
                             heinServiceType.TOTAL_HEIN_PRICE = sereServNoStent.Sum(s => s.VIR_TOTAL_HEIN_PRICE ?? 0);
                             heinServiceType.TOTAL_BHYT_PRICE = heinServiceType.TOTAL_HEIN_PRICE + heinServiceType.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE;
@@ -397,7 +392,7 @@ namespace MPS.Processor.Mps000302
                             heinServiceType.TOTAL_PATIENT_PRICE_LEFT = sereServNoStent.Sum(s => s.TOTAL_PATIENT_PRICE_LEFT);
 
                             HIS_SERE_SERV sereServParent = rdo.SereServs.FirstOrDefault(o => o.ID == sereServBHYT.HEIN_SERVICE_TYPE_ID.Value);
-                            string heinServiceTypeName = String.Format("{0} {1}({2})", sereServBHYT.HEIN_SERVICE_TYPE_NAME, indexGoiVatTuYTe, sereServParent.TDL_HEIN_SERVICE_BHYT_NAME);
+                            string heinServiceTypeName = String.Format("{0} {1}({2})", sereServBHYT.HEIN_SERVICE_TYPE_NAME, indexGoiVatTuYTe, sereServParent != null ? sereServParent.TDL_HEIN_SERVICE_BHYT_NAME : null);
                             heinServiceType.ID = sereServBHYT.HEIN_SERVICE_TYPE_ID.Value;
                             heinServiceType.HEIN_SERVICE_TYPE_NAME = heinServiceTypeName;
                             heinServiceType.NUM_ORDER = sereServBHYT.HEIN_SERVICE_TYPE_NUM_ORDER;

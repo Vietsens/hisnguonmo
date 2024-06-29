@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmHisTrackingList));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -68,16 +69,11 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnTemplate = new DevExpress.XtraEditors.DropDownButton();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButton__Search = new DevExpress.XtraBars.BarButtonItem();
             this.barButton__New = new DevExpress.XtraBars.BarButtonItem();
             this.barButton__Print = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.ucViewEmrDocument1 = new HIS.Desktop.Plugins.HisTrackingList.UcEmrDocument.UcViewEmrDocument();
             this.chkPrintDocumentSigned = new DevExpress.XtraEditors.CheckEdit();
             this.chkSign = new DevExpress.XtraEditors.CheckEdit();
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
@@ -96,9 +92,11 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.layoutControl1.Controls.Add(this.ucViewEmrDocument1);
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.ucViewEmrDocument1 = new HIS.Desktop.Plugins.HisTrackingList.UcEmrDocument.UcViewEmrDocument();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -124,6 +122,10 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
@@ -159,8 +161,12 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             // 
             // layoutControl1
             // 
+            this.ucViewEmrDocument1.Location = new System.Drawing.Point(671, 56);
+            this.ucViewEmrDocument1.Name = "ucViewEmrDocument1";
+            this.ucViewEmrDocument1.Size = new System.Drawing.Size(435, 549);
+            this.ucViewEmrDocument1.TabIndex = 13;
+            this.layoutControlItem10.Control = this.ucViewEmrDocument1;
             this.layoutControl1.Controls.Add(this.btnTemplate);
-            this.layoutControl1.Controls.Add(this.ucViewEmrDocument1);
             this.layoutControl1.Controls.Add(this.chkPrintDocumentSigned);
             this.layoutControl1.Controls.Add(this.chkSign);
             this.layoutControl1.Controls.Add(this.ucPaging1);
@@ -195,10 +201,6 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButton__Search,
@@ -242,41 +244,6 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             this.barButton__Print.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P));
             this.barButton__Print.Name = "barButton__Print";
             this.barButton__Print.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButton__Print_ItemClick);
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1130, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 639);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1130, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 610);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1130, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 610);
-            // 
-            // ucViewEmrDocument1
-            // 
-            this.ucViewEmrDocument1.Location = new System.Drawing.Point(671, 56);
-            this.ucViewEmrDocument1.Name = "ucViewEmrDocument1";
-            this.ucViewEmrDocument1.Size = new System.Drawing.Size(435, 549);
-            this.ucViewEmrDocument1.TabIndex = 13;
             // 
             // chkPrintDocumentSigned
             // 
@@ -390,6 +357,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             this.gridViewTrackings.OptionsView.ShowIndicator = false;
             this.gridViewTrackings.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewTrackings_CustomRowCellEdit);
             this.gridViewTrackings.SelectionChanged += new DevExpress.Data.SelectionChangedEventHandler(this.gridViewTrackings_SelectionChanged);
+            this.gridViewTrackings.CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridViewTrackings_CellValueChanged);
             this.gridViewTrackings.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewTrackings_CustomUnboundColumnData);
             this.gridViewTrackings.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridViewTrackings_MouseDown);
             // 
@@ -458,7 +426,6 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             this.gridColumn14.Caption = "Số phiếu";
             this.gridColumn14.FieldName = "SHEET_ORDER";
             this.gridColumn14.Name = "gridColumn14";
-            this.gridColumn14.OptionsColumn.AllowEdit = false;
             this.gridColumn14.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn14.Visible = true;
             this.gridColumn14.VisibleIndex = 5;
@@ -770,7 +737,6 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             // 
             // layoutControlItem10
             // 
-            this.layoutControlItem10.Control = this.ucViewEmrDocument1;
             this.layoutControlItem10.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Size = new System.Drawing.Size(439, 553);
@@ -802,6 +768,34 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             this.layoutControlItem7.Size = new System.Drawing.Size(666, 24);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1130, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 639);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1130, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 610);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1130, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 610);
             // 
             // frmHisTrackingList
             // 

@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -62,10 +61,14 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.label2 = new System.Windows.Forms.Label();
             this.chkIsEmergency = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.barButtonItemSave = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItemSave1 = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.layoutControl5 = new DevExpress.XtraLayout.LayoutControl();
             this.ChkUpdateSereServ = new DevExpress.XtraEditors.CheckEdit();
@@ -76,6 +79,8 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
+            this.txtNumManager = new DevExpress.XtraEditors.TextEdit();
+            this.chkTuberculosis = new DevExpress.XtraEditors.CheckEdit();
             this.chkNeedSickLeaveCert = new DevExpress.XtraEditors.CheckEdit();
             this.chkBHYT = new DevExpress.XtraEditors.CheckEdit();
             this.cboNoVienphi = new DevExpress.XtraEditors.LookUpEdit();
@@ -83,6 +88,10 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem26 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem27 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem35 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem36 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.txtSanPham = new DevExpress.XtraEditors.TextEdit();
@@ -153,11 +162,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControlItem30 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem31 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxValidationProviderTime = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProviderTime = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -175,6 +180,8 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
             this.layoutControl4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtNumManager.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkTuberculosis.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkNeedSickLeaveCert.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkBHYT.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboNoVienphi.Properties)).BeginInit();
@@ -182,6 +189,10 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem35)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem36)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
@@ -300,6 +311,10 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar2});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItemSave1,
@@ -335,6 +350,34 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.barButtonItemSave1.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
             this.barButtonItemSave1.Name = "barButtonItemSave1";
             this.barButtonItemSave1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItemSave_ItemClick);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(906, 22);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 550);
+            this.barDockControlBottom.Size = new System.Drawing.Size(906, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 22);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 528);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(906, 22);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 528);
             // 
             // groupBox4
             // 
@@ -444,6 +487,8 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             // 
             // layoutControl4
             // 
+            this.layoutControl4.Controls.Add(this.txtNumManager);
+            this.layoutControl4.Controls.Add(this.chkTuberculosis);
             this.layoutControl4.Controls.Add(this.chkNeedSickLeaveCert);
             this.layoutControl4.Controls.Add(this.chkBHYT);
             this.layoutControl4.Controls.Add(this.cboNoVienphi);
@@ -454,6 +499,28 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControl4.Size = new System.Drawing.Size(896, 74);
             this.layoutControl4.TabIndex = 0;
             this.layoutControl4.Text = "layoutControl4";
+            // 
+            // txtNumManager
+            // 
+            this.txtNumManager.Location = new System.Drawing.Point(393, 38);
+            this.txtNumManager.MenuManager = this.barManager1;
+            this.txtNumManager.Name = "txtNumManager";
+            this.txtNumManager.Size = new System.Drawing.Size(200, 20);
+            this.txtNumManager.StyleController = this.layoutControl4;
+            this.txtNumManager.TabIndex = 22;
+            //this.txtNumManager.TextChanged += new System.EventHandler(this.txtNumManager_TextChanged);
+            this.txtNumManager.Validated += new System.EventHandler(this.txtNumManager_Validated);
+            // 
+            // chkTuberculosis
+            // 
+            this.chkTuberculosis.Location = new System.Drawing.Point(274, 39);
+            this.chkTuberculosis.MenuManager = this.barManager1;
+            this.chkTuberculosis.Name = "chkTuberculosis";
+            this.chkTuberculosis.Properties.Caption = "";
+            this.chkTuberculosis.Size = new System.Drawing.Size(19, 19);
+            this.chkTuberculosis.StyleController = this.layoutControl4;
+            this.chkTuberculosis.TabIndex = 21;
+            this.chkTuberculosis.CheckedChanged += new System.EventHandler(this.chkTuberculosis_CheckedChanged);
             // 
             // chkNeedSickLeaveCert
             // 
@@ -507,7 +574,11 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControlGroup4.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem25,
             this.layoutControlItem26,
-            this.layoutControlItem27});
+            this.layoutControlItem27,
+            this.layoutControlItem35,
+            this.layoutControlItem36,
+            this.emptySpaceItem3,
+            this.emptySpaceItem4});
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 5, 0);
@@ -523,7 +594,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControlItem25.MaxSize = new System.Drawing.Size(295, 24);
             this.layoutControlItem25.MinSize = new System.Drawing.Size(295, 24);
             this.layoutControlItem25.Name = "layoutControlItem25";
-            this.layoutControlItem25.Size = new System.Drawing.Size(295, 69);
+            this.layoutControlItem25.Size = new System.Drawing.Size(295, 24);
             this.layoutControlItem25.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem25.Text = "Nợ viện phí:";
             this.layoutControlItem25.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -537,7 +608,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControlItem26.MaxSize = new System.Drawing.Size(300, 23);
             this.layoutControlItem26.MinSize = new System.Drawing.Size(300, 23);
             this.layoutControlItem26.Name = "layoutControlItem26";
-            this.layoutControlItem26.Size = new System.Drawing.Size(300, 69);
+            this.layoutControlItem26.Size = new System.Drawing.Size(300, 23);
             this.layoutControlItem26.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem26.Text = " ";
             this.layoutControlItem26.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -554,6 +625,46 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControlItem27.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem27.TextSize = new System.Drawing.Size(90, 13);
             this.layoutControlItem27.TextToControlDistance = 5;
+            // 
+            // layoutControlItem35
+            // 
+            this.layoutControlItem35.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem35.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem35.Control = this.chkTuberculosis;
+            this.layoutControlItem35.Location = new System.Drawing.Point(215, 24);
+            this.layoutControlItem35.Name = "layoutControlItem35";
+            this.layoutControlItem35.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 10, 2);
+            this.layoutControlItem35.Size = new System.Drawing.Size(80, 45);
+            this.layoutControlItem35.Text = "Bệnh lao:";
+            this.layoutControlItem35.TextSize = new System.Drawing.Size(54, 13);
+            // 
+            // layoutControlItem36
+            // 
+            this.layoutControlItem36.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem36.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem36.Control = this.txtNumManager;
+            this.layoutControlItem36.Location = new System.Drawing.Point(334, 23);
+            this.layoutControlItem36.Name = "layoutControlItem36";
+            this.layoutControlItem36.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 10, 2);
+            this.layoutControlItem36.Size = new System.Drawing.Size(261, 46);
+            this.layoutControlItem36.Text = "Số quản lý:";
+            this.layoutControlItem36.TextSize = new System.Drawing.Size(54, 13);
+            // 
+            // emptySpaceItem3
+            // 
+            this.emptySpaceItem3.AllowHotTrack = false;
+            this.emptySpaceItem3.Location = new System.Drawing.Point(295, 23);
+            this.emptySpaceItem3.Name = "emptySpaceItem3";
+            this.emptySpaceItem3.Size = new System.Drawing.Size(39, 46);
+            this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // emptySpaceItem4
+            // 
+            this.emptySpaceItem4.AllowHotTrack = false;
+            this.emptySpaceItem4.Location = new System.Drawing.Point(0, 24);
+            this.emptySpaceItem4.Name = "emptySpaceItem4";
+            this.emptySpaceItem4.Size = new System.Drawing.Size(215, 45);
+            this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
             // groupBox2
             // 
@@ -1445,34 +1556,6 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.emptySpaceItem1.Size = new System.Drawing.Size(787, 24);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 22);
-            this.barDockControlTop.Size = new System.Drawing.Size(906, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 550);
-            this.barDockControlBottom.Size = new System.Drawing.Size(906, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 22);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 528);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(906, 22);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 528);
-            // 
             // dxValidationProviderTime
             // 
             this.dxValidationProviderTime.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProviderTime_ValidationFailed);
@@ -1520,6 +1603,8 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).EndInit();
             this.layoutControl4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtNumManager.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkTuberculosis.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkNeedSickLeaveCert.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkBHYT.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboNoVienphi.Properties)).EndInit();
@@ -1527,6 +1612,10 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem35)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem36)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
@@ -1708,5 +1797,11 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
         private DevExpress.XtraEditors.PanelControl panelControlInIcd;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem33;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem34;
+        private DevExpress.XtraEditors.TextEdit txtNumManager;
+        private DevExpress.XtraEditors.CheckEdit chkTuberculosis;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem35;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem36;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem4;
     }
 }

@@ -97,6 +97,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList.Base
 
         internal const string HIS_SERVICE_REQ_GET = "/api/HisServiceReq/Get";
         internal const string HIS_SERE_SERV_GET = "api/HisSereServ/Get";
+        internal const string HIS_SERE_SERV_GETVIEW = "api/HisSereServ/GetView";
         internal const string HIS_SERE_SERV_GETVIEW_12 = "api/HisSereServ/GetView12";
 
         internal const short IS_TRUE = 1;

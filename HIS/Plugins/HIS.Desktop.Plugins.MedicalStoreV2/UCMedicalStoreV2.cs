@@ -694,7 +694,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             {
                 this._FilterLoadTree = new HisTreatmentLView3Filter();
                 filter.ORDER_DIRECTION = "DESC";
-                filter.ORDER_FIELD = "MODIFY_TIME";
+                filter.ORDER_FIELD = "STORE_CODE";
 
                 if (!string.IsNullOrEmpty(txtTreatmentCodeMediRecord.Text))
                 {
@@ -1150,7 +1150,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                         }
                         else if (e.Column.FieldName == "ViewEmr")
                         {
-                            if (String.IsNullOrWhiteSpace(row.TREATMENT_CODE))
+                            if (String.IsNullOrWhiteSpace(row.TDL_TREATMENT_CODES))
                             {
                                 e.RepositoryItem = repositoryItemButtonView_Disable;
                             }
@@ -2366,7 +2366,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                     sdo.LocationStoreId = focus.LOCATION_STORE_ID;
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
-                    var rsApi = new BackendAdapter(param).Post<HIS_MEDI_RECORD>("api/HisMediRecord/Store", ApiConsumer.ApiConsumers.MosConsumer, focus.ID, param);
+                    var rsApi = new BackendAdapter(param).Post<HIS_MEDI_RECORD>("api/HisMediRecord/Store", ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
                     WaitingManager.Hide();
 
                     if (rsApi != null)
@@ -2454,7 +2454,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                     WaitingManager.Show();
 
                     List<object> listArgs = new List<object>();
-                    List<string> treatmentCodes = row.TREATMENT_CODE.Split(',').ToList();
+                    List<string> treatmentCodes = row.TDL_TREATMENT_CODES.Split(',').ToList();
                     listArgs.Add(treatmentCodes);
                     listArgs.Add(true);
                     if (this.currentModule != null)

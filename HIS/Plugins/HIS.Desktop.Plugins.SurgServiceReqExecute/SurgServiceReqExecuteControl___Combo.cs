@@ -19,6 +19,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Columns;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.SurgServiceReqExecute.Base;
 using HIS.Desktop.Utility;
 using Inventec.Common.Controls.EditorLoader;
@@ -93,6 +94,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         {
             try
             {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.SurgServiceReqExecute").FirstOrDefault();
+                Inventec.Common.Logging.LogSystem.Debug("moduleData" + Inventec.Common.Logging.LogUtil.TraceData("_moduleData", moduleData));
                 List<HIS_PTTT_GROUP> datas = null;
                 if (BackendDataWorker.IsExistsKey<HIS_PTTT_GROUP>())
                 {

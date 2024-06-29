@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Spire.Spreadsheet</id>
+        <version>2.1.0</version>
+        <title>Spire.Spreadsheet for .NET</title>
+        <authors>win7x64</authors>
+        <owners>E-iceblue</owners>
+        <licenseUrl>http://www.e-iceblue.com/Tutorials/Licensing/License-Agreement.html</licenseUrl>
+        <projectUrl>http://www.e-iceblue.com/Introduce/spreadsheet-for-net.html</projectUrl>
+        <iconUrl>http://www.e-iceblue.com/images/product_logo/product_buy/SpreadsheetNET.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>Spire.Spreadsheet for .NET expresses scalability, time-saving and cost-effective to view and print excel spreadsheets. The main functions to operate the excel files, such as add filter, comments, naming ranges, group, formula and search features are all supported by Spire.Spreadsheet. 
+Main Functions
+View and Print Excel document
+Spire.Spreadsheet for .NET can help developers quickly open Excel 97-2003, Excel 2007, Excel 2010 and Excel 2013. By using Spire.Spreadsheet for .NET, developers can load Excel files from file, stream, and byte array, even it is encrypted excel files. Developers with Spire.Spreadsheet for .NET can view documents in reading or printing mode and display documents zoom in/out with 100%, 200%, and 400%.
+Elements
+Styles &amp; Formats
+Merge &amp; Unmerge
+Hyperlinks
+Resize
+Image
+Freeze Panes
+Features details:
+• Search Text
+• Auto fit, auto size column and row
+• Grouping, sorting and filtering
+• Formula support, define new formula, calculate the value, save them in the excel file
+• Data Validation, Runtime validation
+• Comment, edit and show in smart tags identical to those found in Excel
+• Name range
+• Clipboard, cut, copy and paste, copy/paste with formular
+• Redo, undo,
+• Import Datatable</description>
+        <summary>powerful component to view and operate spreadsheet. Spire.Spreadsheet is a companion component to Spire.XLS, which mainly focus on how to display spreadsheet.</summary>
+        <releaseNotes />
+        <copyright>Copyright © 2016 e-iceblue. All Rights Reserved.</copyright>
+        <language>en-US</language>
+        <tags>view spreadsheet, print excel, Excel viewer</tags>
+    </metadata>
+</package>

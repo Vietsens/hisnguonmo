@@ -15,8 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.UC.SecondaryIcd.ADO;
+using MOS.EFMODEL.DataModels;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HIS.Desktop.Plugins.AssignService.AssignService
 {

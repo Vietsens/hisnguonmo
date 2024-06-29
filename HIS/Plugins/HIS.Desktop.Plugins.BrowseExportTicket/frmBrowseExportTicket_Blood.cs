@@ -285,7 +285,23 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                 if (dataNew != null && dataNew.Count > 0 && this.dicShowBlood != null && this.dicShowBlood.Count > 0)
                 {
                     List<long> bloodIds = dataNew.Select(p => p.ID).ToList();
-                    dataGrid = this.dicShowBlood.Where(p => bloodIds.Contains(p.Key)).Select(p => p.Value).OrderBy(o => o.BLOOD_TYPE_NAME).ThenBy(o => o.VOLUME).ThenBy(o => o.EXPIRED_DATE).ThenBy(o => o.BLOOD_CODE).ToList();
+                    var aboCode = gridLookUpBloodAboCode.EditValue == null ? 0 : Convert.ToInt64(gridLookUpBloodAboCode.EditValue);
+                    if (aboCode != 0)
+                    {
+                        dataGrid = this.dicShowBlood.Where(p => bloodIds.Contains(p.Key))
+                                                    .Select(p => p.Value)
+                                                    .Where(p => p.BLOOD_ABO_ID == Convert.ToInt64(gridLookUpBloodAboCode.EditValue))
+                                                    .OrderBy(o => o.BLOOD_TYPE_NAME).ThenBy(o=>o.BLOOD_ABO_CODE).ThenBy(o => o.VOLUME).ThenBy(o => o.EXPIRED_DATE).ThenBy(o => o.BLOOD_CODE)
+                                                    .ToList();
+                    }
+                    else
+                    {
+                        dataGrid = this.dicShowBlood.Where(p => bloodIds.Contains(p.Key))
+                                                    .Select(p => p.Value)
+                                                    .OrderBy(o => o.BLOOD_TYPE_NAME).ThenBy(o => o.BLOOD_ABO_CODE).ThenBy(o => o.VOLUME).ThenBy(o => o.EXPIRED_DATE).ThenBy(o => o.BLOOD_CODE)
+                                                    .ToList();
+                    }
+                    
                 }
                 if (chkExpiryDate.Checked)
                 {
@@ -844,7 +860,9 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                                 {
                                     var testIndex = _TestIndexs.Where(o => o.SERVICE_CODE == item.TDL_SERVICE_CODE) != null ? _TestIndexs.Where(o => o.SERVICE_CODE == item.TDL_SERVICE_CODE).FirstOrDefault() : null;
                                     if (testIndex != null && testIndex.IS_TEST_HARMONY_BLOOD == 1)
-                                        hisSereServTeinSDO.VALUE = "Âm tính";
+                                    {
+                                        hisSereServTeinSDO.VALUE = expMest.BLOOD_LEVEL != 1 ? "Âm tính" : "";
+                                    }
                                     else if (testIndex != null && testIndex.IS_BLOOD_ABO == 1)
                                         hisSereServTeinSDO.VALUE = currentBlty.BLOOD_ABO_CODE;
                                     else if (testIndex != null && testIndex.IS_BLOOD_RH == 1)
@@ -905,7 +923,9 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                                     {
                                         var testIndex = _TestIndexs.Where(o => o.SERVICE_CODE == item.TDL_SERVICE_CODE) != null ? _TestIndexs.Where(o => o.SERVICE_CODE == item.TDL_SERVICE_CODE).FirstOrDefault() : null;
                                         if (testIndex != null && testIndex.IS_TEST_HARMONY_BLOOD == 1)
-                                            hisSereServTein.VALUE = "Âm tính";
+                                        {
+                                            hisSereServTein.VALUE = expMest.BLOOD_LEVEL != 1 ? "Âm tính" : "";
+                                        }
                                         else if (testIndex != null && testIndex.IS_BLOOD_ABO == 1)
                                             hisSereServTein.VALUE = currentBlty.BLOOD_ABO_CODE;
                                         else if (testIndex != null && testIndex.IS_BLOOD_RH == 1)
@@ -949,7 +969,9 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                                     // hisSereServTein.SERE_SERV_ID = itemTestIndex.SERE_SERV_ID;
 
                                     if (itemTestIndex.IS_TEST_HARMONY_BLOOD == 1)
-                                        hisSereServTein.VALUE = "Âm tính";
+                                    {
+                                        hisSereServTeinSDO.VALUE = expMest.BLOOD_LEVEL != 1 ? "Âm tính" : "";
+                                    }
                                     else if (itemTestIndex.IS_BLOOD_ABO == 1)
                                         hisSereServTein.VALUE = currentBlty.BLOOD_ABO_CODE;
                                     else if (itemTestIndex.IS_BLOOD_RH == 1)
@@ -975,7 +997,9 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                                     hisSereServTein.HAS_ONE_CHILD = 0;
                                     //hisSereServTein.DESCRIPTION = dataTestIndexs[0].DEFAULT_VALUE;s
                                     if (dataTestIndexs[0].IS_TEST_HARMONY_BLOOD == 1)
-                                        hisSereServTein.VALUE = "Âm tính";
+                                    {
+                                        hisSereServTein.VALUE = expMest.BLOOD_LEVEL != 1 ? "Âm tính" : "";
+                                    }
                                     else if (dataTestIndexs[0].IS_BLOOD_ABO == 1)
                                         hisSereServTein.VALUE = currentBlty.BLOOD_ABO_CODE;
                                     else if (dataTestIndexs[0].IS_BLOOD_RH == 1)
@@ -998,7 +1022,9 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                                         hisSereServTein.HAS_ONE_CHILD = 0;
                                         hisSereServTein.TDL_SERVICE_REQ_ID = item.SERVICE_REQ_ID;
                                         if (itemTestIndex.IS_TEST_HARMONY_BLOOD == 1)
-                                            hisSereServTein.VALUE = "Âm tính";
+                                        {
+                                            hisSereServTein.VALUE = expMest.BLOOD_LEVEL != 1 ? "Âm tính" : "";
+                                        }
                                         else if (itemTestIndex.IS_BLOOD_ABO == 1)
                                             hisSereServTein.VALUE = currentBlty.BLOOD_ABO_CODE;
                                         else if (itemTestIndex.IS_BLOOD_RH == 1)

@@ -129,6 +129,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 this.gridControlApprovalMedicine.ToolTipController = this.toolTipController1;
                 this.gridControlApprovalMaterial.ToolTipController = this.toolTipController1;
                 IsReasonRequired = HisConfigs.Get<string>("MOS.EXP_MEST.IS_REASON_REQUIRED") == "1";
+                ReloadExpMest();
                 GetControlAcs();
                 LoadDataToComboReasonRequired();
                 CheckEnableIconSave(this._CurrentExpMest);
@@ -150,6 +151,11 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void ReloadExpMest()
+        {
+            _CurrentExpMest = UpdateExpmest(new HIS_EXP_MEST() { ID = _CurrentExpMest.ID }, _CurrentExpMest);
         }
         #endregion
 

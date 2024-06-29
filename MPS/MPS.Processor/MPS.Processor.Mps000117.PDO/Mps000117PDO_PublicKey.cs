@@ -29,5 +29,6 @@ namespace MPS.Processor.Mps000117.PDO
     {
         public V_HIS_ANTICIPATE HisAnticipate { get; set; }
         public List<HisAnticipateMetyADO> HisAnticipateMetyAdo { get; set; }
+        
     }
 }

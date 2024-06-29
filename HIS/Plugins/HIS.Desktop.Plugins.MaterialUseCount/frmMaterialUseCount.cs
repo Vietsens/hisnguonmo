@@ -72,6 +72,14 @@ namespace HIS.Desktop.Plugins.MaterialUseCount
             }
         }
 
+        private List<long> LIST_EXPMESTTYPEID = new List<long>()
+        {
+            IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DDT,
+            IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DPK,
+            IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DTT,
+            IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DM
+        };
+
         void SetIconFrm()
         {
             try
@@ -127,11 +135,12 @@ namespace HIS.Desktop.Plugins.MaterialUseCount
         V_HIS_EXP_MEST_MATERIAL _expMestMaterial { get; set; }
         public long? _MAX_REUSE_COUNT { get; set; }
         long _REUSE_COUNT { get; set; }
-
+        private List<V_HIS_EXP_MEST_MATERIAL> ListData = new List<V_HIS_EXP_MEST_MATERIAL>();
         private void Process(string _seriNumber)
         {
             try
             {
+                ListData = new List<V_HIS_EXP_MEST_MATERIAL>();
                 this._expMestMaterial = new V_HIS_EXP_MEST_MATERIAL();
                 this._MAX_REUSE_COUNT = 0;
                 this._REUSE_COUNT = 0;
@@ -139,7 +148,9 @@ namespace HIS.Desktop.Plugins.MaterialUseCount
                 MOS.Filter.HisExpMestMaterialViewFilter filter = new MOS.Filter.HisExpMestMaterialViewFilter();
                 filter.SERIAL_NUMBER__EXACT = _seriNumber;
                 filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                filter.MEDI_STOCK_ID = _MediStock.ID;
+                //filter.MEDI_STOCK_ID = _MediStock.ID;
+                filter.IS_EXPORT = true;
+
                 //filter.EXP_MEST_TYPE_IDs = new List<long>();
                 //filter.EXP_MEST_TYPE_IDs.Add(IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BAN);
                 //filter.EXP_MEST_TYPE_IDs.Add(IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BCS);
@@ -152,10 +163,23 @@ namespace HIS.Desktop.Plugins.MaterialUseCount
 
                 var datas = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MATERIAL>>("api/HisExpMestMaterial/GetView", ApiConsumers.MosConsumer, filter, param);
 
-                if (datas != null)
+                 foreach (var req in datas)
+                 {
+                     if (LIST_EXPMESTTYPEID.Contains(req.EXP_MEST_TYPE_ID))
+                     {
+                         ListData.Add(req);
+                     }
+                 }
+
+
+                 if (ListData != null)
                 {
-                    this._expMestMaterial = datas.FirstOrDefault();
-                    this._REUSE_COUNT = datas.Count();
+                    //this._expMestMaterial = ListData.OrderByDescending(item => item.IS_EXPORT).FirstOrDefault();
+                    //var maxExpTime = ListData.Max(item => item.EXP_TIME);
+                    this._expMestMaterial = ListData.OrderByDescending(item => item.EXP_TIME)
+                                          .ThenByDescending(item => item.ID)
+                                          .FirstOrDefault();
+                    this._REUSE_COUNT = ListData.Count();
 
                     MOS.Filter.HisMaterialFilter filterMaterial = new MOS.Filter.HisMaterialFilter();
                     filterMaterial.ID = this._expMestMaterial.MATERIAL_ID;
@@ -216,10 +240,17 @@ namespace HIS.Desktop.Plugins.MaterialUseCount
         {
             try
             {
-                gridControlData.DataSource = null;
+                //gridControlData.DataSource = null;
+                //var data = (DataADO)gridViewData.GetFocusedRow();
+                //if (data != null && this._DataADOs != null && this._DataADOs.Count > 0)
+                //{
+                //    this._DataADOs.Remove(data);
+                //}
+                //gridControlData.DataSource = this._DataADOs;
                 var data = (DataADO)gridViewData.GetFocusedRow();
                 if (data != null && this._DataADOs != null && this._DataADOs.Count > 0)
                 {
+                    gridViewData.DeleteRow(gridViewData.FocusedRowHandle);
                     this._DataADOs.Remove(data);
                 }
                 gridControlData.DataSource = this._DataADOs;
@@ -265,6 +296,7 @@ namespace HIS.Desktop.Plugins.MaterialUseCount
                     ado.REUSE_COUNT_STR = this.spinConLai.Value.ToString() + "/" + this._MAX_REUSE_COUNT;
                     ado.ReusCount = Inventec.Common.TypeConvert.Parse.ToInt64(this.spinConLai.Value.ToString());
                     ado.VAT_RATIO_STR = (this._expMestMaterial.VAT_RATIO * 100) + "";
+                    //ado.EXP_TIME = data != null ? data.MEDI_STOCK_NAME : "";
                     _DataADOs.Add(ado);
                 }
 
@@ -295,7 +327,7 @@ namespace HIS.Desktop.Plugins.MaterialUseCount
                         ado.SerialNumber = item.SERIAL_NUMBER;
                         ado.ReusCount = item.ReusCount;
 
-                        SDO.MaterialReuseSDOs.Add(ado);
+                        SDO.MaterialReuseSDOs.Add(ado); 
                     }
 
                     bool success = false;

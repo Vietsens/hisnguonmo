@@ -1813,7 +1813,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             bool result = false;
             try
             {
-                long? resultTime = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(DateKQ.EditValue).ToString("yyyyMMddHHmm59"));
+                long? resultTime = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(DateKQ.EditValue).ToString("yyyyMMddHHmmss"));
                 if (rowSample != null && rowSample.RESULT_APPROVAL_TIME != null && rowSample.RESULT_APPROVAL_TIME > resultTime)
                 {
                     XtraMessageBox.Show(String.Format("Thời gian duyệt kết quả {0} phải nhỏ hơn thời gian trả kết quả {1}", Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rowSample.RESULT_APPROVAL_TIME ?? 0), Inventec.Common.DateTime.Convert.TimeNumberToTimeString(resultTime ?? 0)), "Thông báo");
@@ -2551,7 +2551,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             hisSereServTeinSDO.LIS_RESULT_ID = lstResultItem[0].ID;
                             hisSereServTeinSDO.ID = lstResultItem[0].ID;
                             hisSereServTeinSDO.SAMPLE_ID = lstResultItem[0].SAMPLE_ID;
-                            //hisSereServTeinSDO.SAMPLE_SERVICE_ID = lstResultItem[0].SAMPLE_SERVICE_ID;
+                            hisSereServTeinSDO.SAMPLE_SERVICE_ID = lstResultItem[0].SAMPLE_SERVICE_ID;
                             hisSereServTeinSDO.SAMPLE_SERVICE_STT_CODE = lstResultItem[0].SAMPLE_SERVICE_STT_CODE;
                             hisSereServTeinSDO.SAMPLE_SERVICE_STT_NAME = lstResultItem[0].SAMPLE_SERVICE_STT_NAME;
                             hisSereServTeinSDO.MACHINE_ID_OLD = lstResultItem[0].MACHINE_ID.HasValue ? lstResultItem[0].MACHINE_ID : lstResultItem[0].SERVICE_MACHINE_ID;
@@ -2564,12 +2564,12 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             hisSereServTeinSDO.IS_RUNNING = lstResultItem[0].IS_RUNNING;
                             hisSereServTeinSDO.RESULT_DESCRIPTION = lstResultItem[0].RESULT_DESCRIPTION;
                             hisSereServTeinSDO.IS_NOT_SHOW_SERVICE = testIndFist.IS_NOT_SHOW_SERVICE;
-                        }
+                            //if (datas != null && datas.Count > 0 && fistGroup.SAMPLE_ID != null)
+                            //{
+                            //    hisSereServTeinSDO.ADDRESS = datas.FirstOrDefault(o => o.ADDRESS != null).ADDRESS;
+                            //}
 
-                        if (testIndFist != null && testIndFist.IS_NOT_SHOW_SERVICE == 1)
-                        {
-                            Inventec.Common.Logging.LogSystem.Debug("IS_NOT_SHOW_SERVICE = 1");
-                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lstResultItem), lstResultItem));
+                            //hisSereServTeinSDO.RERUN = lstResultItem[0].IS_RUNNING == 1;
                         }
                         lstLisResultADOs.Add(hisSereServTeinSDO);
 
@@ -2603,10 +2603,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                                 hisSereServTein.TEST_INDEX_CODE = ssTein.TEST_INDEX_CODE;
                                 hisSereServTein.TEST_INDEX_NAME = ssTein.TEST_INDEX_NAME;
                                 hisSereServTein.MODIFIER = "";
-                                if (ssTein.SAMPLE_SERVICE_ID.HasValue)
-                                {
-                                    hisSereServTeinSDO.SAMPLE_SERVICE_ID = ssTein.SAMPLE_SERVICE_ID;
-                                }
+                                hisSereServTeinSDO.SAMPLE_SERVICE_ID = ssTein.SAMPLE_SERVICE_ID;
                                 hisSereServTeinSDO.SAMPLE_SERVICE_STT_ID = ssTein.SAMPLE_SERVICE_STT_ID;
                                 hisSereServTein.MODIFIER = ssTein.MODIFIER;
                                 hisSereServTein.VALUE_RANGE = ssTein.VALUE;
@@ -2624,6 +2621,11 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                                 hisSereServTeinSDO.SAMPLE_STT_ID = ssTein.SAMPLE_STT_ID;
                                 hisSereServTeinSDO.IS_RUN_AGAIN = ssTein.IS_RUN_AGAIN;
                                 hisSereServTeinSDO.IS_RUNNING = ssTein.IS_RUNNING;
+                                //hisSereServTeinSDO.RERUN = ssTein.IS_RUNNING == 1;
+                                //if (datas != null && datas.Count > 0 && fistGroup.SAMPLE_ID != null)
+                                //{
+                                //    hisSereServTeinSDO.ADDRESS = datas.FirstOrDefault(o => o.ADDRESS != null).ADDRESS;
+                                //}
                                 hisSereServTein.NOTE = ssTein.DESCRIPTION;
                                 lstLisResultADOs.Add(hisSereServTein);
                             }
@@ -3403,7 +3405,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             }
                         }
 
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lisSampleResultSDO), lisSampleResultSDO));
                         if (HisConfigCFG.CHECK_VALUE_MAXLENGTH_OPTION == "2")
                         {
                             var dataGridMaxlengthValue = dataGrid.Where(o => !String.IsNullOrEmpty(o.VALUE_RANGE) && Encoding.UTF8.GetByteCount(o.VALUE_RANGE) > 50);
@@ -4032,7 +4033,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
 
                 if (rowSample != null)
                 {
-                    long? resultTime = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(DateKQ.EditValue).ToString("yyyyMMddHHmm59"));
+                    long? resultTime = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(DateKQ.EditValue).ToString("yyyyMMddHHmmss"));
                     if (rowSample.RESULT_APPROVAL_TIME != null && rowSample.RESULT_APPROVAL_TIME > resultTime)
                     {
                         XtraMessageBox.Show(String.Format("Thời gian duyệt kết quả {0} phải nhỏ hơn thời gian trả kết quả {1}", Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rowSample.RESULT_APPROVAL_TIME ?? 0), Inventec.Common.DateTime.Convert.TimeNumberToTimeString(resultTime ?? 0)), "Thông báo");
@@ -5909,8 +5910,17 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     }
                     if (row != null)
                     {
-                        this.popupMenuProcessor = new PopupMenuProcessor(row, this.barManager1, MouseRightItemClick);
-                        this.popupMenuProcessor.InitMenu();
+                        List<LisSampleADO> data = null;
+                        if (gridControlSample != null)
+                        {
+                            data = (List<LisSampleADO>)gridControlSample.DataSource;
+                        }
+                        List<LisSampleADO> listCheck = data.Where(o => o.IsCheck).ToList();
+                        //if (listCheck != null && listCheck.Count > 0)
+                        {
+                            this.popupMenuProcessor = new PopupMenuProcessor(row, this.barManager1, MouseRightItemClick, listCheck != null && listCheck.Count > 0);
+                            this.popupMenuProcessor.InitMenu();
+                        }
                     }
                 }
             }
@@ -5944,6 +5954,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             break;
                         case PopupMenuProcessor.ItemType.CapNhatBarcode:
                             this.CapNhatBarcode(row);
+                            break;
+                        case PopupMenuProcessor.ItemType.InGopBarcode:
+                            this.InGopBarcode(row);
                             break;
                         default:
                             break;
@@ -6025,6 +6038,40 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void InGopBarcode(LisSampleADO row)
+        {
+            try
+            {
+                bool success = false;
+                CommonParam param = new CommonParam();
+                LisSampleBarcodeCreateSDO lisSampleBarcodeCreateSdo = new LisSampleBarcodeCreateSDO();
+                List<LisSampleADO> data = null;
+                if (gridControlSample != null)
+                {
+                    data = (List<LisSampleADO>)gridControlSample.DataSource;
+                }
+
+                if (data == null || data.Count <= 0)
+                {
+                    return;
+                }
+
+                List<LisSampleADO> listCheck = data.Where(o => o.IsCheck).ToList();
+                if (listCheck == null || listCheck.Count <= 0)
+                {
+                    listCheck.Add(row);
+                }
+                if (listCheck != null && listCheck.Count > 0)
+                {
+                    PrintProcess(PrintType.IN_GOP_BARCODE);
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -6920,9 +6967,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
 
                 if (data != null && grd != null)
                 {
-                    Inventec.Common.Logging.LogSystem.Info("repositoryItemGridLookUp");
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => treeListSereServTein.FocusedNode), treeListSereServTein.FocusedNode));
                     long? serviceResultId = null;
                     if (grd.EditValue != null)
                     {

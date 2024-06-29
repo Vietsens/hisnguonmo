@@ -52,6 +52,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                 if (listTreatment != null && listTreatment.Count == 1)
                 {
                     this.currentTreatment = listTreatment.First();
+                    ClickTreatment(currentTreatment);
                     FillDataToGridHeinCardAndHeinApproval();
                 }
                 WaitingManager.Hide();
@@ -112,6 +113,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                 {
                     success = true;
                     this.currentTreatment.IS_LOCK_HEIN = rs.IS_LOCK_HEIN;
+                    this.currentTreatment.STORE_BORDEREAU_CODE = rs.STORE_BORDEREAU_CODE;
                     if (this.currentTreatment.IS_LOCK_HEIN == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                     {
                         btnUnLockHein.Enabled = true;
@@ -121,6 +123,10 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     {
                         btnLockHein.Enabled = true;
                         btnUnLockHein.Enabled = false;
+                    }
+                    if (Config.HisConfigCFG.OptionStoreBordereauCode == "2")
+                    {
+                        ChangeEnableButtonOption2();
                     }
                 }
 
@@ -164,6 +170,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                 {
                     success = true;
                     this.currentTreatment.IS_LOCK_HEIN = rs.IS_LOCK_HEIN;
+                    this.currentTreatment.STORE_BORDEREAU_CODE = rs.STORE_BORDEREAU_CODE;
                     if (this.currentTreatment.IS_LOCK_HEIN == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                     {
                         btnUnLockHein.Enabled = true;
@@ -173,6 +180,10 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     {
                         btnLockHein.Enabled = true;
                         btnUnLockHein.Enabled = false;
+                    }
+                    if (Config.HisConfigCFG.OptionStoreBordereauCode == "2")
+                    {
+                        ChangeEnableButtonOption2();
                     }
                     gridControlTreatment.BeginUpdate();
                     gridControlTreatment.DataSource = listTreatment;

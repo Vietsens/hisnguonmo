@@ -36,6 +36,10 @@ namespace MPS.Processor.Mps000421.PDO
     /// </summary>
     public partial class Mps000421PDO : RDOBase
     {
+        public Mps000421PDO(V_HIS_TREATMENT treatment, V_HIS_PATIENT patient, V_HIS_EXP_MEST expmest, List<V_HIS_EXP_MEST_BLOOD> expmestblood, List<V_HIS_EXP_BLTY_SERVICE> expbltyservice, List<HIS_EXP_MEST> ListExpMest) : this(treatment, patient, expmest, expmestblood, expbltyservice)
+        {
+            this.ListExpMest = ListExpMest;
+        }
         public Mps000421PDO(V_HIS_TREATMENT treatment, V_HIS_PATIENT patient, V_HIS_EXP_MEST expmest, List<V_HIS_EXP_MEST_BLOOD> expmestblood, List<V_HIS_EXP_BLTY_SERVICE> expbltyservice)
         {
             try

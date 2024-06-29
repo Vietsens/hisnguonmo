@@ -51,6 +51,12 @@
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\HIS.Desktop.Plugins.Library.EmrGenerate\bin\Debug\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.MaterialType">
+      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.UC.MaterialType.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.MedicineType">
+      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.UC.MedicineType.dll</HintPath>
+    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\..\..\RELEASE\MOS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
@@ -334,14 +340,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.MaterialType\HIS.UC.MaterialType.csproj">
-      <Project>{c801fc6b-cadb-4d3d-804a-6dec1cc4edb1}</Project>
-      <Name>HIS.UC.MaterialType</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.MedicineType\HIS.UC.MedicineType.csproj">
-      <Project>{afcd1642-c606-40c3-8372-59794b46889c}</Project>
-      <Name>HIS.UC.MedicineType</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>

@@ -799,11 +799,7 @@ namespace HIS.Desktop.Plugins.SereServTein
             {
                 long treatmentId = lstSereServ.FirstOrDefault().TDL_TREATMENT_ID ?? 0;
                 Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
-                MOS.Filter.HisPatientTypeAlterFilter patientTypeAlterFilter = new HisPatientTypeAlterFilter();
-                patientTypeAlterFilter.TREATMENT_ID = treatmentId;
-                patientTypeAlterFilter.ORDER_FIELD = "LOG_TIME";
-                patientTypeAlterFilter.ORDER_DIRECTION = "DESC";
-                _PatientTypeAlter = new BackendAdapter(param).Get<List<HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeAlter/GetLastByTreatmentId", ApiConsumers.MosConsumer, patientTypeAlterFilter, param).FirstOrDefault();
+                _PatientTypeAlter = new BackendAdapter(param).Get<HIS_PATIENT_TYPE_ALTER>("api/HisPatientTypeAlter/GetLastByTreatmentId", ApiConsumers.MosConsumer, treatmentId, param);
             }
             catch (Exception ex)
             {

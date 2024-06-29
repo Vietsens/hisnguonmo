@@ -73,6 +73,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
         V_HIS_BED_ROOM currentBedRoom = new V_HIS_BED_ROOM();
         List<HIS_TREATMENT_TYPE> listTreatmentTypeIds = new List<HIS_TREATMENT_TYPE>();
         List<HIS_TREATMENT_TYPE> treatmentTypeIdSelecteds = new List<HIS_TREATMENT_TYPE>();
+        List<HIS_PATIENT_TYPE> listPatientTypeIds = new List<HIS_PATIENT_TYPE>();
         #endregion
         #region Construct
         public frmHisBedRoomList()
@@ -154,6 +155,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 LoadDatatoKhuVuc(this.cboKhuVuc, data2);
                 InitComboSpeciality();
                 InitComboCashierRoom();
+                InitComboDefaultsCLS();
                 InitComboTreatmentTypeIds();
                 SetCaptionByLanguageKey();
                 WaitingManager.Hide();
@@ -187,48 +189,92 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             }
         }
 
-        private void InitComboTreatmentTypeIds()
+        private void InitComboDefaultsCLS()
         {
             try
             {
-                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cboTreatmentTypeIds.Properties);
-                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(SelectionGrid__cboTreatmentTypeIds);
-                cboTreatmentTypeIds.Properties.Tag = gridCheck;
-                cboTreatmentTypeIds.Properties.View.OptionsSelection.MultiSelect = true;
+                HIS_PATIENT_TYPE currentDefaultsCLS = new HIS_PATIENT_TYPE();
 
                 CommonParam param = new CommonParam();
-                HisTreatmentTypeFilter filter = new HisTreatmentTypeFilter();
+                HisPatientFilter filter = new HisPatientFilter();
                 filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                listTreatmentTypeIds = new BackendAdapter(param).Get<List<HIS_TREATMENT_TYPE>>("api/HisTreatmentType/Get", ApiConsumers.MosConsumer, filter, null).ToList();
-
-                if (listTreatmentTypeIds != null)
+                listPatientTypeIds = new BackendAdapter(param).Get<List<HIS_PATIENT_TYPE>>("api/HisPatientType/Get", ApiConsumers.MosConsumer, filter, null).ToList();
+                var filteredList = listPatientTypeIds.Select(item => new
                 {
-                    cboTreatmentTypeIds.Properties.DataSource = listTreatmentTypeIds;
-                    cboTreatmentTypeIds.Properties.DisplayMember = "TREATMENT_TYPE_NAME";
-                    cboTreatmentTypeIds.Properties.ValueMember = "ID";
-                    DevExpress.XtraGrid.Columns.GridColumn col2 = cboTreatmentTypeIds.Properties.View.Columns.AddField("TREATMENT_TYPE_CODE");
+                    ID = item.ID,
+                    PATIENT_TYPE_CODE = item.PATIENT_TYPE_CODE,
+                    PATIENT_TYPE_NAME = item.PATIENT_TYPE_NAME
+                }).ToList();
+                //var filteredList = listPatientTypeIds.Select(item => item.PATIENT_TYPE_NAME).ToList();
+
+                if (filteredList != null)
+                {
+
+                    cboDefaultsCLS.Properties.DataSource = filteredList;
+                    cboDefaultsCLS.Properties.DisplayMember = "PATIENT_TYPE_NAME";
+                    cboDefaultsCLS.Properties.ValueMember = "ID";
+
+                    DevExpress.XtraGrid.Columns.GridColumn col2 = cboDefaultsCLS.Properties.View.Columns.AddField("PATIENT_TYPE_CODE");
                     col2.VisibleIndex = 1;
                     col2.Width = 100;
                     col2.Caption = "";
-                    DevExpress.XtraGrid.Columns.GridColumn col3 = cboTreatmentTypeIds.Properties.View.Columns.AddField("TREATMENT_TYPE_NAME");
+                    DevExpress.XtraGrid.Columns.GridColumn col3 = cboDefaultsCLS.Properties.View.Columns.AddField("PATIENT_TYPE_NAME");
                     col3.VisibleIndex = 2;
                     col3.Width = 200;
                     col3.Caption = "";
-
-                    cboTreatmentTypeIds.Properties.PopupFormWidth = 200;
-                    cboTreatmentTypeIds.Properties.View.OptionsView.ShowColumnHeaders = false;
-                    cboTreatmentTypeIds.Properties.View.OptionsSelection.MultiSelect = true;
-                    GridCheckMarksSelection gridCheckMark = cboTreatmentTypeIds.Properties.Tag as GridCheckMarksSelection;
-                    if (gridCheckMark != null)
-                    {
-                        gridCheckMark.ClearSelection(cboTreatmentTypeIds.Properties.View);
-                    }
                 }
+                cboDefaultsCLS.Properties.View.OptionsView.ShowColumnHeaders = false;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+
+        }
+
+
+        private void InitComboTreatmentTypeIds()
+        {
+                try
+                {
+                    GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cboTreatmentTypeIds.Properties);
+                    gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(SelectionGrid__cboTreatmentTypeIds);
+                    cboTreatmentTypeIds.Properties.Tag = gridCheck;
+                    cboTreatmentTypeIds.Properties.View.OptionsSelection.MultiSelect = true;
+
+                    CommonParam param = new CommonParam();
+                    HisTreatmentTypeFilter filter = new HisTreatmentTypeFilter();
+                    filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                    listTreatmentTypeIds = new BackendAdapter(param).Get<List<HIS_TREATMENT_TYPE>>("api/HisTreatmentType/Get", ApiConsumers.MosConsumer, filter, null).ToList();
+
+                    if (listTreatmentTypeIds != null)
+                    {
+                        cboTreatmentTypeIds.Properties.DataSource = listTreatmentTypeIds;
+                        cboTreatmentTypeIds.Properties.DisplayMember = "TREATMENT_TYPE_NAME";
+                        cboTreatmentTypeIds.Properties.ValueMember = "ID";
+                        DevExpress.XtraGrid.Columns.GridColumn col2 = cboTreatmentTypeIds.Properties.View.Columns.AddField("TREATMENT_TYPE_CODE");
+                        col2.VisibleIndex = 1;
+                        col2.Width = 100;
+                        col2.Caption = "";
+                        DevExpress.XtraGrid.Columns.GridColumn col3 = cboTreatmentTypeIds.Properties.View.Columns.AddField("TREATMENT_TYPE_NAME");
+                        col3.VisibleIndex = 2;
+                        col3.Width = 200;
+                        col3.Caption = "";
+
+                        cboTreatmentTypeIds.Properties.PopupFormWidth = 200;
+                        cboTreatmentTypeIds.Properties.View.OptionsView.ShowColumnHeaders = false;
+                        cboTreatmentTypeIds.Properties.View.OptionsSelection.MultiSelect = true;
+                        GridCheckMarksSelection gridCheckMark = cboTreatmentTypeIds.Properties.Tag as GridCheckMarksSelection;
+                        if (gridCheckMark != null)
+                        {
+                            gridCheckMark.ClearSelection(cboTreatmentTypeIds.Properties.View);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
         }
 
         private void SelectionGrid__cboTreatmentTypeIds(object sender, EventArgs e)
@@ -427,6 +473,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 this.cboDepartment.EditValue = null;
                 this.cboTreatmentTypeIds.EditValue = null;
                 this.cboCashierRoom.EditValue = null;
+                this.cboDefaultsCLS.EditValue = null;
                 this.checkEdit1.Checked = false;
                 this.cboChuyenKhoa.EditValue = null;
                 this.cboKhuVuc.EditValue = null;
@@ -839,6 +886,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             {
                 gridControlBedRoom.Refresh();
                 var row = (V_HIS_BED_ROOM)gridViewListBedRoom.GetFocusedRow();
+                //var row1 = (HIS_ROOM)gridViewListBedRoom.GetFocusedRow();
                 if (row != null)
                 {
                     GridCheckMarksSelection gridCheckMarkPart = cboTreatmentTypeIds.Properties.Tag as GridCheckMarksSelection;
@@ -865,6 +913,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                         filter.IS_ACTIVE = 1;
                         List<HIS_ROOM> data = new BackendAdapter(param).Get<List<HIS_ROOM>>("api/HisRoom/Get", ApiConsumers.MosConsumer, filter, param);
 
+                        cboDefaultsCLS.EditValue = data.Where(p => p.ID == row.ROOM_ID).FirstOrDefault().DEFAULT_INSTR_PATIENT_TYPE_ID;
                         cboKhuVuc.EditValue = data.Where(p => p.ID == row.ROOM_ID).FirstOrDefault().AREA_ID;
                         Inventec.Common.Logging.LogSystem.Warn("api/HisRoom/Get        " + data.FirstOrDefault().AREA_ID);
                         cboKhuVuc.Refresh();
@@ -995,6 +1044,11 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                     hisRoom.DEFAULT_CASHIER_ROOM_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboCashierRoom.EditValue ?? "0").ToString());
                 }
 
+                if (cboDefaultsCLS.EditValue != null)
+                {
+                    hisRoom.DEFAULT_INSTR_PATIENT_TYPE_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboDefaultsCLS.EditValue ?? "0").ToString());
+                }
+
                 HisBedRoomSDO.HisRoom = hisRoom;
 
                 WaitingManager.Show();
@@ -1043,6 +1097,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError
                 (dxValidationProvider1, dxErrorProvider1);
                 cboCashierRoom.Properties.DataSource = null;
+                //cboDefaultsCLS.Properties.DataSource = null;
             }
             catch (Exception ex)
             {
@@ -1520,5 +1575,42 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void cboDefaultsCLS_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboDefaultsCLS.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboDefaultsCLS_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboDefaultsCLS.EditValue != null)
+                {
+                    string selectedValue = cboDefaultsCLS.EditValue.ToString().Trim('{', '}');
+                    string[] parts = selectedValue.Split(',');
+                   
+                    //cboDefaultsCLS.EditValue = dataSource.PATIENT_TYPE_NAME;
+                    cboDefaultsCLS.EditValue = parts[2].Trim('"');
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+      
+      
     }
 }

@@ -215,7 +215,7 @@ namespace MPS.Processor.Mps000062
                                             _DicCountNumbers[check.MEDICINE_GROUP_ID ?? 0].Add(ado);
                                         }
                                     }
-                                #endregion
+                                    #endregion
 
                                     #region STT theo loại thuốc cả trong và ngoài kho (việc 47388)
                                     if (!_DicCountNumberByTypes_InOut.ContainsKey(expMedicine.FirstOrDefault().TDL_MEDICINE_TYPE_ID ?? 0))
@@ -420,7 +420,7 @@ namespace MPS.Processor.Mps000062
         /// <summary>
         /// ---- STT Ke Thuoc trong kho và ngoài kho theo checkbox đánh số thứ tự 26055----
         /// </summary>
-        private void CheckSTTMedicineOutStock() 
+        private void CheckSTTMedicineOutStock()
         {
             try
             {
@@ -555,7 +555,7 @@ namespace MPS.Processor.Mps000062
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-            
+
         }
 
         private void ProcessorDataPrint()
@@ -632,6 +632,8 @@ namespace MPS.Processor.Mps000062
                         Mapper.CreateMap<V_HIS_TRACKING, Mps000062ADO>();
                         _service = Mapper.Map<V_HIS_TRACKING, Mps000062ADO>(itemTracking);
                         _service.TRACKING_TIME_STR = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(itemTracking.TRACKING_TIME);
+                        var CheckTrackingTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(itemTracking.TRACKING_TIME);
+                        _service.IS_T7_OR_CN = (CheckTrackingTime.Value.DayOfWeek == DayOfWeek.Sunday || CheckTrackingTime.Value.DayOfWeek == DayOfWeek.Saturday) ? "X" : "";
                         _service.TRACKING_DATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(itemTracking.TRACKING_TIME);
                         _service.TRACKING_DATE_SEPARATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateStringSeparateString(itemTracking.TRACKING_TIME);
                         var User = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().FirstOrDefault(o => o.LOGINNAME == itemTracking.CREATOR);
@@ -1172,14 +1174,14 @@ namespace MPS.Processor.Mps000062
                             {
                                 group.AMOUNT_TH = "Đã thu hồi";
                             }
-                            else 
+                            else
                             {
-                                group.AMOUNT_TEXT = "x " + group.AMOUNT +" "+ group.SERVICE_UNIT_NAME;
+                                group.AMOUNT_TEXT = "x " + group.AMOUNT + " " + group.SERVICE_UNIT_NAME;
                             }
 
                             if (group.TH_AMOUNT > 0)
                             {
-                                group.TH_AMOUNT_STR = "(Thu hồi " + group.TH_AMOUNT +" " + group.SERVICE_UNIT_NAME + ")";
+                                group.TH_AMOUNT_STR = "(Thu hồi " + group.TH_AMOUNT + " " + group.SERVICE_UNIT_NAME + ")";
                             }
 
                             _ExpMestMetyReqADOs.Add(group);
@@ -2938,7 +2940,7 @@ namespace MPS.Processor.Mps000062
                         else if (rdo._WorkPlaceSDO.IsOrderByType == 0)
                         {
                             this._ExpMestMetyReqADOCommons.AddRange(itemIn.OrderBy(m => m.TDL_SERVICE_REQ_ID).ThenBy(o => o.NUM_ORDER).ThenBy(q => q.ID).ThenBy(p => p.NUMBER_H_N).ThenBy(n => n.USING_COUNT_NUMBER).ToList());
-                            
+
                         }
                         else if (rdo._WorkPlaceSDO.IsOrderByType == 3)
                         {
@@ -3420,7 +3422,7 @@ namespace MPS.Processor.Mps000062
                     foreach (var Group in _SplitXN_Group)
                     {
                         ServiceCLS cls = Group.FirstOrDefault();
-                        cls.SERVICE_NAME = String.Join("; ", Group.Select(o=>o.SERVICE_NAME).ToList());
+                        cls.SERVICE_NAME = String.Join("; ", Group.Select(o => o.SERVICE_NAME).ToList());
                         if (ServiceTypeId == cls.TDL_SERVICE_TYPE_ID)
                         {
                             cls.SERVICE_TYPE_NAME = "";
@@ -4047,8 +4049,8 @@ namespace MPS.Processor.Mps000062
                                 item.MEDICINES_MERGE___DATA += "";
                             }
 
-                            item.MEDICINES_MERGE___DATA += String.Format("<table><tr><td style =\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0}</td></span><td style =\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{1}</td></tr></table>", s1, s2);
-                            
+                            item.MEDICINES_MERGE___DATA += String.Format("<table><tr><td style =\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0} {1}</td></span><td style =\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{2}</td></tr></table>", s1, medi.CONCENTRA, s2);
+
 
                             if ((medi.REMEDY_COUNT ?? 0) <= 0)
                             {
@@ -4307,10 +4309,11 @@ namespace MPS.Processor.Mps000062
                                 strAmount = ((MediIns.AMOUNT >= 1 && MediIns.AMOUNT < 10) ? "0" + Inventec.Common.Number.Convert.NumberToStringRoundMax4(MediIns.AMOUNT) : Inventec.Common.Number.Convert.NumberToStringRoundMax4(MediIns.AMOUNT) + "");
                                 s1 = GetUsedDayCounting(MediIns);
                                 s1 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(" " + MediIns.MEDICINE_TYPE_NAME, FontStyle.Bold);
+                                s1 += " " + MediIns.CONCENTRA;
                                 if (MediIns.IS_MIXED_MAIN != 1)
                                 {
                                     var MixedMain = InfusionsGroup.FirstOrDefault(o => o.IS_MIXED_MAIN == 1);
-                                    s1 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br) + (MixedMain != null ? " (Thuốc đi kèm thuốc " + MixedMain.MEDICINE_TYPE_NAME + ")" : "");
+                                    s1 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br) + (MixedMain != null ? " (Thuốc đi kèm thuốc " + MixedMain.MEDICINE_TYPE_NAME + " " + MixedMain.CONCENTRA + ")" : "");
                                 }
                                 s2 = strAmount + " " + MediIns.SERVICE_UNIT_NAME + "/ngày";
 
@@ -4373,16 +4376,16 @@ namespace MPS.Processor.Mps000062
                                     {
                                         s1 += " " + medi.MEDICINE_TYPE_NAME;
                                     }
-
+                                    s1 += " " + medi.CONCENTRA;
                                     if (medi.IS_MIXED_MAIN != 1 && medi.MIXED_INFUSION > 0)
                                     {
                                         var MediMixMain = medicineDuTru_Merges.FirstOrDefault(o => o.EXP_MEST_ID == medi.EXP_MEST_ID && o.MIXED_INFUSION == medi.MIXED_INFUSION && o.IS_MIXED_MAIN == 1);
                                         if (MediMixMain != null)
                                         {
-                                            s1 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br) + "(" + MediMixMain.MEDICINE_TYPE_NAME + ")";
+                                            s1 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br) + "(" + MediMixMain.MEDICINE_TYPE_NAME + " " + MediMixMain.CONCENTRA + ")";
                                         }
                                     }
-                                   
+
 
                                     decimal? amount = 0;
                                     string strAmount = "";
@@ -4543,10 +4546,11 @@ namespace MPS.Processor.Mps000062
                                         strAmount = ((MediIns.AMOUNT >= 1 && MediIns.AMOUNT < 10) ? "0" + Inventec.Common.Number.Convert.NumberToStringRoundMax4(MediIns.AMOUNT) : Inventec.Common.Number.Convert.NumberToStringRoundMax4(MediIns.AMOUNT) + "");
                                         s1 = GetUsedDayCounting(MediIns);
                                         s1 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(" " + MediIns.MEDICINE_TYPE_NAME, FontStyle.Bold);
+                                        s1 += " " + MediIns.CONCENTRA;
                                         if (MediIns.IS_MIXED_MAIN != 1)
                                         {
                                             var MixedMain = InfusionsGroup.FirstOrDefault(o => o.IS_MIXED_MAIN == 1);
-                                            s1 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br) + (MixedMain != null ? " (Thuốc đi kèm thuốc " + MixedMain.MEDICINE_TYPE_NAME + ")" : "");
+                                            s1 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br) + (MixedMain != null ? " (Thuốc đi kèm thuốc " + MixedMain.MEDICINE_TYPE_NAME + " " + MixedMain.CONCENTRA + ")" : "");
                                         }
                                         s2 = strAmount + " " + MediIns.SERVICE_UNIT_NAME + "/ngày";
 
@@ -4577,7 +4581,6 @@ namespace MPS.Processor.Mps000062
                                     string s1 = "";
 
                                     s1 += medi.MEDICINE_TYPE_NAME + " ";
-
                                     decimal? amount = 0;
                                     string strAmount = "";
                                     if (medi.AMOUNT > 0)
@@ -4707,61 +4710,62 @@ namespace MPS.Processor.Mps000062
                             }
                             #endregion
 
-                        #region Thuốc Pha truyền thực hiện dự trù
+                            #region Thuốc Pha truyền thực hiện dự trù
                             var medicineInfusion_THDTs = _MediInfusionTHDT != null && _MediInfusionTHDT.Count > 0 ? _MediInfusionTHDT.Where(o => o.USED_FOR_TRACKING_ID == item.ID && o.TDL_SERVICE_REQ_ID == ReqTHDT.ID).ToList() : null;
 
-                        if (medicineInfusion_THDTs == null)
-                        {
-                            medicineInfusion_THDTs = new List<ExpMestMetyReqADO>();
-                        }
-
-                        if (medicineInfusion_THDTs != null && medicineInfusion_THDTs.Count > 0)
-                        {
-                            var medicineInfusion_THDTGroup = medicineInfusion_THDTs.Where(p => p.TRACKING_ID == item.ID).GroupBy(o => new { o.EXP_MEST_ID, o.MIXED_INFUSION });
-
-                            int checkdem = 0;
-                            foreach (var InfusionsGroup in medicineInfusion_THDTGroup)
+                            if (medicineInfusion_THDTs == null)
                             {
-                                string s1 = "", s2 = "";
-                                InfusionsGroup.OrderBy(o => o.IS_MIXED_MAIN ?? 99999).ToList();
-                                foreach (var MediIns in InfusionsGroup)
-                                {
-                                    if (checkdem == 0 && ReqTHDT.USE_TIME != null)
-                                    {
-                                        item.MEDICINES_INFUSION_THDT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Đơn thuốc pha truyền thực hiện dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(ReqTHDT.USE_TIME ?? 0), FontStyle.Bold);
-                                    }
-
-                                    string strAmount = "";
-
-                                    strAmount = ((MediIns.AMOUNT >= 1 && MediIns.AMOUNT < 10) ? "0" + Inventec.Common.Number.Convert.NumberToStringRoundMax4(MediIns.AMOUNT) : Inventec.Common.Number.Convert.NumberToStringRoundMax4(MediIns.AMOUNT) + "");
-                                    s1 = GetUsedDayCounting(MediIns);
-                                    s1 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(" " + MediIns.MEDICINE_TYPE_NAME, FontStyle.Bold);
-                                    if (MediIns.IS_MIXED_MAIN != 1)
-                                    {
-                                        var MixedMain = InfusionsGroup.FirstOrDefault(o => o.IS_MIXED_MAIN == 1);
-                                        s1 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br) + (MixedMain != null ? " (Thuốc đi kèm thuốc " + MixedMain.MEDICINE_TYPE_NAME + ")" : "");
-                                    }
-                                    s2 = strAmount + " " + MediIns.SERVICE_UNIT_NAME + "/ngày";
-
-                                    item.MEDICINES_INFUSION_THDT___DATA += String.Format("<table><tr><td style =\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0}</td></span><td style =\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{1}</td></tr></table>", s1, s2);
-
-                                    item.MEDICINES_INFUSION_THDT___DATA += MediIns.TUTORIAL;
-                                    checkdem++;
-                                }
-                                item.MEDICINES_INFUSION_THDT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                medicineInfusion_THDTs = new List<ExpMestMetyReqADO>();
                             }
-                        }
-                        #endregion
 
-                        #region ngoài kho thực hiện dự trù
-                        var OutStockTHDTs = _ServiceReqMetyADOs != null && _ServiceReqMetyADOs.Count > 0 ? _ServiceReqMetyADOs.Where(o => o.USED_FOR_TRACKING_ID == item.ID && o.SERVICE_REQ_ID == ReqTHDT.ID).ToList() : null;
+                            if (medicineInfusion_THDTs != null && medicineInfusion_THDTs.Count > 0)
+                            {
+                                var medicineInfusion_THDTGroup = medicineInfusion_THDTs.Where(p => p.TRACKING_ID == item.ID).GroupBy(o => new { o.EXP_MEST_ID, o.MIXED_INFUSION });
 
-                        if (OutStockTHDTs == null)
+                                int checkdem = 0;
+                                foreach (var InfusionsGroup in medicineInfusion_THDTGroup)
+                                {
+                                    string s1 = "", s2 = "";
+                                    InfusionsGroup.OrderBy(o => o.IS_MIXED_MAIN ?? 99999).ToList();
+                                    foreach (var MediIns in InfusionsGroup)
+                                    {
+                                        if (checkdem == 0 && ReqTHDT.USE_TIME != null)
+                                        {
+                                            item.MEDICINES_INFUSION_THDT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Đơn thuốc pha truyền thực hiện dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(ReqTHDT.USE_TIME ?? 0), FontStyle.Bold);
+                                        }
+
+                                        string strAmount = "";
+
+                                        strAmount = ((MediIns.AMOUNT >= 1 && MediIns.AMOUNT < 10) ? "0" + Inventec.Common.Number.Convert.NumberToStringRoundMax4(MediIns.AMOUNT) : Inventec.Common.Number.Convert.NumberToStringRoundMax4(MediIns.AMOUNT) + "");
+                                        s1 = GetUsedDayCounting(MediIns);
+                                        s1 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(" " + MediIns.MEDICINE_TYPE_NAME, FontStyle.Bold);
+                                        s1 += " " + MediIns.CONCENTRA;
+                                        if (MediIns.IS_MIXED_MAIN != 1)
+                                        {
+                                            var MixedMain = InfusionsGroup.FirstOrDefault(o => o.IS_MIXED_MAIN == 1);
+                                            s1 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br) + (MixedMain != null ? " (Thuốc đi kèm thuốc " + MixedMain.MEDICINE_TYPE_NAME + " " + MediIns.CONCENTRA + ")" : "");
+                                        }
+                                        s2 = strAmount + " " + MediIns.SERVICE_UNIT_NAME + "/ngày";
+
+                                        item.MEDICINES_INFUSION_THDT___DATA += String.Format("<table><tr><td style =\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0}</td></span><td style =\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{1}</td></tr></table>", s1, s2);
+
+                                        item.MEDICINES_INFUSION_THDT___DATA += MediIns.TUTORIAL;
+                                        checkdem++;
+                                    }
+                                    item.MEDICINES_INFUSION_THDT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                }
+                            }
+                            #endregion
+
+                            #region ngoài kho thực hiện dự trù
+                            var OutStockTHDTs = _ServiceReqMetyADOs != null && _ServiceReqMetyADOs.Count > 0 ? _ServiceReqMetyADOs.Where(o => o.USED_FOR_TRACKING_ID == item.ID && o.SERVICE_REQ_ID == ReqTHDT.ID).ToList() : null;
+
+                            if (OutStockTHDTs == null)
                             {
                                 OutStockTHDTs = new List<ServiceReqMetyADO>();
                             }
 
-                        if (OutStockTHDTs != null && OutStockTHDTs.Count > 0)
+                            if (OutStockTHDTs != null && OutStockTHDTs.Count > 0)
                             {
                                 int dem = 0;
 
@@ -4834,6 +4838,7 @@ namespace MPS.Processor.Mps000062
                                 }
 
                                 s1 = IMedi.MEDICINE_TYPE_NAME;
+                                s1 += " " + IMedi.CONCENTRA;
                                 s2 = Inventec.Common.Number.Convert.NumberToStringRoundMax4(IMedi.AMOUNT) + " " + IMedi.SERVICE_UNIT_NAME;
                                 item.MOBA_IMP_MEST_MEDICINE__DATA += String.Format("<table><tr><td width=\"650\" text-align=\"left\" align=\"left\">{0}</td></span><td text-align=\"right\" align=\"right\" width=\"150\">{1}</td></tr></table>", s1, s2);
                             }
@@ -4968,6 +4973,7 @@ namespace MPS.Processor.Mps000062
                                     {
                                         string s1 = "", s2 = "";
                                         s1 = medicineTypeName.MEDICINE_TYPE_NAME;
+                                        s1 += " " + medicineTypeName.CONCENTRA;
                                         s2 = emmedi.TUTORIAL;
                                         item.PRE_MEDICINE += String.Format("<table><tr><td width=\"650\" text-align=\"left\" align=\"left\">- {0}</td></span></tr><tr><td text-align=\"right\" align=\"left\" width=\"650\">{1}</td></tr></table>", s1, s2);
 
@@ -5002,7 +5008,7 @@ namespace MPS.Processor.Mps000062
                                         string s1 = "";
 
                                         s1 += "- " + DY.MEDICINE_TYPE_NAME;
-
+                                        s1 += " " + DY.CONCENTRA;
                                         decimal? amount = 0;
                                         string strAmount = "";
                                         amount = DY.Amount_By_Remedy_Count;
@@ -5966,7 +5972,7 @@ namespace MPS.Processor.Mps000062
 
         }
 
-        public void DataMedicine_Merge(List<ExpMestMetyReqADO> Data, List<ExpMestMetyReqADO> Result) 
+        public void DataMedicine_Merge(List<ExpMestMetyReqADO> Data, List<ExpMestMetyReqADO> Result)
         {
             if (Data != null && Data.Count > 0)
             {

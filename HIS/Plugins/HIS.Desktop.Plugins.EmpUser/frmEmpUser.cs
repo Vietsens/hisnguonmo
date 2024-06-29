@@ -294,6 +294,14 @@ namespace HIS.Desktop.Plugins.EmpUser
             else
                 updateDTOEmployee.MEDI_ORG_CODES = null;
 
+            if (chkIsNeedSignInstead.Checked == true)
+            {
+                updateDTOEmployee.IS_NEED_SIGN_INSTEAD = 1;
+            }
+            else
+            {
+                updateDTOEmployee.IS_NEED_SIGN_INSTEAD = null;
+            }
         }
 
         private void filldatatocboMediStock(HIS_EMPLOYEE data)
@@ -704,6 +712,15 @@ namespace HIS.Desktop.Plugins.EmpUser
                     {
                         chkAllowBlockConcurrentCLS.Checked = false;
                     }
+                    if (currentDataEmp.IS_NEED_SIGN_INSTEAD != null && currentDataEmp.IS_NEED_SIGN_INSTEAD == 1)
+                    {
+                        chkIsNeedSignInstead.Checked = true;
+                    }
+                    else 
+                    {
+                        chkIsNeedSignInstead.Checked = false;
+                    }
+
                     this.ActionType = GlobalVariables.ActionEdit;
                     EnableControlChanged(this.ActionType);
                     txtTitle.Text = currentDataEmp.TITLE;
@@ -804,6 +821,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 chkWorkOnly.Checked = false;
                 txtSocialInsuranceNumber.Text = null;
                 chkIsLimitSchedule.Checked = false;
+                chkIsNeedSignInstead.Checked = false;
                 //set Action
                 this.ActionType = GlobalVariables.ActionAdd;
                 EnableControlChanged(this.ActionType);
@@ -2988,7 +3006,7 @@ namespace HIS.Desktop.Plugins.EmpUser
 
                 var fileName = string.Format("XML_{0}", new string[] { DateTime.Now.ToString("dd.MM.yyyy_HH.mm.ss") });
                 var path = string.Format("{0}/{1}.xml", folderPath, fileName);
-                bool Sucess = CreatedXmlFile(lstXml, displayNamspacess: false, saveFile: true, path);
+                bool Sucess = CreatedXmlFile(lstXml, false, true, path);
                 WaitingManager.Hide();
                 if (Sucess)
                 {

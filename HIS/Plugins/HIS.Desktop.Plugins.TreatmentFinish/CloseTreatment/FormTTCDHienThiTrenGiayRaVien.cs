@@ -25,6 +25,7 @@ using HIS.UC.SecondaryIcd.ADO;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using MOS.EFMODEL.DataModels;
+using MOS.UTILITY;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -64,12 +65,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
         private void FormTTCDHienThiTrenGiayRaVien_Load(object sender, EventArgs e)
         {
             SetCaptionByLanguageKey();
-            listIcd = BackendDataWorker.Get<HIS_ICD>().OrderBy(o => o.ICD_CODE).ToList();
+            listIcd = BackendDataWorker.Get<HIS_ICD>().Where(a => a.IS_ACTIVE == Constant.IS_TRUE && (a.IS_TRADITIONAL == null || a.IS_TRADITIONAL == Constant.IS_FALSE)).OrderBy(o => o.ICD_CODE).ToList();
             InitUcIcd();
             InitUcSecondaryIcd();
-
-
-
 
             if (!string.IsNullOrEmpty(data.SHOW_ICD_CODE))
             {

@@ -440,6 +440,7 @@ namespace HIS.Desktop.Plugins.HisDebateTemp.HisDebateTemp
                 txtTreatmentMethod.Text = "";
                 txtCareMethod.Text = "";
                 txtConclusion.Text = "";
+                txtDiscussion.Text = "";
                 ChkIsPublic1.Checked = false;
             }
             catch (Exception ex)
@@ -644,6 +645,14 @@ namespace HIS.Desktop.Plugins.HisDebateTemp.HisDebateTemp
                     else
 
                         txtConclusion.Text = "";
+
+                    if (dataRow.DISCUSSION != null)
+                    {
+                        txtDiscussion.Text = dataRow.DISCUSSION;
+                    }
+                    else
+
+                        txtDiscussion.Text = "";
                 }
             }
             catch (Exception ex)
@@ -692,11 +701,7 @@ namespace HIS.Desktop.Plugins.HisDebateTemp.HisDebateTemp
                 data.TREATMENT_METHOD = txtTreatmentMethod.Text.Trim();
                 data.CARE_METHOD = txtCareMethod.Text.Trim();
                 data.CONCLUSION = txtConclusion.Text.Trim();
-                if (HisDebateTemp != null && HisDebateTemp.HIS_DEBATE_USER != null && HisDebateTemp.HIS_DEBATE_USER.Count > 0)
-                {
-                    data.HIS_DEBATE_USER = HisDebateTemp.HIS_DEBATE_USER;
-                }
-
+                data.DISCUSSION = txtDiscussion.Text.Trim();
                 data.DEPARTMENT_ID = WorkPlaceSDO.DepartmentId;
             }
             catch (Exception ex)
@@ -723,6 +728,10 @@ namespace HIS.Desktop.Plugins.HisDebateTemp.HisDebateTemp
                 {
                     if (CheckCoincidence())
                     {
+                        if (HisDebateTemp != null && HisDebateTemp.HIS_DEBATE_USER != null && HisDebateTemp.HIS_DEBATE_USER.Count > 0)
+                        {
+                            UpdateDTO.HIS_DEBATE_USER = HisDebateTemp.HIS_DEBATE_USER;
+                        }
                         var apiResult = new BackendAdapter(param).Post<HIS_DEBATE_TEMP>(HisRequestUriStore.HisDebateTemp_Create, ApiConsumers.MosConsumer, UpdateDTO, param);
                         if (apiResult != null)
                         {
@@ -830,6 +839,7 @@ namespace HIS.Desktop.Plugins.HisDebateTemp.HisDebateTemp
                 this.lciTreatmentMethod.Text = Get.Value("frmHisDebateTemp.lciTreatmentMethod.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciCareMethod.Text = Get.Value("frmHisDebateTemp.lciCareMethod.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciConclusion.Text = Get.Value("frmHisDebateTemp.lciConclusion.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciDiscussion.Text = Get.Value("frmHisDebateTemp.lciDiscussion.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.STT.Caption = Get.Value("frmHisDebateTemp.STT.Caption", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.STT.ToolTip = Get.Value("frmHisDebateTemp.STT.ToolTip", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColDebateTempCode.Caption = Get.Value("frmHisDebateTemp.grdColDebateTempCode.Caption", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -869,6 +879,7 @@ namespace HIS.Desktop.Plugins.HisDebateTemp.HisDebateTemp
                 ValidateMaxLangthAllowNull(txtTreatmentMethod, 2000);
                 ValidateMaxLangthAllowNull(txtCareMethod, 2000);
                 ValidateMaxLangthAllowNull(txtConclusion, 2000);
+                ValidateMaxLangthAllowNull(txtDiscussion, 2000);
             }
             catch (Exception ex)
             {
@@ -1160,18 +1171,7 @@ namespace HIS.Desktop.Plugins.HisDebateTemp.HisDebateTemp
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    if (this.ActionType == GlobalVariables.ActionAdd && btnAdd.Enabled)
-                    {
-                        btnAdd.Focus();
-                    }
-                    else if (this.ActionType == GlobalVariables.ActionEdit && btnEdit.Enabled)
-                    {
-                        btnEdit.Focus();
-                    }
-                    else
-                    {
-                        btnCancel.Focus();
-                    }
+                    txtDiscussion.Focus();
                 }
                 e.Handled = true;
             }
@@ -1217,5 +1217,33 @@ namespace HIS.Desktop.Plugins.HisDebateTemp.HisDebateTemp
             }
         }
         #endregion
+
+        private void txtDiscussion_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (this.ActionType == GlobalVariables.ActionAdd && btnAdd.Enabled)
+                    {
+                        btnAdd.Focus();
+                    }
+                    else if (this.ActionType == GlobalVariables.ActionEdit && btnEdit.Enabled)
+                    {
+                        btnEdit.Focus();
+                    }
+                    else
+                    {
+                        btnCancel.Focus();
+                    }
+                }
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Error(ex);
+            }
+        }
     }
 }

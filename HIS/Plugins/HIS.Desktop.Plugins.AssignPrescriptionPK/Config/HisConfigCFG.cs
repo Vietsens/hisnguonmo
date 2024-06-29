@@ -139,7 +139,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         private const string KEY__EXECUTE_ROOM_PAYMENT_OPTION = "MOS.EPAYMENT.EXECUTE_ROOM_PAYMENT_OPTION";
         private const string KEY__RequiredTreatmentMethodOption = "HIS.Desktop.Plugins.TreatmentFinish.RequiredTreatmentMethodOption";
         private const string KEY__InstructionTimeServiceMustBeGreaterThanStartTimeExam = "HIS.Desktop.Plugins.InstructionTimeServiceMustBeGreaterThanStartTimeExam";
-
+        private const string KEY_TreatmentEndTypeIsTransfer = "HIS.Desktop.Plugins.TreatmentFinish.TreatmentEndTypeIsTransfer";
+        private const string KEY_TuberculosisOption = "HIS.Desktop.Plugins.AssignPrescriptionPK.TuberculosisOption";
+        internal static string TuberculosisOption;
+        internal static string OptionTreatmentEndTypeIsTransfer;
         internal static string InstructionTimeServiceMustBeGreaterThanStartTimeExam;
         internal static string RequiredTreatmentMethodOption;
         internal static string ExecuteRoomPaymentOption;
@@ -426,6 +429,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         {
             try
             {
+                TuberculosisOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_TuberculosisOption);
+                OptionTreatmentEndTypeIsTransfer = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_TreatmentEndTypeIsTransfer);
                 InstructionTimeServiceMustBeGreaterThanStartTimeExam = GetValue(KEY__InstructionTimeServiceMustBeGreaterThanStartTimeExam);
                 RequiredTreatmentMethodOption = GetValue(KEY__RequiredTreatmentMethodOption);
                 ExecuteRoomPaymentOption = GetValue(KEY__EXECUTE_ROOM_PAYMENT_OPTION);

@@ -27,16 +27,23 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
 {
     public partial class frmCheckInfoBHYT : HIS.Desktop.Utility.FormBase
     {
-        private async Task CheckTTFull(V_HIS_PATIENT_TYPE_ALTER _patientTypeAlter)
+        private async Task CheckTTFull(V_HIS_PATIENT_TYPE_ALTER _patientTypeAlter, string nameCb, string cccdCb, string api)
         {
             rsDataBHYT = new ResultDataADO();
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên cán bộ:{0}", nameCb));
+                Inventec.Common.Logging.LogSystem.Debug(String.Format("CCCD cán bộ:{0}", cccdCb));
+                Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên api:{0}", api));
+
                 ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
+                apiInsuranceExpertise.ApiEgw = api;
                 CheckHistoryLDO checkHistoryLDO = new CheckHistoryLDO();
                 checkHistoryLDO.maThe = _patientTypeAlter.HEIN_CARD_NUMBER;
                 checkHistoryLDO.ngaySinh = Inventec.Common.DateTime.Convert.TimeNumberToDateString(_HisPatient.DOB);
                 checkHistoryLDO.hoTen = _HisPatient.VIR_PATIENT_NAME;
+                checkHistoryLDO.cccdCb = cccdCb;
+                checkHistoryLDO.hoTenCb = nameCb;
                 if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
                     || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)
                     || !string.IsNullOrEmpty(BHXHLoginCFG.ADDRESS))

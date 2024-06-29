@@ -885,7 +885,8 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 icdProcessor.FocusControl(ucIcd);
                 lblInCode.Text = "";
                 lblEndCode.Text = "";
-
+                chkTuberculosis.Checked = false;
+                txtNumManager.Enabled = false;
             }
             catch (Exception ex)
             {
@@ -1026,6 +1027,32 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                             cboDoctorUserName.EditValue = null;
                         }
                     }
+                    if(currentVHisTreatment.IS_TUBERCULOSIS == 1)
+                    {
+                        chkTuberculosis.Checked = true;
+                    }
+                    else
+                    {
+                        chkTuberculosis.Checked = false;
+                    }
+                    txtNumManager.Text = currentVHisTreatment.TUBERCULOSIS_CODE;
+                    //if (chkTuberculosis.Checked == false)
+                    //{
+                    //    txtNumManager.Enabled = false;
+                    //    if (!string.IsNullOrEmpty(txtNumManager.Text))
+                    //    {
+                    //        if (MessageBox.Show("Bạn có muốn xóa số quản lý hay không?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    //        {
+                    //            txtNumManager.Text = "";
+                    //        }
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    txtNumManager.Enabled = true;
+                    //    txtNumManager.Properties.MaxLength = 100;
+                    //}
+
                 }
                 if (currentVHisTreatment.TREATMENT_ORDER.HasValue)
                 {
@@ -1035,6 +1062,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 {
                     this.txtTreatmentOrder.Text = "";
                 }
+               
             }
             catch (Exception ex)
             {
@@ -1489,6 +1517,20 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         data.DoctorUserName = checkDoctor.USERNAME;
                     }
                 }
+
+                if (chkTuberculosis.Checked == true)
+                {
+                    data.IsTuberculosis = 1;
+                }
+                else
+                {
+                    data.IsTuberculosis = 0;
+                }
+                if (!string.IsNullOrEmpty(txtNumManager.Text))
+                {
+                    data.TuberculosisCode = txtNumManager.Text;
+                }
+                
 
                 HisTreatmentCommonInfoUpdateSDO result = new BackendAdapter(param).Post<HisTreatmentCommonInfoUpdateSDO>(RequestUriStore.HIS_TREATMENT_UPDATE_COMMON_INFO, ApiConsumer.ApiConsumers.MosConsumer, data, param);
 
@@ -2498,5 +2540,90 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void chkTuberculosis_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+
+                if (chkTuberculosis.Checked == true)
+                {
+                    txtNumManager.Enabled = true;
+                }
+                else
+                {
+                    txtNumManager.Enabled = false;
+                    if (!string.IsNullOrEmpty(txtNumManager.Text))
+                    {
+                        if (MessageBox.Show("Bạn có muốn xóa số quản lý hay không?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        {
+                            txtNumManager.Text = "";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+        private bool CheckMaxLength(string Str, int Length)
+        {
+            try
+            {
+                return (Str != null && Encoding.UTF8.GetByteCount(Str.Trim()) <= Length);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
+
+        private string TruncateToMaxLength(string str, int maxLength)
+        {
+            if (str == null) return null;
+            if (Encoding.UTF8.GetByteCount(str) <= maxLength) return str;
+
+            int length = str.Length;
+            while (length > 0)
+            {
+                string truncated = str.Substring(0, length);
+
+                int byteCount = Encoding.UTF8.GetByteCount(truncated);
+
+                if (byteCount <= maxLength)
+                {
+                    return truncated;
+                }
+
+                length--;
+            }
+
+            return string.Empty; // Trường hợp chuỗi hoàn toàn bị cắt bỏ
+        }
+
+        private void txtNumManager_Validated(object sender, EventArgs e)
+        {
+            try
+            {
+                string text = txtNumManager.Text;
+
+                if (!CheckMaxLength(text, 100))
+                {
+                    MessageBox.Show("Không được nhập quá 100 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    string truncatedText = TruncateToMaxLength(text, 100);
+                    txtNumManager.Text = truncatedText;
+                    txtNumManager.SelectionStart = txtNumManager.Text.Length;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
     }
 }

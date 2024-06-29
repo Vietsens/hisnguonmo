@@ -194,7 +194,7 @@
       <HintPath>..\..\..\..\..\RELEASE\HIS\HIS.Desktop.Plugins.Library.ConnectBloodPressure\HIS.Desktop.Plugins.Library.ConnectBloodPressure.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.IntegrateAssignPrescription">
-      <HintPath>..\..\..\..\..\..\TEST_HIS\HIS\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.IntegrateAssignPrescription.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\HIS_TEST\ReferencedAssemblies\HIS.Desktop.Plugins.Library.IntegrateAssignPrescription.dll</HintPath>
     </Reference>
     <Reference Include="His.EventLog, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -375,10 +375,6 @@
     </Reference>
     <Reference Include="Inventec.UC.EventLogControl">
       <HintPath>..\..\..\..\..\RELEASE\Inventec.UC\Inventec.UC.EventLogControl\Inventec.UC.EventLogControl.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.UC.Loading, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.UC.Loading.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Login, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -611,7 +607,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\Config\frmSystemConfig.resx">
       <DependentUpon>frmSystemConfig.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\Login\frmLoadConfigSystem.resx">
       <DependentUpon>frmLoadConfigSystem.cs</DependentUpon>
@@ -644,7 +639,9 @@
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Lang.my.resx" />
+    <EmbeddedResource Include="Resources\Lang.my.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Lang.vi.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -671,6 +668,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\USERCONTROL\COMMON\Inventec.UC.Loading\Inventec.UC.Loading.csproj">
+      <Project>{2064398d-0397-4d63-981a-a25aa6c43e9a}</Project>
+      <Name>Inventec.UC.Loading</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>

@@ -199,6 +199,6 @@ namespace HIS.Desktop.Print
         public const string PRINT_TYPE_CODE__PHIEU_YEU_CAU_IN_TO_DIEU_TRI_TRONG_BENH_AN_MPS000429 = "Mps000429";
         public const string PRINT_TYPE_CODE__BIEUMAU__PHIEU_TRA_THUOC__MPS000100 = "Mps000100";
         public const string PRINT_TYPE_CODE__TOM_TAT_Y_LENH_PTTT_VA_DON_THUOC__MPS000478 = "Mps000478";
-
+        public const string PRINT_TYPE_CODE__IN_TEM_VTTSD__MPS000494 = "Mps000494";
     }
 }

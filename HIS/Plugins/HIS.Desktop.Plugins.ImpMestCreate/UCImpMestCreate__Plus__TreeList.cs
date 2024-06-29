@@ -28,6 +28,7 @@ using HIS.UC.MaterialType.ADO;
 using HIS.UC.MedicineType;
 using HIS.UC.MedicineType.ADO;
 using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
@@ -369,6 +370,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 txtExpiredDate.Text = "";
                 txtPackageNumber.Text = "";
                 txtBid.Text = "";
+                txtHeinServiceBidMateType.Text = "";
+                dxValidationProvider2.RemoveControlError(txtHeinServiceBidMateType);
+                dxValidationProvider2.RemoveControlError(spinImpAmount);
+                dxValidationProvider2.RemoveControlError(txtPackageNumber);
+                dxValidationProvider2.RemoveControlError(txtExpiredDate);
 
                 if (this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC
                     && medistock.IS_ALLOW_IMP_SUPPLIER == 0)
@@ -774,6 +780,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 txtPackageNumber.Text = "";
                 txtBid.Text = "";
                 txtBid.Properties.MaxLength = 4;
+                txtHeinServiceBidMateType.Text = "";
+                dxValidationProvider2.RemoveControlError(txtHeinServiceBidMateType);
+                dxValidationProvider2.RemoveControlError(spinImpAmount);
+                dxValidationProvider2.RemoveControlError(txtPackageNumber);
+                dxValidationProvider2.RemoveControlError(txtExpiredDate);
 
                 if (this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC && medistock.IS_ALLOW_IMP_SUPPLIER == 0)
                 {
@@ -1018,6 +1029,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             this.txtActiveIngrBhytName.Text = dataMediType.ACTIVE_INGR_BHYT_NAME;
                             this.txtDosageForm.Text = dataMediType.DOSAGE_FORM;
                             this.cboMedicineUseForm.EditValue = dataMediType.MEDICINE_USE_FORM_ID;
+                            txtBidNumber.Text = this.currrentServiceAdo.TDL_BID_NUMBER;
                         }
                     }
                     else
@@ -1044,6 +1056,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             txtNognDoHL.Text = dataMateType.CONCENTRA;
                             if (dataMateType.MANUFACTURER_ID > 0)
                                 cboHangSX.EditValue = dataMateType.MANUFACTURER_ID;
+                            txtBidNumber.Text = this.currrentServiceAdo.TDL_BID_NUMBER;
                         }
                     }
                 }
@@ -1810,6 +1823,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 ValidBidControlMaxlength(txtBidNumOrder, 50);
 
                 ValidBidControlMaxlength(txtkyHieuHoaDon, 20);
+                ValidBidControlMaxlength(txtHeinServiceBidMateType, 1500);
+
             }
             catch (Exception ex)
             {
@@ -2127,6 +2142,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         if (o.IMP_UNIT_ID.HasValue) o.SERVICE_UNIT_NAME = o.IMP_UNIT_NAME;
                     });
                 }
+                
                 this.medicineProcessor.Reload(this.ucMedicineTypeTree, listMedicineType);
                 if (this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC || this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__DK)
                 {
@@ -2265,9 +2281,9 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 {
                     HisBidMedicineTypeViewFilter mediFilter = new HisBidMedicineTypeViewFilter();
                     mediFilter.BID_ID = this.currentBid.ID;
+                    mediFilter.IS_ACTIVE = 1;
                     listBidMedicine = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_BID_MEDICINE_TYPE>>(HisRequestUriStore.HIS_BID_MEDICINE_TYPE_GETVIEW, ApiConsumers.MosConsumer, mediFilter, null);
                     List<long> listSupplierIds = new List<long>();
-
                     if (listBidMedicine != null && listBidMedicine.Count > 0)
                     {
                         if (currentSupplier != null)
@@ -2708,8 +2724,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 {
                     HisBidMaterialTypeViewFilter mateFilter = new HisBidMaterialTypeViewFilter();
                     mateFilter.BID_ID = this.currentBid.ID;
+                    mateFilter.IS_ACTIVE = 1;
                     var listBidMaterial = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_BID_MATERIAL_TYPE>>(HisRequestUriStore.HIS_BID_MATERIAL_TYPE_GETVIEW, ApiConsumers.MosConsumer, mateFilter, null);
-
                     if (listBidMaterial != null && listBidMaterial.Count > 0)
                     {
                         if (currentSupplier != null)

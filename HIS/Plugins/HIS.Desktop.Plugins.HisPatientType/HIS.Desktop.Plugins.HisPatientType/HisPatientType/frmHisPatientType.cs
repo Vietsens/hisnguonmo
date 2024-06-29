@@ -183,7 +183,10 @@ namespace HIS.Desktop.Plugins.HisPatientType.HisPatientType
                 this.chkMustBeGuaranteed.Text = Inventec.Common.Resource.Get.Value("frmHisPatientType.chkMustBeGuaranteed.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkMustBeGuaranteed.ToolTip = Inventec.Common.Resource.Get.Value("frmHisPatientType.chkMustBeGuaranteed.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkIsRation.Text = Inventec.Common.Resource.Get.Value("frmHisPatientType.chkIsRation.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-
+                this.gridColumn5.Caption = Inventec.Common.Resource.Get.Value("frmHisPatientType.gridColumn5.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn5.ToolTip = Inventec.Common.Resource.Get.Value("frmHisPatientType.gridColumn5.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkSerNotAllow.Text = Inventec.Common.Resource.Get.Value("frmHisPatientType.chkSerNotAllow.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                
                 this.chkIsAdditionRequire.Text = Inventec.Common.Resource.Get.Value("frmHisPatientType.chkIsAdditionRequire.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkIsNotShowKiosk.Text = Inventec.Common.Resource.Get.Value("frmHisPatientType.chkIsNotShowKiosk.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdIsNotShowKiosd.Caption = Inventec.Common.Resource.Get.Value("frmHisPatientType.grdIsNotShowKiosd.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -740,6 +743,17 @@ namespace HIS.Desktop.Plugins.HisPatientType.HisPatientType
                     {
                         e.Value = pData != null && pData.IS_NOT_CHECK_FEE_WHEN_EXP_PRES == 1 ? true : false;
                     }
+                    else if (e.Column.FieldName == "IS_NOT_EDIT_ASSIGN_SERVICE ")
+                    {
+                        try
+                        {
+                            e.Value = pData != null && pData.IS_NOT_EDIT_ASSIGN_SERVICE == 1 ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot  IS_NOT_EDIT_ASSIGN_SERVICE", ex);
+                        }
+                    }
                     gridControlFormList.RefreshDataSource();
                 }
             }
@@ -856,6 +870,7 @@ namespace HIS.Desktop.Plugins.HisPatientType.HisPatientType
                     chkPres.Checked = (data.IS_CHECK_FEE_WHEN_PRES == 1 ? true : false);
                     chkIsAdditionRequire.Checked = (data.IS_ADDITION_REQUIRED == 1 ? true : false);
                     chkKiemTra.Checked = (data.IS_NOT_CHECK_FEE_WHEN_EXP_PRES == 1 ? true : false);
+                    chkSerNotAllow.Checked = (data.IS_NOT_EDIT_ASSIGN_SERVICE == 1 ? true : false);
 
                     chkDefaultDisplay.Checked = (data.IS_SHOWING_OUT_STOCK_BY_DEF == 1 ? true : false);
                     chkMustBeGuaranteed.Checked = (data.MUST_BE_GUARANTEED == 1 ? true : false);
@@ -1151,6 +1166,7 @@ namespace HIS.Desktop.Plugins.HisPatientType.HisPatientType
                 chkCheckFinishCls.Checked = false;
                 chkIsRation.Checked = false;
                 chkIsAdditionRequire.Checked = false;
+                chkSerNotAllow.Checked = false;
                 SetFocusEditor();
                 InitComboBasePatientType(listPatientType);
                 txtPatientTypeCode.Focus();
@@ -1393,6 +1409,15 @@ namespace HIS.Desktop.Plugins.HisPatientType.HisPatientType
                 {
                     currentDTO.IS_ADDITION_REQUIRED = null;
                 }
+                if (chkSerNotAllow.Checked)
+                {
+                    currentDTO.IS_NOT_EDIT_ASSIGN_SERVICE = 1;
+                }
+                else
+                {
+                    currentDTO.IS_NOT_EDIT_ASSIGN_SERVICE = null;
+                }
+
                 currentDTO.IS_CHECK_FEE_WHEN_ASSIGN = (short)(chkAssign.Checked ? 1 : 0);
                 currentDTO.IS_CHECK_FEE_WHEN_PRES = (short)(chkPres.Checked ? 1 : 0);
                 currentDTO.IS_NOT_FOR_KIOSK = (short)(chkIsNotShowKiosk.Checked ? 1 : 0);

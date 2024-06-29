@@ -30,7 +30,7 @@ namespace MPS.Processor.Mps000178.PDO
         public V_HIS_PATIENT currentPatient { get; set; }
         public V_HIS_PATIENT_TYPE_ALTER patientTypeAlter { get; set; }
         public V_HIS_TREATMENT_4 treatment4 { get; set; }
-
+        public V_HIS_DEPARTMENT_TRAN departmentTran { get; set; }
         public Mps000178PDO() { }
 
         public Mps000178PDO(V_HIS_PATIENT currentPatient)
@@ -38,11 +38,12 @@ namespace MPS.Processor.Mps000178.PDO
             this.currentPatient = currentPatient;
         }
 
-        public Mps000178PDO(V_HIS_PATIENT currentPatient, V_HIS_PATIENT_TYPE_ALTER _patientTypeAlter, V_HIS_TREATMENT_4 _treatment4)
+        public Mps000178PDO(V_HIS_PATIENT currentPatient, V_HIS_PATIENT_TYPE_ALTER _patientTypeAlter, V_HIS_TREATMENT_4 _treatment4, V_HIS_DEPARTMENT_TRAN departmentTran)
         {
             this.currentPatient = currentPatient;
             this.patientTypeAlter = _patientTypeAlter;
             this.treatment4 = _treatment4;
+            this.departmentTran = departmentTran;
         }
     }
 }

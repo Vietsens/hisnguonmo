@@ -59,6 +59,8 @@ namespace HIS.Desktop.Plugins.HisExamServiceTemp.HisExamServiceTemp
         int rowCount = 0;
         int dataTotal = 0;
         int startPage = 0;
+        long roomID = 0;
+        long departmentID = 0;
         PagingGrid pagingGrid;
         int ActionType = -1;
         int positionHandle = -1;
@@ -84,7 +86,8 @@ namespace HIS.Desktop.Plugins.HisExamServiceTemp.HisExamServiceTemp
             try
             {
                 InitializeComponent();
-
+                this.roomID = moduleData.RoomId;
+                
                 pagingGrid = new PagingGrid();
                 this.moduleData = moduleData;
                 this.selectData = examServiceTempADO.DelegateSelectData;
@@ -116,13 +119,39 @@ namespace HIS.Desktop.Plugins.HisExamServiceTemp.HisExamServiceTemp
             try
             {
                 MeShow();
+                 
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        //private void frmHisExamServiceTemp_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.Control && e.KeyCode == Keys.N)
+        //        {
+        //            btnAdd.PerformClick();
+        //        }
+        //        if (e.Control && e.KeyCode == Keys.F)
+        //        {
+        //            btnSearch.PerformClick();
+        //        }
+        //        if (e.Control && e.KeyCode == Keys.S)
+        //        {
+        //            btnEdit.PerformClick();
+        //        }
+        //        if (e.Control && e.KeyCode == Keys.R)
+        //        {
+        //            btnCancel.PerformClick();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogSystem.Debug(ex);
+        //    }
+        //}
         private void SetCaptionByLanguageKey()
         {
             try
@@ -457,8 +486,7 @@ namespace HIS.Desktop.Plugins.HisExamServiceTemp.HisExamServiceTemp
                 filter.KEY_WORD__CODE__NAME = txtKeyword.Text.Trim();
                 if (this.isCreatorOrPublic.HasValue && this.isCreatorOrPublic.Value)
                 {
-                    filter.IS_PUBLIC = 1;
-                    filter.DATA_DOMAIN_FILTER = true;
+                    filter.PUBLIC_DEPARTMENT_ID = this.departmentID;
                 }
             }
             catch (Exception ex)
@@ -561,6 +589,17 @@ namespace HIS.Desktop.Plugins.HisExamServiceTemp.HisExamServiceTemp
                             Inventec.Common.Logging.LogSystem.Error(ex);
                         }
                     }
+                    else if (e.Column.FieldName == "PUBLIC_DEPARTMENT_STR")
+                    {
+                        try
+                        {
+                            e.Value = pData != null && pData.PUBLIC_DEPARTMENT_ID != null ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn(ex);
+                        }
+                    }
                     gridControlFormList.RefreshDataSource();
                 }
             }
@@ -659,8 +698,26 @@ namespace HIS.Desktop.Plugins.HisExamServiceTemp.HisExamServiceTemp
                     this.ActionType = GlobalVariables.ActionEdit;
                     EnableControlChanged(this.ActionType);
 
-                    //Disable nút sửa nếu dữ liệu đã bị khóa
-                    btnEdit.Enabled = (this.currentData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+                    
+                    if (data.CREATOR == this.LoggingName || CheckLoginAdmin.IsAdmin(LoggingName))
+                    {
+                        btnEdit.ResetForeColor();
+                        btnEdit.Enabled = true;
+                        
+                    }
+                    else
+                    {
+                        btnEdit.ForeColor = Color.Gray;
+                        btnEdit.Appearance.Options.UseForeColor = true; // Cho phép sử dụng màu chữ được đặt
+                        btnEdit.Appearance.BackColor = System.Drawing.Color.LightGray; // Đặt màu nền là màu xám nhạt
+                        btnEdit.Appearance.BackColor2 = System.Drawing.Color.LightGray;
+                        btnEdit.Appearance.BorderColor = System.Drawing.Color.FromArgb(100, 100, 100); // Đặt màu đường viền là màu xám với độ trong suốt
+                        //btnEdit.Appearance.Options.UseBorderColor = true;
+                        //btnEdit.Refresh();
+
+                    }
+                    
+                    
 
                     positionHandle = -1;
                     Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProviderEditorInfo, dxErrorProvider);
@@ -706,7 +763,7 @@ namespace HIS.Desktop.Plugins.HisExamServiceTemp.HisExamServiceTemp
                     txtExamServiceTempCode.Text = data.EXAM_SERVICE_TEMP_CODE;
                     txtExamServiceTempName.Text = data.EXAM_SERVICE_TEMP_NAME;
                     chkPublic.Checked = (data.IS_PUBLIC == 1 ? true : false);
-
+                    chkPublicDepartment.Checked = (data.PUBLIC_DEPARTMENT_ID != null ? true : false);
                     //
                     txtTai.Text = data.PART_EXAM_EAR;
                     txtHong.Text = data.PART_EXAM_THROAT;
@@ -796,6 +853,7 @@ namespace HIS.Desktop.Plugins.HisExamServiceTemp.HisExamServiceTemp
                     txtPartExamEyeSightGlassLeft.Text = data.PART_EXAM_EYESIGHT_GLASS_LEFT != null ? data.PART_EXAM_EYESIGHT_GLASS_LEFT.ToString() : null;
                     txtPartEyeGlassKcdtLeft.Text = data.PART_EYE_GLASS_KCDT_LEFT != null ? data.PART_EYE_GLASS_KCDT_LEFT.ToString() : null;
                     txtPartEyeGlassAddLeft.Text = data.PART_EYE_GLASS_ADD_LEFT != null ? data.PART_EYE_GLASS_ADD_LEFT.ToString() : null;
+                    
                 }
             }
             catch (Exception ex)
@@ -878,6 +936,7 @@ namespace HIS.Desktop.Plugins.HisExamServiceTemp.HisExamServiceTemp
                 chkPART_EXAM_VERTICAL_SIGHT__BT.Checked = false;
                 chkPART_EXAM_EYE_BLIND_COLOR__MMV.Checked = false;
                 chkPART_EXAM_VERTICAL_SIGHT__HC.Checked = false;
+                chkPublicDepartment.Checked = false;
                 //
                 txtNhanApPhai.Text = "";
                 txtNhanApTrai.Text = "";
@@ -1078,6 +1137,7 @@ namespace HIS.Desktop.Plugins.HisExamServiceTemp.HisExamServiceTemp
         {
             try
             {
+                if (btnEdit.ForeColor == Color.Gray) return;
                 SaveProcess();
             }
             catch (Exception ex)
@@ -1522,7 +1582,11 @@ namespace HIS.Desktop.Plugins.HisExamServiceTemp.HisExamServiceTemp
                 currentDTO.PART_EXAM_EYESIGHT_GLASS_LEFT = txtPartExamEyeSightGlassLeft.EditValue != null ? txtPartExamEyeSightGlassLeft.Text.Trim().ToString() : null;
                 currentDTO.PART_EYE_GLASS_KCDT_LEFT = txtPartEyeGlassKcdtLeft.EditValue != null ? txtPartEyeGlassKcdtLeft.Text.Trim().ToString() : null;
                 currentDTO.PART_EYE_GLASS_ADD_LEFT = txtPartEyeGlassAddLeft.EditValue != null ? txtPartEyeGlassAddLeft.Text.Trim().ToString() : null;
-
+                if (chkPublicDepartment.Checked == true)
+                {
+                    if(this.departmentID != 0)
+                        currentDTO.PUBLIC_DEPARTMENT_ID = this.departmentID;
+                }
 
             }
             catch (Exception ex)
@@ -1697,6 +1761,8 @@ namespace HIS.Desktop.Plugins.HisExamServiceTemp.HisExamServiceTemp
             {
                 isNotLoadWhileChangeControlStateInFirst = true;
                 LoggingName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                //load department
+                LoadDepartment();
                 //Gan gia tri mac dinh
                 SetDefaultValue();
                 InitControlState();
@@ -1730,6 +1796,8 @@ namespace HIS.Desktop.Plugins.HisExamServiceTemp.HisExamServiceTemp
 
                 //Focus default
                 SetDefaultFocus();
+
+                
                 if (data != null)
                 {
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
@@ -1740,6 +1808,27 @@ namespace HIS.Desktop.Plugins.HisExamServiceTemp.HisExamServiceTemp
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadDepartment()
+        {
+            try
+            {
+                chkPublicDepartment.Enabled = false;
+                if (roomID != 0)
+                {
+                    var currentRoom = BackendDataWorker.Get<HIS_ROOM>().Where(s => s.ID == roomID).FirstOrDefault();
+                    if (currentRoom != null)
+                    {
+                        chkPublicDepartment.Enabled = true;
+                        this.departmentID = currentRoom.DEPARTMENT_ID;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+               Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
         #endregion
@@ -2109,5 +2198,46 @@ namespace HIS.Desktop.Plugins.HisExamServiceTemp.HisExamServiceTemp
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void toolTipController1_GetActiveObjectInfo(object sender, ToolTipControllerGetActiveObjectInfoEventArgs e)
+        {
+            try
+            {
+                if (e.SelectedControl == btnEdit && btnEdit.ForeColor == Color.Gray)
+                {
+                    e.Info = new ToolTipControlInfo(btnEdit, "Chỉ cho phép đối với người tạo hoặc tài khoản quản trị");
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void frmHisExamServiceTemp_MouseMove(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                var control = GetChildAtPoint(PointToClient(Cursor.Position));
+                var button = control as SimpleButton;
+                if (button != null && button == btnEdit && !button.Enabled)
+                {
+                    toolTipController1.ShowHint("Chỉ cho phép đối với người tạo hoặc tài khoản quản trị", MousePosition);
+                }
+                else
+                {
+                    toolTipController1.HideHint();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        
     }
 }

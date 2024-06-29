@@ -54,6 +54,14 @@ namespace HIS.Desktop.Plugins.BidUpdate
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtSearch = new DevExpress.XtraEditors.TextEdit();
             this.gridControlEdit = new DevExpress.XtraGrid.GridControl();
@@ -93,6 +101,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridCol_HourLifespan = new DevExpress.XtraGrid.Columns.GridColumn();
             this.spAdjustAmount = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.spAdjustAmountDisable = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
+            this.repAdjustAmount = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repAdjustAmountDis = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -107,6 +117,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
             ((System.ComponentModel.ISupportInitialize)(this.spVat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spAdjustAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spAdjustAmountDisable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repAdjustAmount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repAdjustAmountDis)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
@@ -148,7 +160,9 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.spVat,
             this.spAmount,
             this.spAdjustAmount,
-            this.spAdjustAmountDisable});
+            this.spAdjustAmountDisable,
+            this.repAdjustAmount,
+            this.repAdjustAmountDis});
             this.gridControlEdit.Size = new System.Drawing.Size(585, 282);
             this.gridControlEdit.TabIndex = 4;
             this.gridControlEdit.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -189,6 +203,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridViewEdit.GridControl = this.gridControlEdit;
             this.gridViewEdit.Name = "gridViewEdit";
             this.gridViewEdit.OptionsView.ColumnAutoWidth = false;
+            this.gridViewEdit.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.gridViewEdit.OptionsView.ShowGroupPanel = false;
             this.gridViewEdit.OptionsView.ShowIndicator = false;
             this.gridViewEdit.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewEdit_CustomRowCellEdit);
@@ -590,6 +605,23 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.spAdjustAmountDisable.Name = "spAdjustAmountDisable";
             this.spAdjustAmountDisable.ReadOnly = true;
             // 
+            // repAdjustAmount
+            // 
+            this.repAdjustAmount.AutoHeight = false;
+            this.repAdjustAmount.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleRight, global::HIS.Desktop.Plugins.BidUpdate.Properties.Resources.y_lenh, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            this.repAdjustAmount.Name = "repAdjustAmount";
+            this.repAdjustAmount.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.repAdjustAmount.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repAdjustAmount_ButtonClick);
+            // 
+            // repAdjustAmountDis
+            // 
+            this.repAdjustAmountDis.AutoHeight = false;
+            this.repAdjustAmountDis.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleRight, global::HIS.Desktop.Plugins.BidUpdate.Properties.Resources.y_lenh, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            this.repAdjustAmountDis.Name = "repAdjustAmountDis";
+            this.repAdjustAmountDis.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            // 
             // layoutControlGroup1
             // 
             this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -640,6 +672,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
             ((System.ComponentModel.ISupportInitialize)(this.spVat)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spAdjustAmount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spAdjustAmountDisable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repAdjustAmount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repAdjustAmountDis)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
@@ -691,5 +725,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn17;
         private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit spAdjustAmount;
         private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit spAdjustAmountDisable;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repAdjustAmount;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repAdjustAmountDis;
     }
 }

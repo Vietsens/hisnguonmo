@@ -28,6 +28,7 @@ using System.Collections;
 using DevExpress.XtraGrid.Views.Base;
 using HIS.Desktop.Plugins.BidUpdate.ADO;
 using HIS.Desktop.Plugins.BidUpdate.Base;
+using MOS.EFMODEL.DataModels;
 
 namespace HIS.Desktop.Plugins.BidUpdate
 {
@@ -37,12 +38,18 @@ namespace HIS.Desktop.Plugins.BidUpdate
         Delete_ButtonClick deleteButtonClick;
         Grid_Click gridClick;
         List<ADO.MedicineTypeADO> listAdo;
+        List<ADO.MedicineTypeADO> listAdoDefault;
+        Inventec.Desktop.Common.Modules.Module Module;
+        long bid_id;
+        public bool IsFirstLoad = true;
 
-        public UC_LoadEdit(BidEditADO ado)
+        public UC_LoadEdit(BidEditADO ado, Inventec.Desktop.Common.Modules.Module Module, long bid_id)
         {
             InitializeComponent();
             try
             {
+                this.bid_id = bid_id;
+                this.Module = Module;
                 this.bidEditAdo = ado;
                 this.deleteButtonClick = ado.delete_ButtonClick;
                 this.gridClick = ado.grid_Click;
@@ -170,6 +177,11 @@ namespace HIS.Desktop.Plugins.BidUpdate
             {
                 gridControlEdit.BeginUpdate();
                 this.listAdo = data;
+                if (IsFirstLoad && data != null && data.Count > 0)
+                {
+                    this.listAdoDefault = data;
+                    IsFirstLoad = false;
+                }
                 gridControlEdit.DataSource = null;
                 gridControlEdit.DataSource = data;
                 gridControlEdit.EndUpdate();
@@ -287,7 +299,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 {
                     if (e.Column.FieldName == "ADJUST_AMOUNT")
                     {
-                        e.RepositoryItem = data.Type != Base.GlobalConfig.MAU ? spAdjustAmount : spAdjustAmountDisable;
+                        e.RepositoryItem = data.Type != Base.GlobalConfig.MAU ? listAdoDefault != null && listAdoDefault.Count > 0 && listAdoDefault.FirstOrDefault(o => o.ID == data.ID) != null ? repAdjustAmount : repAdjustAmountDis : spAdjustAmountDisable;
                     }
 
                 }
@@ -302,7 +314,38 @@ namespace HIS.Desktop.Plugins.BidUpdate
             try
             {
                 gridViewEdit.FocusedColumn = gridColumn17;
-                gridViewEdit.FocusedRowHandle = listAdo.IndexOf(listAdo.FirstOrDefault(o=>o.AMOUNT == 0 && o.ADJUST_AMOUNT == null));
+                gridViewEdit.FocusedRowHandle = listAdo.IndexOf(listAdo.FirstOrDefault(o => o.AMOUNT == 0 && o.ADJUST_AMOUNT == null));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repAdjustAmount_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                List<object> listArgs = new List<object>();
+                var row = (MedicineTypeADO)gridViewEdit.GetFocusedRow();
+                if (listAdoDefault.FirstOrDefault(o => o.ID == row.ID) != null)
+                {
+                    var objData = listAdoDefault.FirstOrDefault(o => o.ID == row.ID);
+
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => objData), objData));
+                    if (objData.Type == Base.GlobalConfig.THUOC)
+                        listArgs.Add(new HIS_BID_MEDICINE_TYPE() { ID = objData.BID_MEDI_MATY_BLO_ID, MEDICINE_TYPE_ID = objData.ID, AMOUNT = objData.AMOUNT ?? 0, ADJUST_AMOUNT = objData.ADJUST_AMOUNT, BID_ID = bid_id });
+                    else
+                        listArgs.Add(new HIS_BID_MATERIAL_TYPE() { ID = objData.BID_MEDI_MATY_BLO_ID, MATERIAL_TYPE_ID = objData.ID, AMOUNT = objData.AMOUNT ?? 0, ADJUST_AMOUNT = objData.ADJUST_AMOUNT, BID_ID = bid_id });
+                    listArgs.Add((HIS.Desktop.Common.DelegateSelectData)((data) =>
+                    {
+                        objData.ADJUST_AMOUNT = data as decimal?;
+                        row.ADJUST_AMOUNT = objData.ADJUST_AMOUNT;
+                        gridControlEdit.RefreshDataSource();
+                    }));
+
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.BidRegulation", this.Module.RoomId, this.Module.RoomTypeId, listArgs);
+                }
             }
             catch (Exception ex)
             {

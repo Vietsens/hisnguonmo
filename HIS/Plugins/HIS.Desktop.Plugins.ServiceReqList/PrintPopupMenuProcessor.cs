@@ -87,7 +87,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             GiayDeNghiDoiTraDichVu,
             TaoPhieuYeuCauSuDungKhangSinh,
             HuyLayMau,
-            ChuyenThanhDonTam
+            ChuyenThanhDonTam,
+            InVatTuTSD
 
         }
 
@@ -386,6 +387,14 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                             menu.AddItems(new BarItem[] { bbtnUpdateToTemp });
                         }
                     }
+                }
+
+                if(ado != null && (this.ado.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK || this.ado.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT || this.ado.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT))
+                {
+                    BarButtonItem bbtnPrintmaterialUse = new BarButtonItem(barManager, "In tem vật tư tái sử dụng", 11);
+                    bbtnPrintmaterialUse.Tag = ModuleType.InVatTuTSD;
+                    bbtnPrintmaterialUse.ItemClick += new ItemClickEventHandler(PrintMouseClick);
+                    menu.AddItems(new BarItem[] { bbtnPrintmaterialUse });
                 }
                 menu.ShowPopup(Cursor.Position);
             }

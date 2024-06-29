@@ -31,6 +31,7 @@ using HIS.UC.MaterialType.ADO;
 using HIS.UC.MedicineType.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using MOS.EFMODEL.DataModels;
@@ -246,6 +247,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 ValidControlMaxLength(txtTaiKhoanCo, 50);
                 ValidControlMaxLength(txtTaiKhoanNo, 50);
                 ValidControlMaxLength(txtkyHieuHoaDon, 20);
+                ValidBidControlMaxlength(txtHeinServiceBidMateType, 1500);
             }
             catch (Exception ex)
             {
@@ -381,7 +383,6 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void ValidControlImpVatRatio()
         {
             try
@@ -1334,13 +1335,15 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 {
                     HisBidMedicineTypeViewFilter mediFilter = new HisBidMedicineTypeViewFilter();
                     mediFilter.BID_ID = this.currentBid.ID;
+                    mediFilter.IS_ACTIVE = 1;
                     var listBidMedicine = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_BID_MEDICINE_TYPE>>(HisRequestUriStore.HIS_BID_MEDICINE_TYPE_GETVIEW, ApiConsumers.MosConsumer, mediFilter, null);
-
+                    
                     HisBidMaterialTypeViewFilter mateFilter = new HisBidMaterialTypeViewFilter();
                     mateFilter.BID_ID = this.currentBid.ID;
+                    mateFilter.IS_ACTIVE = 1;
                     var listBidMaterial = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_BID_MATERIAL_TYPE>>(HisRequestUriStore.HIS_BID_MATERIAL_TYPE_GETVIEW, ApiConsumers.MosConsumer, mateFilter, null);
                     List<long> listSupplierIds = new List<long>();
-
+                    LogSystem.Debug("____listBidMedicine Count: " + listBidMedicine.Count() + "______listBidMaterial Count: " + listBidMaterial.Count());
                     if (listBidMedicine != null && listBidMedicine.Count > 0)
                     {
                         if (listBidMedicine != null && listBidMedicine.Count > 0)

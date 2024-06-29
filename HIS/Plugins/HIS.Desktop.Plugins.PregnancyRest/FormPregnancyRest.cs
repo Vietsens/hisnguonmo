@@ -101,6 +101,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
         {
             try
             {
+                checkConfig();
                 this.xml2076ExportOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(XML2076CFG);
                 SetIcon();
                 ValidateForm();
@@ -114,11 +115,37 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 LoadDataToGrid();
                 SetDefaultValueControl();
                 CboTreatmentEndTypExt.Focus();
+               
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        List<string> connectInfors = new List<string>();
+        string api = "";
+        string nameCb = "";
+        string cccdCb = "";
+        private void checkConfig()
+        {
+            try
+            {
+                HisConfigCHECKHEINCARD.LoadConfig();
+                string connect_infor = HisConfigCHECKHEINCARD.CHECK_HEIN_CARD_BHXH__API;
+                if (!string.IsNullOrEmpty(connect_infor))
+                {
+                    connectInfors = connect_infor.Split('|').ToList();
+                    api = connectInfors[0];
+                    nameCb = connectInfors[1];
+                    cccdCb = connectInfors[2];
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         private void LoadDataToGrid()
@@ -2043,14 +2070,21 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             ResultHistoryLDO rsData = null;
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên cán bộ:{0}", nameCb));
+                Inventec.Common.Logging.LogSystem.Debug(String.Format("CCCD cán bộ:{0}", cccdCb));
+                Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên api:{0}", api));
+
                 BHXHLoginCFG.LoadConfig();
                 CommonParam param = new CommonParam();
                 ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
+                apiInsuranceExpertise.ApiEgw = api;
                 CheckHistoryLDO checkHistoryLDO = new CheckHistoryLDO();
                 checkHistoryLDO.maThe = txtMaBHXH.Text.Trim();
                 checkHistoryLDO.ngaySinh = hisPatient.IS_HAS_NOT_DAY_DOB == 1 ? hisPatient.DOB.ToString().Substring(0, 4) : ((Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(hisPatient.DOB) ?? DateTime.MinValue).ToString("dd/MM/yyyy"));
                 checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(hisPatient.VIR_PATIENT_NAME.ToLower());
                 checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? hisPatient.VIR_PATIENT_NAME.ToLower() : checkHistoryLDO.hoTen);
+                checkHistoryLDO.cccdCb = cccdCb;
+                checkHistoryLDO.hoTenCb = nameCb;
                 Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 1");
                 if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
                     || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)

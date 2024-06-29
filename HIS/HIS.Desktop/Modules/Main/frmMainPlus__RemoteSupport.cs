@@ -46,14 +46,13 @@ namespace HIS.Desktop.Modules.Main
             try
             {
                 var module = GlobalVariables.CurrentModuleSelected;
-
                 frmRemoteSupportCreate frmRemoteSupportCreate = new frmRemoteSupportCreate(module);
                 frmRemoteSupportCreate.ShowDialog();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-            }
+            }            
         }
 
     }

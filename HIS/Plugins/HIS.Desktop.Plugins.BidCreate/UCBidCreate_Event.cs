@@ -30,11 +30,14 @@ using Inventec.Common.Logging;
 using HIS.Desktop.LocalStorage.BackendData;
 using MOS.EFMODEL.DataModels;
 using DevExpress.XtraEditors;
+using MOS.Filter;
 
 namespace HIS.Desktop.Plugins.BidCreate
 {
     public partial class UCBidCreate : HIS.Desktop.Utility.UserControlBase
     {
+        public List<HIS_BID_MEDICINE_TYPE> BidMedicineType { get; private set; }
+        public List<HIS_BID_MATERIAL_TYPE> BidMaterialType { get; private set; }
         #region Click
         private void btnAdd_Click(object sender, EventArgs e)
         {
@@ -159,6 +162,8 @@ namespace HIS.Desktop.Plugins.BidCreate
             CommonParam paramCommon = new CommonParam();
             try
             {
+                BidMaterialType = null;
+                BidMedicineType = null;
                 this.positionHandleRight = -1;
                 if (!getDataForProcess()) return;
                 if (!dxValidationProviderRight.Validate())
@@ -204,6 +209,11 @@ namespace HIS.Desktop.Plugins.BidCreate
                         txtBidNumOrder.Text = "";
                         txtBidGroupCode.Text = "";
                         txtBidPackageCode.Text = "";
+                        txtMaTT.Text = "";
+                        txtTenTT.Text = "";
+                        LoadBidMedicineType(bidPrint.ID);
+                        LoadBidMaterialType(bidPrint.ID);
+                        gridControlProcess.RefreshDataSource();
                     }
                     WaitingManager.Hide();
                 }
@@ -239,7 +249,37 @@ namespace HIS.Desktop.Plugins.BidCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void LoadBidMedicineType(long bidId)
+        {
 
+            try
+            {
+                CommonParam paramCommon = new CommonParam();
+                HisBidMedicineTypeFilter filter = new HisBidMedicineTypeFilter();
+                filter.BID_ID = bidId;
+                BidMedicineType = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_BID_MEDICINE_TYPE>>("api/HisBidMedicineType/get", ApiConsumer.ApiConsumers.MosConsumer, filter, paramCommon);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void LoadBidMaterialType(long bidId)
+        {
+            try
+            {
+                CommonParam paramCommon = new CommonParam();
+                HisBidMaterialTypeFilter filter = new HisBidMaterialTypeFilter();
+                filter.BID_ID = bidId;
+                BidMaterialType = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_BID_MATERIAL_TYPE>>("api/HisBidMaterialType/get", ApiConsumer.ApiConsumers.MosConsumer, filter, paramCommon);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void btnNew_Click(object sender, EventArgs e)
         {
             try

@@ -139,7 +139,12 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save
                 if (Form.lciDoctorName.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && !String.IsNullOrEmpty(Form.txtDoctorLogginName.Text.Trim()))
                 {
                     this.DoctorLoginname = Form.txtDoctorLogginName.Text.Trim();
-                    this.DoctorUsernname = Form.cboDoctorUserName.EditValue.ToString();
+                    //this.DoctorUsernname = Form.cboDoctorUserName.EditValue.ToString();
+                    var VhisEmployee = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == Form.txtDoctorLogginName.Text && o.IS_ACTIVE == 1);
+                    if (VhisEmployee != null)
+                    {
+                        this.DoctorUsernname = VhisEmployee.TDL_USERNAME;
+                    }
                 }
 
                 this.Treatment_Method = Form.txtMethod.Text;

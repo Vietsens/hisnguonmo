@@ -77,6 +77,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         internal enum PrintType
         {
             IN_BARCODE,
+            IN_GOP_BARCODE
         }
 
         private void PrintProcess(PrintType printType)
@@ -89,6 +90,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 {
                     case PrintType.IN_BARCODE:
                         richEditorMain.RunPrintTemplate(MPS.Processor.Mps000077.PDO.Mps000077PDO.PrintTypeCode.Mps000077, DelegateRunPrinter);
+                        break;
+                    case PrintType.IN_GOP_BARCODE:
+                        richEditorMain.RunPrintTemplate(MPS.Processor.Mps000496.PDO.Mps000496PDO.PrintTypeCode.Mps000496, DelegateRunPrinter);
                         break;
                     default:
                         break;
@@ -110,6 +114,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     case MPS.Processor.Mps000077.PDO.Mps000077PDO.PrintTypeCode.Mps000077:
                         LoadBieuMauPhieuYCInBarCode(printTypeCode, fileName, ref result);
                         break;
+                    case MPS.Processor.Mps000496.PDO.Mps000496PDO.PrintTypeCode.Mps000496:
+                        LoadBieuMauPhieuYCInGopBarCode(printTypeCode, fileName, ref result);
+                        break;
                     default:
                         break;
                 }
@@ -120,6 +127,50 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             }
 
             return result;
+        }
+
+        private void LoadBieuMauPhieuYCInGopBarCode(string printTypeCode, string fileName, ref bool result)
+        {
+
+            try
+            {
+                var data = (List<LisSampleADO>)gridControlSample.DataSource;
+                List<LisSampleADO> listCheck = data.Where(o => o.IsCheck).ToList();
+                if (listCheck != null && listCheck.Count > 0)
+                {
+                    string printerName = "";
+                    if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                    {
+                        printerName = GlobalVariables.dicPrinter[printTypeCode];
+                    }
+                    List<V_LIS_SAMPLE> lst = new List<V_LIS_SAMPLE>();
+                    foreach (var item in listCheck)
+                    {
+                        V_LIS_SAMPLE ado = new V_LIS_SAMPLE();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<V_LIS_SAMPLE>(ado, item);
+                        lst.Add(ado);
+                    }
+                    MPS.Processor.Mps000496.PDO.Mps000496PDO mps = new MPS.Processor.Mps000496.PDO.Mps000496PDO(
+                               lst
+                               );
+                    WaitingManager.Hide();
+
+                    if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
+                    {
+                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) {  });
+                    }
+                    else
+                    {
+                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { });
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         internal void LoadBieuMauPhieuYCInBarCode(string printTypeCode, string fileName, ref bool result)

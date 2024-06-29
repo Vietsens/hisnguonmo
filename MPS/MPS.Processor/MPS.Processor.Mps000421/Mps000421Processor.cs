@@ -153,6 +153,13 @@ namespace MPS.Processor.Mps000421
             
             try
             {
+                var numberBloodTransf = 1;
+                if (rdo.ListExpMest != null && rdo.ListExpMest.Count > 0)
+                {
+                    var empL = rdo.ListExpMest.Where(o => (o.FINISH_TIME ?? 0) <= (rdo.ExpMest.FINISH_TIME ?? 0) && o.EXP_MEST_STT_ID == 5 && o.TDL_TREATMENT_ID == rdo.ExpMest.TDL_TREATMENT_ID).ToList();
+                    numberBloodTransf = empL.Count == 0 ? 1 : empL.Count;
+                }
+                SetSingleKey((new KeyValue(Mps000421ExtendSingleKey.NUMBER_BLOOD_TRANSFUSIONS, numberBloodTransf)));
                 if (rdo.Treatment != null)
                 {
                     var PATIENT_TYPE = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(md => md.ID == rdo.Treatment.TDL_PATIENT_TYPE_ID);

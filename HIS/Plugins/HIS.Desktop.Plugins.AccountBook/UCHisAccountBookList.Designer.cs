@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCHisAccountBookList));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -241,6 +242,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.btnImport = new DevExpress.XtraEditors.SimpleButton();
             this.chkShowAll = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlCRUD = new DevExpress.XtraLayout.LayoutControl();
+            this.txtKhoGiay = new DevExpress.XtraEditors.TextEdit();
             this.chkLuonTachTheoTungSo = new DevExpress.XtraEditors.CheckEdit();
             this.cboEInvoiceSys = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -296,6 +298,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.lciWorkingShift = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciEInvoiceSys = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem21 = new DevExpress.XtraLayout.LayoutControlItem();
             this.btnRefesh = new DevExpress.XtraEditors.SimpleButton();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
             this.txtKeyWord = new DevExpress.XtraEditors.TextEdit();
@@ -362,10 +365,10 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageListIconLock = new System.Windows.Forms.ImageList();
-            this.imageListIcon = new System.Windows.Forms.ImageList();
-            this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.toolTipController = new DevExpress.Utils.ToolTipController();
+            this.imageListIconLock = new System.Windows.Forms.ImageList(this.components);
+            this.imageListIcon = new System.Windows.Forms.ImageList(this.components);
+            this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.toolTipController = new DevExpress.Utils.ToolTipController(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlTransaction)).BeginInit();
@@ -415,6 +418,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             ((System.ComponentModel.ISupportInitialize)(this.chkShowAll.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlCRUD)).BeginInit();
             this.layoutControlCRUD.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtKhoGiay.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkLuonTachTheoTungSo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboEInvoiceSys.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).BeginInit();
@@ -468,6 +472,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             ((System.ComponentModel.ISupportInitialize)(this.lciWorkingShift)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciEInvoiceSys)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWord.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlAccountBook)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewAccountBook)).BeginInit();
@@ -536,11 +541,11 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.layoutControlTransaction.Controls.Add(this.dtCreateTimeTo);
             this.layoutControlTransaction.Controls.Add(this.dtCreateTimeFrom);
             this.layoutControlTransaction.Controls.Add(this.gridControlTransaction);
-            this.layoutControlTransaction.Location = new System.Drawing.Point(201, 212);
+            this.layoutControlTransaction.Location = new System.Drawing.Point(252, 219);
             this.layoutControlTransaction.Name = "layoutControlTransaction";
             this.layoutControlTransaction.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(40, 206, 250, 350);
             this.layoutControlTransaction.Root = this.layoutControlGroupTransaction;
-            this.layoutControlTransaction.Size = new System.Drawing.Size(1119, 319);
+            this.layoutControlTransaction.Size = new System.Drawing.Size(1119, 331);
             this.layoutControlTransaction.TabIndex = 32;
             this.layoutControlTransaction.Text = "layoutControl2";
             // 
@@ -718,7 +723,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.repositoryItemBtnRestoreDisable,
             this.btnDELETE,
             this.btnDisableDelete});
-            this.gridControlTransaction.Size = new System.Drawing.Size(1115, 265);
+            this.gridControlTransaction.Size = new System.Drawing.Size(1115, 277);
             this.gridControlTransaction.TabIndex = 5;
             this.gridControlTransaction.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewTransaction});
@@ -1361,7 +1366,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.layoutControlGroupTransaction.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroupTransaction.Name = "Root";
             this.layoutControlGroupTransaction.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroupTransaction.Size = new System.Drawing.Size(1119, 319);
+            this.layoutControlGroupTransaction.Size = new System.Drawing.Size(1119, 331);
             this.layoutControlGroupTransaction.TextVisible = false;
             // 
             // layoutControlItem10
@@ -1369,7 +1374,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.layoutControlItem10.Control = this.gridControlTransaction;
             this.layoutControlItem10.Location = new System.Drawing.Point(0, 50);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(1119, 269);
+            this.layoutControlItem10.Size = new System.Drawing.Size(1119, 281);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
@@ -1552,7 +1557,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // 
             // btnImport
             // 
-            this.btnImport.Location = new System.Drawing.Point(1204, 2);
+            this.btnImport.Location = new System.Drawing.Point(1255, 2);
             this.btnImport.Name = "btnImport";
             this.btnImport.Size = new System.Drawing.Size(116, 22);
             this.btnImport.StyleController = this.layoutControl1;
@@ -1562,7 +1567,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // 
             // chkShowAll
             // 
-            this.chkShowAll.Location = new System.Drawing.Point(862, 2);
+            this.chkShowAll.Location = new System.Drawing.Point(913, 2);
             this.chkShowAll.Name = "chkShowAll";
             this.chkShowAll.Properties.Caption = "Hiển thị tất cả";
             this.chkShowAll.Size = new System.Drawing.Size(106, 19);
@@ -1571,6 +1576,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // 
             // layoutControlCRUD
             // 
+            this.layoutControlCRUD.Controls.Add(this.txtKhoGiay);
             this.layoutControlCRUD.Controls.Add(this.chkLuonTachTheoTungSo);
             this.layoutControlCRUD.Controls.Add(this.cboEInvoiceSys);
             this.layoutControlCRUD.Controls.Add(this.chkForDebt);
@@ -1596,17 +1602,25 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.layoutControlCRUD.Controls.Add(this.spinEditMaxItemNumber);
             this.layoutControlCRUD.Controls.Add(this.chkForOtherSale);
             this.layoutControlCRUD.Controls.Add(this.cboWorkingShift);
-            this.layoutControlCRUD.Location = new System.Drawing.Point(-51, 0);
+            this.layoutControlCRUD.Location = new System.Drawing.Point(0, 0);
             this.layoutControlCRUD.Name = "layoutControlCRUD";
             this.layoutControlCRUD.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(36, 268, 250, 350);
             this.layoutControlCRUD.Root = this.Root;
-            this.layoutControlCRUD.Size = new System.Drawing.Size(250, 533);
+            this.layoutControlCRUD.Size = new System.Drawing.Size(250, 552);
             this.layoutControlCRUD.TabIndex = 29;
             this.layoutControlCRUD.Text = "layoutControl2";
             // 
+            // txtKhoGiay
+            // 
+            this.txtKhoGiay.Location = new System.Drawing.Point(97, 194);
+            this.txtKhoGiay.Name = "txtKhoGiay";
+            this.txtKhoGiay.Size = new System.Drawing.Size(151, 20);
+            this.txtKhoGiay.StyleController = this.layoutControlCRUD;
+            this.txtKhoGiay.TabIndex = 29;
+            // 
             // chkLuonTachTheoTungSo
             // 
-            this.chkLuonTachTheoTungSo.Location = new System.Drawing.Point(97, 338);
+            this.chkLuonTachTheoTungSo.Location = new System.Drawing.Point(97, 362);
             this.chkLuonTachTheoTungSo.Name = "chkLuonTachTheoTungSo";
             this.chkLuonTachTheoTungSo.Properties.Caption = "Luôn tách dải theo từng sổ";
             this.chkLuonTachTheoTungSo.Size = new System.Drawing.Size(151, 19);
@@ -1641,7 +1655,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // 
             // chkForDebt
             // 
-            this.chkForDebt.Location = new System.Drawing.Point(97, 434);
+            this.chkForDebt.Location = new System.Drawing.Point(97, 458);
             this.chkForDebt.Name = "chkForDebt";
             this.chkForDebt.Properties.Caption = "Công nợ";
             this.chkForDebt.Size = new System.Drawing.Size(151, 19);
@@ -1653,7 +1667,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // chkNotGenOrder
             // 
             this.chkNotGenOrder.EnterMoveNextControl = true;
-            this.chkNotGenOrder.Location = new System.Drawing.Point(97, 314);
+            this.chkNotGenOrder.Location = new System.Drawing.Point(97, 338);
             this.chkNotGenOrder.Name = "chkNotGenOrder";
             this.chkNotGenOrder.Properties.Caption = "Không tự động tạo số";
             this.chkNotGenOrder.Size = new System.Drawing.Size(151, 19);
@@ -1693,7 +1707,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             0,
             0,
             0});
-            this.spinNumOrder.Location = new System.Drawing.Point(97, 218);
+            this.spinNumOrder.Location = new System.Drawing.Point(97, 242);
             this.spinNumOrder.Name = "spinNumOrder";
             this.spinNumOrder.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1710,7 +1724,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // cboPatientTypeId
             // 
             this.cboPatientTypeId.EnterMoveNextControl = true;
-            this.cboPatientTypeId.Location = new System.Drawing.Point(147, 242);
+            this.cboPatientTypeId.Location = new System.Drawing.Point(147, 266);
             this.cboPatientTypeId.Name = "cboPatientTypeId";
             this.cboPatientTypeId.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboPatientTypeId.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1734,7 +1748,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // 
             // txtPatientTypeId
             // 
-            this.txtPatientTypeId.Location = new System.Drawing.Point(97, 242);
+            this.txtPatientTypeId.Location = new System.Drawing.Point(97, 266);
             this.txtPatientTypeId.Name = "txtPatientTypeId";
             this.txtPatientTypeId.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.txtPatientTypeId.Size = new System.Drawing.Size(50, 20);
@@ -1745,7 +1759,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // dtReleaseTime
             // 
             this.dtReleaseTime.EditValue = null;
-            this.dtReleaseTime.Location = new System.Drawing.Point(97, 194);
+            this.dtReleaseTime.Location = new System.Drawing.Point(97, 218);
             this.dtReleaseTime.Name = "dtReleaseTime";
             this.dtReleaseTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1786,7 +1800,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(169, 504);
+            this.btnCancel.Location = new System.Drawing.Point(169, 528);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(79, 22);
             this.btnCancel.StyleController = this.layoutControlCRUD;
@@ -1796,7 +1810,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(85, 504);
+            this.btnAdd.Location = new System.Drawing.Point(85, 528);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(80, 22);
             this.btnAdd.StyleController = this.layoutControlCRUD;
@@ -1806,7 +1820,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(2, 504);
+            this.btnSave.Location = new System.Drawing.Point(2, 528);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(79, 22);
             this.btnSave.StyleController = this.layoutControlCRUD;
@@ -1817,7 +1831,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // chkForRepay
             // 
             this.chkForRepay.EnterMoveNextControl = true;
-            this.chkForRepay.Location = new System.Drawing.Point(97, 410);
+            this.chkForRepay.Location = new System.Drawing.Point(97, 434);
             this.chkForRepay.Name = "chkForRepay";
             this.chkForRepay.Properties.Caption = "Hoàn ứng";
             this.chkForRepay.Size = new System.Drawing.Size(151, 19);
@@ -1827,7 +1841,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // 
             // chkForBill
             // 
-            this.chkForBill.Location = new System.Drawing.Point(97, 386);
+            this.chkForBill.Location = new System.Drawing.Point(97, 410);
             this.chkForBill.Name = "chkForBill";
             this.chkForBill.Properties.Caption = "Thanh toán";
             this.chkForBill.Size = new System.Drawing.Size(151, 19);
@@ -1838,7 +1852,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // 
             // chkForDeposit
             // 
-            this.chkForDeposit.Location = new System.Drawing.Point(97, 362);
+            this.chkForDeposit.Location = new System.Drawing.Point(97, 386);
             this.chkForDeposit.Name = "chkForDeposit";
             this.chkForDeposit.Properties.Caption = "Tạm ứng";
             this.chkForDeposit.Size = new System.Drawing.Size(151, 19);
@@ -1850,7 +1864,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // txtDescription
             // 
             this.txtDescription.EnterMoveNextControl = true;
-            this.txtDescription.Location = new System.Drawing.Point(97, 266);
+            this.txtDescription.Location = new System.Drawing.Point(97, 290);
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.Properties.MaxLength = 2000;
             this.txtDescription.Size = new System.Drawing.Size(151, 20);
@@ -1932,7 +1946,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             0,
             0,
             0});
-            this.spinEditMaxItemNumber.Location = new System.Drawing.Point(97, 290);
+            this.spinEditMaxItemNumber.Location = new System.Drawing.Point(97, 314);
             this.spinEditMaxItemNumber.Name = "spinEditMaxItemNumber";
             this.spinEditMaxItemNumber.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1949,7 +1963,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // 
             // chkForOtherSale
             // 
-            this.chkForOtherSale.Location = new System.Drawing.Point(97, 457);
+            this.chkForOtherSale.Location = new System.Drawing.Point(97, 481);
             this.chkForOtherSale.Name = "chkForOtherSale";
             this.chkForOtherSale.Properties.Caption = "Thanh toán khác";
             this.chkForOtherSale.Size = new System.Drawing.Size(151, 19);
@@ -1960,7 +1974,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // 
             // cboWorkingShift
             // 
-            this.cboWorkingShift.Location = new System.Drawing.Point(97, 480);
+            this.cboWorkingShift.Location = new System.Drawing.Point(97, 504);
             this.cboWorkingShift.Name = "cboWorkingShift";
             this.cboWorkingShift.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboWorkingShift.Properties.AutoComplete = false;
@@ -2013,11 +2027,12 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.lciForDebt1,
             this.lciWorkingShift,
             this.lciEInvoiceSys,
-            this.layoutControlItem11});
+            this.layoutControlItem11,
+            this.layoutControlItem21});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.Root.Size = new System.Drawing.Size(250, 533);
+            this.Root.Size = new System.Drawing.Size(250, 552);
             this.Root.TextVisible = false;
             // 
             // lciAccountBookCode
@@ -2055,7 +2070,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.lciDescription.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciDescription.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciDescription.Control = this.txtDescription;
-            this.lciDescription.Location = new System.Drawing.Point(0, 264);
+            this.lciDescription.Location = new System.Drawing.Point(0, 288);
             this.lciDescription.Name = "lciDescription";
             this.lciDescription.Size = new System.Drawing.Size(250, 24);
             this.lciDescription.Text = "Mô tả:";
@@ -2070,7 +2085,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.lciForAccountBook.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciForAccountBook.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciForAccountBook.Control = this.chkForDeposit;
-            this.lciForAccountBook.Location = new System.Drawing.Point(0, 360);
+            this.lciForAccountBook.Location = new System.Drawing.Point(0, 384);
             this.lciForAccountBook.Name = "lciForAccountBook";
             this.lciForAccountBook.Size = new System.Drawing.Size(250, 24);
             this.lciForAccountBook.Text = "Loại sổ:";
@@ -2081,7 +2096,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // layoutControlItem14
             // 
             this.layoutControlItem14.Control = this.chkForBill;
-            this.layoutControlItem14.Location = new System.Drawing.Point(0, 384);
+            this.layoutControlItem14.Location = new System.Drawing.Point(0, 408);
             this.layoutControlItem14.Name = "layoutControlItem14";
             this.layoutControlItem14.Size = new System.Drawing.Size(250, 24);
             this.layoutControlItem14.Text = " ";
@@ -2092,9 +2107,9 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // layoutControlItem17
             // 
             this.layoutControlItem17.Control = this.btnSave;
-            this.layoutControlItem17.Location = new System.Drawing.Point(0, 502);
+            this.layoutControlItem17.Location = new System.Drawing.Point(0, 526);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(83, 31);
+            this.layoutControlItem17.Size = new System.Drawing.Size(83, 26);
             this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem17.TextVisible = false;
             // 
@@ -2116,7 +2131,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.lciReleaseTime.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciReleaseTime.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciReleaseTime.Control = this.dtReleaseTime;
-            this.lciReleaseTime.Location = new System.Drawing.Point(0, 192);
+            this.lciReleaseTime.Location = new System.Drawing.Point(0, 216);
             this.lciReleaseTime.Name = "lciReleaseTime";
             this.lciReleaseTime.Size = new System.Drawing.Size(250, 24);
             this.lciReleaseTime.Text = "Ngày phát hành:";
@@ -2129,7 +2144,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.lciPatientTypeId.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciPatientTypeId.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciPatientTypeId.Control = this.txtPatientTypeId;
-            this.lciPatientTypeId.Location = new System.Drawing.Point(0, 240);
+            this.lciPatientTypeId.Location = new System.Drawing.Point(0, 264);
             this.lciPatientTypeId.Name = "lciPatientTypeId";
             this.lciPatientTypeId.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
             this.lciPatientTypeId.Size = new System.Drawing.Size(147, 24);
@@ -2142,7 +2157,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.cboPatientTypeId;
-            this.layoutControlItem8.Location = new System.Drawing.Point(147, 240);
+            this.layoutControlItem8.Location = new System.Drawing.Point(147, 264);
             this.layoutControlItem8.Name = "layoutControlItem8";
             this.layoutControlItem8.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
             this.layoutControlItem8.Size = new System.Drawing.Size(103, 24);
@@ -2153,9 +2168,9 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // layoutControlItem20
             // 
             this.layoutControlItem20.Control = this.btnCancel;
-            this.layoutControlItem20.Location = new System.Drawing.Point(167, 502);
+            this.layoutControlItem20.Location = new System.Drawing.Point(167, 526);
             this.layoutControlItem20.Name = "layoutControlItem20";
-            this.layoutControlItem20.Size = new System.Drawing.Size(83, 31);
+            this.layoutControlItem20.Size = new System.Drawing.Size(83, 26);
             this.layoutControlItem20.Text = " ";
             this.layoutControlItem20.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem20.TextSize = new System.Drawing.Size(0, 0);
@@ -2165,7 +2180,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.chkForRepay;
-            this.layoutControlItem15.Location = new System.Drawing.Point(0, 408);
+            this.layoutControlItem15.Location = new System.Drawing.Point(0, 432);
             this.layoutControlItem15.Name = "layoutControlItem15";
             this.layoutControlItem15.Size = new System.Drawing.Size(250, 24);
             this.layoutControlItem15.Text = " ";
@@ -2222,7 +2237,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.lciNumOrder.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciNumOrder.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciNumOrder.Control = this.spinNumOrder;
-            this.lciNumOrder.Location = new System.Drawing.Point(0, 216);
+            this.lciNumOrder.Location = new System.Drawing.Point(0, 240);
             this.lciNumOrder.Name = "lciNumOrder";
             this.lciNumOrder.Size = new System.Drawing.Size(250, 24);
             this.lciNumOrder.Text = "Độ ưu tiên:";
@@ -2248,7 +2263,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.lciNotGenOrder.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciNotGenOrder.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciNotGenOrder.Control = this.chkNotGenOrder;
-            this.lciNotGenOrder.Location = new System.Drawing.Point(0, 312);
+            this.lciNotGenOrder.Location = new System.Drawing.Point(0, 336);
             this.lciNotGenOrder.Name = "lciNotGenOrder";
             this.lciNotGenOrder.Size = new System.Drawing.Size(250, 24);
             this.lciNotGenOrder.Text = "Số chứng từ:";
@@ -2259,9 +2274,9 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // layoutControlItem18
             // 
             this.layoutControlItem18.Control = this.btnAdd;
-            this.layoutControlItem18.Location = new System.Drawing.Point(83, 502);
+            this.layoutControlItem18.Location = new System.Drawing.Point(83, 526);
             this.layoutControlItem18.Name = "layoutControlItem18";
-            this.layoutControlItem18.Size = new System.Drawing.Size(84, 31);
+            this.layoutControlItem18.Size = new System.Drawing.Size(84, 26);
             this.layoutControlItem18.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem18.TextVisible = false;
             // 
@@ -2271,7 +2286,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.lciMaxItemNumber.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciMaxItemNumber.Control = this.spinEditMaxItemNumber;
             this.lciMaxItemNumber.CustomizationFormText = "Từ:";
-            this.lciMaxItemNumber.Location = new System.Drawing.Point(0, 288);
+            this.lciMaxItemNumber.Location = new System.Drawing.Point(0, 312);
             this.lciMaxItemNumber.Name = "lciMaxItemNumber";
             this.lciMaxItemNumber.OptionsToolTip.ToolTip = "Số dòng mặt hàng tối đa trên 1 phiếu";
             this.lciMaxItemNumber.Size = new System.Drawing.Size(250, 24);
@@ -2285,7 +2300,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.lciForDebt.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciForDebt.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciForDebt.Control = this.chkForDebt;
-            this.lciForDebt.Location = new System.Drawing.Point(0, 432);
+            this.lciForDebt.Location = new System.Drawing.Point(0, 456);
             this.lciForDebt.Name = "lciForDebt";
             this.lciForDebt.Size = new System.Drawing.Size(250, 23);
             this.lciForDebt.Text = " ";
@@ -2297,7 +2312,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // 
             this.lciForDebt1.Control = this.chkForOtherSale;
             this.lciForDebt1.CustomizationFormText = " ";
-            this.lciForDebt1.Location = new System.Drawing.Point(0, 455);
+            this.lciForDebt1.Location = new System.Drawing.Point(0, 479);
             this.lciForDebt1.Name = "lciForDebt1";
             this.lciForDebt1.Size = new System.Drawing.Size(250, 23);
             this.lciForDebt1.Text = " ";
@@ -2310,7 +2325,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.lciWorkingShift.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciWorkingShift.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciWorkingShift.Control = this.cboWorkingShift;
-            this.lciWorkingShift.Location = new System.Drawing.Point(0, 478);
+            this.lciWorkingShift.Location = new System.Drawing.Point(0, 502);
             this.lciWorkingShift.Name = "lciWorkingShift";
             this.lciWorkingShift.Size = new System.Drawing.Size(250, 24);
             this.lciWorkingShift.Text = "Ca làm việc:";
@@ -2335,7 +2350,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.chkLuonTachTheoTungSo;
-            this.layoutControlItem11.Location = new System.Drawing.Point(0, 336);
+            this.layoutControlItem11.Location = new System.Drawing.Point(0, 360);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.OptionsToolTip.ToolTip = "Luôn sinh số chứng từ theo từng dải riêng tương ứng với từng sổ. Trong trường hợp" +
     " checkbox này không được check thì các sổ có cùng mẫu số và ký hiệu sẽ được sinh" +
@@ -2346,9 +2361,23 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.layoutControlItem11.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem11.TextToControlDistance = 5;
             // 
+            // layoutControlItem21
+            // 
+            this.layoutControlItem21.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem21.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem21.Control = this.txtKhoGiay;
+            this.layoutControlItem21.Location = new System.Drawing.Point(0, 192);
+            this.layoutControlItem21.Name = "layoutControlItem21";
+            this.layoutControlItem21.OptionsToolTip.ToolTip = "Khổ giấy mặc định khi in hóa đơn điện tử. VD: A4, A5,…";
+            this.layoutControlItem21.Size = new System.Drawing.Size(250, 24);
+            this.layoutControlItem21.Text = "Khổ giấy HĐ ĐT:";
+            this.layoutControlItem21.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem21.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem21.TextToControlDistance = 5;
+            // 
             // btnRefesh
             // 
-            this.btnRefesh.Location = new System.Drawing.Point(1082, 2);
+            this.btnRefesh.Location = new System.Drawing.Point(1133, 2);
             this.btnRefesh.Name = "btnRefesh";
             this.btnRefesh.Size = new System.Drawing.Size(118, 22);
             this.btnRefesh.StyleController = this.layoutControl1;
@@ -2358,7 +2387,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(972, 2);
+            this.btnSearch.Location = new System.Drawing.Point(1023, 2);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(106, 22);
             this.btnSearch.StyleController = this.layoutControl1;
@@ -2368,7 +2397,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // 
             // txtKeyWord
             // 
-            this.txtKeyWord.Location = new System.Drawing.Point(201, 2);
+            this.txtKeyWord.Location = new System.Drawing.Point(252, 2);
             this.txtKeyWord.Name = "txtKeyWord";
             this.txtKeyWord.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
             this.txtKeyWord.Properties.NullValuePromptShowForEmptyValue = true;
@@ -2380,7 +2409,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // 
             // gridControlAccountBook
             // 
-            this.gridControlAccountBook.Location = new System.Drawing.Point(201, 28);
+            this.gridControlAccountBook.Location = new System.Drawing.Point(252, 28);
             this.gridControlAccountBook.MainView = this.gridViewAccountBook;
             this.gridControlAccountBook.Name = "gridControlAccountBook";
             this.gridControlAccountBook.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
@@ -2403,7 +2432,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.repositoryItemButtonLockDis,
             this.repositoryItemButtonUnLock,
             this.repositoryItemButtonUnLockDis});
-            this.gridControlAccountBook.Size = new System.Drawing.Size(1119, 180);
+            this.gridControlAccountBook.Size = new System.Drawing.Size(1119, 187);
             this.gridControlAccountBook.TabIndex = 4;
             this.gridControlAccountBook.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewAccountBook});
@@ -3135,10 +3164,10 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.layoutControlItem2,
             this.layoutControlItem7,
             this.layoutControlItem9});
-            this.layoutControlGroup1.Location = new System.Drawing.Point(-51, 0);
+            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1373, 533);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1373, 552);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -3146,7 +3175,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.layoutControlItem1.Control = this.gridControlAccountBook;
             this.layoutControlItem1.Location = new System.Drawing.Point(250, 26);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1123, 184);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1123, 191);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -3174,7 +3203,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem3.Size = new System.Drawing.Size(250, 533);
+            this.layoutControlItem3.Size = new System.Drawing.Size(250, 552);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -3208,9 +3237,9 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.layoutControlTransaction;
-            this.layoutControlItem9.Location = new System.Drawing.Point(250, 210);
+            this.layoutControlItem9.Location = new System.Drawing.Point(250, 217);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(1123, 323);
+            this.layoutControlItem9.Size = new System.Drawing.Size(1123, 335);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
@@ -3298,6 +3327,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             ((System.ComponentModel.ISupportInitialize)(this.chkShowAll.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlCRUD)).EndInit();
             this.layoutControlCRUD.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtKhoGiay.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkLuonTachTheoTungSo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboEInvoiceSys.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).EndInit();
@@ -3351,6 +3381,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
             ((System.ComponentModel.ISupportInitialize)(this.lciWorkingShift)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciEInvoiceSys)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWord.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlAccountBook)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewAccountBook)).EndInit();
@@ -3601,5 +3632,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonUnLockDis;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn10;
+        private DevExpress.XtraEditors.TextEdit txtKhoGiay;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem21;
     }
 }

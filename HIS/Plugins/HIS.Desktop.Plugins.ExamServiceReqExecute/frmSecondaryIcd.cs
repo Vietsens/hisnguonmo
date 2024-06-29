@@ -65,7 +65,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.icdCodes = icdCodes;
                 this.icdNames = icdNames;
                 string[] codes = this.icdCodes.Split(IcdUtil.seperator.ToCharArray());
-                icdAdoChecks = (from m in BackendDataWorker.Get<HIS_ICD>() select new IcdADO(m, codes)).ToList();
+                icdAdoChecks = (from m in BackendDataWorker.Get<HIS_ICD>() where m.IS_ACTIVE == 1 && m.IS_TRADITIONAL != 1 select new IcdADO(m, codes)).ToList();
                 limit = (int)_limit;
                 this.checkIcdManager = checkIcdManager;
             }

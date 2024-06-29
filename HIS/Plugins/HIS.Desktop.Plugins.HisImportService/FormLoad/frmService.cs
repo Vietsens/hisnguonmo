@@ -216,6 +216,8 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                     string error = "";
                     var serAdo = new ServiceImportADO();
                     Inventec.Common.Mapper.DataObjectMapper.Map<ServiceImportADO>(serAdo, item);
+                    if (!string.IsNullOrEmpty(item.PTTT_GROUP_CODE))
+                        item.PTTT_GROUP_CODE = item.PTTT_GROUP_CODE.Trim();
 
                     if (!string.IsNullOrEmpty(item.PARENT_CODE))
                     {
@@ -369,6 +371,7 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                             error += string.Format(Message.MessageImport.KhongHopLe, "Gói");
                         }
                     }
+
 
                     if (!string.IsNullOrEmpty(item.PTTT_GROUP_CODE))
                     {
@@ -536,7 +539,7 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
 
                     if (!string.IsNullOrEmpty(item.SERVICE_NAME))
                     {
-                        if (Encoding.UTF8.GetByteCount(item.SERVICE_NAME.Trim()) > 500)
+                        if (Encoding.UTF8.GetByteCount(item.SERVICE_NAME.Trim()) > 1500)
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Tên dịch vụ");
                         }
@@ -620,7 +623,7 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
 
                     if (!string.IsNullOrEmpty(item.HEIN_SERVICE_BHYT_NAME))
                     {
-                        if (Encoding.UTF8.GetByteCount(item.HEIN_SERVICE_BHYT_NAME.Trim()) > 500)
+                        if (Encoding.UTF8.GetByteCount(item.HEIN_SERVICE_BHYT_NAME.Trim()) > 1500)
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Tên DV BHYT");
                         }

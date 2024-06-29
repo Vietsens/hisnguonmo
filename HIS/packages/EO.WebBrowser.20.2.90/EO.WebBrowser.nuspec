@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>EO.WebBrowser</id>
+    <version>20.2.90</version>
+    <title>EO.WebBrowser for .NET</title>
+    <authors>Essential Objects</authors>
+    <owners>Essential Objects</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>http://www.essentialobjects.com/Products/WebBrowser/EULA.aspx</licenseUrl>
+    <projectUrl>http://www.essentialobjects.com/Products/WebBrowser/Default.aspx</projectUrl>
+    <iconUrl>http://www.essentialobjects.com/eo.png</iconUrl>
+    <description>EO.WebBrowser is a .NET browser engine based on Google's Chrome project. It packs a full featured browser engine inside a single .NET DLL that has zero external dependency and works for both 32 bit and 64 bit applications. It also offers many advanced features such extensive customization options, ability to call JavaScript code from .NET code and ability to call .NET code from JavaScript code, custom resource handler, custom download handler, etc. The control is an ideal replacement of the .NET's built-in WebBrowser control.</description>
+    <summary>EO.WebBrowser is a .NET browser engine based on Google's Chrome project. It packs a full featured browser engine inside a single .NET DLL that has zero external dependency and works for both 32 bit and 64 bit applications. It's an ideal replacement of the .NET's built-in WebBrowser control.</summary>
+    <copyright>Essential Objects, Inc.</copyright>
+    <language>es-US</language>
+    <tags>EO WebBrowser, Chrome Embedded, Web Engine, HTML Engine</tags>
+    <references>
+      <reference file="EO.Base.dll" />
+      <reference file="EO.WebEngine.dll" />
+      <reference file="EO.WebBrowser.dll" />
+    </references>
+  </metadata>
+</package>

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{856AAE17-9F11-43A7-B340-FDB3BD4E0380}</ProjectGuid>
+    <ProjectGuid>{7C32F705-F6E7-4543-B1C1-262D6289934D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HIS.Desktop.Plugins.MedicalStoreV2</RootNamespace>

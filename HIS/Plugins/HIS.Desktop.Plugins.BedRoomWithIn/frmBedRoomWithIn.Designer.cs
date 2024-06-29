@@ -55,6 +55,10 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barbtnSave = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtPatientReceive = new DevExpress.XtraEditors.TextEdit();
             this.lblNote = new System.Windows.Forms.Label();
@@ -94,8 +98,10 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.dtLogTime = new DevExpress.XtraEditors.DateEdit();
             this.cboServiceCondition = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cbboDoctor = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView7 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cbbDoctor = new DevExpress.XtraEditors.TextEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
-            this.lciTime = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -111,7 +117,6 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.LciPrimaryPatientType = new DevExpress.XtraLayout.LayoutControlItem();
             this.LciPrice = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciTxtInCode = new DevExpress.XtraLayout.LayoutControlItem();
@@ -128,10 +133,9 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem21 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem22 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.lciTime = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider2 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.timerInit = new System.Windows.Forms.Timer();
             this.toolTipController1 = new DevExpress.Utils.ToolTipController();
@@ -170,8 +174,10 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             ((System.ComponentModel.ISupportInitialize)(this.dtLogTime.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboServiceCondition.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbboDoctor.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbbDoctor.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
@@ -187,7 +193,6 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             ((System.ComponentModel.ISupportInitialize)(this.LciPrimaryPatientType)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTxtInCode)).BeginInit();
@@ -204,6 +209,9 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider2)).BeginInit();
             this.SuspendLayout();
             // 
@@ -239,18 +247,20 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.layoutControl1.Controls.Add(this.cboBedRoom);
             this.layoutControl1.Controls.Add(this.dtLogTime);
             this.layoutControl1.Controls.Add(this.cboServiceCondition);
+            this.layoutControl1.Controls.Add(this.cbboDoctor);
+            this.layoutControl1.Controls.Add(this.cbbDoctor);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 29);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(641, 88, 250, 350);
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(459, 574);
+            this.layoutControl1.Size = new System.Drawing.Size(459, 577);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // cboPatientReceive
             // 
-            this.cboPatientReceive.Location = new System.Drawing.Point(157, 242);
+            this.cboPatientReceive.Location = new System.Drawing.Point(157, 197);
             this.cboPatientReceive.MenuManager = this.barManager1;
             this.cboPatientReceive.Name = "cboPatientReceive";
             this.cboPatientReceive.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
@@ -267,6 +277,10 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barbtnSave});
@@ -291,6 +305,34 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.barbtnSave.Name = "barbtnSave";
             this.barbtnSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barbtnSave_ItemClick);
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(459, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 606);
+            this.barDockControlBottom.Size = new System.Drawing.Size(459, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 577);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(459, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 577);
+            // 
             // gridView4
             // 
             this.gridView4.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
@@ -300,7 +342,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // txtPatientReceive
             // 
-            this.txtPatientReceive.Location = new System.Drawing.Point(97, 242);
+            this.txtPatientReceive.Location = new System.Drawing.Point(97, 197);
             this.txtPatientReceive.MenuManager = this.barManager1;
             this.txtPatientReceive.Name = "txtPatientReceive";
             this.txtPatientReceive.Size = new System.Drawing.Size(60, 20);
@@ -311,7 +353,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // lblNote
             // 
             this.lblNote.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNote.Location = new System.Drawing.Point(97, 170);
+            this.lblNote.Location = new System.Drawing.Point(97, 125);
             this.lblNote.Name = "lblNote";
             this.lblNote.Padding = new System.Windows.Forms.Padding(4);
             this.lblNote.Size = new System.Drawing.Size(343, 20);
@@ -320,7 +362,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // txtGROUP_NAME
             // 
-            this.txtGROUP_NAME.Location = new System.Drawing.Point(97, 98);
+            this.txtGROUP_NAME.Location = new System.Drawing.Point(97, 53);
             this.txtGROUP_NAME.Name = "txtGROUP_NAME";
             this.txtGROUP_NAME.Size = new System.Drawing.Size(343, 20);
             this.txtGROUP_NAME.TabIndex = 41;
@@ -329,7 +371,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // chkIsEmergency
             // 
             this.chkIsEmergency.Enabled = false;
-            this.chkIsEmergency.Location = new System.Drawing.Point(97, 74);
+            this.chkIsEmergency.Location = new System.Drawing.Point(97, 29);
             this.chkIsEmergency.MenuManager = this.barManager1;
             this.chkIsEmergency.Name = "chkIsEmergency";
             this.chkIsEmergency.Properties.Caption = "";
@@ -341,7 +383,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // cboPATIENT_CLASSIFY
             // 
             this.cboPATIENT_CLASSIFY.EditValue = "";
-            this.cboPATIENT_CLASSIFY.Location = new System.Drawing.Point(157, 382);
+            this.cboPATIENT_CLASSIFY.Location = new System.Drawing.Point(157, 361);
             this.cboPATIENT_CLASSIFY.MenuManager = this.barManager1;
             this.cboPATIENT_CLASSIFY.Name = "cboPATIENT_CLASSIFY";
             this.cboPATIENT_CLASSIFY.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -365,7 +407,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // txtPATIENT_CLASSIFY
             // 
-            this.txtPATIENT_CLASSIFY.Location = new System.Drawing.Point(97, 382);
+            this.txtPATIENT_CLASSIFY.Location = new System.Drawing.Point(97, 361);
             this.txtPATIENT_CLASSIFY.MenuManager = this.barManager1;
             this.txtPATIENT_CLASSIFY.Name = "txtPATIENT_CLASSIFY";
             this.txtPATIENT_CLASSIFY.Size = new System.Drawing.Size(60, 20);
@@ -375,7 +417,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // labelGender
             // 
-            this.labelGender.Location = new System.Drawing.Point(333, 26);
+            this.labelGender.Location = new System.Drawing.Point(333, -19);
             this.labelGender.Name = "labelGender";
             this.labelGender.Size = new System.Drawing.Size(107, 20);
             this.labelGender.TabIndex = 37;
@@ -383,7 +425,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // labelAddress
             // 
-            this.labelAddress.Location = new System.Drawing.Point(97, 50);
+            this.labelAddress.Location = new System.Drawing.Point(97, 5);
             this.labelAddress.Name = "labelAddress";
             this.labelAddress.Size = new System.Drawing.Size(343, 20);
             this.labelAddress.TabIndex = 36;
@@ -391,7 +433,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // labelDOB
             // 
-            this.labelDOB.Location = new System.Drawing.Point(97, 26);
+            this.labelDOB.Location = new System.Drawing.Point(97, -19);
             this.labelDOB.Name = "labelDOB";
             this.labelDOB.Size = new System.Drawing.Size(187, 20);
             this.labelDOB.TabIndex = 35;
@@ -399,7 +441,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // labelName
             // 
-            this.labelName.Location = new System.Drawing.Point(97, 2);
+            this.labelName.Location = new System.Drawing.Point(97, -43);
             this.labelName.Name = "labelName";
             this.labelName.Size = new System.Drawing.Size(343, 20);
             this.labelName.TabIndex = 34;
@@ -407,7 +449,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // txtInCode
             // 
-            this.txtInCode.Location = new System.Drawing.Point(97, 122);
+            this.txtInCode.Location = new System.Drawing.Point(97, 77);
             this.txtInCode.MenuManager = this.barManager1;
             this.txtInCode.Name = "txtInCode";
             this.txtInCode.Size = new System.Drawing.Size(164, 20);
@@ -418,7 +460,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // panelSubIcdYhct
             // 
             this.panelSubIcdYhct.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.panelSubIcdYhct.Location = new System.Drawing.Point(0, 356);
+            this.panelSubIcdYhct.Location = new System.Drawing.Point(0, 335);
             this.panelSubIcdYhct.Name = "panelSubIcdYhct";
             this.panelSubIcdYhct.Size = new System.Drawing.Size(442, 24);
             this.panelSubIcdYhct.TabIndex = 32;
@@ -426,7 +468,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // panelControlIcdYhct
             // 
             this.panelControlIcdYhct.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.panelControlIcdYhct.Location = new System.Drawing.Point(0, 308);
+            this.panelControlIcdYhct.Location = new System.Drawing.Point(0, 287);
             this.panelControlIcdYhct.Name = "panelControlIcdYhct";
             this.panelControlIcdYhct.Size = new System.Drawing.Size(442, 24);
             this.panelControlIcdYhct.TabIndex = 31;
@@ -434,7 +476,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // panelControlSubIcd
             // 
             this.panelControlSubIcd.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.panelControlSubIcd.Location = new System.Drawing.Point(0, 332);
+            this.panelControlSubIcd.Location = new System.Drawing.Point(0, 311);
             this.panelControlSubIcd.Name = "panelControlSubIcd";
             this.panelControlSubIcd.Size = new System.Drawing.Size(442, 24);
             this.panelControlSubIcd.TabIndex = 30;
@@ -442,7 +484,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // LblPrice
             // 
             this.LblPrice.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.LblPrice.Location = new System.Drawing.Point(97, 550);
+            this.LblPrice.Location = new System.Drawing.Point(97, 529);
             this.LblPrice.Name = "LblPrice";
             this.LblPrice.Size = new System.Drawing.Size(343, 20);
             this.LblPrice.StyleController = this.layoutControl1;
@@ -450,7 +492,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // CboPrimaryPatientType
             // 
-            this.CboPrimaryPatientType.Location = new System.Drawing.Point(97, 478);
+            this.CboPrimaryPatientType.Location = new System.Drawing.Point(97, 457);
             this.CboPrimaryPatientType.MenuManager = this.barManager1;
             this.CboPrimaryPatientType.Name = "CboPrimaryPatientType";
             this.CboPrimaryPatientType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -476,7 +518,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // CboPatientType
             // 
-            this.CboPatientType.Location = new System.Drawing.Point(97, 454);
+            this.CboPatientType.Location = new System.Drawing.Point(97, 433);
             this.CboPatientType.MenuManager = this.barManager1;
             this.CboPatientType.Name = "CboPatientType";
             this.CboPatientType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -502,7 +544,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // CboBedService
             // 
-            this.CboBedService.Location = new System.Drawing.Point(97, 430);
+            this.CboBedService.Location = new System.Drawing.Point(97, 409);
             this.CboBedService.MenuManager = this.barManager1;
             this.CboBedService.Name = "CboBedService";
             this.CboBedService.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -533,7 +575,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             0,
             0,
             0});
-            this.SpNamGhep.Location = new System.Drawing.Point(97, 526);
+            this.SpNamGhep.Location = new System.Drawing.Point(97, 505);
             this.SpNamGhep.MenuManager = this.barManager1;
             this.SpNamGhep.Name = "SpNamGhep";
             this.SpNamGhep.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -551,7 +593,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // lblSoVaoVien
             // 
-            this.lblSoVaoVien.Location = new System.Drawing.Point(97, 146);
+            this.lblSoVaoVien.Location = new System.Drawing.Point(97, 101);
             this.lblSoVaoVien.Name = "lblSoVaoVien";
             this.lblSoVaoVien.Size = new System.Drawing.Size(343, 20);
             this.lblSoVaoVien.TabIndex = 23;
@@ -559,7 +601,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // layoutControlIcd
             // 
-            this.layoutControlIcd.Location = new System.Drawing.Point(0, 288);
+            this.layoutControlIcd.Location = new System.Drawing.Point(0, 267);
             this.layoutControlIcd.Name = "layoutControlIcd";
             this.layoutControlIcd.Root = this.Root;
             this.layoutControlIcd.Size = new System.Drawing.Size(442, 20);
@@ -577,7 +619,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // cboBed
             // 
-            this.cboBed.Location = new System.Drawing.Point(97, 406);
+            this.cboBed.Location = new System.Drawing.Point(97, 385);
             this.cboBed.MenuManager = this.barManager1;
             this.cboBed.Name = "cboBed";
             this.cboBed.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -604,7 +646,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // cboTreatmentType
             // 
-            this.cboTreatmentType.Location = new System.Drawing.Point(157, 218);
+            this.cboTreatmentType.Location = new System.Drawing.Point(157, 173);
             this.cboTreatmentType.MenuManager = this.barManager1;
             this.cboTreatmentType.Name = "cboTreatmentType";
             this.cboTreatmentType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -628,7 +670,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // txtTreatmentTypeCode
             // 
-            this.txtTreatmentTypeCode.Location = new System.Drawing.Point(97, 218);
+            this.txtTreatmentTypeCode.Location = new System.Drawing.Point(97, 173);
             this.txtTreatmentTypeCode.MenuManager = this.barManager1;
             this.txtTreatmentTypeCode.Name = "txtTreatmentTypeCode";
             this.txtTreatmentTypeCode.Size = new System.Drawing.Size(60, 20);
@@ -638,7 +680,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(298, 584);
+            this.btnSave.Location = new System.Drawing.Point(298, 553);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(142, 22);
             this.btnSave.StyleController = this.layoutControl1;
@@ -648,7 +690,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // txtBedRoomCode
             // 
-            this.txtBedRoomCode.Location = new System.Drawing.Point(97, 266);
+            this.txtBedRoomCode.Location = new System.Drawing.Point(97, 221);
             this.txtBedRoomCode.Name = "txtBedRoomCode";
             this.txtBedRoomCode.Size = new System.Drawing.Size(60, 20);
             this.txtBedRoomCode.StyleController = this.layoutControl1;
@@ -657,7 +699,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // cboBedRoom
             // 
-            this.cboBedRoom.Location = new System.Drawing.Point(157, 266);
+            this.cboBedRoom.Location = new System.Drawing.Point(157, 221);
             this.cboBedRoom.Name = "cboBedRoom";
             this.cboBedRoom.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboBedRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -683,7 +725,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // dtLogTime
             // 
             this.dtLogTime.EditValue = null;
-            this.dtLogTime.Location = new System.Drawing.Point(97, 194);
+            this.dtLogTime.Location = new System.Drawing.Point(97, 149);
             this.dtLogTime.Name = "dtLogTime";
             this.dtLogTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -701,7 +743,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // cboServiceCondition
             // 
-            this.cboServiceCondition.Location = new System.Drawing.Point(97, 502);
+            this.cboServiceCondition.Location = new System.Drawing.Point(97, 481);
             this.cboServiceCondition.MenuManager = this.barManager1;
             this.cboServiceCondition.Name = "cboServiceCondition";
             this.cboServiceCondition.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -723,12 +765,47 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.gridView5.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridView5.OptionsView.ShowGroupPanel = false;
             // 
+            // cbboDoctor
+            // 
+            this.cbboDoctor.EnterMoveNextControl = true;
+            this.cbboDoctor.Location = new System.Drawing.Point(157, 245);
+            this.cbboDoctor.MenuManager = this.barManager1;
+            this.cbboDoctor.Name = "cbboDoctor";
+            this.cbboDoctor.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cbboDoctor.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cbboDoctor.Properties.NullText = "";
+            this.cbboDoctor.Properties.View = this.gridView7;
+            this.cbboDoctor.Size = new System.Drawing.Size(283, 20);
+            this.cbboDoctor.StyleController = this.layoutControl1;
+            this.cbboDoctor.TabIndex = 47;
+            this.cbboDoctor.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cbbDoctor_Closed);
+            this.cbboDoctor.EditValueChanged += new System.EventHandler(this.cbboDoctor_EditValueChanged);
+            // 
+            // gridView7
+            // 
+            this.gridView7.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView7.Name = "gridView7";
+            this.gridView7.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView7.OptionsView.ShowGroupPanel = false;
+            // 
+            // cbbDoctor
+            // 
+            this.cbbDoctor.Location = new System.Drawing.Point(97, 245);
+            this.cbbDoctor.MenuManager = this.barManager1;
+            this.cbbDoctor.Name = "cbbDoctor";
+            this.cbbDoctor.Size = new System.Drawing.Size(60, 20);
+            this.cbbDoctor.StyleController = this.layoutControl1;
+            this.cbbDoctor.TabIndex = 46;
+            this.cbbDoctor.EditValueChanged += new System.EventHandler(this.cbbDoctor_EditValueChanged);
+            this.cbbDoctor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cbbDoctor_KeyDown);
+            this.cbbDoctor.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cbbDoctor_PreviewKeyDown);
+            // 
             // layoutControlGroup1
             // 
             this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             this.layoutControlGroup1.GroupBordersVisible = false;
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.lciTime,
             this.layoutControlItem4,
             this.layoutControlItem5,
             this.layoutControlItem6,
@@ -744,7 +821,6 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.LciPrimaryPatientType,
             this.LciPrice,
             this.layoutControlItem1,
-            this.emptySpaceItem2,
             this.layoutControlItem7,
             this.layoutControlItem10,
             this.lciTxtInCode,
@@ -760,27 +836,15 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.layoutControlItem19,
             this.layoutControlItem20,
             this.layoutControlItem21,
-            this.layoutControlItem22});
-            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem22,
+            this.lciTime,
+            this.layoutControlItem23,
+            this.layoutControlItem24});
+            this.layoutControlGroup1.Location = new System.Drawing.Point(0, -45);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(442, 608);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(442, 622);
             this.layoutControlGroup1.TextVisible = false;
-            // 
-            // lciTime
-            // 
-            this.lciTime.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
-            this.lciTime.AppearanceItemCaption.Options.UseForeColor = true;
-            this.lciTime.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.lciTime.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lciTime.Control = this.dtLogTime;
-            this.lciTime.Location = new System.Drawing.Point(0, 192);
-            this.lciTime.Name = "lciTime";
-            this.lciTime.Size = new System.Drawing.Size(442, 24);
-            this.lciTime.Text = "Thời gian:";
-            this.lciTime.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciTime.TextSize = new System.Drawing.Size(90, 20);
-            this.lciTime.TextToControlDistance = 5;
             // 
             // layoutControlItem4
             // 
@@ -809,7 +873,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnSave;
-            this.layoutControlItem6.Location = new System.Drawing.Point(296, 582);
+            this.layoutControlItem6.Location = new System.Drawing.Point(296, 596);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Size = new System.Drawing.Size(146, 26);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
@@ -818,7 +882,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 582);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 596);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(296, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -852,7 +916,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.layoutControlItem8.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem8.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem8.Control = this.cboBed;
-            this.layoutControlItem8.Location = new System.Drawing.Point(0, 404);
+            this.layoutControlItem8.Location = new System.Drawing.Point(0, 428);
             this.layoutControlItem8.Name = "layoutControlItem8";
             this.layoutControlItem8.Size = new System.Drawing.Size(442, 24);
             this.layoutControlItem8.Text = "Giường:";
@@ -863,7 +927,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // layoutControlItem13
             // 
             this.layoutControlItem13.Control = this.layoutControlIcd;
-            this.layoutControlItem13.Location = new System.Drawing.Point(0, 288);
+            this.layoutControlItem13.Location = new System.Drawing.Point(0, 312);
             this.layoutControlItem13.Name = "layoutControlItem13";
             this.layoutControlItem13.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlItem13.Size = new System.Drawing.Size(442, 20);
@@ -888,7 +952,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.LciNamGhep.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LciNamGhep.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LciNamGhep.Control = this.SpNamGhep;
-            this.LciNamGhep.Location = new System.Drawing.Point(0, 524);
+            this.LciNamGhep.Location = new System.Drawing.Point(0, 548);
             this.LciNamGhep.Name = "LciNamGhep";
             this.LciNamGhep.Size = new System.Drawing.Size(442, 24);
             this.LciNamGhep.Text = "Nằm ghép:";
@@ -901,7 +965,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.LciBedService.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LciBedService.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LciBedService.Control = this.CboBedService;
-            this.LciBedService.Location = new System.Drawing.Point(0, 428);
+            this.LciBedService.Location = new System.Drawing.Point(0, 452);
             this.LciBedService.Name = "LciBedService";
             this.LciBedService.Size = new System.Drawing.Size(442, 24);
             this.LciBedService.Text = "Dịch vụ giường:";
@@ -914,7 +978,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.LciPatientType.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LciPatientType.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LciPatientType.Control = this.CboPatientType;
-            this.LciPatientType.Location = new System.Drawing.Point(0, 452);
+            this.LciPatientType.Location = new System.Drawing.Point(0, 476);
             this.LciPatientType.Name = "LciPatientType";
             this.LciPatientType.OptionsToolTip.ToolTip = "Đối tượng thanh toán";
             this.LciPatientType.Size = new System.Drawing.Size(442, 24);
@@ -928,7 +992,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.LciPrimaryPatientType.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LciPrimaryPatientType.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LciPrimaryPatientType.Control = this.CboPrimaryPatientType;
-            this.LciPrimaryPatientType.Location = new System.Drawing.Point(0, 476);
+            this.LciPrimaryPatientType.Location = new System.Drawing.Point(0, 500);
             this.LciPrimaryPatientType.Name = "LciPrimaryPatientType";
             this.LciPrimaryPatientType.Size = new System.Drawing.Size(442, 24);
             this.LciPrimaryPatientType.Text = "ĐT Phụ Thu:";
@@ -941,7 +1005,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.LciPrice.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LciPrice.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LciPrice.Control = this.LblPrice;
-            this.LciPrice.Location = new System.Drawing.Point(0, 548);
+            this.LciPrice.Location = new System.Drawing.Point(0, 572);
             this.LciPrice.Name = "LciPrice";
             this.LciPrice.Size = new System.Drawing.Size(442, 24);
             this.LciPrice.Text = "Đơn giá:";
@@ -952,7 +1016,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.panelControlSubIcd;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 332);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 356);
             this.layoutControlItem1.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem1.MinSize = new System.Drawing.Size(5, 24);
             this.layoutControlItem1.Name = "layoutControlItem1";
@@ -964,18 +1028,10 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.layoutControlItem1.TextToControlDistance = 0;
             this.layoutControlItem1.TextVisible = false;
             // 
-            // emptySpaceItem2
-            // 
-            this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 572);
-            this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(442, 10);
-            this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
-            // 
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.panelControlIcdYhct;
-            this.layoutControlItem7.Location = new System.Drawing.Point(0, 308);
+            this.layoutControlItem7.Location = new System.Drawing.Point(0, 332);
             this.layoutControlItem7.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem7.MinSize = new System.Drawing.Size(1, 24);
             this.layoutControlItem7.Name = "layoutControlItem7";
@@ -988,7 +1044,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.panelSubIcdYhct;
-            this.layoutControlItem10.Location = new System.Drawing.Point(0, 356);
+            this.layoutControlItem10.Location = new System.Drawing.Point(0, 380);
             this.layoutControlItem10.MinSize = new System.Drawing.Size(5, 24);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1071,7 +1127,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.layoutControlItem15.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem15.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem15.Control = this.txtPATIENT_CLASSIFY;
-            this.layoutControlItem15.Location = new System.Drawing.Point(0, 380);
+            this.layoutControlItem15.Location = new System.Drawing.Point(0, 404);
             this.layoutControlItem15.Name = "layoutControlItem15";
             this.layoutControlItem15.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
             this.layoutControlItem15.Size = new System.Drawing.Size(157, 24);
@@ -1083,7 +1139,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // layoutControlItem16
             // 
             this.layoutControlItem16.Control = this.cboPATIENT_CLASSIFY;
-            this.layoutControlItem16.Location = new System.Drawing.Point(157, 380);
+            this.layoutControlItem16.Location = new System.Drawing.Point(157, 404);
             this.layoutControlItem16.Name = "layoutControlItem16";
             this.layoutControlItem16.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
             this.layoutControlItem16.Size = new System.Drawing.Size(285, 24);
@@ -1162,7 +1218,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.layoutControlItem22.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem22.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem22.Control = this.cboServiceCondition;
-            this.layoutControlItem22.Location = new System.Drawing.Point(0, 500);
+            this.layoutControlItem22.Location = new System.Drawing.Point(0, 524);
             this.layoutControlItem22.Name = "layoutControlItem22";
             this.layoutControlItem22.OptionsToolTip.ToolTip = "Điều kiện dịch vụ";
             this.layoutControlItem22.Size = new System.Drawing.Size(442, 24);
@@ -1171,33 +1227,44 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.layoutControlItem22.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem22.TextToControlDistance = 5;
             // 
-            // barDockControlTop
+            // lciTime
             // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(459, 0);
+            this.lciTime.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
+            this.lciTime.AppearanceItemCaption.Options.UseForeColor = true;
+            this.lciTime.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciTime.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciTime.Control = this.dtLogTime;
+            this.lciTime.Location = new System.Drawing.Point(0, 192);
+            this.lciTime.Name = "lciTime";
+            this.lciTime.Size = new System.Drawing.Size(442, 24);
+            this.lciTime.Text = "Thời gian:";
+            this.lciTime.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciTime.TextSize = new System.Drawing.Size(90, 20);
+            this.lciTime.TextToControlDistance = 5;
             // 
-            // barDockControlBottom
+            // layoutControlItem23
             // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 603);
-            this.barDockControlBottom.Size = new System.Drawing.Size(459, 0);
+            this.layoutControlItem23.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem23.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem23.Control = this.cbbDoctor;
+            this.layoutControlItem23.Location = new System.Drawing.Point(0, 288);
+            this.layoutControlItem23.Name = "layoutControlItem23";
+            this.layoutControlItem23.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
+            this.layoutControlItem23.Size = new System.Drawing.Size(157, 24);
+            this.layoutControlItem23.Text = "Bác sĩ điều trị:";
+            this.layoutControlItem23.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem23.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem23.TextToControlDistance = 5;
             // 
-            // barDockControlLeft
+            // layoutControlItem24
             // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 574);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(459, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 574);
+            this.layoutControlItem24.Control = this.cbboDoctor;
+            this.layoutControlItem24.Location = new System.Drawing.Point(157, 288);
+            this.layoutControlItem24.Name = "layoutControlItem24";
+            this.layoutControlItem24.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
+            this.layoutControlItem24.Size = new System.Drawing.Size(285, 24);
+            this.layoutControlItem24.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem24.TextVisible = false;
             // 
             // timerInit
             // 
@@ -1208,13 +1275,14 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(459, 603);
+            this.ClientSize = new System.Drawing.Size(459, 606);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "frmBedRoomWithIn";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -1260,8 +1328,10 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             ((System.ComponentModel.ISupportInitialize)(this.dtLogTime.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboServiceCondition.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbboDoctor.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbbDoctor.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
@@ -1277,7 +1347,6 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             ((System.ComponentModel.ISupportInitialize)(this.LciPrimaryPatientType)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciPrice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTxtInCode)).EndInit();
@@ -1294,6 +1363,9 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1350,7 +1422,6 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider2;
         private DevExpress.XtraEditors.PanelControl panelControlSubIcd;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
         private DevExpress.XtraEditors.PanelControl panelControlIcdYhct;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
         private DevExpress.XtraEditors.PanelControl panelSubIcdYhct;
@@ -1387,5 +1458,10 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem22;
         private DevExpress.XtraEditors.GridLookUpEdit cboServiceCondition;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView5;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem23;
+        private DevExpress.XtraEditors.GridLookUpEdit cbboDoctor;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView7;
+        private DevExpress.XtraEditors.TextEdit cbbDoctor;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem24;
     }
 }

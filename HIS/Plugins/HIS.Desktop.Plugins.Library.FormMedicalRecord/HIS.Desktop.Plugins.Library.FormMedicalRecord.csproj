@@ -187,7 +187,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS\MPS.csproj">
       <Project>{b7c687ba-a486-414e-8bcb-a6b294ca4310}</Project>
-      <Name>MPS %28MPS\MPS%29</Name>
+      <Name>MPS %28Mps\MPS%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>

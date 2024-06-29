@@ -1570,6 +1570,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         sdo.BedFinishTime = item.BedFinishTime;
                         sdo.BedStartTime = item.BedStartTime;
                         sdo.IsNotUseBhyt = item.IsNotUseBhyt;
+                        sdo.AssignNumOrder = item.AssignNumOrder;
                         if (item.TEST_SAMPLE_TYPE_ID > 0)
                             sdo.SampleTypeCode = item.TEST_SAMPLE_TYPE_CODE;
                         serviceReqSDO.ServiceReqDetails.Add(sdo);

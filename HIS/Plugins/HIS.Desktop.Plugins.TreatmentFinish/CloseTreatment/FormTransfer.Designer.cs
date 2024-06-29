@@ -46,21 +46,22 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.cboTransporterLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.txtTransporterLoginName = new DevExpress.XtraEditors.ButtonEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItemSave = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboTransporterLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtLoginName = new DevExpress.XtraEditors.TextEdit();
@@ -109,13 +110,15 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cboTransporterLoginName.Properties)).BeginInit();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtTransporterLoginName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTransporterLoginName.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboLoginName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtLoginName.Properties)).BeginInit();
@@ -161,13 +164,13 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
-            this.layoutControl1.Controls.Add(this.cboTransporterLoginName);
+            this.layoutControl1.Controls.Add(this.panel1);
             this.layoutControl1.Controls.Add(this.cboLoginName);
             this.layoutControl1.Controls.Add(this.txtLoginName);
             this.layoutControl1.Controls.Add(this.btnSaveTranPatiTemp);
@@ -197,22 +200,28 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // cboTransporterLoginName
+            // panel1
             // 
-            this.cboTransporterLoginName.Location = new System.Drawing.Point(584, 74);
-            this.cboTransporterLoginName.MenuManager = this.barManager1;
-            this.cboTransporterLoginName.Name = "cboTransporterLoginName";
-            this.cboTransporterLoginName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.cboTransporterLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            this.panel1.Controls.Add(this.txtTransporterLoginName);
+            this.panel1.Controls.Add(this.cboTransporterLoginName);
+            this.panel1.Location = new System.Drawing.Point(584, 74);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(294, 20);
+            this.panel1.TabIndex = 25;
+            // 
+            // txtTransporterLoginName
+            // 
+            this.txtTransporterLoginName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtTransporterLoginName.Location = new System.Drawing.Point(0, 0);
+            this.txtTransporterLoginName.MenuManager = this.barManager1;
+            this.txtTransporterLoginName.Name = "txtTransporterLoginName";
+            this.txtTransporterLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
-            this.cboTransporterLoginName.Properties.NullText = "";
-            this.cboTransporterLoginName.Properties.View = this.gridView4;
-            this.cboTransporterLoginName.Size = new System.Drawing.Size(294, 20);
-            this.cboTransporterLoginName.StyleController = this.layoutControl1;
-            this.cboTransporterLoginName.TabIndex = 23;
-            this.cboTransporterLoginName.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboTransporterLoginName_ButtonClick);
-            this.cboTransporterLoginName.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboTransporterLoginName_CustomDisplayText);
+            this.txtTransporterLoginName.Size = new System.Drawing.Size(294, 20);
+            this.txtTransporterLoginName.TabIndex = 1;
+            this.txtTransporterLoginName.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtTransporterLoginName_ButtonClick);
+            this.txtTransporterLoginName.Leave += new System.EventHandler(this.txtTransporterLoginName_Leave);
             // 
             // barManager1
             // 
@@ -274,12 +283,31 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             this.barDockControlRight.Location = new System.Drawing.Point(880, 29);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 352);
             // 
-            // gridView4
+            // cboTransporterLoginName
             // 
-            this.gridView4.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridView4.Name = "gridView4";
-            this.gridView4.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridView4.OptionsView.ShowGroupPanel = false;
+            this.cboTransporterLoginName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cboTransporterLoginName.Location = new System.Drawing.Point(0, 0);
+            this.cboTransporterLoginName.MenuManager = this.barManager1;
+            this.cboTransporterLoginName.Name = "cboTransporterLoginName";
+            this.cboTransporterLoginName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboTransporterLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboTransporterLoginName.Properties.NullText = "";
+            this.cboTransporterLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboTransporterLoginName.Properties.View = this.gridView5;
+            this.cboTransporterLoginName.Size = new System.Drawing.Size(294, 20);
+            this.cboTransporterLoginName.TabIndex = 0;
+            this.cboTransporterLoginName.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboTransporterLoginName_ButtonClick);
+            this.cboTransporterLoginName.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboTransporterLoginName_CustomDisplayText);
+            this.cboTransporterLoginName.TextChanged += new System.EventHandler(this.cboTransporterLoginName_TextChanged);
+            // 
+            // gridView5
+            // 
+            this.gridView5.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView5.Name = "gridView5";
+            this.gridView5.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView5.OptionsView.ShowGroupPanel = false;
             // 
             // cboLoginName
             // 
@@ -396,11 +424,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             // 
             // txtUsedMedicine
             // 
-            this.txtUsedMedicine.Location = new System.Drawing.Point(2, 268);
+            this.txtUsedMedicine.Location = new System.Drawing.Point(2, 270);
             this.txtUsedMedicine.MenuManager = this.barManager1;
             this.txtUsedMedicine.Name = "txtUsedMedicine";
             this.txtUsedMedicine.Properties.MaxLength = 3000;
-            this.txtUsedMedicine.Size = new System.Drawing.Size(876, 56);
+            this.txtUsedMedicine.Size = new System.Drawing.Size(876, 54);
             this.txtUsedMedicine.StyleController = this.layoutControl1;
             this.txtUsedMedicine.TabIndex = 14;
             // 
@@ -420,7 +448,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             this.txtPhuongTienVanChuyen.Name = "txtPhuongTienVanChuyen";
             this.txtPhuongTienVanChuyen.Properties.LinesCount = 1;
             this.txtPhuongTienVanChuyen.Properties.MaxLength = 3000;
-            this.txtPhuongTienVanChuyen.Size = new System.Drawing.Size(408, 59);
+            this.txtPhuongTienVanChuyen.Size = new System.Drawing.Size(408, 61);
             this.txtPhuongTienVanChuyen.StyleController = this.layoutControl1;
             this.txtPhuongTienVanChuyen.TabIndex = 13;
             // 
@@ -490,7 +518,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             this.txtPPKTThuoc.Name = "txtPPKTThuoc";
             this.txtPPKTThuoc.Properties.LinesCount = 1;
             this.txtPPKTThuoc.Properties.MaxLength = 3000;
-            this.txtPPKTThuoc.Size = new System.Drawing.Size(464, 59);
+            this.txtPPKTThuoc.Size = new System.Drawing.Size(464, 61);
             this.txtPPKTThuoc.StyleController = this.layoutControl1;
             this.txtPPKTThuoc.TabIndex = 12;
             // 
@@ -584,7 +612,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             this.layoutControlItem6,
             this.layoutControlItem8,
             this.layoutControlItem10,
-            this.layoutControlItem11});
+            this.layoutControlItem13});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -645,10 +673,12 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             // 
             // lciPhuongTienVanChuyen
             // 
+            this.lciPhuongTienVanChuyen.AppearanceItemCaption.ForeColor = System.Drawing.Color.Brown;
+            this.lciPhuongTienVanChuyen.AppearanceItemCaption.Options.UseForeColor = true;
             this.lciPhuongTienVanChuyen.Control = this.txtPhuongTienVanChuyen;
             this.lciPhuongTienVanChuyen.Location = new System.Drawing.Point(468, 171);
             this.lciPhuongTienVanChuyen.Name = "lciPhuongTienVanChuyen";
-            this.lciPhuongTienVanChuyen.Size = new System.Drawing.Size(412, 79);
+            this.lciPhuongTienVanChuyen.Size = new System.Drawing.Size(412, 81);
             this.lciPhuongTienVanChuyen.Text = "Phương tiện vận chuyển";
             this.lciPhuongTienVanChuyen.TextLocation = DevExpress.Utils.Locations.Top;
             this.lciPhuongTienVanChuyen.TextSize = new System.Drawing.Size(117, 13);
@@ -685,6 +715,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             // 
             // lciHuongDieuTri
             // 
+            this.lciHuongDieuTri.AppearanceItemCaption.ForeColor = System.Drawing.Color.Brown;
+            this.lciHuongDieuTri.AppearanceItemCaption.Options.UseForeColor = true;
             this.lciHuongDieuTri.Control = this.txtHuongDieuTri;
             this.lciHuongDieuTri.Location = new System.Drawing.Point(0, 96);
             this.lciHuongDieuTri.Name = "lciHuongDieuTri";
@@ -695,10 +727,12 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             // 
             // lciPhuongPhapSuDung
             // 
+            this.lciPhuongPhapSuDung.AppearanceItemCaption.ForeColor = System.Drawing.Color.Brown;
+            this.lciPhuongPhapSuDung.AppearanceItemCaption.Options.UseForeColor = true;
             this.lciPhuongPhapSuDung.Control = this.txtPPKTThuoc;
             this.lciPhuongPhapSuDung.Location = new System.Drawing.Point(0, 171);
             this.lciPhuongPhapSuDung.Name = "lciPhuongPhapSuDung";
-            this.lciPhuongPhapSuDung.Size = new System.Drawing.Size(468, 79);
+            this.lciPhuongPhapSuDung.Size = new System.Drawing.Size(468, 81);
             this.lciPhuongPhapSuDung.Text = "Phương pháp điều trị";
             this.lciPhuongPhapSuDung.TextLocation = DevExpress.Utils.Locations.Top;
             this.lciPhuongPhapSuDung.TextSize = new System.Drawing.Size(117, 13);
@@ -706,9 +740,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.txtUsedMedicine;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 250);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 252);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(880, 76);
+            this.layoutControlItem1.Size = new System.Drawing.Size(880, 74);
             this.layoutControlItem1.Text = "Thuốc đã dùng";
             this.layoutControlItem1.TextLocation = DevExpress.Utils.Locations.Top;
             this.layoutControlItem1.TextSize = new System.Drawing.Size(117, 13);
@@ -838,18 +872,20 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
-            // layoutControlItem11
+            // layoutControlItem13
             // 
-            this.layoutControlItem11.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem11.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem11.Control = this.cboTransporterLoginName;
-            this.layoutControlItem11.Location = new System.Drawing.Point(467, 72);
-            this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(413, 24);
-            this.layoutControlItem11.Text = "Người vận chuyển:";
-            this.layoutControlItem11.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem11.TextSize = new System.Drawing.Size(110, 20);
-            this.layoutControlItem11.TextToControlDistance = 5;
+            this.layoutControlItem13.AppearanceItemCaption.ForeColor = System.Drawing.Color.Brown;
+            this.layoutControlItem13.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutControlItem13.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem13.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem13.Control = this.panel1;
+            this.layoutControlItem13.Location = new System.Drawing.Point(467, 72);
+            this.layoutControlItem13.Name = "layoutControlItem13";
+            this.layoutControlItem13.Size = new System.Drawing.Size(413, 24);
+            this.layoutControlItem13.Text = "Người vận chuyển:";
+            this.layoutControlItem13.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem13.TextSize = new System.Drawing.Size(110, 20);
+            this.layoutControlItem13.TextToControlDistance = 5;
             // 
             // dxValidationProvider
             // 
@@ -876,9 +912,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.cboTransporterLoginName.Properties)).EndInit();
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtTransporterLoginName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTransporterLoginName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboLoginName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtLoginName.Properties)).EndInit();
@@ -924,7 +962,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -990,8 +1028,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
         private DevExpress.XtraEditors.TextEdit txtLoginName;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
+        private System.Windows.Forms.Panel panel1;
+        private DevExpress.XtraEditors.ButtonEdit txtTransporterLoginName;
         private DevExpress.XtraEditors.GridLookUpEdit cboTransporterLoginName;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView4;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView5;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
     }
 }

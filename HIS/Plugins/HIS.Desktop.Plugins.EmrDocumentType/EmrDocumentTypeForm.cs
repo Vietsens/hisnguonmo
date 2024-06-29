@@ -131,6 +131,11 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        //private void SetToolTip
+        //{ 
+        //    toolTipController1.
+        //    toolTipController.SetToolTip(spinEdit1, "Đây là tooltip cho SpinEdit.")
+        //}
 
         private void ValidateForm()
         {
@@ -348,7 +353,13 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
         {
             try
             {
-                filter.KEY_WORD = txtFind.Text.Trim();
+                if (!string.IsNullOrEmpty(txtFind.Text.Trim()))
+                {
+                    filter.KEY_WORD = txtFind.Text.Trim();
+                }
+                else
+                    filter.KEY_WORD = null;
+                
             }
             catch (Exception ex)
             {
@@ -375,6 +386,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             {
                 this.ActionType = GlobalVariables.ActionAdd;
                 txtFind.Text = "";
+                numFixZoom.EditValue = null;
             }
             catch (Exception ex)
             {
@@ -509,6 +521,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                 chkIsRequiredToComplete.Checked = false;
                 chkPatientMustSign.Checked = false;
                 cboPatientSignatureDisplayType.SelectedIndex = -1;
+                numFixZoom.EditValue = null;
             }
             catch (Exception ex)
             {
@@ -593,7 +606,15 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
 
                 currentDTO.SIGNER_EXCEPTION_LOGINNAME = txtKDK.Text != null ? txtKDK.Text : null;
                 currentDTO.PATIENT_SIGNATURE_DISPLAY_TYPE = cboPatientSignatureDisplayType.SelectedIndex != -1 ? (long?)cboPatientSignatureDisplayType.SelectedIndex : null;
-
+                if (numFixZoom.EditValue == null)
+                {
+                    currentDTO.VIEW_ZOOM_PERCENT = null;
+                }
+                else
+                {
+                    long zoomValueLong = (long)numFixZoom.Value;
+                    currentDTO.VIEW_ZOOM_PERCENT = zoomValueLong;
+                }
             }
             catch (Exception ex)
             {
@@ -794,7 +815,17 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                     txtKDK.Text = data.SIGNER_EXCEPTION_LOGINNAME;
                     chkAllowDuplicateHisCode.EditValue = data.IS_ALLOW_DUPLICATE_HIS_CODE == 1 ? true : false;
                     chkIsAllowPatientIssue.EditValue = data.IS_ALLOW_PATIENT_ISSUE == 1 ? true : false;
-                    
+                    decimal? zoomValueNullable = data.VIEW_ZOOM_PERCENT;
+                    if (zoomValueNullable.HasValue)
+                    {
+                        decimal zoomValue = zoomValueNullable.Value;
+                        numFixZoom.Value = zoomValue;
+                    }
+                    else
+                    {
+                        //numFixZoom.Value = 0;
+                        numFixZoom.EditValue = null;
+                    }
 
                     //chkIsMedicalPaymentEvidence.EditValue = data.IS_MEDICAL_PAYMENT_EVIDENCE == 1 ? true : false;
                     chkIsMedicalPaymentEvidence.Checked = data.IS_MEDICAL_PAYMENT_EVIDENCE == 1 ? true : false;
@@ -907,6 +938,8 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                             txtCode.Text = "";
                             txtSTT.Text = "";
                             txtKDK.Text = "";
+                            //numFixZoom.Value = 0;
+                            numFixZoom.EditValue = null;
                             cboPatientSignatureDisplayType.SelectedIndex = -1;
                             EnableControlChanged(this.ActionType);
                             FillDatagctFormList();
@@ -1259,5 +1292,26 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void gridView1_CustomColumnDisplayText(object sender, CustomColumnDisplayTextEventArgs e)
+        {
+            try
+            {
+                if (e.Column.FieldName == "VIEW_ZOOM_PERCENT")
+                {
+                    if (e.Value != null)
+                    {
+                        e.DisplayText = e.Value.ToString() + "%";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+  
+       
     }
 }

@@ -209,6 +209,7 @@
     <Compile Include="Validation\ValidBhxhCode.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
     <EmbeddedResource Include="SickLeave\frmSickLeave.resx">
@@ -257,7 +258,7 @@
       <Name>HIS.Desktop.ModuleExt</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2AAD22DB-2166-4BE8-AE52-335B21DC03FC}</Project>
+      <Project>{2115dfe8-7545-4e23-aa30-276716394f87}</Project>
       <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Plugins.Library.RegisterConfig\HIS.Desktop.Plugins.Library.RegisterConfig.csproj">

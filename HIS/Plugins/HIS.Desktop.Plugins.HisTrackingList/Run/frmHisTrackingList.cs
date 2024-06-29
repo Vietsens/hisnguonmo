@@ -993,7 +993,10 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                     }
                     if (documentTrackingADOs != null && documentTrackingADOs.Count > 0)
                     {
-                        this.ucViewEmrDocument1.ReloadDocument(documentTrackingADOs, documentTrackingADOs != null && documentTrackingADOs.Count > 0);
+                        if (documentTrackingADOs != null && documentTrackingADOs.Count > 0)
+                        {
+                            this.ucViewEmrDocument1.ReloadDocument(documentTrackingADOs,false);
+                        }
                         if(this.ucViewEmrDocument1.frmEmr != null && Form.ActiveForm == this.ucViewEmrDocument1.frmEmr)
                         {
                             this.ucViewEmrDocument1.frmEmr.ucViewEmrDocument1.ReloadDocument(documentTrackingADOs, documentTrackingADOs != null && documentTrackingADOs.Count > 0);
@@ -1761,6 +1764,35 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return isContinue;
+        }
+
+        private void gridViewTrackings_CellValueChanged(object sender, CellValueChangedEventArgs e)
+        {
+            try
+            {
+                HIS_TRACKING success = new HIS_TRACKING();
+                int selectedIndex = gridViewTrackings.FocusedRowHandle;
+                if (e.RowHandle >= 0 && e.Column.FieldName == "SHEET_ORDER")
+                {
+                    //V_HIS_TRACKING dataRow = (V_HIS_TRACKING)gridViewTrackings.GetRow(e.RowHandle);
+                    V_HIS_TRACKING dataRow = (V_HIS_TRACKING)gridViewTrackings.GetFocusedRow();
+                    if (dataRow != null)
+                    {
+                        UpdateTrackingInfoSDO data = new UpdateTrackingInfoSDO();
+                        // Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_TRACKING>(data, dataRow);
+                        data.TrackingId = dataRow.ID;
+                        data.SheetOrder = dataRow.SHEET_ORDER;
+                        WaitingManager.Show();
+                        success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRACKING>("api/HisTracking/UpdateTrackingInfo", ApiConsumer.ApiConsumers.MosConsumer, data, param);
+                        WaitingManager.Hide();
+                    }
+                }
+                gridViewTrackings.FocusedRowHandle = selectedIndex;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }

@@ -66,7 +66,7 @@ namespace MPS.Processor.Mps000062.PDO
         public string IS_SHOW_MEDICINE { get; set; }
 
         public long? SUM_MEDI_MATE { get; set; }
-
+        public string IS_T7_OR_CN { get; set; }
         public decimal? BELLY { get; set; }
         public long? BLOOD_PRESSURE_MAX { get; set; }
         public long? BLOOD_PRESSURE_MIN { get; set; }
@@ -95,12 +95,14 @@ namespace MPS.Processor.Mps000062.PDO
         public long NUMBER_DAYS_TREATMENT { get; set; }
     }
 
-    public class Mps000062ExtADO : HIS_TRACKING
+    public class Mps000062ExtADO : V_HIS_TRACKING
     {
         public Mps000062ExtADO() { }
         public Mps000062ExtADO(Mps000062ADO mps000062ADO)
         {
+            Inventec.Common.Mapper.DataObjectMapper.Map<Mps000062ExtADO>(this, mps000062ADO);
             this.TRACKING_TIME_STR = mps000062ADO.TRACKING_TIME_STR;
+            this.IS_T7_OR_CN = mps000062ADO.IS_T7_OR_CN;
             this.TRACKING_DATE_STR = mps000062ADO.TRACKING_DATE_STR;
             this.TRACKING_DATE_SEPARATE_STR = mps000062ADO.TRACKING_DATE_SEPARATE_STR;
             this.REMEDY_COUNT = mps000062ADO.REMEDY_COUNT;
@@ -165,7 +167,7 @@ namespace MPS.Processor.Mps000062.PDO
             this.ICD_TEXT_TRACKING = mps000062ADO.ICD_TEXT_TRACKING;
             this.NUMBER_DAYS_TREATMENT = mps000062ADO.NUMBER_DAYS_TREATMENT;
         }
-
+        public string IS_T7_OR_CN { get; set; }
         public string TRACKING_TIME_STR { get; set; }
         public string TRACKING_DATE_STR { get; set; }
         public string TRACKING_DATE_SEPARATE_STR { get; set; }

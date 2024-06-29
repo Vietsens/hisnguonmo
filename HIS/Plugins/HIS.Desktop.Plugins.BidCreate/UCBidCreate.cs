@@ -40,6 +40,8 @@ using HIS.Desktop.Plugins.BidCreate.ADO;
 using Inventec.Common.Logging;
 using System.IO;
 using SDA.EFMODEL.DataModels;
+using Inventec.Core;
+using DevExpress.XtraEditors.Repository;
 
 namespace HIS.Desktop.Plugins.BidCreate
 {
@@ -83,7 +85,7 @@ namespace HIS.Desktop.Plugins.BidCreate
         List<SDA_NATIONAL> lstNational = new List<SDA_NATIONAL>();
         List<HIS_MANUFACTURER> lstManufacture = new List<HIS_MANUFACTURER>();
         List<HIS_MEDICINE_USE_FORM> lstMediUseForm = new List<HIS_MEDICINE_USE_FORM>();
-		List<V_HIS_MEDICINE_TYPE> listHisMedicineType = new List<V_HIS_MEDICINE_TYPE>();
+        List<V_HIS_MEDICINE_TYPE> listHisMedicineType = new List<V_HIS_MEDICINE_TYPE>();
         List<V_HIS_MATERIAL_TYPE> listHisMaterialType = new List<V_HIS_MATERIAL_TYPE>();
         List<V_HIS_BLOOD_TYPE> listHisBloodType = new List<V_HIS_BLOOD_TYPE>();
         #endregion
@@ -482,6 +484,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                 txtDosageForm.Text = "";
                 txtQCĐG.Text = "";
                 txtTenBHYT.Text = "";
+                txtTenTT.Text = "";
+                txtMaTT.Text = "";
                 cboMediUserForm.EditValue = null;
                 txtBidName.Text = "";
                 txtBID.Text = "";
@@ -557,6 +561,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                 txtManufacture.Text = "";
                 txtNationalMainText.Text = "";
                 txtConcentra.Text = "";
+                txtTenTT.Text = "";
+                txtMaTT.Text = "";
                 cboSupplier.Text = "";
                 cboSupplier.EditValue = null;
                 cboSupplier.Properties.Buttons[1].Visible = false;
@@ -1176,7 +1182,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                 this.DtExpiredDate.EditValue = null;
                 spinAmount.Focus();
                 spinAmount.SelectAll();
-
+                txtMaTT.Text = null;
+                txtTenTT.Text = null;
                 if (this.materialType != null)
                 {
                     Inventec.Common.Logging.LogSystem.Debug("this.materialType.NATIONAL_NAME: " + this.materialType.NATIONAL_NAME);
@@ -1269,6 +1276,17 @@ namespace HIS.Desktop.Plugins.BidCreate
                     txtManufacture.Text = this.materialType.MANUFACTURER_CODE;
                     txtConcentra.Text = this.materialType.CONCENTRA;
                     cboInformationBid.SelectedIndex = 0;
+
+                    MOS.Filter.HisBidMaterialTypeViewFilter bidMatyFilter = new MOS.Filter.HisBidMaterialTypeViewFilter();
+                    bidMatyFilter.MATERIAL_TYPE_ID = materialType.ID;
+                    var bidMaty = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_BID_MATERIAL_TYPE>>(ApiConsumer.HisRequestUriStore.HIS_BID_MATERIAL_TYPE_GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, bidMatyFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
+                    if (bidMaty != null && bidMaty.Count > 0)
+                    {
+                        this.materialType.BID_MATERIAL_TYPE_NAME = bidMaty[0].BID_MATERIAL_TYPE_NAME;
+                        this.materialType.BID_MATERIAL_TYPE_CODE = bidMaty[0].BID_MATERIAL_TYPE_CODE;
+                    }
+                    txtTenTT.Text = this.materialType.BID_MATERIAL_TYPE_NAME ?? "";
+                    txtMaTT.Text = this.materialType.BID_MATERIAL_TYPE_CODE ?? "";
                     if (this.materialType.DAY_LIFESPAN.HasValue)
                     {
                         spinDayLifeSpan.EditValue = this.materialType.DAY_LIFESPAN.Value;
@@ -1309,9 +1327,9 @@ namespace HIS.Desktop.Plugins.BidCreate
                     spinDayLifeSpan.EditValue = null;
                     spinMonthLifeSpan.EditValue = null;
                     spinHourLifeSpan.EditValue = null;
+                    txtTenTT.Text = "";
+                    txtMaTT.Text = "";
                 }
-
-
 
                 dxValidationProviderLeft.RemoveControlError(spinImpPrice);
                 dxValidationProviderLeft.RemoveControlError(spinAmount);
@@ -1324,6 +1342,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                 dxValidationProviderLeft.RemoveControlError(txtBidGroupCode);
                 dxValidationProviderLeft.RemoveControlError(txtConcentra);
                 dxValidationProviderLeft.RemoveControlError(txtRegisterNumber);
+                dxValidationProviderLeft.RemoveControlError(txtTenTT);
+                dxValidationProviderLeft.RemoveControlError(txtTenBHYT);
             }
             catch (Exception ex)
             {
@@ -2834,7 +2854,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 if (e.KeyCode == Keys.Enter)
                 {
                     btnSave.Focus();
-                   
+
                 }
             }
             catch (Exception ex)
@@ -2913,7 +2933,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 {
                     if (e.Column.FieldName == "ADJUST_AMOUNT")
                     {
-                        e.RepositoryItem = data.Type != Base.GlobalConfig.MAU ? SpinEditAdjustAmount : SpinEditAdjustAmountDisable;
+                        e.RepositoryItem = data.Type != Base.GlobalConfig.MAU ? ((data.Type == Base.GlobalConfig.VATTU && BidMaterialType != null && BidMaterialType.Count > 0 && BidMaterialType.FirstOrDefault(o => o.MATERIAL_TYPE_ID == data.ID || o.MATERIAL_TYPE_MAP_ID == data.ID) != null) || (data.Type == Base.GlobalConfig.THUOC && BidMedicineType != null && BidMedicineType.Count > 0 && BidMedicineType.FirstOrDefault(o => o.MEDICINE_TYPE_ID == data.ID) != null)) ? repAdjustAmount : repAdjustAmountDis : SpinEditAdjustAmountDisable;
                     }
 
                 }
@@ -2929,7 +2949,7 @@ namespace HIS.Desktop.Plugins.BidCreate
 
             try
             {
-                if(e.Button.Kind == ButtonPredefines.Delete)
+                if (e.Button.Kind == ButtonPredefines.Delete)
                     cboInformationBid.EditValue = null;
             }
             catch (Exception ex)
@@ -2937,6 +2957,40 @@ namespace HIS.Desktop.Plugins.BidCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        private void repAdjustAmount_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+
+            try
+            {
+                var row = (MedicineTypeADO)gridViewProcess.GetFocusedRow();
+                if (row.Type == Base.GlobalConfig.THUOC && BidMedicineType != null && BidMedicineType.Count > 0 && BidMedicineType.FirstOrDefault(o => o.MEDICINE_TYPE_ID == row.ID) != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(BidMedicineType.FirstOrDefault(o => o.MEDICINE_TYPE_ID == row.ID));
+                    listArgs.Add((HIS.Desktop.Common.DelegateSelectData)((data) => {
+                        row.ADJUST_AMOUNT = data as decimal?;
+                        gridControlProcess.RefreshDataSource();
+                    }));
+
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.BidRegulation", this.currentModuleBase.RoomId, this.currentModuleBase.RoomTypeId, listArgs);
+                }
+                else if (row.Type == Base.GlobalConfig.VATTU && BidMaterialType != null && BidMaterialType.Count > 0 && BidMaterialType.FirstOrDefault(o => o.MATERIAL_TYPE_ID == row.ID || o.MATERIAL_TYPE_MAP_ID == row.ID) != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(BidMaterialType.FirstOrDefault(o => o.MATERIAL_TYPE_ID == row.ID || o.MATERIAL_TYPE_MAP_ID == row.ID));
+                    listArgs.Add((HIS.Desktop.Common.DelegateSelectData)((data) => {
+                        row.ADJUST_AMOUNT = data as decimal?;
+                        gridControlProcess.RefreshDataSource();
+                    }));
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.BidRegulation", this.currentModuleBase.RoomId, this.currentModuleBase.RoomTypeId, listArgs);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void cboMediUserForm_ButtonClick(object sender, ButtonPressedEventArgs e)

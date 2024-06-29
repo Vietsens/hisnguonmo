@@ -122,6 +122,9 @@
     <Reference Include="Inventec.Common.DateTime">
       <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.DocumentViewer">
+      <HintPath>..\..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.DocumentViewer\Inventec.Common.DocumentViewer.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.LocalStorage.SdaConfig, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
@@ -215,6 +218,9 @@
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\..\..\RELEASE\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>..\..\..\..\..\..\..\RELEASE\Library packages\itextsharp\5.5.3.0\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
@@ -297,6 +303,7 @@
     <Compile Include="ADO\ImageADO.cs" />
     <Compile Include="ADO\InformationADO.cs" />
     <Compile Include="ADO\PatientADO.cs" />
+    <Compile Include="ADO\SereServFileADO.cs" />
     <Compile Include="ADO\SereServHistoryADO.cs" />
     <Compile Include="ADO\ServiceADO.cs" />
     <Compile Include="ADO\ThreadSereServADO.cs" />
@@ -305,6 +312,12 @@
     <Compile Include="ConfigKeys.cs" />
     <Compile Include="Config\AppConfigKeys.cs" />
     <Compile Include="Config\ServiceExecuteCFG.cs" />
+    <Compile Include="frmAttackPdf.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAttackPdf.Designer.cs">
+      <DependentUpon>frmAttackPdf.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmCamera.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -488,6 +501,9 @@
   <ItemGroup>
     <EmbeddedResource Include="EkipTemp\frmEkipTemp.resx">
       <DependentUpon>frmEkipTemp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAttackPdf.resx">
+      <DependentUpon>frmAttackPdf.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCamera.resx">
       <DependentUpon>frmCamera.cs</DependentUpon>

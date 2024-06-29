@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -70,12 +71,31 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 long date = 0;
                 if (dtdInfantdate.EditValue != null)
                 {
-                    date = Inventec.Common.TypeConvert.Parse.ToInt64(dtdInfantdate.DateTime.ToString("yyyyMMdd000000"));
+                    date = Inventec.Common.TypeConvert.Parse.ToInt64(dtdInfantdate.DateTime.ToString("yyyyMMdd"));
                 }
                 long datecreate = 0;
+                
                 if (date > 0)
                 {
-                    currentDTO.BornTime = date + hour;
+                    if (Convert.ToInt32(cboBirthPlaceType.EditValue) == 1)
+                    {
+                        long intime = this.treatment.IN_TIME / 1000000;
+                        if (date < intime)
+                        {
+                            dxErrorProvider1.SetError(dtdInfantdate, "Thời gian sinh phải lớn hơn thời gian vào viện", ErrorType.Warning);
+                        }
+                        else if (date == intime)
+                        {
+                            var treatmentHour = Inventec.Common.TypeConvert.Parse.ToInt64(this.treatment.IN_TIME.ToString().Substring(8, 6));
+                            if (hour < treatmentHour)
+                            {
+                                dxErrorProvider1.SetError(txtInfantBorntime, "Thời gian sinh phải lớn hơn thời gian vào viện", ErrorType.Warning);
+                            }
+
+                        }
+                    }
+                    
+                    currentDTO.BornTime = date * 1000000 + hour;
                 }
                 else
                 {

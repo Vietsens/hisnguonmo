@@ -79,6 +79,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         bool isShowMess = false;
         WcfClient cll;
         DateTime dteCommonParam { get; set; }
+        private bool is_true = true;
 
         public frmTransactionDeposit(Inventec.Desktop.Common.Modules.Module module)
             : base(module)
@@ -134,6 +135,8 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 timerInitForm.Enabled = true;
                 timerInitForm.Start();
                 InitControlState();
+                btnSave.Enabled = is_true;
+                btnSavePrint.Enabled = is_true;
             }
             catch (Exception ex)
             {
@@ -141,6 +144,8 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+       
 
         private void InitLinkLabel()
         {
@@ -307,7 +312,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             }
         }
 
-
+        
         private void LoadSearchByTreatmentCode()
         {
             try
@@ -316,6 +321,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 HisTreatmentFeeViewFilter filter = new HisTreatmentFeeViewFilter();
                 if (!String.IsNullOrEmpty(txtTreatmenCode.Text))
                 {
+                    
                     string code = txtTreatmenCode.Text.Trim();
                     if (code.Length < 12)
                     {
@@ -328,9 +334,13 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                             .Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT_FEE>>(ApiUri.HIS_TREATMENT_GETFEEVIEW, ApiConsumers.MosConsumer, filter, param);
                     if (listTreatment != null && listTreatment.Count > 0)
                     {
+                        
                         this.treatment = listTreatment.FirstOrDefault();
+                        
                         txtTotalAmount.Focus();
                         txtTotalAmount.SelectAll();
+                        
+                        
                     }
                     else
                     {
@@ -389,7 +399,44 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        #region Kiem tra du lieu tim kiem
+        private bool checkDK()
+        {
+            bool sucess = true;
+            
+            try
+            {
+                HisTreatmentFeeViewFilter filter = new HisTreatmentFeeViewFilter();
+                filter.TREATMENT_CODE__EXACT = this.treatment.TREATMENT_CODE;
+                var data = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT_FEE>>(ApiUri.HIS_TREATMENT_GETFEEVIEW, ApiConsumers.MosConsumer, filter, null).FirstOrDefault();
+                if (data != null)
+                {
+                    string treatment_code = this.treatment.TREATMENT_CODE;
+                    short is_pause = data.IS_PAUSE ?? 0;
+                    if (data.DIS_DEPOSIT_OPTION == 1)
+                    {
+                        DialogResult rs = MessageBox.Show("Không cho phép tạm ứng do diện điều trị được check vào checkbox chặn không cho phép tạm ứng trong danh mục diện điều trị");
+                        sucess = false;
+                    }
+                    if (data.DIS_DEPOSIT_OPTION == 2 && is_pause == 1)
+                    {
+                        sucess = false;
+                        DialogResult rs = MessageBox.Show("Không cho phép hồ sơ tạm ứng do đã kết thúc điều trị");
+                    }
+                }
+                else sucess = false;
+            }
+            
+                
+            catch (Exception)
+            {
+                sucess = false;
+                
+                throw;
+            }
+            return sucess;
+        }
+        #endregion
         private void FillDataToCommon(V_HIS_TREATMENT_FEE data)
         {
             try
@@ -453,10 +500,9 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 Inventec.Common.Logging.LogSystem.Debug("timerInitForm_Tick. 1");
                 this.timerInitForm.Stop();
 
-                this.LoadAccountBookToLocal(true);
                 this.LoadDataToComboPayForm();
                 //this.SetDefaultAccountBook(true);
-
+                this.LoadAccountBookToLocal(true);
                 this.ResetDefaultValueControl();
                 this.GeneratePrintMenu();
                 this.ValidControlDescription();
@@ -756,6 +802,10 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 acFilter.ORDER_FIELD = "ID";
                 this.ListAccountBook = await new BackendAdapter(paramCommon).GetAsync<List<V_HIS_ACCOUNT_BOOK>>("api/HisAccountBook/GetView", ApiConsumer.ApiConsumers.MosConsumer, acFilter, paramCommon);
                 dteCommonParam = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(paramCommon.Now) ?? DateTime.Now;
+                if (HisConfigCFG.ShowServerTimeByDefault == "1")
+                {
+                    dtTransactionTime.DateTime = dteCommonParam;
+                }
                 this.ListAccountBook = this.ListAccountBook.Where(o => o.WORKING_SHIFT_ID == null || o.WORKING_SHIFT_ID == (HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkInfoSDO.WorkingShiftId ?? 0)).ToList();
                 this.LoadDataToComboAccountBook();
                 this.SetDefaultAccountBook(isFirstLoad);
@@ -2393,12 +2443,33 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 if (!String.IsNullOrEmpty(txtTreatmenCode.Text))
                 {
                     LoadSearchByTreatmentCode();
-                    FillDataToCommon(this.treatment);
+                    if (checkDK())
+                    {
+                        FillDataToCommon(this.treatment);
+                        btnSavePrint.Enabled = true;
+                        btnSave.Enabled = true;
+                    }
+                    else
+                    {
+                        btnSavePrint.Enabled = false;
+                        btnSave.Enabled = false;
+                    }
+                    
                 }
                 else
                 {
                     LoadSearchByDepositReqCode();
-                    FillDataToCommon(this.depositReq);
+                    if (checkDK())
+                    {
+                        FillDataToCommon(this.depositReq);
+                        btnSavePrint.Enabled = true;
+                        btnSave.Enabled = true;
+                    }
+                    else
+                    {
+                        btnSavePrint.Enabled = false;
+                        btnSave.Enabled = false;
+                    }
                 }
             }
             catch (Exception ex)

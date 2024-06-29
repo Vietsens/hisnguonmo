@@ -1192,6 +1192,31 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         dicMedicalAssessment[item.TREATMENT_ID].Add(item);
                     }
                 }
+                string connect_infor = HisConfigCFG.QD_130_BYT__CONNECTION_INFO;
+                string username = null, password = null, address = null, typeXml = null;
+                string xml130Api = null, xmlGdykApi = null;
+                List<string> connectInfors = new List<string>();
+                if (string.IsNullOrEmpty(connect_infor))
+                {
+
+                }
+                else
+                {
+                    connectInfors = connect_infor.Split('|').ToList();
+                }
+                try
+                {
+                    address = connectInfors[0];
+                    username = connectInfors[1];
+                    password = connectInfors[2];
+                    typeXml = connectInfors[3];
+                    xml130Api = connectInfors[4];
+                    xmlGdykApi = connectInfors[5];
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("Key cấu hình hệ thống chỉ thiết lập 3 giá trị");
+                }
                 foreach (var treatment in hisTreatments)
                 {
                     InputADO ado = new InputADO();
@@ -1272,6 +1297,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();
                     ado.TotalSericeData = BackendDataWorker.Get<V_HIS_SERVICE>();
                     ado.TotalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
+                    ado.serverInfo = new ServerInfo() { Username = username, Password = password, Address = address, TypeXml = typeXml, Xml130Api = xml130Api, XmlGdykApi = xmlGdykApi };
                     if (dicTuberculosisTreat.ContainsKey(treatment.ID))
                     {
                         ado.TuberculosisTreat = dicTuberculosisTreat[treatment.ID];
@@ -3053,7 +3079,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 listMessageError = new List<string>();
                 paramUpdateXml130 = new CommonParam();
                 string connect_infor = HisConfigCFG.QD_130_BYT__CONNECTION_INFO;
-                string username = null, password = null, address = null;
+                string username = null, password = null, address = null, typeXml = null;
+                string xml130Api = null, xmlGdykApi = null;
                 List<string> connectInfors = new List<string>();
                 if (string.IsNullOrEmpty(connect_infor))
                 {
@@ -3064,7 +3091,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 else
                 {
                     connectInfors = connect_infor.Split('|').ToList();
-                    if (connectInfors.Count != 3 || string.IsNullOrEmpty(connectInfors[0]) || string.IsNullOrEmpty(connectInfors[1]) || string.IsNullOrEmpty(connectInfors[2]))
+                    if (connectInfors.Count < 3 || string.IsNullOrEmpty(connectInfors[0]) || string.IsNullOrEmpty(connectInfors[1]) || string.IsNullOrEmpty(connectInfors[2]))
                     {
                         WaitingManager.Hide();
                         XtraMessageBox.Show("01 - Lỗi cấu hình hệ thống");
@@ -3074,6 +3101,19 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 address = connectInfors[0];
                 username = connectInfors[1];
                 password = connectInfors[2];
+
+                try
+                {
+                    typeXml = connectInfors[3];
+                    xml130Api = connectInfors[4];
+                    xmlGdykApi = connectInfors[5];
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("Key cấu hình hệ thống chỉ thiết lập 3 giá trị");
+                }
+                
+              
                 Dictionary<string, List<string>> DicErrorMess = new Dictionary<string, List<string>>();
                 if (listTreatmentSync != null && listTreatmentSync.Count > 0)
                 {
@@ -3337,7 +3377,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();
                             ado.TotalSericeData = BackendDataWorker.Get<V_HIS_SERVICE>();
                             ado.TotalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
-                            ado.serverInfo = new ServerInfo() { Username = username, Password = password, Address = address };
+                            ado.serverInfo = new ServerInfo() { Username = username, Password = password, Address = address,TypeXml = typeXml, Xml130Api = xml130Api, XmlGdykApi = xmlGdykApi};
                             #endregion
                             His.Bhyt.ExportXml.XML130.CreateXmlProcessor xmlProcessor = new His.Bhyt.ExportXml.XML130.CreateXmlProcessor(ado);
                             SyncResultADO syncResult = null;

@@ -69,7 +69,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 if (dataCheck != null)
                 {
                     string heinCardNumber = dataCheck.HeinCardNumber;
-                    this.FillDataAfterSaerchPatientInUCPatientRaw(dataCheck);
+                    DataResultADO dataResult = new DataResultADO() { HeinCardData = dataCheck };
+                    this.FillDataAfterSaerchPatientInUCPatientRaw(dataResult);
                     //if (!String.IsNullOrEmpty(heinCardNumber))
                     this.FillDataCareerUnder6AgeByHeinCardNumber(heinCardNumber);
                 }

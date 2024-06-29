@@ -292,6 +292,8 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 departmentTranReceiveSDO.InTime = Inventec.Common.TypeConvert.Parse.ToInt64(dtLogTime.DateTime.ToString("yyyyMMddHHmm") + "00");
                 //PreviousDepartmentTranId => DepartmentTranId
                 departmentTranReceiveSDO.DepartmentTranId = this.currentHisDepartmentTran.ID;
+                departmentTranReceiveSDO.DoctorLoginname = this.doctorLoginname;
+                departmentTranReceiveSDO.DoctorUsername = this.doctorUsername;
                 if (cboBedRoom.EditValue != null)
                 {
                     departmentTranReceiveSDO.BedRoomId = Inventec.Common.TypeConvert.Parse.ToInt64((cboBedRoom.EditValue ?? "").ToString());

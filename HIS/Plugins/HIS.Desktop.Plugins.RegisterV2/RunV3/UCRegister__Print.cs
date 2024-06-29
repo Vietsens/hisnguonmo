@@ -740,6 +740,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 }
 
                 V_HIS_TREATMENT_4 treatment4 = new V_HIS_TREATMENT_4();
+                V_HIS_DEPARTMENT_TRAN departmentTran = new V_HIS_DEPARTMENT_TRAN();
                 if (this.resultHisPatientProfileSDO.HisTreatment != null)
                 {
                     MOS.Filter.HisTreatmentView4Filter filter = new HisTreatmentView4Filter();
@@ -749,12 +750,22 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     {
                         treatment4 = treatments.First();
                     }
+
+                    MOS.Filter.HisDepartmentTranViewFilter defilter = new HisDepartmentTranViewFilter();
+                    defilter.ID = this.resultHisPatientProfileSDO.HisTreatment.ID;
+                    var departmentTrans = new BackendAdapter(new CommonParam()).Get<List<V_HIS_DEPARTMENT_TRAN>>("api/HisDepartmentTran/GetView", ApiConsumer.ApiConsumers.MosConsumer, defilter, null);
+                    if (departmentTrans != null && departmentTrans.Count > 0)
+                    {
+                        departmentTrans = departmentTrans.OrderByDescending(o => o.DEPARTMENT_IN_TIME ?? Int64.MaxValue).ThenByDescending(o => o.ID).ToList();
+                        departmentTran = departmentTrans.First();
+                    }
                 }
 
                 MPS.Processor.Mps000178.PDO.Mps000178PDO mps000178RDO = new MPS.Processor.Mps000178.PDO.Mps000178PDO(
                     currentPatient,
                     patientTypeAlterByPatient,
-                    treatment4
+                    treatment4,
+                    departmentTran
                     );
                 WaitingManager.Hide();
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
@@ -821,6 +832,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 }
 
                 V_HIS_TREATMENT_4 treatment4 = new V_HIS_TREATMENT_4();
+                V_HIS_DEPARTMENT_TRAN departmentTran = new V_HIS_DEPARTMENT_TRAN();
                 if (this.resultHisPatientProfileSDO.HisTreatment != null)
                 {
                     MOS.Filter.HisTreatmentView4Filter filter = new HisTreatmentView4Filter();
@@ -830,12 +842,22 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     {
                         treatment4 = treatments.First();
                     }
+
+                    MOS.Filter.HisDepartmentTranViewFilter defilter = new HisDepartmentTranViewFilter();
+                    defilter.TREATMENT_ID = this.resultHisPatientProfileSDO.HisTreatment.ID;
+                    var departmentTrans = new BackendAdapter(new CommonParam()).Get<List<V_HIS_DEPARTMENT_TRAN>>("api/HisDepartmentTran/GetView", ApiConsumer.ApiConsumers.MosConsumer, defilter, null);
+                    if (departmentTrans != null && departmentTrans.Count > 0)
+                    {
+                        departmentTrans = departmentTrans.OrderByDescending(o => o.DEPARTMENT_IN_TIME ?? Int64.MaxValue).ThenByDescending(o => o.ID).ToList();
+                        departmentTran = departmentTrans.First();
+                    }
                 }
 
                 MPS.Processor.Mps000178.PDO.Mps000178PDO mps000178RDO = new MPS.Processor.Mps000178.PDO.Mps000178PDO(
                     currentPatient,
                     patientTypeAlterByPatient,
-                    treatment4
+                    treatment4,
+                    departmentTran
                     );
                 WaitingManager.Hide();
                 MPS.ProcessorBase.Core.PrintData PrintData = null;

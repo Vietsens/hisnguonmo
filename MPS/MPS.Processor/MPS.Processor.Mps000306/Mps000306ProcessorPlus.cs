@@ -50,6 +50,10 @@ namespace MPS.Processor.Mps000306
                 {
                     sereServADOs.AddRange(sereServAdoFees);
                 }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServADOTemps), sereServADOTemps));
+                }
 
                 sereServADOs = sereServADOs.OrderBy(o => o.SERVICE_NAME).ToList();
 

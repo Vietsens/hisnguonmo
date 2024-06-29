@@ -194,6 +194,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                     foreach (var item in this.ServiceIsleafADOs)
                     {
+                        item.AssignNumOrder = null;
                         item.IsChecked = false;
                         item.ShareCount = null;
                         item.AMOUNT = 1;

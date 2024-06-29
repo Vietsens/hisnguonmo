@@ -296,6 +296,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             try
             {
                 if (isReset) return;
+
+                DefaultChosen();
+                TextDefault();
                 //dynamic eyeSurgDesc = new System.Dynamic.ExpandoObject();
                 //4. Phẫu thuật tái tạo lệ quản:
                 //- CHAN_DOAN_DUT_LE_QUAN: 1: Dut le quan duoi; 2: Dut le quan tren; 3: Dut le quan tren duoi
@@ -478,8 +481,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 {
                     checkEdit144.Checked = false;
                 }
-                DefaultChosen();
-                TextDefault();
                 //- TRA_MAT_BANG_EP: 0: khong, 1: co
             }
             catch (Exception ex)
@@ -743,6 +744,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             try
             {
                 if (isReset) return;
+                DefaultChosenGlocom();
+                TextDefaultGlocom();
                 //dynamic eyeSurgDesc = new System.Dynamic.ExpandoObject();                
 
                 //- CHAN_DOAN: 6: glocom goc dong, 7: glocom goc mo, 8: glocom bam sinh, 9: glocom thu phat
@@ -960,8 +963,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 
                 textEdit6.Text = eyeSurgDesc.TRA_MAT_THUOC;
                 textEdit2.Text = eyeSurgDesc.TRA_MAT_BANG_TT;
-                DefaultChosenGlocom();
-                TextDefaultGlocom();
             }
             catch (Exception ex)
             {
@@ -974,6 +975,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             try
             {
                 if (isReset) return;
+                DefaultChosenDucTTT();
+                TextDefaultDucTTT();
                 //dynamic eyeSurgDesc = new System.Dynamic.ExpandoObject();
                 //3: Phẫu thuật đục thủy tinh thể:
                 if (eyeSurgDesc.CHAN_DOAN == 1)
@@ -1238,8 +1241,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 //- Tra_mat_bang_ep: 0: khong, 1: co
                 txtDienBienKhac.Text = eyeSurgDesc.DIEN_BIEN_KHAC;
                 //- Dien_bien_khac
-                DefaultChosenDucTTT();
-                TextDefaultDucTTT();
             }
             catch (Exception ex)
             {
@@ -1720,7 +1721,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         {
             try
             {
-                TextDefaultPTSupMi();
                 //dynamic eyeSurgDesc = new System.Dynamic.ExpandoObject();
                 //5. Phẫu thuật sụp mí:
                 if (checkEdit141.Checked)
@@ -2243,8 +2243,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         {
             try
             {
-                DefaultChosenDucTTT();
-                TextDefaultDucTTT();
                 //dynamic eyeSurgDesc = new System.Dynamic.ExpandoObject();
                 //3: Phẫu thuật đục thủy tinh thể:
                 if (raDucT3Gia.Checked)

@@ -335,19 +335,13 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        int? reusable = null;
         private void cboReusable_EditValueChanged(int? data)
         {
             try
             {
-                if (data != null && data > 0)
-                {
-                    LoadData(data);
-                }
-                else
-                {
-                    LoadData();
-                }
+                reusable = data;
+                LoadData();
                 if (materialTypeTreeProcessor != null)
                 {
                     materialTypeTreeProcessor.Reload(this.ucMaterialType, this.materialTypes);
@@ -648,7 +642,7 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
             this.materialTypeTreeProcessor.Reload(this.ucMaterialType, this.materialTypes);
         }
 
-        private void LoadData(int? isReusable = null)
+        private void LoadData()
         {
             try
             {
@@ -670,13 +664,13 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                     filter.IS_BUSINESS = false;
                 }
 
-                if (isReusable != null)
+                if (reusable != null)
                 {
-                    if (isReusable == 1)
+                    if (reusable == 1)
                     {
                         filter.IS_REUSABLE = true;
                     }
-                    else if (isReusable == 2)
+                    else if (reusable == 2)
                     {
                         filter.IS_REUSABLE = false;
                     }

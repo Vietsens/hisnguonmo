@@ -72,8 +72,8 @@ using HIS.Desktop.Plugins.Library.CheckIcd;
 using SDA.EFMODEL.DataModels;
 using HIS.Desktop.LocalStorage.ConfigSystem;
 using System.Reflection;
-using static HIS.Desktop.Plugins.Library.PrintBordereau.Base.PrintOption;
 using Inventec.Desktop.Common.Modules;
+using DevExpress.XtraBars;
 
 namespace HIS.Desktop.Plugins.AssignService.AssignService
 {
@@ -915,6 +915,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 VisibleGridPatient();
                 ModuleList();
                 IsFirstloadForm = false;
+                CheckEnableBtnQR();
+
             }
             catch (Exception ex)
             {
@@ -1884,7 +1886,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 item.PATIENT_TYPE_ID = 0;
                 item.PATIENT_TYPE_CODE = null;
                 item.PATIENT_TYPE_NAME = null;
-
+                item.AssignNumOrder = null;
                 item.TDL_EXECUTE_ROOM_ID = 0;
                 item.IsNotLoadDefaultPatientType = false;
                 item.IsContainAppliedPatientType = false;
@@ -2071,6 +2073,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         {
                             e.RepositoryItem = this.repSampleTypeDis;
                         }
+                    }else if(e.Column.FieldName == "AssignNumOrder")
+                    {
+                        if (data.IsChecked && !assignMulti)
+                            e.RepositoryItem = this.repositoryItemSpinAmount_TabService;
+                        else
+                            e.RepositoryItem = this.repositoryItemSpinAmount__Disable_TabService;
                     }
                 }
             }
@@ -2121,6 +2129,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         }
                         this.gridControlServiceProcess.RefreshDataSource();
                         this.SetEnableButtonControl(this.actionType);
+                    }
+                    if(e.Column.FieldName == this.grcChecked_TabService.FieldName)
+                    {
+                        if (sereServADO.IsChecked)
+                            this.SetAssignNumOrder(sereServADO);
                     }
                     if (e.Column.FieldName == this.grcChecked_TabService.FieldName
                         || e.Column.FieldName == this.grcExpend_TabService.FieldName
@@ -2396,7 +2409,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                             }
                                             this.FillDataOtherPaySourceDataRow(sereServADO);
                                             this.ValidServiceDetailProcessing(sereServADO);
-
+                                            this.SetAssignNumOrder(sereServADO);
                                             if (!VerifyCheckFeeWhileAssign())
                                             {
                                                 this.ResetOneService(sereServADO);
@@ -2901,6 +2914,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 sereServADO.IsExpend = true;
                             this.ValidServiceDetailProcessing(sereServADO);
                             this.ProcessNoDifferenceHeinServicePrice(sereServADO);
+                            this.SetAssignNumOrder(sereServADO);
                             this.VerifyWarningOverCeiling();
                         }
                         else
@@ -2923,6 +2937,32 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
         }
 
+        private void SetAssignNumOrder(SereServADO sereServ)
+        {
+            try
+            {
+                if (!sereServ.IsChecked)
+                {
+                    sereServ.AssignNumOrder = null;
+                    return;
+                }
+                if (workingAssignServiceADO.OpenFromBedRoomPartial && this.patientSelectProcessor != null && this.ucPatientSelect != null)
+                {
+                    var lstPatientSelect = this.patientSelectProcessor.GetSelectedRows(this.ucPatientSelect);
+                    if (lstPatientSelect != null && lstPatientSelect.Count > 1)
+                    {
+                        sereServ.AssignNumOrder = null;
+                        return;
+                    }
+                }
+                var ss = sereServsInTreatmentRaw.Where(o => o.SERVICE_ID == sereServ.SERVICE_ID && o.TDL_INTRUCTION_TIME <= InstructionTime).ToList();
+                sereServ.AssignNumOrder = ss != null && ss.Count > 0 ? ss.Count + 1 : 1;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void gridViewServiceProcess_KeyDown(object sender, KeyEventArgs e)
         {
             try
@@ -3214,13 +3254,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 {
                     List<SereServADO> serviceCheckeds__Send = this.ServiceIsleafADOs.FindAll(o => o.IsChecked);
                     this.btnSave.Enabled = this.btnSaveAndPrint.Enabled = this.btnCreateServiceGroup.Enabled = (serviceCheckeds__Send != null && serviceCheckeds__Send.Count > 0);
-                    this.pnlPrintAssignService.Enabled = this.btnShowDetail.Enabled = this.btnCreateBill.Enabled = this.btnDepositService.Enabled = this.btnPrintPhieuHuongDanBN.Enabled = this.BtnPrint.Enabled = this.btnEdit.Enabled = false;
+                    this.pnlPrintAssignService.Enabled = this.btnShowDetail.Enabled = this.btnCreateBill.Enabled = this.btnDepositService.Enabled = this.btnPrintPhieuHuongDanBN.Enabled = this.BtnPrint.Enabled = this.btnEdit.Enabled = this.btnQRPay.Enabled = false;
 
                 }
                 else
                 {
                     this.btnSave.Enabled = this.btnSaveAndPrint.Enabled = this.btnCreateServiceGroup.Enabled = false;
-                    this.pnlPrintAssignService.Enabled = this.btnShowDetail.Enabled = this.btnCreateBill.Enabled = this.btnDepositService.Enabled = this.btnPrintPhieuHuongDanBN.Enabled = this.BtnPrint.Enabled = this.btnEdit.Enabled = true;
+                    this.pnlPrintAssignService.Enabled = this.btnShowDetail.Enabled = this.btnCreateBill.Enabled = this.btnDepositService.Enabled = this.btnPrintPhieuHuongDanBN.Enabled = this.BtnPrint.Enabled = this.btnEdit.Enabled = this.btnQRPay.Enabled = true;
                 }
 
                 //hiển thị ảnh checkbox
@@ -3490,275 +3530,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
         }
 
-        private void SelectOneServiceGroupProcess1(List<ServiceGroupADO> svgrs, bool isCheckChange = true)
-        {
-            try
-            {
-
-                List<SereServADO> services = null;
-                StringBuilder strMessage = new StringBuilder();
-                StringBuilder strMessageTemp__CoDichVuKhongCauHinh = new StringBuilder();
-                StringBuilder strMessageTemp__KhongDichVu = new StringBuilder();
-                bool hasMessage = false;
-                bool hasService = false;
-                //if (isCheckChange)
-                //{
-                //    this.ResetServiceGroupSelected();//TODO
-                //}
-
-                //+ Danh sách 1: Các nhóm đã chọn trước đó.
-                //+ Danh sách 2: Các nhóm chọn mới.
-                //+ Danh sách 3: Các nhóm bỏ tích.
-
-                //this.selectedSeviceGroupCopys//TODO
-
-                List<ServiceGroupADO> serviceGroupAdd = new List<ServiceGroupADO>();
-                List<ServiceGroupADO> serviceGroupDelete = new List<ServiceGroupADO>();
-                List<ServiceGroupADO> serviceGroupData = new List<ServiceGroupADO>();
-
-                if (svgrs != null && svgrs.Count > 0)
-                {
-
-                    if (this.selectedSeviceGroupCopys != null && this.selectedSeviceGroupCopys.Count > 0)
-                    {
-                        var idOlds = this.selectedSeviceGroupCopys.Select(o => o.ID).ToList();
-
-                        serviceGroupData = this.workingServiceGroupADOs.Where(o => o.IsChecked && idOlds.Contains(o.ID)).ToList();
-                        serviceGroupAdd = this.workingServiceGroupADOs.Where(o => o.IsChecked && !idOlds.Contains(o.ID)).ToList();
-                        serviceGroupDelete = this.workingServiceGroupADOs.Where(o => !o.IsChecked).ToList();
-
-                    }
-                    else
-                    {
-                        serviceGroupAdd = this.workingServiceGroupADOs.Where(o => o.IsChecked).ToList();
-                        serviceGroupDelete = this.workingServiceGroupADOs.Where(o => !o.IsChecked).ToList();
-                    }
-
-                    Inventec.Common.Logging.LogSystem.Debug("serviceGroupData.Count=" + (serviceGroupData != null ? serviceGroupData.Count : 0) + "");
-                    Inventec.Common.Logging.LogSystem.Debug("serviceGroupAdd.Count=" + (serviceGroupAdd != null ? serviceGroupAdd.Count : 0) + "");
-                    Inventec.Common.Logging.LogSystem.Debug("serviceGroupDelete.Count=" + (serviceGroupDelete != null ? serviceGroupDelete.Count : 0) + "");
-                    var servSegrAllowAlls = BackendDataWorker.Get<V_HIS_SERV_SEGR>();
-                    List<V_HIS_SERV_SEGR> servSegrAllowAlls__Current = new List<V_HIS_SERV_SEGR>();
-                    List<V_HIS_SERV_SEGR> servSegrAllowAlls__Delete = new List<V_HIS_SERV_SEGR>();
-                    List<V_HIS_SERV_SEGR> servSegrAllowAlls__Add = new List<V_HIS_SERV_SEGR>();
-
-                    if (serviceGroupData != null && serviceGroupData.Count > 0)
-                    {
-                        var idSelecteds = serviceGroupData.Select(o => o.ID).Distinct().ToList();
-                        servSegrAllowAlls__Current = servSegrAllowAlls.Where(o => idSelecteds.Contains(o.SERVICE_GROUP_ID)).ToList();
-                    }
-                    Inventec.Common.Logging.LogSystem.Debug("servSegrAllowAlls__Current.Count=" + (servSegrAllowAlls__Current != null ? servSegrAllowAlls__Current.Count : 0) + "");
-                    if (serviceGroupDelete != null && serviceGroupDelete.Count > 0)
-                    {
-                        var idSelecteds = serviceGroupDelete.Select(o => o.ID).Distinct().ToList();
-                        servSegrAllowAlls__Delete = servSegrAllowAlls.Where(o => idSelecteds.Contains(o.SERVICE_GROUP_ID)).ToList();
-
-                        if (servSegrAllowAlls__Delete != null && servSegrAllowAlls__Delete.Count > 0)
-                        {
-                            var servSegrAllowAlls__Delete__Ids = servSegrAllowAlls__Delete.Select(k => k.SERVICE_ID).Distinct().ToList();
-
-                            List<V_HIS_SERV_SEGR> servSegrAllow__Del = new List<V_HIS_SERV_SEGR>();
-                            if (servSegrAllowAlls__Current != null && servSegrAllowAlls__Current.Count > 0)
-                            {
-                                var del2 = servSegrAllowAlls__Delete.Where(l => !servSegrAllowAlls__Current.Select(k => k.SERVICE_ID).Contains(l.SERVICE_ID)).ToList();
-                                if (del2 != null && del2.Count > 0)
-                                {
-                                    servSegrAllow__Del.AddRange(del2);
-                                }
-                            }
-                            else
-                            {
-                                servSegrAllow__Del.AddRange(servSegrAllowAlls__Delete);
-                            }
-
-                            var servSegrAllow__DelWithUpdate = (servSegrAllowAlls__Current != null && servSegrAllowAlls__Current.Count > 0) ? servSegrAllowAlls__Current.Where(l => servSegrAllowAlls__Delete__Ids.Contains(l.SERVICE_ID)).ToList() : null;
-                            if (servSegrAllow__Del != null && servSegrAllow__Del.Count > 0)
-                            {
-                                var service__Del = this.ServiceIsleafADOs.Where(o => servSegrAllow__Del.Select(g => g.SERVICE_ID).Contains(o.SERVICE_ID)).ToList();
-                                Inventec.Common.Logging.LogSystem.Debug("service__Del.Count=" + (service__Del != null ? service__Del.Count : 0) + "");
-                                foreach (var itemDel in service__Del)
-                                {
-                                    //if (itemDel.SERVICE_GROUP_ID_SELECTEDs != null && itemDel.SERVICE_GROUP_ID_SELECTEDs.Count > 0)
-                                    {
-                                        itemDel.IsChecked = false;
-                                        itemDel.SERVICE_GROUP_ID_SELECTEDs = null;
-                                        itemDel.TDL_EXECUTE_ROOM_ID = 0;
-                                    }
-                                }
-                            }
-                            if (servSegrAllow__DelWithUpdate != null && servSegrAllow__DelWithUpdate.Count > 0)
-                            {
-                                var service__DelWithUpdate = this.ServiceIsleafADOs.Where(o => servSegrAllow__DelWithUpdate.Select(g => g.SERVICE_ID).Contains(o.SERVICE_ID)).ToList();
-                                Inventec.Common.Logging.LogSystem.Debug("service__DelWithUpdate.Count=" + (service__DelWithUpdate != null ? service__DelWithUpdate.Count : 0) + "");
-                                foreach (var itemDelWithUpdate in service__DelWithUpdate)
-                                {
-                                    if (itemDelWithUpdate.IS_MULTI_REQUEST == 1 && itemDelWithUpdate.AMOUNT > 1)
-                                    {
-                                        itemDelWithUpdate.AMOUNT = itemDelWithUpdate.AMOUNT - 1;
-                                    }
-                                    else
-                                    {
-                                        itemDelWithUpdate.AMOUNT = 1;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if (serviceGroupAdd != null && serviceGroupAdd.Count > 0)
-                    {
-                        Inventec.Common.Logging.LogSystem.Debug("SelectOneServiceGroupProcess. Add");
-                        var idSelecteds = serviceGroupAdd.Select(o => o.ID).Distinct().ToList();
-                        servSegrAllowAlls__Add = servSegrAllowAlls.Where(o => idSelecteds.Contains(o.SERVICE_GROUP_ID)).ToList();
-                        Inventec.Common.Logging.LogSystem.Debug("servSegrAllowAlls__Add.Count=" + (servSegrAllowAlls__Add != null ? servSegrAllowAlls__Add.Count : 0) + "");
-                        if (servSegrAllowAlls__Add != null && servSegrAllowAlls__Add.Count > 0)
-                        {
-                            var serviceOfGroupsInGroupbys = servSegrAllowAlls__Add.GroupBy(o => o.SERVICE_GROUP_ID).ToDictionary(o => o.Key, o => o.ToList());
-                            Inventec.Common.Logging.LogSystem.Debug("serviceOfGroupsInGroupbys.Count=" + (serviceOfGroupsInGroupbys != null ? serviceOfGroupsInGroupbys.Count : 0) + "");
-                            foreach (var item in serviceOfGroupsInGroupbys)
-                            {
-                                List<V_HIS_SERV_SEGR> servSegrErrors = new List<V_HIS_SERV_SEGR>();
-                                foreach (var svInGr in serviceOfGroupsInGroupbys[item.Key])
-                                {
-                                    var service = this.ServiceIsleafADOs.FirstOrDefault(o => svInGr.SERVICE_ID == o.SERVICE_ID);
-                                    if (service != null)
-                                    {
-                                        if (servSegrAllowAlls__Current != null && servSegrAllowAlls__Current.Count > 0 && servSegrAllowAlls__Current.Exists(d => d.SERVICE_ID == service.SERVICE_ID))
-                                        {
-
-                                            if (service.IS_MULTI_REQUEST == 1)
-                                            {
-                                                service.AMOUNT = service.AMOUNT + 1;
-                                            }
-                                            else
-                                            {
-                                                service.AMOUNT = 1;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (service.IsChecked)
-                                            {
-                                                Inventec.Common.Logging.LogSystem.Debug("serviceGroupAdd.3: IsChecked=" + service.IsChecked);
-                                                continue;
-                                            }
-
-                                            hasService = true;
-                                            service.IsChecked = true;
-                                            service.IsKHBHYT = false;
-                                            service.SERVICE_GROUP_ID_SELECTEDs = idSelecteds;
-                                            var searchServiceOfGroups = servSegrAllowAlls__Add.Where(o => o.SERVICE_ID == service.SERVICE_ID).ToList();
-                                            if (searchServiceOfGroups != null)
-                                            {
-                                                if (service.IS_MULTI_REQUEST == 1)
-                                                {
-                                                    service.AMOUNT = searchServiceOfGroups.Sum(o => o.AMOUNT);
-                                                }
-                                                else
-                                                {
-                                                    service.AMOUNT = 1;
-                                                }
-                                                service.InstructionNote = searchServiceOfGroups[0].NOTE;
-                                                service.IsExpend = (searchServiceOfGroups[0].IS_EXPEND == 1);
-                                            }
-                                            this.ChoosePatientTypeDefaultlService(this.currentHisPatientTypeAlter.PATIENT_TYPE_ID, service.SERVICE_ID, service);
-                                            this.FillDataOtherPaySourceDataRow(service);
-
-                                            List<V_HIS_EXECUTE_ROOM> executeRoomList = null;
-                                            FilterExecuteRoom(service, ref executeRoomList);
-
-                                            long executeRoomId = this.SetPriorityRequired(executeRoomList);
-
-                                            if (executeRoomId <= 0)
-                                                executeRoomId = this.SetDefaultExcuteRoom(executeRoomList);
-
-                                            //data.TDL_EXECUTE_ROOM_ID = executeRoomDefault;
-                                            if (service.TDL_EXECUTE_ROOM_ID <= 0)
-                                            {
-                                                service.TDL_EXECUTE_ROOM_ID = executeRoomId;
-                                            }
-
-                                            this.ValidServiceDetailProcessing(service);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        servSegrErrors.Add(svInGr);
-                                        Inventec.Common.Logging.LogSystem.Debug("svInGr.SERVICE_ID = " + svInGr.SERVICE_ID + " not exists in ServiceIsleafADOs");
-                                    }
-                                }
-
-                                if (servSegrErrors != null && servSegrErrors.Count > 0)
-                                {
-                                    if (String.IsNullOrEmpty(strMessageTemp__CoDichVuKhongCauHinh.ToString()))
-                                    {
-                                        strMessageTemp__CoDichVuKhongCauHinh.Append("; ");
-                                    }
-                                    strMessageTemp__CoDichVuKhongCauHinh.Append(String.Format(ResourceMessage.NhomDichVuChiTiet, Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(Inventec.Desktop.Common.HtmlString.ProcessorString.InsertColor(servSegrErrors[0].SERVICE_GROUP_NAME, Color.Red), FontStyle.Bold), String.Join(",", servSegrErrors.Select(o => Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(Inventec.Desktop.Common.HtmlString.ProcessorString.InsertColor(o.SERVICE_CODE, Color.Black), FontStyle.Bold)))));
-
-                                    hasMessage = true;
-                                }
-                                servSegrErrors = new List<V_HIS_SERV_SEGR>();
-                            }
-                        }
-                    }
-
-                    services = this.ServiceIsleafADOs.Where(o => o.IsChecked).OrderByDescending(o => o.SERVICE_NUM_ORDER).ThenBy(o => o.TDL_SERVICE_NAME).ToList();
-
-                    var sgNotIn = servSegrAllowAlls__Current.Select(o => o.SERVICE_GROUP_ID).Distinct().ToArray();
-                    var searchServiceOfGroups__NoService = svgrs.Where(o => !sgNotIn.Contains(o.ID)).ToList();
-                    if (searchServiceOfGroups__NoService != null && searchServiceOfGroups__NoService.Count > 0)
-                    {
-                        strMessageTemp__KhongDichVu.Append(String.Join(",", searchServiceOfGroups__NoService.Select(o => Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(Inventec.Desktop.Common.HtmlString.ProcessorString.InsertColor(o.SERVICE_GROUP_NAME, Color.Red), FontStyle.Bold))));
-                        hasMessage = true;
-                    }
-                    Inventec.Common.Logging.LogSystem.Debug("SelectOneServiceGroupProcess. 3");
-
-                    if (hasService && (this.toggleSwitchDataChecked.EditValue ?? "").ToString().ToLower() != "true")
-                        this.toggleSwitchDataChecked.EditValue = true;
-
-                    if (hasMessage)
-                    {
-                        strMessage.Append(ResourceMessage.NhomDichVuCoDichVuDuocCauHinhTrongNhomNhungKhongCoCauHinhChinhSach);
-                        if (!String.IsNullOrEmpty(strMessageTemp__CoDichVuKhongCauHinh.ToString()))
-                        {
-                            strMessage.Append("\r\n" + String.Format(ResourceMessage.NhomDichVuCoDichVuKhongCoCauHinh, strMessageTemp__CoDichVuKhongCauHinh.ToString()));
-                        }
-                        if (!String.IsNullOrEmpty(strMessageTemp__KhongDichVu.ToString()))
-                        {
-                            strMessage.Append("\r\n" + String.Format(ResourceMessage.NhomDichVuKhongCoDichVu, strMessageTemp__KhongDichVu.ToString()));
-                        }
-                        strMessage.Append("\r\n" + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(Inventec.Desktop.Common.HtmlString.ProcessorString.InsertColor(ResourceMessage.CacDichVuKhongCoChinhSachGiaHoacKhongCoCauHinhSeKhongDuocChon, Color.Maroon), FontStyle.Italic));
-                        WaitingManager.Hide();
-                        MessageManager.Show(strMessage.ToString());
-                    }
-                    else
-                    {
-                        WaitingManager.Hide();
-                    }
-
-                    this.ValidOnlyShowNoticeService(services);
-
-                    this.SetEnableButtonControl(this.actionType);
-                    this.SetDefaultSerServTotalPrice();
-                    this.VerifyWarningOverCeiling();
-                }
-                else
-                {
-                    services = this.ServiceIsleafADOs;
-                    if ((this.toggleSwitchDataChecked.EditValue ?? "").ToString().ToLower() == "true")
-                        this.toggleSwitchDataChecked.EditValue = false;
-                    this.VerifyWarningOverCeiling();
-                }
-                this.gridControlServiceProcess.DataSource = null;
-                this.gridControlServiceProcess.DataSource = services;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
         private void ShowKskServiceProcess(List<HIS_KSK_SERVICE> lstkskService)
         {
             try
@@ -3788,7 +3559,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 break;
                             }
                             this.FillDataOtherPaySourceDataRow(service);
-
+                            this.SetAssignNumOrder(service);
                             List<V_HIS_EXECUTE_ROOM> executeRoomList = null;
                             FilterExecuteRoom(service, ref executeRoomList);
 
@@ -3876,7 +3647,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                     }
                                     hasService = true;
                                     service.IsChecked = true;
-
+                                    this.SetAssignNumOrder(service);
                                     service.IsKHBHYT = false;
                                     service.SERVICE_GROUP_ID_SELECTEDs = idSelecteds;
                                     var searchServiceOfGroups = servSegrAllows.Where(o => o.SERVICE_ID == service.SERVICE_ID).ToList();
@@ -5368,7 +5139,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (!string.IsNullOrEmpty(HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam))
                 {
                     LoadVServiceReq();
-                    if (vServiceReq != null && vServiceReq.START_TIME.HasValue && Inventec.Common.DateTime.Calculation.DifferenceTime(vServiceReq.START_TIME.Value, InstructionTime,  Inventec.Common.DateTime.Calculation.UnitDifferenceTime.SECOND) < Int32.Parse(HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam))
+                    if (vServiceReq != null && vServiceReq.START_TIME.HasValue && Inventec.Common.DateTime.Calculation.DifferenceTime(vServiceReq.START_TIME.Value, InstructionTime, Inventec.Common.DateTime.Calculation.UnitDifferenceTime.SECOND) < Int32.Parse(HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam))
                     {
                         DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Thời gian chỉ định {0} phải cách thời gian bắt đầu khám {1} là {2} giây mới được phép chỉ định", Inventec.Common.DateTime.Convert.TimeNumberToTimeString(InstructionTime), Inventec.Common.DateTime.Convert.TimeNumberToTimeString(vServiceReq.START_TIME.Value), HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
                         return;
@@ -5722,6 +5493,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                 foreach (var item in this.ServiceIsleafADOs)
                 {
+                    item.AssignNumOrder = null;
                     item.AMOUNT = 1;
                     item.IsChecked = false;
                     item.ShareCount = null;
@@ -8071,7 +7843,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             service.OTHER_PAY_SOURCE_ID = null;
                             service.OTHER_PAY_SOURCE_CODE = "";
                             service.OTHER_PAY_SOURCE_NAME = "";
-
+                            this.SetAssignNumOrder(service);
                             HIS_PATIENT_TYPE paty = this.ChoosePatientTypeDefaultlService(this.currentHisPatientTypeAlter.PATIENT_TYPE_ID, service.SERVICE_ID, service);
 
                             if (!VerifyCheckFeeWhileAssign())
@@ -9092,6 +8864,15 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.BindTree();
                 this.LoadDataDhst();
                 this.InitDefaultFocus();
+                assignMulti = false;
+                if (workingAssignServiceADO.OpenFromBedRoomPartial && this.patientSelectProcessor != null && this.ucPatientSelect != null)
+                {
+                    var lstPatientSelect = this.patientSelectProcessor.GetSelectedRows(this.ucPatientSelect);
+                    if (lstPatientSelect != null && lstPatientSelect.Count > 1)
+                    {
+                        assignMulti = true;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -9479,5 +9260,111 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
 
         }
+        List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
+        private void CheckEnableBtnQR()
+        {
+            try
+            {
+                listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+                if (listConfig != null)
+               {
+                   btnQRPay.Enabled = true;
+               }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+        private HIS_CONFIG selectedConfig = new HIS_CONFIG();
+        private void btnQRPay_Click(object sender, EventArgs e)
+        {
+            try 
+	        {
+                if (listConfig != null)
+                {
+                    if (listConfig.Count > 1)
+                    {
+                        popupMenu1.ClearLinks();
+                        foreach (var item in listConfig)
+                        {
+                            string key = "";
+                            string value = item.KEY;
+                            int index = value.IndexOf("Info");
+                            if (index > 0)
+                            {
+                                var shotkey = value.Substring(0, index);
+                                string[] parts = shotkey.Split('.');
+                                if (parts.Length > 0)
+                                {
+                                    key = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
+                                }
+                            }
+                            else
+                            {
+                                key = item.KEY;
+                            }
+
+                           
+                            BarButtonItem btnOption = new BarButtonItem(null, key);
+                            btnOption.ItemClick += (s, args) =>
+                            {
+
+                                selectedConfig = item;
+                                List<object> listArgs = new List<object>();
+                                TransReqQRADO adoqr = new TransReqQRADO();
+                                adoqr.TreatmentId = this.treatmentId;
+                                adoqr.ConfigValue = selectedConfig;
+                                adoqr.TransReqId = 0;
+                                adoqr.DelegtePrint = (HIS.Desktop.Common.RefeshReference)IN_QR;
+                                listArgs.Add(adoqr);
+                                LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
+                                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+                            };
+                            popupMenu1.AddItem(btnOption);
+                        }
+
+                        popupMenu1.ShowPopup(Control.MousePosition);
+                    }
+                    else
+                    {
+                        selectedConfig = listConfig[0];
+                        List<object> listArgs = new List<object>();
+                        TransReqQRADO adoqr = new TransReqQRADO();
+                        adoqr.TreatmentId = this.treatmentId;
+                        adoqr.ConfigValue = selectedConfig;
+                        adoqr.TransReqId = 0;
+                        adoqr.DelegtePrint = (HIS.Desktop.Common.RefeshReference)IN_QR;
+                        listArgs.Add(adoqr);
+                        LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
+                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+                        
+                    }
+                    
+                }
+	        }
+	        catch (Exception ex)
+	        {
+		        LogSystem.Error("Loi khi thuc hien thanh toan QR tam thu: "+ex);
+	        }
+        }
+        private void IN_QR()
+        {
+            try
+            {
+                PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, null, currentModule != null ? currentModule.RoomId : 0);
+
+                InPhieuYeuCauDichVu(true);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+       
+        
     }
 }

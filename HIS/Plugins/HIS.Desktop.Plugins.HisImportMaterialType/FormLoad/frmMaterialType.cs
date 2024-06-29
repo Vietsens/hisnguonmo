@@ -1445,7 +1445,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
 
                     if (!string.IsNullOrEmpty(item.MATERIAL_TYPE_NAME))
                     {
-                        if (!CheckMaxLenth(item.MATERIAL_TYPE_NAME, 500))
+                        if (!CheckMaxLenth(item.MATERIAL_TYPE_NAME, 1500))
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Tên vật tư");
                             mateAdo.MATERIAL_TYPE_NAME_ERROR = 1;

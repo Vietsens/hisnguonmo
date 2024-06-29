@@ -47,7 +47,6 @@ using Inventec.Common.QrCodeBHYT;
 using DevExpress.XtraEditors;
 using Inventec.Common.QrCodeCCCD;
 using MOS.LibraryHein.Bhyt;
-using HIS.Desktop.Plugins.Library.CheckHeinGOV;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisteredExam;
 using WcfCCCD;
@@ -118,6 +117,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             try
             {
                 AppConfigs.LoadConfig();
+                checkConfig();
+
                 //Lấy ảnh từ thư mục trong HIS.Desktop
                 getImageFromFile();
 
@@ -250,6 +251,32 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             }
 
         }
+
+        List<string> connectInfors = new List<string>();
+        string api = "";
+        string nameCb = "";
+        string cccdCb = "";
+        private void checkConfig()
+        {
+            try
+            {
+                HisConfigCHECKHEINCARD.LoadConfig();
+                string connect_infor = HisConfigCHECKHEINCARD.CHECK_HEIN_CARD_BHXH__API;
+                if (!string.IsNullOrEmpty(connect_infor))
+                {
+                    connectInfors = connect_infor.Split('|').ToList();
+                    api = connectInfors[0];
+                    nameCb = connectInfors[1];
+                    cccdCb = connectInfors[2];
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
         private void OpenServiceCccd()
         {
             try
@@ -1083,12 +1110,12 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                             }
                         }
 
+                        DateTime dTheDen = DateTime.MinValue;
                         if (!string.IsNullOrEmpty(rsIns.gtTheDen))
                         {
-                            DateTime d;
-                            if (DateTime.TryParseExact(rsIns.gtTheDen, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out d))
+                            if (DateTime.TryParseExact(rsIns.gtTheDen, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dTheDen))
                             {
-                                long? ToTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(d);
+                                long? ToTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dTheDen);
                                 if (this.PatientData.CardInfo != null)
                                 {
                                     Inventec.Common.Logging.LogSystem.Warn("fromTime__1_" + ToTime);
@@ -1102,11 +1129,47 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                                 }
                             }
                         }
-
+                        DateTime dTheTuMoi = DateTime.MinValue;
+                        if (!string.IsNullOrEmpty(rsIns.gtTheTuMoi))
+                        {
+                            DateTime d;
+                            if (DateTime.TryParseExact(rsIns.gtTheTuMoi, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dTheTuMoi))
+                            {
+                               //Gắn giá trị thẻ mới
+                            }
+                        }
                         string mathe = "";
-                        if (!String.IsNullOrWhiteSpace(rsIns.maTheMoi))
+                        if (!String.IsNullOrWhiteSpace(rsIns.maTheMoi) && dTheTuMoi != DateTime.MinValue && Int64.Parse(DateTime.Now.ToString("yyyyMMdd000000")) >= Int64.Parse(dTheTuMoi.ToString("yyyyMMdd000000")))
                         {
                             mathe = rsIns.maTheMoi;
+                            long? fromTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dTheTuMoi);
+                            if (this.PatientData.CardInfo != null)
+                            {
+                                this.PatientData.CardInfo.HeinCardFromTime = fromTime;
+                            }
+
+                            if (this.PatientData.PatientForKiosk != null)
+                            {
+                                this.PatientData.PatientForKiosk.HeinCardFromTime = fromTime;
+                            }
+
+                            if (!string.IsNullOrEmpty(rsIns.gtTheDenMoi))
+                            {
+                                DateTime d;
+                                if (DateTime.TryParseExact(rsIns.gtTheDenMoi, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dTheDen))
+                                {
+                                    long? ToTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dTheDen);
+                                    if (this.PatientData.CardInfo != null)
+                                    {
+                                        this.PatientData.CardInfo.HeinCardToTime = ToTime;
+                                    }
+
+                                    if (this.PatientData.PatientForKiosk != null)
+                                    {
+                                        this.PatientData.PatientForKiosk.HeinCardToTime = ToTime;
+                                    }
+                                }
+                            }
                         }
                         else
                         {
@@ -1306,14 +1369,20 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                     Inventec.Common.Logging.LogSystem.Info("Khong goi cong BHXH check thong tin the do du lieu truyen vao chua du du lieu bat buoc___" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataHein), dataHein));
                     return reult;
                 }
+                Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên cán bộ:{0}", nameCb));
+                Inventec.Common.Logging.LogSystem.Debug(String.Format("CCCD cán bộ:{0}", cccdCb));
+                Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên api:{0}", api));
 
                 CommonParam param = new CommonParam();
                 ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
+                apiInsuranceExpertise.ApiEgw = api;
                 CheckHistoryLDO checkHistoryLDO = new CheckHistoryLDO();
                 checkHistoryLDO.maThe = dataHein.HeinCardNumber;
                 checkHistoryLDO.ngaySinh = dataHein.Dob;
                 checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(dataHein.PatientName);
                 checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? dataHein.PatientName : checkHistoryLDO.hoTen);
+                checkHistoryLDO.hoTenCb = nameCb;
+                checkHistoryLDO.cccdCb = cccdCb;
                 Inventec.Common.Logging.LogSystem.Info("CheckHanSDTheBHYT => 1");
                 reult = await apiInsuranceExpertise.CheckHistory(BHXHLoginCFG.USERNAME, BHXHLoginCFG.PASSWORD, BHXHLoginCFG.ADDRESS, checkHistoryLDO, BHXHLoginCFG.ADDRESS_OPTION);
 

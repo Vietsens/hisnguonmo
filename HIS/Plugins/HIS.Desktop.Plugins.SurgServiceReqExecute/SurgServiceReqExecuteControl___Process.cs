@@ -94,6 +94,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 {
                     txtMethodCode.Text = this.sereServPTTT.PTTT_METHOD_CODE;
                     cboMethod.EditValue = this.sereServPTTT.PTTT_METHOD_ID;
+
                     txtPtttGroupCode.Text = this.sereServPTTT.PTTT_GROUP_CODE;
                     cbbPtttGroup.EditValue = this.sereServPTTT.PTTT_GROUP_ID;
                     //txtEmotionlessMethod.Text = this.sereServPTTT.EMOTIONLESS_METHOD_CODE;
@@ -146,7 +147,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         long ptttGroupId = 0;
                         long ptttMethodId = 0;
 
-                        var surgMisuService = lstService.FirstOrDefault(o => o.ID == sereServ.SERVICE_ID && (o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT || o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT));
+                        var surgMisuService = lstService.FirstOrDefault(o => o.ID == sereServ.SERVICE_ID );
                         if (surgMisuService != null)
                         {
                             if (surgMisuService.PTTT_GROUP_ID.HasValue)
@@ -246,7 +247,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     {
                         long ptttGroupId = 0;
 
-                        var surgMisuService = lstService.FirstOrDefault(o => o.ID == sereServ.SERVICE_ID && (o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT || o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT));
+                        var surgMisuService = lstService.FirstOrDefault(o => o.ID == sereServ.SERVICE_ID);
                         if (surgMisuService != null)
                         {
                             if (surgMisuService.PTTT_GROUP_ID.HasValue)
@@ -255,6 +256,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                                 ptttGroupId = ptttGroup.ID;
                                 txtPtttGroupCode.Text = ptttGroup.PTTT_GROUP_CODE;
                             }
+                            
                         }
 
                         if (ptttGroupId > 0)
@@ -920,7 +922,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         SereServExt.MACHINE_ID = null;
                         SereServExt.MACHINE_CODE = "";
                     }
-
+                    SereServExt.INSTRUCTION_NOTE = !string.IsNullOrEmpty(txtIntructionNote.Text.Trim()) ? txtIntructionNote.Text.Trim() : null;
                     hisSurgResultSDO.SereServExt = SereServExt;
                 }
                 //AutoMapper.Mapper.CreateMap<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_5, HIS_SERE_SERV>();

@@ -606,6 +606,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 if (data != null)
                 {
                     Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisServiceReqMaty").FirstOrDefault();
+                    
                     if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.HisServiceReqMaty");
                     if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                     {
@@ -944,8 +945,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     if (success)
                     {
 
-                        if (this.isAllowEditInfo)
-                            SetEnableControl();
+                        SetEnableControl();
                         if (success && dtFinish.EditValue != null && chkKetThuc.Checked && chkClose.Checked)
                         {
                             XtraTabControl main = SessionManager.GetTabControlMain();

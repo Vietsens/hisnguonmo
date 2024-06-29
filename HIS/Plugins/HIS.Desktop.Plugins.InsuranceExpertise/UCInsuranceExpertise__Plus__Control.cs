@@ -140,6 +140,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                         if (listTreatment != null && listTreatment.Count == 1)
                         {
                             this.currentTreatment = listTreatment.First();
+                            ClickTreatment(currentTreatment);
                             FillDataToGridHeinCardAndHeinApproval();
                         }
                         txtFindTreatmentCode.SelectAll();
@@ -169,6 +170,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     if (listTreatment != null && listTreatment.Count == 1)
                     {
                         this.currentTreatment = listTreatment.First();
+                        ClickTreatment(currentTreatment);
                         FillDataToGridHeinCardAndHeinApproval();
                     }
                     gridControlTreatment.Focus();
@@ -705,25 +707,19 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     }
                     if (btnLuuTru.Visible)
                         btnLuuTru.Enabled = this.currentTreatment.HEIN_LOCK_TIME != null && string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE);
+                    if (string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE))
+                        GetNextStoreBordereauCode();
+                    if (txtStoreBordereauCode.Visible)
+                        txtStoreBordereauCodeOption2.Text = this.currentTreatment.STORE_BORDEREAU_CODE ?? (nextStoreBordereauCode != null ? nextStoreBordereauCode.StoreBordereauCode : null);
                     if (Config.HisConfigCFG.OptionStoreBordereauCode == "2")
                     {
-                        dteStoreTime.Enabled = string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE);
-
-                        if (string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE)){
-                            btnLuuTruOption2.Text = "Lưu trữ (F5)";
-                        }
-                        else
-                        {
-                            btnLuuTruOption2.Text = "Hủy LT (F5)";
-                            btnLuuTruOption2.ToolTip = "Hủy lưu trữ bảng kê";
-                        }
-                        txtStoreBordereauCodeOption2.Enabled = string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE);
-                        btnLockHein.Enabled = this.currentTreatment.IS_LOCK_HEIN != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE);
-                        btnUnLockHein.Enabled = this.currentTreatment.IS_LOCK_HEIN == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE);
+                        txtStoreBordereauCodeOption2.Text = this.currentTreatment.STORE_BORDEREAU_CODE ?? (nextStoreBordereauCode != null ? nextStoreBordereauCode.StoreBordereauCode : null);
+                        ChangeEnableButtonOption2();
                     }
                 }
                 else
                 {
+                    txtStoreBordereauCode.Text = null;
                     btnLockHein.Enabled = false;
                     btnUnLockHein.Enabled = false;
                     if (Config.HisConfigCFG.OptionStoreBordereauCode == "2")
@@ -731,9 +727,11 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                         dteStoreTime.Enabled = true;
                         btnLuuTruOption2.Text = "Lưu trữ (F5)";
                         btnLuuTruOption2.ToolTip = null;
+                        btnLuuTruOption2.Enabled = true;
                         btnLockHein.Enabled = true;
                         btnUnLockHein.Enabled = true;
                         txtStoreBordereauCodeOption2.Enabled = true;
+                        txtStoreBordereauCodeOption2.Text = null;
                     }
                 }
                 gridControlHeinCard.BeginUpdate();
@@ -753,7 +751,37 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void ChangeEnableButtonOption2()
+        {
 
+            try
+            {
+                dteStoreTime.Enabled = string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE);
+
+                txtStoreBordereauCodeOption2.Enabled = string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE);
+                btnLockHein.Enabled = this.currentTreatment.IS_LOCK_HEIN != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE);
+                btnUnLockHein.Enabled = this.currentTreatment.IS_LOCK_HEIN == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+
+                if (string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE))
+                {
+                    btnLuuTruOption2.Text = "Lưu trữ (F5)";
+                    if (btnLockHein.Enabled)
+                        btnLuuTruOption2.Enabled = false;
+                }
+                else
+                {
+                    btnLuuTruOption2.Text = "Hủy LT (F5)";
+                    btnLuuTruOption2.ToolTip = "Hủy lưu trữ bảng kê";
+                    btnLuuTruOption2.Enabled = true;
+                    btnUnLockHein.Enabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
         private void FillDataToSereServTree(List<V_HIS_SERE_SERV_5> hisSereServs)
         {
             try

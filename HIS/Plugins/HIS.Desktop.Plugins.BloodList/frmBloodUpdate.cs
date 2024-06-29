@@ -49,6 +49,7 @@ using DevExpress.XtraEditors.Popup;
 using DevExpress.Utils.Win;
 using System.Text.RegularExpressions;
 using HIS.Desktop.ApiConsumer;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.BloodList
 {
@@ -80,6 +81,7 @@ namespace HIS.Desktop.Plugins.BloodList
                 else
                 {
                     lcgBloodGiver.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    LcgBloodGriverCheck();
                 }
             }
             catch (Exception ex)
@@ -89,6 +91,28 @@ namespace HIS.Desktop.Plugins.BloodList
 
         }
 
+        private void LcgBloodGriverCheck()
+        {
+            lcgBloodGiver.BeginUpdate();
+
+            try
+            {
+                foreach (DevExpress.XtraLayout.BaseLayoutItem item in lcgBloodGiver.Items)
+                {
+                    DevExpress.XtraLayout.LayoutControlItem lci = item as DevExpress.XtraLayout.LayoutControlItem;
+                    if (lci != null && lci.Control != null && lci.Control is BaseEdit)
+                    {
+                        DevExpress.XtraEditors.BaseEdit fomatFrm = lci.Control as DevExpress.XtraEditors.BaseEdit;
+                        dxValidationProvider1.SetValidationRule(fomatFrm, null);
+                    }
+                }
+                dxValidationProvider1.SetValidationRule(txtDob, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         #region Method
         private void SetCaptionByLanguageKey()
         {
@@ -709,13 +733,12 @@ namespace HIS.Desktop.Plugins.BloodList
 
                 if (!dxValidationProvider1.Validate())
                     return;
-
-                if (!chkAtUnit.Checked && cboWorkPlace.EditValue == null)
+                if (!chkAtUnit.Checked && cboWorkPlace.EditValue == null && lcgBloodGiver.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show("Vui lòng chọn đơn vị", Resources.ResourceMessage.ThongBao);
                     return;
                 }
-                else if (!chkAtPermanentAddress.Checked && (cboDistrictBlood.EditValue == null || cboProvinceBlood.EditValue == null))
+                else if (!chkAtPermanentAddress.Checked && (cboDistrictBlood.EditValue == null || cboProvinceBlood.EditValue == null) && lcgBloodGiver.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show("Vui lòng chọn Tỉnh/Huyện", Resources.ResourceMessage.ThongBao);
                     return;

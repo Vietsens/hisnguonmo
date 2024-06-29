@@ -792,9 +792,56 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                     ///Khoi tao cbo PatientType va set gia tri mac dinh theo service
                     FillDataIntoPatientTypeCombo(this.currentMedicineTypeADOForEdit, cboPatientType);
-                    HIS_PATIENT_TYPE patientTypeDefault = ChoosePatientTypeDefaultlServiceOther(currentHisPatientTypeAlter.PATIENT_TYPE_ID,
-                        this.currentMedicineTypeADOForEdit.SERVICE_ID, this.currentMedicineTypeADOForEdit.SERVICE_TYPE_ID);
+                    SetPatientType();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
+        private void SetPatientType()
+        {
+            try
+            {
+                HIS_PATIENT_TYPE patientTypeDefault = ChoosePatientTypeDefaultlServiceOther(currentHisPatientTypeAlter.PATIENT_TYPE_ID,
+                        this.currentMedicineTypeADOForEdit.SERVICE_ID, this.currentMedicineTypeADOForEdit.SERVICE_TYPE_ID);
+                bool IsHasPatientType = false;
+                var selectedOpionGroup = GetSelectedOpionGroup();
+                if (this.serviceReqParentId != null && ListAncillaryServPaty != null && ListAncillaryServPaty.Count > 0)
+                {
+                    if (this.currentMedicineTypeADOForEdit.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
+                    {
+                        var sv = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().Where(o => o.SERVICE_ID == this.currentMedicineTypeADOForEdit.SERVICE_ID).FirstOrDefault();
+                        if (sv != null && !string.IsNullOrEmpty(sv.HEIN_SERVICE_BHYT_CODE))
+                        {
+                            var acMety = ListAncillaryServPaty.Where(o => (o.CHILD_SERVICE_ID == sv.SERVICE_ID || (!string.IsNullOrEmpty(o.PREFIX_BHYT_CODE) && sv.HEIN_SERVICE_BHYT_CODE.StartsWith(o.PREFIX_BHYT_CODE))) && currentPatientTypeWithPatientTypeAlter.Exists(p => p.ID == o.PATIENT_TYPE_ID)).ToList();
+                            if (acMety != null && acMety.Count > 0)
+                            {
+                                acMety = acMety.OrderByDescending(o => o.ID).ToList();
+                                cboPatientType.EditValue = acMety.FirstOrDefault().PATIENT_TYPE_ID;
+                                IsHasPatientType = true;
+                            }
+                        }
+                    }
+                    else if (this.currentMedicineTypeADOForEdit.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
+                    {
+                        var sv = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().Where(o => o.SERVICE_ID == this.currentMedicineTypeADOForEdit.SERVICE_ID).FirstOrDefault();
+                        if (sv != null && !string.IsNullOrEmpty(sv.HEIN_SERVICE_BHYT_CODE))
+                        {
+                            var acMaty = ListAncillaryServPaty.Where(o => (o.CHILD_SERVICE_ID == sv.SERVICE_ID || (!string.IsNullOrEmpty(o.PREFIX_BHYT_CODE) && sv.HEIN_SERVICE_BHYT_CODE.StartsWith(o.PREFIX_BHYT_CODE))) && currentPatientTypeWithPatientTypeAlter.Exists(p => p.ID == o.PATIENT_TYPE_ID)).ToList();
+                            if (acMaty != null && acMaty.Count > 0)
+                            {
+                                acMaty = acMaty.OrderByDescending(o => o.ID).ToList();
+                                cboPatientType.EditValue = acMaty.FirstOrDefault().PATIENT_TYPE_ID;
+                                IsHasPatientType = true;
+                            }
+                        }
+                    }
+                }
+                if (!IsHasPatientType)
+                {
                     if (HisConfigCFG.DefaultPatientTypeOption && this.serviceReqParentId != null)
                     {
                         CommonParam param = new CommonParam();
@@ -830,6 +877,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+
         }
 
         private void MaterialTypeTSD_RowClick(object data)
@@ -874,38 +922,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                     ///Khoi tao cbo PatientType va set gia tri mac dinh theo service
                     FillDataIntoPatientTypeCombo(this.currentMedicineTypeADOForEdit, cboPatientType);
-                    HIS_PATIENT_TYPE patientTypeDefault = ChoosePatientTypeDefaultlServiceOther(currentHisPatientTypeAlter.PATIENT_TYPE_ID,
-                        this.currentMedicineTypeADOForEdit.SERVICE_ID, this.currentMedicineTypeADOForEdit.SERVICE_TYPE_ID);
-
-                    if (HisConfigCFG.DefaultPatientTypeOption && this.serviceReqParentId != null)
-                    {
-                        CommonParam param = new CommonParam();
-                        HisSereServFilter filter = new HisSereServFilter();
-                        filter.SERVICE_REQ_ID = this.serviceReqParentId;
-                        var SereServ = new BackendAdapter(param).Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, filter, param);
-                        if (SereServ != null && SereServ.Count > 0)
-                        {
-                            cboPatientType.EditValue = SereServ.FirstOrDefault().PATIENT_TYPE_ID;
-                        }
-                        else if (patientTypeDefault != null)
-                        {
-                            cboPatientType.EditValue = patientTypeDefault.ID;
-                        }
-                        else
-                        {
-                            Inventec.Common.Logging.LogSystem.Error("Khong tim thay doi tuong thanh toan mac dinh cho dinh vu");
-                            cboPatientType.EditValue = null;
-                        }
-                    }
-                    else if (patientTypeDefault != null)
-                    {
-                        cboPatientType.EditValue = patientTypeDefault.ID;
-                    }
-                    else
-                    {
-                        Inventec.Common.Logging.LogSystem.Error("Khong tim thay doi tuong thanh toan mac dinh cho dinh vu");
-                        cboPatientType.EditValue = null;
-                    }
+                    SetPatientType();
                 }
             }
             catch (Exception ex)

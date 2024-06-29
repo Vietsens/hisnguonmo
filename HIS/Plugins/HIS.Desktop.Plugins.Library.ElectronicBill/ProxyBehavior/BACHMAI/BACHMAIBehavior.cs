@@ -306,24 +306,30 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.BACHMAI
                 decimal tongtienhang = 0;
                 decimal tongtienthue = 0;
                 decimal tongtientt = 0;
-
+                decimal tongtienchuavatkhac = 0;
+                decimal tongtienvatkhac = 0;
                 foreach (var item in listEinvoiceLine)
                 {
-                    if (item.THUESUAT == "0")
+                    if (item.THUESUAT == "5")
                     {
-                        tongtien0 += item.TONGTIEN;
-                    }
-                    else if (item.THUESUAT == "5")
-                    {
-                        tongtienvat5 += item.TONGTIEN;
+                        tongtienvat5 += item.TIENTHUE;
                         tongtienchuavat5 += item.THANHTIEN;
                     }
                     else if (item.THUESUAT == "10")
                     {
-                        tongtienvat10 += item.TONGTIEN;
+                        tongtienvat10 += item.TIENTHUE;
                         tongtienchuavat10 += item.THANHTIEN;
                     }
-                    else
+                    else if (item.THUESUAT == "8")
+                    {
+                        tongtienvatkhac += item.TIENTHUE;
+                        tongtienchuavatkhac += item.THANHTIEN;
+                    }
+                    else if (item.THUESUAT == "0")
+                    {
+                        tongtien0 += item.TONGTIEN;
+                    }
+                    else if (item.THUESUAT == "KCT")
                     {
                         tongtienkct += item.TONGTIEN;
                     }
@@ -333,11 +339,19 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.BACHMAI
                     tongtientt += item.TONGTIEN;
                 }
 
+                //gán lại bằng 0 với hóa đơn thường ko chịu thuế
+                if (tongtienvat5 == 0 && tongtienvat10 == 0)
+                {
+                    tongtien0 = 0;
+                }
+
                 invoice.TONGTIEN0 = (long)Math.Round(tongtien0, 0, MidpointRounding.AwayFromZero);
                 invoice.TONGTIENVAT5 = (long)Math.Round(tongtienvat5, 0, MidpointRounding.AwayFromZero);
                 invoice.TONGTIENCHUAVAT5 = (long)Math.Round(tongtienchuavat5, 0, MidpointRounding.AwayFromZero);
                 invoice.TONGTIENVAT10 = (long)Math.Round(tongtienvat10, 0, MidpointRounding.AwayFromZero);
                 invoice.TONGTIENCHUAVAT10 = (long)Math.Round(tongtienchuavat10, 0, MidpointRounding.AwayFromZero);
+                invoice.TONGTIENVATKHAC = (long)Math.Round(tongtienvatkhac, 0, MidpointRounding.AwayFromZero);
+                invoice.TONGTIENCHUAVATKHAC = (long)Math.Round(tongtienchuavatkhac, 0, MidpointRounding.AwayFromZero);
                 invoice.TONGTIENKCT = (long)Math.Round(tongtienkct, 0, MidpointRounding.AwayFromZero);
                 invoice.TONGTIENHANG = (long)Math.Round(tongtienhang, 0, MidpointRounding.AwayFromZero);
                 invoice.TONGTIENTHUE = (long)Math.Round(tongtienthue, 0, MidpointRounding.AwayFromZero);
@@ -516,15 +530,15 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.BACHMAI
 
                         if (item.ProdPrice.HasValue)
                         {
-                            line.DONGIA = Math.Round(item.ProdPrice.Value, 4, MidpointRounding.AwayFromZero);
+                            line.DONGIA = Math.Round(item.ProdPrice.Value, 2, MidpointRounding.AwayFromZero);
                         }
 
-                        line.TONGTIEN = Math.Round(item.Amount, 4, MidpointRounding.AwayFromZero);
+                        line.TONGTIEN = Math.Round(item.Amount, 2, MidpointRounding.AwayFromZero);
 
                         line.THUETTDB = "0";
 
-                        line.TIENTHUE = Math.Round(item.TaxAmount ?? 0, 4, MidpointRounding.AwayFromZero);
-                        line.THANHTIEN = Math.Round(item.AmountWithoutTax ?? 0, 4, MidpointRounding.AwayFromZero);
+                        line.TIENTHUE = Math.Round(item.TaxAmount ?? 0, 2, MidpointRounding.AwayFromZero);
+                        line.THANHTIEN = Math.Round(item.AmountWithoutTax ?? 0, 2, MidpointRounding.AwayFromZero);
 
                         if (item.TaxPercentage == 1)
                         {
@@ -837,15 +851,15 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.BACHMAI
 
                         if (item.ProdPrice.HasValue)
                         {
-                            line.dongia = Math.Round(item.ProdPrice.Value, 4, MidpointRounding.AwayFromZero);
+                            line.dongia = Math.Round(item.ProdPrice.Value, 2, MidpointRounding.AwayFromZero);
                         }
 
-                        line.tongtien = Math.Round(item.Amount, 4, MidpointRounding.AwayFromZero);
+                        line.tongtien = Math.Round(item.Amount, 2, MidpointRounding.AwayFromZero);
 
                         line.thuettdb = 0;
 
-                        line.tienthue = Math.Round(item.TaxAmount ?? 0, 4, MidpointRounding.AwayFromZero);
-                        line.thanhtien = Math.Round(item.AmountWithoutTax ?? 0, 4, MidpointRounding.AwayFromZero);
+                        line.tienthue = Math.Round(item.TaxAmount ?? 0, 2, MidpointRounding.AwayFromZero);
+                        line.thanhtien = Math.Round(item.AmountWithoutTax ?? 0, 2, MidpointRounding.AwayFromZero);
 
                         if (item.TaxPercentage == 1)
                         {

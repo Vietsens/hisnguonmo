@@ -94,7 +94,6 @@ namespace HIS.Desktop.Modules.Main
                         await LoadDataExecuteRoom();
                         await LoadDataServiceGroup();
                         await LoadDataRoomTimes();
-                        await LoadDataExroRoom();
                     }
 
                     if (moduleLinks.Contains("HIS.Desktop.Plugins.Transaction"))
@@ -1014,26 +1013,5 @@ namespace HIS.Desktop.Modules.Main
             }
         }
 
-        private async Task LoadDataExroRoom()
-        {
-            try
-            {
-                Inventec.Common.Logging.LogSystem.Info("async Task LoadDataExroRoom => 1");
-
-                CommonParam paramCommon = new CommonParam();
-                MOS.Filter.HisExroRoomFilter filter = new MOS.Filter.HisExroRoomFilter();
-                //filter.IS_ACTIVE = 1;
-                //filter.IS_ALLOW_REQUEST = true;
-                var result = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.HIS_EXRO_ROOM>>("api/HisExroRoom/Get", ApiConsumers.MosConsumer, filter, paramCommon);
-
-                if (result != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_EXRO_ROOM), result, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
-
-                Inventec.Common.Logging.LogSystem.Info("async Task LoadDataExroRoom => 2");
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
     }
 }

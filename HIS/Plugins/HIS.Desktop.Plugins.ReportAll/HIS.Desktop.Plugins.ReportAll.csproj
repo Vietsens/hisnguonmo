@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{56A459BD-4432-4556-8284-340E6A544EB9}</ProjectGuid>
+    <ProjectGuid>{7E82B5DF-8F97-4779-97DD-3F4A84815B0D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HIS.Desktop.Plugins.ReportAll</RootNamespace>

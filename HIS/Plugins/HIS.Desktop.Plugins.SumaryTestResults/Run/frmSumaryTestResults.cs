@@ -161,12 +161,25 @@ namespace HIS.Desktop.Plugins.SumaryTestResults
                 }
                 WaitingManager.Show();
                 var _serviceReqIds = this._ServiceReqs.Select(p => p.ID).ToList();
-                HisSereServViewFilter sereServFilter = new HisSereServViewFilter();
-                sereServFilter.SERVICE_REQ_IDs = _serviceReqIds;
-                sereServFilter.ORDER_FIELD = "SERVICE_NUM_ORDER";
-                sereServFilter.ORDER_DIRECTION = "DESC";
+
                 lstSereServ = new List<HIS_SERE_SERV>();
-                lstSereServ = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>("/api/HisSereServ/Get", ApiConsumers.MosConsumer, sereServFilter, param);
+                int index = 0;
+                while (_serviceReqIds.Count - index > 0)
+                {
+                    var ssIds = _serviceReqIds.Skip(index).Take(100).ToList();
+
+                    HisSereServViewFilter sereServFilter = new HisSereServViewFilter();
+                    sereServFilter.SERVICE_REQ_IDs = ssIds;
+                    sereServFilter.ORDER_FIELD = "SERVICE_NUM_ORDER";
+                    sereServFilter.ORDER_DIRECTION = "DESC";
+                    var lstSereServ = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>("/api/HisSereServ/Get", ApiConsumers.MosConsumer, sereServFilter, param);
+                    if (lstSereServ != null && lstSereServ.Count > 0)
+                    {
+                        this.lstSereServ.AddRange(lstSereServ);
+                    }
+                    index += 100;
+                }
+
                 var groupSS = lstSereServ.GroupBy(p => p.SERVICE_ID).Select(grc => grc.ToList()).ToList();
                 List<HIS_SERE_SERV> lstSereServDistinct = new List<HIS_SERE_SERV>();
                 foreach (var group in groupSS)
@@ -220,12 +233,23 @@ namespace HIS.Desktop.Plugins.SumaryTestResults
             try
             {
                 CommonParam param = new CommonParam();
+                int index = 0;
                 this._vHisSereServTeinAlls = new List<V_HIS_SERE_SERV_TEIN>();
-                List<long> sereServIds = lstSereServ.Select(o => o.ID).ToList();
-                HisSereServTeinViewFilter sereSerTeinFilter = new HisSereServTeinViewFilter();
-                sereSerTeinFilter.SERE_SERV_IDs = sereServIds;
-                sereSerTeinFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                this._vHisSereServTeinAlls = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN>>("api/HisSereServTein/GetView", ApiConsumers.MosConsumer, sereSerTeinFilter, param).OrderByDescending(m => m.NUM_ORDER).ToList();
+                while (lstSereServ.Count - index > 0)
+                {
+                    var ssIds = lstSereServ.Skip(index).Take(100).Select(o => o.ID).ToList();
+                    List<long> sereServIds = ssIds;
+                    HisSereServTeinViewFilter sereSerTeinFilter = new HisSereServTeinViewFilter();
+                    sereSerTeinFilter.SERE_SERV_IDs = sereServIds;
+                    sereSerTeinFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                    var vHisSereServTeinAlls = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN>>("api/HisSereServTein/GetView", ApiConsumers.MosConsumer, sereSerTeinFilter, param);
+                    if(vHisSereServTeinAlls != null && vHisSereServTeinAlls.Count > 0)
+                    {
+                        _vHisSereServTeinAlls.AddRange(vHisSereServTeinAlls);
+                    }
+                    index += 100;
+                }
+                _vHisSereServTeinAlls = _vHisSereServTeinAlls.OrderByDescending(m => m.NUM_ORDER).ToList();
             }
             catch (Exception ex)
             {

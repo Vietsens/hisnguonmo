@@ -443,8 +443,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.layoutControl7 = new DevExpress.XtraLayout.LayoutControl();
-            this.btnContentWarning = new DevExpress.XtraEditors.SimpleButton();
-            this.txtContentWarning = new DevExpress.XtraEditors.TextEdit();
+            this.txtBhytWhiteListCodes = new DevExpress.XtraEditors.TextEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
@@ -453,6 +452,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.barDockControl10 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl11 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl12 = new DevExpress.XtraBars.BarDockControl();
+            this.btnContentWarning = new DevExpress.XtraEditors.SimpleButton();
+            this.txtContentWarning = new DevExpress.XtraEditors.TextEdit();
             this.rdoBlock1 = new DevExpress.XtraEditors.CheckEdit();
             this.rdoWarning1 = new DevExpress.XtraEditors.CheckEdit();
             this.spinUseInDay = new DevExpress.XtraEditors.SpinEdit();
@@ -543,6 +544,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem400 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem403 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem405 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem39 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem40 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -1383,8 +1385,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.barDockControl6 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl7 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl8 = new DevExpress.XtraBars.BarDockControl();
-            this.txtBhytWhiteListCodes = new DevExpress.XtraEditors.TextEdit();
-            this.layoutControlItem405 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationMedicineType)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
@@ -1592,8 +1592,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl7)).BeginInit();
             this.layoutControl7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtContentWarning.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtBhytWhiteListCodes.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtContentWarning.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdoBlock1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdoWarning1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinUseInDay.Properties)).BeginInit();
@@ -1682,6 +1683,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem400)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem403)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem405)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).BeginInit();
@@ -2497,8 +2499,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem380)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem381)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem382)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtBhytWhiteListCodes.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem405)).BeginInit();
             this.SuspendLayout();
             // 
             // dxValidationMedicineType
@@ -5382,33 +5382,15 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControl7.TabIndex = 45;
             this.layoutControl7.Text = "layoutControl7";
             // 
-            // btnContentWarning
+            // txtBhytWhiteListCodes
             // 
-            this.btnContentWarning.Appearance.Options.UseTextOptions = true;
-            this.btnContentWarning.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
-            this.btnContentWarning.Location = new System.Drawing.Point(507, 290);
-            this.btnContentWarning.Name = "btnContentWarning";
-            this.btnContentWarning.Size = new System.Drawing.Size(22, 22);
-            this.btnContentWarning.StyleController = this.layoutControl7;
-            this.btnContentWarning.TabIndex = 113;
-            this.btnContentWarning.Text = "...";
-            this.btnContentWarning.Click += new System.EventHandler(this.btnContentWarning_Click);
-            // 
-            // txtContentWarning
-            // 
-            this.txtContentWarning.EditValue = "";
-            this.txtContentWarning.Location = new System.Drawing.Point(207, 290);
-            this.txtContentWarning.MenuManager = this.barManager1;
-            this.txtContentWarning.Name = "txtContentWarning";
-            this.txtContentWarning.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.txtContentWarning.Properties.MaxLength = 2000;
-            this.txtContentWarning.Properties.NullValuePrompt = "Nội dung cảnh báo khi kê lẻ";
-            this.txtContentWarning.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtContentWarning.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtContentWarning.Size = new System.Drawing.Size(296, 20);
-            this.txtContentWarning.StyleController = this.layoutControl7;
-            this.txtContentWarning.TabIndex = 112;
-            this.txtContentWarning.ToolTip = "Nội dung cảnh báo khi kê lẻ";
+            this.txtBhytWhiteListCodes.Enabled = false;
+            this.txtBhytWhiteListCodes.Location = new System.Drawing.Point(122, 243);
+            this.txtBhytWhiteListCodes.MenuManager = this.barManager1;
+            this.txtBhytWhiteListCodes.Name = "txtBhytWhiteListCodes";
+            this.txtBhytWhiteListCodes.Size = new System.Drawing.Size(407, 20);
+            this.txtBhytWhiteListCodes.StyleController = this.layoutControl7;
+            this.txtBhytWhiteListCodes.TabIndex = 114;
             // 
             // barManager1
             // 
@@ -5479,6 +5461,34 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.barDockControl12.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControl12.Location = new System.Drawing.Point(1076, 29);
             this.barDockControl12.Size = new System.Drawing.Size(0, 661);
+            // 
+            // btnContentWarning
+            // 
+            this.btnContentWarning.Appearance.Options.UseTextOptions = true;
+            this.btnContentWarning.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            this.btnContentWarning.Location = new System.Drawing.Point(507, 290);
+            this.btnContentWarning.Name = "btnContentWarning";
+            this.btnContentWarning.Size = new System.Drawing.Size(22, 22);
+            this.btnContentWarning.StyleController = this.layoutControl7;
+            this.btnContentWarning.TabIndex = 113;
+            this.btnContentWarning.Text = "...";
+            this.btnContentWarning.Click += new System.EventHandler(this.btnContentWarning_Click);
+            // 
+            // txtContentWarning
+            // 
+            this.txtContentWarning.EditValue = "";
+            this.txtContentWarning.Location = new System.Drawing.Point(207, 290);
+            this.txtContentWarning.MenuManager = this.barManager1;
+            this.txtContentWarning.Name = "txtContentWarning";
+            this.txtContentWarning.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.txtContentWarning.Properties.MaxLength = 2000;
+            this.txtContentWarning.Properties.NullValuePrompt = "Nội dung cảnh báo khi kê lẻ";
+            this.txtContentWarning.Properties.NullValuePromptShowForEmptyValue = true;
+            this.txtContentWarning.Properties.ShowNullValuePromptWhenFocused = true;
+            this.txtContentWarning.Size = new System.Drawing.Size(296, 20);
+            this.txtContentWarning.StyleController = this.layoutControl7;
+            this.txtContentWarning.TabIndex = 112;
+            this.txtContentWarning.ToolTip = "Nội dung cảnh báo khi kê lẻ";
             // 
             // rdoBlock1
             // 
@@ -6761,6 +6771,21 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem403.Size = new System.Drawing.Size(26, 26);
             this.layoutControlItem403.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem403.TextVisible = false;
+            // 
+            // layoutControlItem405
+            // 
+            this.layoutControlItem405.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem405.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem405.Control = this.txtBhytWhiteListCodes;
+            this.layoutControlItem405.Location = new System.Drawing.Point(0, 241);
+            this.layoutControlItem405.Name = "layoutControlItem405";
+            this.layoutControlItem405.OptionsToolTip.ToolTip = "Khai báo các đầu mã thẻ ngăn cách nhau bằng dấu phẩy. Nếu không khai báo được hiể" +
+    "u là áp dụng cho tất cả đầu mã thẻ";
+            this.layoutControlItem405.Size = new System.Drawing.Size(531, 24);
+            this.layoutControlItem405.Text = "Đầu mã thẻ BHYT:";
+            this.layoutControlItem405.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem405.TextSize = new System.Drawing.Size(115, 20);
+            this.layoutControlItem405.TextToControlDistance = 5;
             // 
             // layoutControlGroup2
             // 
@@ -17465,31 +17490,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.barDockControl8.Location = new System.Drawing.Point(0, 29);
             this.barDockControl8.Size = new System.Drawing.Size(981, 0);
             // 
-            // txtBhytWhiteListCodes
-            // 
-            this.txtBhytWhiteListCodes.Enabled = false;
-            this.txtBhytWhiteListCodes.Location = new System.Drawing.Point(122, 243);
-            this.txtBhytWhiteListCodes.MenuManager = this.barManager1;
-            this.txtBhytWhiteListCodes.Name = "txtBhytWhiteListCodes";
-            this.txtBhytWhiteListCodes.Size = new System.Drawing.Size(407, 20);
-            this.txtBhytWhiteListCodes.StyleController = this.layoutControl7;
-            this.txtBhytWhiteListCodes.TabIndex = 114;
-            // 
-            // layoutControlItem405
-            // 
-            this.layoutControlItem405.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem405.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem405.Control = this.txtBhytWhiteListCodes;
-            this.layoutControlItem405.Location = new System.Drawing.Point(0, 241);
-            this.layoutControlItem405.Name = "layoutControlItem405";
-            this.layoutControlItem405.OptionsToolTip.ToolTip = "Khai báo các đầu mã thẻ ngăn cách nhau bằng dấu phẩy. Nếu không khai báo được hiể" +
-    "u là áp dụng cho tất cả đầu mã thẻ";
-            this.layoutControlItem405.Size = new System.Drawing.Size(531, 24);
-            this.layoutControlItem405.Text = "Đầu mã thẻ BHYT:";
-            this.layoutControlItem405.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem405.TextSize = new System.Drawing.Size(115, 20);
-            this.layoutControlItem405.TextToControlDistance = 5;
-            // 
             // frmMedicineTypeCreate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -17720,8 +17720,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl7)).EndInit();
             this.layoutControl7.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.txtContentWarning.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtBhytWhiteListCodes.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtContentWarning.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdoBlock1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdoWarning1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinUseInDay.Properties)).EndInit();
@@ -17810,6 +17811,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem400)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem403)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem405)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).EndInit();
@@ -18625,8 +18627,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem380)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem381)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem382)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtBhytWhiteListCodes.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem405)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

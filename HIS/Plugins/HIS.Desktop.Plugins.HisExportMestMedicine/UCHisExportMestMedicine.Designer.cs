@@ -2739,6 +2739,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.dtCreateTimeTo.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
             this.dtCreateTimeTo.Properties.MaxValue = new System.DateTime(9999, 12, 31, 23, 59, 0, 0);
             this.dtCreateTimeTo.Size = new System.Drawing.Size(109, 20);
+            this.dtCreateTimeTo.StyleController = this.layoutControl2;
             this.dtCreateTimeTo.TabIndex = 9;
             this.dtCreateTimeTo.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtCreateTimeTo_Closed);
             this.dtCreateTimeTo.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dtCreateTimeTo_KeyUp);
@@ -2759,6 +2760,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.dtCreateTimeFrom.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
             this.dtCreateTimeFrom.Properties.MaxValue = new System.DateTime(9999, 12, 31, 23, 59, 0, 0);
             this.dtCreateTimeFrom.Size = new System.Drawing.Size(109, 20);
+            this.dtCreateTimeFrom.StyleController = this.layoutControl2;
             this.dtCreateTimeFrom.TabIndex = 8;
             this.dtCreateTimeFrom.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtCreateTimeFrom_Closed);
             this.dtCreateTimeFrom.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dtCreateTimeFrom_KeyUp);

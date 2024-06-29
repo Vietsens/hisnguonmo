@@ -122,10 +122,20 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 if (!btnSaveAndSign.Enabled)
                     return;
                 SetEnableButtonSave(false);
+                if (HisConfigCFG.AutoCreateDepositTransaction && decimal.Parse(lblReceiveAmount.Text) > 0 && cboDepositBook.Enabled && cboDepositBook.EditValue == null)
+                {
+                    XtraMessageBox.Show("Bắt buộc phải chọn sổ tạm ứng khi thanh toán", "Thông báo");
+                    Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule validate = new Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule();
+                    validate.editor = this.cboDepositBook;
+                    validate.ErrorText = "Trường dữ liệu bắt buộc";
+                    validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                    dxValidationProvider1.SetValidationRule(this.cboDepositBook, validate);
+                }
                 if (!dxValidationProvider1.Validate() || this.treatmentId == null)
                 {
                     return;
                 }
+                dxValidationProvider1.SetValidationRule(this.cboDepositBook, null);
                 if (String.IsNullOrEmpty(TransactionBillConfig.InvoiceTypeCreate))
                     return;
 
@@ -289,12 +299,20 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 if (!btnSavePrint.Enabled)
                     return;
                 SetEnableButtonSave(false);
+                if (HisConfigCFG.AutoCreateDepositTransaction && decimal.Parse(lblReceiveAmount.Text) > 0 && cboDepositBook.Enabled && cboDepositBook.EditValue == null)
+                {
+                    XtraMessageBox.Show("Bắt buộc phải chọn sổ tạm ứng khi thanh toán", "Thông báo");
+                    Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule validate = new Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule();
+                    validate.editor = this.cboDepositBook;
+                    validate.ErrorText = "Trường dữ liệu bắt buộc";
+                    validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                    dxValidationProvider1.SetValidationRule(this.cboDepositBook, validate);
+                }
                 if (!dxValidationProvider1.Validate() || this.treatmentId == null)
                 {
                     return;
                 }
-
-
+                dxValidationProvider1.SetValidationRule(this.cboDepositBook, null);
                 if (HisConfigCFG.AttachAssignPrintWarningOption == "1")
                 {
                     Inventec.Common.Logging.LogSystem.Debug("HisConfigCFG.AttachAssignPrintWarningOption == 1");
@@ -1777,6 +1795,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 InputADO ado = new InputADO();
                 ado.DeleteWhenClose = true;
                 ado.NumberOfCopy = HisConfigCFG.E_BILL__PRINT_NUM_COPY;
+                ado.PrintPageSize = resultTranBill.EINVOICE_PAGE_SIZE;
                 ado.URL = electronicBillResult.InvoiceLink;
                 ViewType.Platform type = ViewType.Platform.Telerik;
                 if (HisConfigCFG.PlatformOption > 0)
@@ -1996,6 +2015,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             ado.DeleteWhenClose = true;
             ado.NumberOfCopy = HisConfigCFG.E_BILL__PRINT_NUM_COPY;
             ado.URL = electronicBillResult.InvoiceLink;
+            ado.PrintPageSize = resultTranBill.EINVOICE_PAGE_SIZE;
             ViewType.Platform type = ViewType.Platform.Telerik;
             if (HisConfigCFG.PlatformOption > 0)
             {
@@ -2048,6 +2068,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 InputADO ado = new InputADO();
                 ado.DeleteWhenClose = true;
                 ado.NumberOfCopy = HisConfigCFG.E_BILL__PRINT_NUM_COPY;
+                ado.PrintPageSize = resultTranBill.EINVOICE_PAGE_SIZE;
                 ado.URL = electronicBillResult.InvoiceLink;
                 ViewType.Platform type = ViewType.Platform.Telerik;
                 if (HisConfigCFG.PlatformOption > 0)
@@ -3271,10 +3292,16 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     {
                         throw new Exception("Khong lay duoc SereServBill theo BillId: " + this.resultTranBill.ID);
                     }
-
+                    
                     HisSereServFilter ssFilter = new HisSereServFilter();
-                    ssFilter.IDs = hisSSBillsPrint.Select(s => s.SERE_SERV_ID).ToList();
-                    listSereServPrint = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, ssFilter, null);
+                    ssFilter.TREATMENT_ID = this.resultTranBill.TREATMENT_ID.Value;
+                    List<HIS_SERE_SERV> listSereServApi = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, ssFilter, null);
+
+                    if (listSereServApi != null && listSereServApi.Count > 0 && hisSSBillsPrint != null && hisSSBillsPrint.Count > 0)
+                    {
+                        listSereServPrint = listSereServApi.Where(o => hisSSBillsPrint.Select(p => p.SERE_SERV_ID).Contains(o.ID)).ToList();
+                    }
+
                     return true;
                 }
             }

@@ -121,7 +121,56 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued.Form
                 List<EmrDocumentFileSDO> apiResult = new BackendAdapter(paramCommon).Post<List<EmrDocumentFileSDO>>("api/EmrDocument/DownloadFile", ApiConsumers.EmrConsumer, filter, paramCommon);
                 if (apiResult != null && apiResult.Count > 0)
                 {
-                    var uc = libraryProcessor.GetUC(apiResult.FirstOrDefault().Base64Data, FileType.Pdf, inputADO);
+                    string output = Utils.GenerateTempFileWithin();
+                    List<string> joinStreams = new List<string>();
+
+                    List<MemoryStream> documentData = new List<MemoryStream>();
+                    foreach (var item in apiResult)
+                    {
+                        if (item.Extension.ToLower().Equals("pdf"))
+                        {
+                            string pdfAddFile = Utils.GenerateTempFileWithin();
+                            Utils.ByteToFile(Utils.StreamToByte(new MemoryStream(Convert.FromBase64String(item.Base64Data))), pdfAddFile);
+                            joinStreams.Add(pdfAddFile);
+                        }
+                    }
+
+                    Stream currentStream = File.Open(output, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+
+                    var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(currentStream);
+
+                    var pages = new List<int>();
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("Đây là dữ liệu joinStreams: " + Inventec.Common.Logging.LogUtil.GetMemberName(() => joinStreams), joinStreams));
+
+                    foreach (var file in joinStreams)
+                    {
+                        iTextSharp.text.pdf.PdfReader pdfReader = null;
+                        pdfReader = new iTextSharp.text.pdf.PdfReader(file);
+                        pages = new List<int>();
+                        for (int i = 0; i <= pdfReader.NumberOfPages; i++)
+                        {
+                            pages.Add(i);
+                        }
+                        pdfReader.SelectPages(pages);
+                        pdfConcat.AddPages(pdfReader);
+                        pdfReader.Close();
+                    }
+                    try
+                    {
+                        pdfConcat.Close();
+                    }
+                    catch { }
+
+                    foreach (var file in joinStreams)
+                    {
+                        try
+                        {
+                            File.Delete(file);
+                        }
+                        catch { }
+                    }
+
+                    var uc = libraryProcessor.GetUC(Utils.FileToBase64String(output), FileType.Pdf, inputADO);
                     if (uc != null)
                     {
                         uc.Dock = DockStyle.Fill;

@@ -2155,8 +2155,8 @@ namespace HIS.Desktop.Plugins.HisService
                     {
                         ProcessSelectChiSo(data.SUIM_INDEX_ID.ToString(), gridCheckChiSo);
                     }
-                    else
-                    {
+                    //else
+                    //{
                         CommonParam param = new CommonParam();
                         HisSuimSetySuinFilter SetyFilter = new HisSuimSetySuinFilter();
                         SetyFilter.SUIM_SERVICE_TYPE_ID = data.ID;
@@ -2171,7 +2171,7 @@ namespace HIS.Desktop.Plugins.HisService
                             gridCheckChiSo.ClearSelection(cboChiSo.Properties.View);
                             cboChiSo.EditValue = null;
                         }
-                    }
+                    //}
 
                     CheckPTTT(data);
                     spHeinNew.EditValue = data.HEIN_LIMIT_PRICE;
@@ -2789,7 +2789,8 @@ namespace HIS.Desktop.Plugins.HisService
                 ValidationControlMaxLength(txtMisuSerTypeCode, 25, true);
                 ValidationControlMaxLength(txtTestingTechnique, 500, false);
                 ValidationSingleControl(txtMisuSerTypeName);
-                ValidationControlMaxLength(txtMisuSerTypeName, 500, true);
+                ValidationControlMaxLength(txtMisuSerTypeName, 1500, true);
+                ValidationControlMaxLength(txtBHYTName, 1500, false);
                 if (txtRatioSymbol.Enabled)
                     ValidationControlMaxLength(txtRatioSymbol, 10, false);
                 if (txtOTHER_PAY_SOURCE.Enabled)
@@ -3384,7 +3385,8 @@ namespace HIS.Desktop.Plugins.HisService
                 ValidationSingleControl(txtMisuSerTypeCode);
                 ValidationControlMaxLength(txtMisuSerTypeCode, 25, true);
                 ValidationSingleControl(txtMisuSerTypeName);
-                ValidationControlMaxLength(txtMisuSerTypeName, 500, true);
+                ValidationControlMaxLength(txtMisuSerTypeName, 1500, true);
+                ValidationControlMaxLength(txtBHYTName, 1500, false);
                 ValidationControlMaxLength(txtTestingTechnique, 500, false);
                 ValidationControlMaxLength(txtProcessCode, 50, false);
 

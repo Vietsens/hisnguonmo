@@ -957,11 +957,14 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                 BHXHLoginCFG.LoadConfig();
                 CommonParam param = new CommonParam();
                 ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
+                apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.APIEGW;
                 CheckHistoryLDO checkHistoryLDO = new CheckHistoryLDO();
                 checkHistoryLDO.maThe = txtBhxhCode.Text.Trim();
                 checkHistoryLDO.ngaySinh = Patient.IS_HAS_NOT_DAY_DOB == 1 ? Patient.DOB.ToString().Substring(0, 4) : ((Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Patient.DOB) ?? DateTime.MinValue).ToString("dd/MM/yyyy"));
                 checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(Patient.VIR_PATIENT_NAME.ToLower());
                 checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? Patient.VIR_PATIENT_NAME.ToLower() : checkHistoryLDO.hoTen);
+                checkHistoryLDO.hoTenCb = BHXHLoginCFG.OFFICERNAME;
+                checkHistoryLDO.cccdCb = BHXHLoginCFG.CCCDOFFICER;
                 Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 1");
                 if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
                     || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)

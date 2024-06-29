@@ -225,6 +225,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             try
             {
                 WaitingManager.Show();
+                HisConfigCFG.LoadConfig();
                 LoadKeyUCLanguage();
                 ValidControl();
                 LoadCashierRoom();
@@ -413,7 +414,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
 
                 dtHeinLockTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Inventec.Common.DateTime.Get.Now() ?? 0) ?? DateTime.MinValue;
 
-                if (HisConfigCFG.GetValue("MOS.HIS_TREATMENT.GENERATE_STORE_BORDEREAU_CODE_WHEN_LOCK_HEIN") == "1")
+                if (HisConfigCFG.isGenerateStoreBordereauCodeWhenLockHein)
                     lcStoreBordereauCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 else
                     lcStoreBordereauCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -630,8 +631,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                 btnUnLockHein.Enabled = false;
                 if (HisConfigCFG.OptionStoreBordereauCode == "1")
                     layoutControlItem16.Visibility = HisConfigCFG.isGenerateStoreBordereauCodeWhenLockHein ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                else
-                    layoutControlItem17.Visibility = HisConfigCFG.isGenerateStoreBordereauCodeWhenLockHein ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
             }
             catch (Exception ex)
             {
@@ -875,26 +875,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                                 repositoryItem_XMLView_ButtonClick(null, null);
                             }
                         }
-                        dteStoreTime.DateTime = DateTime.Now;
-                        nextStoreBordereauCode = null;
-                        if (treatment1 != null)
-                        {
-                            if (treatment1.STORE_BORDEREAU_TIME != null)
-                            {
-                                dteStoreTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(treatment1.STORE_BORDEREAU_TIME ?? 0) ?? DateTime.Now;
-                            }
-                            if (!string.IsNullOrEmpty(treatment1.STORE_BORDEREAU_CODE))
-                            {
-                                if (HisConfigCFG.OptionStoreBordereauCode == "1")
-                                    txtStoreBordereauCode.Text = treatment1.STORE_BORDEREAU_CODE;
-                                else if (HisConfigCFG.OptionStoreBordereauCode == "2")
-                                    txtStoreBordereauCodeOption2.Text = treatment1.STORE_BORDEREAU_CODE;
-                            }
-                            else
-                            {
-                                GetNextStoreBordereauCode();
-                            }
-                        }
+                        ClickTreatment(treatment1);
                     }
                 }
             }
@@ -903,7 +884,38 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void ClickTreatment(V_HIS_TREATMENT_1 treatment1)
+        {
 
+            try
+            {
+                dteStoreTime.DateTime = DateTime.Now;
+                nextStoreBordereauCode = null;
+                if (treatment1 != null)
+                {
+                    if (treatment1.STORE_BORDEREAU_TIME != null)
+                    {
+                        dteStoreTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(treatment1.STORE_BORDEREAU_TIME ?? 0) ?? DateTime.Now;
+                    }
+                    if (!string.IsNullOrEmpty(treatment1.STORE_BORDEREAU_CODE))
+                    {
+                        if (HisConfigCFG.OptionStoreBordereauCode == "1")
+                            txtStoreBordereauCode.Text = treatment1.STORE_BORDEREAU_CODE;
+                        else if (HisConfigCFG.OptionStoreBordereauCode == "2")
+                            txtStoreBordereauCodeOption2.Text = treatment1.STORE_BORDEREAU_CODE;
+                    }
+                    else
+                    {
+                        GetNextStoreBordereauCode();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
         private void btnImport_Click(object sender, EventArgs e)
         {
             try
@@ -1357,11 +1369,6 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     gridControlTreatment.BeginUpdate();
                     gridControlTreatment.DataSource = listTreatment;
                     gridControlTreatment.EndUpdate();
-
-                    dteStoreTime.Enabled = string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE);
-                    txtStoreBordereauCodeOption2.Enabled = string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE);
-                    btnLockHein.Enabled = this.currentTreatment.IS_LOCK_HEIN != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE);
-                    btnUnLockHein.Enabled = this.currentTreatment.IS_LOCK_HEIN == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE);
                     nextStoreBordereauCode = null;
                     dteStoreTime.DateTime = DateTime.Now;
                     if (currentTreatment.STORE_BORDEREAU_TIME != null)
@@ -1372,15 +1379,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     {
                         GetNextStoreBordereauCode();
                     }
-                    if (string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE))
-                    {
-                        btnLuuTruOption2.Text = "Lưu trữ (F5)";
-                    }
-                    else
-                    {
-                        btnLuuTruOption2.Text = "Hủy LT (F5)";
-                        btnLuuTruOption2.ToolTip = "Hủy lưu trữ bảng kê";
-                    }
+                    ChangeEnableButtonOption2();
                 }
                 else
                 {
@@ -1407,6 +1406,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     if (listTreatment != null && listTreatment.Count == 1)
                     {
                         this.currentTreatment = listTreatment.First();
+                        ClickTreatment(currentTreatment);
                         FillDataToGridHeinCardAndHeinApproval();
                     }
                     gridControlTreatment.Focus();
@@ -1418,6 +1418,24 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void dteStoreTime_Leave(object sender, EventArgs e)
+        {
+
+            try
+            {
+                if (dteStoreTime.EditValue != dteStoreTime.OldEditValue)
+                {
+                    if (string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE))
+                        GetNextStoreBordereauCode();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
     }
 }

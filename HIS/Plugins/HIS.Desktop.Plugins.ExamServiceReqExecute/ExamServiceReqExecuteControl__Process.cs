@@ -504,7 +504,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 long hospitalizationReasonRequired = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKeys.HOSPITALIZATION_REASON__REQUIRED));
-                if (hospitalizationReasonRequired == 1 && String.IsNullOrEmpty(txtHospitalizationReason.Text.Trim()))
+                var PatientTypeCode = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == this.treatment.TDL_PATIENT_TYPE_ID).PATIENT_TYPE_CODE;
+                if ((hospitalizationReasonRequired == 1 && String.IsNullOrEmpty(txtHospitalizationReason.Text.Trim())) || (String.IsNullOrEmpty(txtHospitalizationReason.Text.Trim()) && !string.IsNullOrEmpty(HisConfigCFG.HospitalizationReasonRequiredByPatientCode) && HisConfigCFG.HospitalizationReasonRequiredByPatientCode.Split(',').ToList().Contains(PatientTypeCode)))
                 {
                     if (MessageBox.Show("Bắt buộc nhập lý do khám", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning) == DialogResult.OK)
                     {
@@ -603,7 +604,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (!String.IsNullOrEmpty(this.txtIcdCode.Text.Trim()))
                 {
                     Inventec.Common.Logging.LogSystem.Debug("ValidForSave 2");
-                    var listData = this.currentIcds.FirstOrDefault(o => o.ICD_CODE.Contains(this.txtIcdCode.Text.Trim()));
+                    var listData = this.currentIcds.FirstOrDefault(o => o.ICD_CODE.Equals(this.txtIcdCode.Text.Trim()));
                     var result = listData != null ? listData : null;
                     if (result == null)
                     {
@@ -1610,7 +1611,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         this.isPrintHospitalizeExam = hisDepartmentTranHospitalizeSDO.IsPrintHospitalizeExam;
                         this.isSign = hisDepartmentTranHospitalizeSDO.IsSign;
                         this.isPrintSign = hisDepartmentTranHospitalizeSDO.IsPrintSign;
-
+                        this.IsPrintMps178 = hisDepartmentTranHospitalizeSDO.IsPrintMps178;
 
 
                         if (hisDepartmentTranHospitalizeSDO.icdADOInTreatment != null && !String.IsNullOrWhiteSpace(hisDepartmentTranHospitalizeSDO.icdADOInTreatment.ICD_CODE))
@@ -1715,6 +1716,18 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                                 return;
                             }
                         }
+
+                        if ((HisConfigCFG.OptionTreatmentEndTypeIsTransfer == "1" || HisConfigCFG.OptionTreatmentEndTypeIsTransfer == "2") && treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
+                        {
+                            HisExpMestFilter filter = new HisExpMestFilter();
+                            filter.TDL_TREATMENT_ID = treatment.ID;
+                            filter.EXP_MEST_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DPK;
+                            var expMestPK = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumers.MosConsumer, filter, null);
+                            if (expMestPK != null && expMestPK.Count > 0 && DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Bệnh nhân tồn tại đơn phòng khám, {0}", HisConfigCFG.OptionTreatmentEndTypeIsTransfer == "1" ? "không cho phép chuyển viện" : "bạn có muốn cho bệnh nhân chuyển viện không?"), "Thông báo", HisConfigCFG.OptionTreatmentEndTypeIsTransfer == "1" ? MessageBoxButtons.OK : MessageBoxButtons.YesNo) == (HisConfigCFG.OptionTreatmentEndTypeIsTransfer == "1" ? DialogResult.OK : DialogResult.No))
+                            {
+                                return;
+                            }
+                        }
                         serviceReqUpdateSDO.TreatmentFinishSDO = new HisTreatmentFinishSDO();
                         serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentEndTypeExtId = treatmentFinish.TreatmentFinishSDO.TreatmentEndTypeExtId;
                         if (this.treatment != null
@@ -1811,13 +1824,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentEndTypeId = treatmentFinish.TreatmentFinishSDO.TreatmentEndTypeId;
                         serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentFinishTime = treatmentFinish.TreatmentFinishSDO.TreatmentFinishTime;
                         serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentId = treatmentFinish.TreatmentFinishSDO.TreatmentId;
-                        if (!string.IsNullOrEmpty(treatmentFinish.TreatmentFinishSDO.TreatmentMethod))
+                        if (!string.IsNullOrEmpty(txtTreatmentInstruction.Text.Trim()))
                         {
-                            serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = treatmentFinish.TreatmentFinishSDO.TreatmentMethod;
+                            serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = txtTreatmentInstruction.Text.Trim();
                         }
                         else
                         {
-                            serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = txtTreatmentInstruction.Text.Trim();
+                            serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = treatmentFinish.TreatmentFinishSDO.TreatmentMethod;
                         }
                         serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentResultId = treatmentFinish.TreatmentFinishSDO.TreatmentResultId;
                         serviceReqUpdateSDO.TreatmentFinishSDO.UsedMedicine = treatmentFinish.TreatmentFinishSDO.UsedMedicine;
@@ -1846,9 +1859,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         serviceReqUpdateSDO.TreatmentFinishSDO.SocialInsuranceNumber = treatmentFinish.TreatmentFinishSDO.SocialInsuranceNumber;
                         serviceReqUpdateSDO.TreatmentFinishSDO.NumOrderBlockId = treatmentFinish.TreatmentFinishSDO.NumOrderBlockId;
                         //serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = txtTreatmentInstruction.Text.Trim();
-                        str1 = treatmentFinish.TreatmentFinishSDO.TreatmentMethod;
+                        //str1 = treatmentFinish.TreatmentFinishSDO.TreatmentMethod;
                         str2 = treatmentFinish.TreatmentFinishSDO.SubclinicalResult;
-                        if (!string.IsNullOrEmpty(str1)) serviceReqUpdateSDO.TreatmentInstruction = str1;
+                        //if (!string.IsNullOrEmpty(str1)) serviceReqUpdateSDO.TreatmentInstruction = str1;
                         if (!string.IsNullOrEmpty(str2)) serviceReqUpdateSDO.Subclinical = str2;
                         if (treatmentFinish != null && treatmentFinish.icdADOInTreatment != null && !String.IsNullOrWhiteSpace(treatmentFinish.icdADOInTreatment.ICD_CODE))
                         {
@@ -1905,7 +1918,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         serviceReqUpdateSDO.TreatmentFinishSDO.EndTypeExtNote = treatmentFinish.TreatmentFinishSDO.EndTypeExtNote;
                         serviceReqUpdateSDO.TreatmentFinishSDO.DeathCertBookFirstId = treatmentFinish.TreatmentFinishSDO.DeathCertBookFirstId;
                         serviceReqUpdateSDO.TreatmentFinishSDO.DeathCertNumFirst = treatmentFinish.TreatmentFinishSDO.DeathCertNumFirst;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = treatmentFinish.TreatmentFinishSDO.TreatmentMethod;
                         serviceReqUpdateSDO.TreatmentFinishSDO.PregnancyTerminationReason = treatmentFinish.TreatmentFinishSDO.PregnancyTerminationReason;
                         serviceReqUpdateSDO.TreatmentFinishSDO.IsPregnancyTermination = treatmentFinish.TreatmentFinishSDO.IsPregnancyTermination;
                         serviceReqUpdateSDO.TreatmentFinishSDO.GestationalAge = treatmentFinish.TreatmentFinishSDO.GestationalAge;
@@ -2301,7 +2313,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                                 this.LoadProcessAndPrintBHXH();
                             }
                         }
-
                         if (this.isPrintBANT)
                         {
                             PrintTreatmentFinishProcessor printTreatmentFinishProcessor = new PrintTreatmentFinishProcessor(this.treatment, currentModuleBase != null ? currentModuleBase.RoomId : 0);
@@ -2351,6 +2362,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     if (this.isPrintHosTransfer)
                     {
                         PrintProcess(PrintType.IN_GIAY_CHUYEN_VIEN);
+                    }
+                    if (this.IsPrintMps178)
+                    {
+                        PrintMps000178();
                     }
                     //if ((IsAppointment_ExamServiceAdd && IsPrintAppointment_ExamServiceAdd) || (IsAppointment_ExamFinish && IsPrintAppointment_ExamFinish))
                     if (IsAppointment_ExamServiceAdd || IsAppointment_ExamFinish)

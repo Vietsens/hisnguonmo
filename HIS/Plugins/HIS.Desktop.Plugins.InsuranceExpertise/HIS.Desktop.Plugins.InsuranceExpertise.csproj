@@ -181,7 +181,6 @@
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="Base\ResourceMessageLang.cs" />
     <Compile Include="Config\AutoLockAfterApprovalBHYTCFG.cs" />
-    <Compile Include="Config\HisAccidentHurtTypeCFG.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Config\HisPatientTypeCFG.cs" />
     <Compile Include="Config\TreatmentBranchCFG.cs" />

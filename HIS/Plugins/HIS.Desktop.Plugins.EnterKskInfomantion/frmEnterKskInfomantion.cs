@@ -52,6 +52,7 @@ using DevExpress.XtraBars;
 using ACS.EFMODEL.DataModels;
 using HIS.Desktop.Plugins.EnterKskInfomantion.ADO;
 using Inventec.Common.Integrate.EditorLoader;
+using System.IO;
 
 namespace HIS.Desktop.Plugins.EnterKskInfomantion
 {
@@ -374,7 +375,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                         lblBirthDate.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.TDL_PATIENT_DOB);
                     lblIntructionTime.Text = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.INTRUCTION_TIME);
                     lblGeneralCode.Text = data.KSK_GENERAL.KSK_GENERAL_CODE;
-
+                    if (!String.IsNullOrEmpty(data.TDL_PATIENT_AVATAR_URL))
+                    {
+                        MemoryStream stream = Inventec.Fss.Client.FileDownload.GetFile(data.TDL_PATIENT_AVATAR_URL);
+                        pictureEditAvatar.Image = Image.FromStream(stream);
+                        pictureEditAvatar.Image.Tag = data.TDL_PATIENT_AVATAR_URL;
+                    }
+                    else
+                    {
+                        string pathLocal = GetPathDefault();
+                        pictureEditAvatar.Image = Image.FromFile(pathLocal);
+                    }
                     if (data.TDL_KSK_CONTRACT_ID != null)
                     {
                         var result = BackendDataWorker.Get<HIS_KSK_CONTRACT>().Where(o => o.ID == data.TDL_KSK_CONTRACT_ID).FirstOrDefault();
@@ -395,6 +406,22 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private string GetPathDefault()
+        {
+            string imageDefaultPath = string.Empty;
+            try
+            {
+                string localPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                imageDefaultPath = localPath + "\\Img\\ImageStorage\\notImage.jpg";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+            return imageDefaultPath;
         }
 
         private void FillDataToTabKhamChung(ADO.ServiceReqADO data)

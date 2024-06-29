@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using CHC.WCFClient.CheckHeinCardService;
 using DevExpress.Utils.Menu;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
@@ -73,7 +74,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 		frmTransPati frm;
 		HisServiceReqExamRegisterResultSDO currentHisExamServiceReqResultSDO { get; set; }
 		HisPatientProfileSDO resultHisPatientProfileSDO = null;
-		HeinCardData _HeinCardData { get; set; }
+        Inventec.Common.QrCodeBHYT.HeinCardData _HeinCardData { get; set; }
 		ResultDataADO ResultDataADO { get; set; }
 		internal bool isNotPatientDayDob = false;
 		int actionType = 0;
@@ -755,16 +756,16 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 				if (data != null)
 				{
 					string heinCardNumber = "";
-					HeinCardData dataCheck = new HeinCardData();
+                    Inventec.Common.QrCodeBHYT.HeinCardData dataCheck = new Inventec.Common.QrCodeBHYT.HeinCardData();
 					DataResultADO dataResult = (DataResultADO)data;
 					this.SetValueVariableUCAddressCombo(dataResult);
 					if (dataResult.OldPatient == false && dataResult.UCRelativeADO != null)
 						FillDataIntoUCRelativeInfo(dataResult.UCRelativeADO);
 					else if (dataResult.OldPatient == false && dataResult.HeinCardData != null)
 					{
-						this.FillDataAfterSaerchPatientInUCPatientRaw(dataResult.HeinCardData);
+						this.FillDataAfterSaerchPatientInUCPatientRaw(dataResult);
 						FillDataIntoUCPlusInfo(dataResult.HisPatientSDO, dataResult.IsReadQr);
-						dataCheck = dataResult.HeinCardData;
+                        dataCheck = dataResult.HeinCardData;
 					}
 					else if (dataResult.HisPatientSDO != null)
 					{
@@ -802,10 +803,12 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 						dataCheck.ToDate = Inventec.Common.DateTime.Convert.TimeNumberToDateString(currentPatientSDO.HeinCardToTime ?? 0);
 					}
 
-					long? treatmentTypeId = null;
+                    UCPatientRawADO patientRawADO = this.ucPatientRaw1.GetValue();
+                    
+                    long? treatmentTypeId = null;
 					if (this.ucPatientRaw1 != null && !String.IsNullOrEmpty(dataCheck.HeinCardNumber))
 					{
-						UCPatientRawADO patientRawADO = this.ucPatientRaw1.GetValue();
+						patientRawADO = this.ucPatientRaw1.GetValue();
 						if (patientRawADO.PATIENTTYPE_ID == HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__BHYT)
 						{
 							this.CheckTTProcessResultData(dataCheck, null, false);
@@ -1683,7 +1686,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 			try
 			{
 				LogSystem.Debug("SetDefaultRegisterForm. 1");
-				this._HeinCardData = new HeinCardData();
+				this._HeinCardData = new Inventec.Common.QrCodeBHYT.HeinCardData();
 				this.ResultDataADO = new ResultDataADO();
 				this.actionType = GlobalVariables.ActionAdd;
 				this.isReadQrCode = false;

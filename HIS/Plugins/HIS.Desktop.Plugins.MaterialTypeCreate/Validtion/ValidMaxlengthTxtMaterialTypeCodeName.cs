@@ -40,9 +40,12 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.Validtion
                 }
                 else
                 {
-                    if (Inventec.Common.String.CountVi.Count(txtMaterialTypeTypeCode.Text) > 25 && Inventec.Common.String.CountVi.Count(txtMaterialTypeTypeName.Text) > 500)
+                    //int? LengthCountVi = Inventec.Common.String.CountVi.Count(txtMaterialTypeTypeName.Text.Trim());
+                    //int? Length = txtMaterialTypeTypeName.Text.Length;
+
+                    if (Inventec.Common.String.CountVi.Count(txtMaterialTypeTypeCode.Text) > 25 && Inventec.Common.String.CountVi.Count(txtMaterialTypeTypeName.Text.Trim()) > 1500)
                     {
-                        this.ErrorText = "Độ dài mã vượt quá " + 25 + "||" + "Độ dài tên vượt quá " + 500;
+                        this.ErrorText = "Độ dài mã vượt quá " + 25 + "||" + "Độ dài tên vượt quá " + 1500;
                         return valid;
                     }
                     else
@@ -52,9 +55,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.Validtion
                             this.ErrorText = "Độ dài mã vượt quá " + 25;
                             return valid;
                         }
-                        else if (Inventec.Common.String.CountVi.Count(txtMaterialTypeTypeName.Text) > 500)
+                        else if (Inventec.Common.String.CountVi.Count(txtMaterialTypeTypeName.Text.Trim()) > 1500)
                         {
-                            this.ErrorText = "Độ dài tên vượt quá " + 500;
+                            this.ErrorText = "Độ dài tên vượt quá " + 1500;
                             return valid;
                         }
                         else

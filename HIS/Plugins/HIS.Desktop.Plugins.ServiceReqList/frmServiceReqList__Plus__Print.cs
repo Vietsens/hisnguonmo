@@ -47,6 +47,7 @@ using System.Drawing;
 using HIS.Desktop.LocalStorage.Location;
 using System.Configuration;
 using EMR.SDO;
+using DevExpress.XtraEditors;
 
 namespace HIS.Desktop.Plugins.ServiceReqList
 {
@@ -335,6 +336,9 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     case MPS000433:
                         InGiayDeNghiDoiTraDichVu(printTypeCode, fileName, ref result);
                         break;
+                    case "Mps000494":
+                        PrintMps494(printTypeCode, fileName, ref result);
+                        break;
                     default:
                         break;
                 }
@@ -347,6 +351,88 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             return result;
         }
 
+        private void PrintMps494(string printTypeCode, string fileName, ref bool result)
+        {
+            try
+            {
+                if (gridViewServiceReq.FocusedRowHandle >= 0)
+                {
+                    var data = (ADO.ServiceReqADO)gridViewServiceReq.GetFocusedRow();
+                    if (data != null && data.ID > 0)
+                    {
+                        HisExpMestMaterialFilter filter = new HisExpMestMaterialFilter();
+                        filter.TDL_SERVICE_REQ_ID = data.ID;
+
+                        var lstMatePrintMps494 = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_EXP_MEST_MATERIAL>>("api/HisExpMestMaterial/Get", ApiConsumers.MosConsumer, filter, null);
+                        if (lstMatePrintMps494 == null || lstMatePrintMps494.Count == 0)
+                        {
+                            XtraMessageBox.Show("Không có vật tư tái sử dụng hoặc vật tư tái sử dụng đã hết số lần tái sử dụng.");
+                            return;
+                        }
+                        var expmestMate = lstMatePrintMps494.Where(o => !string.IsNullOrEmpty(o.SERIAL_NUMBER) && o.REMAIN_REUSE_COUNT != null).ToList();
+                        if (expmestMate == null || expmestMate.Count == 0)
+                        {
+                            XtraMessageBox.Show("Không có vật tư tái sử dụng hoặc vật tư tái sử dụng đã hết số lần tái sử dụng.");
+                            return;
+                        }
+                        List<HIS_MATERIAL> mate = new List<HIS_MATERIAL>();
+                        var materialIdList = expmestMate.Select(p => p.MATERIAL_ID ?? 0).ToList();
+                        if (materialIdList != null && materialIdList.Count > 0)
+                        {
+                            MOS.Filter.HisMaterialFilter materialFilter = new HisMaterialFilter();
+                            materialFilter.IDs = materialIdList;
+                            mate = new BackendAdapter(new CommonParam()).Get<List<HIS_MATERIAL>>("api/HisMaterial/Get", ApiConsumer.ApiConsumers.MosConsumer, materialFilter, null);
+                        }
+                        List<MPS.Processor.Mps000494.PDO.SerialADO> lstSend = new List<MPS.Processor.Mps000494.PDO.SerialADO>();
+                        foreach (var m in expmestMate)
+                        {
+                            MPS.Processor.Mps000494.PDO.SerialADO ado = new MPS.Processor.Mps000494.PDO.SerialADO();
+                            var te = mate.FirstOrDefault(o => o.ID == m.MATERIAL_ID);
+                            if (te != null)
+                            {
+                                ado.NEXT_REUSABLE_NUMBER = ((te.MAX_REUSE_COUNT ?? 0) - (m.REMAIN_REUSE_COUNT ?? 0) + 2).ToString();
+                                ado.SIZE = te.MATERIAL_SIZE;
+                                if (Int32.Parse(ado.NEXT_REUSABLE_NUMBER) > (te.MAX_REUSE_COUNT ?? 0))
+                                    continue;
+                            }
+                            else
+                                continue;
+                            ado.SERIAL_NUMBER = m.SERIAL_NUMBER;
+                            lstSend.Add(ado);
+                        }
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lstSend), lstSend));
+                        if (lstSend == null || lstSend.Count == 0)
+                        {
+                            XtraMessageBox.Show("Không có vật tư tái sử dụng hoặc vật tư tái sử dụng đã hết số lần tái sử dụng.");
+                            return;
+                        }
+                        MPS.Processor.Mps000494.PDO.Mps000494PDO rdo = new MPS.Processor.Mps000494.PDO.Mps000494PDO(lstSend);
+
+                        RunPrint(printTypeCode, fileName, rdo, (Inventec.Common.FlexCelPrint.DelegateEventLog)EventLogPrint, result, currentModule.RoomId);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void EventLogPrint()
+        {
+            try
+            {
+                var row = (ADO.ServiceReqADO)gridViewServiceReq.GetFocusedRow();
+                string message = "In tem vật tư tái sử dụng. Mã in : Mps000494" + "  TREATMENT_CODE: " + row.TDL_TREATMENT_CODE + "  Thời gian in: " + Inventec.Common.DateTime.Convert.SystemDateTimeToTimeSeparateString(DateTime.Now) + "  Người in: " + Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                His.EventLog.Logger.Log(GlobalVariables.APPLICATION_CODE, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), message, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginAddress());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
         private HIS_TREATMENT getTreatment(long treatmentId)
         {
             Inventec.Common.Logging.LogSystem.Debug("Begin get HIS_TREATMENT");
@@ -401,58 +487,56 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             try
             {
                 CommonParam paramCommon = new CommonParam();
-                HisSereServFilter sereServFilter = new HisSereServFilter();
+                HisSereServViewFilter sereServFilter = new HisSereServViewFilter();
                 sereServFilter.SERVICE_REQ_ID = serviceReqId;
-                var apiResult = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<HIS_SERE_SERV>>(Base.GlobalStore.HIS_SERE_SERV_GET, ApiConsumers.MosConsumer, sereServFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
+                var apiResult = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<V_HIS_SERE_SERV>>(Base.GlobalStore.HIS_SERE_SERV_GETVIEW, ApiConsumers.MosConsumer, sereServFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
                 if (apiResult != null && apiResult.Count > 0)
                 {
-                    apiResult = apiResult.Where(o => o.IS_NO_EXECUTE != Base.GlobalStore.IS_TRUE).ToList();
-                    foreach (var item in apiResult)
-                    {
-                        V_HIS_SERE_SERV ss11 = new V_HIS_SERE_SERV();
-                        Mapper.CreateMap<MOS.EFMODEL.DataModels.HIS_SERE_SERV, MOS.EFMODEL.DataModels.V_HIS_SERE_SERV>();
-                        ss11 = Mapper.Map<MOS.EFMODEL.DataModels.HIS_SERE_SERV, MOS.EFMODEL.DataModels.V_HIS_SERE_SERV>(item);
+                    result = apiResult.Where(o => o.IS_NO_EXECUTE != Base.GlobalStore.IS_TRUE).ToList();
+                    //foreach (var item in apiResult)
+                    //{
+                    //    V_HIS_SERE_SERV ss11 = item;
 
-                        var service = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_SERVICE>().FirstOrDefault(o => o.ID == ss11.SERVICE_ID);
-                        if (service != null)
-                        {
-                            ss11.TDL_SERVICE_CODE = service.SERVICE_CODE;
-                            ss11.TDL_SERVICE_NAME = service.SERVICE_NAME;
-                            ss11.SERVICE_TYPE_NAME = service.SERVICE_TYPE_NAME;
-                            ss11.SERVICE_TYPE_CODE = service.SERVICE_TYPE_CODE;
-                            ss11.SERVICE_UNIT_CODE = service.SERVICE_UNIT_CODE;
-                            ss11.SERVICE_UNIT_NAME = service.SERVICE_UNIT_NAME;
-                            ss11.HEIN_SERVICE_TYPE_CODE = service.HEIN_SERVICE_TYPE_CODE;
-                            ss11.HEIN_SERVICE_TYPE_NAME = service.HEIN_SERVICE_TYPE_NAME;
-                            ss11.HEIN_SERVICE_TYPE_NUM_ORDER = service.HEIN_SERVICE_TYPE_NUM_ORDER;
-                        }
+                    //    var service = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_SERVICE>().FirstOrDefault(o => o.ID == ss11.SERVICE_ID);
+                    //    if (service != null)
+                    //    {
+                    //        ss11.TDL_SERVICE_CODE = service.SERVICE_CODE;
+                    //        ss11.TDL_SERVICE_NAME = service.SERVICE_NAME;
+                    //        ss11.SERVICE_TYPE_NAME = service.SERVICE_TYPE_NAME;
+                    //        ss11.SERVICE_TYPE_CODE = service.SERVICE_TYPE_CODE;
+                    //        ss11.SERVICE_UNIT_CODE = service.SERVICE_UNIT_CODE;
+                    //        ss11.SERVICE_UNIT_NAME = service.SERVICE_UNIT_NAME;
+                    //        ss11.HEIN_SERVICE_TYPE_CODE = service.HEIN_SERVICE_TYPE_CODE;
+                    //        ss11.HEIN_SERVICE_TYPE_NAME = service.HEIN_SERVICE_TYPE_NAME;
+                    //        ss11.HEIN_SERVICE_TYPE_NUM_ORDER = service.HEIN_SERVICE_TYPE_NUM_ORDER;
+                    //    }
 
-                        var executeRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == item.TDL_EXECUTE_ROOM_ID);
-                        if (executeRoom != null)
-                        {
-                            ss11.EXECUTE_ROOM_CODE = executeRoom.ROOM_CODE;
-                            ss11.EXECUTE_ROOM_NAME = executeRoom.ROOM_NAME;
-                            ss11.EXECUTE_DEPARTMENT_CODE = executeRoom.DEPARTMENT_CODE;
-                            ss11.EXECUTE_DEPARTMENT_NAME = executeRoom.DEPARTMENT_NAME;
-                        }
+                    //    var executeRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == item.TDL_EXECUTE_ROOM_ID);
+                    //    if (executeRoom != null)
+                    //    {
+                    //        ss11.EXECUTE_ROOM_CODE = executeRoom.ROOM_CODE;
+                    //        ss11.EXECUTE_ROOM_NAME = executeRoom.ROOM_NAME;
+                    //        ss11.EXECUTE_DEPARTMENT_CODE = executeRoom.DEPARTMENT_CODE;
+                    //        ss11.EXECUTE_DEPARTMENT_NAME = executeRoom.DEPARTMENT_NAME;
+                    //    }
 
-                        var reqRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == item.TDL_REQUEST_ROOM_ID);
-                        if (reqRoom != null)
-                        {
-                            ss11.REQUEST_DEPARTMENT_CODE = reqRoom.DEPARTMENT_CODE;
-                            ss11.REQUEST_DEPARTMENT_NAME = reqRoom.DEPARTMENT_NAME;
-                            ss11.REQUEST_ROOM_CODE = reqRoom.ROOM_CODE;
-                            ss11.REQUEST_ROOM_NAME = reqRoom.ROOM_NAME;
-                        }
+                    //    var reqRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == item.TDL_REQUEST_ROOM_ID);
+                    //    if (reqRoom != null)
+                    //    {
+                    //        ss11.REQUEST_DEPARTMENT_CODE = reqRoom.DEPARTMENT_CODE;
+                    //        ss11.REQUEST_DEPARTMENT_NAME = reqRoom.DEPARTMENT_NAME;
+                    //        ss11.REQUEST_ROOM_CODE = reqRoom.ROOM_CODE;
+                    //        ss11.REQUEST_ROOM_NAME = reqRoom.ROOM_NAME;
+                    //    }
 
-                        var patientTpye = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == item.PATIENT_TYPE_ID);
-                        if (patientTpye != null)
-                        {
-                            ss11.PATIENT_TYPE_CODE = patientTpye.PATIENT_TYPE_CODE;
-                            ss11.PATIENT_TYPE_NAME = patientTpye.PATIENT_TYPE_NAME;
-                        }
-                        result.Add(ss11);
-                    }
+                    //    var patientTpye = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == item.PATIENT_TYPE_ID);
+                    //    if (patientTpye != null)
+                    //    {
+                    //        ss11.PATIENT_TYPE_CODE = patientTpye.PATIENT_TYPE_CODE;
+                    //        ss11.PATIENT_TYPE_NAME = patientTpye.PATIENT_TYPE_NAME;
+                    //    }
+                    //    result.Add(ss11);
+                    //}
                 }
             }
             catch (Exception ex)
@@ -716,10 +800,30 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                           .Get<List<V_HIS_PATIENT>>("api/HisPatient/GetView", ApiConsumers.MosConsumer, patientFilter, param).FirstOrDefault();
                 WaitingManager.Hide();
 
+                #region bo sung V_HIS_DEPARTMENT_TRAN
+                V_HIS_DEPARTMENT_TRAN departmentDTO = new V_HIS_DEPARTMENT_TRAN();
+                HisDepartmentTranViewFilter deFilter = new HisDepartmentTranViewFilter();
+                deFilter.TREATMENT_ID = treatment4.ID;
+                deFilter.ORDER_DIRECTION = "DESC";
+                deFilter.ORDER_FIELD = "DEPARTMENT_IN_TIME";
+                var dataAPI = new BackendAdapter(param).Get<List<V_HIS_DEPARTMENT_TRAN>>("api/HisDepartmentTran/GetView", ApiConsumers.MosConsumer, deFilter, param);
+
+                if (dataAPI != null)
+                {
+                    var sortedList = dataAPI
+                                    .OrderByDescending(o => o.DEPARTMENT_IN_TIME.HasValue)  // NULL lên đầu
+                                    .ThenByDescending(o => o.DEPARTMENT_IN_TIME)            // Giảm dần theo DEPARTMENT_IN_TIME
+                                    .ThenByDescending(o => o.ID)                            // Giảm dần theo ID
+                                    .ToList();
+                    departmentDTO = dataAPI.First();
+                }
+                #endregion
+
                 MPS.Processor.Mps000178.PDO.Mps000178PDO mps000178RDO = new MPS.Processor.Mps000178.PDO.Mps000178PDO(
                    currentPatient,
                    patientTypeAlter,
-                   treatment4
+                   treatment4,
+                   departmentDTO
                    );
 
                 string printerName = "";

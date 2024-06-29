@@ -1737,6 +1737,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 dataInput.TemplateCode = transaction.TEMPLATE_CODE;
                 dataInput.TransactionTime = transaction.TRANSACTION_TIME;
                 dataInput.EinvoiceTypeId = transaction.EINVOICE_TYPE_ID;
+                List<V_HIS_TRANSACTION> vtran = new List<V_HIS_TRANSACTION>();
+                vtran.Add(transaction);
+                dataInput.ListTransaction = vtran;
 
                 List<V_HIS_SERE_SERV_5> sereServ5s = new List<V_HIS_SERE_SERV_5>();
 
@@ -1896,6 +1899,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 dataInput.EinvoiceTypeId = resultRecieptBill.EINVOICE_TYPE_ID;
                 HIS_TRANSACTION transaction = new HIS_TRANSACTION();
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(transaction, this.resultRecieptBill);
+                List<V_HIS_TRANSACTION> vtran = new List<V_HIS_TRANSACTION>();
+                vtran.Add(resultRecieptBill);
+                dataInput.ListTransaction = vtran;
                 dataInput.Transaction = transaction;
                 dataInput.Treatment = this.treatment;
                 dataInput.SereServs = new List<V_HIS_SERE_SERV_5>();
@@ -1953,6 +1959,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 dataInput.ENumOrder = resultInvoiceBill.EINVOICE_NUM_ORDER;
                 dataInput.EinvoiceTypeId = resultInvoiceBill.EINVOICE_TYPE_ID;
                 HIS_TRANSACTION transaction = new HIS_TRANSACTION();
+                List<V_HIS_TRANSACTION> vtran = new List<V_HIS_TRANSACTION>();
+                vtran.Add(resultInvoiceBill);
+                dataInput.ListTransaction = vtran;
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(transaction, this.resultInvoiceBill);
                 dataInput.Transaction = transaction;
                 dataInput.Treatment = this.treatment;

@@ -33,6 +33,7 @@ namespace HIS.Desktop.Plugins.MedicineUpdate.Validation
             bool vaild = false;
             try
             {
+
                 if (txtBid != null && !string.IsNullOrEmpty(txtBid.Text.Trim()) && Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(txtBid.Text.Trim(), maxlength))
                 {
                     this.ErrorText = "Trường dữ liệu vượt quá maxlength( " + maxlength + " kí tự)";

@@ -29,7 +29,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 using System.Windows.Forms;
 
 namespace MPS.ProcessorBase.Core

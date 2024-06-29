@@ -2016,7 +2016,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         DevExpress.XtraEditors.XtraMessageBox.Show(string.Format(ResourceMessageManager.ThoiGianNhapVuotHieuLucHopDong, Inventec.Common.DateTime.Convert.TimeNumberToDateString(this.currentContract.VALID_TO_DATE.Value)), Base.ResourceMessageManager.TieuDeCuaSoThongBaoLaCanhBao);
                         return;
                     }
-
+                    
                     if (this.MedicalContractMety != null && xtraTabControlMain.SelectedTabPage == xtraTabPageMedicine)
                     {
                         if (spinCanImpAmount.Value < spinImpAmount.Value)
@@ -3060,6 +3060,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 dxValidationProvider1.RemoveControlError(txtDocumentDate);
                 dxValidationProvider1.RemoveControlError(txtDocumentNumber);
                 dxValidationProvider2.RemoveControlError(txtPackageNumber);
+                dxValidationProvider2.RemoveControlError(txtHeinServiceBidMateType);
 
                 this.currentContract = null;
                 SetValueByContractMety(null);
@@ -3157,6 +3158,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                 if (this.currentContract != null)
                 {
+                    
                     if (this.MedicalContractMety != null && xtraTabControlMain.SelectedTabPage == xtraTabPageMedicine)
                     {
                         if (spinCanImpAmount.Value < spinImpAmount.Value)
@@ -3297,7 +3299,6 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 }
                 AutoMapper.Mapper.CreateMap<VHisServicePatyADO, VHisServicePatyADO>();
                 this.currrentServiceAdo.VHisServicePatys = AutoMapper.Mapper.Map<List<VHisServicePatyADO>>(listServicePatyAdo);
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listServicePatyAdo), listServicePatyAdo));
 
                 if (listServicePatyAdo == null)
                 {
@@ -4029,7 +4030,6 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                     EventProcessMaterialReUse();
 
-                    Inventec.Common.Logging.LogSystem.Info("listServicePatyAdo: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listServicePatyAdo), listServicePatyAdo));
 
                     gridControlServicePaty.BeginUpdate();
                     UpdateExpPrice();
@@ -4283,7 +4283,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     }
                     IsEditImpPriceVAT = false;
                 }
-
+                if (this.currrentServiceAdo != null)
+                    this.currrentServiceAdo.IMP_PRICE = spinImpPrice.Visible ? spinImpPrice.Value : spinImpPrice1.Visible ? spinImpPrice1.Value : 0;
                 LoadServicePatyByAdo();
             }
             catch (Exception ex)

@@ -2604,7 +2604,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     }
                     else
                     {
-                        var data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CAREER>().Where(o => o.CAREER_CODE.Contains(searchCode)).ToList();
+                        var data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CAREER>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.CAREER_CODE.Contains(searchCode)).ToList();
                         var searchResult = (data != null && data.Count > 0) ? (data.Count == 1 ? data : data.Where(o => o.CAREER_CODE.ToUpper() == searchCode.ToUpper()).ToList()) : null;
                         if (searchResult != null && searchResult.Count == 1)
                         {
@@ -2635,7 +2635,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 {
                     if (this.cboCareer.EditValue != null)
                     {
-                        MOS.EFMODEL.DataModels.HIS_CAREER career = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CAREER>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((this.cboCareer.EditValue ?? 0).ToString()));
+                        MOS.EFMODEL.DataModels.HIS_CAREER career = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CAREER>().SingleOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((this.cboCareer.EditValue ?? 0).ToString()));
                         if (career != null)
                         {
                             this.txtCareerCode.Text = career.CAREER_CODE;
@@ -2664,7 +2664,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 {
                     if (this.cboCareer.EditValue != null)
                     {
-                        MOS.EFMODEL.DataModels.HIS_CAREER data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CAREER>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((this.cboCareer.EditValue ?? "").ToString()));
+                        MOS.EFMODEL.DataModels.HIS_CAREER data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CAREER>().SingleOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((this.cboCareer.EditValue ?? "").ToString()));
                         if (data != null)
                         {
                             this.txtCareerCode.Text = data.CAREER_CODE;

@@ -137,21 +137,21 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
 
         #region private function
         private void CheckEnableIconSave(MOS.EFMODEL.DataModels.V_HIS_EXP_MEST AggExpMest)
-		{
-			try
-			{
+        {
+            try
+            {
                 this.loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 if ((AggExpMest.EXP_MEST_STT_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE || (controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == ControlCode.BtnIconSave && o.IS_ACTIVE == IMSys.DbConfig.ACS_RS.COMMON.IS_ACTIVE__TRUE) != null))
                     && (BackendDataWorker.Get<HIS_MEDI_STOCK>().Where(o => o.ID == AggExpMest.MEDI_STOCK_ID).FirstOrDefault().ROOM_ID == moduleData.RoomId || loginName == AggExpMest.CREATOR))
-				{
+                {
                     btnIconSave.Enabled = true;
-				}                    
-			}
-			catch (Exception ex)
-			{
+                }
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-		}
+        }
         private void LoadDataToComboReasonRequired()
         {
             try
@@ -248,9 +248,20 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 // thêm xuất bù lĩnh
                 expMestIds.Add(this.AggExpMest.ID);
                 CommonParam param = new CommonParam();
-                MOS.Filter.HisExpMestMedicineViewFilter expMestMedicineFilter = new HisExpMestMedicineViewFilter();
-                expMestMedicineFilter.EXP_MEST_IDs = expMestIds;
-                this.expMestMedicines = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MEDICINE>>("api/HisExpMestMedicine/GetView", ApiConsumer.ApiConsumers.MosConsumer, expMestMedicineFilter, param);
+                int skip = 0;
+                this.expMestMedicines = new List<V_HIS_EXP_MEST_MEDICINE>();
+                while (expMestIds.Count - skip > 0)
+                {
+                    var ids = expMestIds.Skip(skip).Take(100).ToList();
+                    MOS.Filter.HisExpMestMedicineViewFilter expMestMedicineFilter = new HisExpMestMedicineViewFilter();
+                    expMestMedicineFilter.EXP_MEST_IDs = ids;
+                    var expMestMedicines = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MEDICINE>>("api/HisExpMestMedicine/GetView", ApiConsumer.ApiConsumers.MosConsumer, expMestMedicineFilter, param);
+                    skip += 100;
+                    if (expMestMedicines != null && expMestMedicines.Count > 0)
+                    {
+                        this.expMestMedicines.AddRange(expMestMedicines);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -268,9 +279,20 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 List<long> expMestIds = this.ExpMestChildFromAggs.Select(o => o.ID).Distinct().ToList();
                 // thêm xuất bù lĩnh
                 expMestIds.Add(this.AggExpMest.ID);
-                MOS.Filter.HisExpMestMaterialViewFilter hisExpMestMaterialViewFilter = new HisExpMestMaterialViewFilter();
-                hisExpMestMaterialViewFilter.EXP_MEST_IDs = expMestIds;
-                this.expMestMaterials = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MATERIAL>>("api/HisExpMestMaterial/GetView", ApiConsumer.ApiConsumers.MosConsumer, hisExpMestMaterialViewFilter, param);
+                int skip = 0;
+                this.expMestMaterials = new List<V_HIS_EXP_MEST_MATERIAL>();
+                while (expMestIds.Count - skip > 0)
+                {
+                    var ids = expMestIds.Skip(skip).Take(100).ToList();
+                    MOS.Filter.HisExpMestMaterialViewFilter hisExpMestMaterialViewFilter = new HisExpMestMaterialViewFilter();
+                    hisExpMestMaterialViewFilter.EXP_MEST_IDs = ids;
+                    var expMestMaterials = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MATERIAL>>("api/HisExpMestMaterial/GetView", ApiConsumer.ApiConsumers.MosConsumer, hisExpMestMaterialViewFilter, param);
+                    skip += 100;
+                    if (expMestMaterials != null && expMestMaterials.Count > 0)
+                    {
+                        this.expMestMaterials.AddRange(expMestMaterials);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -529,13 +551,13 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     {
                         gridColumn16.VisibleIndex = 7;
                         gridColumn17.VisibleIndex = 8;
-                         var dataGroup = ExpMestMatyMetyReqSDODetailsDb.GroupBy(p => new
-                         {
-                             p.IS_MEDICINE,
-                             p.MEDI_MATE_TYPE_ID,
-                             p.PATIENT_TYPE_ID,
-                             p.OTHER_PAY_SOURCE_ID
-                         }).ToList();
+                        var dataGroup = ExpMestMatyMetyReqSDODetailsDb.GroupBy(p => new
+                        {
+                            p.IS_MEDICINE,
+                            p.MEDI_MATE_TYPE_ID,
+                            p.PATIENT_TYPE_ID,
+                            p.OTHER_PAY_SOURCE_ID
+                        }).ToList();
                         foreach (var itemGroup in dataGroup)
                         {
                             ExpMestMatyMetyReqSDODetail ado = new ExpMestMatyMetyReqSDODetail(itemGroup.FirstOrDefault());
@@ -559,11 +581,12 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     else if (!chkPatientType.Checked && chkOtherPaySource.Checked)
                     {
                         gridColumn17.VisibleIndex = 7;
-                       var  dataGroup = ExpMestMatyMetyReqSDODetailsDb.GroupBy(p => new {
-                           p.IS_MEDICINE,
-                           p.MEDI_MATE_TYPE_ID,
+                        var dataGroup = ExpMestMatyMetyReqSDODetailsDb.GroupBy(p => new
+                        {
+                            p.IS_MEDICINE,
+                            p.MEDI_MATE_TYPE_ID,
                             p.OTHER_PAY_SOURCE_ID
-                       }).ToList();
+                        }).ToList();
                         foreach (var itemGroup in dataGroup)
                         {
                             ExpMestMatyMetyReqSDODetail ado = new ExpMestMatyMetyReqSDODetail(itemGroup.FirstOrDefault());
@@ -613,8 +636,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                             ImpMestMediMateADOTemps.Add(ado);
                         }
                     }
-					else
-					{
+                    else
+                    {
                         var dataGroup = ExpMestMatyMetyReqSDODetailsDb.GroupBy(p => new
                         {
                             p.IS_MEDICINE,
@@ -639,9 +662,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                             ado.PACKAGE_NUMBER = packageNumber;
                             ImpMestMediMateADOTemps.Add(ado);
                         }
-                    } 
-                        
-                 
+                    }
+
+
                 }
                 else if (!chkTheoLo.Checked && !chkHaoPhi.Checked)
                 {
@@ -680,7 +703,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     else if (!chkPatientType.Checked && chkOtherPaySource.Checked)
                     {
                         gridColumn17.VisibleIndex = 7;
-                        var dataGroup = ExpMestMatyMetyReqSDODetailsDb.GroupBy(p => new {
+                        var dataGroup = ExpMestMatyMetyReqSDODetailsDb.GroupBy(p => new
+                        {
                             p.IS_MEDICINE,
                             p.MEDI_MATE_TYPE_ID,
                             p.OTHER_PAY_SOURCE_ID
@@ -708,7 +732,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     else if (chkPatientType.Checked && !chkOtherPaySource.Checked)
                     {
                         gridColumn16.VisibleIndex = 7;
-                        var  dataGroup = ExpMestMatyMetyReqSDODetailsDb.GroupBy(p => new
+                        var dataGroup = ExpMestMatyMetyReqSDODetailsDb.GroupBy(p => new
                         {
                             p.IS_MEDICINE,
                             p.MEDI_MATE_TYPE_ID,
@@ -761,7 +785,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                             ImpMestMediMateADOTemps.Add(ado);
                         }
                     }
-                  
+
                 }
                 else if (chkTheoLo.Checked && chkHaoPhi.Checked)
                 {
@@ -786,7 +810,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     else if (!chkPatientType.Checked && chkOtherPaySource.Checked)
                     {
                         gridColumn17.VisibleIndex = 7;
-                        var dataGroup = ExpMestMatyMetyReqSDODetailsDb.GroupBy(p => new {
+                        var dataGroup = ExpMestMatyMetyReqSDODetailsDb.GroupBy(p => new
+                        {
                             p.IS_MEDICINE,
                             p.MEDI_MATE_ID,
                             p.OTHER_PAY_SOURCE_ID
@@ -854,7 +879,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     else if (!chkPatientType.Checked && chkOtherPaySource.Checked)
                     {
                         gridColumn17.VisibleIndex = 7;
-                        var dataGroup = ExpMestMatyMetyReqSDODetailsDb.GroupBy(p => new {
+                        var dataGroup = ExpMestMatyMetyReqSDODetailsDb.GroupBy(p => new
+                        {
                             p.IS_MEDICINE,
                             p.MEDI_MATE_ID,
                             p.OTHER_PAY_SOURCE_ID
@@ -899,7 +925,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 }
 
                 ImpMestMediMateADOTemps = (ImpMestMediMateADOTemps != null && ImpMestMediMateADOTemps.Count > 0) ? ImpMestMediMateADOTemps.OrderBy(o => o.MEDI_MATE_TYPE_ID).ThenBy(o => o.IS_MEDICINE).ToList() : ImpMestMediMateADOTemps;
-            
+
                 SetDataToGridControlMedicineMaterial(ImpMestMediMateADOTemps);
             }
             catch (Exception ex)
@@ -936,7 +962,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                         expMestBuThuocLe.EXP_MEST_STT_ID = this.AggExpMest.EXP_MEST_STT_ID;
                         expMestBuThuocLe.EXP_MEST_STT_CODE = this.AggExpMest.EXP_MEST_STT_CODE;
                         expMestBuThuocLe.EXP_MEST_STT_NAME = this.AggExpMest.EXP_MEST_STT_NAME;
-                        expMestBuThuocLe.REASION_ID = this.AggExpMest.EXP_MEST_REASON_ID !=null ? this.AggExpMest.EXP_MEST_REASON_ID.ToString() : "";
+                        expMestBuThuocLe.REASION_ID = this.AggExpMest.EXP_MEST_REASON_ID != null ? this.AggExpMest.EXP_MEST_REASON_ID.ToString() : "";
                         expMestBuThuocLe.EXP_MEST_REASON_ID = this.AggExpMest.EXP_MEST_REASON_ID;
                         expMestBuThuocLe.EXP_MEST_REASON_CODE = this.AggExpMest.EXP_MEST_REASON_CODE;
                         expMestBuThuocLe.EXP_MEST_REASON_NAME = this.AggExpMest.EXP_MEST_REASON_NAME;
@@ -1017,16 +1043,16 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     return;
                 }
 
-    //            List<ExpMestSDO> data1 = (List<ExpMestSDO>)gridControlExpMestChild.DataSource;
-    //            string mess = "Bắt buộc nhập lý do xuất.";
-    //            mess += "\r\nCác mã phiếu chưa nhập: ";
-    //            List<string> lstStr = data1.Where(o => o.EXP_MEST_REASON_ID == null).Select(o => o.EXP_MEST_CODE).ToList();
-    //            if(lstStr!=null && lstStr.Count>0 && IsReasonRequired)
-				//{
-    //                MessageBox.Show(mess + String.Join(", ", lstStr), "Thông báo", MessageBoxButtons.OK);
-    //                return;
+                //            List<ExpMestSDO> data1 = (List<ExpMestSDO>)gridControlExpMestChild.DataSource;
+                //            string mess = "Bắt buộc nhập lý do xuất.";
+                //            mess += "\r\nCác mã phiếu chưa nhập: ";
+                //            List<string> lstStr = data1.Where(o => o.EXP_MEST_REASON_ID == null).Select(o => o.EXP_MEST_CODE).ToList();
+                //            if(lstStr!=null && lstStr.Count>0 && IsReasonRequired)
+                //{
+                //                MessageBox.Show(mess + String.Join(", ", lstStr), "Thông báo", MessageBoxButtons.OK);
+                //                return;
 
-    //            }                    
+                //            }                    
                 List<ExpMestMatyMetyReqSDODetail> dataSource = (List<ExpMestMatyMetyReqSDODetail>)gridControlMedicineMaterialDetail.DataSource;
                 // get expMestMedicine
                 List<ExpMestMatyMetyReqSDODetail> expMestMedicines = dataSource != null && dataSource.Count() > 0 ? dataSource.Where(o => o.IS_MEDICINE == true).ToList() : dataSource;
@@ -1306,23 +1332,23 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                             e.RepositoryItem = null;
                         }
                     }
-     //               else if(e.Column.FieldName == "REASION_ID")
-					//{
-     //                   if(AggExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE || RoomIdFromMediStock != moduleData.RoomId)
-					//	{
-     //                       e.RepositoryItem = repTextDisable;
-     //                       if ((gridViewExpMestChild.GetRowCellValue(e.RowHandle, "REASION_ID") ?? "") != null)
-     //                       {
-     //                           string value = (gridViewExpMestChild.GetRowCellValue(e.RowHandle, "REASION_ID") ?? "").ToString();
-     //                           if (!string.IsNullOrEmpty(value))
-     //                               gridViewExpMestChild.SetRowCellValue(e.RowHandle, gridColumn15, reason.FirstOrDefault(o=>o.ID == Int64.Parse(value)).EXP_MEST_REASON_NAME);
-     //                       }
-     //                   }
-     //                   else
-					//	{
-     //                       e.RepositoryItem = repReasonRequired;
-					//	}                            
-					//}                        
+                    //               else if(e.Column.FieldName == "REASION_ID")
+                    //{
+                    //                   if(AggExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE || RoomIdFromMediStock != moduleData.RoomId)
+                    //	{
+                    //                       e.RepositoryItem = repTextDisable;
+                    //                       if ((gridViewExpMestChild.GetRowCellValue(e.RowHandle, "REASION_ID") ?? "") != null)
+                    //                       {
+                    //                           string value = (gridViewExpMestChild.GetRowCellValue(e.RowHandle, "REASION_ID") ?? "").ToString();
+                    //                           if (!string.IsNullOrEmpty(value))
+                    //                               gridViewExpMestChild.SetRowCellValue(e.RowHandle, gridColumn15, reason.FirstOrDefault(o=>o.ID == Int64.Parse(value)).EXP_MEST_REASON_NAME);
+                    //                       }
+                    //                   }
+                    //                   else
+                    //	{
+                    //                       e.RepositoryItem = repReasonRequired;
+                    //	}                            
+                    //}                        
                 }
             }
             catch (Exception ex)
@@ -1399,7 +1425,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     {
                         e.Value = pData.REQ_ROOM_CODE + "/" + pData.REQ_ROOM_NAME;
                     }
-                   
+
                 }
             }
             catch (Exception ex)
@@ -1504,9 +1530,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             }
         }
         V_HIS_EXP_MEST expMestFocus;
-		private string loginName;
+        private string loginName;
 
-		private void gridViewExpMestChild_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        private void gridViewExpMestChild_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             try
             {
@@ -1981,15 +2007,15 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-		#endregion
+        #endregion
 
-		private void gridViewExpMestChild_CellValueChanged(object sender, CellValueChangedEventArgs e)
-		{
-			
-		}
+        private void gridViewExpMestChild_CellValueChanged(object sender, CellValueChangedEventArgs e)
+        {
 
-		private void repReasonRequired_EditValueChanged(object sender, EventArgs e)
-		{
+        }
+
+        private void repReasonRequired_EditValueChanged(object sender, EventArgs e)
+        {
             try
             {
                 GridLookUpEdit cbo = sender as GridLookUpEdit;
@@ -2011,20 +2037,20 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             }
         }
 
-		private void btnIconSave_Click(object sender, EventArgs e)
-		{
-			try
-			{
-                if(IsReasonRequired && cboExpMestReason.EditValue == null)
-				{
-                    XtraMessageBox.Show(ResourceLanguageManager.BatBuocNhapLyDoXuat,MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),MessageBoxButtons.OK);
+        private void btnIconSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (IsReasonRequired && cboExpMestReason.EditValue == null)
+                {
+                    XtraMessageBox.Show(ResourceLanguageManager.BatBuocNhapLyDoXuat, MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK);
                     cboExpMestReason.Focus();
                     cboExpMestReason.ShowPopup();
                     return;
-				}
+                }
                 CommonParam param = new CommonParam();
                 ExpMestUpdateReasonSDO sdo = new ExpMestUpdateReasonSDO();
-                if(cboExpMestReason.EditValue !=null && !string.IsNullOrEmpty(cboExpMestReason.EditValue.ToString()))
+                if (cboExpMestReason.EditValue != null && !string.IsNullOrEmpty(cboExpMestReason.EditValue.ToString()))
                     sdo.ExpMestReasonId = Int64.Parse(cboExpMestReason.EditValue.ToString());
                 sdo.ExpMestId = AggExpMest.ID;
                 sdo.WorkingRoomId = moduleData.RoomId;
@@ -2039,9 +2065,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                         {
                             item.EXP_MEST_REASON_CODE = reason.FirstOrDefault(o => o.ID == result.EXP_MEST_REASON_ID).EXP_MEST_REASON_CODE;
                             item.EXP_MEST_REASON_NAME = reason.FirstOrDefault(o => o.ID == result.EXP_MEST_REASON_ID).EXP_MEST_REASON_NAME;
-						}
-						else
-						{
+                        }
+                        else
+                        {
                             item.EXP_MEST_REASON_CODE = null;
                             item.EXP_MEST_REASON_NAME = null;
                         }
@@ -2052,24 +2078,24 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 }
                 MessageManager.Show(this.ParentForm, param, result != null);
             }
-			catch (Exception ex)
-			{
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-		}
+        }
 
-		private void chkHaoPhi_CheckedChanged(object sender, EventArgs e)
-		{
+        private void chkHaoPhi_CheckedChanged(object sender, EventArgs e)
+        {
             gridViewExpMestChild_SelectionChanged(null, null);
         }
 
-		private void chkTheoLo_CheckedChanged(object sender, EventArgs e)
-		{
+        private void chkTheoLo_CheckedChanged(object sender, EventArgs e)
+        {
             gridViewExpMestChild_SelectionChanged(null, null);
         }
 
-		private void chkPatientType_CheckedChanged(object sender, EventArgs e)
-		{
+        private void chkPatientType_CheckedChanged(object sender, EventArgs e)
+        {
             try
             {
                 gridViewExpMestChild_SelectionChanged(null, null);
@@ -2100,8 +2126,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             }
         }
 
-		private void chkOtherPaySource_CheckedChanged(object sender, EventArgs e)
-		{
+        private void chkOtherPaySource_CheckedChanged(object sender, EventArgs e)
+        {
             try
             {
                 gridViewExpMestChild_SelectionChanged(null, null);
@@ -2132,17 +2158,17 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             }
         }
 
-		private void cboExpMestReason_ButtonClick(object sender, ButtonPressedEventArgs e)
-		{
-			try
-			{
+        private void cboExpMestReason_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
                 if (e.Button.Kind == ButtonPredefines.Delete)
                     cboExpMestReason.EditValue = null;
-			}
-			catch (Exception ex)
-			{
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-		}
-	}
+        }
+    }
 }

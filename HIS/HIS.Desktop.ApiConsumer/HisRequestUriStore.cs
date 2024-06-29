@@ -328,7 +328,7 @@ namespace HIS.Desktop.ApiConsumer
         public const string HIS_SERV_SEGR_GETVIEW = "api/HisServSegr/GetView";
         public const string HIS_SERE_SERV_GETVIEW2 = "api/HisSereServ/GetView2";
         public const string HIS_SERE_SERV_GETVIEW = "api/HisSereServ/GetView";
-        public const string HIS_SERVICE_REQ_START = "api/HisServiceReq/StartWithTime";
+        public const string HIS_SERVICE_REQ_START = "api/HisServiceReq/Start";
 
         public const string HIS_SERVICE_REQ_FINISH = "/api/HisServiceReq/Finish";
         public const string HIS_SERVICE_REQ_UPDATE = "/api/HisServiceReq/UpdateSereServ";

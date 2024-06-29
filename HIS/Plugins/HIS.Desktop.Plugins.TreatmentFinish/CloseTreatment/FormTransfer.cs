@@ -41,6 +41,9 @@ using DevExpress.XtraEditors.Controls;
 using Inventec.Desktop.Common.LanguageManager;
 using System.Resources;
 using Inventec.Desktop.CustomControl.CustomGrid;
+using HIS.Desktop.Plugins.TreatmentFinish.Validation;
+using DevExpress.XtraEditors.DXErrorProvider;
+using Inventec.Desktop.Common.Controls.ValidationRule;
 
 namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
 {
@@ -168,11 +171,25 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                             {
                                 List<V_HIS_EMPLOYEE> seleceds = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => oldSelecteds.Contains(o.LOGINNAME)).ToList();
                                 gridCheckMark.SelectAll(seleceds);
-
-                                string displayText = String.Join(", ", seleceds.Select(s => s.TDL_USERNAME).ToList());
-                                cboTransporterLoginName.Text = displayText;
                             }
                         }
+                    }
+                    if (treatment != null && !string.IsNullOrEmpty(treatment.TRANSPORTER))
+                    {
+                        var splt = treatment.TRANSPORTER.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (var item in splt)
+                        {
+                            if (selected.FirstOrDefault(o => !string.IsNullOrEmpty(o.LOGINNAME) && o.TDL_USERNAME == item.Trim()) != null)
+                                continue;
+                            selected.Add(new V_HIS_EMPLOYEE() { TDL_USERNAME = item });
+                        }
+                        txtTransporterLoginName.Text = treatment.TRANSPORTER;
+                    }
+                    if (selected != null && selected.Count > 0)
+                    {
+                        selected = selected.Distinct(new CompareTransfer()).ToList();
+                        string displayText = String.Join(", ", selected.Select(s => s.TDL_USERNAME).ToList());
+                        cboTransporterLoginName.Text = displayText;
                     }
                     txtPPKTThuoc.Text = treatment.TREATMENT_METHOD;
                     txtHuongDieuTri.Text = treatment.TREATMENT_DIRECTION;
@@ -403,10 +420,25 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                                 List<V_HIS_EMPLOYEE> seleceds = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => oldSelecteds.Contains(o.LOGINNAME)).ToList();
                                 gridCheckMark.SelectAll(seleceds);
 
-                                string displayText = String.Join(", ", seleceds.Select(s => s.TDL_USERNAME).ToList());
-                                cboTransporterLoginName.Text = displayText;
                             }
                         }
+                    }
+                    if (currentTreatmentFinishSDO != null && !string.IsNullOrEmpty(currentTreatmentFinishSDO.Transporter))
+                    {
+                        var splt = currentTreatmentFinishSDO.Transporter.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (var item in splt)
+                        {
+                            if (selected.FirstOrDefault(o => !string.IsNullOrEmpty(o.LOGINNAME) && o.TDL_USERNAME == item.Trim()) != null)
+                                continue;
+                            selected.Add(new V_HIS_EMPLOYEE() { TDL_USERNAME = item });
+                        }
+                        txtTransporterLoginName.Text = currentTreatmentFinishSDO.Transporter;
+                    }
+                    if (selected != null && selected.Count > 0)
+                    {
+                        selected = selected.Distinct(new CompareTransfer()).ToList();
+                        string displayText = String.Join(", ", selected.Select(s => s.TDL_USERNAME).ToList());
+                        cboTransporterLoginName.Text = displayText;
                     }
                     txtPPKTThuoc.Text = currentTreatmentFinishSDO.TreatmentMethod;
                     txtHuongDieuTri.Text = currentTreatmentFinishSDO.TreatmentDirection;
@@ -469,6 +501,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 ValidationMaxLength(txtPhuongTienVanChuyen, 3000);
                 //ValidationMaxLength(txtNguoiHoTong, 200);
                 ValidationMaxLength(txtUsedMedicine, 3000);
+                ValidateTextEdit(txtHuongDieuTri);
+                ValidateTextEdit(txtPhuongTienVanChuyen);
+                ValidateTextEdit(txtPPKTThuoc);
+                ValidateGridLookupWithTextEditSpecial(this.cboTransporterLoginName, txtTransporterLoginName, this.dxValidationProvider);
             }
             catch (Exception ex)
             {
@@ -520,6 +556,23 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 icdMainRule.ErrorText = ResourceMessage.TruongDuLieuBatBuoc;
                 icdMainRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                 this.dxValidationProvider.SetValidationRule(txtTranPatiForm, icdMainRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        internal static void ValidateGridLookupWithTextEditSpecial(GridLookUpEdit cbo, TextEdit textEdit, DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditor)
+        {
+            try
+            {
+                GridLookupEditWithTextEditValidationRuleSpecial validRule = new GridLookupEditWithTextEditValidationRuleSpecial();
+                validRule.txtTextEdit = textEdit;
+                validRule.cbo = cbo;
+                validRule.ErrorText = ResourceMessage.TruongDuLieuBatBuoc;
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProviderEditor.SetValidationRule(textEdit, validRule);
             }
             catch (Exception ex)
             {
@@ -898,7 +951,16 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
 
                 currentTreatmentFinishSDO.PatientCondition = txtTinhTrangNguoiBenh.Text;
                 currentTreatmentFinishSDO.TransportVehicle = txtPhuongTienVanChuyen.Text;
-                currentTreatmentFinishSDO.TransporterLoginnames = selected != null && selected.Count > 0 ? string.Join(";", selected.Select(o => o.LOGINNAME)) : null;
+                List<string> lstLoginNames = new List<string>();
+                if (selected != null && selected.Count > 0)
+                {
+                    var lst = selected.Where(o => !string.IsNullOrEmpty(o.LOGINNAME));
+                    if (lst != null && lst.Count() > 0)
+                    {
+                        lstLoginNames = lst.Select(o => o.LOGINNAME).ToList();
+                    }
+                }
+                currentTreatmentFinishSDO.TransporterLoginnames = lstLoginNames != null && lstLoginNames.Count > 0 ? string.Join(";", lstLoginNames) : null;
                 currentTreatmentFinishSDO.Transporter = selected != null && selected.Count > 0 ? string.Join(";", selected.Select(o => o.TDL_USERNAME)) : null;
                 currentTreatmentFinishSDO.TreatmentMethod = txtPPKTThuoc.Text;
                 currentTreatmentFinishSDO.TreatmentDirection = txtHuongDieuTri.Text;
@@ -1330,11 +1392,25 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                         {
                             selected = Employees.Where(o => oldSelecteds.Contains(o.LOGINNAME)).ToList();
                             gridCheckMark.SelectAll(selected);
-
-                            string displayText = String.Join(", ", selected.Select(s => s.TDL_USERNAME).ToList());
-                            cboTransporterLoginName.Text = displayText;
                         }
                     }
+                }
+                if (currentTreatmentFinishSDO != null && !string.IsNullOrEmpty(currentTreatmentFinishSDO.Transporter))
+                {
+                    var splt = currentTreatmentFinishSDO.Transporter.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var item in splt)
+                    {
+                        if (selected.FirstOrDefault(o => !string.IsNullOrEmpty(o.LOGINNAME) && o.TDL_USERNAME == item.Trim()) != null)
+                            continue;
+                        selected.Add(new V_HIS_EMPLOYEE() { TDL_USERNAME = item });
+                    }
+                    txtTransporterLoginName.Text = currentTreatmentFinishSDO.Transporter;
+                }
+                if (selected != null && selected.Count > 0)
+                {
+                    selected = selected.Distinct(new CompareTransfer()).ToList();
+                    string displayText = String.Join(", ", selected.Select(s => s.TDL_USERNAME).ToList());
+                    cboTransporterLoginName.Text = displayText;
                 }
             }
             catch (Exception ex)
@@ -1417,6 +1493,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                         gridCheckMark.ClearSelection(cboTransporterLoginName.Properties.View);
                     }
                     this.cboTransporterLoginName.Focus();
+                    txtTransporterLoginName.Text = null;
                 }
             }
             catch (Exception ex)
@@ -1439,6 +1516,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                     }
                 }
                 e.DisplayText = roomName;
+                txtTransporterLoginName.Text = roomName;
             }
             catch (Exception ex)
             {
@@ -1470,7 +1548,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             try
             {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
+                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection; 
+                List<V_HIS_EMPLOYEE> employeeFreeTextList = null;
+                if (selected != null && selected.Count > 0)
+                    employeeFreeTextList = selected.Where(o => string.IsNullOrEmpty(o.LOGINNAME)).ToList();
                 selected = new List<V_HIS_EMPLOYEE>();
                 if (gridCheckMark != null)
                 {
@@ -1486,6 +1567,15 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                     }
                     this.selected = new List<V_HIS_EMPLOYEE>();
                     this.selected.AddRange(erSelectedNews);
+                }
+                if (employeeFreeTextList != null && employeeFreeTextList.Count > 0)
+                {
+                    foreach (var item in employeeFreeTextList)
+                    {
+                        if (sb.ToString().Length > 0) { sb.Append(", "); }
+                        sb.Append(item.TDL_USERNAME);
+                    }
+                    this.selected.AddRange(employeeFreeTextList);
                 }
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => selected.Count), selected.Count));
                 this.cboTransporterLoginName.Text = sb.ToString();
@@ -1534,6 +1624,112 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void ValidateTextEdit(TextEdit txt)
+        {
+            try
+            {
+                ValidateTxtRule valid = new ValidateTxtRule();
+                valid.textEdit = txt;
+                valid.ErrorType = ErrorType.Warning;
+                this.dxValidationProvider.SetValidationRule(txt, valid);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtTransporterLoginName_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(txtTransporterLoginName.Text.Trim()))
+                {
+                    selected = new List<V_HIS_EMPLOYEE>();
+                    cboTransporterLoginName.EditValue = null;
+                }
+                else
+                {
+                    if (selected != null && selected.Count > 0)
+                        selected = selected.Where(o => !string.IsNullOrEmpty(o.LOGINNAME)).ToList();
+                    var splitNames = txtTransporterLoginName.Text.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var item in splitNames)
+                    {
+                        if (selected == null || selected.Count == 0 || selected.FirstOrDefault(o => o.TDL_USERNAME == item.Trim()) == null)
+                        {
+                            if (selected == null)
+                                selected = new List<V_HIS_EMPLOYEE>();
+                            selected.Add(new V_HIS_EMPLOYEE() { TDL_USERNAME = item.Trim() });
+                        }
+                    }
+                    txtTransporterLoginName.Text = string.Join(", ", selected.Select(o => o.TDL_USERNAME));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtTransporterLoginName_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Combo)
+                {
+                    cboTransporterLoginName.Focus();
+                    cboTransporterLoginName.ShowPopup();
+                }
+                else if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    selected = new List<V_HIS_EMPLOYEE>();
+                    cboTransporterLoginName.EditValue = null;
+                    GridCheckMarksSelection gridCheckMark = cboTransporterLoginName.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboTransporterLoginName.Properties.View);
+                    }
+                    cboTransporterLoginName.Focus();
+                    txtTransporterLoginName.Text = null;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboTransporterLoginName_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                txtTransporterLoginName.Focus();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+    }
+
+    public class CompareTransfer : IEqualityComparer<V_HIS_EMPLOYEE>
+    {
+        public bool Equals(V_HIS_EMPLOYEE x, V_HIS_EMPLOYEE y)
+        {
+            return
+                x.LOGINNAME == y.LOGINNAME &&
+                x.TDL_USERNAME == y.TDL_USERNAME &&
+                x.ID == y.ID;
+        }
+
+        public int GetHashCode(V_HIS_EMPLOYEE x)
+        {
+            return (!string.IsNullOrEmpty(x.LOGINNAME) ? x.LOGINNAME.GetHashCode() : 0) +
+                (!string.IsNullOrEmpty(x.TDL_USERNAME) ? x.TDL_USERNAME.GetHashCode() : 0) +
+                (x.ID != null ? x.ID.GetHashCode() : 0);
         }
     }
 }

@@ -40,6 +40,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm;
+using DevExpress.XtraEditors;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 {
@@ -1522,7 +1523,25 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
             return valid;
         }
-
+        private bool CheckMedicineGroupTuberCulosis(bool IsCheckList)
+        {
+            bool valid = true;
+            try
+            {
+                if (HisConfigCFG.TuberculosisOption == "1" && ((currentMedicineTypeADOForEdit != null && currentMedicineTypeADOForEdit.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__LAO) || (IsCheckList && mediMatyTypeADOs != null && mediMatyTypeADOs.Count > 0 && mediMatyTypeADOs.Exists(o => o.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__LAO))) && VHistreatment != null && string.IsNullOrEmpty(currentTreatment.TUBERCULOSIS_CODE))
+                {
+                    XtraMessageBox.Show("Hồ sơ chưa có thông tin số quản lý bệnh lao. Vui lòng cập nhật thông tin trước khi thực hiện kê thuốc lao");
+                    if(IsCheckList)
+                        mediMatyTypeADOs = new List<MediMatyTypeADO>();
+                    valid = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return valid;
+        }
         private bool CheckMaxExpend()
         {
             bool result = true;

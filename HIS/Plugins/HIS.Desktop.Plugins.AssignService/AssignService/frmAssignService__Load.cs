@@ -49,7 +49,6 @@ using System.Windows.Forms;
 using HIS.Desktop.IsAdmin;
 using DevExpress.XtraPrinting.Native;
 using HIS.Desktop.Controls.Session;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace HIS.Desktop.Plugins.AssignService.AssignService
 {
@@ -1815,6 +1814,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             {
                                 Inventec.Common.Logging.LogSystem.Debug("ChoosePatientTypeDefaultlService.2");
                                 listResult = currentPatientTypeTemps.Where(o => (!this.isNotUseBhyt || (this.isNotUseBhyt && o.ID != HisConfigCFG.PatientTypeId__BHYT)) && o.ID == patientTypeAppointmentId.Value).ToList();
+                            }else if (HisConfigCFG.IsSetPrimaryPatientType != commonString__true
+                                && this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.HasValue
+                                && this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.Value != HisConfigCFG.PatientTypeId__BHYT
+                                && currentPatientTypeTemps.Exists(e => e.ID == this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.Value))
+                            {
+                                Inventec.Common.Logging.LogSystem.Debug("ChoosePatientTypeDefaultlService. 6 currentRoom Has default instr patient type");
+                                listResult = currentPatientTypeTemps.Where(o => (!this.isNotUseBhyt || (this.isNotUseBhyt && o.ID != HisConfigCFG.PatientTypeId__BHYT)) && o.ID == this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.Value).ToList();
                             }
                             else if (HisConfigCFG.IsSetPrimaryPatientType != commonString__true
                                 && this.currentDepartment.DEFAULT_INSTR_PATIENT_TYPE_ID.HasValue
@@ -1955,6 +1961,16 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             //        Inventec.Common.Logging.LogSystem.Error(ex);
                             //    }
                             //}
+                        }
+                        else if (!notChangePrimary
+                           && HisConfigCFG.IsSetPrimaryPatientType == commonString__true
+                           && this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.HasValue
+                           && this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.Value != HisConfigCFG.PatientTypeId__BHYT
+                           && primaryPatientTypeTemps.Exists(e => e.ID == this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.Value)
+                           && result.ID != this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.Value)
+                        {
+                            var priPaty = primaryPatientTypeTemps.FirstOrDefault(o => o.ID == this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.Value);
+                            sereServADO.PRIMARY_PATIENT_TYPE_ID = priPaty.ID;
                         }
                         else if (!notChangePrimary
                             && HisConfigCFG.IsSetPrimaryPatientType == commonString__true
@@ -2516,7 +2532,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                     sereServADO.IsChecked = false;
                                     break;
                                 }
-
+                                this.SetAssignNumOrder(sereServADO);
                                 this.FillDataOtherPaySourceDataRow(sereServADO);
 
                                 List<V_HIS_EXECUTE_ROOM> executeRoomList = null;
@@ -3330,6 +3346,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                     sereServADO.TDL_EXECUTE_ROOM_ID = executeRoomId;
                                 }
                                 this.ValidServiceDetailProcessing(sereServADO);
+                                this.SetAssignNumOrder(sereServADO);
                             }
                             this.toggleSwitchDataChecked.EditValue = true;
                         }
@@ -3381,7 +3398,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             sereServADO.IsChecked = false;
                             break;
                         }
-
+                        this.SetAssignNumOrder(sereServADO);
                         this.FillDataOtherPaySourceDataRow(sereServADO);
                         this.ValidServiceDetailProcessing(sereServADO);
                     }

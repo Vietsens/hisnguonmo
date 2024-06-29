@@ -17,6 +17,8 @@
  */
 using DevExpress.Data;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
@@ -34,6 +36,7 @@ using System.Configuration;
 using System.Drawing;
 using System.Linq;
 using System.Resources;
+using System.Windows.Forms;
 
 
 namespace HIS.Desktop.Plugins.BidDetail
@@ -49,7 +52,11 @@ namespace HIS.Desktop.Plugins.BidDetail
         Inventec.Desktop.Common.Modules.Module moduleData;
         Dictionary<long, V_HIS_MEDICINE_TYPE> dicMedicineType;
         Dictionary<long, V_HIS_MATERIAL_TYPE> dicMaterialType;
-
+        Inventec.Desktop.Common.Modules.Module currentModule = null;
+        long roomId = 0;
+        long roomTypeId = 0;
+        decimal? adjustAmount;
+        short? isActive ;
         #endregion
 
         #region Construct
@@ -57,6 +64,9 @@ namespace HIS.Desktop.Plugins.BidDetail
             : base(moduleData)
         {
             InitializeComponent();
+            this.currentModule = moduleData;
+            this.roomId = moduleData.RoomId;
+            this.roomTypeId = moduleData.RoomTypeId;
             try
             {
                 SetIcon();
@@ -744,11 +754,508 @@ namespace HIS.Desktop.Plugins.BidDetail
             cboPrint_Click(null, null);
         }
         #endregion
+      
+        private Dictionary<int, Rectangle> imageRectangles = new Dictionary<int, Rectangle>();
+        private void gridViewMedicine_CustomDrawCell(object sender, RowCellCustomDrawEventArgs e)
+        {
+            try
+            {
+
+                //if (bidMedicineTypes != null && bidMedicineTypes.Count > 0)
+                //{
+                //    var listData = bidMedicineTypes;
+                //    foreach (var item in listData)
+                //    {
+                //        if (e.Column.FieldName == "ADJUST_AMOUNTT")
+                //        {
+                //            e.Graphics.FillRectangle(new SolidBrush(e.Appearance.BackColor), e.Bounds);
+                //            //var itaem = bidMedicineTypes[e.RowHandle];
+                //            // Lấy hình ảnh từ tài nguyên
+                //            Image image = HIS.Desktop.Plugins.BidDetail.Properties.Resources.dieutiet;
+
+                //            // Tính toán vị trí và kích thước của hình ảnh
+                //            int imageWidth = image.Width;
+                //            int imageHeight = image.Height;
+                //            int imageX = e.Bounds.Right - imageWidth; // Đặt ảnh bên phải của ô
+                //            int imageY = e.Bounds.Y + (e.Bounds.Height - imageHeight) / 2; // Đặt ảnh ở giữa theo chiều dọc
+
+                //            // Vẽ hình ảnh vào ô trước khi vẽ văn bản
+                //            e.Graphics.DrawImage(image, imageX, imageY, imageWidth, imageHeight);
+
+                //            // Giải phóng tài nguyên hình ảnh sau khi đã sử dụng
+                //            image.Dispose();
+                //            Rectangle imageRect = new Rectangle(imageX, imageY, imageWidth, imageHeight);
+                //            imageRectangles[e.RowHandle] = imageRect;
+                //            //string text = item.ADJUST_AMOUNT.ToString();
+                //            adjustAmount = item.ADJUST_AMOUNT;
+
+                //            string text = adjustAmount.HasValue ? adjustAmount.Value.ToString("N0") : "";
+                //            SizeF textSize = e.Graphics.MeasureString(text, e.Appearance.Font);
+                //            int textX = e.Bounds.Left; // Vị trí X của văn bản
+                //            int textY = e.Bounds.Y + (e.Bounds.Height - (int)textSize.Height) / 2; // Vị trí Y của văn bản
+                //            Rectangle textRect = new Rectangle(textX, textY, (int)textSize.Width, (int)textSize.Height);
+
+                //            e.Appearance.DrawString(e.Cache, text, textRect);
+                //            e.Handled = true;
+
+                //        }
+                //    }
+
+                //}
+                if (bidMedicineTypes != null && bidMedicineTypes.Count > 0)
+                {
+                    // Kiểm tra xem cột hiện tại có phải là "ADJUST_AMOUNTT" hay không
+                    if (e.Column.FieldName == "ADJUST_AMOUNTT")
+                    {
+                        // Lấy đối tượng dữ liệu tương ứng với dòng hiện tại
+                        var item = bidMedicineTypes[e.RowHandle];
+
+                        // Xóa văn bản và hình ảnh cũ trong ô hiện tại
+                        e.Graphics.FillRectangle(new SolidBrush(e.Appearance.BackColor), e.Bounds);
+
+                        // Lấy hình ảnh từ tài nguyên
+                        Image image = HIS.Desktop.Plugins.BidDetail.Properties.Resources.dieutiet;
+
+                        // Tính toán vị trí và kích thước của hình ảnh
+                        int imageWidth = image.Width;
+                        int imageHeight = image.Height;
+                        int imageX = e.Bounds.Right - imageWidth; // Đặt ảnh bên phải của ô
+                        int imageY = e.Bounds.Y + (e.Bounds.Height - imageHeight) / 2; // Đặt ảnh ở giữa theo chiều dọc
+
+                        // Vẽ hình ảnh vào ô trước khi vẽ văn bản
+                        e.Graphics.DrawImage(image, imageX, imageY, imageWidth, imageHeight);
+
+                        // Giải phóng tài nguyên hình ảnh sau khi đã sử dụng
+                        image.Dispose();
+
+                        Rectangle imageRect = new Rectangle(imageX, imageY, imageWidth, imageHeight);
+                        imageRectangles[e.RowHandle] = imageRect;
+
+                        // Vẽ văn bản vào ô hiện tại
+                        var adjustAmount = item.ADJUST_AMOUNT;
+                        string text = adjustAmount.HasValue ? adjustAmount.Value.ToString("N0") : "";
+                        SizeF textSize = e.Graphics.MeasureString(text, e.Appearance.Font);
+                        int textX = e.Bounds.Left; // Vị trí X của văn bản
+                        int textY = e.Bounds.Y + (e.Bounds.Height - (int)textSize.Height) / 2; // Vị trí Y của văn bản
+                        Rectangle textRect = new Rectangle(textX, textY, (int)textSize.Width, (int)textSize.Height);
+
+                        // Vẽ văn bản sau khi đã vẽ hình ảnh
+                        e.Appearance.DrawString(e.Cache, text, textRect);
+
+                        e.Handled = true;
+                    }
+                }
+
+                
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
         #endregion
 
+        private void gridViewMedicine_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            try
+            {
+                GridView view = sender as GridView;
+                GridHitInfo hitInfo = view.CalcHitInfo(e.Location);
+                Rectangle imageRect;
+                var rowMdc = (MOS.EFMODEL.DataModels.V_HIS_BID_MEDICINE_TYPE)gridViewMedicine.GetFocusedRow();
+                if (rowMdc.IS_ACTIVE == 0)
+                {
+                    GvMedicine_GcActiveIngrBhytCode.OptionsColumn.AllowEdit = false;
+                    GvMedicine_GcActiveIngrBhytName.OptionsColumn.AllowEdit = false;
+                    GvMedicine_GcMedicineUseFormID.OptionsColumn.AllowEdit = false;
+                    GvMedicine_GcConcentra.OptionsColumn.AllowEdit = false;
+                    GvMedicine_GcImpVatRatio.OptionsColumn.AllowEdit = false;
+                    GvMedicine_GcRegisterNumber.OptionsColumn.AllowEdit = false;
+                    GvMedicine_GcSupplierName.OptionsColumn.AllowEdit = false;
+                    GvMedicine_GcManufacturerName.OptionsColumn.AllowEdit = false;
+                    GvMedicine_GcNationalName.OptionsColumn.AllowEdit = false;
+                }
+                else
+                {
+                    GvMedicine_GcActiveIngrBhytCode.OptionsColumn.AllowEdit = true;
+                    GvMedicine_GcActiveIngrBhytName.OptionsColumn.AllowEdit = true;
+                    GvMedicine_GcMedicineUseFormID.OptionsColumn.AllowEdit = true;
+                    GvMedicine_GcConcentra.OptionsColumn.AllowEdit = true;
+                    GvMedicine_GcImpVatRatio.OptionsColumn.AllowEdit = true;
+                    GvMedicine_GcRegisterNumber.OptionsColumn.AllowEdit = true;
+                    GvMedicine_GcSupplierName.OptionsColumn.AllowEdit = true;
+                    GvMedicine_GcManufacturerName.OptionsColumn.AllowEdit = true;
+                    GvMedicine_GcNationalName.OptionsColumn.AllowEdit = true;
+                }
+                  if (hitInfo.InRowCell && hitInfo.Column.FieldName == "ADJUST_AMOUNTT")
+                {
+                    if (imageRectangles.TryGetValue(hitInfo.RowHandle, out imageRect))
+                    {
+
+                        if (imageRect.Contains(e.Location))
+                        {
+                            if (rowMdc == null || rowMdc.IS_ACTIVE == 0)
+                            {
+                                return;
+                            }
+                           
+                            MOS.EFMODEL.DataModels.HIS_BID_MEDICINE_TYPE dataMdc = new MOS.EFMODEL.DataModels.HIS_BID_MEDICINE_TYPE();
+
+                            List<object> listArgs = new List<object>();
+                            if (rowMdc != null)
+                            {
+                                Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_BID_MEDICINE_TYPE>(dataMdc, rowMdc);
+                                listArgs.Add(dataMdc);
+                                listArgs.Add((HIS.Desktop.Common.DelegateSelectData)GetAdjustAmount);
+                            }
+                            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.BidRegulation", roomId, roomTypeId, listArgs);
+                            FillDataToGrid();
+                        }
+                    }
+                }
+              
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        public void GetAdjustAmount(object data)
+        {
+            adjustAmount = data as decimal?;
+        }
+
+        private void gridViewMaterial_CustomDrawCell(object sender, RowCellCustomDrawEventArgs e)
+        {
+            try
+            {
+                if (bidMaterialTypes != null && bidMaterialTypes.Count > 0)
+                {
+                    // Kiểm tra xem cột hiện tại có phải là "ADJUST_AMOUNTT" hay không
+                    if (e.Column.FieldName == "ADJUST_AMOUNTT")
+                    {
+                        // Lấy đối tượng dữ liệu tương ứng với dòng hiện tại
+                        var item = bidMaterialTypes[e.RowHandle];
+
+                        // Xóa văn bản và hình ảnh cũ trong ô hiện tại
+                        e.Graphics.FillRectangle(new SolidBrush(e.Appearance.BackColor), e.Bounds);
+
+                        // Lấy hình ảnh từ tài nguyên
+                        Image image = HIS.Desktop.Plugins.BidDetail.Properties.Resources.dieutiet;
+
+                        // Tính toán vị trí và kích thước của hình ảnh
+                        int imageWidth = image.Width;
+                        int imageHeight = image.Height;
+                        int imageX = e.Bounds.Right - imageWidth; // Đặt ảnh bên phải của ô
+                        int imageY = e.Bounds.Y + (e.Bounds.Height - imageHeight) / 2; // Đặt ảnh ở giữa theo chiều dọc
+
+                        // Vẽ hình ảnh vào ô trước khi vẽ văn bản
+                        e.Graphics.DrawImage(image, imageX, imageY, imageWidth, imageHeight);
+
+                        // Giải phóng tài nguyên hình ảnh sau khi đã sử dụng
+                        image.Dispose();
+
+                        Rectangle imageRect = new Rectangle(imageX, imageY, imageWidth, imageHeight);
+                        imageRectangles[e.RowHandle] = imageRect;
+
+                        // Vẽ văn bản vào ô hiện tại
+                        var adjustAmount = item.ADJUST_AMOUNT;
+                        string text = adjustAmount.HasValue ? adjustAmount.Value.ToString("N0") : "";
+                        SizeF textSize = e.Graphics.MeasureString(text, e.Appearance.Font);
+                        int textX = e.Bounds.Left; // Vị trí X của văn bản
+                        int textY = e.Bounds.Y + (e.Bounds.Height - (int)textSize.Height) / 2; // Vị trí Y của văn bản
+                        Rectangle textRect = new Rectangle(textX, textY, (int)textSize.Width, (int)textSize.Height);
+
+                        // Vẽ văn bản sau khi đã vẽ hình ảnh
+                        e.Appearance.DrawString(e.Cache, text, textRect);
+
+                        e.Handled = true;
+                    }
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridViewMaterial_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            try
+            {
+                GridView view = sender as GridView;
+                GridHitInfo hitInfo = view.CalcHitInfo(e.Location);
+                Rectangle imageRect;
+                var rowMtr = (MOS.EFMODEL.DataModels.V_HIS_BID_MATERIAL_TYPE)gridViewMaterial.GetFocusedRow();
+                if (rowMtr.IS_ACTIVE == 0)
+                {
+                    GvMaterial_GcMaterialTypeCode.OptionsColumn.AllowEdit = false;
+                    GvMaterial_GcMaterialTypeName.OptionsColumn.AllowEdit = false;
+                    gridColumn3.OptionsColumn.AllowEdit = false;
+                    GvMaterial_GcConcentra.OptionsColumn.AllowEdit = false;
+                    GvMaterial_GcImpVatRatio.OptionsColumn.AllowEdit = false;
+                    gridColumn7.OptionsColumn.AllowEdit = false;
+                    GvMaterial_GcSupplierName.OptionsColumn.AllowEdit = false;
+                    GvMaterial_GcManufacturerName.OptionsColumn.AllowEdit = false;
+                    GvMaterial_GcNationalName.OptionsColumn.AllowEdit = false;
+                }
+                else
+                {
+                    GvMaterial_GcMaterialTypeCode.OptionsColumn.AllowEdit = true;
+                    GvMaterial_GcMaterialTypeName.OptionsColumn.AllowEdit = true;
+                    gridColumn3.OptionsColumn.AllowEdit = true;
+                    GvMaterial_GcConcentra.OptionsColumn.AllowEdit = true;
+                    GvMaterial_GcImpVatRatio.OptionsColumn.AllowEdit = true;
+                    gridColumn7.OptionsColumn.AllowEdit = true;
+                    GvMaterial_GcSupplierName.OptionsColumn.AllowEdit = true;
+                    GvMaterial_GcManufacturerName.OptionsColumn.AllowEdit = true;
+                    GvMaterial_GcNationalName.OptionsColumn.AllowEdit = true;
+                }
+                if (hitInfo.InRowCell && hitInfo.Column.FieldName == "ADJUST_AMOUNTT")
+                {
+                    if (imageRectangles.TryGetValue(hitInfo.RowHandle, out imageRect))
+                    {
+
+                        if (imageRect.Contains(e.Location))
+                        {
+                           
+                            if (rowMtr == null || rowMtr.IS_ACTIVE == 0)
+                            {
+                                return;
+                            }
+                            MOS.EFMODEL.DataModels.HIS_BID_MATERIAL_TYPE dataMtr = new MOS.EFMODEL.DataModels.HIS_BID_MATERIAL_TYPE();
+
+                            List<object> listArgs = new List<object>();
+                          
+                            if (rowMtr != null)
+                            {
+                                Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_BID_MATERIAL_TYPE>(dataMtr, rowMtr);
+                                listArgs.Add(dataMtr);
+                                listArgs.Add((HIS.Desktop.Common.DelegateSelectData)GetAdjustAmount);
+                            }
+                            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.BidRegulation", roomId, roomTypeId, listArgs);
+                            FillDataToGrid();
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridViewMedicine_CustomRowCellEdit(object sender, CustomRowCellEditEventArgs e)
+        {
+            try
+            {
+                if (e.RowHandle >= 0)
+                {
+                    V_HIS_BID_MEDICINE_TYPE data = (V_HIS_BID_MEDICINE_TYPE)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                    if (e.Column.FieldName == "LOCK")
+                    {
+                        e.RepositoryItem = (data.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__FALSE ? btnLock : btnUnLock);
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnLock_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+
+            CommonParam param = new CommonParam();
+            HIS_BID_MEDICINE_TYPE success = new HIS_BID_MEDICINE_TYPE();
+            bool notHandler = false;
+            try
+            {
+                if (bidDetail.IS_ACTIVE == 1)
+                {
+                    V_HIS_BID_MEDICINE_TYPE dataRow = (V_HIS_BID_MEDICINE_TYPE)gridViewMedicine.GetFocusedRow();
+                    if (MessageBox.Show("Bạn có chắc muốn bỏ khóa dữ liệu?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        HIS_BID_MEDICINE_TYPE data = new HIS_BID_MEDICINE_TYPE();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_BID_MEDICINE_TYPE>(data, dataRow);
+                        data.ID = dataRow.ID;
+                        data.IS_ACTIVE = 1;
+                        WaitingManager.Show();
+                        success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_BID_MEDICINE_TYPE>("api/HisBidMedicineType/ChangeLock", ApiConsumer.ApiConsumers.MosConsumer, data, param);
+                        WaitingManager.Hide();
+                        if (success != null)
+                        {
+                            notHandler = true;
+                            FillDataToGrid();
+                        }
+                        MessageManager.Show(this, param, notHandler);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(string.Format("Thầu {0} đang bị khóa, không cho phép sửa chi tiết thầu", bidDetail.BID_NUMBER));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            
+        }
+
+        private void btnUnLock_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            CommonParam param = new CommonParam();
+            HIS_BID_MEDICINE_TYPE success = new HIS_BID_MEDICINE_TYPE();
+            bool notHandler = false;
+            try
+            {
+                if (bidDetail.IS_ACTIVE == 1)
+                {
+                    V_HIS_BID_MEDICINE_TYPE dataRow = (V_HIS_BID_MEDICINE_TYPE)gridViewMedicine.GetFocusedRow();
+                    if (MessageBox.Show("Bạn có chắc muốn khóa khóa dữ liệu?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        HIS_BID_MEDICINE_TYPE data = new HIS_BID_MEDICINE_TYPE();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_BID_MEDICINE_TYPE>(data, dataRow);
+                        data.ID = dataRow.ID;
+                        data.IS_ACTIVE = 0;
+                        WaitingManager.Show();
+                        success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_BID_MEDICINE_TYPE>("api/HisBidMedicineType/ChangeLock", ApiConsumer.ApiConsumers.MosConsumer, data, param);
+                        //api/HisBidMedicineType/Update
+                        WaitingManager.Hide();
+                        if (success != null)
+                        {
+                            success.IS_ACTIVE = isActive;
+                            notHandler = true;
+                            FillDataToGrid();
+                        }
+                        MessageManager.Show(this, param, notHandler);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(string.Format("Thầu {0} đang bị khóa, không cho phép sửa chi tiết thầu", bidDetail.BID_NUMBER));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            
+        }
+
+        private void gridViewMaterial_CustomRowCellEdit(object sender, CustomRowCellEditEventArgs e)
+        {
+            try
+            {
+                DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (e.RowHandle >= 0)
+                {
+                    V_HIS_BID_MATERIAL_TYPE data = (V_HIS_BID_MATERIAL_TYPE)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                    if (e.Column.FieldName == "LOCK")
+                    {
+                        e.RepositoryItem = (data.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__FALSE ? btnLockMaterial : btnUnLockMaterial);
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnLockMaterial_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            CommonParam param = new CommonParam();
+            HIS_BID_MATERIAL_TYPE success = new HIS_BID_MATERIAL_TYPE();
+            bool notHandler = false;
+            try
+            {
+                if (bidDetail.IS_ACTIVE == 1)
+                {
+                    V_HIS_BID_MATERIAL_TYPE dataRow = (V_HIS_BID_MATERIAL_TYPE)gridViewMaterial.GetFocusedRow();
+                    if (MessageBox.Show("Bạn có chắc muốn bỏ khóa dữ liệu", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        HIS_BID_MATERIAL_TYPE data = new HIS_BID_MATERIAL_TYPE();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_BID_MATERIAL_TYPE>(data, dataRow);
+                        data.ID = dataRow.ID;
+                        data.IS_ACTIVE = 1;
+                        WaitingManager.Show();
+                        success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_BID_MATERIAL_TYPE>("api/HisBidMaterialType/ChangeLock", ApiConsumer.ApiConsumers.MosConsumer, data, param);
+                        WaitingManager.Hide();
+                        if (success != null)
+                        {
+                            notHandler = true;
+                            FillDataToGrid();
+                        }
+                        MessageManager.Show(this, param, notHandler);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(string.Format("Thầu {0} đang bị khóa, không cho phép sửa chi tiết thầu", bidDetail.BID_NUMBER));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnUnLockMaterial_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            CommonParam param = new CommonParam();
+            HIS_BID_MATERIAL_TYPE success = new HIS_BID_MATERIAL_TYPE();
+            bool notHandler = false;
+            try
+            {
+                if (bidDetail.IS_ACTIVE == 1)
+                {
+                    V_HIS_BID_MATERIAL_TYPE dataRow = (V_HIS_BID_MATERIAL_TYPE)gridViewMaterial.GetFocusedRow();
+                    if (MessageBox.Show("Bạn có chắc muốn khóa khóa dữ liệu?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        HIS_BID_MATERIAL_TYPE data = new HIS_BID_MATERIAL_TYPE();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_BID_MATERIAL_TYPE>(data, dataRow);
+                        data.ID = dataRow.ID;
+                        data.IS_ACTIVE = 0;
+                        WaitingManager.Show();
+                        success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_BID_MATERIAL_TYPE>("api/HisBidMaterialType/ChangeLock", ApiConsumer.ApiConsumers.MosConsumer, data, param);
+                        WaitingManager.Hide();
+                        if (success != null)
+                        {
+                            notHandler = true;
+                            FillDataToGrid();
+                        }
+                        MessageManager.Show(this, param, notHandler);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(string.Format("Thầu {0} đang bị khóa, không cho phép sửa chi tiết thầu", bidDetail.BID_NUMBER));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
+       
         #region Public method
 
         #endregion
+
     }
 }

@@ -45,10 +45,11 @@ namespace HIS.Desktop.Plugins.Register.Run
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            this.components = new System.ComponentModel.Container();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCRegister));
             this.lciRegisterEditor = new DevExpress.XtraLayout.LayoutControl();
             this.cboHosReason = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
@@ -110,7 +111,6 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.txtNationalCode = new DevExpress.XtraEditors.TextEdit();
             this.cboEthnic = new DevExpress.XtraEditors.LookUpEdit();
             this.txtEthnicCode = new DevExpress.XtraEditors.TextEdit();
-            this.cboCareer = new DevExpress.XtraEditors.LookUpEdit();
             this.txtCareerCode = new DevExpress.XtraEditors.TextEdit();
             this.cboCommune = new DevExpress.XtraEditors.LookUpEdit();
             this.txtCommuneCode = new DevExpress.XtraEditors.TextEdit();
@@ -221,10 +221,12 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.lciRecalPatient = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxErrorProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.timer1 = new System.Windows.Forms.Timer();
-            this.dxValidationProviderPlusInfomation = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.dxValidationProviderPlusInfomation = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.cboCareer = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
             ((System.ComponentModel.ISupportInitialize)(this.lciRegisterEditor)).BeginInit();
             this.lciRegisterEditor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboHosReason.Properties)).BeginInit();
@@ -269,7 +271,6 @@ namespace HIS.Desktop.Plugins.Register.Run
             ((System.ComponentModel.ISupportInitialize)(this.txtNationalCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboEthnic.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEthnicCode.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboCareer.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCareerCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboCommune.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCommuneCode.Properties)).BeginInit();
@@ -376,6 +377,8 @@ namespace HIS.Desktop.Plugins.Register.Run
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderPlusInfomation)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboCareer.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView3)).BeginInit();
             this.SuspendLayout();
             // 
             // lciRegisterEditor
@@ -420,7 +423,6 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.lciRegisterEditor.Controls.Add(this.txtNationalCode);
             this.lciRegisterEditor.Controls.Add(this.cboEthnic);
             this.lciRegisterEditor.Controls.Add(this.txtEthnicCode);
-            this.lciRegisterEditor.Controls.Add(this.cboCareer);
             this.lciRegisterEditor.Controls.Add(this.txtCareerCode);
             this.lciRegisterEditor.Controls.Add(this.cboCommune);
             this.lciRegisterEditor.Controls.Add(this.txtCommuneCode);
@@ -450,6 +452,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.lciRegisterEditor.Controls.Add(this.cboEmergencyTime);
             this.lciRegisterEditor.Controls.Add(this.cboPatientType);
             this.lciRegisterEditor.Controls.Add(this.pnlServiceRoomInfomation);
+            this.lciRegisterEditor.Controls.Add(this.cboCareer);
             this.lciRegisterEditor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lciRegisterEditor.Location = new System.Drawing.Point(0, 0);
             this.lciRegisterEditor.Name = "lciRegisterEditor";
@@ -941,7 +944,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.cboTHX.Name = "cboTHX";
             this.cboTHX.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.cboTHX.Properties.NullText = "";
             this.cboTHX.Properties.PopupSizeable = false;
             this.cboTHX.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
@@ -1174,21 +1177,6 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.txtEthnicCode.TabIndex = 29;
             this.txtEthnicCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtEthnic_PreviewKeyDown);
             // 
-            // cboCareer
-            // 
-            this.cboCareer.Location = new System.Drawing.Point(573, 281);
-            this.cboCareer.Margin = new System.Windows.Forms.Padding(2, 0, 2, 2);
-            this.cboCareer.Name = "cboCareer";
-            this.cboCareer.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.cboCareer.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboCareer.Properties.NullText = "";
-            this.cboCareer.Size = new System.Drawing.Size(250, 20);
-            this.cboCareer.StyleController = this.lciRegisterEditor;
-            this.cboCareer.TabIndex = 36;
-            this.cboCareer.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboCareer_Closed);
-            this.cboCareer.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboCareer_KeyUp);
-            // 
             // txtCareerCode
             // 
             this.txtCareerCode.Location = new System.Drawing.Point(486, 281);
@@ -1197,7 +1185,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.txtCareerCode.Properties.Appearance.Options.UseTextOptions = true;
             this.txtCareerCode.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.txtCareerCode.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtCareerCode.Size = new System.Drawing.Size(87, 20);
+            this.txtCareerCode.Size = new System.Drawing.Size(126, 20);
             this.txtCareerCode.StyleController = this.lciRegisterEditor;
             this.txtCareerCode.TabIndex = 35;
             this.txtCareerCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtCareerCode_PreviewKeyDown);
@@ -2392,7 +2380,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.lciCareer.MinSize = new System.Drawing.Size(110, 24);
             this.lciCareer.Name = "lciCareer";
             this.lciCareer.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lciCareer.Size = new System.Drawing.Size(164, 24);
+            this.lciCareer.Size = new System.Drawing.Size(203, 24);
             this.lciCareer.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciCareer.Text = "Nghề nghiệp:";
             this.lciCareer.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -2402,10 +2390,10 @@ namespace HIS.Desktop.Plugins.Register.Run
             // lciCboCareer
             // 
             this.lciCboCareer.Control = this.cboCareer;
-            this.lciCboCareer.Location = new System.Drawing.Point(570, 0);
+            this.lciCboCareer.Location = new System.Drawing.Point(609, 0);
             this.lciCboCareer.Name = "lciCboCareer";
             this.lciCboCareer.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.lciCboCareer.Size = new System.Drawing.Size(252, 24);
+            this.lciCboCareer.Size = new System.Drawing.Size(213, 24);
             this.lciCboCareer.TextSize = new System.Drawing.Size(0, 0);
             this.lciCboCareer.TextVisible = false;
             // 
@@ -2694,6 +2682,30 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.dxValidationProviderPlusInfomation.ValidateHiddenControls = false;
             this.dxValidationProviderPlusInfomation.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProviderPlusInfomation_ValidationFailed);
             // 
+            // cboCareer
+            // 
+            this.cboCareer.Location = new System.Drawing.Point(612, 281);
+            this.cboCareer.Margin = new System.Windows.Forms.Padding(2, 0, 2, 2);
+            this.cboCareer.Name = "cboCareer";
+            this.cboCareer.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboCareer.Properties.AutoComplete = false;
+            this.cboCareer.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboCareer.Properties.NullText = "";
+            this.cboCareer.Properties.View = this.gridView3;
+            this.cboCareer.Size = new System.Drawing.Size(211, 20);
+            this.cboCareer.StyleController = this.lciRegisterEditor;
+            this.cboCareer.TabIndex = 36;
+            this.cboCareer.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboCareer_Closed);
+            this.cboCareer.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboCareer_KeyUp);
+            // 
+            // gridView3
+            // 
+            this.gridView3.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView3.Name = "gridView3";
+            this.gridView3.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView3.OptionsView.ShowGroupPanel = false;
+            // 
             // UCRegister
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2747,7 +2759,6 @@ namespace HIS.Desktop.Plugins.Register.Run
             ((System.ComponentModel.ISupportInitialize)(this.txtNationalCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboEthnic.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEthnicCode.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboCareer.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCareerCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboCommune.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCommuneCode.Properties)).EndInit();
@@ -2854,6 +2865,8 @@ namespace HIS.Desktop.Plugins.Register.Run
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderPlusInfomation)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboCareer.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView3)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2930,7 +2943,6 @@ namespace HIS.Desktop.Plugins.Register.Run
         internal DevExpress.XtraEditors.TextEdit txtNationalCode;
         internal DevExpress.XtraEditors.LookUpEdit cboEthnic;
         internal DevExpress.XtraEditors.TextEdit txtEthnicCode;
-        internal DevExpress.XtraEditors.LookUpEdit cboCareer;
         internal DevExpress.XtraEditors.TextEdit txtCareerCode;
         internal DevExpress.XtraLayout.LayoutControlItem layoutControlItem31;
         internal DevExpress.XtraLayout.LayoutControlItem lciCareer;
@@ -3035,5 +3047,7 @@ namespace HIS.Desktop.Plugins.Register.Run
         private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cboHosReason;
         private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridLookUpEditWithFilterMultiColumn1View;
         private DevExpress.XtraLayout.LayoutControlItem lciHospitalizeReason;
+        internal DevExpress.XtraEditors.GridLookUpEdit cboCareer;
+        internal DevExpress.XtraGrid.Views.Grid.GridView gridView3;
     }
 }

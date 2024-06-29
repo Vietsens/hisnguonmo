@@ -216,8 +216,8 @@ namespace HIS.Desktop.Modules.Login
             try
             {
                 int length = (curNum + (nextNum > 0 ? nextNum : 7));
-                if (isLogger)
-                    LogSystem.Info(string.Format("Loaded " + type + ", count = " + (dataCount) + ". ({0}%)", curNum));
+                //if (isLogger)
+                //    LogSystem.Info(string.Format("Loaded " + type + ", count = " + (dataCount) + ". ({0}%)", curNum));
                 length = length < 100 ? length : 100;
                 for (; (curNum < length); curNum++)
                 {
@@ -1084,7 +1084,6 @@ namespace HIS.Desktop.Modules.Login
                 for (; (i <= 100); i++)
                 {
                     LoadingMain.SetReportProgress(UCLoading, i);
-                    LogSystem.Info(string.Format("Loaded count = ({0}%)", i));
                     System.Threading.Thread.Sleep(5);
                 }
                 watch2.Stop();

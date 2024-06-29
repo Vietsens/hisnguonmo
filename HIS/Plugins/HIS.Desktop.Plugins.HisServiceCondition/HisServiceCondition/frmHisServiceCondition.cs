@@ -941,17 +941,17 @@ namespace HIS.Desktop.Plugins.HisServiceCondition
                 if (e.RowHandle >= 0)
                 {
 
-                    HIS_SERVICE_CONDITION data = (HIS_SERVICE_CONDITION)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                    short? isactive = (short?)view.GetRowCellValue(e.RowHandle, "IS_ACTIVE");
                     if (e.Column.FieldName == "LOCK")
                     {
-                        e.RepositoryItem = (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? btnGUnLock : btnGLock);
+                        e.RepositoryItem = (isactive == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? btnGUnLock : btnGLock);
 
                     }
                     else if (e.Column.FieldName == "DELETE")
                     {
                         try
                         {
-                            if (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                            if (isactive == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                                 e.RepositoryItem = btnGEnableDelete;
                             else
                                 e.RepositoryItem = btnGDisableDelete;
@@ -1079,10 +1079,10 @@ namespace HIS.Desktop.Plugins.HisServiceCondition
                 DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
                 if (e.RowHandle >= 0)
                 {
-                    HIS_SERVICE_CONDITION data = (HIS_SERVICE_CONDITION)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                    short? isactive = (short?)view.GetRowCellValue(e.RowHandle, "IS_ACTIVE");
                     if (e.Column.FieldName == "STATUS")
                     {
-                        if (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                        if (isactive == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
                             e.Appearance.ForeColor = Color.Red;
                         else
                             e.Appearance.ForeColor = Color.Green;

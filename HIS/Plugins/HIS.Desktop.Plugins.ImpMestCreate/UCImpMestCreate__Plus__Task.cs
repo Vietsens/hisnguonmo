@@ -237,12 +237,19 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 		{
 			try
 			{
-				listMedicineTypeTemp = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().Where(o =>
+                var activeBidMedicineTypeIds = BackendDataWorker.Get<HIS_BID_MEDICINE_TYPE>()
+												.Where(bid => bid.IS_ACTIVE == 0)
+												.Select(bid => bid.MEDICINE_TYPE_ID)
+												.Distinct()
+												.ToList();
+                listMedicineTypeTemp = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().Where(o =>
 					  o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
 					  && o.IS_LEAF == 1
-					  && o.IS_STOP_IMP == null).ToList();
+					  && o.IS_STOP_IMP == null
+					  && !activeBidMedicineTypeIds.Contains(o.ID)).ToList();
 				
-			}
+
+            }
 			catch (Exception ex)
 			{
 				Inventec.Common.Logging.LogSystem.Error(ex);
@@ -252,12 +259,20 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 		{
 			try
 			{
-				listMaterialTypeTemp = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().Where(o =>
+                var activeBidMaterialTypeIds = BackendDataWorker.Get<HIS_BID_MATERIAL_TYPE>()
+                                                .Where(bid => bid.IS_ACTIVE == 0)
+                                                .Select(bid => bid.MATERIAL_TYPE_ID)
+												.Distinct()
+                                                .ToList();
+                listMaterialTypeTemp = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().Where(o =>
 						o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
 						&& o.IS_LEAF == 1
-						&& o.IS_STOP_IMP == null).ToList();
-			}
-			catch (Exception ex)
+						&& o.IS_STOP_IMP == null
+						&& !activeBidMaterialTypeIds.Contains(o.ID)).ToList();
+                
+
+            }
+            catch (Exception ex)
 			{
 				Inventec.Common.Logging.LogSystem.Error(ex);
 			}

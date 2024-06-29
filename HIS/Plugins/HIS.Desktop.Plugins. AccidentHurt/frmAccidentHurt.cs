@@ -242,8 +242,7 @@ namespace HIS.Desktop.Plugins.AccidentHurt
                         this.action = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit;
                         // lOAD DỮ LIỆU LÊN FROM
                         dtAccidentTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)AccidentHurtData.ACCIDENT_TIME) ?? DateTime.MinValue;
-                        LoadAllAccidentData();
-
+                        LoadAllAccidentData(treatment);
                         
                     }
                     else
@@ -257,9 +256,12 @@ namespace HIS.Desktop.Plugins.AccidentHurt
                             LoadIcdToControl(AccidentHurtData.ACCIDENT_HURT_ICD_CODE, AccidentHurtData.ACCIDENT_HURT_ICD_NAME);
                         }
                     }
-                   
                     else
                     {
+                        if (treatment != null)
+                        {
+                            memoGetInHospital.Text = treatment.HOSPITALIZATION_REASON;
+                        }
                         LoadIcdToControl(treatment.ICD_CODE, treatment.ICD_NAME);
                     }
                     if (AccidentHurtData != null)
@@ -281,14 +283,23 @@ namespace HIS.Desktop.Plugins.AccidentHurt
             }
         }
 
-        private void LoadAllAccidentData()
+        private void LoadAllAccidentData(HIS_TREATMENT treatment)
         {
             txtAccidentLocaltion.Text = AccidentHurtData.ACCIDENT_LOCATION_CODE;
             cboAccidentLocaltion.EditValue = AccidentHurtData.ACCIDENT_LOCATION_ID;
 
             txtContent.Text = AccidentHurtData.CONTENT;
-
-            memoGetInHospital.Text = AccidentHurtData.HOSPITALIZATION_REASON;
+            if (!string.IsNullOrEmpty(AccidentHurtData.HOSPITALIZATION_REASON))
+            {
+                memoGetInHospital.Text = AccidentHurtData.HOSPITALIZATION_REASON;
+            }
+            else
+            {
+                if (treatment != null)
+                {
+                    memoGetInHospital.Text = treatment.HOSPITALIZATION_REASON;
+                }
+            }
 
             txtAccidentBodyPart.Text = AccidentHurtData.ACCIDENT_BODY_PART_CODE;
             cboAccidentBodyPart.EditValue = AccidentHurtData.ACCIDENT_BODY_PART_ID;
@@ -310,10 +321,6 @@ namespace HIS.Desktop.Plugins.AccidentHurt
 
             txtAccidentCare.Text = AccidentHurtData.ACCIDENT_CARE_CODE;
             cboAccidentCare.EditValue = AccidentHurtData.ACCIDENT_CARE_ID;
-
-
-
-
 
             List<HIS_SERVICE_REQ> serviceReq = new List<HIS_SERVICE_REQ>();
             if (String.IsNullOrEmpty(AccidentHurtData.TREATMENT_INFO) || String.IsNullOrEmpty(AccidentHurtData.STATUS_IN))

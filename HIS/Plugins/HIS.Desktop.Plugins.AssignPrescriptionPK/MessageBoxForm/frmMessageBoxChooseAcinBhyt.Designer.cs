@@ -103,7 +103,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
             this.MinimizeBox = false;
             this.Name = "frmMessageBoxChooseAcinBhyt";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao);
+            this.Text = "Thông báo";
             this.Load += new System.EventHandler(this.frmMessageBoxChooseMedicineTypeAcin_Load);
             this.ResumeLayout(false);
 

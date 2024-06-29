@@ -86,6 +86,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.BACHMAI.Model
         public long TONGTIENVAT5 { get; set; }
         public long TONGTIENCHUAVAT10 { get; set; }
         public long TONGTIENVAT10 { get; set; }
+        public long TONGTIENCHUAVATKHAC { get; set; }
+        public long TONGTIENVATKHAC { get; set; }
         public long TONGTIENHANG { get; set; }
         public long TONGTIENCKGG { get; set; }
         public long TONGTIENTT { get; set; }

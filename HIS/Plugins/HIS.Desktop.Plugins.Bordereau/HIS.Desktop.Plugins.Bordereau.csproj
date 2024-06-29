@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6AD7A0BB-712C-4837-A891-04275F446763}</ProjectGuid>
+    <ProjectGuid>{27D07E2F-1953-4B3C-B4B6-927848F9A9C0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HIS.Desktop.Plugins.Bordereau</RootNamespace>
@@ -432,7 +432,7 @@
       <Name>HIS.Desktop.LocalStorage.LocalData</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2AAD22DB-2166-4BE8-AE52-335B21DC03FC}</Project>
+      <Project>{2115dfe8-7545-4e23-aa30-276716394f87}</Project>
       <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Plugins.Library.PrintBordereau\HIS.Desktop.Plugins.Library.PrintBordereau.csproj">

@@ -55,7 +55,7 @@ using System.Linq;
 using System.Resources;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using static DevExpress.XtraPrinting.Native.ExportOptionsPropertiesNames;
+
 
 namespace HIS.Desktop.Plugins.MedicineSaleBill
 {
@@ -245,7 +245,6 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 {
                     List<long> treatmentIds = ExpMests.Select(s => s.TDL_TREATMENT_ID ?? 0).Distinct().ToList();
                     Inventec.Common.Logging.LogSystem.Info("treatmentIds: " + string.Join(",", treatmentIds));
-
                     HisTreatmentFeeViewFilter feeFilter = new HisTreatmentFeeViewFilter();
                     feeFilter.IDs = treatmentIds;
                     var treatmentFees = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT_FEE>>("api/HisTreatment/GetFeeView", ApiConsumers.MosConsumer, feeFilter, null);
@@ -2333,7 +2332,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         {
             try
             {
-                if (this.transactionBillResult == null || String.IsNullOrEmpty(this.transactionBillResult.INVOICE_CODE))
+                if (this.transactionBillResult == null && String.IsNullOrEmpty(this.transactionBillResult.INVOICE_CODE))
                 {
                     //MessageBox.Show("Hóa đơn chưa thanh toán hoặc chưa cấu hình hóa đơn điện tử.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => transactionBillResult), transactionBillResult));
@@ -2348,9 +2347,13 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 dataInput.TransactionTime = transactionBillResult.EINVOICE_TIME ??  transactionBillResult.TRANSACTION_TIME;
                 dataInput.EinvoiceTypeId = transactionBillResult.EINVOICE_TYPE_ID;
                 dataInput.ENumOrder = transactionBillResult.EINVOICE_NUM_ORDER;
+               
                 HIS_TRANSACTION tran = new HIS_TRANSACTION();
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
                 dataInput.Transaction = tran;
+                List<V_HIS_TRANSACTION> vtran = new List<V_HIS_TRANSACTION>();
+                vtran.Add(transactionBillResult);
+                dataInput.ListTransaction = vtran;
                 //V_HIS_TREATMENT_2 treatment2 = new V_HIS_TREATMENT_2();
                 //AutoMapper.Mapper.CreateMap<V_HIS_TREATMENT_FEE, V_HIS_TREATMENT_2>();
                 //treatment2 = AutoMapper.Mapper.Map<V_HIS_TREATMENT_2>(this.currentTreatment);

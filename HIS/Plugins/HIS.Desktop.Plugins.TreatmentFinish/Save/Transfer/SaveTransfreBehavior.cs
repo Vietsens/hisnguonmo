@@ -106,6 +106,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Transfer
                     result.GestationalAge = hisTreatmentFinishSDO_process.GestationalAge;
                     result.PregnancyTerminationReason = hisTreatmentFinishSDO_process.PregnancyTerminationReason;
                     result.PregnancyTerminationTime = hisTreatmentFinishSDO_process.PregnancyTerminationTime;
+                    //result.TreatmentMethod = (hisTreatmentFinishSDO_process != null && hisTreatmentFinishSDO_process.TreatmentMethod != null) ? hisTreatmentFinishSDO_process.TreatmentMethod : null;
                 }
                 else
                 {

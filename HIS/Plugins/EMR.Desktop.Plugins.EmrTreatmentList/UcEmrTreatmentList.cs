@@ -605,7 +605,7 @@ namespace EMR.Desktop.Plugins.EmrTreatmentList
                             e.RepositoryItem = repositoryItemBtnReqView;
                         }
                     }
-                    EMR.SDO.TreatmentCheckViewerSDO
+
                     if (e.Column.FieldName == "Approval")
                     {
                         if (data.APPROVAL_SIGN_STATUS == null || data.APPROVAL_SIGN_STATUS == 1)

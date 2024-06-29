@@ -332,6 +332,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save.Create
                     prescriptionSDO.TreatmentFinishSDO.TransportVehicle = this.TransportVehicle;
                     prescriptionSDO.TreatmentFinishSDO.TransporterLoginnames = this.TransporterLoginnames;
                     prescriptionSDO.TreatmentFinishSDO.Transporter = this.Transporter;
+                    prescriptionSDO.TreatmentFinishSDO.TreatmentMethod = this.TreatmentMethod;
                     prescriptionSDO.TreatmentFinishSDO.TreatmentDirection = this.TreatmentDirection;
                     prescriptionSDO.TreatmentFinishSDO.MainCause = this.MainCause;
                     prescriptionSDO.TreatmentFinishSDO.Surgery = this.Surgery;

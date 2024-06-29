@@ -476,6 +476,9 @@ namespace HIS.Desktop.Plugins.RationSumPrint
                     case PrintTypeCode.PRINT_TYPE_CODE__MPS000371:
                         InTem(printTypeCode, fileName, ref result);
                         break;
+                    case PrintTypeCode.PRINT_TYPE_CODE__MPS000497:
+                        InGroup(printTypeCode, fileName, ref result);
+                        break;
                     default:
                         break;
 
@@ -487,6 +490,85 @@ namespace HIS.Desktop.Plugins.RationSumPrint
                 result = false;
             }
             return result;
+        }
+
+        private void InGroup(string printTypeCode, string fileName, ref bool result)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                var listRatioSumID = rationSumList.Select(s => s.ID).ToList();
+                HisSereServRationViewFilter filter = new HisSereServRationViewFilter();
+                filter.RATION_SUM_IDs = listRatioSumID;
+                var res = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_RATION>>("/api/HisSereServRation/GetView", ApiConsumers.MosConsumer, filter, param);
+                List<HIS_DEPARTMENT> departmentSelectList = new List<HIS_DEPARTMENT>();
+                List<HIS_RATION_GROUP> rationGroupSelectList = new List<HIS_RATION_GROUP>();
+                var selectdepartment = gridViewDepartment.GetSelectedRows();
+                if (selectdepartment != null && selectdepartment.Count() > 0)
+                {
+                    foreach (var item in selectdepartment)
+                    {
+                        var department = (HIS_DEPARTMENT)gridViewDepartment.GetRow(item);
+                        departmentSelectList.Add(department);
+                    }
+                }
+
+                var selectRationGroup = gridViewRationGroup.GetSelectedRows();
+                if (selectRationGroup != null && selectRationGroup.Count() > 0)
+                {
+                    foreach (var item in selectRationGroup)
+                    {
+                        var rationGroup = (HIS_RATION_GROUP)gridViewRationGroup.GetRow(item);
+                        rationGroupSelectList.Add(rationGroup);
+                    }
+                }
+                if (res != null)
+                {
+                    var groupRatio = res.GroupBy(s => s.RATION_TIME_ID);
+                    foreach (var group in groupRatio)
+                    {
+                        List<V_HIS_SERE_SERV_RATION> rationlist = new List<V_HIS_SERE_SERV_RATION>();
+                        foreach (var ration in group)
+                        {
+                            rationlist.Add(ration);
+                        }
+                        List<HIS_RATION_SUM> rationSum = new List<HIS_RATION_SUM>();
+                        foreach (var item in rationSumList)
+                        {
+                            HIS_RATION_SUM temp = new HIS_RATION_SUM();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_RATION_SUM>(temp, item);
+                            rationSum.Add(temp);
+
+                        }
+                        MPS.Processor.Mps000497.PDO.Mps000497PDO pdo = new MPS.Processor.Mps000497.PDO.Mps000497PDO(rationSum, rationlist, rationGroupSelectList, departmentSelectList);
+                        //Inventec.Common.Logging.LogSystem.Debug("_____printDataPDO:"+Inventec.Common.Logging.LogUtil.TraceData("pdo:",pdo));
+
+                        MPS.ProcessorBase.Core.PrintData printData = null;
+
+                        string printerName = "";
+                        if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                        {
+                            printerName = GlobalVariables.dicPrinter[printTypeCode];
+                        }
+
+                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((""), printTypeCode, this.moduleData != null ? this.moduleData.RoomId : 0);
+                        WaitingManager.Hide();
+                        if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                        {
+
+                            result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                        }
+                        else
+                        {
+                            result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Debug(ex);
+            }
         }
 
         private void InPhieuChiTiet(string printTypeCode, string fileName, ref bool result)
@@ -916,6 +998,19 @@ namespace HIS.Desktop.Plugins.RationSumPrint
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnPrintGroup_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                store.RunPrintTemplate(PrintTypeCode.PRINT_TYPE_CODE__MPS000497, DelegateRunPrinter);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Debug(ex);
             }
         }
 

@@ -127,6 +127,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         bool isPrintHospitalizeExam = false;
         bool isSign = false;
         bool isPrintSign = false;
+        bool IsPrintMps178 = false;
         bool isPrintSurgAppoint = false;
         bool isPrintExamServiceAdd = false;
         bool isSignExamServiceAdd = false;
@@ -211,6 +212,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        long currentTime = 0;
+        bool isTimeServer = false;
         #endregion
 
         #region Construct - Load
@@ -272,8 +275,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.LoadSdaConfig();
                 this.autoCheckIcd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>("HIS.Desktop.Plugins.AutoCheckIcd");
                 this.isAutoCheckIcd = (this.autoCheckIcd == 1);
-                this.currentIcds = BackendDataWorker.Get<HIS_ICD>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).OrderBy(o => o.ICD_CODE).ToList();
+                this.currentIcds = BackendDataWorker.Get<HIS_ICD>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && p.IS_TRADITIONAL != 1).OrderBy(o => o.ICD_CODE).ToList();
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .2");
+
+                long istime = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>("HIS.Desktop.ShowServerTimeByDefault");
+                if (istime == 1) isTimeServer = true;
+                if (isTimeServer) this.currentTime = param.Now;
+
                 LoadTreatmentByPatient();
                 LoadCurrentPatient();
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .3");
@@ -1808,7 +1816,24 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        private CommonParam loadParam()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisPatientTypeAlterViewAppliedFilter filter = new HisPatientTypeAlterViewAppliedFilter();
+                filter.TreatmentId = treatmentId;
+                
+                filter.InstructionTime = Inventec.Common.DateTime.Get.Now() ?? 0;
+                var currentHisPatientTypeAlter = new BackendAdapter(param).Get<MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER>(HisRequestUriStore.HIS_PATIENT_TYPE_ALTER_GET_APPLIED, ApiConsumers.MosConsumer, filter, param);
+                return param;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+                return null;
+            }
+        }
         private void chkExamServiceAdd_CheckedChanged(object sender, EventArgs e)
         {
             try
@@ -1836,6 +1861,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     CommonParam param = new CommonParam();
                     HisPatientTypeAlterViewAppliedFilter filter = new HisPatientTypeAlterViewAppliedFilter();
                     filter.TreatmentId = treatmentId;
+                    
                     filter.InstructionTime = Inventec.Common.DateTime.Get.Now() ?? 0;
                     var currentHisPatientTypeAlter = new BackendAdapter(param).Get<MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER>(HisRequestUriStore.HIS_PATIENT_TYPE_ALTER_GET_APPLIED, ApiConsumers.MosConsumer, filter, param);
                     if (HisConfigCFG.IsNotRequiredFee && currentHisPatientTypeAlter.PATIENT_TYPE_ID != HisPatientTypeCFG.PATIENT_TYPE_ID__BHYT)
@@ -1843,6 +1869,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         examServiceAddADO.IsNotRequiredFee = true;
                     }
                     Inventec.Common.Logging.LogSystem.Debug("examServiceAddADO.IsNotRequiredFee: " + examServiceAddADO.IsNotRequiredFee);
+                    
                     this.ucExamAddition = (UserControl)examServiceAddProcessor.Run(examServiceAddADO);
                     LoadUCToPanelExecuteExt(this.ucExamAddition, chkExamServiceAdd);
                 }
@@ -1869,7 +1896,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 if (chkHospitalize.Checked)
                 {
-
                     SetCheckExecute(true, chkHospitalize, chkExamServiceAdd, chkTreatmentFinish, chkExamFinish);
                     ResetPrintExecuteExt();
                     long departmentId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == moduleData.RoomId).DepartmentId;
@@ -1881,7 +1907,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     hospitalizeADO.TreatmentId = this.HisServiceReqView.TREATMENT_ID;
                     hospitalizeADO.FinishTime = this.HisServiceReqView.FINISH_TIME;
                     hospitalizeADO.OutTime = this.treatment.OUT_TIME;
-                    hospitalizeADO.InTime = this.treatment.IN_TIME;
+                    if(isTimeServer)
+                        hospitalizeADO.InTime = loadParam().Now;
+                    else
+                        hospitalizeADO.InTime = this.treatment.IN_TIME;
                     hospitalizeADO.StartTime = this.HisServiceReqView.START_TIME;
                     hospitalizeADO.ModuleLink = this.moduleData.ModuleLink;
                     hospitalizeADO.IcdCode = this.icdDefaultFinish.ICD_CODE;
@@ -1972,7 +2001,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     ResetPrintExecuteExt();
                     HIS.UC.ExamFinish.ADO.ExamFinishInitADO examFinishInitADO = new HIS.UC.ExamFinish.ADO.ExamFinishInitADO();
                     examFinishInitADO.TreatmentId = this.HisServiceReqView.TREATMENT_ID;
-                    examFinishInitADO.FinishTime = this.HisServiceReqView.FINISH_TIME;
+                    if (this.isTimeServer)
+                        examFinishInitADO.FinishTime = loadParam().Now;
+                    else 
+                        examFinishInitADO.FinishTime = this.HisServiceReqView.FINISH_TIME;
                     examFinishInitADO.InTime = this.treatment.IN_TIME;
                     examFinishInitADO.OutTime = this.treatment.OUT_TIME;
                     examFinishInitADO.StartTime = this.HisServiceReqView.START_TIME;
@@ -2136,6 +2168,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         treatmentFinishInitADO.Treatment.SICK_LOGINNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                         treatmentFinishInitADO.Treatment.SICK_USERNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
                     }
+                    if (string.IsNullOrEmpty(treatmentFinishInitADO.Treatment.TREATMENT_METHOD))
+                    {
+                        treatmentFinishInitADO.Treatment.TREATMENT_METHOD = txtTreatmentInstruction.Text.Trim();
+                    }
+                    
                     treatmentFinishInitADO.PatientPrograms = PatientProgramList;
                     treatmentFinishInitADO.DataStores = DataStoreList;
                     treatmentFinishInitADO.MediRecord = MediRecode;
@@ -2170,6 +2207,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         var dtEventsCausesDeath = new BackendAdapter(param).Get<List<HIS_EVENTS_CAUSES_DEATH>>("api/HisEventsCausesDeath/Get", ApiConsumers.MosConsumer, filterChild, param);
                         treatmentFinishInitADO.ListEventsCausesDeath = dtEventsCausesDeath;
                     }
+                    if (this.isTimeServer) treatmentFinishInitADO.Treatment.OUT_TIME = loadParam().Now;
                     this.ucTreatmentFinish = (UserControl)treatmentFinishProcessor.Run(treatmentFinishInitADO);
                     LoadUCToPanelExecuteExt(this.ucTreatmentFinish, chkTreatmentFinish);
 
@@ -2602,6 +2640,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 isKyPhieuPhuLuc = false;
                 isPrintPrescription = false;
                 isPrintHosTransfer = false;
+                IsPrintMps178 = false;
                 IsReturn = false;
                 SevereIllnessInfo = null;
                 EventsCausesDeaths = new List<HIS_EVENTS_CAUSES_DEATH>();
@@ -5828,7 +5867,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 bool showCbo = true;
                 if (!String.IsNullOrEmpty(searchCode))
                 {
-                    var listData = currentIcds.Where(o => o.ICD_CODE.Contains(searchCode)).ToList();
+                    var listData = currentIcds.Where(o => o.ICD_CODE.Equals(searchCode)).ToList();
                     var result = listData != null ? (listData.Count > 1 ? listData.Where(o => o.ICD_CODE == searchCode).ToList() : listData) : null;
                     if (result != null && result.Count > 0)
                     {
@@ -6180,7 +6219,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 var search = ((DevExpress.XtraEditors.TextEdit)sender).Text.Trim();
                 if (!String.IsNullOrEmpty(search))
                 {
-                    var listData = this.currentIcds.Where(o => o.ICD_CODE.Contains(search)).ToList();
+                    var listData = this.currentIcds.Where(o => o.ICD_CODE.Equals(search)).ToList();
                     var result = listData != null ? (listData.Count > 1 ? listData.Where(o => o.ICD_CODE == search).ToList() : listData) : null;
                     if (result == null || result.Count <= 0)
                     {
@@ -6405,7 +6444,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 bool showCbo = true;
                 if (!String.IsNullOrEmpty(searchCode))
                 {
-                    var listData = currentIcds.Where(o => o.ICD_CODE.Contains(searchCode)).ToList();
+                    var listData = currentIcds.Where(o => o.ICD_CODE.Equals(searchCode)).ToList();
                     var result = listData != null ? (listData.Count > 1 ? listData.Where(o => o.ICD_CODE == searchCode).ToList() : listData) : null;
                     if (result != null && result.Count > 0)
                     {
@@ -6631,7 +6670,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     var search = ((DevExpress.XtraEditors.TextEdit)sender).Text.Trim();
                     if (!String.IsNullOrEmpty(search))
                     {
-                        var listData = this.currentIcds.Where(o => o.ICD_CODE.Contains(search)).ToList();
+                        var listData = this.currentIcds.Where(o => o.ICD_CODE.Equals(search)).ToList();
                         var result = listData != null ? (listData.Count > 1 ? listData.Where(o => o.ICD_CODE == search).ToList() : listData) : null;
                         if (result == null || result.Count <= 0)
                         {
@@ -7114,7 +7153,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (!String.IsNullOrEmpty(icdSubCode))
                 {
-                    var listData = currentIcds.Where(o => o.ICD_CODE.Contains(icdSubCode)).ToList();
+                    var listData = currentIcds.Where(o => o.ICD_CODE.Equals(icdSubCode)).ToList();
                     var result = listData != null ? (listData.Count > 1 ? listData.Where(o => o.ICD_CODE == icdSubCode).ToList() : listData) : null;
                     if (result != null && result.Count > 0)
                     {

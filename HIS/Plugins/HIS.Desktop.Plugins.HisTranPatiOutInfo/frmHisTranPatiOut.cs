@@ -28,6 +28,7 @@ using HIS.UC.Icd;
 using HIS.UC.Icd.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using Inventec.Desktop.CustomControl.CustomGrid;
@@ -148,13 +149,30 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 VHisTranPatiForm = BackendDataWorker.Get<HIS_TRAN_PATI_FORM>();
                 InitComboTransporterLoginNameCheck();
                 SetCaptionByLanguageKey();
-                
+                ValidateControl();
                 //ToTranfer
                 ProcessLoad.LoadDataToComboMediOrg(cboMediOrgNameTo, VHisHeinMediOrg);
                 ProcessLoad.LoadDataToComboTranPatiReason(cboTranPatiReasonTo, VHisTranPatiReason);
                 ProcessLoad.LoadDataToComboTranPatiForm(cboTranPatiFormTo, VHisTranPatiForm);
 
                 LoadDataTreatment();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ValidateControl()
+        {
+            try
+            {
+                //ValidationRequired(cboTransporterLoginName);
+                ValidationRequired(buttonEdit1);
+                ValidationRequired(txtDauHieuLamSang);
+                ValidationRequired(txtHuongDieuTri);
+                ValidationRequired(txtPPKTThuoc);
+                ValidationRequired(txtPhuongTienVanChuyen);
             }
             catch (Exception ex)
             {
@@ -242,7 +260,8 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        List<V_HIS_EMPLOYEE> Employees = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>().Where(o => o.IS_ACTIVE == 1).ToList();
+                    
         private void FillDataToControlTranPatiToTranfer(HIS_TREATMENT data)
         {
             try
@@ -287,25 +306,61 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                     txtHuongDieuTri.Text = data.TREATMENT_DIRECTION;
                     txtPhuongTienVanChuyen.Text = data.TRANSPORT_VEHICLE;
                     //txtNguoiHoTong.Text = data.TRANSPORTER;
-                    var Employees = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>().Where(o => o.IS_ACTIVE == 1);
                     InitComboTransporterLoginName(Employees.ToList());
-                    if (data != null && !string.IsNullOrEmpty(data.TRANSPORTER_LOGINNAMES))
+                    //if (data != null && !string.IsNullOrEmpty(data.TRANSPORTER_LOGINNAMES))
+                    //{
+                    //    var oldSelecteds = data.TRANSPORTER_LOGINNAMES.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                    //    GridCheckMarksSelection gridCheckMark = cboTransporterLoginName.Properties.Tag as GridCheckMarksSelection;
+                    //    if (gridCheckMark != null)
+                    //    {
+                    //        gridCheckMark.ClearSelection(cboTransporterLoginName.Properties.View);
+                    //        if (oldSelecteds != null && oldSelecteds.Count > 0)
+                    //        {
+                    //            List<V_HIS_EMPLOYEE> seleceds = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => oldSelecteds.Contains(o.LOGINNAME)).ToList();
+                    //            gridCheckMark.SelectAll(seleceds);
+
+                    //            string displayText = String.Join(", ", seleceds.Select(s => s.TDL_USERNAME).ToList());
+                    //            cboTransporterLoginName.Text = displayText;
+                    //        }
+                    //    }
+                    //}
+
+                    if (data != null && !string.IsNullOrEmpty(data.TRANSPORTER))
                     {
-                        var oldSelecteds = data.TRANSPORTER_LOGINNAMES.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                        var oldSelecteds = data.TRANSPORTER.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList();
                         GridCheckMarksSelection gridCheckMark = cboTransporterLoginName.Properties.Tag as GridCheckMarksSelection;
+                        List<V_HIS_EMPLOYEE> newListEm = new List<V_HIS_EMPLOYEE>();
                         if (gridCheckMark != null)
                         {
                             gridCheckMark.ClearSelection(cboTransporterLoginName.Properties.View);
                             if (oldSelecteds != null && oldSelecteds.Count > 0)
                             {
-                                List<V_HIS_EMPLOYEE> seleceds = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => oldSelecteds.Contains(o.LOGINNAME)).ToList();
-                                gridCheckMark.SelectAll(seleceds);
-
-                                string displayText = String.Join(", ", seleceds.Select(s => s.TDL_USERNAME).ToList());
-                                cboTransporterLoginName.Text = displayText;
+                                foreach (var item in oldSelecteds)
+                                {
+                                    V_HIS_EMPLOYEE seleceds = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => item.Equals(o.TDL_USERNAME)).FirstOrDefault();
+                                    if (seleceds != null)
+                                    {
+                                        newListEm.Add(seleceds);
+                                        selected.Add(seleceds);
+                                    }
+                                    else
+                                    {
+                                        var newEmployee = new V_HIS_EMPLOYEE
+                                        {
+                                            LOGINNAME = "",
+                                            TDL_USERNAME = item,
+                                            IS_ACTIVE = 1
+                                        };
+                                        selected.Add(newEmployee);
+                                    }
+                                }
+                                gridCheckMark.SelectAll(selected);
+                                string displayText = string.Join(", ", selected.Select(s => s.TDL_USERNAME).Distinct());
+                                buttonEdit1.Text = displayText;
                             }
                         }
                     }
+
                     lblSoChuyenVien.Text = data.OUT_CODE;
 
                     SetReadOnlyControlToTranPati(true);
@@ -557,7 +612,17 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 txtTinhTrangNguoiBenh.ReadOnly = isReadOnly;
                 txtHuongDieuTri.ReadOnly = isReadOnly;
                 txtPhuongTienVanChuyen.ReadOnly = isReadOnly;
-                lblNguoiVanChuyen.Enabled = !isReadOnly;
+
+                if (isReadOnly == true)
+                {
+                    buttonEdit1.Enabled = false;
+                    buttonEdit1.ReadOnly = true;
+                }
+                else
+                {
+                    buttonEdit1.Enabled = true;
+                    buttonEdit1.ReadOnly = false;
+                }
                 //txtNguoiHoTong.ReadOnly = isReadOnly;
             }
             catch (Exception ex)
@@ -622,7 +687,9 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
             try
             {
                 //Review
+                buttonEdit1_Validated(buttonEdit1, null);
                 bool success = false;
+                if (!dxValidationProvider1.Validate()) return;
                 CommonParam param = new CommonParam();
                 HIS_TREATMENT _treatmentUpdate = new HIS_TREATMENT();
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(_treatmentUpdate, this.currentTreatment);
@@ -671,8 +738,8 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 _treatmentUpdate.TREATMENT_DIRECTION = txtHuongDieuTri.Text;
                 _treatmentUpdate.TRANSPORT_VEHICLE = txtPhuongTienVanChuyen.Text;
                 //_treatmentUpdate.TRANSPORTER = txtNguoiHoTong.Text;
-                _treatmentUpdate.TRANSPORTER_LOGINNAMES = selected != null && selected.Count > 0 ? string.Join(";", selected.Select(o => o.LOGINNAME)) : null;
-                _treatmentUpdate.TRANSPORTER = selected != null && selected.Count > 0 ? string.Join(";", selected.Select(o => o.TDL_USERNAME)) : null;
+                _treatmentUpdate.TRANSPORTER_LOGINNAMES = selected != null && selected.Count > 0 ? string.Join(";", selected.Select(o => o.LOGINNAME).Distinct()) : null;
+                _treatmentUpdate.TRANSPORTER = selected != null && selected.Count > 0 ? string.Join(";", selected.Select(o => o.TDL_USERNAME).Distinct()) : null;
                 sdoUpdate.HisTreatment = _treatmentUpdate;
 
                 var rs = new BackendAdapter(param).Post<HIS_TREATMENT>("api/HisTreatment/UpdateTranPatiInfo", ApiConsumers.MosConsumer, sdoUpdate, param);
@@ -771,6 +838,23 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
         //    SessionManager.ProcessTokenLost(param);
         //    #endregion
         //}
+
+
+        private void ValidationRequired(BaseEdit control)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule validate = new ControlEditValidationRule();
+                validate.editor = control;
+                validate.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                this.dxValidationProvider1.SetValidationRule(control, validate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
@@ -1203,7 +1287,7 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                     this.selected.AddRange(erSelectedNews);
                 }
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => selected.Count), selected.Count));
-                this.cboTransporterLoginName.Text = sb.ToString();
+                this.buttonEdit1.Text = sb.ToString();
 
             }
             catch (Exception ex)
@@ -1250,24 +1334,150 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+       
         private void cboTransporterLoginName_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
         {
+            //try
+            //{
+            //    e.DisplayText = "";
+            //    string roomName = "";
+            //    if (this.selected != null && this.selected.Count > 0)
+            //    {
+            //        foreach (var item in this.selected)
+            //        {
+            //            roomName += item.TDL_USERNAME + ", ";
+            //        }
+            //    }
+            //    e.DisplayText = roomName;
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Warn(ex);
+            //}
             try
             {
-                e.DisplayText = "";
-                string roomName = "";
+
+                string displayText = "";
+
                 if (this.selected != null && this.selected.Count > 0)
                 {
-                    foreach (var item in this.selected)
-                    {
-                        roomName += item.TDL_USERNAME + ", ";
-                    }
+                    displayText = String.Join(", ", this.selected.Select(s => s.TDL_USERNAME).Distinct().ToList());
                 }
-                e.DisplayText = roomName;
+
+                e.DisplayText = displayText;
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+
+            }
+        }
+
+        private void buttonEdit1_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)
+                {
+                    
+                    cboTransporterLoginName.ShowPopup();
+                }
+                else if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    
+                    cboTransporterLoginName.EditValue = null;
+                    GridCheckMarksSelection gridCheckMark = cboTransporterLoginName.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboTransporterLoginName.Properties.View);
+                    }
+                    this.cboTransporterLoginName.Focus();
+                    buttonEdit1.Text = "";
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+                
+               Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        bool isUpdatingValue = false;
+        private void buttonEdit1_Validated(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isUpdatingValue)
+                    return;
+
+                var edit = sender as DevExpress.XtraEditors.ButtonEdit;
+                if (edit != null && !string.IsNullOrEmpty(edit.Text))
+                {
+                    try
+                    {
+                        isUpdatingValue = true; // Đặt cờ để ngăn chặn vòng lặp sự kiện
+
+                        // Tách các giá trị được nhập vào
+                        var enteredValues = edit.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                                     .Select(v => v.Trim()) // Loại bỏ khoảng trắng thừa
+                                                     .Distinct() // Loại bỏ các giá trị trùng lặp
+                                                     .ToList();
+
+                        //int index = 1;
+                        foreach (var value in enteredValues)
+                        {
+                            if (!string.IsNullOrEmpty(value))
+                            {
+                                // Kiểm tra nếu giá trị nhập vào không có trong danh sách
+                                var employee = Employees.FirstOrDefault(s => !string.IsNullOrEmpty(s.TDL_USERNAME) && s.TDL_USERNAME.Equals(value));
+                                if (employee != null && !selected.Contains(employee))
+                                {
+                                    // Thêm vào danh sách selected nếu chưa có
+                                    selected.Add(employee);
+                                }
+                                else
+                                {
+                                    var newEmployee = new V_HIS_EMPLOYEE
+                                    {
+                                        LOGINNAME = "",
+                                        TDL_USERNAME = value,
+                                        IS_ACTIVE = 1
+                                    };
+                                    selected.Add(newEmployee);
+                                }
+
+                            }
+                        }
+
+                        edit.Text = string.Join(", ", selected.Select(s => s.TDL_USERNAME).Distinct());
+                    }
+                    finally
+                    {
+                        isUpdatingValue = false; // Reset cờ sau khi hoàn thành
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+
+        private void buttonEdit1_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    txtHuongDieuTri.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }

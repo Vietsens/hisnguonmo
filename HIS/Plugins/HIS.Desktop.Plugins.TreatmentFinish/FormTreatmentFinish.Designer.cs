@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTreatmentFinish));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -62,10 +61,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.layoutControlMain = new DevExpress.XtraLayout.LayoutControl();
             this.btnDeleteEndInfo = new DevExpress.XtraEditors.SimpleButton();
             this.txtEndDeptSubsHead = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItemSave = new DevExpress.XtraBars.BarButtonItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -90,7 +89,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.txtMaBHXH = new DevExpress.XtraEditors.TextEdit();
             this.chkIsEmergency = new DevExpress.XtraEditors.CheckEdit();
-            this.popupControlContainerPrintConfig = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainerPrintConfig = new DevExpress.XtraBars.PopupControlContainer();
             this.gridControlContainerPrintConfig = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.gridViewContainerPrintConfig = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.btnPrintConfig = new DevExpress.XtraEditors.SimpleButton();
@@ -246,9 +245,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.layoutControlItem45 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem46 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciDeleteEndInfo = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.dxValidationProvider_ForOutPatientDateFromTo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.dxValidationProvider_ForOutPatientDateFromTo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlMain)).BeginInit();
             this.layoutControlMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtEndDeptSubsHead.Properties)).BeginInit();
@@ -531,6 +530,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.txtEndDeptSubsHead.StyleController = this.layoutControlMain;
             this.txtEndDeptSubsHead.TabIndex = 78;
             this.txtEndDeptSubsHead.ToolTip = "Chọn người ký thay trưởng khoa";
+            this.txtEndDeptSubsHead.EditValueChanged += new System.EventHandler(this.txtEndDeptSubsHead_EditValueChanged);
             this.txtEndDeptSubsHead.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtEndDeptSubsHead_PreviewKeyDown);
             // 
             // barManager1
@@ -631,6 +631,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.txtHospSubsDirector.StyleController = this.layoutControlMain;
             this.txtHospSubsDirector.TabIndex = 75;
             this.txtHospSubsDirector.ToolTip = "Chọn người ký thay giám đốc bệnh viện";
+            this.txtHospSubsDirector.EditValueChanged += new System.EventHandler(this.txtHospSubsDirector_EditValueChanged);
             this.txtHospSubsDirector.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtHospSubsDirector_PreviewKeyDown);
             // 
             // txtDirectorUser
@@ -2514,8 +2515,6 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             // 
             // lciPatientProgram
             // 
-            this.lciPatientProgram.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
-            this.lciPatientProgram.AppearanceItemCaption.Options.UseForeColor = true;
             this.lciPatientProgram.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciPatientProgram.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciPatientProgram.Control = this.cboProgram;

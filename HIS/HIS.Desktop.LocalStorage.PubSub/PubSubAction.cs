@@ -150,7 +150,7 @@ namespace HIS.Desktop.LocalStorage.PubSub
         {
             try
             {
-                Task.Run(() => { ConnectPubSub(); });
+                ConnectPubSub();
             }
             catch (Exception ex)
             {
@@ -162,6 +162,8 @@ namespace HIS.Desktop.LocalStorage.PubSub
             try
             {
                 Inventec.Common.Logging.LogSystem.Info("New pubsubProcessor");
+
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => pubsubProcessor), pubsubProcessor));
                 if (pubsubProcessor != null && pubsubProcessor.IsConnected) return;
                 pubsubProcessor = new PubSubProcessor(ReceivedMessage);
                 if (await pubsubProcessor.Init())
@@ -246,7 +248,7 @@ namespace HIS.Desktop.LocalStorage.PubSub
                     return;
                 if (loginName.Equals(HisAlert.CREATOR))
                     return;
-                if (!("," + HisAlert.RECEIVE_DEPARTMENT_IDS + ",").Contains("," + departmentId + ",") && !WorkPlace.GetDepartmentIds().Exists(o => ("," + HisAlert.RECEIVE_DEPARTMENT_IDS + ",").Contains("," + o + ",")))
+                if (!("," + HisAlert.RECEIVE_DEPARTMENT_IDS + ",").Contains("," + departmentId + ",") && !WorkPlace.GetDepartmentIds().Exists(o=> ("," + HisAlert.RECEIVE_DEPARTMENT_IDS + ",").Contains("," + o + ",")))
                     return;
                 if (!string.IsNullOrEmpty(HisAlert.RECEIVER_LOGINNAME))
                 {
@@ -325,7 +327,7 @@ namespace HIS.Desktop.LocalStorage.PubSub
                         Inventec.Common.Logging.LogSystem.Debug("api/HisAlert/Reject thất bại " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => alertId), alertId));
                     }
                 }
-                if (resultData)
+                if(resultData)
                     DisposeNotifi(alertId);
             }
             catch (Exception ex)
@@ -351,8 +353,7 @@ namespace HIS.Desktop.LocalStorage.PubSub
             {
                 if (frmShowNotifi.InvokeRequired)
                 {
-                    frmShowNotifi.Invoke(new MethodInvoker(delegate
-                    {
+                    frmShowNotifi.Invoke(new MethodInvoker(delegate {
                         AlertInfo info = new AlertInfo(HisAlert.TITLE, HisAlert.CONTENT);
                         info.Tag = HisAlert.ID;
                         alertControl.Show(frmShowNotifi, info);
@@ -376,8 +377,7 @@ namespace HIS.Desktop.LocalStorage.PubSub
             {
                 if (frmShowNotifi.InvokeRequired)
                 {
-                    frmShowNotifi.Invoke(new MethodInvoker(delegate
-                    {
+                    frmShowNotifi.Invoke(new MethodInvoker(delegate {
                         var alertForm = alertControl.AlertFormList.FirstOrDefault(o => Int64.Parse(o.Tag.ToString()) == alertId);
                         if (alertForm == null)
                             return;

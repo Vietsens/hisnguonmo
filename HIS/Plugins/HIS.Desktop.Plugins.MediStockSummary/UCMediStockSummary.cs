@@ -711,40 +711,47 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 HisBloodTypeInStockColumn bloodTypeNameCol = new HisBloodTypeInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_MEDICINE_TYPE_NAME", ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "BloodTypeName", 200, false);
                 bloodTypeNameCol.VisibleIndex = 2;
                 ado.HisBloodTypeInStockColumns.Add(bloodTypeNameCol);
-                // Mã túi máu
-                HisBloodTypeInStockColumn BloodCode = new HisBloodTypeInStockColumn("Mã túi máu", "BloodCode", 100, false);
-                BloodCode.VisibleIndex = 3;
-                ado.HisBloodTypeInStockColumns.Add(BloodCode);
-                // Số lô
-                HisBloodTypeInStockColumn bloodPackageNumber = new HisBloodTypeInStockColumn("Số lô", "PackageNumber", 100, false);
-                bloodPackageNumber.VisibleIndex = 4;
-                ado.HisBloodTypeInStockColumns.Add(bloodPackageNumber);
-                // Hạn sử dụng
-                HisBloodTypeInStockColumn bloodExpiredDate = new HisBloodTypeInStockColumn("Hạn sử dụng", "ExpiredDateStr", 100, false);
-                bloodExpiredDate.VisibleIndex = 5;
-                ado.HisBloodTypeInStockColumns.Add(bloodExpiredDate);
-                // Nhà cung cấp
-                HisBloodTypeInStockColumn bloodSupplierName = new HisBloodTypeInStockColumn("Nhà cung cấp", "SupplierName", 200, false);
-                bloodSupplierName.VisibleIndex = 6;
-                ado.HisBloodTypeInStockColumns.Add(bloodSupplierName);
-                //Column dung tích
-                HisBloodTypeInStockColumn serviceUnitNameCol = new HisBloodTypeInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__BLOOD_IN_STOCK__COLUMN_VOLUME", ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "Volume", 80, false);
-                serviceUnitNameCol.VisibleIndex = 7;
-                ado.HisBloodTypeInStockColumns.Add(serviceUnitNameCol);
 
                 //Column Nhóm máu
-                HisBloodTypeInStockColumn bloodAboCodeCol = new HisBloodTypeInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_BLOOD_ABO_CODE", ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "BloodAboCode", 80, false);
-                bloodAboCodeCol.VisibleIndex = 8;
+                HisBloodTypeInStockColumn bloodAboCodeCol = new HisBloodTypeInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_BLOOD_ABO_CODE", ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "BloodAboCode", 70, false);
+                bloodAboCodeCol.VisibleIndex = 3;
                 ado.HisBloodTypeInStockColumns.Add(bloodAboCodeCol);
 
                 //Column Rh
-                HisBloodTypeInStockColumn bloodRhCol = new HisBloodTypeInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_BLOOD_RH_CODE", ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "BloodRhCode", 50, false);
-                bloodRhCol.VisibleIndex = 9;
+                HisBloodTypeInStockColumn bloodRhCol = new HisBloodTypeInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_BLOOD_RH_CODE", ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "BloodRhCode", 30, false);
+                bloodRhCol.VisibleIndex = 4;
                 ado.HisBloodTypeInStockColumns.Add(bloodRhCol);
+
+                // Mã túi máu
+                HisBloodTypeInStockColumn BloodCode = new HisBloodTypeInStockColumn("Mã túi máu", "BloodCode", 170, false);
+                BloodCode.VisibleIndex = 5;
+                ado.HisBloodTypeInStockColumns.Add(BloodCode);
+                // Số lô
+                HisBloodTypeInStockColumn bloodPackageNumber = new HisBloodTypeInStockColumn("Số lô", "PackageNumber", 100, false);
+                bloodPackageNumber.VisibleIndex = 6;
+                ado.HisBloodTypeInStockColumns.Add(bloodPackageNumber);
+                // Hạn sử dụng
+                HisBloodTypeInStockColumn bloodExpiredDate = new HisBloodTypeInStockColumn("Hạn sử dụng", "ExpiredDateStr", 120, false);
+                bloodExpiredDate.VisibleIndex = 7;
+                ado.HisBloodTypeInStockColumns.Add(bloodExpiredDate);
+
+                // Ngày còn lại
+                HisBloodTypeInStockColumn bloodExpiredDaysLeft = new HisBloodTypeInStockColumn("Ngày còn lại", "ExpiredDaysLeft", 120, false);
+                bloodExpiredDaysLeft.VisibleIndex = 8;
+                ado.HisBloodTypeInStockColumns.Add(bloodExpiredDaysLeft);
+
+                // Nhà cung cấp
+                HisBloodTypeInStockColumn bloodSupplierName = new HisBloodTypeInStockColumn("Nhà cung cấp", "SupplierName", 200, false);
+                bloodSupplierName.VisibleIndex = 9;
+                ado.HisBloodTypeInStockColumns.Add(bloodSupplierName);
+                //Column dung tích
+                HisBloodTypeInStockColumn serviceUnitNameCol = new HisBloodTypeInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__BLOOD_IN_STOCK__COLUMN_VOLUME", ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "Volume", 100, false);
+                serviceUnitNameCol.VisibleIndex = 10;
+                ado.HisBloodTypeInStockColumns.Add(serviceUnitNameCol);
 
                 //Column số lượng tồn
                 HisBloodTypeInStockColumn totalAmountCol = new HisBloodTypeInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_TOTAL_AMOUNT", ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "Amount", 80, false);
-                totalAmountCol.VisibleIndex = 10;
+                totalAmountCol.VisibleIndex = 11;
                 ado.HisBloodTypeInStockColumns.Add(totalAmountCol);
 
                 this.ucBloodInfo = (UserControl)hisBloodProcessor.Run(ado);

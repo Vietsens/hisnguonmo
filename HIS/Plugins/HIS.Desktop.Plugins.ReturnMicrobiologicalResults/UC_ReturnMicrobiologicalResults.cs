@@ -625,6 +625,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
         {
             try
             {
+
                 GridView View = sender as GridView;
                 if (e.RowHandle >= 0)
                 {
@@ -676,6 +677,8 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                     }
                     else if (e.Column.FieldName == "DUYET")
                     {
+                        //CheckDuyet(e, sampleStt);
+                        e.RepositoryItem = HuyDuyetD;
                         if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM
                             || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI)
                         {
@@ -684,7 +687,8 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                         else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM
                             || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN)
                         {
-                            e.RepositoryItem = HuyDuyetE;
+                            if (controlAcs.Any(s => s.CONTROL_CODE == "HIS000028"))
+                                e.RepositoryItem = HuyDuyetE;
                         }
                         else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ)
                         {
@@ -692,26 +696,21 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                         }
                         else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ)
                         {
-                            if (LisConfigCFG.MUST_APPROVE_RESULT == "1" || !CheckEmployIsAdmin())
+                            if (LisConfigCFG.MUST_APPROVE_RESULT == "1")
                             {
-                                e.RepositoryItem = HuyDuyetD;
-                            }
-                            else
-                            {
-                                e.RepositoryItem = HuyDuyetE;
+                                if (controlAcs.Any(s => s.CONTROL_CODE == "HIS000028"))
+                                    e.RepositoryItem = HuyDuyetE;
                             }
                         }
-                        else
+                        else if (CheckEmployIsAdmin())
                         {
-                            if (CheckEmployIsAdmin())
-                            {
-                                e.RepositoryItem = HuyDuyetE;
-                            }
-                            else
-                            {
-                                e.RepositoryItem = HuyDuyetD;
-                            }
+                            e.RepositoryItem = HuyDuyetE;
                         }
+                        else if (controlAcs.Any(s => s.CONTROL_CODE == "HIS000028"))
+                        {
+                            e.RepositoryItem = HuyDuyetE;
+                        }
+                        else e.RepositoryItem = HuyDuyetD;
                     }
                     else if (e.Column.FieldName == "UPDATE_BARCODE_TIME")
                     {
@@ -807,6 +806,8 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        
 
         private void gridViewSample_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
         {

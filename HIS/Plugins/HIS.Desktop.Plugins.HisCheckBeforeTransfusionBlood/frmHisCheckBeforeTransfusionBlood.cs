@@ -56,6 +56,7 @@ using DevExpress.XtraTreeList.Nodes;
 using MOS.SDO;
 using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.Plugins.Library.EmrGenerate;
+using DevExpress.XtraBars;
 
 namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
 {
@@ -187,8 +188,8 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 LoadComboAC(cboAC);
 
                 LoadComboAC(cboAC2);
-
-                btnPrint.Enabled = (this.expMest != null && this.expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE);
+                //loadExpMest();
+                btnPrint.Enabled = (this.expMest != null && this.expMest.EXP_MEST_STT_ID == 5);
 
                 LoadDataToCombo();
 
@@ -196,6 +197,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
 
                 BuidTreeList();
 
+                InitBtnPrint();
 
                 WaitingManager.Hide();
             }
@@ -205,7 +207,27 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        private void loadExpMest()
+        {
+            try
+            {
+                if (this.ExpMestId != null)
+                {
+                    HisExpMestViewFilter filter = new HisExpMestViewFilter();
+                    filter.ID = this.ExpMestId;
+                    var data = new BackendAdapter(new CommonParam()).Get<V_HIS_EXP_MEST>("/api/HisExpMest/GetView", ApiConsumers.MosConsumer, filter, null);
+                    if (data != null)
+                    {
+                        this.expMest = data;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+        }
         private void LoadComboAC(GridLookUpEdit cbo)
         {
             try
@@ -410,6 +432,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                             adoParent.SERVICE_BLOOD_NAME = first.BLOOD_TYPE_NAME;
                             adoParent.VOLUME = first.VOLUME;
                             adoParent.is_Sevrvice_Blood = false;
+                            //adoParent.PREPARATIONS_BLOOD_NAME = first.PREPARATIONS_BLOOD_NAME;
                             datas.Add(adoParent);
 
                             //Xu ly blood (tui mau)
@@ -456,7 +479,8 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                                 adoBlood.TEST_TUBE_TWO = bl.TEST_TUBE_TWO;
                                 adoBlood.AC_SELF_ENVIDENCE = bl.AC_SELF_ENVIDENCE;
                                 adoBlood.AC_SELF_ENVIDENCE_SECOND = bl.AC_SELF_ENVIDENCE_SECOND;
-
+                                adoBlood.PREPARATIONS_BLOOD_NAME = bl.PREPARATIONS_BLOOD_NAME;
+                                adoBlood.NUM_ORDER = bl.NUM_ORDER??0;
                                 datas.Add(adoBlood);
                             }
 
@@ -491,6 +515,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                                     adoService.SERVICE_RESULT = serv.SERVICE_RESULT;
                                     adoService.EXP_MEST_ID = serv.EXP_MEST_ID;
                                     adoService.SERVICE_AMOUNT = serv.SERVICE_AMOUNT;
+                                    
                                     datas.Add(adoService);
                                 }
                             }
@@ -824,31 +849,11 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
-        private void ChangedDataRow(ExpBloodADO data)
-        {
-            try
-            {
-                if (data != null)
-                {
-                    FillDataToEditorControl(data);
-
-                    //Disable nút sửa nếu dữ liệu đã bị khóa
-
-                    positionHandle = -1;
-                    Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProvider1, dxErrorProvider1);
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
         private void FillDataToEditorControl(ExpBloodADO data)
         {
             try
             {
+                var dataPare = BackendDataWorker.Get<HIS_PREPARATIONS_BLOOD>();
                 if (data != null)
                 {
                     cboNewAbo.EditValue = data.PATIENT_BLOOD_ABO_CODE ?? (this.CurrentPatient != null ? this.CurrentPatient.BLOOD_ABO_CODE : null);
@@ -884,9 +889,44 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                         cboSaltEnviTwo.EditValue = (long)5;
                         cboAntiGlobulinTwo.EditValue = (long)5;
                     }
+
+
+                    cboAC.EditValue = (decimal?)data.AC_SELF_ENVIDENCE;
+                    cboAC2.EditValue = (decimal?)data.AC_SELF_ENVIDENCE_SECOND;
                     if (data.BloodTypeId > 0)
                     {
                         var bloodType = BackendDataWorker.Get<HIS_BLOOD_TYPE>().Where(o => o.ID == data.BloodTypeId).FirstOrDefault();
+                        if (bloodType != null)
+                        {
+                            var pre = dataPare.FirstOrDefault(o => o.ID == bloodType.PREPARATIONS_BLOOD_ID);
+                            if (pre != null)
+                            {
+                                if (pre.PREPARATIONS_BLOOD_CODE == "3" || pre.PREPARATIONS_BLOOD_CODE == "4" || pre.PREPARATIONS_BLOOD_CODE == "5" || pre.PREPARATIONS_BLOOD_CODE == "1" || pre.PREPARATIONS_BLOOD_CODE == "6")
+                                {
+                                    cboSaltEnvi.EditValue = null;
+                                    cboAntiGlobulin.EditValue = null;
+                                    cboSaltEnviTwo.EditValue = null;
+                                    cboAntiGlobulinTwo.EditValue = null;
+                                    cboAC.EditValue = null;
+                                    cboAC2.EditValue = null;
+                                }
+                                if (pre.PREPARATIONS_BLOOD_CODE == "3" || pre.PREPARATIONS_BLOOD_CODE == "4" || pre.PREPARATIONS_BLOOD_CODE == "5")
+                                {
+                                    cboSaltEnviTwo.EditValue = (long)5;
+                                }
+                                if (pre.PREPARATIONS_BLOOD_CODE == "6")
+                                {
+                                    cboSaltEnvi.EditValue = (long)5;
+                                    cboSaltEnviTwo.EditValue = (long)5;
+                                    cboAntiGlobulin.EditValue = (long)5;
+                                }
+                                if (pre.PREPARATIONS_BLOOD_CODE == "1")
+                                {
+                                    cboSaltEnvi.EditValue = (long)5;
+                                    cboAntiGlobulin.EditValue = (long)5;
+                                }
+                            }
+                        }
                         long? bloodGroupId = bloodType != null ? bloodType.BLOOD_GROUP_ID : null;
                         var bloodGroup = BackendDataWorker.Get<HIS_BLOOD_GROUP>().Where(o => o.ID == bloodGroupId).FirstOrDefault();
                         if (bloodGroup != null)
@@ -913,9 +953,6 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                             }
                         }
                     }
-                    
-                    cboAC.EditValue = (decimal?)data.AC_SELF_ENVIDENCE;
-                    cboAC2.EditValue = (decimal?)data.AC_SELF_ENVIDENCE_SECOND;
                 }
                 else
                 {
@@ -932,6 +969,9 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                     txtTestTubeTwo.Text = "";
                     cboSaltEnviTwo.EditValue = null;
                     cboAntiGlobulinTwo.EditValue = null;
+                    cboAC.EditValue = null;
+                    cboAC2.EditValue = null;
+
 
                     txtTestTube.Enabled = true;
                     txtTestTubeTwo.Enabled = true;
@@ -1363,7 +1403,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
 
                 Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
 
-                store.RunPrintTemplate("Mps000421", delegateProcessPrint);
+                store.RunPrintTemplate("Mps000421", delegateProcessPrintExp);
             }
             catch (Exception ex)
             {
@@ -1418,6 +1458,13 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 {
                     if (this.expMest.TDL_TREATMENT_ID.HasValue)
                     {
+                        HisExpMestViewFilter filterExp = new HisExpMestViewFilter();
+                        filterExp.EXP_MEST_TYPE_ID = 12;
+                        filterExp.EXP_MEST_STT_ID = 5;
+                        filterExp.TDL_TREATMENT_CODE__EXACT = expMest.TDL_TREATMENT_CODE;
+                        
+                        listExp = new BackendAdapter(new CommonParam()).Get<List<HIS_EXP_MEST>>("/api/HisExpMest/Get", ApiConsumers.MosConsumer, filterExp, null);
+
                         HisTreatmentViewFilter treatFilter = new HisTreatmentViewFilter();
                         treatFilter.ID = this.expMest.TDL_TREATMENT_ID.Value;
                         List<V_HIS_TREATMENT> lstTreatment = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT>>("/api/HisTreatment/GetView", ApiConsumers.MosConsumer, treatFilter, null);
@@ -1448,7 +1495,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                     list.Add(item);
                     List<V_HIS_EXP_BLTY_SERVICE> listService = expBltyServices != null ? expBltyServices.ToList() : null;
 
-                    MPS.Processor.Mps000421.PDO.Mps000421PDO mps000421PDO = new MPS.Processor.Mps000421.PDO.Mps000421PDO(treatment, this.CurrentPatient, this.expMest, list, listService);
+                    MPS.Processor.Mps000421.PDO.Mps000421PDO mps000421PDO = new MPS.Processor.Mps000421.PDO.Mps000421PDO(treatment, this.CurrentPatient, this.expMest, list, listService,listExp);
 
                     if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                     {
@@ -1673,5 +1720,162 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        #region Custom btnPrint
+        private void InitBtnPrint()
+        {
+            try
+            {
+                PopupMenu popupMenu = new PopupMenu();
+                popupMenu.Manager = new BarManager();
+                popupMenu.ItemLinks.Add(new BarButtonItem(popupMenu.Manager, "Phiếu truyền máu theo phiếu xuất"));
+                popupMenu.ItemLinks.Add(new BarButtonItem(popupMenu.Manager, "Phiếu truyền máu theo mã vạch"));
+                btnPrint.DropDownControl = popupMenu;
+
+                foreach (BarItemLink link in popupMenu.ItemLinks)
+                {
+                    link.Item.ItemClick += (sender, e) =>
+                    {
+                        string menuItemText = e.Item.Caption;
+
+                        // Xử lý dựa trên văn bản của các mục menu
+                        switch (menuItemText)
+                        {
+                            case "Phiếu truyền máu theo phiếu xuất":
+                                // Xử lý khi người dùng nhấp vào mục "Phiếu truyền máu theo phiếu xuất"
+                                if (!btnPrint.Enabled || !this.ExpMestId.HasValue) return;
+                                Inventec.Common.RichEditor.RichEditorStore store1 = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                                store1.RunPrintTemplate("Mps000421", delegateProcessPrintExp);
+                                break;
+                            case "Phiếu truyền máu theo mã vạch":
+                                // Xử lý khi người dùng nhấp vào mục "Phiếu truyền máu theo mã vạch"
+                                if (!btnPrint.Enabled || !this.ExpMestId.HasValue) return;
+                                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                                store.RunPrintTemplate("Mps000421", delegateProcessPrint);
+                                break;
+                            default:
+                                break;
+                        }
+                    };
+                }
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+        }
+        private bool delegateProcessPrintExp(string printTypeCode, string fileName)
+        {
+            bool result = false;
+            try
+            {
+                if (!String.IsNullOrEmpty(printTypeCode) && !String.IsNullOrEmpty(fileName))
+                {
+                    switch (printTypeCode)
+                    {
+                        case "Mps000421":
+                            InTheoPhieuXuat(ref result, printTypeCode, fileName);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
+        private List<HIS_EXP_MEST> listExp = new List<HIS_EXP_MEST>();
+        private void InTheoPhieuXuat(ref bool result, string printTypeCode, string fileName)
+        {
+            try
+            {
+                WaitingManager.Show();
+
+                MPS.ProcessorBase.Core.PrintData printData = null;
+                
+                HisExpMestBloodViewFilter bloodViewFilter = new HisExpMestBloodViewFilter();
+                bloodViewFilter.EXP_MEST_ID = this.ExpMestId.Value;
+                List<V_HIS_EXP_MEST_BLOOD> expMestBloods = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_BLOOD>>("/api/HisExpMestBlood/GetView", ApiConsumers.MosConsumer, bloodViewFilter, null);
+
+                HisExpBltyServiceViewFilter bltyServiceFilter = new HisExpBltyServiceViewFilter();
+                bltyServiceFilter.EXP_MEST_ID = this.ExpMestId.Value;
+                List<V_HIS_EXP_BLTY_SERVICE> expBltyServices = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_BLTY_SERVICE>>("/api/HisExpBltyService/GetView", ApiConsumers.MosConsumer, bltyServiceFilter, null);
+
+                V_HIS_TREATMENT treatment = null;
+                
+                if (this.expMest != null)
+                {
+                    if (this.expMest.TDL_TREATMENT_ID.HasValue)
+                    {
+                        #region load list exp mest
+
+                        HisExpMestViewFilter filterExp = new HisExpMestViewFilter();
+                        filterExp.EXP_MEST_TYPE_ID = 12;
+                        filterExp.EXP_MEST_STT_ID = 5;
+                        filterExp.TDL_TREATMENT_CODE__EXACT = expMest.TDL_TREATMENT_CODE;
+                        
+                        listExp = new BackendAdapter(new CommonParam()).Get<List<HIS_EXP_MEST>>("/api/HisExpMest/Get", ApiConsumers.MosConsumer, filterExp, null);
+                        
+
+                        #endregion
+
+                        HisTreatmentViewFilter treatFilter = new HisTreatmentViewFilter();
+                        treatFilter.ID = this.expMest.TDL_TREATMENT_ID.Value;
+                        List<V_HIS_TREATMENT> lstTreatment = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT>>("/api/HisTreatment/GetView", ApiConsumers.MosConsumer, treatFilter, null);
+                        treatment = lstTreatment != null ? lstTreatment.FirstOrDefault() : null;
+                    }
+
+                }
+
+                WaitingManager.Hide();
+                List<V_HIS_EXP_MEST_BLOOD> list = new List<V_HIS_EXP_MEST_BLOOD>();
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(this.expMest != null ? this.expMest.TDL_TREATMENT_CODE : "", printTypeCode, this.currentModuleBase.RoomId);
+                foreach (var item in expMestBloods)
+                {
+                    if (inputADO != null && treatment != null && this.expMest != null)
+                    {
+                        string treatmentCode = "TREATMENT_CODE:" + treatment.TREATMENT_CODE;
+                        string expMestCode = "EXP_MEST_CODE:" + this.expMest.EXP_MEST_CODE;
+                        string bloodCode = "";
+                        if (item != null)
+                        {
+                            bloodCode = "BLOOD_CODE:" + item.BLOOD_CODE;
+                        }
+                        inputADO.HisCode = String.Format("{0} {1} {2} {3}", printTypeCode, treatmentCode, expMestCode, bloodCode);
+                    }
+
+                    
+                    list.Add(item);  
+                }
+                List<V_HIS_EXP_BLTY_SERVICE> listService = expBltyServices != null ? expBltyServices.ToList() : null;
+                //MPS.Processor.Mps000421.PDO.Mps000421PDO mps000421PDO = new MPS.Processor.Mps000421.PDO.Mps000421PDO(treatment, this.CurrentPatient, this.expMest, list, listService);
+                MPS.Processor.Mps000421.PDO.Mps000421PDO mps000421PDO = new MPS.Processor.Mps000421.PDO.Mps000421PDO(treatment, this.CurrentPatient, this.expMest, list, listService, listExp);
+                if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+                    printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000421PDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "");
+                }
+                else
+                {
+                    printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000421PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "");
+                }
+                if (printData != null)
+                {
+                    printData.EmrInputADO = inputADO;
+                    result = MPS.MpsPrinter.Run(printData);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        #endregion
     }
 }

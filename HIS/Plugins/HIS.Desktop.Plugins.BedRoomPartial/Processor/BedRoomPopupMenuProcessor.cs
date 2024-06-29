@@ -79,6 +79,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             AssignPaan,
             GiayNamVien,
             SuaHSDT,
+            BacSiDt,
             PublicService_NT,
             HisCoTreatmentCreate,
             HisCoTreatmentFinish,
@@ -468,6 +469,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 itemSuaHSDT.Tag = ModuleType.SuaHSDT;
                 itemSuaHSDT.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
                 menu.AddItems(new BarItem[] { itemSuaHSDT });
+
+                BarButtonItem itemBacSiDt = new BarButtonItem(barManager, "Bác sĩ điều trị", 7);
+                itemBacSiDt.Tag = ModuleType.BacSiDt;
+                itemBacSiDt.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
+                menu.AddItems(new BarItem[] { itemBacSiDt });
 
                 BarButtonItem itemDongThoiGian = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__DONG_THOI_GIAN", Base.ResourceLangManager.LanguageUCBedRoomPartial, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 7);
                 itemDongThoiGian.Tag = ModuleType.TreatmentLog;

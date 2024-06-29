@@ -1113,6 +1113,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                 //if (serviceClick.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT)   //Với loại “Đơn điều trị” thì hiển thị 'Đối tượng thanh toán'
                                 {
                                     var patientType = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == expMestMetyGroup.First().PATIENT_TYPE_ID);
+                                    metyExpmestTypeADO.PATIENT_TYPE_ID = patientType != null ? patientType.ID : 0;
                                     metyExpmestTypeADO.PATIENT_TYPE_NAME = patientType != null ? patientType.PATIENT_TYPE_NAME : null;
                                     metyExpmestTypeADO.IS_RATION = patientType != null ? patientType.IS_RATION : null;
                                 }
@@ -1158,6 +1159,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                 //if (serviceClick.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT)   //Với loại “Đơn điều trị” thì hiển thị 'Đối tượng thanh toán'
                                 {
                                     var patientType = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == expMestMatyGroup.First().PATIENT_TYPE_ID);
+                                    matyExpmestTypeADO.PATIENT_TYPE_ID = patientType != null ? patientType.ID : 0;
                                     matyExpmestTypeADO.PATIENT_TYPE_NAME = patientType != null ? patientType.PATIENT_TYPE_NAME : null;
                                     matyExpmestTypeADO.IS_RATION = patientType != null ? patientType.IS_RATION : null;
                                 }
@@ -1347,7 +1349,6 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                             matyExpmestTypeADO.CONVERT_AMOUNT = matyExpmestTypeADO.AMOUNT * maty.CONVERT_RATIO.Value;
                                         }
                                     }
-
                                     listMedicine.Add(matyExpmestTypeADO);
                                 }
                             }
@@ -1446,6 +1447,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                 }
                             }
                             var patientType = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == item.PATIENT_TYPE_ID);
+                            item.PATIENT_TYPE_ID = patientType != null ? patientType.ID : 0;
                             item.PATIENT_TYPE_NAME = patientType != null ? patientType.PATIENT_TYPE_NAME : null;
                             item.IS_RATION = patientType != null ? patientType.IS_RATION : null;
                             item.USE_TIME = serviceClick.USE_TIME;
@@ -1516,6 +1518,46 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private async Task GetSereServ(ServiceReqADO serviceClick)
+        {
+
+            try
+            {
+                if (serviceClick != null && serviceClick.ID > 0)
+                {
+                    CommonParam paramCommon = new CommonParam();
+                    HIS_EXP_MEST expMest = null;
+
+                    if (serviceClick.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK ||
+                        serviceClick.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM ||
+                        serviceClick.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT ||
+                        serviceClick.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT)
+                    {
+                        this.currentPrescription = null;
+                        HisExpMestFilter expMestFilter = new HisExpMestFilter();
+                        expMestFilter.SERVICE_REQ_ID = serviceClick.ID;
+                        var result = new BackendAdapter(new CommonParam()).Get<List<HIS_EXP_MEST>>(RequestUriStore.HIS_EXP_MEST_GET, ApiConsumer.ApiConsumers.MosConsumer, expMestFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
+                        if (result != null && result.Count > 0)
+                        {
+                            currentPrescription = result.FirstOrDefault();
+                            expMest = result.FirstOrDefault();
+                        }
+                        else
+                        {
+                            expMest = new HIS_EXP_MEST();
+                            expMest.SERVICE_REQ_ID = serviceClick.ID;
+                        }
+                    }
+
+                    await this.FillDataGridDetail(expMest, serviceClick);
+                }
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -3192,10 +3234,10 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     else if (e.Column.FieldName == "SereSerDeleteDQ")
                     {
                         if ((creator == this.loginName || CheckLoginAdmin.IsAdmin(this.loginName))
-                            && data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH
-                            && currentServiceReq.SERVICE_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT
-                            && hisExecuteRoomData.ALLOW_NOT_CHOOSE_SERVICE == (short)1
-                            )
+                        && data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH
+                        && currentServiceReq.SERVICE_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT
+                        && hisExecuteRoomData.ALLOW_NOT_CHOOSE_SERVICE == (short)1
+                        )
                         {
                             e.RepositoryItem = repositoryItemButtonEditDeleteEna;
                         }
@@ -3203,6 +3245,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         {
                             e.RepositoryItem = repositoryItemButtonEditDeleteDis;
                         }
+
                     }
                     if (e.Column.FieldName == "IS_CONFIRM_NO_EXCUTE")
                     {
@@ -3426,16 +3469,40 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             }
         }
 
-        private void repositoryItemBtnServiceReqDelete_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        private async void repositoryItemBtnServiceReqDelete_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
             {
-                if (gridViewServiceReq.FocusedRowHandle >= 0)
+                var data = (ADO.ServiceReqADO)gridViewServiceReq.GetFocusedRow();
+                bool IsBreak = false;
+                List<string> lstServiceName = new List<string>();
+                if (!CheckLoginAdmin.IsAdmin(this.loginName))
+                {
+                    await GetSereServ(data);
+                    var sereServ = grdSereServServiceReq.DataSource as List<ListMedicineADO>;
+                    if (sereServ != null && sereServ.Count > 0)
+                    {
+                        foreach (var item in sereServ)
+                        {
+                            var patientType = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == item.PATIENT_TYPE_ID);
+                            if (patientType != null && patientType.IS_NOT_EDIT_ASSIGN_SERVICE == 1)
+                            {
+                                lstServiceName.Add(item.TDL_SERVICE_NAME);
+                                IsBreak = true;
+                            }
+                        }
+                    }
+                }
+                if (IsBreak)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Dịch vụ {0} có đối tượng thanh toán được tích \"Không cho phép sửa xóa dịch vụ đã chỉ định\", vui lòng liên hệ với quản trị hệ thống", string.Join(", ", lstServiceName)), "Thông báo");
+                    return;
+                }
+                if (gridViewServiceReq.FocusedRowHandle >= 0 && !IsBreak)
                 {
                     CommonParam paramEmr = new CommonParam();
                     CommonParam param = new CommonParam();
                     bool success = false;
-                    var data = (ADO.ServiceReqADO)gridViewServiceReq.GetFocusedRow();
                     if (data == null)
                     {
                         Inventec.Common.Logging.LogSystem.Info("Data thuc hien huy yeu cau dich vu null: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
@@ -3589,14 +3656,38 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             return result;
         }
 
-        private void repositoryItemBtnServiceReqEdit_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        private async void repositoryItemBtnServiceReqEdit_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
             {
                 if (gridViewServiceReq.FocusedRowHandle >= 0)
                 {
+                    bool IsBreak = false;
                     var data = (ADO.ServiceReqADO)gridViewServiceReq.GetFocusedRow();
-                    if (data != null)// && data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                    List<string> lstServiceName = new List<string>();
+                    if (!CheckLoginAdmin.IsAdmin(this.loginName))
+                    {
+                        await GetSereServ(data);
+                        var sereServ = grdSereServServiceReq.DataSource as List<ListMedicineADO>;
+                        if (sereServ != null && sereServ.Count > 0)
+                        {
+                            foreach (var item in sereServ)
+                            {
+                                var patientType = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == item.PATIENT_TYPE_ID);
+                                if (patientType != null && patientType.IS_NOT_EDIT_ASSIGN_SERVICE == 1)
+                                {
+                                    lstServiceName.Add(item.TDL_SERVICE_NAME);
+                                    IsBreak = true;
+                                }
+                            }
+                        }
+                    }
+                    if (IsBreak)
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Dịch vụ {0} có đối tượng thanh toán được tích \"Không cho phép sửa xóa dịch vụ đã chỉ định\", vui lòng liên hệ với quản trị hệ thống", string.Join(", ", lstServiceName)), "Thông báo");
+                        return;
+                    }
+                    if (data != null && !IsBreak)// && data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
                     {
                         //65930
                         if (HisConfigCFG.AutoDeleteEmrDocumentWhenEditReq == "1")
@@ -3712,7 +3803,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                         var listSereServ = new BackendAdapter(new CommonParam()).Get<List<V_HIS_SERE_SERV>>("api/HisSereServ/GetView", ApiConsumers.MosConsumer, ssfilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
                                         if (listSereServ != null && listSereServ.Count > 0)
                                             assignServiceADO.SereServ = listSereServ.FirstOrDefault();
-                                    }    
+                                    }
                                     CallModule("HIS.Desktop.Plugins.AssignPrescriptionPK", sendObj);
                                 }
                                 else if (data.PRESCRIPTION_TYPE_ID == 2)
@@ -4884,6 +4975,9 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         case PrintPopupMenuProcessor.ModuleType.ChuyenThanhDonTam:
                             Btn_ChuyenDonTam_ButtonClick();
                             break;
+                        case PrintPopupMenuProcessor.ModuleType.InVatTuTSD:
+                            Btn_InVatTuTSD();
+                            break;
                         default:
                             break;
                     }
@@ -4896,6 +4990,44 @@ namespace HIS.Desktop.Plugins.ServiceReqList
 
         }
 
+        private void Btn_InVatTuTSD()
+        {
+            try
+            {
+                Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), HIS.Desktop.LocalStorage.Location.PrintStoreLocation.ROOT_PATH);
+                richEditorMain.RunPrintTemplate("Mps000494", DelegateRunPrinter);
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+        void RunPrint(string printTypeCode, string fileName, object data, Inventec.Common.FlexCelPrint.DelegateEventLog EventLogPrint, bool result, long? roomId)
+        {
+            try
+            {
+                string printerName = "";
+                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                {
+                    printerName = GlobalVariables.dicPrinter[printTypeCode];
+                }
+                if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, data, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName, EventLogPrint));
+                }
+                else
+                {
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(((ADO.ServiceReqADO)gridViewServiceReq.GetFocusedRow()).TDL_TREATMENT_CODE, printTypeCode, roomId);
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, data, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName, EventLogPrint) { EmrInputADO = inputADO });
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void Btn_ChuyenDonTam_ButtonClick()
         {
             try
@@ -5223,7 +5355,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     var data = (ADO.ServiceReqADO)gridViewServiceReq.GetFocusedRow();
                     if (data != null && data.ID > 0)
                     {
-                        if (HisConfigCFG.IsUseInventecLis) { 
+                        if (HisConfigCFG.IsUseInventecLis)
+                        {
                             if (data.LIS_STT_ID.HasValue || data.IS_SENT_EXT.HasValue)
                             {
                                 Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "LIS.Desktop.Plugins.SampleInfo").FirstOrDefault();
@@ -5237,7 +5370,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                     if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
                                     ((Form)extenceInstance).ShowDialog();
                                 }
-                            }else
+                            }
+                            else
                             {
                                 DevExpress.XtraEditors.XtraMessageBox.Show("Bệnh nhân đang nợ viện phí cần thực hiện thanh toán hoặc tạm ứng dịch vụ mới được lấy mẫu bệnh phẩm");
                             }
@@ -6581,7 +6715,12 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         Inventec.Common.Logging.LogSystem.Info("Data thuc hien huy yeu cau dich vu null: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
                         return;
                     }
-
+                    if (!CheckLoginAdmin.IsAdmin(this.loginName) && BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == data.PATIENT_TYPE_ID).IS_NOT_EDIT_ASSIGN_SERVICE == 1)
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Dịch vụ {0} có đối tượng thanh toán được tích \"Không cho phép sửa xóa dịch vụ đã chỉ định\", vui lòng liên hệ với quản trị hệ thống", data.TDL_SERVICE_NAME), "Thông báo");
+                        return;
+                    }
+                    
                     if (MessageBox.Show(string.Format("Có chắc muốn xóa dịch vụ {0} không?", data.TDL_SERVICE_NAME), Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
 

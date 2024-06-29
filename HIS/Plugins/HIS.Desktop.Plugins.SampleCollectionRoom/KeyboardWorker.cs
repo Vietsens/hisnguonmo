@@ -30,6 +30,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
     [KeyboardAction("FocusF1", "HIS.Desktop.Plugins.SampleCollectionRoom.SampleCollectionRoomUC", "FocusF1", KeyStroke = XKeys.F1)]
     [KeyboardAction("FocusF2", "HIS.Desktop.Plugins.SampleCollectionRoom.SampleCollectionRoomUC", "FocusF2", KeyStroke = XKeys.F2)]
     [KeyboardAction("FocusF3", "HIS.Desktop.Plugins.SampleCollectionRoom.SampleCollectionRoomUC", "FocusF3", KeyStroke = XKeys.F3)]
+    [KeyboardAction("FocusF4", "HIS.Desktop.Plugins.SampleCollectionRoom.SampleCollectionRoomUC", "FocusF3", KeyStroke = XKeys.F4)]
     [KeyboardAction("PrintBarcode", "HIS.Desktop.Plugins.SampleCollectionRoom.SampleCollectionRoomUC", "PrintBarcode", KeyStroke = XKeys.Control | XKeys.P)]
     [KeyboardAction("ShotcurtCall", "HIS.Desktop.Plugins.SampleCollectionRoom.SampleCollectionRoomUC", "ShotcurtCall", KeyStroke = XKeys.F6)]
     [KeyboardAction("ShotcurtReCall", "HIS.Desktop.Plugins.SampleCollectionRoom.SampleCollectionRoomUC", "ShotcurtReCall", KeyStroke = XKeys.F7)]

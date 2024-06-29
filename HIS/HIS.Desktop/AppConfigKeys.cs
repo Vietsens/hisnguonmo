@@ -38,6 +38,9 @@ namespace HIS.Desktop
         //Thời gian tự động gọi thông báo
         public const string CONFIG_KEY__HIS_DESKTOP__AUTO_SHOW_NOTIFY = "CONFIG_KEY__HIS_DESKTOP__AUTO_SHOW_NOTIFY";
 
+        //Option hiển thị thông báo
+        public const string CONFIG_KEY__HIS_DESKTOP__OPTION_FORM_NOTIFY = "CONFIG_KEY__HIS_DESKTOP__OPTION_FORM_NOTIFY";
+
         //Cấu hình có lưu token phiên làm việc vào registry phục vụ cho việc đăng nhập lần đầu tiên, nếu lần sau mở phần mềm token vẫn còn hiệu lực thì sẽ tự động đăng nhập luôn
         //public const string CONFIG_KEY__HIS_DESKTOP__IS_USE_REGISTRY_TOKEN = "CONFIG_KEY__HIS_DESKTOP__IS_USE_REGISTRY_TOKEN";
 
@@ -52,10 +55,6 @@ namespace HIS.Desktop
 
         //Thời gian chạy tiến trình LogAction ghi dug lượng ram phần mềm sử dụng
         public const string CONFIG_KEY__HIS_DESKTOP__AUTO_RUN_MODULE_LINKS_CFG = "CONFIG_KEY__HIS_DESKTOP__AUTO_RUN_MODULE_LINKS";
-
-        //- Nếu không có giá trị hoặc giá trị = 0 khi có notify hiển thị giao diện cửa sổ thông báo dạng danh sách(giao diện thông báo cũ đang dùng)
-        //- Nếu giá trị = 1 khi có notify hiển thị giao diện cửa sổ thông báo mới: gồm tên bệnh viện, nội dung thông báo, thời gian thông báo. Có nhiều thông báo sẽ hiển thị cùng lúc nhiều cửa sổ thông báo, mỗi cửa sổ hiển thị nội dung của 1 dòng thông báo
-        public const string CONFIG_KEY__HIS_DESKTOP__OPTION_FORM_NOTIFY = "CONFIG_KEY__HIS_DESKTOP__OPTION_FORM_NOTIFY";
         #endregion
     }
 }

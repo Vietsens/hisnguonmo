@@ -355,6 +355,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 InputADO ado = new InputADO();
                 ado.DeleteWhenClose = true;
                 ado.NumberOfCopy = HisConfigCFG.E_BILL__PRINT_NUM_COPY;
+                ado.PrintPageSize = transactionPrint.EINVOICE_PAGE_SIZE;
                 ado.URL = electronicBillResult.InvoiceLink;
                 ViewType.Platform type = ViewType.Platform.Telerik;
                 if (HisConfigCFG.PlatformOption > 0)
@@ -638,6 +639,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 InputADO ado = new InputADO();
                 ado.DeleteWhenClose = true;
                 ado.NumberOfCopy = HisConfigCFG.E_BILL__PRINT_NUM_COPY;
+                ado.PrintPageSize = transactionPrint.EINVOICE_PAGE_SIZE;
                 ado.URL = electronicBillResult.InvoiceLink;
                 ViewType.Platform type = ViewType.Platform.Telerik;
                 if (HisConfigCFG.PlatformOption > 0)

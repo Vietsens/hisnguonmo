@@ -50,8 +50,23 @@ namespace MPS.Processor.Mps000117
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
+                List<HisAnticipateMetyADO> tempList = rdo.HisAnticipateMetyAdo;
+                int numOrder = 0;
+                tempList = tempList.OrderBy(bid => 
+                        {
+                            if (int.TryParse(bid.BID_NUM_ORDER, out numOrder))
+                            {
+                                return numOrder;
+                            }
+                            else
+                            {
+                                return int.MaxValue;
+                            }
+                        })
+                        .ThenBy(bid => bid.MEDICINE_TYPE_CODE)
+                        .ToList();
                 objectTag.AddObjectData(store, "AnticipateMeties", rdo.HisAnticipateMetyAdo);
-
+                objectTag.AddObjectData(store, "OrderByBid", tempList); 
                 result = true;
             }
             catch (Exception ex)

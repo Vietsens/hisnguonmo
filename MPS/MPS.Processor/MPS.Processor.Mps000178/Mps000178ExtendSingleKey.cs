@@ -34,5 +34,6 @@ namespace MPS.Processor.Mps000178
         internal const string HEIN_CARD_ADDRESS = "HEIN_CARD_ADDRESS";
         internal const string TREATMENT_CODE_BAR = "TREATMENT_CODE_BAR";
         internal const string IMAGE_AVATAR = "IMAGE_AVATAR";
+        internal const string TRAN_DEPARTMENT_NAME = "TRAN_DEPARTMENT_NAME";
     }
 }

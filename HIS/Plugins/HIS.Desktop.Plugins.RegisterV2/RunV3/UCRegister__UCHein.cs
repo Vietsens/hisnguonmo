@@ -46,10 +46,12 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 {
     public partial class UCRegister : UserControlBase
     {
-        private void FillDataAfterSaerchPatientInUCPatientRaw(HeinCardData heinCardData)
+        private void FillDataAfterSaerchPatientInUCPatientRaw(DataResultADO dt)
         {
             try
             {
+                var heinCardData = dt.HeinCardData;
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => heinCardData), heinCardData));
                 Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.1");
                 var ucPatientRawData = ucPatientRaw1.GetValue();
                 if (heinCardData != null
@@ -58,7 +60,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     && (
                         ucPatientRawData.PATIENTTYPE_ID == 0
                         || (ucPatientRawData.PATIENTTYPE_ID != HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__BHYT
-                            && ucPatientRawData.PATIENTTYPE_ID != HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__QN)))
+                            && ucPatientRawData.PATIENTTYPE_ID != HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__QN))
+                    && !ucPatientRawData.IsReadQrCccd)
                 {
                     Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.2");
                     Inventec.Common.Logging.LogSystem.Debug("Trường hợp đối tượng BN đang chọn không phải là đối tượng BHYT, người dùng nhập qrcode để tìm kiếm ==>tự động gán đối tượng thanh toán mặc định là đối tượng BHYT," + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ucPatientRawData.PATIENTTYPE_ID), ucPatientRawData.PATIENTTYPE_ID));
@@ -76,11 +79,13 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 //Kiem tra cau hinh co tu dong fill du lieu dia chi ghi tren the vao o dia chi benh nhan, co thi fill du lieu, khong thi bo qua
                 if (HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 1)
                 {
-                     Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.5");
-                     dataAddressPatient = this.ucAddressCombo1.GetValue() ?? new HIS.UC.AddressCombo.ADO.UCAddressADO();
-                     dataAddressPatient.Address = heinCardData.Address;
-                     this.ucAddressCombo1.SetValue(dataAddressPatient);
-                     Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.6");
+                    Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.5");
+                    dataAddressPatient = this.ucAddressCombo1.GetValue() ?? new HIS.UC.AddressCombo.ADO.UCAddressADO();
+
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataAddressPatient), dataAddressPatient));
+                    dataAddressPatient.Address = heinCardData.Address;
+                    this.ucAddressCombo1.SetValue(dataAddressPatient);
+                    Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.6");
                 }
                 if (this.ucOtherServiceReqInfo1 != null)
                     this.ucOtherServiceReqInfo1.RefreshUserControl();

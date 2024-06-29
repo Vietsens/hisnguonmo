@@ -45,6 +45,10 @@ namespace HIS.Desktop.Plugins.EmpUser
         /// </summary>
         private void InitializeComponent()
         {
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject45 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject46 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject47 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject48 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -53,27 +57,23 @@ namespace HIS.Desktop.Plugins.EmpUser
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmEmpUser));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject29 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject30 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject31 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject32 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject33 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject34 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject35 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject36 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject37 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject38 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject39 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject40 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject41 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject42 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject43 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject44 = new DevExpress.Utils.SerializableAppearanceObject();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.itemSearch = new DevExpress.XtraBars.BarButtonItem();
@@ -87,6 +87,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.lcEditInfo = new DevExpress.XtraLayout.LayoutControl();
+            this.chkIsNeedSignInstead = new DevExpress.XtraEditors.CheckEdit();
             this.cboBranch = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
             this.customGridLookUpEditWithFilterMultiColumn5View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.cboTypeOfTime = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
@@ -177,6 +178,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.layoutControlItem33 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem34 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem35 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem37 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
@@ -235,6 +237,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditInfo)).BeginInit();
             this.lcEditInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsNeedSignInstead.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBranch.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn5View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboTypeOfTime.Properties)).BeginInit();
@@ -324,6 +327,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem35)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
@@ -354,6 +358,10 @@ namespace HIS.Desktop.Plugins.EmpUser
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar2});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barToggleSwitchItem1,
@@ -432,8 +440,8 @@ namespace HIS.Desktop.Plugins.EmpUser
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 22);
-            this.barDockControlTop.Size = new System.Drawing.Size(1260, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1260, 22);
             // 
             // barDockControlBottom
             // 
@@ -458,6 +466,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             // 
             // lcEditInfo
             // 
+            this.lcEditInfo.Controls.Add(this.chkIsNeedSignInstead);
             this.lcEditInfo.Controls.Add(this.cboBranch);
             this.lcEditInfo.Controls.Add(this.cboTypeOfTime);
             this.lcEditInfo.Controls.Add(this.cboPostion);
@@ -504,6 +513,17 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.lcEditInfo.Size = new System.Drawing.Size(501, 553);
             this.lcEditInfo.TabIndex = 5;
             this.lcEditInfo.Text = "layoutControl2";
+            // 
+            // chkIsNeedSignInstead
+            // 
+            this.chkIsNeedSignInstead.Location = new System.Drawing.Point(121, 412);
+            this.chkIsNeedSignInstead.MenuManager = this.barManager1;
+            this.chkIsNeedSignInstead.Name = "chkIsNeedSignInstead";
+            this.chkIsNeedSignInstead.Properties.Caption = "";
+            this.chkIsNeedSignInstead.Size = new System.Drawing.Size(376, 19);
+            this.chkIsNeedSignInstead.StyleController = this.lcEditInfo;
+            this.chkIsNeedSignInstead.TabIndex = 42;
+            this.chkIsNeedSignInstead.ToolTip = "Tài khoản cần ký thay cho các chức năng xử lý kết thúc điều trị";
             // 
             // cboBranch
             // 
@@ -786,7 +806,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.dtDOB.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.dtDOB.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "", null, null, true)});
             this.dtDOB.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dtDOB.Properties.DisplayFormat.FormatString = "dd/MM/yyyy";
@@ -876,7 +896,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.cboDepartment.Properties.AutoComplete = false;
             this.cboDepartment.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
             this.cboDepartment.Properties.NullText = "";
             this.cboDepartment.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboDepartment.Properties.View = this.customGridLookUpEditWithFilterMultiColumn1View;
@@ -932,7 +952,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(364, 412);
+            this.btnRefresh.Location = new System.Drawing.Point(364, 436);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(133, 22);
             this.btnRefresh.StyleController = this.lcEditInfo;
@@ -942,7 +962,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(255, 412);
+            this.btnAdd.Location = new System.Drawing.Point(255, 436);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(105, 22);
             this.btnAdd.StyleController = this.lcEditInfo;
@@ -953,7 +973,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(143, 412);
+            this.btnEdit.Location = new System.Drawing.Point(143, 436);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(108, 22);
             this.btnEdit.StyleController = this.lcEditInfo;
@@ -1083,7 +1103,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.cbbRank.Properties.AutoComplete = false;
             this.cbbRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
             this.cbbRank.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             this.cbbRank.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             this.cbbRank.Properties.NullText = "";
@@ -1205,7 +1225,8 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.layoutControlItem32,
             this.layoutControlItem33,
             this.layoutControlItem34,
-            this.layoutControlItem35});
+            this.layoutControlItem35,
+            this.layoutControlItem37});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "Root";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
@@ -1273,7 +1294,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             // layoutControlItem12
             // 
             this.layoutControlItem12.Control = this.btnEdit;
-            this.layoutControlItem12.Location = new System.Drawing.Point(139, 408);
+            this.layoutControlItem12.Location = new System.Drawing.Point(139, 432);
             this.layoutControlItem12.Name = "layoutControlItem12";
             this.layoutControlItem12.Size = new System.Drawing.Size(112, 26);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
@@ -1282,7 +1303,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             // layoutControlItem13
             // 
             this.layoutControlItem13.Control = this.btnAdd;
-            this.layoutControlItem13.Location = new System.Drawing.Point(251, 408);
+            this.layoutControlItem13.Location = new System.Drawing.Point(251, 432);
             this.layoutControlItem13.Name = "layoutControlItem13";
             this.layoutControlItem13.Size = new System.Drawing.Size(109, 26);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
@@ -1291,7 +1312,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             // layoutControlItem14
             // 
             this.layoutControlItem14.Control = this.btnRefresh;
-            this.layoutControlItem14.Location = new System.Drawing.Point(360, 408);
+            this.layoutControlItem14.Location = new System.Drawing.Point(360, 432);
             this.layoutControlItem14.Name = "layoutControlItem14";
             this.layoutControlItem14.Size = new System.Drawing.Size(137, 26);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
@@ -1380,9 +1401,9 @@ namespace HIS.Desktop.Plugins.EmpUser
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 434);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 458);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(497, 115);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(497, 91);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem8
@@ -1585,7 +1606,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 408);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 432);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
             this.emptySpaceItem2.Size = new System.Drawing.Size(139, 26);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
@@ -1740,6 +1761,20 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.layoutControlItem35.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem35.TextSize = new System.Drawing.Size(110, 20);
             this.layoutControlItem35.TextToControlDistance = 5;
+            // 
+            // layoutControlItem37
+            // 
+            this.layoutControlItem37.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem37.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem37.Control = this.chkIsNeedSignInstead;
+            this.layoutControlItem37.Location = new System.Drawing.Point(0, 408);
+            this.layoutControlItem37.Name = "layoutControlItem37";
+            this.layoutControlItem37.OptionsToolTip.ToolTip = "Tài khoản cần ký thay cho các chức năng xử lý kết thúc điều trị";
+            this.layoutControlItem37.Size = new System.Drawing.Size(497, 24);
+            this.layoutControlItem37.Text = "Cần ký thay:";
+            this.layoutControlItem37.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem37.TextSize = new System.Drawing.Size(112, 20);
+            this.layoutControlItem37.TextToControlDistance = 5;
             // 
             // dxErrorProvider1
             // 
@@ -1923,7 +1958,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             // 
             this.btnDefaultPass.AutoHeight = false;
             this.btnDefaultPass.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnDefaultPass.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnDefaultPass.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "", null, null, true)});
             this.btnDefaultPass.Name = "btnDefaultPass";
             this.btnDefaultPass.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnDefaultPass.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnDefaultPass_ButtonClick);
@@ -1944,7 +1979,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             // 
             this.btnRoleUser.AutoHeight = false;
             this.btnRoleUser.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnRoleUser.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnRoleUser.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "", null, null, true)});
             this.btnRoleUser.Name = "btnRoleUser";
             this.btnRoleUser.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnRoleUser.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnRoleUser_ButtonClick);
@@ -2222,7 +2257,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             // 
             this.btnLock.AutoHeight = false;
             this.btnLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.Default, ((System.Drawing.Image)(resources.GetObject("btnLock.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Khóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.Default, ((System.Drawing.Image)(resources.GetObject("btnLock.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject37, serializableAppearanceObject38, serializableAppearanceObject39, serializableAppearanceObject40, "Khóa", null, null, true)});
             this.btnLock.Name = "btnLock";
             this.btnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnLock.Click += new System.EventHandler(this.btnLock_Click);
@@ -2231,7 +2266,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             // 
             this.btnUnlock.AutoHeight = false;
             this.btnUnlock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnUnlock.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnUnlock.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject41, serializableAppearanceObject42, serializableAppearanceObject43, serializableAppearanceObject44, "", null, null, true)});
             this.btnUnlock.ContextImage = ((System.Drawing.Image)(resources.GetObject("btnUnlock.ContextImage")));
             this.btnUnlock.Name = "btnUnlock";
             this.btnUnlock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
@@ -2340,6 +2375,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditInfo)).EndInit();
             this.lcEditInfo.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsNeedSignInstead.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBranch.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn5View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboTypeOfTime.Properties)).EndInit();
@@ -2429,6 +2465,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem35)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
@@ -2620,5 +2657,7 @@ namespace HIS.Desktop.Plugins.EmpUser
         private Inventec.Desktop.CustomControl.CustomGrid.CustomGridView customGridView1;
         private Inventec.Desktop.CustomControl.CustomGrid.CustomGridLookUpEdit cboSpecialityCodes;
         private Inventec.Desktop.CustomControl.CustomGrid.CustomGridView customGridView2;
+        private DevExpress.XtraEditors.CheckEdit chkIsNeedSignInstead;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem37;
     }
 }

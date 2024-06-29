@@ -561,8 +561,8 @@ namespace MPS.Processor.Mps000302
                                     SetSingleKey(new KeyValue(Mps000302ExtendSingleKey.TRANSACTION_TREATMENT_BILL_AMOUNT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(lastTran.TREATMENT_BILL_AMOUNT ?? 0, 0)));
                                 }
 
-
-                                SetSingleKey(new KeyValue(Mps000302ExtendSingleKey.LAST_TRANSACTION_AMOUNT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(rdo.ListTransactionBill.Where(o => o.IS_DIRECTLY_BILLING != 1 && o.IS_CANCEL != 1 && o.SALE_TYPE_ID == null).OrderByDescending(o => o.TRANSACTION_TIME).FirstOrDefault().AMOUNT, 0)));
+                                var chk = rdo.ListTransactionBill.Where(o => o.IS_DIRECTLY_BILLING != 1 && o.IS_CANCEL != 1 && o.SALE_TYPE_ID == null);
+                                SetSingleKey(new KeyValue(Mps000302ExtendSingleKey.LAST_TRANSACTION_AMOUNT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(chk != null && chk.Count() > 0 ? chk.OrderByDescending(o => o.TRANSACTION_TIME).FirstOrDefault().AMOUNT : 0, 0) ));
                             }
                         }
 

@@ -311,25 +311,25 @@
       <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000131.PDO">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\MPS.Processor.Mps000131.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000131.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000217.PDO">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\MPS.Processor.Mps000217.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\HIS_TEST\ReferencedAssemblies\MPS.Processor.Mps000217.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000218.PDO">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\MPS.Processor.Mps000218.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\HIS_TEST\ReferencedAssemblies\MPS.Processor.Mps000218.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000219.PDO">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\MPS.Processor.Mps000219.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000219.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000220.PDO">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\MPS.Processor.Mps000220.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000220.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000482.PDO">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\MPS.Processor.Mps000482.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000482.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000483.PDO">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\MPS.Processor.Mps000483.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000483.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -442,9 +442,7 @@
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Lang.my.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.my.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -525,6 +523,9 @@
       <Project>{0aedfd21-7195-4fdb-a3ef-035640df48f3}</Project>
       <Name>HIS.Desktop.Plugins.Library.EmrGenerate</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

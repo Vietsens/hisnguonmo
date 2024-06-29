@@ -426,7 +426,7 @@ namespace HIS.Desktop.Plugins.HisMachine
                 CommonParam param = new CommonParam();
                 param.Limit = rowCount;
                 param.Count = dataTotal;
-                ucPaging.Init(LoadPaging, param, numPageSize);
+                ucPaging.Init(LoadPaging, param, numPageSize, this.gridControl1);
                 WaitingManager.Hide();
             }
             catch (Exception ex)

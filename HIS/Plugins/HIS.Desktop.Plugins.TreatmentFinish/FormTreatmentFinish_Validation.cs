@@ -27,6 +27,7 @@ using DevExpress.XtraEditors;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using HIS.Desktop.Plugins.TreatmentFinish.Config;
 using System.Drawing;
+using HIS.Desktop.Plugins.TreatmentFinish.Validation;
 
 namespace HIS.Desktop.Plugins.TreatmentFinish
 {
@@ -43,7 +44,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 ValidationOutPatientDateFrom(ref dxValidationProvider_ForOutPatientDateFromTo);
                 ValidationOutPatientDateTo(ref dxValidationProvider_ForOutPatientDateFromTo);
             }
-
+            ValidationCboHeadLoginName(ref dxValidationProvider);
+            ValidationHeadLoginName(ref dxValidationProvider);
             ValidationFinishType();
             ValidationResult();
             ValidationMaxLength(txtMethod, 3000);
@@ -77,8 +79,28 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             ValidationMaxLength(txtSurgery, 3000);
             ValidationMaxLength(txtMaBHXH, 10, true);
             ValidationComboProgram();
+            MOS.EFMODEL.DataModels.HIS_TREATMENT_END_TYPE data = this.hisTreatmentEndTypes.SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentEndType.EditValue ?? 0).ToString()));
+            if ((data != null && data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN) || (Int64.Parse(cboTreatmentEndType.EditValue.ToString()) == 2))
+            {
+                layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
+                ValidateTextEdit(txtDauHieuLamSang);
+            }
         }
 
+        private void ValidateTextEdit(TextEdit txt)
+        {
+            try
+            {
+                ValidateTxtRule valid = new ValidateTxtRule();
+                valid.textEdit = txt;
+                valid.ErrorType = ErrorType.Warning;
+                this.dxValidationProvider.SetValidationRule(txt, valid);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void ValidationOutPatientDateFrom(ref DXValidationProvider validationProvider)
         {
             try
@@ -111,6 +133,38 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        private void ValidationHeadLoginName(ref DXValidationProvider validationProvider)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule LoginName = new Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule();
+                LoginName.editor = txtHeadUser;
+                LoginName.ErrorText = ResourceMessage.TruongDuLieuBatBuoc;
+                LoginName.ErrorType = ErrorType.Warning;
+                dxValidationProvider.SetValidationRule(cboTreatmentEndType, LoginName);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+        private void ValidationCboHeadLoginName(ref DXValidationProvider validationProvider)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule headUser = new Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule();
+                headUser.editor = cboHeadUser;
+                headUser.ErrorText = ResourceMessage.TruongDuLieuBatBuoc;
+                headUser.ErrorType = ErrorType.Warning;
+                dxValidationProvider.SetValidationRule(cboTreatmentEndType, headUser);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
         }
 
         private void ValidationEndOrder()

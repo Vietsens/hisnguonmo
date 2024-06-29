@@ -757,6 +757,7 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
             }
         }
 
+        private long IS_REQUIRED = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>("HIS.Desktop.Plugins.Transaction.IsRequiredLatchApproveStore");
         private void FillDataToGridTreatment(object param)
         {
             try
@@ -772,6 +773,10 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 CommonParam paramCommon = new CommonParam(start, limit);
                 HisTreatmentFeeViewFilter treatFilter = new HisTreatmentFeeViewFilter();
                 this.SetTreatmentFilterByValueControl(ref treatFilter);
+                if (IS_REQUIRED == 1)
+                {
+                    treatFilter.IS_APPROVE_STORE = true;
+                }
                 var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_TREATMENT_FEE>>("api/HisTreatment/GetFeeView", ApiConsumers.MosConsumer, treatFilter, paramCommon);
                 if (result != null)
                 {

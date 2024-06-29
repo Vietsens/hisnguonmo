@@ -64,7 +64,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 {
                     if (item.DataType != HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD && item.DataType != HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_TUTUC)
                     {
-                        item.UpdateAutoRoundUpByConvertUnitRatioInDataRow(item,VHistreatment);
+                        item.UpdateAutoRoundUpByConvertUnitRatioInDataRow(item, VHistreatment);
                     }
 
                     if ((item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC) && item.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT && (item.MEDICINE_USE_FORM_ID ?? 0) <= 0)
@@ -145,7 +145,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             try
             {
                 var instructionTimeMedis = GetInstructionTimeMedi();
-                if(!PrescriptionPrevious)
+                if (!PrescriptionPrevious)
                     GetOverReason(ref this.mediMatyTypeADOs, new List<long>() { treatmentId }, instructionTimeMedis, false);
                 PrescriptionPrevious = false;
                 foreach (var item in this.mediMatyTypeADOs)
@@ -218,8 +218,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             {
                                 item.ErrorMessageIsAssignDay = ResourceMessage.CanhBaoThuocDaKeTrongNgay;
                                 item.ErrorTypeIsAssignDay = ErrorType.Warning;
-                            }                           
-                        }                       
+                            }
+                        }
                     }
                     if (!string.IsNullOrEmpty(item.OVER_RESULT_TEST_REASON))
                         item.IsEditOverResultTestReason = true;
@@ -332,10 +332,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 foreach (var item in mediMatyTypeADOs)
                 {
                     var SereServItem = SereServs.FirstOrDefault(o => o.SERVICE_ID == item.SERVICE_ID && o.PATIENT_TYPE_ID == item.PATIENT_TYPE_ID);
-                    if(SereServItem != null)
+                    if (SereServItem != null)
                     {
-                        item.TotalPrice = (SereServItem.VIR_PRICE ?? 0 ) * SereServItem.AMOUNT;
-                    }    
+                        item.TotalPrice = (SereServItem.VIR_PRICE ?? 0) * SereServItem.AMOUNT;
+                    }
                 }
                 IsNotReloadTreatmentFinish = true;
                 gridViewServiceProcess.GridControl.DataSource = null;
@@ -360,7 +360,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     InitCheckIcdManager();
                     if (!checkIcdManager.ProcessCheckIcd(txtIcdCode.Text.Trim(), txtIcdSubCode.Text.Trim(), ref messErr, HisConfigCFG.CheckIcdWhenSave == "1" || HisConfigCFG.CheckIcdWhenSave == "2"))
                     {
-                        if(HisConfigCFG.CheckIcdWhenSave == "1")
+                        if (HisConfigCFG.CheckIcdWhenSave == "1")
                         {
                             if (DevExpress.XtraEditors.XtraMessageBox.Show(currentTreatment.TREATMENT_CODE + ": " + messErr + ". Bạn có muốn tiếp tục?",
                          HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
@@ -403,7 +403,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
-                Inventec.Common.Logging.LogSystem.Info("frmAssignPrescription.ProcessSaveData.1");              
+                Inventec.Common.Logging.LogSystem.Info("frmAssignPrescription.ProcessSaveData.1");
                 IsValidForSave = true;
                 bool valid = true;
                 this.positionHandleControl = -1;
@@ -416,10 +416,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 //if (this.gridViewServiceProcess.FocusedRowModified)
                 //    this.gridViewServiceProcess.UpdateCurrentRow();
 
-                if(!(GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) && !string.IsNullOrEmpty(HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam))
+                if (!(GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) && !string.IsNullOrEmpty(HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam))
                 {
                     LoadVServiceReq();
-                    if(vServiceReq != null && vServiceReq.START_TIME.HasValue && Inventec.Common.DateTime.Calculation.DifferenceTime(vServiceReq.START_TIME.Value, InstructionTime, Inventec.Common.DateTime.Calculation.UnitDifferenceTime.SECOND) < Int32.Parse(HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam))
+                    if (vServiceReq != null && vServiceReq.START_TIME.HasValue && Inventec.Common.DateTime.Calculation.DifferenceTime(vServiceReq.START_TIME.Value, InstructionTime, Inventec.Common.DateTime.Calculation.UnitDifferenceTime.SECOND) < Int32.Parse(HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam))
                     {
                         DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Thời gian chỉ định {0} phải cách thời gian bắt đầu khám {1} là {2} giây mới được phép chỉ định", Inventec.Common.DateTime.Convert.TimeNumberToTimeString(InstructionTime), Inventec.Common.DateTime.Convert.TimeNumberToTimeString(vServiceReq.START_TIME.Value), HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
                         return;
@@ -451,18 +451,31 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     var price = GetPrice();
                     if (treatmentType != null && price != null && price > 0)
                     {
-                        if(treatmentType.FEE_DEBT_OPTION == 2)
+                        if (treatmentType.FEE_DEBT_OPTION == 2)
                         {
                             DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Bệnh nhân đang thiếu viện phí {0} đồng", Inventec.Common.Number.Convert.NumberToString(Math.Abs(price ?? 0), ConfigApplications.NumberSeperator)), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
                             return;
                         }
-                        else if(treatmentType.FEE_DEBT_OPTION == 1)
+                        else if (treatmentType.FEE_DEBT_OPTION == 1)
                         {
                             if (DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Bệnh nhân đang thiếu viện phí {0} đồng", Inventec.Common.Number.Convert.NumberToString(Math.Abs(price ?? 0), ConfigApplications.NumberSeperator)) + ". Bạn có muốn tiếp tục?",
                          HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
                          MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
-                        }    
+                        }
                     }
+
+                    if ((HisConfigCFG.OptionTreatmentEndTypeIsTransfer == "1" || HisConfigCFG.OptionTreatmentEndTypeIsTransfer == "2") && treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
+                    {
+                        HisExpMestFilter filter = new HisExpMestFilter();
+                        filter.TDL_TREATMENT_ID = treatmentId;
+                        filter.EXP_MEST_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DPK;
+                        var expMestPK = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumers.MosConsumer, filter, null);
+                        if (expMestPK != null && expMestPK.Count > 0 && XtraMessageBox.Show(string.Format("Bệnh nhân tồn tại đơn phòng khám, {0}", HisConfigCFG.OptionTreatmentEndTypeIsTransfer == "1" ? "không cho phép chuyển viện" : "bạn có muốn cho bệnh nhân chuyển viện không?"), "Thông báo", HisConfigCFG.OptionTreatmentEndTypeIsTransfer == "1" ? MessageBoxButtons.OK : MessageBoxButtons.YesNo) == (HisConfigCFG.OptionTreatmentEndTypeIsTransfer == "1" ? DialogResult.OK : DialogResult.No))
+                        {
+                            return;
+                        }
+                    }
+
                 }
                 if (valid)
                 {
@@ -502,11 +515,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             errorMessagesBlock += item.MEDICINE_TYPE_NAME + " " + item.ErrorMessageOverKidneyReason + ".";
                         }
                     }
-                    if(!String.IsNullOrEmpty(errorMessagesBlock))
+                    if (!String.IsNullOrEmpty(errorMessagesBlock))
                     {
                         DevExpress.XtraEditors.XtraMessageBox.Show(errorMessagesBlock, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
                         return;
-                    }    
+                    }
                     if (!String.IsNullOrEmpty(errorMessages))
                     {
                         if (DevExpress.XtraEditors.XtraMessageBox.Show(errorMessages + ". Bạn có muốn tiếp tục?",
@@ -628,7 +641,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 {
                     var patientProgram = BackendDataWorker.Get<HIS_PROGRAM>().FirstOrDefault(o => o.ID == treatUC.ProgramId);
                     if (patientProgram != null && treatUC.IsIssueOutPatientStoreCode && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU && patientProgram.AUTO_CHANGE_TO_OUT_PATIENT == 1)
-					{
+                    {
                         DevExpress.XtraEditors.XtraMessageBox.Show(string.Format(ResourceMessage.ChuongTrinh, patientProgram.PROGRAM_NAME),
                         HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
                         MessageBoxButtons.OK);
@@ -636,7 +649,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     }
                     if ((HisConfigCFG.MustChooseSeviceExamOption == "1" || (isHasTreatmentFinishChecked && HisConfigCFG.MustChooseSeviceExamOption == "2")) && !this.CheckMustChooseSeviceExamOption(HisConfigCFG.MustChooseSeviceExamOption))
                         return;
-                }                    
+                }
 
                 Inventec.Common.Logging.LogSystem.Info("frmAssignPrescription.ProcessSaveData.3");
 
@@ -669,7 +682,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 {
                     HIS_SERVICE_REQ serviceReqResult = null;
                     HIS_EXP_MEST expMestResult = null;
-                    List<HIS_EXP_MEST> ListExpMestResult = null;
+                    ListExpMestResult = null;
                     List<HIS_SERE_SERV> lstSereServObeyCantraindi = new List<HIS_SERE_SERV>();
                     List<HIS_SERE_SERV> lstSereServ = new List<HIS_SERE_SERV>();
                     List<HIS_EXP_MEST_MEDICINE> Medicines = new List<HIS_EXP_MEST_MEDICINE>();
@@ -688,7 +701,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             lstSereServObeyCantraindi.AddRange(patientPresResultSDO.SereServs);
                         }
                         Medicines = patientPresResultSDO.Medicines;
-                        Materials = patientPresResultSDO.Materials;                   
+                        Materials = patientPresResultSDO.Materials;
                     }
                     else if (this.resultDataPrescription.GetType() == typeof(OutPatientPresResultSDO))
                     {
@@ -709,8 +722,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     TaskUpdateObeyCantraindi(lstSereServObeyCantraindi, ListExpMestResult, lstserviceReqResult);
                     List<long> mediTypeIds = new List<long>();
                     List<long> mateTypeIds = new List<long>();
+
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListExpMestResult), ListExpMestResult));
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Medicines), Medicines));
                     if (Medicines != null && Medicines.Count > 0)
                     {
+                        if (ListExpMestResult != null && ListExpMestResult.Count > 0 && ListExpMestResult.FirstOrDefault(o => o.ANTIBIOTIC_REQUEST_ID == null) != null)
+                        {
+                            ListExpMestMedicineAntibioticRequired = Medicines.Where(o => ListExpMestResult.Where(p => p.ANTIBIOTIC_REQUEST_ID == null).Select(p => p.ID).ToList().Exists(p => p == o.EXP_MEST_ID)).ToList();
+                        }
                         mediTypeIds.AddRange(Medicines.Select(o => o.TDL_MEDICINE_TYPE_ID ?? 0).ToList());
                         var mediType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE>().Where(o => mediTypeIds.Exists(p => p == o.ID)).ToList();
                         foreach (var item in Medicines)
@@ -745,7 +765,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             }
                         }
                     }
-                    
+
                     UpdateTotalPriceInRow(lstSereServ);
                     this.oldServiceReq = serviceReqResult;
                     this.oldExpMest = expMestResult;
@@ -1016,7 +1036,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     serviceReqs = serviceReqs.Where(o => o.IS_NO_EXECUTE != 1 && o.IS_DELETE != 1 && string.IsNullOrEmpty(o.TDL_SERVICE_IDS)).ToList();
                     if (serviceReqs != null && serviceReqs.Count > 0)
                     {
-                        if ((KeyMustChooseSeviceExam == "1" && XtraMessageBox.Show(String.Format("Y lệnh {0} thiếu dịch vụ khám. Bạn có muốn tiếp tục", String.Join(", ", serviceReqs.Select(o => o.SERVICE_REQ_CODE))),"Thông báo", MessageBoxButtons.YesNo) != System.Windows.Forms.DialogResult.Yes) || (KeyMustChooseSeviceExam == "2" && XtraMessageBox.Show(String.Format("Y lệnh {0} thiếu dịch vụ khám. Không cho phép kết thúc điều trị", String.Join(", ", serviceReqs.Select(o => o.SERVICE_REQ_CODE))), "Thông báo") == System.Windows.Forms.DialogResult.OK))
+                        if ((KeyMustChooseSeviceExam == "1" && XtraMessageBox.Show(String.Format("Y lệnh {0} thiếu dịch vụ khám. Bạn có muốn tiếp tục", String.Join(", ", serviceReqs.Select(o => o.SERVICE_REQ_CODE))), "Thông báo", MessageBoxButtons.YesNo) != System.Windows.Forms.DialogResult.Yes) || (KeyMustChooseSeviceExam == "2" && XtraMessageBox.Show(String.Format("Y lệnh {0} thiếu dịch vụ khám. Không cho phép kết thúc điều trị", String.Join(", ", serviceReqs.Select(o => o.SERVICE_REQ_CODE))), "Thông báo") == System.Windows.Forms.DialogResult.OK))
                             rs = false;
                     }
                 }
@@ -1037,13 +1057,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     ObeyContraindiSave = new List<HIS_OBEY_CONTRAINDI>();
                 if (ObeyContraindiEdit != null && ObeyContraindiEdit.Count > 0)
                 {
-                    ObeyContraindiSave.AddRange(ObeyContraindiEdit.Where(o=> !ObeyContraindiSave.Exists(p=>p.ID == o.ID)));
+                    ObeyContraindiSave.AddRange(ObeyContraindiEdit.Where(o => !ObeyContraindiSave.Exists(p => p.ID == o.ID)));
                 }
                 ObeyContraindiSave.ForEach(o =>
                 {
                     if (sereServ != null && sereServ.Count > 0)
                     {
-                        var serviceReqHasObey = sereServ.Where(p => p.SERVICE_ID == o.SERVICE_ID && serviceReq.Exists(k=>k.ID == p.SERVICE_REQ_ID)).ToList();
+                        var serviceReqHasObey = sereServ.Where(p => p.SERVICE_ID == o.SERVICE_ID && serviceReq.Exists(k => k.ID == p.SERVICE_REQ_ID)).ToList();
                         if (serviceReqHasObey != null && serviceReqHasObey.Count() > 0)
                         {
                             if (string.IsNullOrEmpty(o.SERVICE_REQ_CODES))
@@ -1057,7 +1077,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         else
                         {
                             if (!string.IsNullOrEmpty(o.SERVICE_REQ_CODES))
-                            {                            
+                            {
                                 if (expMests != null && expMests.Count > 0 && expMests.FirstOrDefault(p => sereServ.Exists(k => k.SERVICE_REQ_ID == p.SERVICE_REQ_ID)) != null)
                                 {
                                     o.EXP_MEST_CODES = String.Join(",", o.EXP_MEST_CODES.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).ToList().Where(k => !expMests.Where(p => sereServ.Exists(i => i.SERVICE_REQ_ID == p.SERVICE_REQ_ID)).Select(p => p.EXP_MEST_CODE).ToList().Exists(p => p.Equals(k))).Distinct());
@@ -1068,7 +1088,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         }
                     }
                 });
-                if(lstSend != null && lstSend.Count > 0)
+                if (lstSend != null && lstSend.Count > 0)
                 {
                     CommonParam param = new CommonParam();
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lstSend), lstSend));
@@ -1120,7 +1140,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
                 if (HisConfigCFG.IsReasonRequired)
                 {
-                    if(actionType == GlobalVariables.ActionAdd)
+                    if (actionType == GlobalVariables.ActionAdd)
                     {
                         if (this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0)
                         {
@@ -1135,7 +1155,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             }
                         }
                     }
-                    else if(actionType == GlobalVariables.ActionEdit)
+                    else if (actionType == GlobalVariables.ActionEdit)
                     {
                         if (this.lciExpMestReason.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
                         {
@@ -1167,16 +1187,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 var icdValue = UcIcdGetValue() as HIS.UC.Icd.ADO.IcdInputADO;
                 var subIcd = UcSecondaryIcdGetValue() as HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO;
 
-                if ((subIcd == null ||(subIcd != null && string.IsNullOrEmpty(subIcd.ICD_SUB_CODE))) && (icdValue != null && !string.IsNullOrEmpty(icdValue.ICD_CODE)))
+                if ((subIcd == null || (subIcd != null && string.IsNullOrEmpty(subIcd.ICD_SUB_CODE))) && (icdValue != null && !string.IsNullOrEmpty(icdValue.ICD_CODE)))
                 {
                     if (!String.IsNullOrEmpty(HisConfigCFG.IcdCodeToApplyRestrictPatientTypeByOtherSourcePaid))
                     {
                         var IcdCodes = HisConfigCFG.IcdCodeToApplyRestrictPatientTypeByOtherSourcePaid.Split(',').ToList();
-                        if ( IcdCodes != null &&IcdCodes.Count > 0)
+                        if (IcdCodes != null && IcdCodes.Count > 0)
                         {
                             if (IcdCodes.Contains(icdValue.ICD_CODE))
                             {
-                                var checkData = (this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0) ? this.mediMatyTypeADOs.Where(o => o.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT && o.OTHER_PAY_SOURCE_ID == null).Select(p=>p.MEDICINE_TYPE_NAME).ToList() : null;
+                                var checkData = (this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0) ? this.mediMatyTypeADOs.Where(o => o.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT && o.OTHER_PAY_SOURCE_ID == null).Select(p => p.MEDICINE_TYPE_NAME).ToList() : null;
                                 if (checkData != null && checkData.Count > 0)
                                 {
                                     DevExpress.XtraEditors.XtraMessageBox.Show(String.Format(ResourceMessage.BoSungThongTinChanDoanPhuHoacDoiDoiTuongThanhToan, string.Join(", ", checkData)),
@@ -1194,7 +1214,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             catch (Exception ex)
             {
                 result = false;
-                Inventec.Common.Logging.LogSystem.Error(ex);                
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
         }
@@ -1207,9 +1227,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 var medicineTypeAcinByMety = ValidAcinInteractiveWorker.GetMedicineTypeAcinByMedicineType(medicineTypeIds);
 
-                if (medicineTypeAcinByMety != null && medicineTypeAcinByMety.Count > 0)
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListExpMestMedicineAntibioticRequired), ListExpMestMedicineAntibioticRequired));
+                if (medicineTypeAcinByMety != null && medicineTypeAcinByMety.Count > 0 && ListExpMestMedicineAntibioticRequired != null && ListExpMestMedicineAntibioticRequired.Count > 0)
                 {
-                    var AcinIds = medicineTypeAcinByMety.Select(o => o.ACTIVE_INGREDIENT_ID).ToList();
+                    var AcinIds = medicineTypeAcinByMety.Where(o => ListExpMestMedicineAntibioticRequired.Exists(p => p.TDL_MEDICINE_TYPE_ID == o.MEDICINE_TYPE_ID)).Select(o => o.ACTIVE_INGREDIENT_ID).ToList();
                     var acinIngredients = BackendDataWorker.Get<HIS_ACTIVE_INGREDIENT>().Where(o => AcinIds.Contains(o.ID)).Where(o => o.IS_APPROVAL_REQUIRED == GlobalVariables.CommonNumberTrue).ToList();
 
                     if (acinIngredients != null && acinIngredients.Count > 0)
@@ -1227,68 +1248,72 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             var acinIngredientID = acinIngredients.Select(o => o.ID).ToList();
                             var TypeAcinMedicineType = medicineTypeAcinByMety.Where(o => acinIngredientID.Contains(o.ACTIVE_INGREDIENT_ID)).Select(p => p.MEDICINE_TYPE_ID).ToList();
                             var medicineType = this.mediMatyTypeADOs.Where(o => TypeAcinMedicineType.Contains(o.ID)).ToList();
-
-                            foreach (var item in medicineType)
+                            var ExpMestId = ListExpMestMedicineAntibioticRequired.Select(o => o.EXP_MEST_ID).Distinct().ToList();
+                            foreach (var em in ExpMestId)
                             {
-                                var acinIngredient = medicineTypeAcinByMety.Where(o => o.MEDICINE_TYPE_ID == item.ID).ToList();
-
-                                foreach (var iAcin in acinIngredient)
+                                var medicineTypeExpMest = medicineType.Where(o => ListExpMestMedicineAntibioticRequired.Where(p => p.EXP_MEST_ID == em).ToList().Exists(p => p.TDL_MEDICINE_TYPE_ID == o.ID)).ToList();
+                                foreach (var item in medicineTypeExpMest)
                                 {
-                                    HIS_ANTIBIOTIC_NEW_REG NewReg = new HIS_ANTIBIOTIC_NEW_REG();
-                                    NewReg.DOSAGE = item.TUTORIAL;
-                                    NewReg.USE_FORM = item.MEDICINE_USE_FORM_NAME;
-                                    NewReg.USE_DAY = item.UseDays;
-                                    NewReg.ACTIVE_INGREDIENT_ID = iAcin != null ? iAcin.ACTIVE_INGREDIENT_ID : 0;
-                                    NewReg.CONCENTRA = item.CONCENTRA;
+                                    var acinIngredient = medicineTypeAcinByMety.Where(o => o.MEDICINE_TYPE_ID == item.ID).ToList();
 
-                                    NewRegimen.Add(NewReg);
-                                }
-                            }
+                                    foreach (var iAcin in acinIngredient)
+                                    {
+                                        HIS_ANTIBIOTIC_NEW_REG NewReg = new HIS_ANTIBIOTIC_NEW_REG();
+                                        NewReg.DOSAGE = item.TUTORIAL;
+                                        NewReg.USE_FORM = item.MEDICINE_USE_FORM_NAME;
+                                        NewReg.USE_DAY = item.UseDays;
+                                        NewReg.ACTIVE_INGREDIENT_ID = iAcin != null ? iAcin.ACTIVE_INGREDIENT_ID : 0;
+                                        NewReg.CONCENTRA = item.CONCENTRA;
 
-                            if (actionType == GlobalVariables.ActionAdd)
-                            {
-                                ado.PatientCode = currentTreatmentWithPatientType.TDL_PATIENT_CODE;
-                                ado.PatientName = currentTreatmentWithPatientType.TDL_PATIENT_NAME;
-                                ado.Dob = currentTreatmentWithPatientType.TDL_PATIENT_DOB;
-                                ado.IsHasNotDayDob = currentTreatmentWithPatientType.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1;
-                                ado.GenderName = currentTreatmentWithPatientType.TDL_PATIENT_GENDER_NAME;
-                                ado.Temperature = (decimal?)spinTemperature.EditValue;
-                                ado.Weight = (decimal?)spinWeight.EditValue;
-                                ado.Height = (decimal?)spinHeight.EditValue;
-                                ado.IcdSubCode = txtIcdSubCode.Text;
-                                ado.IcdText = txtIcdText.Text;
-                                ado.NewRegimen = new List<HIS_ANTIBIOTIC_NEW_REG>();
-                                ado.NewRegimen = NewRegimen;
-                                ado.ExpMestId = this.oldExpMestId;
-                                ado.processType = HIS.Desktop.ADO.AntibioticRequestADO.ProcessType.Request;
-                                ado.InstructionDate = this.intructionTimeSelecteds.OrderByDescending(o => o).Last();
-
-                            }
-                            else if (actionType == GlobalVariables.ActionEdit)
-                            {
-                                V_HIS_ANTIBIOTIC_REQUEST AntibioticRequest = new V_HIS_ANTIBIOTIC_REQUEST();
-                                if (this.oldExpMest != null)
-                                {
-                                    CommonParam param = new CommonParam();
-                                    HisAntibioticRequestViewFilter filter = new HisAntibioticRequestViewFilter();
-                                    filter.ID = this.oldExpMest.ANTIBIOTIC_REQUEST_ID;
-                                    AntibioticRequest = new BackendAdapter(param).Get<List<V_HIS_ANTIBIOTIC_REQUEST>>("api/HisAntibioticRequest/GetView", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
+                                        NewRegimen.Add(NewReg);
+                                    }
                                 }
 
-                                ado.AntibioticRequest = new V_HIS_ANTIBIOTIC_REQUEST();
-                                ado.AntibioticRequest = AntibioticRequest;
-                                ado.NewRegimen = new List<HIS_ANTIBIOTIC_NEW_REG>();
-                                ado.NewRegimen = NewRegimen;
-                                ado.ExpMestId = this.oldExpMestId;
-                                ado.processType = HIS.Desktop.ADO.AntibioticRequestADO.ProcessType.Request;
-                                ado.InstructionDate = this.intructionTimeSelecteds.OrderByDescending(o => o).Last();
-                            }
+                                if (actionType == GlobalVariables.ActionAdd)
+                                {
+                                    ado.PatientCode = currentTreatmentWithPatientType.TDL_PATIENT_CODE;
+                                    ado.PatientName = currentTreatmentWithPatientType.TDL_PATIENT_NAME;
+                                    ado.Dob = currentTreatmentWithPatientType.TDL_PATIENT_DOB;
+                                    ado.IsHasNotDayDob = currentTreatmentWithPatientType.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1;
+                                    ado.GenderName = currentTreatmentWithPatientType.TDL_PATIENT_GENDER_NAME;
+                                    ado.Temperature = (decimal?)spinTemperature.EditValue;
+                                    ado.Weight = (decimal?)spinWeight.EditValue;
+                                    ado.Height = (decimal?)spinHeight.EditValue;
+                                    ado.IcdSubCode = txtIcdSubCode.Text;
+                                    ado.IcdText = txtIcdText.Text;
+                                    ado.NewRegimen = new List<HIS_ANTIBIOTIC_NEW_REG>();
+                                    ado.NewRegimen = NewRegimen;
+                                    ado.ExpMestId = em ?? 0;
+                                    ado.processType = HIS.Desktop.ADO.AntibioticRequestADO.ProcessType.Request;
+                                    ado.InstructionDate = this.intructionTimeSelecteds.OrderByDescending(o => o).Last();
 
-                            List<object> listArgs = new List<object>();
-                            listArgs.Add(ado);
-                            var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, GetRoomId(), GetRoomTypeId()), listArgs);
-                            if (extenceInstance == null) throw new ArgumentNullException("Khoi tao moduleData that bai. extenceInstance = null");
-                            ((Form)extenceInstance).ShowDialog();
+                                }
+                                else if (actionType == GlobalVariables.ActionEdit)
+                                {
+                                    V_HIS_ANTIBIOTIC_REQUEST AntibioticRequest = new V_HIS_ANTIBIOTIC_REQUEST();
+                                    if (em != null)
+                                    {
+                                        CommonParam param = new CommonParam();
+                                        HisAntibioticRequestViewFilter filter = new HisAntibioticRequestViewFilter();
+                                        filter.ID = ListExpMestResult.FirstOrDefault(o => o.ID == (em ?? 0)).ANTIBIOTIC_REQUEST_ID;
+                                        AntibioticRequest = new BackendAdapter(param).Get<List<V_HIS_ANTIBIOTIC_REQUEST>>("api/HisAntibioticRequest/GetView", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
+                                    }
+
+                                    ado.AntibioticRequest = new V_HIS_ANTIBIOTIC_REQUEST();
+                                    ado.AntibioticRequest = AntibioticRequest;
+                                    ado.NewRegimen = new List<HIS_ANTIBIOTIC_NEW_REG>();
+                                    ado.NewRegimen = NewRegimen;
+                                    ado.ExpMestId = em ?? 0;
+                                    ado.processType = HIS.Desktop.ADO.AntibioticRequestADO.ProcessType.Request;
+                                    ado.InstructionDate = this.intructionTimeSelecteds.OrderByDescending(o => o).Last();
+                                }
+
+                                List<object> listArgs = new List<object>();
+                                listArgs.Add(ado);
+                                var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, GetRoomId(), GetRoomTypeId()), listArgs);
+                                if (extenceInstance == null) throw new ArgumentNullException("Khoi tao moduleData that bai. extenceInstance = null");
+                                ((Form)extenceInstance).ShowDialog();
+                            }
                         }
                     }
                 }
@@ -2066,7 +2091,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 methods.Add(LoadVServiceReq);
                 ThreadCustomManager.MultipleThreadWithJoin(methods);
                 WaitingManager.Hide();
-                
+
 
                 CommonParam param = new CommonParam();
                 HisPatientViewFilter patientFilter = new HisPatientViewFilter();

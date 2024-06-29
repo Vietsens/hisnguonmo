@@ -44,5 +44,7 @@ namespace MPS.Processor.Mps000421
         internal const string Month = "Month";
         internal const string Year = "Year";
         internal const string BARCODE_EXP_MEST_CODE = "BARCODE_EXP_MEST_CODE";
+
+        internal const string NUMBER_BLOOD_TRANSFUSIONS = "NUMBER_BLOOD_TRANSFUSIONS";
     }
 }

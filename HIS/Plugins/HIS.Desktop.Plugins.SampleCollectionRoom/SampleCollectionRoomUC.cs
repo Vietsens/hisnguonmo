@@ -638,6 +638,15 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     }
                     lisSampleFilter.SERVICE_REQ_CODE__EXACT = code;
                 }
+                else if (!String.IsNullOrWhiteSpace(txtFindServiceBarCode.Text))
+                {
+                    string code = txtFindServiceBarCode.Text.Trim();
+                    //if (code.Length <= 5)
+                    //{
+                    //    txtFindTreamentCode.Text = code;
+                    //}
+                    lisSampleFilter.BARCODE__EXACT = code;
+                }
                 else if (!String.IsNullOrWhiteSpace(txtFindTreamentCode.Text))
                 {
                     string code = txtFindTreamentCode.Text.Trim();
@@ -2374,6 +2383,19 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             }
         }
 
+        public void FocusF4()
+        {
+            try
+            {
+                txtFindServiceBarCode.Focus();
+                txtFindServiceBarCode.SelectAll();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void ShotcurtReCall()
         {
             try
@@ -3289,6 +3311,21 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtFindServiceBarCode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    btnFind_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

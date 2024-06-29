@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{48575A83-B03F-40F4-A4E5-B1D3F3046FBA}</ProjectGuid>
+    <ProjectGuid>{4D1A76DF-CCD6-47B0-8317-90DABDC5103D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EMR.Desktop.Plugins.EmrTreatmentList</RootNamespace>

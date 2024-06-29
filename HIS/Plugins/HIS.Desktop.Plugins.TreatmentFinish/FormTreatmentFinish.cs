@@ -76,6 +76,7 @@ using Inventec.Common.Logging;
 using IcdADO = HIS.Desktop.Plugins.TreatmentFinish.ADO.IcdADO;
 using HIS.UC.Death.ADO;
 using System.Resources;
+using Inventec.UC.Login.Base;
 
 namespace HIS.Desktop.Plugins.TreatmentFinish
 {
@@ -169,6 +170,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         public List<MOS.EFMODEL.DataModels.HIS_BRANCH> hisBranchs;
         public List<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE> hisTreatmentTypes;
         HIS_PATIENT currentPatient;
+        
 
         bool isFinished = false;
         #endregion
@@ -332,6 +334,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 //
                 chkOutHopitalCondition.MaximumSize = new System.Drawing.Size(txtDaysBedTreatment.Width, 0);
                 ChkExpXml4210.MaximumSize = new System.Drawing.Size(txtDaysBedTreatment.Width, 0);
+                
                 time.Start();
             }
             catch (Exception ex)
@@ -442,8 +445,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 this.lciOutPatientDateFrom.Text = Inventec.Common.Resource.Get.Value("FormTreatmentFinish.lciOutPatientDateFrom.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciDoctorName.Text = Inventec.Common.Resource.Get.Value("FormTreatmentFinish.lciDoctorName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciTypeOfDischarge.Text = Inventec.Common.Resource.Get.Value("FormTreatmentFinish.lciTypeOfDischarge.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem11.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("FormTreatmentFinish.layoutControlItem11.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem11.Text = Inventec.Common.Resource.Get.Value("FormTreatmentFinish.layoutControlItem11.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem13.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("FormTreatmentFinish.layoutControlItem11.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem13.Text = Inventec.Common.Resource.Get.Value("FormTreatmentFinish.layoutControlItem11.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciPatientProgram.Text = Inventec.Common.Resource.Get.Value("FormTreatmentFinish.lciPatientProgram.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem27.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("FormTreatmentFinish.layoutControlItem27.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem27.Text = Inventec.Common.Resource.Get.Value("FormTreatmentFinish.layoutControlItem27.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -760,8 +763,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 {
                     lciDoctorName.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     lciCboDoctor.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                    txtDoctorLogginName.Text = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                    cboDoctorUserName.EditValue = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
+                    this.txtDoctorLogginName.Text = ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    this.cboDoctorUserName.EditValue = (object)ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                     cboDoctorUserName.Properties.Buttons[1].Visible = true;
                 }
                 else
@@ -1003,14 +1006,39 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 var department = this.hisDepartments.FirstOrDefault(o => o.ID == (currentHisTreatment.LAST_DEPARTMENT_ID ?? 0));
                 if (department != null)
                 {
+                    if (CheckNeedSignInstead(department.HEAD_LOGINNAME))
+                    {
+                        this.layoutControlItem46.AppearanceItemCaption.ForeColor = Color.Brown;
+                    }
                     txtHeadUser.Text = department.HEAD_LOGINNAME;
                     cboHeadUser.EditValue = department.HEAD_USERNAME;
+
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+        private bool CheckNeedSignInstead(string login_name)
+        {
+            bool isSign = false;
+            try
+            {
+                //var rs = HisEmployees.Where(s => s.LOGINNAME.Equals(login_name)).FirstOrDefault();
+                HisEmployeeFilter emFilter = new HisEmployeeFilter();
+                emFilter.LOGINNAME__EXACT = login_name;
+                var rs = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EMPLOYEE>>("/api/HisEmployee/GetView", ApiConsumers.MosConsumer, emFilter, new CommonParam());
+                if(rs!= null)
+                {
+                    if (rs.First().IS_NEED_SIGN_INSTEAD == 1) isSign = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+            return isSign;
         }
         private async Task LoadCboDirectorUser(List<ACS_USER> acsUser)
         {
@@ -1023,8 +1051,14 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     var branch = this.hisBranchs.FirstOrDefault(o => o.ID == (department.BRANCH_ID));
                     if (branch != null)
                     {
+
+                        if (CheckNeedSignInstead(branch.DIRECTOR_LOGINNAME))
+                        {
+                            this.layoutControlItem43.AppearanceItemCaption.ForeColor = Color.Brown;
+                        }
                         txtDirectorUser.Text = branch.DIRECTOR_LOGINNAME;
                         cboDirectorUser.EditValue = branch.DIRECTOR_USERNAME;
+
                     }
                 }
 
@@ -2332,6 +2366,30 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private bool ValidationUser()
+        {
+            bool isValid = true;
+            try
+            {
+                if ((string.IsNullOrEmpty(txtEndDeptSubsHead.Text.Trim()) || cboEndDeptSubsHead.EditValue == null)&&this.layoutControlItem46.AppearanceItemCaption.ForeColor == Color.Brown)
+                {
+                    dxErrorProvider1.SetError(txtEndDeptSubsHead, ResourceMessage.TruongDuLieuBatBuoc, ErrorType.Warning);
+                    isValid = false;
+                }
+                if ((string.IsNullOrEmpty(txtHospSubsDirector.Text.Trim()) || cboHospSubsDirector.EditValue == null) && this.layoutControlItem43.AppearanceItemCaption.ForeColor == Color.Brown)
+                {
+                    dxErrorProvider1.SetError(txtHospSubsDirector, ResourceMessage.TruongDuLieuBatBuoc, ErrorType.Warning);
+                    isValid = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                isValid = false;
+                LogSystem.Error(ex);
+            }
+            return isValid;
+        }
         private async void save()
         {
             try
@@ -2339,11 +2397,16 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 if (!btnSave.Enabled) return;
                 bool success = false;
                 this.positionHandle = -1;
-
+                if (Int64.Parse(cboTreatmentEndType.EditValue.ToString()) == 2)
+                {
+                    layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    ValidateTextEdit(txtDauHieuLamSang);
+                }
                 bool valid = (bool)icdProcessor.ValidationIcd(ucIcd);
                 valid = (bool)subIcdProcessor.GetValidate(ucSecondaryIcd) && valid;
                 valid = IsValiICDCause() && valid;
                 valid = dxValidationProvider.Validate() && valid;
+                if (!ValidationUser()) return;
                 if (!valid) return;
                 bool IsContinue = true;
                 IsContinue = IsContinue && CheckSA(true);
@@ -2462,10 +2525,14 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     || treatmentEndType.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN || treatmentEndType.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__RAVIEN
                     || treatmentEndType.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN || treatmentEndType.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CTCV))
                 {
-                    if (String.IsNullOrEmpty(txtMethod.Text))
+                    if (String.IsNullOrEmpty(txtMethod.Text) && String.IsNullOrEmpty(hisTreatmentFinishSDO_process.TreatmentMethod))
                     {
                         DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.ChuaNhapPhuongPhapDieuTri, ResourceMessage.ThongBao);
                         return;
+                    }
+                    if (!String.IsNullOrEmpty(hisTreatmentFinishSDO_process.TreatmentMethod) && String.IsNullOrEmpty(txtMethod.Text))
+                    {
+                        txtMethod.Text = hisTreatmentFinishSDO_process.TreatmentMethod;
                     }
                     else
                     {
@@ -2476,10 +2543,15 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     || treatmentEndType.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN || treatmentEndType.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__RAVIEN
                     || treatmentEndType.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN || treatmentEndType.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CTCV))))
                 {
-                    if (String.IsNullOrEmpty(txtMethod.Text))
+
+                    if (String.IsNullOrEmpty(txtMethod.Text) && String.IsNullOrEmpty(hisTreatmentFinishSDO_process.TreatmentMethod))
                     {
                         DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.ChuaNhapPhuongPhapDieuTri, ResourceMessage.ThongBao);
                         return;
+                    }
+                    if (!String.IsNullOrEmpty(hisTreatmentFinishSDO_process.TreatmentMethod) && String.IsNullOrEmpty(txtMethod.Text))
+                    {
+                        txtMethod.Text = hisTreatmentFinishSDO_process.TreatmentMethod;
                     }
                     else
                     {
@@ -2498,7 +2570,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 {
                     return;
                 }
-
+                if (hisTreatmentFinishSDO != null && Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentEndType.EditValue ?? "0").ToString()) == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN && (string.IsNullOrEmpty(hisTreatmentFinishSDO.ClinicalNote) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TreatmentDirection) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TreatmentMethod) && string.IsNullOrEmpty(hisTreatmentFinishSDO.TransportVehicle) || (string.IsNullOrEmpty(hisTreatmentFinishSDO.TransporterLoginnames) && string.IsNullOrEmpty(hisTreatmentFinishSDO.Transporter)) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TransferOutMediOrgCode) || !hisTreatmentFinishSDO.TranPatiReasonId.HasValue || !hisTreatmentFinishSDO.TranPatiFormId.HasValue))
+                {
+                    XtraMessageBox.Show("Thiếu thông tin chuyển viện", "Thông báo");
+                    return;
+                }
                 CommonParam param = new CommonParam();
                 SaveTreatmentFinish(hisTreatmentFinishSDO, ref success, ref param);
                 MessageManager.Show(this, param, success);
@@ -2787,9 +2863,47 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 this.positionHandle = -1;
 
                 bool valid = (bool)icdProcessor.ValidationIcd(ucIcd);
+                valid = (bool)subIcdProcessor.GetValidate(ucSecondaryIcd) && valid;
                 valid = this.IsValiICDCause();
                 valid = dxValidationProvider.Validate() && valid;
                 if (!valid) return;
+                HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager check = new Desktop.Plugins.Library.CheckIcd.CheckIcdManager(null, currentHisTreatment);
+                string message = null;
+                if (CheckIcdWhenSave == "1" || CheckIcdWhenSave == "2")
+                {
+                    string icdCode = "", icdSubCode = "";
+                    if (ucIcd != null)
+                    {
+                        var icdValue = icdProcessor.GetValue(ucIcd);
+                        if (icdValue != null && icdValue is IcdInputADO)
+                        {
+                            icdCode = ((IcdInputADO)icdValue).ICD_CODE;
+                        }
+                    }
+                    if (ucSecondaryIcd != null)
+                    {
+                        var subIcd = subIcdProcessor.GetValue(ucSecondaryIcd);
+                        if (subIcd != null && subIcd is SecondaryIcdDataADO)
+                        {
+                            icdSubCode = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
+                        }
+                    }
+                    if (!check.ProcessCheckIcd(icdCode, icdSubCode, ref message, true))
+                    {
+                        if (CheckIcdWhenSave == "1" && !String.IsNullOrEmpty(message))
+                        {
+                            if (DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("{0}. Bạn có muốn tiếp tục không?", message),
+                            "Thông báo",
+                           MessageBoxButtons.YesNo) == DialogResult.No)
+                                return;
+                        }
+                        if (CheckIcdWhenSave == "2" && !String.IsNullOrEmpty(message))
+                        {
+                            DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK);
+                            return;
+                        }
+                    }
+                }
                 bool success = false;
                 if (hisTreatmentFinishSDO_process == null)
                     hisTreatmentFinishSDO_process = new MOS.SDO.HisTreatmentFinishSDO();
@@ -5170,6 +5284,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         {
             try
             {
+                dxErrorProvider1.SetError(txtHospSubsDirector, "", ErrorType.None);
                 if (e.KeyCode == Keys.Enter)
                 {
                     if (cboHospSubsDirector.EditValue != null)
@@ -5197,6 +5312,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         {
             try
             {
+
+                dxErrorProvider1.SetError(txtEndDeptSubsHead, "", ErrorType.None);
+
                 if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
                 {
                     if (cboEndDeptSubsHead.EditValue != null)
@@ -5400,6 +5518,31 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+
+        private void txtEndDeptSubsHead_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                dxErrorProvider1.SetError(txtEndDeptSubsHead, "", ErrorType.None);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtHospSubsDirector_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                dxErrorProvider1.SetError(txtHospSubsDirector, "", ErrorType.None);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
             }
         }
     }

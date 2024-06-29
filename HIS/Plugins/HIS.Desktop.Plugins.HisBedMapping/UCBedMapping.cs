@@ -281,7 +281,8 @@ namespace HIS.Desktop.Plugins.HisBedMapping
             try
             {
                 var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId);
-                var bedRoom = BackendDataWorker.Get<V_HIS_BED_ROOM>().Where(o => o.DEPARTMENT_ID == currentRoom.DEPARTMENT_ID).ToList();
+                var bedRoomData = BackendDataWorker.Get<V_HIS_BED_ROOM>().Where(o => o.DEPARTMENT_ID == currentRoom.DEPARTMENT_ID).ToList();
+                var bedRoom = bedRoomData.Where(o => o.IS_ACTIVE == 1).ToList();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("BED_ROOM_CODE", "", 80, 1));
                 columnInfos.Add(new ColumnInfo("BED_ROOM_NAME", "", 200, 2));

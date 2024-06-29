@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<doc>
+  <assembly>
+    <name>EO.WebBrowser.WinForm</name>
+  </assembly>
+  <members>
+    <member name="T:EO.WinForm.WebViewHost">
+      <summary>
+            Provides the base class for a Windows Forms control that hosts a <see cref="T:EO.WebBrowser.WebView" />.
+            </summary>
+    </member>
+    <member name="P:EO.WinForm.WebViewHost.IsReady">
+      <summary>
+            Gets a value indicating whether the underlying <see cref="T:EO.WebBrowser.WebView" /> is ready.
+            </summary>
+    </member>
+    <member name="E:EO.WinForm.WebViewHost.IsReadyChanged">
+      <summary>
+            Occurs when <see cref="P:EO.WinForm.WebViewHost.IsReady" /> is changed.
+            </summary>
+    </member>
+    <member name="T:EO.WinForm.WebControl">
+      <summary>
+            A Windows Forms control that provides a thin wrapper to the <see cref="T:EO.WebBrowser.WebView" /> class.
+            </summary>
+    </member>
+    <member name="P:EO.WinForm.WebControl.WebView">
+      <summary>
+            Gets or sets the associated <see cref="P:EO.WinForm.WebControl.WebView" /> object.
+            </summary>
+    </member>
+  </members>
+</doc>

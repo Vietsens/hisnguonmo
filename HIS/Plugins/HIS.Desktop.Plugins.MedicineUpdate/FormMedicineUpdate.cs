@@ -610,7 +610,7 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 ValidBidControlMaxlength(txtBidNumber, 30, false);
                 ValidBidControlMaxlength(txtMaHoatChatBHYT, 500, false);
                 ValidBidControlMaxlength(txtConcentra, 1000, false);
-                ValidBidControlMaxlength(txtHeinServiceBHYTName, 500, false);
+                ValidBidControlMaxlength(txtHeinServiceBHYTName, 1500);
                 ValidBidControlMaxlength(txtTenHoatChatBHYT, 1000, false);
                 ValidBidControlMaxlength(txtBidExtraCode, 50, false);
             }
@@ -957,7 +957,7 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                //Inventec.Common.Logging.LogSystem.Error(ex);
                 WaitingManager.Hide();
             }
         }

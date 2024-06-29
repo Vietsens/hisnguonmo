@@ -136,7 +136,10 @@ namespace MPS.Processor.Mps000178
                 {
                     AddObjectKeyIntoListkey<V_HIS_TREATMENT_4>(rdo.treatment4, false);
                 }
-
+                if(rdo.departmentTran != null)
+                {
+                    SetSingleKey(new KeyValue(Mps000178ExtendSingleKey.TRAN_DEPARTMENT_NAME, rdo.departmentTran.DEPARTMENT_NAME));
+                }
             }
             catch (Exception ex)
             {

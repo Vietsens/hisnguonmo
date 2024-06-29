@@ -42,7 +42,7 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                     HIS_SUPPLIER newData = data as HIS_SUPPLIER;
                     BackendDataWorker.Reset<HIS_SUPPLIER>();
                     //Task task =
-                        LoadAsyncDataToCboSupplier();
+                    LoadAsyncDataToCboSupplier();
                     //task.Wait();
                     if (cboSupplierNum == 1)
                     {
@@ -74,7 +74,7 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                     V_HIS_BID_MEDICINE_TYPE bidMedicine = null;
                     if (bidId > 0)
                     {
-                        if(DicBidMedicineType.ContainsKey(bidId))
+                        if (DicBidMedicineType.ContainsKey(bidId))
                             bidMedicine = this.DicBidMedicineType[bidId].FirstOrDefault(o => o.SUPPLIER_ID == supplierId && o.MEDICINE_TYPE_ID == this.medicineType.ID && o.BID_GROUP_CODE == this.medicineType.BidGroupCode);
                         if (bidMedicine != null)
                         {
@@ -101,7 +101,7 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                         txtConcentra.Enabled = false;
                         txtManufacturerCode.Enabled = false;
                         cboManufacturerName.Enabled = false;
-                      
+
                         txtQDThau.Enabled = false;
                         txtNhomThau.Enabled = false;
                         txtGhiChu.Enabled = false;
@@ -137,7 +137,7 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                         txtManufacturerCode.Text = bidMedicine.MANUFACTURER_CODE;
                         txtRegisterNumber.Text = bidMedicine.REGISTER_NUMBER;
                         txtConcentra.Text = bidMedicine.CONCENTRA;
-                       
+
                         txtQDThau.Text = bidMedicine.BID_NUMBER;
                         txtNhomThau.Text = bidMedicine.BID_GROUP_CODE;
                         txtGhiChu.Text = bidMedicine.NOTE;
@@ -174,7 +174,7 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                         txtManufacturerCode.Text = this.medicineType.MANUFACTURER_CODE;
                         txtConcentra.Text = this.medicineType.CONCENTRA;
 
-                    
+
 
                         spImpVat.EditValue = this.medicineType.IMP_VAT_RATIO * 100;
                     }
@@ -191,7 +191,7 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                     V_HIS_BID_MATERIAL_TYPE bidMaterial = null;
                     if (bidId > 0)
                     {
-                        if(DicBidMaterialType.ContainsKey(bidId))
+                        if (DicBidMaterialType.ContainsKey(bidId))
                             bidMaterial = this.DicBidMaterialType[bidId].FirstOrDefault(o => o.SUPPLIER_ID == supplierId && o.MATERIAL_TYPE_ID == this.materialType.ID && o.BID_GROUP_CODE == this.materialType.BidGroupCode);
                         if (bidMaterial != null)
                         {
@@ -222,7 +222,7 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                         txtQDThau.Enabled = false;
                         txtGhiChu.Enabled = false;
                     }
-                    
+
                     if (bidMaterial != null)
                     {
                         var national = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().Where(o => o.NATIONAL_NAME == bidMaterial.NATIONAL_NAME).ToList();
@@ -395,7 +395,7 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                     Inventec.Common.Mapper.DataObjectMapper.Map<ADO.MetyMatyADO>(ado, this.medicineType);
 
                     long supplierId = Inventec.Common.TypeConvert.Parse.ToInt64((cboSupplier.EditValue ?? 0).ToString());
-                    if(DicBidMedicineType.ContainsKey(bidId))
+                    if (DicBidMedicineType.ContainsKey(bidId))
                         bidMedicine = this.DicBidMedicineType[bidId].FirstOrDefault(o => o.SUPPLIER_ID == supplierId && o.MEDICINE_TYPE_ID == this.medicineType.ID && o.BID_GROUP_CODE == medicineType.BidGroupCode);
                     if (bidMedicine != null)
                     {
@@ -409,10 +409,10 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                     // lấy ra dữ liệu khi mới mở form Edit
                     ADO.MetyMatyADO metyMatyADO = new ADO.MetyMatyADO();
                     if (this.ActionType == GlobalVariables.ActionEdit)
-                        metyMatyADO = ListMedicineADOTemp.FirstOrDefault(o=>o.ID == this.EditMedicine.ID);
+                        metyMatyADO = ListMedicineADOTemp.FirstOrDefault(o => o.ID == this.EditMedicine.ID);
                     // lưu rồi thì mới trừ số lượng.                   
                     decimal checkAmount = spAmount.Value - (this.ActionType == GlobalVariables.ActionEdit && metyMatyADO != null && metyMatyADO.AMOUNT.HasValue && metyMatyADO.CONTRACT_MATY_METY_ID > 0 ? metyMatyADO.AMOUNT.Value : 0);
-                    decimal VariableAmount = bidMedicine.AMOUNT * (1 + (bidMedicine.IMP_MORE_RATIO ?? 0)) - (bidMedicine.TDL_CONTRACT_AMOUNT ?? 0);
+                    decimal VariableAmount = bidMedicine.AMOUNT * (1 + (bidMedicine.IMP_MORE_RATIO ?? 0)) - (bidMedicine.TDL_CONTRACT_AMOUNT ?? 0) + (bidMedicine.ADJUST_AMOUNT ?? 0);
                     if (VariableAmount < checkAmount)
                     {
                         DevExpress.XtraEditors.XtraMessageBox.Show(Resources.ResourceLanguageManager.SoLuongHopDongVuotQuaSoLuongThau, Resources.ResourceLanguageManager.ThongBao);
@@ -437,26 +437,26 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                 ado.AMOUNT = spAmount.Value;
                 ado.NATIONAL_NAME = txtNationalName.Text.Trim();
                 ado.CONCENTRA = txtConcentra.Text.Trim();
-                if (!string.IsNullOrEmpty(this.bidGroupCodeSelected)) 
+                if (!string.IsNullOrEmpty(this.bidGroupCodeSelected))
                 {
                     ado.BID_GROUP_CODE = this.bidGroupCodeSelected;
                 }
-                else if(!string.IsNullOrEmpty(txtNhomThau.Text.Trim()))
+                else if (!string.IsNullOrEmpty(txtNhomThau.Text.Trim()))
                 {
                     ado.BID_GROUP_CODE = txtNhomThau.Text.Trim();
-				}
-				else
-				{
+                }
+                else
+                {
                     ado.BID_GROUP_CODE = null;
-				}
+                }
                 ado.NOTE = txtGhiChu.Text;
                 ado.BID_NUMBER = txtQDThau.Text;
-               
-                
+
+
                 ado.REGISTER_NUMBER = txtRegisterNumber.Text.Trim();
                 ado.CONTRACT_PRICE = spContractPrice.Value;
 
-               
+
                 if (spMonthLifespan.Value > 0)
                 {
                     ado.MonthLifespan = (long)spMonthLifespan.Value;
@@ -535,7 +535,7 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                 ado.DISCOUNT_TO_DATE = DiscountToDate;
                 #endregion
                 var aMedicineType = this.ListMedicineADO.FirstOrDefault(o => o.ID == this.medicineType.ID && o.CONTRACT_PRICE == ado.CONTRACT_PRICE && (o.BID_GROUP_CODE ?? "") == (ado.BID_GROUP_CODE ?? "") && (o.BID_NUMBER ?? "") == (ado.BID_NUMBER ?? ""));
-                
+
                 if (aMedicineType != null && aMedicineType.ID > 0)
                 {
                     if (this.ActionType == GlobalVariables.ActionAdd)
@@ -601,8 +601,8 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                     if (this.ActionType == GlobalVariables.ActionEdit)
                         metyMatyADO = ListMaterialADOTemp.FirstOrDefault(o => o.ID == this.EditMaterial.ID);
                     // lưu rồi thì mới trừ số lượng.                   
-                    decimal checkAmount = spAmount.Value - (this.ActionType == GlobalVariables.ActionEdit && metyMatyADO !=null && metyMatyADO.AMOUNT.HasValue && metyMatyADO.CONTRACT_MATY_METY_ID > 0 ? metyMatyADO.AMOUNT.Value : 0);
-                    decimal VariableAmount = bidMaterial.AMOUNT * (1 + (bidMaterial.IMP_MORE_RATIO ?? 0)) - (bidMaterial.TDL_CONTRACT_AMOUNT ?? 0);
+                    decimal checkAmount = spAmount.Value - (this.ActionType == GlobalVariables.ActionEdit && metyMatyADO != null && metyMatyADO.AMOUNT.HasValue && metyMatyADO.CONTRACT_MATY_METY_ID > 0 ? metyMatyADO.AMOUNT.Value : 0);
+                    decimal VariableAmount = bidMaterial.AMOUNT * (1 + (bidMaterial.IMP_MORE_RATIO ?? 0)) - (bidMaterial.TDL_CONTRACT_AMOUNT ?? 0) + (bidMaterial.ADJUST_AMOUNT ?? 0);
                     if (VariableAmount < checkAmount)
                     {
                         DevExpress.XtraEditors.XtraMessageBox.Show(Resources.ResourceLanguageManager.SoLuongHopDongVuotQuaSoLuongThau, Resources.ResourceLanguageManager.ThongBao);
@@ -629,14 +629,14 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                 ado.NATIONAL_NAME = txtNationalName.Text.Trim();
                 ado.CONCENTRA = txtConcentra.Text.Trim();
 
-                
+
 
 
                 ado.REGISTER_NUMBER = txtRegisterNumber.Text.Trim();
                 ado.CONTRACT_PRICE = spContractPrice.Value;
-                
+
                 ado.NOTE = txtGhiChu.Text;
-               
+
                 ado.BID_NUMBER = txtQDThau.Text;
                 if (!string.IsNullOrEmpty(this.bidGroupCodeSelected))
                 {
@@ -727,7 +727,7 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                     this.ListMaterialADO.Remove(aMaterialType);
 
                 }
-                
+
                 this.ListMaterialADO.Add(ado);
                 this.xtraTabContractMetyMaty.SelectedTabPage = tabMedicalContractMaty;
                 result = true;
@@ -766,8 +766,15 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                         param.Messages = new List<string>();
                     }
 
+                    long supplierId = Inventec.Common.TypeConvert.Parse.ToInt64((cboSupplier.EditValue ?? 0).ToString());
+
+                    long bidId = Inventec.Common.TypeConvert.Parse.ToInt64((cboBid.EditValue ?? 0).ToString());
+
+                    bool IsHasMessageAdjustAmount = false;
+
                     if (medicines != null && medicines.Count > 0)
                     {
+                        bool CheckAmount = false;
                         foreach (var item in medicines)
                         {
                             string messageErr = String.Format(Resources.ResourceLanguageManager.CanhBaoThuoc, item.MEDICINE_TYPE_NAME);
@@ -775,6 +782,7 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
 
                             if (item.AMOUNT <= 0)
                             {
+                                CheckAmount = true;
                                 result = false;
                                 messageErr += Resources.ResourceLanguageManager.SoLuongKhongDuocAm;
                             }
@@ -784,10 +792,45 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                                 param.Messages.Add(messageErr + ";");
                             }
                         }
+                        if (!CheckAmount && DicBidMedicineType != null && DicBidMedicineType.Count > 0)
+                        {
+                            var dt = medicines.GroupBy(o => o.ID).ToList();
+                            List<string> message = new List<string>();
+                            foreach (var item in dt)
+                            {
+                                var AmountTotal = item.ToList().Sum(o => o.AMOUNT);
+                                V_HIS_BID_MEDICINE_TYPE bidMedicine = null;
+                                if (this.ActionType == GlobalVariables.ActionEdit)
+                                {
+                                    if (DicBidMedicineType.ContainsKey(bidId))
+                                        bidMedicine = this.DicBidMedicineType[bidId].FirstOrDefault(o => o.ID == item.FirstOrDefault().BID_METY_MATY_ID);
+
+                                }
+                                else if (this.ActionType == GlobalVariables.ActionAdd)
+                                {
+                                    if (DicBidMedicineType.ContainsKey(bidId))
+                                        bidMedicine = this.DicBidMedicineType[bidId].FirstOrDefault(o => o.SUPPLIER_ID == supplierId && o.MEDICINE_TYPE_ID == item.FirstOrDefault().ID && o.BID_GROUP_CODE == item.FirstOrDefault().BID_GROUP_CODE);
+                                }
+                                if (bidMedicine != null)
+                                {
+                                    decimal VariableAmount = bidMedicine.AMOUNT * (1 + (bidMedicine.IMP_MORE_RATIO ?? 0)) + (bidMedicine.ADJUST_AMOUNT ?? 0);
+                                    if (AmountTotal > VariableAmount)
+                                    {
+                                        message.Add(string.Format("Thuốc {0} (Hợp đồng: {1} - Thầu: {2})", item.ToList().FirstOrDefault().MEDICINE_TYPE_NAME, AmountTotal, VariableAmount));
+                                    }
+                                }
+                            }
+                            if (message != null && message.Count > 0)
+                            {
+                                IsHasMessageAdjustAmount = true;
+                                param.Messages.Add("Thuốc/vật tư có tổng số lượng hợp đồng lớn hơn số lượng trong thầu." + string.Join(", ", message));
+                            }
+                        }
                     }
 
                     if (materials != null && materials.Count > 0)
                     {
+                        bool CheckAmount = false;
                         foreach (var item in materials)
                         {
                             string messageErr = String.Format(Resources.ResourceLanguageManager.CanhBaoVatTu, item.MEDICINE_TYPE_NAME);
@@ -796,12 +839,47 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                             if (item.AMOUNT <= 0)
                             {
                                 result = false;
+                                CheckAmount = true;
                                 messageErr += Resources.ResourceLanguageManager.SoLuongKhongDuocAm;
                             }
 
                             if (!result)
                             {
                                 param.Messages.Add(messageErr + ";");
+                            }
+                        }
+                        if (!CheckAmount && DicBidMaterialType != null && DicBidMaterialType.Count > 0)
+                        {
+                            var dt = materials.GroupBy(o => o.ID).ToList();
+                            List<string> message = new List<string>();
+                            foreach (var item in dt)
+                            {
+                                var AmountTotal = item.ToList().Sum(o => o.AMOUNT);
+                                V_HIS_BID_MATERIAL_TYPE bidMaterial = null;
+                                if (this.ActionType == GlobalVariables.ActionEdit)
+                                {
+                                    if (DicBidMaterialType.ContainsKey(bidId))
+                                        bidMaterial = this.DicBidMaterialType[bidId].FirstOrDefault(o => o.ID == item.FirstOrDefault().BID_METY_MATY_ID);
+
+                                }
+                                else if (this.ActionType == GlobalVariables.ActionAdd)
+                                {
+                                    if (DicBidMaterialType.ContainsKey(bidId))
+                                        bidMaterial = this.DicBidMaterialType[bidId].FirstOrDefault(o => o.SUPPLIER_ID == supplierId && o.MATERIAL_TYPE_ID == item.FirstOrDefault().ID && o.BID_GROUP_CODE == item.FirstOrDefault().BID_GROUP_CODE);
+                                }
+                                if (bidMaterial != null)
+                                {
+                                    decimal VariableAmount = bidMaterial.AMOUNT * (1 + (bidMaterial.IMP_MORE_RATIO ?? 0)) + (bidMaterial.ADJUST_AMOUNT ?? 0);
+                                    if (AmountTotal > VariableAmount)
+                                    {
+                                        message.Add(string.Format("Vật tư {0} (Hợp đồng: {1} - Thầu: {2})", item.ToList().FirstOrDefault().MEDICINE_TYPE_NAME, AmountTotal, VariableAmount));
+                                    }
+                                }
+                            }
+                            if (message != null && message.Count > 0)
+                            {
+                                IsHasMessageAdjustAmount = true;
+                                param.Messages.Add(string.Join(", ", message));
                             }
                         }
                     }

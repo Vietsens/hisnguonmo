@@ -593,7 +593,7 @@
       <Name>HIS.Desktop.Print</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2AAD22DB-2166-4BE8-AE52-335B21DC03FC}</Project>
+      <Project>{e8503e88-cc27-4296-b9c0-1c019114433d}</Project>
       <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
   </ItemGroup>

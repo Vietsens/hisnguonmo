@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1621E5DE-8AC1-496F-BFFB-119886CE1650}</ProjectGuid>
+    <ProjectGuid>{0969D89A-2384-4411-A28B-0D25CFE267E2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HIS.Desktop.Plugins.HisAlert</RootNamespace>

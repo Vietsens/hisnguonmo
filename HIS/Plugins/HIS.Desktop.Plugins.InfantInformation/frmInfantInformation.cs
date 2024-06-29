@@ -1276,11 +1276,12 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 if (!dxValidationProviderEditorInfo.Validate())
                     return;
 
-                WaitingManager.Show();
+               
                 HisBabySDO updateDTO = new HisBabySDO();
 
                 UpdateDTOFromDataForm(ref updateDTO);
-
+                if (dxErrorProvider1.HasErrors) return;
+                WaitingManager.Show();
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTO), updateDTO));
                 if (ActionType == GlobalVariables.ActionAdd)
                 {
@@ -1417,6 +1418,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             try
             {
                 currentData = null;
+                dxErrorProvider1.ClearErrors();
                 this.ActionType = GlobalVariables.ActionAdd;
                 EnableControlChanged(this.ActionType);
                 positionHandle = -1;
@@ -3931,6 +3933,32 @@ namespace HIS.Desktop.Plugins.InfantInformation
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtInfantBorntime_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                dxErrorProvider1.SetError(txtInfantBorntime, "", ErrorType.None);
+                dxErrorProvider1.SetError(dtdInfantdate, "", ErrorType.None);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
+        private void dtdInfantdate_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                dxErrorProvider1.SetError(txtInfantBorntime, "", ErrorType.None);
+                dxErrorProvider1.SetError(dtdInfantdate, "", ErrorType.None);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
             }
         }
     }

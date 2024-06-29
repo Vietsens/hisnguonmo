@@ -251,7 +251,6 @@
     <Compile Include="ADO\ExpMestSDO.cs" />
     <Compile Include="ADO\ExpMestMatyMetyReqSDODetail.cs" />
     <Compile Include="ADO\ExpMestMedicineSDODetail.cs" />
-    <Compile Include="ADO\GroupListADO.cs" />
     <Compile Include="AggrExpMestDetail\frmAggrExpMestDetail.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -293,7 +292,6 @@
     <EmbeddedResource Include="AggrExpMestDetail\frmAggrExpMestDetail.resx">
       <DependentUpon>frmAggrExpMestDetail.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

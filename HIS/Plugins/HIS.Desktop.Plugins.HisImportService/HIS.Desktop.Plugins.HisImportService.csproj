@@ -159,7 +159,7 @@
     <Compile Include="Import\ImportBehavior.cs" />
     <Compile Include="Import\ImportFactory.cs" />
     <Compile Include="Import\IImport.cs" />
-    <Compile Include="Import\Message\MessageImport.cs" />
+    <Compile Include="Message\MessageImport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />

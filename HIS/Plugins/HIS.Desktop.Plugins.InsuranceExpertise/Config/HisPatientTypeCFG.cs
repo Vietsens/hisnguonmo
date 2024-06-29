@@ -36,11 +36,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise.Config
         {
             get
             {
-                if (patientTypeIdIsHein == 0)
-                {
-                    patientTypeIdIsHein = GetId(HisConfigCFG.GetValue(SDA_CONFIG__PATIENT_TYPE_CODE__BHYT));
-                }
-                return patientTypeIdIsHein;
+                return GetId(HisConfigCFG.GetValue(SDA_CONFIG__PATIENT_TYPE_CODE__BHYT));
             }
             set
             {
@@ -53,11 +49,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise.Config
         {
             get
             {
-                if (string.IsNullOrEmpty(patientTypeCodeIsHein))
-                {
-                    patientTypeCodeIsHein = HisConfigCFG.GetValue(SDA_CONFIG__PATIENT_TYPE_CODE__BHYT);
-                }
-                return patientTypeCodeIsHein;
+                return HisConfigCFG.GetValue(SDA_CONFIG__PATIENT_TYPE_CODE__BHYT);
             }
             set
             {

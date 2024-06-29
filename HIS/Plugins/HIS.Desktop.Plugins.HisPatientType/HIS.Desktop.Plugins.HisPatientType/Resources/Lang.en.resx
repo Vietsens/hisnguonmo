@@ -117,63 +117,373 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="frmHisPatientType.grdColDelete.Tooltip" xml:space="preserve">
-    <value />
+  <data name="frmHisPatientType.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
   </data>
-  <data name="frmHisPatientType.grdColEdit.ToolTip" xml:space="preserve">
-    <value />
+  <data name="frmHisPatientType.bbtnAdd.Caption" xml:space="preserve">
+    <value>Add (Ctrl N)</value>
   </data>
-  <data name="frmHisPatientType.grdColumn4.Caption" xml:space="preserve">
-    <value />
+  <data name="frmHisPatientType.bbtnEdit.Caption" xml:space="preserve">
+    <value>Edit (Ctrl S)</value>
   </data>
-  <data name="frmHisPatientType.grdColumn4.Tooltip" xml:space="preserve">
-    <value />
+  <data name="frmHisPatientType.bbtnFocusDefault.Caption" xml:space="preserve">
+    <value>F2</value>
   </data>
-  <data name="frmImpUserTemp.bar1.Text" xml:space="preserve">
-    <value />
+  <data name="frmHisPatientType.bbtnReset.Caption" xml:space="preserve">
+    <value>Redo (Ctrl R)</value>
   </data>
-  <data name="frmImpUserTemp.bbtnAdd.Caption" xml:space="preserve">
-    <value />
+  <data name="frmHisPatientType.bbtnSearch.Caption" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
   </data>
-  <data name="frmImpUserTemp.bbtnSearch.Caption" xml:space="preserve">
-    <value />
+  <data name="frmHisPatientType.btnAdd.Text" xml:space="preserve">
+    <value>Add (Ctrl N)</value>
   </data>
-  <data name="frmImpUserTemp.btnAdd.Text" xml:space="preserve">
-    <value />
+  <data name="frmHisPatientType.btnCancel.Text" xml:space="preserve">
+    <value>Redo (Ctrl R)</value>
   </data>
-  <data name="frmImpUserTemp.btnSearch.Text" xml:space="preserve">
-    <value />
+  <data name="frmHisPatientType.btnEdit.Text" xml:space="preserve">
+    <value>Edit (Ctrl S)</value>
   </data>
-  <data name="frmImpUserTemp.grdColSTT.Caption" xml:space="preserve">
-    <value />
+  <data name="frmHisPatientType.btnSearch.Text" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
   </data>
-  <data name="frmImpUserTemp.grdColumn2.Caption" xml:space="preserve">
-    <value />
+  <data name="frmHisPatientType.cboBasePatientType.ToolTip" xml:space="preserve">
+    <value>Pricing policy will apply according to subjects</value>
   </data>
-  <data name="frmImpUserTemp.grdColumn2.Tooltip" xml:space="preserve">
-    <value />
+  <data name="frmHisPatientType.cboOtherPaySource.ToolTip" xml:space="preserve">
+    <value>Other payment sources must be selected when receiving patients with this subject</value>
   </data>
-  <data name="frmImpUserTemp.grdColumn3.Caption" xml:space="preserve">
-    <value />
+  <data name="frmHisPatientType.cboTreatmentType.ToolTip" xml:space="preserve">
+    <value>Only records with corresponding treatment areas are allowed</value>
   </data>
-  <data name="frmImpUserTemp.grdColumn3.Tooltip" xml:space="preserve">
-    <value />
+  <data name="frmHisPatientType.chkAddition.Properties.Caption" xml:space="preserve">
+    <value>Subject of surcharge</value>
   </data>
-  <data name="frmImpUserTemp.STT.Caption" xml:space="preserve">
-    <value />
+  <data name="frmHisPatientType.chkAddition.Text" xml:space="preserve">
+    <value>Subject of surcharge</value>
   </data>
-  <data name="frmImpUserTemp.Text" xml:space="preserve">
-    <value />
+  <data name="frmHisPatientType.chkAssign.Properties.Caption" xml:space="preserve">
+    <value>Appointment of services is not allowed if funds are lacking</value>
   </data>
-  <data name="frmImpUserTemp.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
-    <value />
+  <data name="frmHisPatientType.chkAssign.Text" xml:space="preserve">
+    <value>Appointment of services is not allowed if funds are lacking</value>
+  </data>
+  <data name="frmHisPatientType.chkAssign.ToolTip" xml:space="preserve">
+    <value>Applicable to medical patients only (not applicable to outpatient, inpatient, or day treatment patients)</value>
+  </data>
+  <data name="frmHisPatientType.chkCheckFinishCls.Properties.Caption" xml:space="preserve">
+    <value>Prescribing is not allowed for patients without the CLS service being completed</value>
+  </data>
+  <data name="frmHisPatientType.chkCheckFinishCls.Text" xml:space="preserve">
+    <value>Prescribing is not allowed for patients without the CLS service being completed</value>
+  </data>
+  <data name="frmHisPatientType.chkDefaultDisplay.Properties.Caption" xml:space="preserve">
+    <value>By default, \</value>
+  </data>
+  <data name="frmHisPatientType.chkDefaultDisplay.Text" xml:space="preserve">
+    <value>By default, \</value>
+  </data>
+  <data name="frmHisPatientType.chkForSaleExp.Properties.Caption" xml:space="preserve">
+    <value>By default, the price policy is displayed when creating drugs/business supplies</value>
+  </data>
+  <data name="frmHisPatientType.chkIsAdditionRequire.Properties.Caption" xml:space="preserve">
+    <value>Required to select surcharge object</value>
+  </data>
+  <data name="frmHisPatientType.chkIsAdditionRequire.Text" xml:space="preserve">
+    <value>Required to select surcharge object</value>
+  </data>
+  <data name="frmHisPatientType.chkIsCopayment.Properties.Caption" xml:space="preserve">
+    <value>Co-payment</value>
+  </data>
+  <data name="frmHisPatientType.chkIsCopayment.Text" xml:space="preserve">
+    <value>Co-payment</value>
+  </data>
+  <data name="frmHisPatientType.chkIsForSaleExp.Text" xml:space="preserve">
+    <value>By default, the price policy is displayed when creating drugs/business supplies</value>
+  </data>
+  <data name="frmHisPatientType.chkIsNotServBill.Properties.Caption" xml:space="preserve">
+    <value>Do not enter HDDV</value>
+  </data>
+  <data name="frmHisPatientType.chkIsNotServBill.Text" xml:space="preserve">
+    <value>Do not enter HDDV</value>
+  </data>
+  <data name="frmHisPatientType.chkIsNotServBill.ToolTip" xml:space="preserve">
+    <value>Do not include service invoices (Calculated on regular invoices and only for cases of 2-book payment)</value>
+  </data>
+  <data name="frmHisPatientType.chkIsNotShowKiosk.Properties.Caption" xml:space="preserve">
+    <value>Not displayed on Kiosk</value>
+  </data>
+  <data name="frmHisPatientType.chkIsNotShowKiosk.Text" xml:space="preserve">
+    <value>Not displayed on Kiosk</value>
+  </data>
+  <data name="frmHisPatientType.chkIsNotUseForPatient.Properties.Caption" xml:space="preserve">
+    <value>Not allowed for use in patients</value>
+  </data>
+  <data name="frmHisPatientType.chkIsNotUseForPatient.Text" xml:space="preserve">
+    <value>Not allowed for use in patients</value>
+  </data>
+  <data name="frmHisPatientType.chkIsNotUseForPatient.ToolTip" xml:space="preserve">
+    <value>Only allowed to be used as a payment object when ordering services, not allowing reception registration or setting up patient objects</value>
+  </data>
+  <data name="frmHisPatientType.chkIsRation.Properties.Caption" xml:space="preserve">
+    <value>It's the level of food</value>
+  </data>
+  <data name="frmHisPatientType.chkIsRation.Text" xml:space="preserve">
+    <value>It's the level of food</value>
+  </data>
+  <data name="frmHisPatientType.chkKiemTra.Properties.Caption" xml:space="preserve">
+    <value>Failure to check hospital fees when dispensing medicine to patients at the clinic</value>
+  </data>
+  <data name="frmHisPatientType.chkKiemTra.ToolTip" xml:space="preserve">
+    <value>Do not block approval/delivery of drugs for clinic patients when there is a shortage of hospital fees in case the system configuration \</value>
+  </data>
+  <data name="frmHisPatientType.chkMustBeGuaranteed.Properties.Caption" xml:space="preserve">
+    <value>A guarantor is required</value>
   </data>
   <data name="frmHisPatientType.chkMustBeGuaranteed.Text" xml:space="preserve">
     <value>A guarantor is required</value>
-    <comment>Bắt buộc có người bảo lãnh</comment>
   </data>
   <data name="frmHisPatientType.chkMustBeGuaranteed.ToolTip" xml:space="preserve">
     <value>Compulsory to enter guarantor information upon reception</value>
-    <comment>Bắt buộc nhập thông tin người bảo lãnh khi tiếp đón</comment>
+  </data>
+  <data name="frmHisPatientType.chkPres.Properties.Caption" xml:space="preserve">
+    <value>Prescriptions are not allowed if funds are lacking</value>
+  </data>
+  <data name="frmHisPatientType.chkPres.Text" xml:space="preserve">
+    <value>Prescriptions are not allowed if funds are lacking</value>
+  </data>
+  <data name="frmHisPatientType.chkPres.ToolTip" xml:space="preserve">
+    <value>Applicable to medical patients only (not applicable to outpatient, inpatient, or day treatment patients)</value>
+  </data>
+  <data name="frmHisPatientType.chkSerNotAllow.Properties.Caption" xml:space="preserve">
+    <value>Editing or deleting the specified service is not allowed</value>
+  </data>
+  <data name="frmHisPatientType.ckhKiemTra.Text" xml:space="preserve">
+    <value>Failure to check hospital fees when dispensing medicine to patients at the clinic</value>
+  </data>
+  <data name="frmHisPatientType.dnNavigation.Text" xml:space="preserve">
+    <value>dataNavigator1</value>
+  </data>
+  <data name="frmHisPatientType.grdChkIsForSaleExp.Caption" xml:space="preserve">
+    <value>By default, the price policy is displayed when creating drugs/business supplies</value>
+  </data>
+  <data name="frmHisPatientType.grdColAddition.Caption" xml:space="preserve">
+    <value>Subject of surcharge</value>
+  </data>
+  <data name="frmHisPatientType.grdColCreateTime.Caption" xml:space="preserve">
+    <value>Creation time</value>
+  </data>
+  <data name="frmHisPatientType.grdColCreateTime.ToolTip" xml:space="preserve">
+    <value>CREATE_TIME</value>
+  </data>
+  <data name="frmHisPatientType.grdColCreator.Caption" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="frmHisPatientType.grdColCreator.ToolTip" xml:space="preserve">
+    <value>CREATOR</value>
+  </data>
+  <data name="frmHisPatientType.grdColDescription.Caption" xml:space="preserve">
+    <value>Describe</value>
+  </data>
+  <data name="frmHisPatientType.grdColDescription.ToolTip" xml:space="preserve">
+    <value>DESCRIPTION</value>
+  </data>
+  <data name="frmHisPatientType.grdColIsCopayment.Caption" xml:space="preserve">
+    <value>Co-payment</value>
+  </data>
+  <data name="frmHisPatientType.grdColIsCopayment.ToolTip" xml:space="preserve">
+    <value>IS_COPAYMENT</value>
+  </data>
+  <data name="frmHisPatientType.grdColIsNotServiceBill.Caption" xml:space="preserve">
+    <value>Do not enter HDDV</value>
+  </data>
+  <data name="frmHisPatientType.grdColModifier.Caption" xml:space="preserve">
+    <value>Repairer</value>
+  </data>
+  <data name="frmHisPatientType.grdColModifier.ToolTip" xml:space="preserve">
+    <value>MODIFIER</value>
+  </data>
+  <data name="frmHisPatientType.grdColModifyTime.Caption" xml:space="preserve">
+    <value>Repair time</value>
+  </data>
+  <data name="frmHisPatientType.grdColModifyTime.ToolTip" xml:space="preserve">
+    <value>MODIFY_TIME</value>
+  </data>
+  <data name="frmHisPatientType.grdColPatientTypeCode.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="frmHisPatientType.grdColPatientTypeCode.ToolTip" xml:space="preserve">
+    <value>PATIENT_TYPE_CODE</value>
+  </data>
+  <data name="frmHisPatientType.grdColPatientTypeName.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="frmHisPatientType.grdColPatientTypeName.ToolTip" xml:space="preserve">
+    <value>PATIENT_TYPE_NAME</value>
+  </data>
+  <data name="frmHisPatientType.grdColPriority.Caption" xml:space="preserve">
+    <value>Prioritize</value>
+  </data>
+  <data name="frmHisPatientType.grdColPriority.ToolTip" xml:space="preserve">
+    <value>The smaller the number, the more priority</value>
+  </data>
+  <data name="frmHisPatientType.grdIsNotServiceBill.Caption" xml:space="preserve">
+    <value>Do not enter HDDV</value>
+  </data>
+  <data name="frmHisPatientType.grdIsNotServiceBill.Tooltip" xml:space="preserve">
+    <value>Do not include service invoices (Calculated on regular invoices and only for cases of 2-book payment)</value>
+  </data>
+  <data name="frmHisPatientType.grdIsNotShowKiosd.Caption" xml:space="preserve">
+    <value>Not displayed on Kiosd</value>
+  </data>
+  <data name="frmHisPatientType.grdIsNotShowKiosd.ToolTip" xml:space="preserve">
+    <value>Kiosk not displayed</value>
+  </data>
+  <data name="frmHisPatientType.grdIsNotUseForPatient.Caption" xml:space="preserve">
+    <value>Not allowed for use in patients</value>
+  </data>
+  <data name="frmHisPatientType.gridColDefaultDisplay.Caption" xml:space="preserve">
+    <value>By default, \</value>
+  </data>
+  <data name="frmHisPatientType.gridColDefaultDisplay.ToolTip" xml:space="preserve">
+    <value>By default, \</value>
+  </data>
+  <data name="frmHisPatientType.gridColumn1.Caption" xml:space="preserve">
+    <value>gridColumn1</value>
+  </data>
+  <data name="frmHisPatientType.gridColumn2.Caption" xml:space="preserve">
+    <value>Prescriptions are not allowed if funds are lacking</value>
+  </data>
+  <data name="frmHisPatientType.gridColumn2.ToolTip" xml:space="preserve">
+    <value>Applicable to medical patients only (not applicable to outpatient, inpatient, or day treatment patients)</value>
+  </data>
+  <data name="frmHisPatientType.gridColumn3.Caption" xml:space="preserve">
+    <value>Appointment of services is not allowed if funds are lacking</value>
+  </data>
+  <data name="frmHisPatientType.gridColumn3.ToolTip" xml:space="preserve">
+    <value>Applicable to medical patients only (not applicable to outpatient, inpatient, or day treatment patients)</value>
+  </data>
+  <data name="frmHisPatientType.gridColumn4.Caption" xml:space="preserve">
+    <value>Failure to check hospital fees when dispensing medicine to patients at the clinic</value>
+  </data>
+  <data name="frmHisPatientType.gridColumn4.ToolTip" xml:space="preserve">
+    <value>Failure to check hospital fees when dispensing medicine to patients at the clinic</value>
+  </data>
+  <data name="frmHisPatientType.gridColumn5.Caption" xml:space="preserve">
+    <value>Editing or deleting the specified service is not allowed</value>
+  </data>
+  <data name="frmHisPatientType.gridColumn5.ToolTip" xml:space="preserve">
+    <value>Editing or deleting the specified service is not allowed</value>
+  </data>
+  <data name="frmHisPatientType.gridColumnEdit.ToolTip" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="frmHisPatientType.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmHisPatientType.layoutControl7.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem10.Text" xml:space="preserve">
+    <value>Pricing policy by phone:</value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem11.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem12.Text" xml:space="preserve">
+    <value>Other payment sources:</value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem13.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Applicable to medical patients only (not applicable to outpatient, inpatient, or day treatment patients)</value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem13.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem14.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Applicable to medical patients only (not applicable to outpatient, inpatient, or day treatment patients)</value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem14.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem15.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Do not include service invoices (Calculated on regular invoices and only for cases of 2-book payment)</value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem15.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem16.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Do not block approval/delivery of drugs for clinic patients when there is a shortage of hospital fees in case the system configuration \</value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem16.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem19.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem21.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem22.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem23.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem24.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem6.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem7.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>The smaller the number, the more priority</value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem7.Text" xml:space="preserve">
+    <value>Prioritize:</value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem9.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.lcAddition.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.lcEditorInfo.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="frmHisPatientType.lciDescription.Text" xml:space="preserve">
+    <value>Describe:</value>
+  </data>
+  <data name="frmHisPatientType.lciIsCopayment.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.lciPatientTypeCode.Text" xml:space="preserve">
+    <value>Code:</value>
+  </data>
+  <data name="frmHisPatientType.lciPatientTypeName.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="frmHisPatientType.lciTreatmentType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Only records with corresponding treatment areas are allowed</value>
+  </data>
+  <data name="frmHisPatientType.lciTreatmentType.Text" xml:space="preserve">
+    <value>Treatment area:</value>
+  </data>
+  <data name="frmHisPatientType.STT.Caption" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="frmHisPatientType.Text" xml:space="preserve">
+    <value>List of patient subjects</value>
+  </data>
+  <data name="frmHisPatientType.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keywords</value>
+  </data>
+  <data name="layoutControlItem10.Text" xml:space="preserve">
+    <value>Pricing policy by phone:</value>
+  </data>
+  <data name="layoutControlItem12.Text" xml:space="preserve">
+    <value>Other payment sources:</value>
+  </data>
+  <data name="frmHisPatientType.chkSerNotAllow.Text" xml:space="preserve">
+    <value>Editing or deleting the specified service is not allowed</value>
   </data>
 </root>

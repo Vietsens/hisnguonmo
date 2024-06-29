@@ -142,7 +142,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                 }
                 WaitingManager.Hide();
 
-                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(currentMediRecord != null ? currentMediRecord.TREATMENT_CODE : "", printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(currentMediRecord != null ? currentMediRecord.TDL_TREATMENT_CODES : "", printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
                 printData.EmrInputADO = inputADO;
 
                 result = MPS.MpsPrinter.Run(printData);

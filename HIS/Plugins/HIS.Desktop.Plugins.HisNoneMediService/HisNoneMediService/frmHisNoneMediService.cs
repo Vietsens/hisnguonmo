@@ -984,7 +984,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             try
             {
                 ValidationMaxlength(txtNoneMediServiceCode, 3, true);
-                ValidationMaxlength(txtNoneMediServiceName, 100, false);
+                ValidationMaxlength(txtNoneMediServiceName, 1500, false);
                 ValidationSingleControl(cboServiceUnit);
                 ValidationSpin(spPrice);
                 ValidationSpin(spNumOrder);

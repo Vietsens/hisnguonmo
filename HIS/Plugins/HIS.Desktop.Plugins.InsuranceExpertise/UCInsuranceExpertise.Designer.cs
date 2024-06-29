@@ -374,6 +374,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             this.dteStoreTime.Size = new System.Drawing.Size(99, 20);
             this.dteStoreTime.StyleController = this.layoutControl1;
             this.dteStoreTime.TabIndex = 31;
+            this.dteStoreTime.Leave += new System.EventHandler(this.dteStoreTime_Leave);
             // 
             // txtStorebcode
             // 

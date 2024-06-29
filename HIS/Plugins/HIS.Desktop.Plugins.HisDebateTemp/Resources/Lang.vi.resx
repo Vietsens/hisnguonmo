@@ -201,4 +201,7 @@
   <data name="frmHisDebateTemp.lcTreatmentTracking.Text" xml:space="preserve">
     <value>4. Tóm tắt diễn biến bệnh, quá trình điều trị, chăm sóc</value>
   </data>
+  <data name="frmHisDebateTemp.lciDiscussion.Text" xml:space="preserve">
+    <value>5. Ý kiến thảo luận</value>
+  </data>
 </root>

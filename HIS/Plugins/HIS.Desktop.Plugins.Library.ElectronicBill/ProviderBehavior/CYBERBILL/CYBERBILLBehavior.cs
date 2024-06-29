@@ -176,8 +176,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                 {
                     DanhSachThue st = new DanhSachThue();
                     st.mathue = item.First().mathue;
-                    st.tongtien_thue = item.Sum(o => o.tongtien_chuathue ?? 0);
-                    st.tongtien_chiuthue = item.Sum(o => o.tongtien_cothue ?? 0) - item.Sum(o => o.tongtien_chuathue ?? 0);
+                    st.tongtien_chiuthue = item.Sum(o => o.tongtien_chuathue ?? 0);
+                    st.tongtien_thue = item.Sum(o => o.tongtien_cothue ?? 0) - item.Sum(o => o.tongtien_chuathue ?? 0);
                     dsthuesuat.Add(st);
                 }
             }

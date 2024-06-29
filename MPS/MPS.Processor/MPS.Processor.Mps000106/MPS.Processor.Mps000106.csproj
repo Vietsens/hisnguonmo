@@ -97,7 +97,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\MPS\MPS.csproj">
       <Project>{b7c687ba-a486-414e-8bcb-a6b294ca4310}</Project>
-      <Name>MPS %28MPS\MPS%29</Name>
+      <Name>MPS</Name>
     </ProjectReference>
     <ProjectReference Include="..\MPS.Processor.Mps000106.PDO\MPS.Processor.Mps000106.PDO.csproj">
       <Project>{59d922af-3e9b-4769-b7df-817a7a7d0666}</Project>

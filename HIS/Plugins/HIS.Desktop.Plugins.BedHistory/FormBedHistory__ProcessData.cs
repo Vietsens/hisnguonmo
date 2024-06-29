@@ -130,6 +130,26 @@ namespace HIS.Desktop.Plugins.BedHistory
                         {
                             this.ExecuteTotalDateTimeBed(bedServiceTypes, ref result);
                         }
+                        if (IsShareBed == "1")
+                        {
+                            foreach (var item in result)
+                            {
+                                if (dicBedLog.ContainsKey(item.BED_ID) && dicBedLog[item.BED_ID] != null && dicBedLog[item.BED_ID].Count > 0)
+                                {
+                                    var bedLogs = dicBedLog[item.BED_ID].Where(o => o.TREATMENT_ID != _TreatmentBedRoom.TREATMENT_ID).ToList();
+                                    if (bedLogs.FirstOrDefault(o => o.START_TIME <= item.START_TIME && item.START_TIME <= o.FINISH_TIME) != null)
+                                    {
+                                        item.AmmoutNamGhep = bedLogs.Where(o => o.START_TIME <= item.START_TIME && item.START_TIME <= o.FINISH_TIME).Count() + 1;
+                                    }
+                                    else
+                                    {
+                                        item.AmmoutNamGhep = null;
+                                    }
+                                }
+                                else
+                                    item.AmmoutNamGhep = null;
+                            }
+                        }
                     }
                 }
             }

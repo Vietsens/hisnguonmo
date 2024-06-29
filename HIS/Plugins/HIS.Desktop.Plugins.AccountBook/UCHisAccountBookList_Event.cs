@@ -76,8 +76,10 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
                 var apiResult = new BackendAdapter(paramCommon).Post<MOS.EFMODEL.DataModels.V_HIS_ACCOUNT_BOOK>(this.ActionType == GlobalVariables.ActionEdit ? HisRequestUriStore.HIS_ACCOUNT_BOOK_UPDATE : HisRequestUriStore.HIS_ACCOUNT_BOOK_CREATE, ApiConsumers.MosConsumer, DataAccountBook, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
                 if (apiResult != null)
                 {
+                    
                     success = true;
                     this.DataAccountBook = apiResult;
+                    if (!UpdateEINVOICE(apiResult)) success = false;
                     FillDataToControl(DataAccountBook);
                     FillDataToGridAccountBookList();
                     txtAccountBookName.Focus();
@@ -137,6 +139,7 @@ namespace HIS.Desktop.Plugins.HisAccountBookList
                 RemoveError();
                 txtAccountBookCode.Focus();
                 txtAccountBookCode.SelectAll();
+                txtKhoGiay.Text = "";
                 positionHandle = -1;
             }
             catch (Exception ex)

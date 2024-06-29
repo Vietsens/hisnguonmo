@@ -58,6 +58,18 @@ namespace HIS.Desktop.Plugins.BidCreate
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.cboBidForm = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -73,7 +85,6 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.txtBidNumber = new DevExpress.XtraEditors.TextEdit();
             this.txtBidName = new DevExpress.XtraEditors.TextEdit();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
-            this.checkedComboBoxEdit1 = new DevExpress.XtraEditors.CheckedComboBoxEdit();
             this.cboInformationBid = new DevExpress.XtraEditors.ComboBoxEdit();
             this.spinImpMoreRatio = new DevExpress.XtraEditors.SpinEdit();
             this.txtDosageForm = new DevExpress.XtraEditors.TextEdit();
@@ -157,7 +168,6 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciBidNumOrder = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciImpMoreRatio = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
             this.gridControlProcess = new DevExpress.XtraGrid.GridControl();
             this.gridViewProcess = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn23 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -167,6 +177,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.GvProcess_GcSTT = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvProcess_GcMedicineTypeCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvProcess_GcMedicineTypeName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repAdjustAmount = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.GvProcess_GcServiceUnitName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvProcess_GcTypeDisplay = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvProcess_GcAmount = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -200,6 +211,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.SpinEditAdjustAmount = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.SpinEditAdjustAmountDisable = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
+            this.repAdjustAmountDis = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.dtFromTime = new DevExpress.XtraEditors.DateEdit();
             this.dtToTime = new DevExpress.XtraEditors.DateEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -236,7 +248,6 @@ namespace HIS.Desktop.Plugins.BidCreate
             ((System.ComponentModel.ISupportInitialize)(this.txtBidName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.checkedComboBoxEdit1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboInformationBid.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinImpMoreRatio.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDosageForm.Properties)).BeginInit();
@@ -319,17 +330,18 @@ namespace HIS.Desktop.Plugins.BidCreate
             ((System.ComponentModel.ISupportInitialize)(this.lciBidNumOrder)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciImpMoreRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlProcess)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewProcess)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonDelete)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEdit)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repAdjustAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpinEditAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpinEditImPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpinEditImpVatRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpinEditAdjustAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpinEditAdjustAmountDisable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repAdjustAmountDis)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtFromTime.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtFromTime.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtToTime.Properties.CalendarTimeProperties)).BeginInit();
@@ -522,7 +534,6 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // layoutControl2
             // 
-            this.layoutControl2.Controls.Add(this.checkedComboBoxEdit1);
             this.layoutControl2.Controls.Add(this.cboInformationBid);
             this.layoutControl2.Controls.Add(this.spinImpMoreRatio);
             this.layoutControl2.Controls.Add(this.txtDosageForm);
@@ -566,19 +577,9 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.layoutControl2.TabIndex = 5;
             this.layoutControl2.Text = "layoutControl2";
             // 
-            // checkedComboBoxEdit1
-            // 
-            this.checkedComboBoxEdit1.Location = new System.Drawing.Point(104, 524);
-            this.checkedComboBoxEdit1.Name = "checkedComboBoxEdit1";
-            this.checkedComboBoxEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.checkedComboBoxEdit1.Size = new System.Drawing.Size(457, 20);
-            this.checkedComboBoxEdit1.StyleController = this.layoutControl2;
-            this.checkedComboBoxEdit1.TabIndex = 40;
-            // 
             // cboInformationBid
             // 
-            this.cboInformationBid.Location = new System.Drawing.Point(449, 378);
+            this.cboInformationBid.Location = new System.Drawing.Point(449, 402);
             this.cboInformationBid.Name = "cboInformationBid";
             this.cboInformationBid.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboInformationBid.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -601,7 +602,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             0,
             0,
             0});
-            this.spinImpMoreRatio.Location = new System.Drawing.Point(92, 306);
+            this.spinImpMoreRatio.Location = new System.Drawing.Point(92, 330);
             this.spinImpMoreRatio.Name = "spinImpMoreRatio";
             this.spinImpMoreRatio.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinImpMoreRatio.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -621,7 +622,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // txtDosageForm
             // 
-            this.txtDosageForm.Location = new System.Drawing.Point(449, 402);
+            this.txtDosageForm.Location = new System.Drawing.Point(449, 426);
             this.txtDosageForm.Name = "txtDosageForm";
             this.txtDosageForm.Size = new System.Drawing.Size(112, 20);
             this.txtDosageForm.StyleController = this.layoutControl2;
@@ -630,7 +631,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // cboMediUserForm
             // 
-            this.cboMediUserForm.Location = new System.Drawing.Point(269, 402);
+            this.cboMediUserForm.Location = new System.Drawing.Point(269, 426);
             this.cboMediUserForm.Name = "cboMediUserForm";
             this.cboMediUserForm.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboMediUserForm.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -653,7 +654,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // txtActiveBhyt
             // 
-            this.txtActiveBhyt.Location = new System.Drawing.Point(92, 402);
+            this.txtActiveBhyt.Location = new System.Drawing.Point(92, 426);
             this.txtActiveBhyt.Name = "txtActiveBhyt";
             this.txtActiveBhyt.Size = new System.Drawing.Size(88, 20);
             this.txtActiveBhyt.StyleController = this.layoutControl2;
@@ -663,7 +664,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // labelControl1
             // 
             this.labelControl1.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl1.Location = new System.Drawing.Point(269, 474);
+            this.labelControl1.Location = new System.Drawing.Point(269, 498);
             this.labelControl1.Name = "labelControl1";
             this.labelControl1.Size = new System.Drawing.Size(0, 20);
             this.labelControl1.StyleController = this.layoutControl2;
@@ -676,7 +677,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             0,
             0,
             0});
-            this.spinHourLifeSpan.Location = new System.Drawing.Point(473, 474);
+            this.spinHourLifeSpan.Location = new System.Drawing.Point(473, 498);
             this.spinHourLifeSpan.Name = "spinHourLifeSpan";
             this.spinHourLifeSpan.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinHourLifeSpan.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -701,7 +702,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             0,
             0,
             0});
-            this.spinDayLifeSpan.Location = new System.Drawing.Point(374, 474);
+            this.spinDayLifeSpan.Location = new System.Drawing.Point(374, 498);
             this.spinDayLifeSpan.Name = "spinDayLifeSpan";
             this.spinDayLifeSpan.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinDayLifeSpan.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -726,7 +727,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             0,
             0,
             0});
-            this.spinMonthLifeSpan.Location = new System.Drawing.Point(267, 474);
+            this.spinMonthLifeSpan.Location = new System.Drawing.Point(267, 498);
             this.spinMonthLifeSpan.Name = "spinMonthLifeSpan";
             this.spinMonthLifeSpan.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinMonthLifeSpan.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -746,7 +747,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // txtQCĐG
             // 
-            this.txtQCĐG.Location = new System.Drawing.Point(269, 378);
+            this.txtQCĐG.Location = new System.Drawing.Point(269, 402);
             this.txtQCĐG.Name = "txtQCĐG";
             this.txtQCĐG.Size = new System.Drawing.Size(101, 20);
             this.txtQCĐG.StyleController = this.layoutControl2;
@@ -755,7 +756,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // txtTenBHYT
             // 
-            this.txtTenBHYT.Location = new System.Drawing.Point(92, 378);
+            this.txtTenBHYT.Location = new System.Drawing.Point(92, 402);
             this.txtTenBHYT.Name = "txtTenBHYT";
             this.txtTenBHYT.Size = new System.Drawing.Size(88, 20);
             this.txtTenBHYT.StyleController = this.layoutControl2;
@@ -765,7 +766,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // txtMaDT
             // 
             this.txtMaDT.Enabled = false;
-            this.txtMaDT.Location = new System.Drawing.Point(449, 354);
+            this.txtMaDT.Location = new System.Drawing.Point(449, 378);
             this.txtMaDT.Name = "txtMaDT";
             this.txtMaDT.Size = new System.Drawing.Size(112, 20);
             this.txtMaDT.StyleController = this.layoutControl2;
@@ -775,7 +776,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // txtTenTT
             // 
             this.txtTenTT.Enabled = false;
-            this.txtTenTT.Location = new System.Drawing.Point(269, 354);
+            this.txtTenTT.Location = new System.Drawing.Point(269, 378);
             this.txtTenTT.Name = "txtTenTT";
             this.txtTenTT.Size = new System.Drawing.Size(101, 20);
             this.txtTenTT.StyleController = this.layoutControl2;
@@ -785,7 +786,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // txtMaTT
             // 
             this.txtMaTT.Enabled = false;
-            this.txtMaTT.Location = new System.Drawing.Point(92, 354);
+            this.txtMaTT.Location = new System.Drawing.Point(92, 378);
             this.txtMaTT.Name = "txtMaTT";
             this.txtMaTT.Size = new System.Drawing.Size(88, 20);
             this.txtMaTT.StyleController = this.layoutControl2;
@@ -794,7 +795,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // chkIsOnlyShowByBusiness
             // 
-            this.chkIsOnlyShowByBusiness.Location = new System.Drawing.Point(153, 498);
+            this.chkIsOnlyShowByBusiness.Location = new System.Drawing.Point(153, 522);
             this.chkIsOnlyShowByBusiness.Name = "chkIsOnlyShowByBusiness";
             this.chkIsOnlyShowByBusiness.Properties.Caption = "Chỉ hiển thị thuốc/vật tư không KD";
             this.chkIsOnlyShowByBusiness.Size = new System.Drawing.Size(187, 19);
@@ -805,7 +806,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // chkClearToAdd
             // 
-            this.chkClearToAdd.Location = new System.Drawing.Point(2, 498);
+            this.chkClearToAdd.Location = new System.Drawing.Point(2, 522);
             this.chkClearToAdd.Name = "chkClearToAdd";
             this.chkClearToAdd.Properties.Caption = "Làm trắng sau khi bổ sung";
             this.chkClearToAdd.Size = new System.Drawing.Size(147, 19);
@@ -818,7 +819,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.panelControlNational.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.panelControlNational.Controls.Add(this.cboNational);
             this.panelControlNational.Controls.Add(this.txtNationalMainText);
-            this.panelControlNational.Location = new System.Drawing.Point(269, 426);
+            this.panelControlNational.Location = new System.Drawing.Point(269, 450);
             this.panelControlNational.MaximumSize = new System.Drawing.Size(0, 20);
             this.panelControlNational.Name = "panelControlNational";
             this.panelControlNational.Size = new System.Drawing.Size(232, 20);
@@ -860,7 +861,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // chkEditNational
             // 
-            this.chkEditNational.Location = new System.Drawing.Point(505, 426);
+            this.chkEditNational.Location = new System.Drawing.Point(505, 450);
             this.chkEditNational.Name = "chkEditNational";
             this.chkEditNational.Properties.Caption = "Sửa";
             this.chkEditNational.Properties.FullFocusRect = true;
@@ -873,7 +874,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // txtConcentra
             // 
-            this.txtConcentra.Location = new System.Drawing.Point(92, 450);
+            this.txtConcentra.Location = new System.Drawing.Point(92, 474);
             this.txtConcentra.Name = "txtConcentra";
             this.txtConcentra.Size = new System.Drawing.Size(88, 20);
             this.txtConcentra.StyleController = this.layoutControl2;
@@ -882,7 +883,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // txtManufacture
             // 
-            this.txtManufacture.Location = new System.Drawing.Point(269, 450);
+            this.txtManufacture.Location = new System.Drawing.Point(269, 474);
             this.txtManufacture.Name = "txtManufacture";
             this.txtManufacture.Size = new System.Drawing.Size(81, 20);
             this.txtManufacture.StyleController = this.layoutControl2;
@@ -891,7 +892,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // txtRegisterNumber
             // 
-            this.txtRegisterNumber.Location = new System.Drawing.Point(92, 426);
+            this.txtRegisterNumber.Location = new System.Drawing.Point(92, 450);
             this.txtRegisterNumber.Name = "txtRegisterNumber";
             this.txtRegisterNumber.Size = new System.Drawing.Size(88, 20);
             this.txtRegisterNumber.StyleController = this.layoutControl2;
@@ -900,7 +901,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // cboManufacture
             // 
-            this.cboManufacture.Location = new System.Drawing.Point(350, 450);
+            this.cboManufacture.Location = new System.Drawing.Point(350, 474);
             this.cboManufacture.Name = "cboManufacture";
             this.cboManufacture.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboManufacture.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -925,7 +926,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // DtExpiredDate
             // 
             this.DtExpiredDate.EditValue = null;
-            this.DtExpiredDate.Location = new System.Drawing.Point(449, 330);
+            this.DtExpiredDate.Location = new System.Drawing.Point(449, 354);
             this.DtExpiredDate.Name = "DtExpiredDate";
             this.DtExpiredDate.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.DtExpiredDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -946,7 +947,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // txtBidGroupCode
             // 
             this.txtBidGroupCode.EnterMoveNextControl = true;
-            this.txtBidGroupCode.Location = new System.Drawing.Point(269, 330);
+            this.txtBidGroupCode.Location = new System.Drawing.Point(269, 354);
             this.txtBidGroupCode.Name = "txtBidGroupCode";
             this.txtBidGroupCode.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.txtBidGroupCode.Properties.MaxLength = 4;
@@ -957,7 +958,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // txtBidPackageCode
             // 
             this.txtBidPackageCode.EnterMoveNextControl = true;
-            this.txtBidPackageCode.Location = new System.Drawing.Point(92, 330);
+            this.txtBidPackageCode.Location = new System.Drawing.Point(92, 354);
             this.txtBidPackageCode.Name = "txtBidPackageCode";
             this.txtBidPackageCode.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.txtBidPackageCode.Properties.MaxLength = 4;
@@ -969,7 +970,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             this.cboSupplier.EditValue = "";
             this.cboSupplier.EnterMoveNextControl = true;
-            this.cboSupplier.Location = new System.Drawing.Point(350, 306);
+            this.cboSupplier.Location = new System.Drawing.Point(350, 330);
             this.cboSupplier.Name = "cboSupplier";
             this.cboSupplier.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboSupplier.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -992,7 +993,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // btnDiscard
             // 
-            this.btnDiscard.Location = new System.Drawing.Point(494, 498);
+            this.btnDiscard.Location = new System.Drawing.Point(494, 522);
             this.btnDiscard.Name = "btnDiscard";
             this.btnDiscard.Size = new System.Drawing.Size(67, 22);
             this.btnDiscard.StyleController = this.layoutControl2;
@@ -1002,7 +1003,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // btnUpdate
             // 
-            this.btnUpdate.Location = new System.Drawing.Point(433, 498);
+            this.btnUpdate.Location = new System.Drawing.Point(433, 522);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(57, 22);
             this.btnUpdate.StyleController = this.layoutControl2;
@@ -1012,7 +1013,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(344, 498);
+            this.btnAdd.Location = new System.Drawing.Point(344, 522);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(85, 22);
             this.btnAdd.StyleController = this.layoutControl2;
@@ -1027,7 +1028,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             0,
             0,
             0});
-            this.spinImpVat.Location = new System.Drawing.Point(449, 282);
+            this.spinImpVat.Location = new System.Drawing.Point(449, 306);
             this.spinImpVat.Name = "spinImpVat";
             this.spinImpVat.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1049,7 +1050,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // txtBidNumOrder
             // 
-            this.txtBidNumOrder.Location = new System.Drawing.Point(92, 474);
+            this.txtBidNumOrder.Location = new System.Drawing.Point(92, 498);
             this.txtBidNumOrder.Name = "txtBidNumOrder";
             this.txtBidNumOrder.Properties.MaxLength = 50;
             this.txtBidNumOrder.Size = new System.Drawing.Size(88, 20);
@@ -1064,7 +1065,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             0,
             0,
             0});
-            this.spinImpPrice.Location = new System.Drawing.Point(269, 282);
+            this.spinImpPrice.Location = new System.Drawing.Point(269, 306);
             this.spinImpPrice.Name = "spinImpPrice";
             this.spinImpPrice.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1091,7 +1092,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             0,
             0,
             0});
-            this.spinAmount.Location = new System.Drawing.Point(92, 282);
+            this.spinAmount.Location = new System.Drawing.Point(92, 306);
             this.spinAmount.Name = "spinAmount";
             this.spinAmount.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1116,7 +1117,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.xtraTabControl1.Location = new System.Drawing.Point(2, 2);
             this.xtraTabControl1.Name = "xtraTabControl1";
             this.xtraTabControl1.SelectedTabPage = this.xtraTabPageMedicine;
-            this.xtraTabControl1.Size = new System.Drawing.Size(559, 276);
+            this.xtraTabControl1.Size = new System.Drawing.Size(559, 300);
             this.xtraTabControl1.TabIndex = 5;
             this.xtraTabControl1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPageMedicine,
@@ -1128,7 +1129,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             this.xtraTabPageMedicine.Controls.Add(this.panelControlMedicineType);
             this.xtraTabPageMedicine.Name = "xtraTabPageMedicine";
-            this.xtraTabPageMedicine.Size = new System.Drawing.Size(553, 248);
+            this.xtraTabPageMedicine.Size = new System.Drawing.Size(553, 272);
             this.xtraTabPageMedicine.Text = "Thuốc";
             // 
             // panelControlMedicineType
@@ -1136,14 +1137,14 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.panelControlMedicineType.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelControlMedicineType.Location = new System.Drawing.Point(0, 0);
             this.panelControlMedicineType.Name = "panelControlMedicineType";
-            this.panelControlMedicineType.Size = new System.Drawing.Size(553, 248);
+            this.panelControlMedicineType.Size = new System.Drawing.Size(553, 272);
             this.panelControlMedicineType.TabIndex = 0;
             // 
             // xtraTabPageMaterial
             // 
             this.xtraTabPageMaterial.Controls.Add(this.panelControlMaterialType);
             this.xtraTabPageMaterial.Name = "xtraTabPageMaterial";
-            this.xtraTabPageMaterial.Size = new System.Drawing.Size(553, 248);
+            this.xtraTabPageMaterial.Size = new System.Drawing.Size(553, 272);
             this.xtraTabPageMaterial.Text = "Vật tư";
             // 
             // panelControlMaterialType
@@ -1151,14 +1152,14 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.panelControlMaterialType.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelControlMaterialType.Location = new System.Drawing.Point(0, 0);
             this.panelControlMaterialType.Name = "panelControlMaterialType";
-            this.panelControlMaterialType.Size = new System.Drawing.Size(553, 248);
+            this.panelControlMaterialType.Size = new System.Drawing.Size(553, 272);
             this.panelControlMaterialType.TabIndex = 0;
             // 
             // xtraTabPageBlood
             // 
             this.xtraTabPageBlood.Controls.Add(this.panelControlBloodType);
             this.xtraTabPageBlood.Name = "xtraTabPageBlood";
-            this.xtraTabPageBlood.Size = new System.Drawing.Size(553, 248);
+            this.xtraTabPageBlood.Size = new System.Drawing.Size(553, 272);
             this.xtraTabPageBlood.Text = "Máu";
             // 
             // panelControlBloodType
@@ -1166,12 +1167,12 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.panelControlBloodType.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelControlBloodType.Location = new System.Drawing.Point(0, 0);
             this.panelControlBloodType.Name = "panelControlBloodType";
-            this.panelControlBloodType.Size = new System.Drawing.Size(553, 248);
+            this.panelControlBloodType.Size = new System.Drawing.Size(553, 272);
             this.panelControlBloodType.TabIndex = 0;
             // 
             // txtSupplierCode
             // 
-            this.txtSupplierCode.Location = new System.Drawing.Point(269, 306);
+            this.txtSupplierCode.Location = new System.Drawing.Point(269, 330);
             this.txtSupplierCode.Name = "txtSupplierCode";
             this.txtSupplierCode.Size = new System.Drawing.Size(81, 20);
             this.txtSupplierCode.StyleController = this.layoutControl2;
@@ -1217,8 +1218,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciDosageForm,
             this.lciBidNumOrder,
             this.lciImpMoreRatio,
-            this.layoutControlItem19,
-            this.layoutControlItem20});
+            this.layoutControlItem19});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1230,14 +1230,14 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.layoutControlItem6.Control = this.xtraTabControl1;
             this.layoutControlItem6.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(563, 280);
+            this.layoutControlItem6.Size = new System.Drawing.Size(563, 304);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
             // lciBtnAdd
             // 
             this.lciBtnAdd.Control = this.btnAdd;
-            this.lciBtnAdd.Location = new System.Drawing.Point(342, 496);
+            this.lciBtnAdd.Location = new System.Drawing.Point(342, 520);
             this.lciBtnAdd.Name = "lciBtnAdd";
             this.lciBtnAdd.Size = new System.Drawing.Size(89, 26);
             this.lciBtnAdd.TextSize = new System.Drawing.Size(0, 0);
@@ -1246,7 +1246,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // lciBtnUpdate
             // 
             this.lciBtnUpdate.Control = this.btnUpdate;
-            this.lciBtnUpdate.Location = new System.Drawing.Point(431, 496);
+            this.lciBtnUpdate.Location = new System.Drawing.Point(431, 520);
             this.lciBtnUpdate.Name = "lciBtnUpdate";
             this.lciBtnUpdate.Size = new System.Drawing.Size(61, 26);
             this.lciBtnUpdate.TextSize = new System.Drawing.Size(0, 0);
@@ -1259,7 +1259,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciAmount.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciAmount.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciAmount.Control = this.spinAmount;
-            this.lciAmount.Location = new System.Drawing.Point(0, 280);
+            this.lciAmount.Location = new System.Drawing.Point(0, 304);
             this.lciAmount.Name = "lciAmount";
             this.lciAmount.Size = new System.Drawing.Size(182, 24);
             this.lciAmount.Text = "Số lượng:";
@@ -1274,7 +1274,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciImpPice.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciImpPice.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciImpPice.Control = this.spinImpPrice;
-            this.lciImpPice.Location = new System.Drawing.Point(182, 280);
+            this.lciImpPice.Location = new System.Drawing.Point(182, 304);
             this.lciImpPice.Name = "lciImpPice";
             this.lciImpPice.Size = new System.Drawing.Size(190, 24);
             this.lciImpPice.Text = "Giá nhập:";
@@ -1289,7 +1289,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciSupplierCode.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciSupplierCode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciSupplierCode.Control = this.txtSupplierCode;
-            this.lciSupplierCode.Location = new System.Drawing.Point(182, 304);
+            this.lciSupplierCode.Location = new System.Drawing.Point(182, 328);
             this.lciSupplierCode.Name = "lciSupplierCode";
             this.lciSupplierCode.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
             this.lciSupplierCode.Size = new System.Drawing.Size(168, 24);
@@ -1305,7 +1305,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciImpVat.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciImpVat.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciImpVat.Control = this.spinImpVat;
-            this.lciImpVat.Location = new System.Drawing.Point(372, 280);
+            this.lciImpVat.Location = new System.Drawing.Point(372, 304);
             this.lciImpVat.Name = "lciImpVat";
             this.lciImpVat.Size = new System.Drawing.Size(191, 24);
             this.lciImpVat.Text = "VAT %:";
@@ -1316,7 +1316,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // lciBtnDiscard
             // 
             this.lciBtnDiscard.Control = this.btnDiscard;
-            this.lciBtnDiscard.Location = new System.Drawing.Point(492, 496);
+            this.lciBtnDiscard.Location = new System.Drawing.Point(492, 520);
             this.lciBtnDiscard.Name = "lciBtnDiscard";
             this.lciBtnDiscard.Size = new System.Drawing.Size(71, 26);
             this.lciBtnDiscard.TextSize = new System.Drawing.Size(0, 0);
@@ -1325,7 +1325,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.cboSupplier;
-            this.layoutControlItem4.Location = new System.Drawing.Point(350, 304);
+            this.layoutControlItem4.Location = new System.Drawing.Point(350, 328);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
             this.layoutControlItem4.Size = new System.Drawing.Size(213, 24);
@@ -1339,7 +1339,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciBidPackageCode.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciBidPackageCode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciBidPackageCode.Control = this.txtBidPackageCode;
-            this.lciBidPackageCode.Location = new System.Drawing.Point(0, 328);
+            this.lciBidPackageCode.Location = new System.Drawing.Point(0, 352);
             this.lciBidPackageCode.Name = "lciBidPackageCode";
             this.lciBidPackageCode.Size = new System.Drawing.Size(182, 24);
             this.lciBidPackageCode.Text = "Gói thầu:";
@@ -1352,7 +1352,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciBidGroupCode.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciBidGroupCode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciBidGroupCode.Control = this.txtBidGroupCode;
-            this.lciBidGroupCode.Location = new System.Drawing.Point(182, 328);
+            this.lciBidGroupCode.Location = new System.Drawing.Point(182, 352);
             this.lciBidGroupCode.Name = "lciBidGroupCode";
             this.lciBidGroupCode.Size = new System.Drawing.Size(190, 24);
             this.lciBidGroupCode.Text = "Nhóm thầu:";
@@ -1365,7 +1365,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.LciExpiredDate.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LciExpiredDate.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LciExpiredDate.Control = this.DtExpiredDate;
-            this.LciExpiredDate.Location = new System.Drawing.Point(372, 328);
+            this.LciExpiredDate.Location = new System.Drawing.Point(372, 352);
             this.LciExpiredDate.Name = "LciExpiredDate";
             this.LciExpiredDate.Size = new System.Drawing.Size(191, 24);
             this.LciExpiredDate.Text = "Hạn dùng:";
@@ -1376,7 +1376,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.cboManufacture;
-            this.layoutControlItem9.Location = new System.Drawing.Point(350, 448);
+            this.layoutControlItem9.Location = new System.Drawing.Point(350, 472);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
             this.layoutControlItem9.Size = new System.Drawing.Size(213, 24);
@@ -1390,7 +1390,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciManufacture.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciManufacture.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciManufacture.Control = this.txtManufacture;
-            this.lciManufacture.Location = new System.Drawing.Point(182, 448);
+            this.lciManufacture.Location = new System.Drawing.Point(182, 472);
             this.lciManufacture.Name = "lciManufacture";
             this.lciManufacture.OptionsToolTip.ToolTip = "Hãng sản xuất";
             this.lciManufacture.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
@@ -1405,7 +1405,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciRegisterNumber.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciRegisterNumber.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciRegisterNumber.Control = this.txtRegisterNumber;
-            this.lciRegisterNumber.Location = new System.Drawing.Point(0, 424);
+            this.lciRegisterNumber.Location = new System.Drawing.Point(0, 448);
             this.lciRegisterNumber.Name = "lciRegisterNumber";
             this.lciRegisterNumber.Size = new System.Drawing.Size(182, 24);
             this.lciRegisterNumber.Text = "Số đăng ký:";
@@ -1418,7 +1418,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciConcentra.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciConcentra.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciConcentra.Control = this.txtConcentra;
-            this.lciConcentra.Location = new System.Drawing.Point(0, 448);
+            this.lciConcentra.Location = new System.Drawing.Point(0, 472);
             this.lciConcentra.Name = "lciConcentra";
             this.lciConcentra.OptionsToolTip.ToolTip = "Nồng độ/ hàm lượng";
             this.lciConcentra.Size = new System.Drawing.Size(182, 24);
@@ -1430,7 +1430,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.chkEditNational;
-            this.layoutControlItem7.Location = new System.Drawing.Point(503, 424);
+            this.layoutControlItem7.Location = new System.Drawing.Point(503, 448);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(60, 24);
             this.layoutControlItem7.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -1443,7 +1443,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.LciNational.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LciNational.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LciNational.Control = this.panelControlNational;
-            this.LciNational.Location = new System.Drawing.Point(182, 424);
+            this.LciNational.Location = new System.Drawing.Point(182, 448);
             this.LciNational.Name = "LciNational";
             this.LciNational.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 0);
             this.LciNational.Size = new System.Drawing.Size(321, 24);
@@ -1455,7 +1455,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.chkClearToAdd;
-            this.layoutControlItem8.Location = new System.Drawing.Point(0, 496);
+            this.layoutControlItem8.Location = new System.Drawing.Point(0, 520);
             this.layoutControlItem8.Name = "layoutControlItem8";
             this.layoutControlItem8.Size = new System.Drawing.Size(151, 26);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
@@ -1464,7 +1464,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.chkIsOnlyShowByBusiness;
-            this.layoutControlItem10.Location = new System.Drawing.Point(151, 496);
+            this.layoutControlItem10.Location = new System.Drawing.Point(151, 520);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Size = new System.Drawing.Size(191, 26);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
@@ -1475,7 +1475,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciMaTT.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciMaTT.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciMaTT.Control = this.txtMaTT;
-            this.lciMaTT.Location = new System.Drawing.Point(0, 352);
+            this.lciMaTT.Location = new System.Drawing.Point(0, 376);
             this.lciMaTT.Name = "lciMaTT";
             this.lciMaTT.OptionsToolTip.ToolTip = "Mã trúng thầu";
             this.lciMaTT.Size = new System.Drawing.Size(182, 24);
@@ -1489,7 +1489,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciTenTT.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciTenTT.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTenTT.Control = this.txtTenTT;
-            this.lciTenTT.Location = new System.Drawing.Point(182, 352);
+            this.lciTenTT.Location = new System.Drawing.Point(182, 376);
             this.lciTenTT.Name = "lciTenTT";
             this.lciTenTT.OptionsToolTip.ToolTip = "Tên trúng thầu";
             this.lciTenTT.Size = new System.Drawing.Size(190, 24);
@@ -1503,7 +1503,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciMaDT.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciMaDT.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciMaDT.Control = this.txtMaDT;
-            this.lciMaDT.Location = new System.Drawing.Point(372, 352);
+            this.lciMaDT.Location = new System.Drawing.Point(372, 376);
             this.lciMaDT.Name = "lciMaDT";
             this.lciMaDT.OptionsToolTip.ToolTip = "Mã dự thầu";
             this.lciMaDT.Size = new System.Drawing.Size(191, 24);
@@ -1519,7 +1519,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciTenBHYT.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciTenBHYT.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTenBHYT.Control = this.txtTenBHYT;
-            this.lciTenBHYT.Location = new System.Drawing.Point(0, 376);
+            this.lciTenBHYT.Location = new System.Drawing.Point(0, 400);
             this.lciTenBHYT.Name = "lciTenBHYT";
             this.lciTenBHYT.OptionsToolTip.ToolTip = "Tên bảo hiểm y tế";
             this.lciTenBHYT.Size = new System.Drawing.Size(182, 24);
@@ -1535,7 +1535,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.layoutControlItem11.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem11.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem11.Control = this.txtQCĐG;
-            this.layoutControlItem11.Location = new System.Drawing.Point(182, 376);
+            this.layoutControlItem11.Location = new System.Drawing.Point(182, 400);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.OptionsToolTip.ToolTip = "Quy cách đóng gói";
             this.layoutControlItem11.Size = new System.Drawing.Size(190, 24);
@@ -1547,7 +1547,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // lciLifeSpan
             // 
             this.lciLifeSpan.Control = this.spinMonthLifeSpan;
-            this.lciLifeSpan.Location = new System.Drawing.Point(267, 472);
+            this.lciLifeSpan.Location = new System.Drawing.Point(267, 496);
             this.lciLifeSpan.Name = "lciLifeSpan";
             this.lciLifeSpan.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
             this.lciLifeSpan.Size = new System.Drawing.Size(105, 24);
@@ -1560,7 +1560,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // layoutControlItem13
             // 
             this.layoutControlItem13.Control = this.spinDayLifeSpan;
-            this.layoutControlItem13.Location = new System.Drawing.Point(372, 472);
+            this.layoutControlItem13.Location = new System.Drawing.Point(372, 496);
             this.layoutControlItem13.Name = "layoutControlItem13";
             this.layoutControlItem13.Size = new System.Drawing.Size(99, 24);
             this.layoutControlItem13.Text = "ngày";
@@ -1572,7 +1572,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.spinHourLifeSpan;
-            this.layoutControlItem15.Location = new System.Drawing.Point(471, 472);
+            this.layoutControlItem15.Location = new System.Drawing.Point(471, 496);
             this.layoutControlItem15.Name = "layoutControlItem15";
             this.layoutControlItem15.Size = new System.Drawing.Size(92, 24);
             this.layoutControlItem15.Text = "giờ";
@@ -1586,7 +1586,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.layoutControlItem12.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem12.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem12.Control = this.labelControl1;
-            this.layoutControlItem12.Location = new System.Drawing.Point(182, 472);
+            this.layoutControlItem12.Location = new System.Drawing.Point(182, 496);
             this.layoutControlItem12.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem12.MinSize = new System.Drawing.Size(75, 24);
             this.layoutControlItem12.Name = "layoutControlItem12";
@@ -1604,7 +1604,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciActiveBhyt.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciActiveBhyt.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciActiveBhyt.Control = this.txtActiveBhyt;
-            this.lciActiveBhyt.Location = new System.Drawing.Point(0, 400);
+            this.lciActiveBhyt.Location = new System.Drawing.Point(0, 424);
             this.lciActiveBhyt.Name = "lciActiveBhyt";
             this.lciActiveBhyt.Size = new System.Drawing.Size(182, 24);
             this.lciActiveBhyt.Text = "Hoạt chất:";
@@ -1619,7 +1619,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciMediUserForm.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciMediUserForm.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciMediUserForm.Control = this.cboMediUserForm;
-            this.lciMediUserForm.Location = new System.Drawing.Point(182, 400);
+            this.lciMediUserForm.Location = new System.Drawing.Point(182, 424);
             this.lciMediUserForm.Name = "lciMediUserForm";
             this.lciMediUserForm.Size = new System.Drawing.Size(190, 24);
             this.lciMediUserForm.Text = "Đường dùng:";
@@ -1632,7 +1632,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciDosageForm.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciDosageForm.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciDosageForm.Control = this.txtDosageForm;
-            this.lciDosageForm.Location = new System.Drawing.Point(372, 400);
+            this.lciDosageForm.Location = new System.Drawing.Point(372, 424);
             this.lciDosageForm.Name = "lciDosageForm";
             this.lciDosageForm.OptionsToolTip.ToolTip = "Dạng bào chế";
             this.lciDosageForm.Size = new System.Drawing.Size(191, 24);
@@ -1648,7 +1648,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciBidNumOrder.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciBidNumOrder.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciBidNumOrder.Control = this.txtBidNumOrder;
-            this.lciBidNumOrder.Location = new System.Drawing.Point(0, 472);
+            this.lciBidNumOrder.Location = new System.Drawing.Point(0, 496);
             this.lciBidNumOrder.Name = "lciBidNumOrder";
             this.lciBidNumOrder.Size = new System.Drawing.Size(182, 24);
             this.lciBidNumOrder.Text = "STT thầu:";
@@ -1661,7 +1661,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciImpMoreRatio.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciImpMoreRatio.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciImpMoreRatio.Control = this.spinImpMoreRatio;
-            this.lciImpMoreRatio.Location = new System.Drawing.Point(0, 304);
+            this.lciImpMoreRatio.Location = new System.Drawing.Point(0, 328);
             this.lciImpMoreRatio.Name = "lciImpMoreRatio";
             this.lciImpMoreRatio.Size = new System.Drawing.Size(182, 24);
             this.lciImpMoreRatio.Text = "Vượt thầu(%):";
@@ -1674,7 +1674,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.layoutControlItem19.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem19.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem19.Control = this.cboInformationBid;
-            this.layoutControlItem19.Location = new System.Drawing.Point(372, 376);
+            this.layoutControlItem19.Location = new System.Drawing.Point(372, 400);
             this.layoutControlItem19.Name = "layoutControlItem19";
             this.layoutControlItem19.OptionsToolTip.ToolTip = "Thông tin thầu theo công văn 4750";
             this.layoutControlItem19.Size = new System.Drawing.Size(191, 24);
@@ -1683,14 +1683,6 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.layoutControlItem19.TextSize = new System.Drawing.Size(70, 20);
             this.layoutControlItem19.TextToControlDistance = 5;
             this.layoutControlItem19.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-            // 
-            // layoutControlItem20
-            // 
-            this.layoutControlItem20.Control = this.checkedComboBoxEdit1;
-            this.layoutControlItem20.Location = new System.Drawing.Point(0, 522);
-            this.layoutControlItem20.Name = "layoutControlItem20";
-            this.layoutControlItem20.Size = new System.Drawing.Size(563, 24);
-            this.layoutControlItem20.TextSize = new System.Drawing.Size(99, 13);
             // 
             // gridControlProcess
             // 
@@ -1705,7 +1697,9 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.SpinEditImpVatRatio,
             this.repositoryItemTextEdit,
             this.SpinEditAdjustAmount,
-            this.SpinEditAdjustAmountDisable});
+            this.SpinEditAdjustAmountDisable,
+            this.repAdjustAmount,
+            this.repAdjustAmountDis});
             this.gridControlProcess.Size = new System.Drawing.Size(749, 424);
             this.gridControlProcess.TabIndex = 4;
             this.gridControlProcess.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1830,12 +1824,23 @@ namespace HIS.Desktop.Plugins.BidCreate
             // GvProcess_GcMedicineTypeName
             // 
             this.GvProcess_GcMedicineTypeName.Caption = "Tên";
+            this.GvProcess_GcMedicineTypeName.ColumnEdit = this.repAdjustAmount;
             this.GvProcess_GcMedicineTypeName.FieldName = "MEDICINE_TYPE_NAME";
             this.GvProcess_GcMedicineTypeName.Name = "GvProcess_GcMedicineTypeName";
             this.GvProcess_GcMedicineTypeName.OptionsColumn.AllowEdit = false;
             this.GvProcess_GcMedicineTypeName.Visible = true;
             this.GvProcess_GcMedicineTypeName.VisibleIndex = 4;
             this.GvProcess_GcMedicineTypeName.Width = 150;
+            // 
+            // repAdjustAmount
+            // 
+            this.repAdjustAmount.AutoHeight = false;
+            this.repAdjustAmount.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleRight, ((System.Drawing.Image)(resources.GetObject("repAdjustAmount.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            this.repAdjustAmount.Name = "repAdjustAmount";
+            this.repAdjustAmount.ShowNullValuePromptWhenFocused = true;
+            this.repAdjustAmount.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.repAdjustAmount.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repAdjustAmount_ButtonClick);
             // 
             // GvProcess_GcServiceUnitName
             // 
@@ -1976,6 +1981,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.GvProcess_GcAdjustAmount.AppearanceHeader.Options.UseTextOptions = true;
             this.GvProcess_GcAdjustAmount.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.GvProcess_GcAdjustAmount.Caption = "Điều tiết";
+            this.GvProcess_GcAdjustAmount.ColumnEdit = this.repAdjustAmount;
             this.GvProcess_GcAdjustAmount.DisplayFormat.FormatString = "#,##0.00";
             this.GvProcess_GcAdjustAmount.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.GvProcess_GcAdjustAmount.FieldName = "ADJUST_AMOUNT";
@@ -2208,7 +2214,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             this.SpinEditAdjustAmount.AutoHeight = false;
             this.SpinEditAdjustAmount.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("SpinEditAdjustAmount.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
             this.SpinEditAdjustAmount.DisplayFormat.FormatString = "#,##0.00";
             this.SpinEditAdjustAmount.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.SpinEditAdjustAmount.EditFormat.FormatString = "#,##0.00";
@@ -2229,9 +2235,18 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             this.SpinEditAdjustAmountDisable.AutoHeight = false;
             this.SpinEditAdjustAmountDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
             this.SpinEditAdjustAmountDisable.Name = "SpinEditAdjustAmountDisable";
             this.SpinEditAdjustAmountDisable.ReadOnly = true;
+            // 
+            // repAdjustAmountDis
+            // 
+            this.repAdjustAmountDis.AutoHeight = false;
+            this.repAdjustAmountDis.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleRight, global::HIS.Desktop.Plugins.BidCreate.Properties.Resources.y_lenh, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
+            this.repAdjustAmountDis.Name = "repAdjustAmountDis";
+            this.repAdjustAmountDis.ShowNullValuePromptWhenFocused = true;
+            this.repAdjustAmountDis.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
             // 
             // dtFromTime
             // 
@@ -2537,7 +2552,6 @@ namespace HIS.Desktop.Plugins.BidCreate
             ((System.ComponentModel.ISupportInitialize)(this.txtBidName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.checkedComboBoxEdit1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboInformationBid.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinImpMoreRatio.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDosageForm.Properties)).EndInit();
@@ -2620,17 +2634,18 @@ namespace HIS.Desktop.Plugins.BidCreate
             ((System.ComponentModel.ISupportInitialize)(this.lciBidNumOrder)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciImpMoreRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlProcess)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewProcess)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonDelete)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEdit)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repAdjustAmount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpinEditAmount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpinEditImPrice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpinEditImpVatRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpinEditAdjustAmount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpinEditAdjustAmountDisable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repAdjustAmountDis)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtFromTime.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtFromTime.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtToTime.Properties.CalendarTimeProperties)).EndInit();
@@ -2823,9 +2838,9 @@ namespace HIS.Desktop.Plugins.BidCreate
         private DevExpress.XtraGrid.Columns.GridColumn GvProcess_GcAdjustAmount;
         private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit SpinEditAdjustAmount;
         private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit SpinEditAdjustAmountDisable;
-        private DevExpress.XtraEditors.CheckedComboBoxEdit checkedComboBoxEdit1;
         private DevExpress.XtraEditors.ComboBoxEdit cboInformationBid;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem20;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repAdjustAmount;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repAdjustAmountDis;
     }
 }

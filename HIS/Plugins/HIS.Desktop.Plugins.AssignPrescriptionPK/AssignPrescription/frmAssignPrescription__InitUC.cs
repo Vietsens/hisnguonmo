@@ -47,7 +47,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 int heightUCBottom = 0;
 
                 this.isAutoCheckIcd = (HisConfigCFG.AutoCheckIcd == GlobalVariables.CommonStringTrue);
-                this.currentIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).OrderBy(o => o.ICD_CODE).ToList();
+                this.currentIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_TRADITIONAL != 1).OrderBy(o => o.ICD_CODE).ToList();
                 VisibleLayoutSubIcd(HisConfigCFG.OptionSubIcdWhenFinish == "3");
                 UCIcdInit();
                 UCIcdCauseInit();
@@ -131,6 +131,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 ado.TreatmentEndHasAppointmentTimeDefault = HisConfigCFG.TreatmentEndHasAppointmentTimeDefault;
                 ado.treatmentId = this.treatmentId;
                 ado.WorkingRoomId = (this.currentModule != null ? this.currentModule.RoomId : 0);
+                ado.WorkingDepartmentId = this.currentWorkPlace != null ? this.currentWorkPlace.DepartmentId : 0;
                 var dataRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId);
                 ado.IsBlockOrder = dataRoom.IS_BLOCK_NUM_ORDER == 1 ? true : false;
                 ado.LanguageInputADO = new UC.TreatmentFinish.ADO.LanguageInputADO();

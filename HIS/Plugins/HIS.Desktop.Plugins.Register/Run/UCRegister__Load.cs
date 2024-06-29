@@ -361,7 +361,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 }
                 else
                 {
-                    career = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CAREER>().SingleOrDefault(o => o.ID == patientDTO.CAREER_ID);
+                    career = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CAREER>().SingleOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.ID == patientDTO.CAREER_ID);
                 }
                 if (career != null && career.ID > 0)
                 {
@@ -1097,7 +1097,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     var bhytWhiteList = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BHYT_WHITELIST>().FirstOrDefault(o => !String.IsNullOrEmpty(heinCardNumder) && o.BHYT_WHITELIST_CODE.ToUpper() == heinCardNumder.Substring(0, 3).ToUpper());
                     if (bhytWhiteList != null && (bhytWhiteList.CAREER_ID ?? 0) > 0)
                     {
-                        result = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CAREER>().SingleOrDefault(o => o.ID == bhytWhiteList.CAREER_ID.Value);
+                        result = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CAREER>().SingleOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.ID == bhytWhiteList.CAREER_ID.Value);
                         if (result == null)
                         {
                             Inventec.Common.Logging.LogSystem.Warn("GetCareerByBhytWhiteListConfig => Khong lay duoc nghe nghiep theo id = " + bhytWhiteList.CAREER_ID);

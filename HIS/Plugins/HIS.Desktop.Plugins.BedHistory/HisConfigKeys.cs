@@ -36,5 +36,6 @@ namespace HIS.Desktop.Plugins.BedHistory
         internal const string CONFIG_KEY__BHYT__EXCEED_DAY_ALLOW_FOR_IN_PATIENT = "MOS.BHYT.EXCEED_DAY_ALLOW_FOR_IN_PATIENT";
         internal const string CONFIG_KEY__MOS__HIS_SERE_SERV__IS__USING_BED_TEMP = "MOS.HIS_SERE_SERV.IS_USING_BED_TEMP";
         internal const string CONFIG_KEY__WarningOverTotalPatientPrice__IsCheck = "HIS.Desktop.WarningOverTotalPatientPrice__IsCheck";
+        internal const string CONFIG_KEY__IsShareBedFeeOffAllPatients = "HIS.Desktop.Plugins.BedHistory.IsShareBedFeeOffAllPatients";
     }
 }

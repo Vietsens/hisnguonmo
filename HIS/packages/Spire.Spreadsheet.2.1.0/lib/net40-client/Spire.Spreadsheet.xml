@@ -1,0 +1,4554 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Spire.Spreadsheet</name>
+    </assembly>
+    <members>
+        <member name="T:Spire.Spreadsheet.Forms.ToolBar.FormulaBox">
+            <summary>
+            FormulaBar
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.ToolBar.FormulaBox.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.ToolBar.FormulaBox.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.ToolBar.FormulaBox.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.ToolBar.FormulaBox.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Spire.Spreadsheet.Forms.ToolBar.FormulaBox.#ctor(Spire.Spreadsheet.Forms.Spreadsheet)" -->
+        <member name="P:Spire.Spreadsheet.Forms.ToolBar.FormulaBox.Spreadsheet">
+            <summary>
+            Gets or sets a Spreadsheet that formla textbox attch to.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ToolBar.FormulaBox.FormulaIconVisible">
+            <summary>
+            Indicates whether Formula icon is visible.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.CheckBoxControl">
+            <summary>
+            Represents a checkbox control.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.OleControl">
+            <summary>
+            Represents a cell control.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.CellObjectBase">
+            <summary>
+            Cell Object base
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.CellObjectBase._worksheet">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.CellObjectBase._row">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.CellObjectBase._col">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellObjectBase.#ctor(Spire.Spreadsheet.Forms.IWorksheet,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellObjectBase.Clone">
+            <summary>
+            Clone ths object.
+            </summary>
+            <returns>cloned object.</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellObjectBase.Dispose">
+            <summary>
+            Dispose object and free resources.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellObjectBase.OnDispose">
+            <summary>
+            Method which can be overriden by users to take any specific actions when
+            object is disposed.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellObjectBase.Parent">
+            <summary>
+            Reference to Parent object. Read-only.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IOleControl.Dispose">
+            <summary>
+            Dispose object and free resources.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IOleControl.Text">
+            <summary>
+            Gets or sets the text associated with this control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IOleControl.Parent">
+            <summary>
+            Reference to Parent object. Read-only.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.OleControl.DrawControl(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only. 
+            </summary>
+            <param name="graphics"></param>
+            <param name="rect"></param>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.OleControl.Text">
+            <summary>
+            Gets or sets the text associated with this control.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.ICheckBoxControl.Dispose">
+            <summary>
+            Dispose object and free resources.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ICheckBoxControl.Worksheet">
+            <summary>
+            Gets worksheet of button control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ICheckBoxControl.Position">
+            <summary>
+            Gets Position of Button control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ICheckBoxControl.Checked">
+            <summary>
+            Indicates whether the check box is in the checked.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ICheckBoxControl.Text">
+            <summary>
+            Gets or sets the text associated with this control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ICheckBoxControl.Parent">
+            <summary>
+            Reference to Parent object. Read-only.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CheckBoxControl.Clone">
+            <summary>
+            Clone this object.
+            </summary>
+            <returns>Copy of this object.</returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CheckBoxControl.Worksheet">
+            <summary>
+            Gets worksheet of button control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CheckBoxControl.Position">
+            <summary>
+            Gets Position of Button control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CheckBoxControl.Checked">
+            <summary>
+            Indicates whether the check box is in the checked.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.CellKeyEventArgs">
+            <summary>
+            Provides data for grid cell key events. 
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellKeyEventArgs.Row">
+            <summary>
+            Gets row index of worksheet.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellKeyEventArgs.Column">
+            <summary>
+            Gets column index of worksheet.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.ToolBar.NameBox.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.ToolBar.NameBox.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.ToolBar.NameBox.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.FindReplaceDialog">
+            <summary>
+            Summary description for FormFindReplace.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.FindReplaceDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.FindReplaceDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.FindReplaceDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IHyperlink.SetTargetUri(System.String)">
+            <summary>
+            Set taget url of hyperlink.
+            </summary>
+            <param name="uri"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IHyperlink.Dispose">
+            <summary>
+            Dispose object and free resources.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IHyperlink.Worksheet">
+            <summary>
+            Gets the worksheet of hyperlink.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IHyperlink.Position">
+            <summary>
+            Gets the position of hyperlink.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IHyperlink.TargetUri">
+            <summary>
+            Gets or set the url of a hyperlink. 
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IHyperlink.Parent">
+            <summary>
+            Reference to Parent object. Read-only.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.ToolBar.FormulaText.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.ToolBar.FormulaText.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.ToolBar.FormulaText.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.SpreadColumn">
+            <summary>
+            Represents s single column in worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.ISpreadColumn.AddButtonControl(System.Int32,System.Int32,System.String)">
+            <summary>
+            Adds a button to the column.
+            </summary>
+            <param name="width">Width of button.</param>
+            <param name="height">Height of button.</param>
+            <param name="caption">Caption.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.ISpreadColumn.AddCheckBox">
+            <summary>
+            Adds a checkbox.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.ISpreadColumn.AddComboBoxControl(System.Collections.IList)">
+            <summary>
+            Adds a combobox.
+            </summary>
+            <param name="items">The list item.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.ISpreadColumn.RemoveOleControl">
+            <summary>
+            Removes the control from the column.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadColumn.OutlineLevel">
+            <summary>
+            Outline level.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadColumn.Worksheet">
+            <summary>
+            Gets worksheet object.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadColumn.Index">
+            <summary>
+            Gets index of column object.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadColumn.Style">
+            <summary>
+            Gets style of the column.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadColumn.Font">
+            <summary>
+            Gets or sets font of the column.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadColumn.FontColor">
+            <summary>
+            Gets or sets font color of the column.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadColumn.Width">
+            <summary>
+            Gets or sets the width of column.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadColumn.IsHidden">
+            <summary>
+            Gets or sets the hidden of column object.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadColumn.Text">
+            <summary>
+            Gets or sets the header text of the column.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadColumn.OleControl">
+            <summary>
+            Gets the Ole control object.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.SpreadColumn.AddButtonControl(System.Int32,System.Int32,System.String)">
+            <summary>
+            Adds a button to the column.
+            </summary>
+            <param name="width">Width of button.</param>
+            <param name="height">Height of button.</param>
+            <param name="caption">Caption.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.SpreadColumn.AddCheckBox">
+            <summary>
+            Adds a checkbox.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.SpreadColumn.AddComboBoxControl(System.Collections.IList)">
+            <summary>
+            Adds a combobox.
+            </summary>
+            <param name="items">The list item.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.SpreadColumn.RemoveOleControl">
+            <summary>
+            Removes the control from the column.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadColumn.OutlineLevel">
+            <summary>
+            Outline level.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadColumn.Worksheet">
+            <summary>
+            Gets worksheet object.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadColumn.Index">
+            <summary>
+            Gets index of column object.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadColumn.Style">
+            <summary>
+            Gets style of the column.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadColumn.Font">
+            <summary>
+            Gets or sets font of the column.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadColumn.FontColor">
+            <summary>
+            Gets or sets font color of the column.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadColumn.Width">
+            <summary>
+            Gets or sets the width of column.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadColumn.IsHidden">
+            <summary>
+            Gets or sets the hidden of column object.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadColumn.Text">
+            <summary>
+            Gets or sets the header text of the column.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadColumn.OleControl">
+            <summary>
+            Gets the Ole control object.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.FileFormatType">
+            <summary>
+            Enumerates spreadsheet file format types
+            </summary>	
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.FileFormatType.Excel97to2003">
+            <summary>
+            Represents an Excel 97 ~2003 file.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.FileFormatType.Excel2007to2013">
+            <summary>
+            Represents an Excel 2007 ~ 2013 xlsx file.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.ISpreadRow.GetFontColor">
+            <summary>
+            Gets font color of row.
+            </summary>
+            <returns>Font color of row.</returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadRow.Worksheet">
+            <summary>
+            Gets worksheet object.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadRow.Index">
+            <summary>
+            Gets index of row object.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadRow.Height">
+            <summary>
+            Gets or sets the height of row object.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadRow.IsHidden">
+            <summary>
+            Gets or sets the hidden of the row.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadRow.Text">
+            <summary>
+            Gets or sets the header text of the row.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadRow.Style">
+            <summary>
+            Gets style of the row.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadRow.FontColor">
+            <summary>
+            Gets or set font color of the row.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IDataFormatCondition.Style">
+            <summary>
+            get or set Style of DataFormatCondition
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IDataFormatCondition.ConditionType">
+            <summary>
+            gets or sets contion type.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IDataFormatCondition.ComparisonOperation">
+            <summary>
+            get or set Comparison Operation type
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IDataFormatCondition.Formula1">
+            <summary>
+            gets or sets Formula1
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IDataFormatCondition.Formula2">
+            <summary>
+            Gets or sets Formula2
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IDataFormatCondition.Priority">
+            <summary>
+            Gets or sets Priority
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.CellActionEventHandler">
+            <summary>
+            Represents actived cell changed event.
+            </summary>
+            <param name="sender"></param>
+            <param name="cell"></param>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Utility.CellStyle">
+            <summary>
+            Represents cell style. 
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Utility.CellStyle.#ctor(Spire.Spreadsheet.Forms.Spreadsheet)">
+            <summary>
+            Style Constructor.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Utility.CellStyle.Copy(Spire.Spreadsheet.Forms.Utility.CellStyle)">
+            <summary>
+            Copies style from another.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Utility.CellStyle.Clone">
+            <summary>
+            Clone object.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Utility.CellStyle.GetHashCode">
+            <summary>
+            Gets hash code.
+            </summary>
+            <returns>A hash code for the current Style.</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Utility.CellStyle.Equals(System.Object)">
+            <summary>
+            Indicates whether two Styles are equal.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Utility.CellStyle.StyleName">
+            <summary>
+            Gets or sets the style name.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Utility.CellStyle.NumberFormat">
+            <summary>
+            Gets or sets the custom number format.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Utility.CellStyle.Readonly">
+            <summary>
+            Gets or sets a value indicating whether cell contents can be modified by the user.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Utility.CellStyle.FormulaHidden">
+            <summary>
+            Gets or sets FormulaHidden attribute.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Utility.CellStyle.WrapText">
+            <summary>
+            Gets or sets a value indicating whether text should be wrapped when it does not fit into a single line.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Utility.CellStyle.Trimming">
+            <summary>
+            Gets or sets how text is trimmed when it exceeds the edges of the cell text rectangle.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Utility.CellStyle.BuiltInFormatIndex">
+            <summary>
+            Gets or sets index of built-in number format.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Utility.CellStyle.HorizontalAlignment">
+            <summary>
+            Gets or sets horizontal alignment of text in the cell.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Utility.CellStyle.VerticalAlignment">
+            <summary>
+            Gets or sets vertical alignment attribute.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Utility.CellStyle.Rotation">
+            <summary>
+            Gets or sets text rotation.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Utility.CellStyle.Indent">
+            <summary>
+            Gets or sets indent level attribute.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Utility.CellStyle.RightToLeft">
+            <summary>
+            Gets or sets if cell contents read from right to left.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Utility.CellStyle.ForegroundColor">
+            <summary>
+            Gets or sets the cell Foreground color.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Utility.CellStyle.BackgroundColor">
+            <summary>
+            Gets or sets the background color.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Utility.CellStyle.Borders">
+            <summary>
+            Gets or sets cell's border.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Collections.HyperlinkCollection">
+            <summary>
+            Collection of Hyperlink objects. 
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Collections.CellObjectCollection">
+            <summary>
+            Collection extened
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.CellObjectCollection.RemoveAt(System.Int32,System.Int32)">
+            <summary>
+            Removes the item at the specified row column index of the cell.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.CellObjectCollection.Remove(System.String)">
+            <summary>
+            Removes the item by name.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.HyperlinkCollection.Add(System.Int32,System.Int32,System.String)">
+            <summary>
+            Adds a hyperlink to a specified cell at row column index.
+            </summary>
+            <param name="row">Row index.</param>
+            <param name="col">Column index.</param>
+            <param name="TargetUrl">link of hyperlink.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.HyperlinkCollection.Add(System.String,System.String)">
+            <summary>
+            Adds a hyperlink to a specified cell by range name.
+            </summary>
+            <param name="rangeName">range Name.</param>
+            <param name="TargetUrl">link of hyperlink.</param>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.HyperlinkCollection.Item(System.Int32,System.Int32)">
+            <summary>
+            Gets the hyperlink object at specified row and column index.
+            </summary>
+            <param name="row">row index.</param>
+            <param name="col">column index.</param>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.HyperlinkCollection.Item(System.String)">
+            <summary>
+            Gets the hyperlink object by specified range name.
+            </summary>
+            <param name="rangeName">range name('A1', 'B1')
+            </param>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.WorksheetCustomProperty">
+            <summary>
+             Represents worksheet custom property.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheetCustomProperty.Name">
+            <summary>
+             Gets or sets name of the property.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheetCustomProperty.Value">
+            <summary>
+            Gets / sets value of the property.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.WorksheetCustomProperty.Name">
+            <summary>
+             Gets or sets name of the property.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.WorksheetCustomProperty.Value">
+            <summary>
+            Gets / sets value of the property.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Collections.CellRange">
+            <summary>
+            Encapsulates a collection of gridcell objects. 
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.CellRange.CopyTo(System.Array,System.Int32)">
+            <summary>
+            Copies the cells to an array.
+            </summary>
+            <param name="array">The array object.</param>
+            <param name="index">The index of the first cell to copy.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.CellRange.FirstCell">
+            <summary>
+            Goto first cell.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.CellRange.MoveNext">
+            <summary>
+            Advances the enumerator to the next element of the collection.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.CellRange.PopulateValues(System.Object)">
+            <summary>
+            Sets value of the range.
+            </summary>
+            <param name="Value"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.CellRange.SetStyles(Spire.Spreadsheet.Forms.Utility.CellStyle)">
+            <summary>
+            Sets style of the range.
+            </summary>
+            <param name="style"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.CellRange.Reset">
+            <summary>
+            Sets the enumerator to first element.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.CellRange.Merge">
+            <summary>
+            Merages the cell range.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.CellRange.Unmerge">
+            <summary>
+            Unmerges the cell range.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.CellRange.GetEnumerator">
+            <summary>
+            Returns an IEnumerator for the collection.
+            </summary>
+            <returns>An IEnumerator for the collection.</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.CellRange.IntersectRange(Spire.Spreadsheet.Forms.Collections.CellRange)">
+            <summary>
+            Get inasect range.
+            </summary>
+            <param name="rangeInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.CellRange.IntersectRange(Spire.Spreadsheet.Forms.Collections.CellRange,Spire.Spreadsheet.Forms.Collections.CellRange)">
+            <summary>
+            Get intasect range.
+            </summary>
+            <param name="r1"></param>
+            <param name="r2"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.CellRange.Top">
+            <summary>
+            Gets the row index of the upper-left corner of the cell range.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.CellRange.Left">
+            <summary>
+            Gets the column index of the upper-left corner of the cell range.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.CellRange.Bottom">
+            <summary>
+            Gets the row index of the bottom-right corner of the cell range.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.CellRange.Right">
+            <summary>
+            Gets the column index of the bottom-right corner of the cell range.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.CellRange.Width">
+            <summary>
+            Gets the width of the range.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.CellRange.Height">
+            <summary>
+             Gets the height of the range.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.CellRange.Count">
+            <summary>
+            Gets the count of the cells.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.CellRange.Current">
+            <summary>
+            Gets the current element in the collection.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Utility.TextDirectionType">
+            <summary>
+            Represents text reading order.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.TextDirectionType.Context">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.TextDirectionType.LeftToRight">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.TextDirectionType.RightToLeft">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Collections.PictureCollection">
+            <summary>
+            Encapsulates a collection of Picture objects. 
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.PictureCollection.AddPicture(System.Int32,System.Int32,System.String)">
+            <summary>
+            Adds a Picture to a specified cell.
+            </summary>
+            <param name="row">Row index.</param>
+            <param name="col">Column index.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.PictureCollection.AddPicture(System.Int32,System.Int32,System.Drawing.Image)">
+            <summary>
+            Adds a Picture to a specified cell.
+            </summary>
+            <param name="row">Row index.</param>
+            <param name="col">Column index.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.PictureCollection.AddPicture(System.Int32,System.Int32,System.IO.Stream)">
+            <summary>
+            Adds a Picture to a specified cell.
+            </summary>
+            <param name="row">Row index.</param>
+            <param name="col">Column index.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.PictureCollection.Picture(System.String,System.String)">
+            <summary>
+            Adds a Picture to a specified cell.
+            </summary>
+            <param name="rangeName">range name.</param>
+            <param name="fileName">File name of picture.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.PictureCollection.AddPicture(System.String,System.IO.Stream)">
+            <summary>
+            Adds a Picture to a specified cell.
+            </summary>
+            <param name="rangeName">Range name.</param>
+            <param name="stream">Stream of picture.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.PictureCollection.AddPicture(System.String,System.Drawing.Image)">
+            <summary>
+            Adds a Picture to a specified cell.
+            </summary>
+            <param name="rangeName">range Name.</param>
+            <param name="image">Image.</param>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.PictureCollection.Item(System.Int32,System.Int32)">
+            <summary>
+            Gets the Picture object at specified row and column index.
+            </summary>
+            <param name="row">row index.</param>
+            <param name="col">column index.</param>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.PictureCollection.Item(System.String)">
+            <summary>
+            Gets the Picture object by specified range name.
+            </summary>
+            <param name="rangeName">range name('A1', 'B1')
+            </param>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.SpreadCell">
+            <summary>
+            Represents a spreadsheet cell. 
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.ISpreadCell.SetCellValue(System.Object)">
+            <summary>
+            Sets cell value.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.ISpreadCell.IsFormula">
+            <summary>
+            Indicates the cell is a formula or not.
+            </summary>
+            <returns>bool</returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadCell.Worksheet">
+            <summary>
+            Gets worksheet object.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadCell.Row">
+            <summary>
+            Gets cell row index.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadCell.Column">
+            <summary>
+            Gets cell column index.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadCell.Name">
+            <summary>
+            Gets cell name.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadCell.Location">
+            <summary>
+            Gets cell location.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadCell.Value">
+            <summary>
+            Gets or sets a cell value.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadCell.Style">
+            <summary>
+            Gets or sets style of cell.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadCell.FormulaValue">
+            <summary>
+             Gets formula value of the cell.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadCell.Font">
+            <summary>
+            Gets or sets font of spread cell.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadCell.FontColor">
+            <summary>
+            Gets or set font color of spread cell.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ISpreadCell.Protected">
+            <summary>
+            Indicates whether the cell is protected.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.SpreadCell.SetCellValue(System.Object)">
+            <summary>
+            Sets cell value.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.SpreadCell.IsFormula">
+            <summary>
+            Indicates the cell is a formula or not.
+            </summary>
+            <returns>bool</returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadCell.Worksheet">
+            <summary>
+            Gets worksheet object.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadCell.Row">
+            <summary>
+            Gets cell row index.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadCell.Column">
+            <summary>
+            Gets cell column index.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadCell.Name">
+            <summary>
+            Gets cell name.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadCell.Location">
+            <summary>
+            Gets cell location.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadCell.Value">
+            <summary>
+            Gets or sets a cell value.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadCell.Style">
+            <summary>
+            Gets or sets style of cell.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadCell.FormulaValue">
+            <summary>
+             Gets formula value of the cell.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadCell.Font">
+            <summary>
+            Gets or sets font of spread cell.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadCell.FontColor">
+            <summary>
+            Gets or set font color of spread cell.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadCell.Protected">
+            <summary>
+            Indicates whether the cell is protected.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.ComboBoxControl">
+            <summary>
+            Represents a combobox control.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IComboBoxControl.Dispose">
+            <summary>
+            Dispose object and free resources.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IComboBoxControl.Worksheet">
+            <summary>
+            Gets worksheet of button control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IComboBoxControl.Position">
+            <summary>
+            Gets Position of Button control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IComboBoxControl.SelectedIndex">
+            <summary>
+            Gets or sets the index of selected item.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IComboBoxControl.Width">
+            <summary>
+            Gets or sets the width of the Combobox control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IComboBoxControl.Height">
+            <summary>
+            Gets or sets the height of the Combobox control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IComboBoxControl.DropDownType">
+            <summary>
+            Gets or sets drop down type of combobox.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IComboBoxControl.Items">
+            <summary>
+            Gets an object representing the collection of the items contained in this ComboBox.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IComboBoxControl.Text">
+            <summary>
+            Gets or sets the text associated with this control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IComboBoxControl.Parent">
+            <summary>
+            Reference to Parent object. Read-only.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ComboBoxControl.Worksheet">
+            <summary>
+            Gets worksheet of button control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ComboBoxControl.Position">
+            <summary>
+            Gets Position of Button control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ComboBoxControl.SelectedIndex">
+            <summary>
+            Gets or sets the index of selected item.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ComboBoxControl.Width">
+            <summary>
+            Gets or sets the width of the Combobox control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ComboBoxControl.Height">
+            <summary>
+            Gets or sets the height of the Combobox control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ComboBoxControl.DropDownType">
+            <summary>
+            Gets or sets drop down type of combobox.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ComboBoxControl.Items">
+            <summary>
+            Gets an object representing the collection of the items contained in this ComboBox.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.ButtonControl">
+            <summary>
+            Represents a button control.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IButtonControl.Dispose">
+            <summary>
+            Dispose object and free resources.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IButtonControl.Worksheet">
+            <summary>
+            Gets worksheet of button control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IButtonControl.Position">
+            <summary>
+            Gets Position of Button control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IButtonControl.Width">
+            <summary>
+            Gets or sets the width of the button control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IButtonControl.Height">
+            <summary>
+            Gets or sets the height of the button control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IButtonControl.Visible">
+            <summary>
+            Gets or sets if the Button should visible.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IButtonControl.Image">
+            <summary>
+            Gets or sets the background image of button control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IButtonControl.Text">
+            <summary>
+            Gets or sets the text associated with this control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IButtonControl.Parent">
+            <summary>
+            Reference to Parent object. Read-only.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.ButtonControl.Clone">
+            <summary>
+            Clone this object.
+            </summary>
+            <returns>Copy of this object.</returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ButtonControl.Worksheet">
+            <summary>
+            Gets worksheet of button control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ButtonControl.Position">
+            <summary>
+            Gets Position of Button control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ButtonControl.Width">
+            <summary>
+            Gets or sets the width of the button control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ButtonControl.Height">
+            <summary>
+            Gets or sets the height of the button control.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ButtonControl.Visible">
+            <summary>
+            Gets or sets if the Button should visible.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ButtonControl.Image">
+            <summary>
+            Gets or sets the background image of button control.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Properties.Resources.button_border_none">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Properties.Resources.button_bottom_line">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Properties.Resources.button_diamand_down">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Properties.Resources.button_diamand_up">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Properties.Resources.button_left_line">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Properties.Resources.button_outline_solid">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Properties.Resources.button_right_line">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Properties.Resources.button_top_line">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Properties.Resources.Copy_Context">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Properties.Resources.Cut_Context">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Properties.Resources.formula">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Properties.Resources.Paste_Context">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Properties.Resources.Properties_Context">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Collections.WorksheetCustomPropertyCollection">
+            <summary>
+            Represents collection of all custom properties in the worksheet. 
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.WorksheetCustomPropertyCollection.Add(System.String,System.String)">
+            <summary>
+            Adds new property to the collection.
+            </summary>
+            <param name="name">The name of the custom property.</param>
+            <param name="value">The value of the custom property.</param>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.WorksheetCustomPropertyCollection.Item(System.Int32)">
+            <summary>
+            Gets the custom property by the specific index.
+            </summary>
+            <param name="index">The index.</param>
+            <returns>The custom property</returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.WorksheetCustomPropertyCollection.Item(System.String)">
+            <summary>
+            Gets the custom property by the property name.
+            </summary>
+            <param name="name">The property name.</param>
+            <returns>The custom property</returns>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Collections.OleControlCollection">
+            <summary>
+            Encapsulates a collection of cell control. 
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.OleControlCollection.AddButtonControl(System.Int32,System.Int32,System.Int32,System.Int32,System.String)">
+            <summary>
+            Adds a button to a specified cell at row column index.
+            </summary>
+            <param name="row">Row index.</param>
+            <param name="col">Column index.</param>
+            <param name="width">Width.</param>
+            <param name="height">Height.</param>
+            <param name="caption">DispayText.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.OleControlCollection.AddButtonControl(System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            Adds a button control to a specified cell by range name.
+            </summary>
+            <param name="rangeName">Range name.</param>
+            <param name="width">Width</param>
+            <param name="height">Height.</param>
+            <param name="caption">Caption.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.OleControlCollection.AddCheckBoxControl(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Adds a checkbox to a specified cell at row column index.
+            </summary>
+            <param name="row">Row index of cell.</param>
+            <param name="col">Column index of cell.</param>
+            <param name="isChecked">Checkbox checked property state.</param>
+            <returns>The added checkbox.</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.OleControlCollection.AddCheckBox(System.String,System.Boolean)">
+            <summary>
+            Adds a checkbox to a specified cell by cell name.
+            </summary>
+            <param name="cellName">Name of grid cell.</param>
+            <param name="IsChecked">check state.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.OleControlCollection.AddComboBoxControl(System.Int32,System.Int32,System.Collections.IList)">
+            <summary>
+            Adds a combobox to a specified cell at row column index.
+            </summary>
+            <param name="row">Row index.</param>
+            <param name="col">Column index.</param>
+            <param name="items">List item</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.OleControlCollection.AddComboBoxControl(System.String,System.Collections.IList)">
+            <summary>
+            Adds a combobox control to a specified cell by range name.
+            </summary>
+            <param name="cellName">Name of grid cell.</param>
+            <param name="items">The collection of the items contained in ComboBox.</param>
+            <returns>The added combobox.</returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.OleControlCollection.Item(System.Int32,System.Int32)">
+            <summary>
+            Gets the cell control at specified row and column index.
+            </summary>
+            <param name="row">row index.</param>
+            <param name="col">column index.</param>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.OleControlCollection.Item(System.String)">
+            <summary>
+            Gets the cell control by specified range name.
+            </summary>
+            <param name="rangeName">range name
+            </param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.EnableRowFilter">
+            <summary>
+            Enable row filter.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.DisableRowFilter">
+            <summary>
+            Disable row filter.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.RemoveRowFilter">
+            <summary>
+            Remove row filter.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.AppendColumn(System.Int32)">
+            <summary>
+            Append specified columns to worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.InsertColumn(System.Int32)">
+            <summary>
+            Inserts a new column.
+            </summary>
+            <param name="index">index of column</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.AppendRows(System.Int32)">
+            <summary>
+            Append specified rows to spreadsheet.
+            </summary>
+            <param name="count">number of rows</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.InsertRow(System.Int32)">
+            <summary>
+            Inserts a new row.
+            </summary>
+            <param name="index">row index</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.RemoveColumn(System.Int32)">
+            <summary>
+            Removes a column at the specified index.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.RemoveRow(System.Int32)">
+            <summary>
+            Removes a row at the specified index.
+            </summary>
+            
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.HasActiveCell">
+            <summary>
+            Determines whether the cell is actived.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.GetActiveCell">
+            <summary>
+            Gets the active cell.
+            </summary>
+            <returns>Cell object.</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.SetActiveCell(Spire.Spreadsheet.Forms.CellAdressInfo)">
+            <summary>
+            Sets the active cell at the specified location.
+            </summary>
+            <param name="cellAdressInfo">Cell location.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.SetActiveCell(System.Int32,System.Int32)">
+            <summary>
+            Sets the active cell at the specified column and row.
+            </summary>
+            <param name="row">Row index.</param>
+            <param name="col">Column index.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.ClearCell(System.Int32,System.Int32)">
+            <summary>
+            Clears cell.
+            </summary>
+            <param name="row">Row index.</param>
+            <param name="col">Column index.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.ClearCell(Spire.Spreadsheet.Forms.ISpreadCell)">
+            <summary>
+            Clears cell.
+            </summary>
+            <param name="cell">GridCell object.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.ClearCell(System.String)">
+            <summary>
+            Clears cell.
+            </summary>
+            <param name="cellRange">Cell range.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.GetSelectedRange">
+            <summary>
+            Gets the selected cell range.
+            </summary>
+            <returns>CellRange object.</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.GetAllSelectedRanges">
+            <summary>
+            Gets all selected ranges of this worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.AddSelectedRange(Spire.Spreadsheet.Forms.CellRangeInfo)">
+            <summary>
+            Add a new selected range to the worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.CheckInSelection(Spire.Spreadsheet.Forms.CellAdressInfo)">
+            <summary>
+            Determines whether the specified cell location is in selected.
+            </summary>
+            <param name="cellAdressInfo">Cell location.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.CheckInSelectionsByColumn(System.Int32)">
+            <summary>
+            Check whether the specified column at index is in selected.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.CheckInSelectionByRow(System.Int32)">
+            <summary>
+            Check whether the specified row at index is in selected.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.ClearSelection">
+            <summary>
+            Clear the selection in Worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.FromRange(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Gets CellRangeInfo from a range of worksheet.
+            </summary>
+            <param name="startRow">Start Row index.</param>
+            <param name="startColumn">Start Column index.</param>
+            <param name="endRow">End Row index.</param>
+            <param name="endColumn">End Column index.</param>
+            <returns>A CellRange object.</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.FromRange(System.String,System.String)">
+            <summary>
+            Gets CellRangeInfo from a range of worksheet.
+            </summary>
+            <param name="startCellRange">Start cell range.</param>
+            <param name="endCellRange">End cell range.</param>
+            <returns>A CellRange object.</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.ImportDataView(System.Data.DataView,System.Int32,System.Int32)">
+            <summary>
+            Import data from data view to worksheet.
+            </summary>
+            <param name="dataView">Dataset</param>
+            <param name="firstRow">The first row.</param>
+            <param name="firstColumn">The first column.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.ImportDataSet(System.Data.DataSet,System.String,System.Int32,System.Int32)">
+            <summary>
+            Imports data from a dataset to worksheet.
+            </summary>
+            <param name="dataSet">Dataset</param>
+            <param name="dataMember">DataMember</param>
+            <param name="firstRow">The first row.</param>
+            <param name="firstColumn">The first column.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.ImportDataTable(System.Data.DataTable,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            Imports data from a DataTable into worksheet
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.ExportDataTable(System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Exports worksheet data into a DataTable
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.ExportDataTable(System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)">
+            <summary>
+            Exports worksheet data into a DataTable
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.Merge(Spire.Spreadsheet.Forms.CellRangeInfo)">
+            <summary>
+            Merges a specified range.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.Merge(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Merges a specified range.
+            </summary>
+            <param name="firstRow">First row.</param>
+            <param name="firstColumn">First column.</param>
+            <param name="endRow">End row.</param>
+            <param name="endColumn">End column.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.Unmerge(Spire.Spreadsheet.Forms.CellRangeInfo)">
+            <summary>
+            Unmerges a specified range of merged cells. 
+            </summary>
+            <param name="range">Merged cells range.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.RemoveAllMerges">
+            <summary>
+            Removes all merges.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.GetMerge(System.Int32)">
+            <summary>
+            Gets the cell range of the merge at the specified index.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.GroupRows(System.Int32,System.Int32)">
+            <summary>
+            Group rows from specified number of rows 
+            </summary>
+            <param name="firstRow">number of rows to start group.</param>
+            <param name="count">numbers of column to be grouped</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.GroupRows(System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Group rows from specified number of rows 
+            </summary>
+            <param name="firstRow">number of rows to start group.</param>
+            <param name="count">numbers of column to be grouped.</param>
+            <param name="outlineLevel">outlineLevel</param>
+            <param name="visible">visible.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.GroupRows(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Group rows from specified number of rows 
+            </summary>
+            <param name="firstRow">number of rows to start group.</param>
+            <param name="count">numbers of column to be grouped.</param>
+            <param name="visible">visible.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.UngroupRows(System.Int32,System.Int32)">
+            <summary>
+            Ungroups rows.
+            </summary>
+            <param name="firstRow">number of row to ungroup.</param>
+            <param name="count">number of rows to ungroup.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.GroupColumns(System.Int32,System.Int32)">
+            <summary>
+            Group columns from specified number of columns 
+            </summary>
+            <param name="firstColumn">number of columns to start group.</param>
+            <param name="count">numbers of column to be grouped.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.GroupColumns(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Group columns from specified number of columns 
+            </summary>
+            <param name="firstColumn">number of columns to start group.</param>
+            <param name="count">numbers of column to be grouped.</param>
+            <param name="visible">visible</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.GroupColumns(System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Group columns from specified number of columns.
+            </summary>
+            <param name="firstColumn">number of columns to start group.</param>
+            <param name="count">numbers of column to be grouped.</param>
+            <param name="outlineLevel">outlineLevel</param>
+            <param name="visible">visible</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.UngroupColumns(System.Int32,System.Int32)">
+            <summary>
+            Ungroups columns.
+            </summary>
+            <param name="firstColumn">number of column to ungroup.</param>
+            <param name="count">number of columns to ungroup.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.AutoFitColumn(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Autofits column.
+            </summary>
+            <param name="columnIndex">Column index.</param>
+            <param name="firstRow">Zero-based index of the first row to be used for autofit operation.</param>
+            <param name="lastRow">Zero-based index of the last row to be used for autofit operation.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.AutoFitColumn(System.Int32)">
+            <summary>
+            Autofits the column width.
+            </summary>
+            <param name="columnIndex">column index</param>     
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.AutoFitColumn(System.Int32,System.Int32)">
+            <summary>
+            Autofits the column width.
+            </summary>
+            <param name="fistColumn">Zero-based index of the first column to be used for autofit operation.</param>
+            <param name="lastColumn">Zero-based index of the last column to be used for autofit operation.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.AutoFitColumn">
+            <summary>
+            Autofits all columns width.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.AutoFitRow(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Autofits the row height. 
+            </summary>
+            <param name="rowIndex">row index, zero based</param>
+            <param name="firstColumn">Zero-based index of the first column to be used for autofit operation.</param>
+            <param name="lastColumn">Zero-based index of the last column to be used for autofit operation.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.AutoFitRow(System.Int32)">
+            <summary>
+            Autofits the row height. 
+            </summary>
+            <param name="rowIndex">row index</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.AutoFitRow(System.Int32,System.Int32)">
+            <summary>
+            Autofits the row height.
+            </summary>
+            <param name="firstRow">Zero-based index of the first row to be used for autofit operation.</param>
+            <param name="lastRow">Zero-based index of the last row to be used for autofit operation.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.AutoFitRow">
+            <summary>
+            Autofits all rows height
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.SetFirstVisibleColumn(System.Int32)">
+            <summary>
+            Set the first visible column index of sheet view.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.CaculateSelectedValue">
+            <summary>
+            Calculates the sum of selected ranges of the worksheet.
+            </summary>
+            <returns>the sum or null.</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.FreezeRow(System.Int32)">
+            <summary>
+            Freeze grid at specified row. 
+            </summary>
+            <param name="Row">row index.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.UnfreezeRow">
+            <summary>
+            UnFreeze grid.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.UnfreezeColumn">
+            <summary>
+            UnFreeze grid.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.FreezeColumn(System.Int32)">
+            <summary>
+             Freeze grid at specified column.
+            </summary>
+            <param name="column"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.GetNumber(System.Int32,System.Int32)">
+            <summary>
+            Gets number value from specific cell.
+            </summary>
+            <param name="row">Row index</param>
+            <param name="column">Column index</param>
+            <returns>Number value</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.Protect">
+            <summary>
+            Protect the worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.Unprotect">
+            <summary>
+            Unprotect the worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.GetRowHeightPixels(System.Int32)">
+            <summary>
+            Get row height.
+            </summary>
+            <param name="Row">Row index</param>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.GetText(System.Int32,System.Int32)">
+            <summary>
+            Gets string value from specific cell.
+            </summary>
+            <param name="row">Row index.</param>
+            <param name="column">Column index.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.InsertArray(System.Object[0:,0:],System.Int32,System.Int32)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrObject"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.InsertArray(System.DateTime[],System.Int32,System.Int32)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrDateTime"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.InsertArray(System.DateTime[],System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrDateTime"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+            <param name="IsVertical"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.InsertArray(System.Double[],System.Int32,System.Int32)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrDouble"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.InsertArray(System.Double[],System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrDouble"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+            <param name="IsVertical"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.InsertArray(System.Int32[],System.Int32,System.Int32)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrInt"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.InsertArray(System.Int32[],System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrInt"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+            <param name="IsVertical"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.InsertArray(System.Object[],System.Int32,System.Int32)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrObject"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.InsertArray(System.Object[],System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrObject"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+            <param name="IsVertical"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.InsertArray(System.String[],System.Int32,System.Int32)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrString"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.InsertDataColumn(System.Data.DataColumn,System.Int32,System.Int32)">
+            <summary>
+            Insert data column to worksheet.
+            </summary>
+            <param name="dataColumn"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.InsertDataTable(System.Data.DataTable,System.Int32,System.Int32)">
+            <summary>
+            Insert datatable to workhseet.
+            </summary>
+            <param name="dataTable"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.InsertDataView(System.Data.DataView,System.Int32,System.Int32)">
+            <summary>
+            Insert dataview to workhseet.
+            </summary>
+            <param name="dataView"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.IsColumnVisible(System.Int32)">
+            <summary>
+            Checks whether the column is visible.
+            </summary>
+            <param name="columnIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.IsRowVisible(System.Int32)">
+            <summary>
+            Checks whether the row is visible.
+            </summary>
+            <param name="rowIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.SetColumnWidthInPixels(System.Int32,System.Int32)">
+            <summary>
+            Sets column with.
+            </summary>
+            <param name="columnIndex"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.SetDefaultColumnStyle(System.Int32,Spire.Spreadsheet.Forms.Utility.CellStyle)">
+            <summary>
+            Sets column style.
+            </summary>
+            <param name="columnIndex"></param>
+            <param name="defaultStyle"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.SetDefaultRowStyle(System.Int32,Spire.Spreadsheet.Forms.Utility.CellStyle)">
+            <summary>
+            Set row style.
+            </summary>
+            <param name="rowIndex"></param>
+            <param name="defaultStyle"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.SetFormula(System.Int32,System.Int32,System.String)">
+            <summary>
+            Sets formula value to specific cell.
+            </summary>
+            <param name="iRow"></param>
+            <param name="iColumn"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.SetNumber(System.Int32,System.Int32,System.Double)">
+            <summary>
+            Sets number value to specific cell.
+            </summary>
+            <param name="iRow"></param>
+            <param name="iColumn"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.SetRowHeightPixels(System.Int32,System.Double)">
+            <summary>
+            Sets row height.
+            </summary>
+            <param name="Row"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.SetText(System.Int32,System.Int32,System.String)">
+            <summary>
+            Sets string value to specific cell.
+            </summary>
+            <param name="iRow"></param>
+            <param name="iColumn"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.SetValue(System.Int32,System.Int32,System.Object)">
+            <summary>
+            Sets value to specific cell.
+            </summary>
+            <param name="iRow"></param>
+            <param name="iColumn"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.Resize(System.Int32,System.Int32)">
+            <summary>
+            Resets row count and column count.
+            </summary>
+            <param name="rows"></param>
+            <param name="cols"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.SetRows(System.Int32)">
+            <summary>
+            Sets rows count.
+            </summary>
+            <param name="rows"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.SetColumns(System.Int32)">
+            <summary>
+            Set columns count.
+            </summary>
+            <param name="columns"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.SortColumn(System.Int32)">
+            <summary>
+            Sort data on specified column.
+            </summary>
+            <param name="columnIndex">column index.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.SortColumns(System.Int32,System.Int32)">
+            <summary>
+            Sort data on specified column.
+            </summary>
+            <param name="columnIndex"></param>
+            <param name="count"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.SortColumn(System.Int32,Spire.Spreadsheet.Forms.SortOrder,System.Boolean)">
+            <summary>
+            Sort data on specified column.
+            </summary>
+            <param name="columnIndex">column index.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.SortColumns(System.Int32,System.Int32,Spire.Spreadsheet.Forms.SortOrder,System.Boolean)">
+            <summary>
+            Sort data on specified column.
+            </summary>
+            <param name="columnIndex"></param>
+            <param name="count"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IWorksheet.SortColumns(System.Int32[],Spire.Spreadsheet.Forms.SortOrder[],System.Boolean)">
+            <summary>
+            Sort data on specified columns.
+            </summary>
+            <param name="columnIndex"></param>
+            <param name="count"></param>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.Spreadsheet">
+            <summary>
+            Gets Spreadsheet object.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.ConditionalFormattings">
+            <summary>
+            ConditionalFormattings of worksheet
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.IsProtected">
+            <summary>
+            Indicates whether worksheet object is protected.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.GridLinesVisible">
+            <summary>
+            Indicates whether the gridlines is visible.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.SheetName">
+            <summary>
+            Gets or sets the name of the sheet.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.FrozenRows">
+            <summary>
+            Gets or sets Worksheet's frozen row count.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.FrozenColumns">
+            <summary>
+            Gets or sets Worksheet's frozen column count.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.ActiveCellAdressInfo">
+            <summary>
+            Gets the active cell.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.Hyperlinks">
+            <summary>
+            Gets the hyperlink collection.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.Pictures">
+            <summary>
+            Gets the picture collection.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.Comments">
+            <summary>
+            Gets the comment collection.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.Controls">
+            <summary>
+            Gets the cell control collection.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.ColumnCount">
+            <summary>
+            Gets or sets the column count of the Worksheet.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.FirstVisibleColumn">
+            <summary>
+            Gets or sets the first visible column of the worksheet.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.FirstVisibleRow">
+            <summary>
+            Get the first visible row of the worksheet.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.Columns">
+            <summary>
+            Gets the collection of columns that belong to this Worksheet.
+            </summary>
+            
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.Rows">
+            <summary>
+            Gets the collection of rows that belong to this Worksheet.
+            </summary>
+            
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.RowCount">
+            <summary>
+            Gets or sets the row count of the Worksheet.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.Cells">
+            <summary>
+            Gets the collection of cells that belong to this worksheet.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.MergeRangesCount">
+            <summary>
+            Gets the count of the merges 
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.IsVisible">
+            <summary>
+            Represents if the worksheet is visible.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.WorksheetCustomProperties">
+            <summary>
+            Gets the CustomProperties. 
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.Item(System.Int32,System.Int32)">
+            <summary>
+            Gets spread cell at specific row and colum.
+            </summary>
+            <param name="row"></param>
+            <param name="column"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.Item(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Gets cell range.
+            </summary>
+            <param name="row"></param>
+            <param name="column"></param>
+            <param name="lastRow"></param>
+            <param name="lastColumn"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.Item(System.String)">
+            <summary>
+            Gets spread cell by cell name.
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IWorksheet.Item(System.String,System.String)">
+            <summary>
+            Gets cell range.
+            </summary>
+            <param name="startName"></param>
+            <param name="endName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IComment.GetPlainText">
+            <summary>
+            Get plain text of the comment.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IComment.SetPlainText(System.String)">
+            <summary>
+            Set plain text of the comment.
+            </summary>
+            <param name="text"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.IComment.Dispose">
+            <summary>
+            Dispose object and free resources.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IComment.Worksheet">
+            <summary>
+            Gets worksheet of the comment.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IComment.Position">
+            <summary>
+            Get position of the comment.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IComment.PlainText">
+            <summary>
+            Gets or sets the text of the Comment. 
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IComment.Width">
+            <summary>
+            Get or set the width of the comment.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IComment.Height">
+            <summary>
+            Get or set the height of the comment. 
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IComment.Visible">
+            <summary>
+            Represents the visibility of a Comment.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.IComment.Parent">
+            <summary>
+            Reference to Parent object. Read-only.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Collections.ConditionalFormatting">
+            <summary>
+            ConditionalFormatting
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.IConditionalFormatting.AddRange(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Add range to Areas of ConditionalFormatting
+            </summary>
+            <param name="firstRow">first row of area</param>
+            <param name="lastRow">last row of area</param>
+            <param name="firstColumn">first column of area</param>
+            <param name="lastColumn">last column of area</param>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.IConditionalFormatting.AddCondition(Spire.Spreadsheet.Forms.ConditionType,Spire.Spreadsheet.Forms.ComparisonOperationType,System.String,System.String)">
+            <summary>
+            Add Condition to FormatConditions
+            </summary>
+            <param name="formatConditionType">format condition Type</param>
+            <param name="operatorType">Operator type</param>
+            <param name="formula1">the first formula</param>
+            <param name="formula2">the second formula</param>
+            <returns>index</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.IConditionalFormatting.AddCondition(Spire.Spreadsheet.Forms.IDataFormatCondition)">
+            <summary>
+            Add Condition to FormatConditions
+            </summary>
+            <param name="fc">FormatCondition</param>
+            <returns>index</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.IConditionalFormatting.RemoveCondition(Spire.Spreadsheet.Forms.IDataFormatCondition)">
+            <summary>
+            remove FormatCondition
+            </summary>
+            <param name="fc">FormatCondition</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.IConditionalFormatting.RemoveCondition(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="index"></param>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.IConditionalFormatting.Areas">
+            <summary>
+            get or set Areas
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.IConditionalFormatting.FormatConditions">
+            <summary>
+            get or set formatconditions
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.IConditionalFormatting.Item(System.Int32)">
+            <summary>
+            Gets FormatCondition
+            </summary>
+            <param name="index">index of formatconditions</param>
+            <returns>FormatCondition</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.ConditionalFormatting.AddRange(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Add range to Areas of ConditionalFormatting
+            </summary>
+            <param name="firstRow">first row of area</param>
+            <param name="lastRow">last row of area</param>
+            <param name="firstColumn">first column of area</param>
+            <param name="lastColumn">last column of area</param>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.ConditionalFormatting.AddCondition(Spire.Spreadsheet.Forms.ConditionType,Spire.Spreadsheet.Forms.ComparisonOperationType,System.String,System.String)">
+            <summary>
+            Add Condition to FormatConditions
+            </summary>
+            <param name="formatConditionType">format condition Type</param>
+            <param name="operatorType">Operator type</param>
+            <param name="formula1">the first formula</param>
+            <param name="formula2">the second formula</param>
+            <returns>index</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.ConditionalFormatting.AddCondition(Spire.Spreadsheet.Forms.IDataFormatCondition)">
+            <summary>
+            Add Condition to FormatConditions
+            </summary>
+            <param name="fc">FormatCondition</param>
+            <returns>index</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.ConditionalFormatting.RemoveCondition(Spire.Spreadsheet.Forms.IDataFormatCondition)">
+            <summary>
+            remove FormatCondition
+            </summary>
+            <param name="fc">FormatCondition</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.ConditionalFormatting.RemoveCondition(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="index"></param>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.ConditionalFormatting.Areas">
+            <summary>
+            get or set Areas
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.ConditionalFormatting.FormatConditions">
+            <summary>
+            get or set formatconditions
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.ConditionalFormatting.Item(System.Int32)">
+            <summary>
+            Gets FormatCondition
+            </summary>
+            <param name="index">index of formatconditions</param>
+            <returns>FormatCondition</returns>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Collections.ColumnCollection">
+            <summary>
+            Collects the objects that represent the individual columns in a worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.ColumnCollection.CopyTo(System.Array,System.Int32)">
+            <summary>
+            Copies the columns to an array.
+            </summary>
+            <param name="array">The array object.</param>
+            <param name="index">The index of the first column to copy.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.ColumnCollection.GetEnumerator">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.ColumnCollection.Item(System.Int32)">
+            <summary>
+            Gets a gridcolumn object at specified index.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.ColumnCollection.Count">
+            <summary>
+            Gets the count of the columns.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.ColumnCollection.IsSynchronized">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.ColumnCollection.SyncRoot">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.CellRangeInfo">
+            <summary>
+            Encapsulates the object that represents a range of cells within a spreadsheet. 
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellRangeInfo.#ctor">
+            <summary>
+            Initializes a new CellrangeInfo object.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellRangeInfo.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Initializes a new CellrangeInfo object.
+            </summary>
+            <param name="Top">Top Row index.</param>
+            <param name="Left">Left Column index.</param>
+            <param name="Bottom">Bottom Row index.</param>
+            <param name="Right">Right Column index.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellRangeInfo.#ctor(System.String)">
+            <summary>
+            Initializes a new CellRangeInfo object.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellRangeInfo.Copy(Spire.Spreadsheet.Forms.CellRangeInfo)">
+            <summary>
+            Copies from another CellRange object.
+            </summary>
+            <param name="cellRange">The CellRange object to copy from.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellRangeInfo.Compare(Spire.Spreadsheet.Forms.CellRangeInfo)">
+            <summary>
+            Compare two CellRanges
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellRangeInfo.InsertRows(System.Int32,System.Int32)">
+            <summary>
+            Insert rows
+            </summary>
+            <param name="rowIndex">row index.</param>
+            <param name="count"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellRangeInfo.InsertColumns(System.Int32,System.Int32)">
+            <summary>
+            Inserts columns.
+            </summary>
+            <param name="columnIndex">Column index.</param>
+            <param name="count"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellRangeInfo.ToString">
+            <summary>
+            A string that contains the column and row index of the top-left and bottom-right position of this range.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellRangeInfo.IntersectRange(Spire.Spreadsheet.Forms.CellRangeInfo)">
+            <summary>
+            Get inasect range.
+            </summary>
+            <param name="rangeInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellRangeInfo.IntersectRange(Spire.Spreadsheet.Forms.CellRangeInfo,Spire.Spreadsheet.Forms.CellRangeInfo)">
+            <summary>
+            Get intasect range.
+            </summary>
+            <param name="r1"></param>
+            <param name="r2"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellRangeInfo.Worksheet">
+            <summary>
+            Gets worksheet object.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellRangeInfo.Top">
+            <summary>
+            Gets or sets the index of the Top row of the range.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellRangeInfo.Bottom">
+            <summary>
+            Gets or sets the index of the bottom row of the range.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellRangeInfo.Left">
+            <summary>
+            Gets or sets the index of the left column of the range.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellRangeInfo.Right">
+            <summary>
+            Gets or sets the index of the right column of the range.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellRangeInfo.Address">
+            <summary>
+            Gets the address of cell range.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.CellAdressInfo">
+            <summary>
+            two-dimensional coordinates on spreadsheet 
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellAdressInfo.ToString">
+            <summary>
+            Convert position to string 
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellAdressInfo.Equals(System.Object)">
+            <summary>
+            Compare the specified Object is equal to the current Object.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellAdressInfo.GetHashCode">
+            <summary>
+            Gets hash code
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellAdressInfo.op_Equality(Spire.Spreadsheet.Forms.CellAdressInfo,Spire.Spreadsheet.Forms.CellAdressInfo)">
+            <summary>
+            Compare the specified Object is equal to the another Object.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellAdressInfo.op_Inequality(Spire.Spreadsheet.Forms.CellAdressInfo,Spire.Spreadsheet.Forms.CellAdressInfo)">
+            <summary>
+            Compare the specified Object is equal to the another Object.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellAdressInfo.Column">
+            <summary>
+            Gets or sets the column of the cell position.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellAdressInfo.Row">
+            <summary>
+            Gets or sets the row of the cell position.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellBorders.SetBorderLineType(Spire.Spreadsheet.Forms.Utility.BorderType,Spire.Spreadsheet.Forms.Utility.BorderLineType)">
+            <summary>
+            Set line type of the border.
+            </summary>
+            <param name="borderType"></param>
+            <param name="borderLineType"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellBorders.GetBorderColor(Spire.Spreadsheet.Forms.Utility.BorderType)">
+            <summary>
+            Get border's color.
+            </summary>
+            <param name="borderType"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellBorders.SetBorderColor(Spire.Spreadsheet.Forms.Utility.BorderType,System.Drawing.Color)">
+            <summary>
+            Set border's color.
+            </summary>
+            <param name="borderType"></param>
+            <param name="color"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellBorders.GetBorderLineType(Spire.Spreadsheet.Forms.Utility.BorderType)">
+            <summary>
+            Get line type of the border.
+            </summary>
+            <param name="borderType"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellBorders.All">
+            <summary>
+            Sets all four border sides.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellBorders.AllColor">
+            <summary>
+            Sets all four border sides.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellBorders.Item(Spire.Spreadsheet.Forms.Utility.BorderType)">
+            <summary>
+            Returns the border line type.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellBorders.Top">
+            <summary>
+            Gets or sets the top border
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellBorders.Left">
+            <summary>
+            Gets or sets the left border
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellBorders.Right">
+            <summary>
+            Gets or sets the right border
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellBorders.DiagonalDown">
+            <summary>
+            Gets or sets the diagonal down border.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellBorders.DiagonalUp">
+            <summary>
+            Gets or sets the diagonal down border.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellBorders.TopColor">
+            <summary>
+            Gets or sets the top border
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellBorders.LeftColor">
+            <summary>
+            Gets or sets the left border
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellBorders.RightColor">
+            <summary>
+            Gets or sets the right border
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellBorders.DiagonalDownColor">
+            <summary>
+            Gets or sets the diagonal down border.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellBorders.DiagonalUpColor">
+            <summary>
+            Gets or sets the diagonal down border.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Spreadsheet">
+            <summary>
+            Represents an Spreadsheet control. 
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.#ctor">
+            <summary>
+            Spreadsheet constructor
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.ClearAll">
+            <summary>
+            Clears all data.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.GetActiveWorksheet">
+            <summary>
+            Gets current active worksheet.
+            </summary>
+            <returns>Worksheet object.</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.AddWorksheet">
+            <summary>
+            Adds a new worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.AddWorksheet(System.String)">
+            <summary>
+            Adds a new worksheet.
+            </summary>
+            <param name="worksheetName"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.GetWorksheet(System.String)">
+            <summary>
+            Gets worksheet by name.
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.GetWorksheet(System.Int32)">
+            <summary>
+            Gets worksheets by index.
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.GetWorksheetIndex(Spire.Spreadsheet.Forms.IWorksheet)">
+            <summary>
+            Gets index of worksheet.
+            </summary>
+            <param name="sheet"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.Refresh">
+            <summary>
+            Refresh the spreadsheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.ShowCellFormatDialog">
+            <summary>
+            Opens cell format dialog.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.LoadFromFile(System.IO.Stream)">
+            <summary>
+            Load an excel file from stream.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.LoadFromFile(System.IO.Stream,System.Boolean)">
+            <summary>
+             Load an excel file from stream. 
+            </summary>
+            <param name="stream">excel stream .</param>
+            <param name="forceRefresh">Indicates whether refresh data.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.LoadFromFile(System.String)">
+            <summary>
+            Load data from an excel file. 
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.LoadFromFile(System.String,System.Boolean)">
+            <summary>
+             Load data from an excel file. 
+            </summary>
+            <param name="fileName">excel file name.</param>
+            <param name="forceFresh">Indicates whether refresh data.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.SaveToFile(System.IO.Stream)">
+            <summary>
+            Save to an excel file stream. 
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.SaveToFile(System.IO.Stream,Spire.Spreadsheet.Forms.FileFormatType)">
+            <summary>
+            Save to an excel file stream. 
+            </summary>
+            <param name="stream">excel stream.</param>
+            <param name="fileFormatType">file format type.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.SaveToFile(System.String)">
+            <summary>
+            Save to an excel file. 
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.SaveToFile(System.String,Spire.Spreadsheet.Forms.FileFormatType)">
+            <summary>
+            Save to an excel file. 
+            </summary>
+            <param name="fileName">file name.</param>
+            <param name="fileFormatType">file format type.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.BeginUpdate">
+            <summary>
+            Begin update spreadsheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.EndUpdate">
+            <summary>
+            End update.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.ShowFindDialog">
+            <summary>
+            Show find dialog.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.ShowReplaceDialog">
+            <summary>
+            Show replace dialog.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.Copy">
+            <summary>
+            Copies content to clipboard.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.Cut">
+            <summary>
+            Cuts content to clipboard.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.Paste">
+            <summary>
+            Pastes clipboard content to cell.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.CalculateAllValue">
+            <summary>
+            Caculate all value.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.OnResize(System.EventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.OnPaint(System.Windows.Forms.PaintEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.OnMouseMove(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.OnMouseUp(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.OnMouseDown(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.ProcessCmdKey(System.Windows.Forms.Message@,System.Windows.Forms.Keys)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.Undo">
+            <summary>
+            Executes undo operation.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Spreadsheet.Redo">
+            <summary>
+            Executes redo operation.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Spreadsheet.Font">
+            <summary>
+            Gets or sets the default font of the cell text.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Spreadsheet.ForeColor">
+            <summary>
+            Gets or sets the default foreground color of the spreadsheet.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Spreadsheet.ColumnHeaderVisible">
+            <summary>
+            Gets or sets a value indicating whether column header is visible.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Spreadsheet.RowHeaderVisible">
+            <summary>
+            Gets or sets a value indicating whether row header is visible.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Spreadsheet.UseR1C1Address">
+            <summary>
+            Gets or sets a value indicating whether using R1C1 range.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Spreadsheet.ContextMenuVisible">
+            <summary>
+            Indicates whether show context menu.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Spreadsheet.BorderStyle">
+            <summary>
+            Indicates the border style for the spreadsheet.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Spreadsheet.SheetsBarVisible">
+            <summary>
+            Gets or sets a value indicating whether sheet bar is visible.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Spreadsheet.SheetTabControlWidth">
+            <summary>
+            Gets or sets width of sheet bar.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Spreadsheet.ActiveSheetIndex">
+            <summary>
+            Gets or sets the selected worksheet index.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Spreadsheet.ActiveWorksheet">
+            <summary>
+            Gets or sets the selected worksheet.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Spreadsheet.NamedRanges">
+            <summary>
+            Gets the collection of all the Name objects in the spreadsheet.
+            </summary>
+        </member>
+        <member name="E:Spire.Spreadsheet.Forms.Spreadsheet.ActiveSheetChanged">
+            <summary>
+            Occurs when the SelectedSheetIndex property is changed.
+            </summary>
+        </member>
+        <member name="E:Spire.Spreadsheet.Forms.Spreadsheet.SelectedCellChanged">
+            <summary>
+            Occurs when the actived cell is changed.
+            </summary>
+        </member>
+        <member name="E:Spire.Spreadsheet.Forms.Spreadsheet.CellClick">
+            <summary>
+            Occurs when the cell is clicked.
+            </summary>
+        </member>
+        <member name="E:Spire.Spreadsheet.Forms.Spreadsheet.CellDoubleClick">
+            <summary>
+            Occurs when the cell is double clicked.
+            </summary>
+        </member>
+        <member name="E:Spire.Spreadsheet.Forms.Spreadsheet.CellKeyPressed">
+            <summary>
+            Occurs when a key is pressed while a cell has focus.
+            </summary>
+        </member>
+        <member name="E:Spire.Spreadsheet.Forms.Spreadsheet.RowHeaderClick">
+            <summary>
+            Occurs when the row header clicked.
+            </summary>
+        </member>
+        <member name="E:Spire.Spreadsheet.Forms.Spreadsheet.RowHeaderDoubleClick">
+            <summary>
+            Occurs when the row header double clicked.
+            </summary>
+        </member>
+        <member name="E:Spire.Spreadsheet.Forms.Spreadsheet.ColumnHeaderClick">
+            <summary>
+            Occurs when the column header clicked.
+            </summary>
+        </member>
+        <member name="E:Spire.Spreadsheet.Forms.Spreadsheet.ColumnHeaderDoubleClick">
+            <summary>
+            Occurs when the column header double clicked.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Spreadsheet.Worksheets">
+            <summary>
+            Gets the Worksheets.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Spreadsheet.CreateParams">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Spreadsheet.EnableAutoCalculate">
+            <summary>
+            Indicates whether calculate all the formula when value changed.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Spreadsheet.EnableUndo">
+            <summary>
+            Gets or sets whether the undo is enabled. 
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Spreadsheet.ScrollBarsVisibility">
+            <summary>
+            Indicates whether scroll bars is visible.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Spreadsheet.VerticalScrollBarVisibility">
+            <summary>
+            Gets or sets visible of Vertical ScrollBar.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Spreadsheet.HorizontalScrollBarVisibility">
+            <summary>
+            Gests or sets visible of Horizontal ScrollBar.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.DataFormatCondition">
+            <summary>
+            DataFormatCondition Class
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Spire.Spreadsheet.Forms.DataFormatCondition.#ctor(Spire.Spreadsheet.Forms.Spreadsheet)" -->
+        <member name="P:Spire.Spreadsheet.Forms.DataFormatCondition.Style">
+            <summary>
+            get or set Style of DataFormatCondition
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.DataFormatCondition.ConditionType">
+            <summary>
+            gets or sets contion type.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.DataFormatCondition.ComparisonOperation">
+            <summary>
+            get or set Comparison Operation type
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.DataFormatCondition.Formula1">
+            <summary>
+            gets or sets Formula1
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.DataFormatCondition.Formula2">
+            <summary>
+            Gets or sets Formula2
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.DataFormatCondition.Priority">
+            <summary>
+            Gets or sets Priority
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.SheetType">
+            <summary>
+            Specifies the worksheet type.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.SheetType.VB">
+            <summary>
+            Visual Basic module
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.SheetType.Worksheet">
+            <summary>
+            Worksheet module
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.SheetType.Chart">
+            <summary>
+            Chart module
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.SheetType.BIFF4Macro">
+            <summary>
+            BIFF4 Macro sheet module
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.SheetType.Other">
+            <summary>
+            Other
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Collections.ProtectedCellCollection">
+            <summary>
+            contains lock cell in a worksheet
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Collections.NamedRangeCollection">
+            <summary>
+            Represents a collection of all the Name objects in the spreadsheet. 
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.NamedRangeCollection.Add(System.String,System.String)">
+            <summary>
+            Defines a new name.
+            </summary>
+            <param name="name">Name rnge text.</param>
+            <param name="refersTo">Refer to.</param>
+            <returns>Name object index.</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.NamedRangeCollection.Remove(Spire.Spreadsheet.Forms.INamedRange)">
+            <summary>
+            Removes the name range.
+            </summary>
+            <param name="name">Name range object.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.NamedRangeCollection.Remove(System.String)">
+            <summary>
+            Removes the name by specified name.
+            </summary>
+            <param name="name">Name range.</param>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.NamedRangeCollection.Item(System.String)">
+            <summary>
+            Gets the name range element by the specified name.
+            </summary>
+            <param name="name">Name.</param>
+            <returns>Name object.</returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.NamedRangeCollection.Item(System.Int32)">
+            <summary>
+            Gets the name range element at the specified index. 
+            </summary>
+            <param name="index">The zero based index of the element.</param>
+            <returns>Name object.</returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CommentEventArgs.Row">
+            <summary>
+            Gets row index.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CommentEventArgs.Column">
+            <summary>
+            Gets column index.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CommentEventArgs.OldText">
+            <summary>
+            Gets old text data of comment
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CommentEventArgs.NewText">
+            <summary>
+            Gets new text data of comment
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Hyperlink">
+            <summary>
+            represents a hyperlink.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Hyperlink.SetTargetUri(System.String)">
+            <summary>
+            Set taget url of hyperlink.
+            </summary>
+            <param name="uri"></param>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Hyperlink.Worksheet">
+            <summary>
+            Gets the worksheet of hyperlink.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Hyperlink.Position">
+            <summary>
+            Gets the position of hyperlink.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Hyperlink.TargetUri">
+            <summary>
+            Gets or set the url of a hyperlink. 
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Collections.GroupCollection">
+            <summary>
+            Summary description for Group.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.SpreadRow">
+            <summary>
+            Represents s single row in worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.SpreadRow.GetStyle">
+            <summary>
+            Gets style object of row.
+            </summary>
+            <returns>Style object of row.</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.SpreadRow.GetFontColor">
+            <summary>
+            Gets font color of row.
+            </summary>
+            <returns>Font color of row.</returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadRow.Worksheet">
+            <summary>
+            Gets worksheet object.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadRow.Index">
+            <summary>
+            Gets index of row object.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadRow.Height">
+            <summary>
+            Gets or sets the height of row object.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadRow.IsHidden">
+            <summary>
+            Gets or sets the hidden of the row.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadRow.Text">
+            <summary>
+            Gets or sets the header text of the row.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadRow.Style">
+            <summary>
+            Gets style of the row.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.SpreadRow.FontColor">
+            <summary>
+            Gets or set font color of the row.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.ConditionType">
+            <summary>
+            Specifies whether the conditional format is based on a cell value or an expression.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Collections.CommentCollection">
+            <summary>
+            Encapsulates a collection of Comment objects.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.CommentCollection.AddComment(System.Int32,System.Int32,System.String)">
+            <summary>
+            Adds a comment to a specified cell at row column index.
+            </summary>
+            <param name="row">Row index of cell.</param>
+            <param name="col">Column index of cell.</param>
+            <param name="comment">Text of comment.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.CommentCollection.AddComment(System.String,System.String)">
+            <summary>
+            Adds a comment to a specified cell.
+            </summary>
+            <param name="rangeName">range name.</param>
+            <param name="comment">Text of comment.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.CommentCollection.RemoveAt(System.Int32,System.Int32)">
+            <summary>
+            Removes the comment at the specified row column.
+            </summary>
+            <param name="row">Row index.</param>
+            <param name="col">Column index.</param>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.CommentCollection.Item(System.Int32,System.Int32)">
+            <summary>
+            Gets the comment at specified row and column.
+            </summary>
+            <param name="row">row index.</param>
+            <param name="col">column index.</param>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.CommentCollection.Item(System.String)">
+            <summary>
+            Gets the commentby specified range name.
+            </summary>
+            <param name="rangeName">range name.
+            </param>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.FilterOptions.Criteria">
+            <summary>
+            Indicates whether the filter uses the criteria on this column.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.FilterOptions.IgnoreCase">
+            <summary>
+            Indicates whether the filter ignores case-sensitive on this column.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.ComparisonOperationType">
+            <summary>
+            Represents the operator type of conditional format and data validation.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.ComparisonOperationType.Between">
+            <summary>
+            Represents Between operator.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.ComparisonOperationType.Equal">
+            <summary>
+            Represents Equal operator.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.ComparisonOperationType.Greater">
+            <summary>
+            Represents GreaterThan.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.ComparisonOperationType.GreaterEqual">
+            <summary>
+            Represents Greater Or Equal operator.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.ComparisonOperationType.Less">
+            <summary>
+            Represents Less Than operator.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.ComparisonOperationType.LessEqual">
+            <summary>
+            Represents Lessthan Or Equal operator.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.ComparisonOperationType.NoComparision">
+            <summary>
+            Represents no comparision.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.ComparisonOperationType.NotBetween">
+            <summary>
+            Represents NotBetween.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.ComparisonOperationType.NotEqual">
+            <summary>
+            Represents NotEqual operator of conditional format and data validation.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.DropDownType">
+            <summary>
+            Specifies the drop down style.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.DropDownType.DropDown">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.DropDownType.DropDownList">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Comment">
+            <summary>
+            Represents a comment.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Comment.GetPlainText">
+            <summary>
+            Get plain text of the comment.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Comment.SetPlainText(System.String)">
+            <summary>
+            Set plain text of the comment.
+            </summary>
+            <param name="text"></param>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Comment.Worksheet">
+            <summary>
+            Gets worksheet of the comment.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Comment.Position">
+            <summary>
+            Get position of the comment.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Comment.PlainText">
+            <summary>
+            Gets or sets the text of the Comment. 
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Comment.Width">
+            <summary>
+            Get or set the width of the comment.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Comment.Height">
+            <summary>
+            Get or set the height of the comment. 
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Comment.Visible">
+            <summary>
+            Represents the visibility of a Comment.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.CellKeyEventHandler">
+            <summary>
+            Handle cell key events.
+            </summary>
+            <param name="sender">sender object.</param>
+            <param name="info">cell address info</param>
+            <param name="key">key data</param>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Collections.WorksheetCollection">
+            <summary>
+            Represents a collection of Worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.WorksheetCollection.Add">
+            <summary>
+            Adds a new worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.WorksheetCollection.Add(System.String)">
+            <summary>
+            Adds a new worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.WorksheetCollection.Add(System.String,System.Int32,System.Int32)">
+            <summary>
+            Adds a new worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.WorksheetCollection.Insert(System.Int32)">
+            <summary>
+            Inserts an worksheet into the collection.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.WorksheetCollection.Insert(System.Int32,System.String)">
+            <summary>
+            Inserts an worksheet into the collection.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.WorksheetCollection.Insert(System.Int32,System.String,System.Int32,System.Int32)">
+            <summary>
+            Inserts an worksheet into collection.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.WorksheetCollection.Remove(Spire.Spreadsheet.Forms.IWorksheet)">
+            <summary>
+            Removes a specific sheet from the collection.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.WorksheetCollection.Remove(System.Int32)">
+            <summary>
+            Removes a specific sheet from the collection.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.WorksheetCollection.Remove(System.String)">
+            <summary>
+            Removes a specific sheet from the collection.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.WorksheetCollection.IndexOf(Spire.Spreadsheet.Forms.IWorksheet)">
+            <summary>
+            Finds the specified sheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.WorksheetCollection.GetEnumerator">
+            <summary>
+            Get IEnumerator
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.WorksheetCollection.Item(System.Int32)">
+            <summary>
+            Gets the worksheet at the specified index. 
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.WorksheetCollection.Item(System.String)">
+            <summary>
+            Gets the worksheet by the specified name. 
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.WorksheetCollection.Count">
+            <summary>
+            Gets the number of elements in the collection.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Utility.HorizontalAlignmentType">
+            <summary>
+            Specifies how a gridcell is horizontally aligned.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.HorizontalAlignmentType.General">
+            <summary>
+            Gerneral type.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.HorizontalAlignmentType.Left">
+            <summary>
+            Specifies that the contents of a cell are aligned with the left.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.HorizontalAlignmentType.Centred">
+            <summary>
+            Specifies that the contents of a cell are aligned with the center.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.HorizontalAlignmentType.Right">
+            <summary>
+            Specifies that the contents of a cell are aligned with the right.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.HorizontalAlignmentType.Filled">
+            <summary>
+            Specifies that the contents of a cell are filled in the cell.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.HorizontalAlignmentType.Justified">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.HorizontalAlignmentType.CentredAcross">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.HorizontalAlignmentType.Distributed">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Collections.ConditionalFormattingCollection">
+            <summary>
+            Represents all ConditionalFormatting .
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.ConditionalFormattingCollection.Add">
+            <summary>
+            add conditionalformatting to list
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.ConditionalFormattingCollection.ConditionalFormattings">
+            <summary>
+            get or set conditionalFormattings list
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.ConditionalFormattingCollection.Item(System.Int32)">
+            <summary>
+            get ConditionalFormatting from list
+            </summary>
+            <param name="index">index</param>
+            <returns></returns>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Worksheet">
+            <summary>
+            Represents a single worksheet. 
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Worksheet.DEFAULT_ROWSCOUNT">
+            <summary>
+            Default rows count of worksheet.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Worksheet.DEFAULT_COLUMNSCOUNT">
+            <summary>
+            Default columns count of worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.EnableRowFilter">
+            <summary>
+            Enable row filter.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.DisableRowFilter">
+            <summary>
+            Disable row filter.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.RemoveRowFilter">
+            <summary>
+            Remove row filter.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.AppendColumn(System.Int32)">
+            <summary>
+            Append specified columns to worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.InsertColumn(System.Int32)">
+            <summary>
+            Inserts a new column.
+            </summary>
+            <param name="index">index of column</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.AppendRows(System.Int32)">
+            <summary>
+            Append specified rows to spreadsheet.
+            </summary>
+            <param name="count">number of rows</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.InsertRow(System.Int32)">
+            <summary>
+            Inserts a new row.
+            </summary>
+            <param name="index">row index</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.RemoveColumn(System.Int32)">
+            <summary>
+            Removes a column at the specified index.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.RemoveRow(System.Int32)">
+            <summary>
+            Removes a row at the specified index.
+            </summary>
+            
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.HasActiveCell">
+            <summary>
+            Determines whether the cell is actived.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.GetActiveCell">
+            <summary>
+            Gets the active cell.
+            </summary>
+            <returns>Cell object.</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.SetActiveCell(Spire.Spreadsheet.Forms.CellAdressInfo)">
+            <summary>
+            Sets the active cell at the specified location.
+            </summary>
+            <param name="cellAdressInfo">Cell location.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.SetActiveCell(System.Int32,System.Int32)">
+            <summary>
+            Sets the active cell at the specified column and row.
+            </summary>
+            <param name="row">Row index.</param>
+            <param name="col">Column index.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.ClearCell(System.Int32,System.Int32)">
+            <summary>
+            Clears cell.
+            </summary>
+            <param name="row">Row index.</param>
+            <param name="col">Column index.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.ClearCell(Spire.Spreadsheet.Forms.ISpreadCell)">
+            <summary>
+            Clears cell.
+            </summary>
+            <param name="cell">GridCell object.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.ClearCell(System.String)">
+            <summary>
+            Clears cell.
+            </summary>
+            <param name="cellRange">Cell range.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.GetSelectedRange">
+            <summary>
+            Gets the selected cell range.
+            </summary>
+            <returns>CellRange object.</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.GetAllSelectedRanges">
+            <summary>
+            Gets all selected ranges of this worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.AddSelectedRange(Spire.Spreadsheet.Forms.CellRangeInfo)">
+            <summary>
+            Add a new selected range to the worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.CheckInSelection(Spire.Spreadsheet.Forms.CellAdressInfo)">
+            <summary>
+            Determines whether the specified cell location is in selected.
+            </summary>
+            <param name="cellAdressInfo">Cell location.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.CheckInSelectionsByColumn(System.Int32)">
+            <summary>
+            Check whether the specified column at index is in selected.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.CheckInSelectionByRow(System.Int32)">
+            <summary>
+            Check whether the specified row at index is in selected.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.ClearSelection">
+            <summary>
+            Clear the selection in Worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.FromRange(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Gets CellRangeInfo from a range of worksheet.
+            </summary>
+            <param name="startRow">Start Row index.</param>
+            <param name="startColumn">Start Column index.</param>
+            <param name="endRow">End Row index.</param>
+            <param name="endColumn">End Column index.</param>
+            <returns>A CellRange object.</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.FromRange(System.String,System.String)">
+            <summary>
+            Gets CellRangeInfo from a range of worksheet.
+            </summary>
+            <param name="startCellRange">Start cell range.</param>
+            <param name="endCellRange">End cell range.</param>
+            <returns>A CellRange object.</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.ImportDataView(System.Data.DataView,System.Int32,System.Int32)">
+            <summary>
+            Import data from data view to worksheet.
+            </summary>
+            <param name="dataView">Dataset</param>
+            <param name="firstRow">The first row.</param>
+            <param name="firstColumn">The first column.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.ImportDataSet(System.Data.DataSet,System.String,System.Int32,System.Int32)">
+            <summary>
+            Imports data from a dataset to worksheet.
+            </summary>
+            <param name="dataSet">Dataset</param>
+            <param name="dataMember">DataMember</param>
+            <param name="firstRow">The first row.</param>
+            <param name="firstColumn">The first column.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.ImportDataTable(System.Data.DataTable,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            Imports data from a DataTable into worksheet
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.ExportDataTable(System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Exports worksheet data into a DataTable
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.ExportDataTable(System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)">
+            <summary>
+            Exports worksheet data into a DataTable
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.Merge(Spire.Spreadsheet.Forms.CellRangeInfo)">
+            <summary>
+            Merges a specified range.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.Merge(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Merges a specified range.
+            </summary>
+            <param name="firstRow">First row.</param>
+            <param name="firstColumn">First column.</param>
+            <param name="endRow">End row.</param>
+            <param name="endColumn">End column.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.Unmerge(Spire.Spreadsheet.Forms.CellRangeInfo)">
+            <summary>
+            Unmerges a specified range of merged cells. 
+            </summary>
+            <param name="range">Merged cells range.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.RemoveAllMerges">
+            <summary>
+            Removes all merges.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.GetMerge(System.Int32)">
+            <summary>
+            Gets the cell range of the merge at the specified index.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.GroupRows(System.Int32,System.Int32)">
+            <summary>
+            Group rows from specified number of rows 
+            </summary>
+            <param name="firstRow">number of rows to start group.</param>
+            <param name="count">numbers of column to be grouped</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.GroupRows(System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Group rows from specified number of rows 
+            </summary>
+            <param name="firstRow">number of rows to start group.</param>
+            <param name="count">numbers of column to be grouped.</param>
+            <param name="outlineLevel">outlineLevel</param>
+            <param name="visible">visible.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.GroupRows(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Group rows from specified number of rows 
+            </summary>
+            <param name="firstRow">number of rows to start group.</param>
+            <param name="count">numbers of column to be grouped.</param>
+            <param name="visible">visible.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.UngroupRows(System.Int32,System.Int32)">
+            <summary>
+            Ungroups rows.
+            </summary>
+            <param name="firstRow">number of row to ungroup.</param>
+            <param name="count">number of rows to ungroup.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.GroupColumns(System.Int32,System.Int32)">
+            <summary>
+            Group columns from specified number of columns 
+            </summary>
+            <param name="firstColumn">number of columns to start group.</param>
+            <param name="count">numbers of column to be grouped.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.GroupColumns(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Group columns from specified number of columns 
+            </summary>
+            <param name="firstColumn">number of columns to start group.</param>
+            <param name="count">numbers of column to be grouped.</param>
+            <param name="visible">visible</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.GroupColumns(System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Group columns from specified number of columns.
+            </summary>
+            <param name="firstColumn">number of columns to start group.</param>
+            <param name="count">numbers of column to be grouped.</param>
+            <param name="outlineLevel">outlineLevel</param>
+            <param name="visible">visible</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.UngroupColumns(System.Int32,System.Int32)">
+            <summary>
+            Ungroups columns.
+            </summary>
+            <param name="firstColumn">number of column to ungroup.</param>
+            <param name="count">number of columns to ungroup.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.AutoFitColumn(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Autofits column.
+            </summary>
+            <param name="columnIndex">Column index.</param>
+            <param name="firstRow">Zero-based index of the first row to be used for autofit operation.</param>
+            <param name="lastRow">Zero-based index of the last row to be used for autofit operation.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.AutoFitColumn(System.Int32)">
+            <summary>
+            Autofits the column width.
+            </summary>
+            <param name="columnIndex">column index</param>     
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.AutoFitColumn(System.Int32,System.Int32)">
+            <summary>
+            Autofits the column width.
+            </summary>
+            <param name="fistColumn">Zero-based index of the first column to be used for autofit operation.</param>
+            <param name="lastColumn">Zero-based index of the last column to be used for autofit operation.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.AutoFitColumn">
+            <summary>
+            Autofits all columns width.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.AutoFitRow(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Autofits the row height. 
+            </summary>
+            <param name="rowIndex">row index, zero based</param>
+            <param name="firstColumn">Zero-based index of the first column to be used for autofit operation.</param>
+            <param name="lastColumn">Zero-based index of the last column to be used for autofit operation.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.AutoFitRow(System.Int32)">
+            <summary>
+            Autofits the row height. 
+            </summary>
+            <param name="rowIndex">row index</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.AutoFitRow(System.Int32,System.Int32)">
+            <summary>
+            Autofits the row height.
+            </summary>
+            <param name="firstRow">Zero-based index of the first row to be used for autofit operation.</param>
+            <param name="lastRow">Zero-based index of the last row to be used for autofit operation.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.AutoFitRow">
+            <summary>
+            Autofits all rows height
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.SetFirstVisibleColumn(System.Int32)">
+            <summary>
+            Set the first visible column index of sheet view.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.CaculateSelectedValue">
+            <summary>
+            Calculates the sum of selected ranges of the worksheet.
+            </summary>
+            <returns>the sum or null.</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.FreezeRow(System.Int32)">
+            <summary>
+            Freeze grid at specified row. 
+            </summary>
+            <param name="Row">row index.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.UnfreezeRow">
+            <summary>
+            UnFreeze grid.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.UnfreezeColumn">
+            <summary>
+            UnFreeze grid.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.FreezeColumn(System.Int32)">
+            <summary>
+             Freeze grid at specified column.
+            </summary>
+            <param name="column"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.GetNumber(System.Int32,System.Int32)">
+            <summary>
+            Gets number value from specific cell.
+            </summary>
+            <param name="row">Row index</param>
+            <param name="column">Column index</param>
+            <returns>Number value</returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.Protect">
+            <summary>
+            Protect the worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.Unprotect">
+            <summary>
+            Unprotect the worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.GetRowHeightPixels(System.Int32)">
+            <summary>
+            Get row height.
+            </summary>
+            <param name="Row">Row index</param>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.GetText(System.Int32,System.Int32)">
+            <summary>
+            Gets string value from specific cell.
+            </summary>
+            <param name="row">Row index.</param>
+            <param name="column">Column index.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.InsertArray(System.Object[0:,0:],System.Int32,System.Int32)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrObject"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.InsertArray(System.DateTime[],System.Int32,System.Int32)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrDateTime"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.InsertArray(System.DateTime[],System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrDateTime"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+            <param name="IsVertical"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.InsertArray(System.Double[],System.Int32,System.Int32)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrDouble"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.InsertArray(System.Double[],System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrDouble"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+            <param name="IsVertical"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.InsertArray(System.Int32[],System.Int32,System.Int32)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrInt"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.InsertArray(System.Int32[],System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrInt"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+            <param name="IsVertical"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.InsertArray(System.Object[],System.Int32,System.Int32)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrObject"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.InsertArray(System.Object[],System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrObject"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+            <param name="IsVertical"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.InsertArray(System.String[],System.Int32,System.Int32)">
+            <summary>
+            Insert array value to worksheet.
+            </summary>
+            <param name="arrString"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.InsertDataColumn(System.Data.DataColumn,System.Int32,System.Int32)">
+            <summary>
+            Insert data column to worksheet.
+            </summary>
+            <param name="dataColumn"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.InsertDataTable(System.Data.DataTable,System.Int32,System.Int32)">
+            <summary>
+            Insert datatable to workhseet.
+            </summary>
+            <param name="dataTable"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.InsertDataView(System.Data.DataView,System.Int32,System.Int32)">
+            <summary>
+            Insert dataview to workhseet.
+            </summary>
+            <param name="dataView"></param>
+            <param name="firstRow"></param>
+            <param name="firstColumn"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.IsColumnVisible(System.Int32)">
+            <summary>
+            Checks whether the column is visible.
+            </summary>
+            <param name="columnIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.IsRowVisible(System.Int32)">
+            <summary>
+            Checks whether the row is visible.
+            </summary>
+            <param name="rowIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.SetColumnWidthInPixels(System.Int32,System.Int32)">
+            <summary>
+            Sets column with.
+            </summary>
+            <param name="columnIndex"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.SetDefaultColumnStyle(System.Int32,Spire.Spreadsheet.Forms.Utility.CellStyle)">
+            <summary>
+            Sets column style.
+            </summary>
+            <param name="columnIndex"></param>
+            <param name="defaultStyle"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.SetDefaultRowStyle(System.Int32,Spire.Spreadsheet.Forms.Utility.CellStyle)">
+            <summary>
+            Set row style.
+            </summary>
+            <param name="rowIndex"></param>
+            <param name="defaultStyle"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.SetFormula(System.Int32,System.Int32,System.String)">
+            <summary>
+            Sets formula value to specific cell.
+            </summary>
+            <param name="iRow"></param>
+            <param name="iColumn"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.SetNumber(System.Int32,System.Int32,System.Double)">
+            <summary>
+            Sets number value to specific cell.
+            </summary>
+            <param name="iRow"></param>
+            <param name="iColumn"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.SetRowHeightPixels(System.Int32,System.Double)">
+            <summary>
+            Sets row height.
+            </summary>
+            <param name="Row"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.SetText(System.Int32,System.Int32,System.String)">
+            <summary>
+            Sets string value to specific cell.
+            </summary>
+            <param name="iRow"></param>
+            <param name="iColumn"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.SetValue(System.Int32,System.Int32,System.Object)">
+            <summary>
+            Sets value to specific cell.
+            </summary>
+            <param name="iRow"></param>
+            <param name="iColumn"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.Resize(System.Int32,System.Int32)">
+            <summary>
+            Resets row count and column count.
+            </summary>
+            <param name="rows"></param>
+            <param name="cols"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.SetRows(System.Int32)">
+            <summary>
+            Sets rows count.
+            </summary>
+            <param name="rows"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.SetColumns(System.Int32)">
+            <summary>
+            Set columns count.
+            </summary>
+            <param name="columns"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.SortColumn(System.Int32)">
+            <summary>
+            Sort data on specified column.
+            </summary>
+            <param name="columnIndex">column index.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.SortColumns(System.Int32,System.Int32)">
+            <summary>
+            Sort data on specified column.
+            </summary>
+            <param name="columnIndex"></param>
+            <param name="count"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.SortColumn(System.Int32,Spire.Spreadsheet.Forms.SortOrder,System.Boolean)">
+            <summary>
+            Sort data on specified column.
+            </summary>
+            <param name="columnIndex">column index.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.SortColumns(System.Int32,System.Int32,Spire.Spreadsheet.Forms.SortOrder,System.Boolean)">
+            <summary>
+            Sort data on specified column.
+            </summary>
+            <param name="columnIndex"></param>
+            <param name="count"></param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Worksheet.SortColumns(System.Int32[],Spire.Spreadsheet.Forms.SortOrder[],System.Boolean)">
+            <summary>
+            Sort data on specified column.
+            </summary>
+            <param name="columnIndex"></param>
+            <param name="count"></param>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.Spreadsheet">
+            <summary>
+            Gets Spreadsheet object.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.ConditionalFormattings">
+            <summary>
+            ConditionalFormattings of worksheet
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.IsProtected">
+            <summary>
+            Indicates whether worksheet object is protected.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.GridLinesVisible">
+            <summary>
+            Indicates whether the gridlines is visible.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.SheetName">
+            <summary>
+            Gets or sets the name of the sheet.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.FrozenRows">
+            <summary>
+            Gets or sets Worksheet's frozen row count.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.FrozenColumns">
+            <summary>
+            Gets or sets Worksheet's frozen column count.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.ActiveCellAdressInfo">
+            <summary>
+            Gets the active cell.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.Hyperlinks">
+            <summary>
+            Gets the hyperlink collection.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.Pictures">
+            <summary>
+            Gets the picture collection.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.Comments">
+            <summary>
+            Gets the comment collection.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.Controls">
+            <summary>
+            Gets the cell control collection.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.Item(System.Int32,System.Int32)">
+            <summary>
+            Gets spread cell at specific row and colum.
+            </summary>
+            <param name="row"></param>
+            <param name="column"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.Item(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Gets cell range.
+            </summary>
+            <param name="row"></param>
+            <param name="column"></param>
+            <param name="lastRow"></param>
+            <param name="lastColumn"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.Item(System.String)">
+            <summary>
+            Gets spread cell by cell name.
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.Item(System.String,System.String)">
+            <summary>
+            Gets cell range.
+            </summary>
+            <param name="startName"></param>
+            <param name="endName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.ColumnCount">
+            <summary>
+            Gets or sets the column count of the Worksheet.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.FirstVisibleColumn">
+            <summary>
+            Gets or sets the first visible column of the worksheet.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.FirstVisibleRow">
+            <summary>
+            Get the first visible row of the worksheet.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.Columns">
+            <summary>
+            Gets the collection of columns that belong to this Worksheet.
+            </summary>
+            
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.Rows">
+            <summary>
+            Gets the collection of rows that belong to this Worksheet.
+            </summary>
+            
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.RowCount">
+            <summary>
+            Gets or sets the row count of the Worksheet.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.Cells">
+            <summary>
+            Gets the collection of cells that belong to this worksheet.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.MergeRangesCount">
+            <summary>
+            Gets the count of the merges 
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.IsVisible">
+            <summary>
+            Represents if the worksheet is visible.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Worksheet.WorksheetCustomProperties">
+            <summary>
+            Gets the CustomProperties. 
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Utility.VerticalAlignmentType">
+            <summary>
+            Specifies the vertical alignment of an object or text in a cell.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.VerticalAlignmentType.Top">
+            <summary>
+            Specifies that the contents of a cell are aligned with the top.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.VerticalAlignmentType.Centred">
+            <summary>
+             Specifies that the contents of a cell are aligned with the center.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.VerticalAlignmentType.Bottom">
+            <summary>
+            Specifies that the contents of a control are aligned with the bottom.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.VerticalAlignmentType.Justified">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.VerticalAlignmentType.Distributed">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.CellFormatDialog">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.CellFormatDialog.components">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellFormatDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.CellFormatDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Formula.FormulaCellData">
+            <summary>
+            Summary description for FormulaCellData.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Utility.BorderLineType">
+            <summary>
+            Specifies the border line type for a gridCell.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.BorderLineType.None">
+            <summary>
+            No border.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.BorderLineType.Thin">
+            <summary>
+            A solid line border.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.BorderLineType.Medium">
+            <summary>
+            A solid line border.Line width is 2f.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.BorderLineType.Dashed">
+            <summary>
+            A dashed line border.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.BorderLineType.Dotted">
+            <summary>
+            A dotted line border.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.BorderLineType.Thick">
+            <summary>
+            A solid line border.Line width is 3f.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.BorderLineType.MediumDashed">
+            <summary>
+            A dashed line border.Line width is 2f.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.BorderLineType.ThinDashDotted">
+            <summary>
+            A dashDotted line border.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.BorderLineType.MediumDashDotted">
+            <summary>
+            A dashDotted line border.Line width is 2f.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.BorderLineType.ThinDashDotDotted">
+            <summary>
+            A dashDotDotted line border.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.Utility.BorderLineType.MediumDashDotDotted">
+            <summary>
+            A dashDotDotted line border.Line width is 2f.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.NamedRange">
+            <summary>
+            Represents a defined name for a range of cells. 
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.INamedRange.Name">
+            <summary>
+            Gets the name of the object. 
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.INamedRange.RefersTo">
+            <summary>
+            Gets the name refer to.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.NamedRange.#ctor(System.String,System.String)">
+            <summary>
+            Constructs a Name object.
+            </summary>
+            <param name="text">Name text.</param>
+            <param name="refersTo">The formula that the name is defined to refer to.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.NamedRange.ParseRefersTo(System.String@,System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
+            <summary>
+            Parses the formula that the name is defined to refer to.
+            </summary>
+            <param name="sheetName">Worksheet's name.</param>
+            <param name="startRow">Start Row index.</param>
+            <param name="startColumn">Start column index.</param>
+            <param name="endRow">End row index.</param>
+            <param name="endColumn">End column index.</param>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.NamedRange.Name">
+            <summary>
+            Gets the name text of the object. 
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.NamedRange.RefersTo">
+            <summary>
+            Gets the formula that the name is defined to refer to.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.ICellPicture.Dispose">
+            <summary>
+            Dispose object and free resources.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ICellPicture.Worksheet">
+            <summary>
+            Gets worksheet of the picture;
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ICellPicture.Position">
+            <summary>
+            Get position of the picture;
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ICellPicture.HorizontalOffset">
+            <summary>
+            Gets or sets the horizontal offset.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ICellPicture.VerticalOffset">
+            <summary>
+            Gets or sets the vertical offset.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ICellPicture.HorizontalScale">
+            <summary>
+            Gets and sets the Horizontal scale.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ICellPicture.VerticalScale">
+            <summary>
+            Gets and sets the Vertical scale.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ICellPicture.Image">
+            <summary>
+            Gets the Image object.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.ICellPicture.Parent">
+            <summary>
+            Reference to Parent object. Read-only.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.Collections.RowCollection">
+            <summary>
+            Collects the objects that represent the individual rows in a worksheet.
+            </summary>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.RowCollection.CopyTo(System.Array,System.Int32)">
+            <summary>
+            Copies the rows to an array.
+            </summary>
+            <param name="array">The array object.</param>
+            <param name="index">The index of the first row to copy.</param>
+        </member>
+        <member name="M:Spire.Spreadsheet.Forms.Collections.RowCollection.GetEnumerator">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.RowCollection.Item(System.Int32)">
+            <summary>
+            Gets a gridrow object at specified index.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.RowCollection.Count">
+            <summary>
+            Gets the count of the rows.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.RowCollection.IsSynchronized">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.Collections.RowCollection.SyncRoot">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.CellPicture">
+            <summary>
+            Represents a picture object in a spreadsheet.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellPicture.Worksheet">
+            <summary>
+            Gets worksheet of the picture;
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellPicture.Position">
+            <summary>
+            Get position of the picture;
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellPicture.HorizontalOffset">
+            <summary>
+            Gets or sets the horizontal offset.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellPicture.VerticalOffset">
+            <summary>
+            Gets or sets the vertical offset.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellPicture.HorizontalScale">
+            <summary>
+            Gets and sets the Horizontal scale.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellPicture.VerticalScale">
+            <summary>
+            Gets and sets the Vertical scale.
+            </summary>
+        </member>
+        <member name="P:Spire.Spreadsheet.Forms.CellPicture.Image">
+            <summary>
+            Gets the Image object.
+            </summary>
+        </member>
+        <member name="T:Spire.Spreadsheet.Forms.SortOrder">
+            <summary>
+            Represents order the data sort by.
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.SortOrder.Ascending">
+            <summary>
+            ascending
+            </summary>
+        </member>
+        <member name="F:Spire.Spreadsheet.Forms.SortOrder.Descending">
+            <summary>
+             descending
+            </summary>
+        </member>
+    </members>
+</doc>

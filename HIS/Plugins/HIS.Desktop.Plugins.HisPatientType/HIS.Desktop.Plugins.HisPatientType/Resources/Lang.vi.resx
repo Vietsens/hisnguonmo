@@ -117,47 +117,158 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="frmHisPatientType.layoutControl4.Text" xml:space="preserve">
-    <value>layoutControl4</value>
+  <data name="frmHisPatientType.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
   </data>
-  <data name="frmHisPatientType.layoutControl7.Text" xml:space="preserve">
-    <value>layoutControl7</value>
+  <data name="frmHisPatientType.bbtnAdd.Caption" xml:space="preserve">
+    <value>Thêm (Ctrl N)</value>
+  </data>
+  <data name="frmHisPatientType.bbtnEdit.Caption" xml:space="preserve">
+    <value>Sửa (Ctrl S)</value>
+  </data>
+  <data name="frmHisPatientType.bbtnFocusDefault.Caption" xml:space="preserve">
+    <value>F2</value>
+  </data>
+  <data name="frmHisPatientType.bbtnReset.Caption" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="frmHisPatientType.bbtnSearch.Caption" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="frmHisPatientType.btnAdd.Text" xml:space="preserve">
+    <value>Thêm (Ctrl N)</value>
+  </data>
+  <data name="frmHisPatientType.btnCancel.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="frmHisPatientType.btnEdit.Text" xml:space="preserve">
+    <value>Sửa (Ctrl S)</value>
   </data>
   <data name="frmHisPatientType.btnSearch.Text" xml:space="preserve">
     <value>Tìm (Ctrl F)</value>
   </data>
-  <data name="frmHisPatientType.STT.Caption" xml:space="preserve">
-    <value>STT</value>
+  <data name="frmHisPatientType.cboBasePatientType.ToolTip" xml:space="preserve">
+    <value>Chính sách giá sẽ áp dụng theo đối tượng</value>
   </data>
-  <data name="frmHisPatientType.gridColumn1.Caption" xml:space="preserve">
-    <value>gridColumn1</value>
+  <data name="frmHisPatientType.cboOtherPaySource.ToolTip" xml:space="preserve">
+    <value>Nguồn chi trả khác bắt buộc chọn khi tiếp đón bệnh nhân với đối tượng này</value>
   </data>
-  <data name="frmHisPatientType.gridColumnEdit.ToolTip" xml:space="preserve">
-    <value>Sửa</value>
+  <data name="frmHisPatientType.cboTreatmentType.ToolTip" xml:space="preserve">
+    <value>Chỉ cho phép hồ sơ có diện điều trị tương ứng</value>
   </data>
-  <data name="frmHisPatientType.grdColPatientTypeCode.Caption" xml:space="preserve">
-    <value>Mã</value>
+  <data name="frmHisPatientType.chkAddition.Properties.Caption" xml:space="preserve">
+    <value>Đối tượng phụ thu</value>
   </data>
-  <data name="frmHisPatientType.grdColPatientTypeCode.ToolTip" xml:space="preserve">
-    <value>PATIENT_TYPE_CODE</value>
+  <data name="frmHisPatientType.chkAddition.Text" xml:space="preserve">
+    <value>Đối tượng phụ thu</value>
   </data>
-  <data name="frmHisPatientType.grdColPatientTypeName.Caption" xml:space="preserve">
-    <value>Tên</value>
+  <data name="frmHisPatientType.chkAssign.Properties.Caption" xml:space="preserve">
+    <value>Không cho phép chỉ định dịch vụ nếu thiếu tiền</value>
   </data>
-  <data name="frmHisPatientType.grdColPatientTypeName.ToolTip" xml:space="preserve">
-    <value>PATIENT_TYPE_NAME</value>
+  <data name="frmHisPatientType.chkAssign.Text" xml:space="preserve">
+    <value>Không cho phép chỉ định dịch vụ nếu thiếu tiền</value>
   </data>
-  <data name="frmHisPatientType.grdColDescription.Caption" xml:space="preserve">
-    <value>Mô tả</value>
+  <data name="frmHisPatientType.chkAssign.ToolTip" xml:space="preserve">
+    <value>Chỉ áp dụng đối với bệnh nhân khám (không áp dụng với bệnh nhân điều trị ngoại trú, điều trị nội trú, điều trị ban ngày)</value>
   </data>
-  <data name="frmHisPatientType.grdColDescription.ToolTip" xml:space="preserve">
-    <value>DESCRIPTION</value>
+  <data name="frmHisPatientType.chkCheckFinishCls.Properties.Caption" xml:space="preserve">
+    <value>Không cho phép kê đơn với bệnh nhân khám nếu chưa thực hiện xong dịch vụ CLS</value>
   </data>
-  <data name="frmHisPatientType.grdColIsCopayment.Caption" xml:space="preserve">
+  <data name="frmHisPatientType.chkCheckFinishCls.Text" xml:space="preserve">
+    <value>Không cho phép kê đơn với bệnh nhân khám nếu chưa thực hiện xong dịch vụ CLS</value>
+  </data>
+  <data name="frmHisPatientType.chkDefaultDisplay.Properties.Caption" xml:space="preserve">
+    <value>Mặc định hiển thị "Thuốc/vật tư mua ngoài" khi kê đơn phòng khám</value>
+  </data>
+  <data name="frmHisPatientType.chkDefaultDisplay.Text" xml:space="preserve">
+    <value>Mặc định hiển thị "Thuốc/vật tư mua ngoài" khi kê đơn phòng khám</value>
+  </data>
+  <data name="frmHisPatientType.chkForSaleExp.Properties.Caption" xml:space="preserve">
+    <value>Mặc định hiển thị chính sách giá khi tạo thuốc/ vật tư kinh doanh</value>
+  </data>
+  <data name="frmHisPatientType.chkIsAdditionRequire.Properties.Caption" xml:space="preserve">
+    <value>Bắt buộc chọn đối tượng phụ thu</value>
+  </data>
+  <data name="frmHisPatientType.chkIsAdditionRequire.Text" xml:space="preserve">
+    <value>Bắt buộc chọn đối tượng phụ thu</value>
+  </data>
+  <data name="frmHisPatientType.chkIsCopayment.Properties.Caption" xml:space="preserve">
     <value>Đồng chi trả</value>
   </data>
-  <data name="frmHisPatientType.grdColIsCopayment.ToolTip" xml:space="preserve">
-    <value>IS_COPAYMENT</value>
+  <data name="frmHisPatientType.chkIsCopayment.Text" xml:space="preserve">
+    <value>Đồng chi trả</value>
+  </data>
+  <data name="frmHisPatientType.chkIsForSaleExp.Text" xml:space="preserve">
+    <value>Mặc định hiển thị chính sách giá khi tạo thuốc/ vật tư kinh doanh</value>
+  </data>
+  <data name="frmHisPatientType.chkIsNotServBill.Properties.Caption" xml:space="preserve">
+    <value>Không vào HĐDV</value>
+  </data>
+  <data name="frmHisPatientType.chkIsNotServBill.Text" xml:space="preserve">
+    <value>Không vào HĐDV</value>
+  </data>
+  <data name="frmHisPatientType.chkIsNotServBill.ToolTip" xml:space="preserve">
+    <value>Không vào hóa đơn dịch vụ(Tính vào hóa đơn thường và chỉ dành cho trường hợp sử dụng thanh toán 2 sổ)</value>
+  </data>
+  <data name="frmHisPatientType.chkIsNotShowKiosk.Properties.Caption" xml:space="preserve">
+    <value>Không hiển thị trên Kiosk</value>
+  </data>
+  <data name="frmHisPatientType.chkIsNotShowKiosk.Text" xml:space="preserve">
+    <value>Không hiển thị trên Kiosk</value>
+  </data>
+  <data name="frmHisPatientType.chkIsNotUseForPatient.Properties.Caption" xml:space="preserve">
+    <value>Không cho phép sử dụng cho đối tượng bệnh nhân</value>
+  </data>
+  <data name="frmHisPatientType.chkIsNotUseForPatient.Text" xml:space="preserve">
+    <value>Không cho phép sử dụng cho đối tượng bệnh nhân</value>
+  </data>
+  <data name="frmHisPatientType.chkIsNotUseForPatient.ToolTip" xml:space="preserve">
+    <value>Chỉ cho phép sử dụng làm đối tượng thanh toán khi chỉ định dịch vụ, chứ không cho phép đăng ký tiếp đón hay thiết lập đối tượng bệnh nhân</value>
+  </data>
+  <data name="frmHisPatientType.chkIsRation.Properties.Caption" xml:space="preserve">
+    <value>Là mức ăn</value>
+  </data>
+  <data name="frmHisPatientType.chkIsRation.Text" xml:space="preserve">
+    <value>Là mức ăn</value>
+  </data>
+  <data name="frmHisPatientType.chkKiemTra.Properties.Caption" xml:space="preserve">
+    <value>Không kiểm tra viện phí khi xuất thuốc cho BN phòng khám</value>
+  </data>
+  <data name="frmHisPatientType.chkKiemTra.ToolTip" xml:space="preserve">
+    <value>Không chặn duyệt/thực xuất thuốc đối với bệnh nhân phòng khám khi thiếu viện phí trong trường hợp bật cấu hình hệ thống ”MOS.HIS_EXP_MEST.CHECK_UNPAID_PRES_OPTION"</value>
+  </data>
+  <data name="frmHisPatientType.chkMustBeGuaranteed.Properties.Caption" xml:space="preserve">
+    <value>Bắt buộc có người bảo lãnh</value>
+  </data>
+  <data name="frmHisPatientType.chkMustBeGuaranteed.Text" xml:space="preserve">
+    <value>Bắt buộc có người bảo lãnh</value>
+  </data>
+  <data name="frmHisPatientType.chkMustBeGuaranteed.ToolTip" xml:space="preserve">
+    <value>Bắt buộc nhập thông tin người bảo lãnh khi tiếp đón</value>
+  </data>
+  <data name="frmHisPatientType.chkPres.Properties.Caption" xml:space="preserve">
+    <value>Không cho phép kê đơn nếu thiếu tiền</value>
+  </data>
+  <data name="frmHisPatientType.chkPres.Text" xml:space="preserve">
+    <value>Không cho phép kê đơn nếu thiếu tiền</value>
+  </data>
+  <data name="frmHisPatientType.chkPres.ToolTip" xml:space="preserve">
+    <value>Chỉ áp dụng đối với bệnh nhân khám (không áp dụng với bệnh nhân điều trị ngoại trú, điều trị nội trú, điều trị ban ngày)</value>
+  </data>
+  <data name="frmHisPatientType.chkSerNotAllow.Properties.Caption" xml:space="preserve">
+    <value>Không cho phép sửa xóa dịch vụ đã chỉ định</value>
+  </data>
+  <data name="frmHisPatientType.ckhKiemTra.Text" xml:space="preserve">
+    <value>Không kiểm tra viện phí khi xuất thuốc cho BN phòng khám</value>
+  </data>
+  <data name="frmHisPatientType.dnNavigation.Text" xml:space="preserve">
+    <value>dataNavigator1</value>
+  </data>
+  <data name="frmHisPatientType.grdChkIsForSaleExp.Caption" xml:space="preserve">
+    <value>Mặc định hiển thị chính sách giá khi tạo thuốc/ vật tư kinh doanh</value>
+  </data>
+  <data name="frmHisPatientType.grdColAddition.Caption" xml:space="preserve">
+    <value>Đối tượng phụ thu</value>
   </data>
   <data name="frmHisPatientType.grdColCreateTime.Caption" xml:space="preserve">
     <value>Thời gian tạo</value>
@@ -171,11 +282,20 @@
   <data name="frmHisPatientType.grdColCreator.ToolTip" xml:space="preserve">
     <value>CREATOR</value>
   </data>
-  <data name="frmHisPatientType.grdColModifyTime.Caption" xml:space="preserve">
-    <value>Thời gian sửa</value>
+  <data name="frmHisPatientType.grdColDescription.Caption" xml:space="preserve">
+    <value>Mô tả</value>
   </data>
-  <data name="frmHisPatientType.grdColModifyTime.ToolTip" xml:space="preserve">
-    <value>MODIFY_TIME</value>
+  <data name="frmHisPatientType.grdColDescription.ToolTip" xml:space="preserve">
+    <value>DESCRIPTION</value>
+  </data>
+  <data name="frmHisPatientType.grdColIsCopayment.Caption" xml:space="preserve">
+    <value>Đồng chi trả</value>
+  </data>
+  <data name="frmHisPatientType.grdColIsCopayment.ToolTip" xml:space="preserve">
+    <value>IS_COPAYMENT</value>
+  </data>
+  <data name="frmHisPatientType.grdColIsNotServiceBill.Caption" xml:space="preserve">
+    <value>Không vào HĐDV</value>
   </data>
   <data name="frmHisPatientType.grdColModifier.Caption" xml:space="preserve">
     <value>Người sửa</value>
@@ -183,98 +303,29 @@
   <data name="frmHisPatientType.grdColModifier.ToolTip" xml:space="preserve">
     <value>MODIFIER</value>
   </data>
-  <data name="frmHisPatientType.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
-    <value>Từ khóa tìm kiếm</value>
+  <data name="frmHisPatientType.grdColModifyTime.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
   </data>
-  <data name="frmHisPatientType.lcEditorInfo.Text" xml:space="preserve">
-    <value>layoutControl5</value>
+  <data name="frmHisPatientType.grdColModifyTime.ToolTip" xml:space="preserve">
+    <value>MODIFY_TIME</value>
   </data>
-  <data name="frmHisPatientType.btnCancel.Text" xml:space="preserve">
-    <value>Làm lại (Ctrl R)</value>
+  <data name="frmHisPatientType.grdColPatientTypeCode.Caption" xml:space="preserve">
+    <value>Mã</value>
   </data>
-  <data name="frmHisPatientType.btnAdd.Text" xml:space="preserve">
-    <value>Thêm (Ctrl N)</value>
+  <data name="frmHisPatientType.grdColPatientTypeCode.ToolTip" xml:space="preserve">
+    <value>PATIENT_TYPE_CODE</value>
   </data>
-  <data name="frmHisPatientType.dnNavigation.Text" xml:space="preserve">
-    <value>dataNavigator1</value>
+  <data name="frmHisPatientType.grdColPatientTypeName.Caption" xml:space="preserve">
+    <value>Tên</value>
   </data>
-  <data name="frmHisPatientType.btnEdit.Text" xml:space="preserve">
-    <value>Sửa (Ctrl S)</value>
+  <data name="frmHisPatientType.grdColPatientTypeName.ToolTip" xml:space="preserve">
+    <value>PATIENT_TYPE_NAME</value>
   </data>
-  <data name="frmHisPatientType.chkIsCopayment.Properties.Caption" xml:space="preserve">
-    <value />
+  <data name="frmHisPatientType.grdColPriority.Caption" xml:space="preserve">
+    <value>Ưu tiên</value>
   </data>
-  <data name="frmHisPatientType.lciPatientTypeCode.Text" xml:space="preserve">
-    <value>Mã:</value>
-  </data>
-  <data name="frmHisPatientType.lciPatientTypeName.Text" xml:space="preserve">
-    <value>Tên:</value>
-  </data>
-  <data name="frmHisPatientType.lciDescription.Text" xml:space="preserve">
-    <value>Mô tả:</value>
-  </data>
-  <data name="frmHisPatientType.chkIsCopayment.Text" xml:space="preserve">
-    <value>Đồng chi trả</value>
-  </data>
-  <data name="frmHisPatientType.bar1.Text" xml:space="preserve">
-    <value>Tools</value>
-  </data>
-  <data name="frmHisPatientType.bbtnSearch.Caption" xml:space="preserve">
-    <value>Tìm (Ctrl F)</value>
-  </data>
-  <data name="frmHisPatientType.bbtnEdit.Caption" xml:space="preserve">
-    <value>Sửa (Ctrl S)</value>
-  </data>
-  <data name="frmHisPatientType.bbtnAdd.Caption" xml:space="preserve">
-    <value>Thêm (Ctrl N)</value>
-  </data>
-  <data name="frmHisPatientType.bbtnReset.Caption" xml:space="preserve">
-    <value>Làm lại (Ctrl R)</value>
-  </data>
-  <data name="frmHisPatientType.bbtnFocusDefault.Caption" xml:space="preserve">
-    <value>F2</value>
-  </data>
-  <data name="frmHisPatientType.Text" xml:space="preserve">
-    <value>Danh mục đối tượng bệnh nhân</value>
-  </data>
-  <data name="frmHisPatientType.chkIsNotUseForPatient.Text" xml:space="preserve">
-    <value>Không cho phép sử dụng cho đối tượng bệnh nhân</value>
-  </data>
-  <data name="frmHisPatientType.ckhKiemTra.Text" xml:space="preserve">
-    <value>Không kiểm tra viện phí khi xuất thuốc cho BN phòng khám</value>
-  </data>
-  <data name="frmHisPatientType.chkAddition.Text" xml:space="preserve">
-    <value>Đối tượng phụ thu</value>
-  </data>
-  <data name="frmHisPatientType.grdColAddition.Caption" xml:space="preserve">
-    <value>Đối tượng phụ thu</value>
-  </data>
-  <data name="frmHisPatientType.chkDefaultDisplay.Text" xml:space="preserve">
-    <value>Mặc định hiển thị "Thuốc/vật tư mua ngoài" khi kê đơn phòng khám</value>
-  </data>
-  <data name="frmHisPatientType.gridColDefaultDisplay.Caption" xml:space="preserve">
-    <value>Mặc định hiển thị "Thuốc/vật tư mua ngoài" khi kê đơn phòng khám</value>
-  </data>
-  <data name="frmHisPatientType.chkIsNotShowKiosk.Text" xml:space="preserve">
-    <value>Không hiển thị trên Kiosk</value>
-  </data>
-  <data name="frmHisPatientType.grdIsNotShowKiosd.Caption" xml:space="preserve">
-    <value>Không hiển thị trên Kiosk</value>
-  </data>
-  <data name="frmHisPatientType.grdIsNotShowKiosd.ToolTip" xml:space="preserve">
-    <value>Không hiển thị trên Kiosk</value>
-  </data>
-  <data name="layoutControlItem10.Text" xml:space="preserve">
-    <value>Chính sách giá theo ĐT: </value>
-  </data>
-  <data name="layoutControlItem12.Text" xml:space="preserve">
-    <value>Nguồn chi trả khác:</value>
-  </data>
-  <data name="frmHisPatientType.chkAssign.Text" xml:space="preserve">
-    <value>Không cho phép chỉ định dịch vụ nếu thiếu tiền</value>
-  </data>
-  <data name="frmHisPatientType.chkPres.Text" xml:space="preserve">
-    <value>Không cho phép kê đơn nếu thiếu tiền</value>
+  <data name="frmHisPatientType.grdColPriority.ToolTip" xml:space="preserve">
+    <value>Số càng nhỏ càng ưu tiên</value>
   </data>
   <data name="frmHisPatientType.grdIsNotServiceBill.Caption" xml:space="preserve">
     <value>Không vào HĐDV</value>
@@ -282,28 +333,157 @@
   <data name="frmHisPatientType.grdIsNotServiceBill.Tooltip" xml:space="preserve">
     <value>Không vào hóa đơn dịch vụ(Tính vào hóa đơn thường và chỉ dành cho trường hợp sử dụng thanh toán 2 sổ)</value>
   </data>
-  <data name="frmHisPatientType.chkIsNotServBill.Text" xml:space="preserve">
-    <value>Không vào HĐDV</value>
+  <data name="frmHisPatientType.grdIsNotShowKiosd.Caption" xml:space="preserve">
+    <value>Không hiển thị trên Kiosd</value>
   </data>
-  <data name="frmHisPatientType.chkIsForSaleExp.Text" xml:space="preserve">
-    <value>Mặc định hiển thị chính sách giá khi tạo thuốc/ vật tư kinh doanh</value>
+  <data name="frmHisPatientType.grdIsNotShowKiosd.ToolTip" xml:space="preserve">
+    <value>Không hiển thị Kiosk</value>
   </data>
-  <data name="frmHisPatientType.grdChkIsForSaleExp.Caption" xml:space="preserve">
-    <value>Mặc định hiển thị chính sách giá khi tạo thuốc/ vật tư kinh doanh</value>
+  <data name="frmHisPatientType.grdIsNotUseForPatient.Caption" xml:space="preserve">
+    <value>Không cho phép sử dụng cho đối tượng bệnh nhân</value>
   </data>
-  <data name="frmHisPatientType.chkMustBeGuaranteed.Text" xml:space="preserve">
-    <value>Bắt buộc có người bảo lãnh</value>
+  <data name="frmHisPatientType.gridColDefaultDisplay.Caption" xml:space="preserve">
+    <value>Mặc định hiển thị "Thuốc/vật tư mua ngoài" khi kê đơn phòng khám</value>
   </data>
-  <data name="frmHisPatientType.chkMustBeGuaranteed.ToolTip" xml:space="preserve">
-    <value>Bắt buộc nhập thông tin người bảo lãnh khi tiếp đón</value>
+  <data name="frmHisPatientType.gridColDefaultDisplay.ToolTip" xml:space="preserve">
+    <value>Mặc định hiển thị "Thuốc/vật tư mua ngoài" khi kê đơn phòng khám</value>
   </data>
-  <data name="frmHisPatientType.chkCheckFinishCls.Text" xml:space="preserve">
-    <value>Không cho phép kê đơn với bệnh nhân khám nếu chưa thực hiện xong dịch vụ CLS</value>
+  <data name="frmHisPatientType.gridColumn1.Caption" xml:space="preserve">
+    <value>gridColumn1</value>
   </data>
-  <data name="frmHisPatientType.chkIsRation.Text" xml:space="preserve">
-    <value>Là mức ăn</value>
+  <data name="frmHisPatientType.gridColumn2.Caption" xml:space="preserve">
+    <value>Không cho phép kê đơn nếu thiếu tiền</value>
   </data>
-  <data name="frmHisPatientType.chkIsAdditionRequire.Text" xml:space="preserve">
-    <value>Bắt buộc chọn đối tượng phụ thu</value>
+  <data name="frmHisPatientType.gridColumn2.ToolTip" xml:space="preserve">
+    <value>Chỉ áp dụng đối với bệnh nhân khám (không áp dụng với bệnh nhân điều trị ngoại trú, điều trị nội trú, điều trị ban ngày)</value>
+  </data>
+  <data name="frmHisPatientType.gridColumn3.Caption" xml:space="preserve">
+    <value>Không cho phép chỉ định dịch vụ nếu thiếu tiền</value>
+  </data>
+  <data name="frmHisPatientType.gridColumn3.ToolTip" xml:space="preserve">
+    <value>Chỉ áp dụng đối với bệnh nhân khám (không áp dụng với bệnh nhân điều trị ngoại trú, điều trị nội trú, điều trị ban ngày)</value>
+  </data>
+  <data name="frmHisPatientType.gridColumn4.Caption" xml:space="preserve">
+    <value>Không kiểm tra viện phí khi xuất thuốc cho BN phòng khám</value>
+  </data>
+  <data name="frmHisPatientType.gridColumn4.ToolTip" xml:space="preserve">
+    <value>Không kiểm tra viện phí khi xuất thuốc cho BN phòng khám</value>
+  </data>
+  <data name="frmHisPatientType.gridColumn5.Caption" xml:space="preserve">
+    <value>Không cho phép sửa xóa dịch vụ đã chỉ định</value>
+  </data>
+  <data name="frmHisPatientType.gridColumn5.ToolTip" xml:space="preserve">
+    <value>Không cho phép sửa xóa dịch vụ đã chỉ định</value>
+  </data>
+  <data name="frmHisPatientType.gridColumnEdit.ToolTip" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="frmHisPatientType.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmHisPatientType.layoutControl7.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem10.Text" xml:space="preserve">
+    <value>Chính sách giá theo ĐT:</value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem11.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem12.Text" xml:space="preserve">
+    <value>Nguồn chi trả khác:</value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem13.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chỉ áp dụng đối với bệnh nhân khám (không áp dụng với bệnh nhân điều trị ngoại trú, điều trị nội trú, điều trị ban ngày)</value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem13.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem14.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chỉ áp dụng đối với bệnh nhân khám (không áp dụng với bệnh nhân điều trị ngoại trú, điều trị nội trú, điều trị ban ngày)</value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem14.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem15.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Không vào hóa đơn dịch vụ(Tính vào hóa đơn thường và chỉ dành cho trường hợp sử dụng thanh toán 2 sổ)</value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem15.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem16.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Không chặn duyệt/thực xuất thuốc đối với bệnh nhân phòng khám khi thiếu viện phí trong trường hợp bật cấu hình hệ thống ”MOS.HIS_EXP_MEST.CHECK_UNPAID_PRES_OPTION"</value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem16.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem19.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem21.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem22.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem23.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem24.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem6.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem7.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số càng nhỏ càng ưu tiên</value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem7.Text" xml:space="preserve">
+    <value>Ưu tiên:</value>
+  </data>
+  <data name="frmHisPatientType.layoutControlItem9.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.lcAddition.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.lcEditorInfo.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="frmHisPatientType.lciDescription.Text" xml:space="preserve">
+    <value>Mô tả:</value>
+  </data>
+  <data name="frmHisPatientType.lciIsCopayment.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisPatientType.lciPatientTypeCode.Text" xml:space="preserve">
+    <value>Mã:</value>
+  </data>
+  <data name="frmHisPatientType.lciPatientTypeName.Text" xml:space="preserve">
+    <value>Tên:</value>
+  </data>
+  <data name="frmHisPatientType.lciTreatmentType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chỉ cho phép hồ sơ có diện điều trị tương ứng</value>
+  </data>
+  <data name="frmHisPatientType.lciTreatmentType.Text" xml:space="preserve">
+    <value>Diện điều trị:</value>
+  </data>
+  <data name="frmHisPatientType.STT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmHisPatientType.Text" xml:space="preserve">
+    <value>Danh mục đối tượng bệnh nhân</value>
+  </data>
+  <data name="frmHisPatientType.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="layoutControlItem10.Text" xml:space="preserve">
+    <value>Chính sách giá theo ĐT: </value>
+  </data>
+  <data name="layoutControlItem12.Text" xml:space="preserve">
+    <value>Nguồn chi trả khác:</value>
+  </data>
+  <data name="frmHisPatientType.chkSerNotAllow.Text" xml:space="preserve">
+    <value>Không cho phép sửa xóa dịch vụ đã chỉ định</value>
   </data>
 </root>

@@ -2662,7 +2662,6 @@ namespace HIS.Desktop.Plugins.HisService
             this.txtBHYTName.Location = new System.Drawing.Point(343, 99);
             this.txtBHYTName.Name = "txtBHYTName";
             this.txtBHYTName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.txtBHYTName.Properties.MaxLength = 500;
             this.txtBHYTName.Size = new System.Drawing.Size(278, 20);
             this.txtBHYTName.StyleController = this.lcEditorInfo;
             this.txtBHYTName.TabIndex = 8;
@@ -2875,7 +2874,6 @@ namespace HIS.Desktop.Plugins.HisService
             // 
             this.txtMisuSerTypeName.Location = new System.Drawing.Point(92, 51);
             this.txtMisuSerTypeName.Name = "txtMisuSerTypeName";
-            this.txtMisuSerTypeName.Properties.MaxLength = 500;
             this.txtMisuSerTypeName.Size = new System.Drawing.Size(132, 20);
             this.txtMisuSerTypeName.StyleController = this.lcEditorInfo;
             this.txtMisuSerTypeName.TabIndex = 3;

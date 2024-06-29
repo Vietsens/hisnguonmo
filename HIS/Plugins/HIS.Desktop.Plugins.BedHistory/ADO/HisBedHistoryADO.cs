@@ -56,6 +56,7 @@ namespace HIS.Desktop.Plugins.BedHistory.ADO
         public bool IsBedStretcher { get; set; }
         public bool HasDefaultPatientTypeId { get; set; }
         public bool HasServiceReq { get; set; }
+        public long BedIdAfterSave { get; set; }
         public HisBedHistoryADO()
         {
             this.startTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);

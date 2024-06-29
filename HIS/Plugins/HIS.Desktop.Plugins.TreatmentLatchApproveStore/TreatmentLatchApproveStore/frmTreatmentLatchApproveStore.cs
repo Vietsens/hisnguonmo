@@ -414,8 +414,9 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
                 Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("filter_____:", filter));
                 filter.ORDER_DIRECTION = "DESC";
                 filter.ORDER_FIELD = "MODIFY_TIME";
-                filter.IS_PAUSE = true;
+                //filter.IS_PAUSE = true;
                 filter.IS_STORED = false;
+                
 
 
                 if (dateEditFrom.EditValue != null && dateEditFrom.DateTime != DateTime.MinValue)
@@ -456,7 +457,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
                 apiResult = new BackendAdapter(paramCommon).GetRO<List<L_HIS_TREATMENT_3>>(HisRequestUriStore.HIS_TREATMENT_GETVIEW, ApiConsumers.MosConsumer, filter, paramCommon);
                 if (apiResult != null)
                 {
-                    var data = (List<MOS.EFMODEL.DataModels.L_HIS_TREATMENT_3>)apiResult.Data;
+                    var data = (List<MOS.EFMODEL.DataModels.L_HIS_TREATMENT_3>)apiResult.Data.Where(s=>s.OUT_DATE != null).ToList();
                     Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("data__:", data));
                     if (data != null)
                     {

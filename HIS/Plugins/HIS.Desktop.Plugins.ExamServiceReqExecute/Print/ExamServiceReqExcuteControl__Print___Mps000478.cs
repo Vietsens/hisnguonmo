@@ -46,7 +46,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+       
         private void ProcessPrintMps000478(string printTypeCode, string fileName, ref bool result)
         {
             try

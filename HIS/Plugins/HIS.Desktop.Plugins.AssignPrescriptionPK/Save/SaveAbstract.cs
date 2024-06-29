@@ -213,9 +213,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                 {
                     this.IsAutoTreatmentEnd = treatDT.IsAutoTreatmentFinish;
                     if (treatDT.dtEndTime != null && treatDT.dtEndTime != DateTime.MinValue)
-                        this.EndTime = Inventec.Common.TypeConvert.Parse.ToInt64((treatDT.dtEndTime.ToString("yyyyMMddHHmm") + "59").ToString());
+                        this.EndTime = Inventec.Common.TypeConvert.Parse.ToInt64((treatDT.dtEndTime.ToString("yyyyMMddHHmmss")).ToString());
                     else
-                        this.EndTime = Inventec.Common.TypeConvert.Parse.ToInt64((DateTime.Now.ToString("yyyyMMddHHmm") + "59").ToString());
+                        this.EndTime = Inventec.Common.TypeConvert.Parse.ToInt64((DateTime.Now.ToString("yyyyMMddHHmmss")).ToString());
                     this.TreatmentEndTypeId = treatDT.TreatmentEndTypeId;
                     this.TreatmentEndTypeExtId = treatDT.TreatmentEndTypeExtId;
                     this.SickHeinCardNumber = treatDT.SickHeinCardNumber;
@@ -262,6 +262,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     this.TransportVehicle = treatDT.TransportVehicle;
                     this.TransporterLoginnames = treatDT.TransporterLoginnames;
                     this.Transporter = treatDT.Transporter;
+                    this.TreatmentMethod = treatDT.TreatmentMethod;
                     this.TreatmentDirection = treatDT.TreatmentDirection;
                     this.MainCause = treatDT.MainCause;
                     this.Surgery = treatDT.Surgery;
@@ -275,7 +276,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
 
                 }
                 this.TreatmentFinishSDO = frmAssignPrescription.treatmentFinishProcessor.GetData(frmAssignPrescription.ucTreatmentFinish);
-                if (this.TreatmentFinishSDO != null)
+                if (this.TreatmentFinishSDO != null && !string.IsNullOrEmpty(this.TreatmentFinishSDO.TreatmentMethod))
                     TreatmentFinishSDO.TreatmentMethod = frmAssignPrescription.TreatmentMethod;
             }
 
@@ -1569,15 +1570,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                 {
                     foreach (var item in serviceCheckeds__Send)
                     {
-                        valid = true;
                         string messageErr = "";
+                        string name = "";
                         if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC)
                         {
-                            messageErr = String.Format(ResourceMessage.CanhBaoThuoc, Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(item.MEDICINE_TYPE_NAME, System.Drawing.FontStyle.Bold));
+                            name = String.Format(ResourceMessage.CanhBaoThuoc, Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(item.MEDICINE_TYPE_NAME, System.Drawing.FontStyle.Bold));
                         }
                         else if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU)
                         {
-                            messageErr = String.Format(ResourceMessage.CanhBaoVatTu, Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(item.MEDICINE_TYPE_NAME, System.Drawing.FontStyle.Bold));
+                            name = String.Format(ResourceMessage.CanhBaoVatTu, Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(item.MEDICINE_TYPE_NAME, System.Drawing.FontStyle.Bold));
                         }
 
                         if ((item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU) && item.PATIENT_TYPE_ID <= 0)
@@ -1611,7 +1612,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                                 Inventec.Common.Logging.LogSystem.Warn("Doi tuong thanh toan bhyt bat buoc phai nhap thong tin duong dung cua thuoc.");
                             }
 
-                            if (!HisConfigCFG.IsNotAutoGenerateTutorial && String.IsNullOrEmpty(item.TUTORIAL))
+                            if (!HisConfigCFG.IsNotAutoGenerateTutorial && (item.TUTORIAL == null || String.IsNullOrEmpty(item.TUTORIAL.Trim())))
                             {
                                 messageErr += (" " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertColor(ResourceMessage.DoiTuongBHYTBatBuocPhaiNhapHDSD, System.Drawing.Color.Maroon));
                                 valid = false;
@@ -1624,6 +1625,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                             messageErr += (" " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertColor(ResourceMessage.HDSDVuotQuaKyTu, System.Drawing.Color.Maroon));
                             valid = false;
                         }
+                        if (!string.IsNullOrEmpty(messageErr.Trim()))
+                            messageErr = name + messageErr;
                         //Check takebean thất bại
                         //if (item.IsNotTakeBean == true)
                         //{
@@ -1632,9 +1635,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                         //    Inventec.Common.Logging.LogSystem.Warn("Take bean thất bại");
                         //}
 
-                        if (!valid)
+                        if (!valid && !string.IsNullOrEmpty(messageErr.Trim()))
                         {
-                            param.Messages.Add(messageErr + ";");
+                            param.Messages.Add(messageErr);
                         }
                         if (validCount > 0) valid = false;
                     }

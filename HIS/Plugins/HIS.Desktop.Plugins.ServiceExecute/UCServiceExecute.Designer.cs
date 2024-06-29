@@ -85,6 +85,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.repositoryItembtnDelete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.tileViewColumn4 = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.btnPdf = new DevExpress.XtraEditors.SimpleButton();
             this.btnCameramax = new DevExpress.XtraEditors.SimpleButton();
             this.lblIntructionTime = new DevExpress.XtraEditors.LabelControl();
             this.layoutControl5 = new DevExpress.XtraLayout.LayoutControl();
@@ -259,6 +260,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControlItem36 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem39 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem50 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem51 = new DevExpress.XtraLayout.LayoutControlItem();
             this.LciEndTime = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem35 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -427,6 +429,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem36)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem50)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem51)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciEndTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem35)).BeginInit();
@@ -534,6 +537,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.btnPdf);
             this.layoutControl1.Controls.Add(this.btnCameramax);
             this.layoutControl1.Controls.Add(this.lblIntructionTime);
             this.layoutControl1.Controls.Add(this.layoutControl5);
@@ -599,13 +603,25 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
+            // btnPdf
+            // 
+            this.btnPdf.Image = ((System.Drawing.Image)(resources.GetObject("btnPdf.Image")));
+            this.btnPdf.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+            this.btnPdf.Location = new System.Drawing.Point(1072, 154);
+            this.btnPdf.Name = "btnPdf";
+            this.btnPdf.Size = new System.Drawing.Size(24, 22);
+            this.btnPdf.StyleController = this.layoutControl1;
+            this.btnPdf.TabIndex = 84;
+            this.btnPdf.ToolTip = "Đính kèm PDF";
+            this.btnPdf.Click += new System.EventHandler(this.btnPdf_Click);
+            // 
             // btnCameramax
             // 
             this.btnCameramax.Image = ((System.Drawing.Image)(resources.GetObject("btnCameramax.Image")));
             this.btnCameramax.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.btnCameramax.Location = new System.Drawing.Point(1076, 102);
+            this.btnCameramax.Location = new System.Drawing.Point(1072, 102);
             this.btnCameramax.Name = "btnCameramax";
-            this.btnCameramax.Size = new System.Drawing.Size(42, 22);
+            this.btnCameramax.Size = new System.Drawing.Size(24, 22);
             this.btnCameramax.StyleController = this.layoutControl1;
             this.btnCameramax.TabIndex = 83;
             this.btnCameramax.ToolTip = "Mở rộng màn hình chụp ảnh";
@@ -740,12 +756,12 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             // 
             // chkAutoCapture
             // 
-            this.chkAutoCapture.Location = new System.Drawing.Point(1067, 128);
+            this.chkAutoCapture.Location = new System.Drawing.Point(1051, 128);
             this.chkAutoCapture.MenuManager = this.barManager1;
             this.chkAutoCapture.Name = "chkAutoCapture";
             this.chkAutoCapture.Properties.Caption = "";
             this.chkAutoCapture.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkAutoCapture.Size = new System.Drawing.Size(25, 19);
+            this.chkAutoCapture.Size = new System.Drawing.Size(19, 19);
             this.chkAutoCapture.StyleController = this.layoutControl1;
             this.chkAutoCapture.TabIndex = 77;
             this.chkAutoCapture.ToolTip = "Tự động chụp";
@@ -757,7 +773,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.btnShowConfig.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
             this.btnShowConfig.Location = new System.Drawing.Point(1034, 102);
             this.btnShowConfig.Name = "btnShowConfig";
-            this.btnShowConfig.Size = new System.Drawing.Size(38, 22);
+            this.btnShowConfig.Size = new System.Drawing.Size(34, 22);
             this.btnShowConfig.StyleController = this.layoutControl1;
             this.btnShowConfig.TabIndex = 76;
             this.btnShowConfig.ToolTip = "Tùy chỉnh ẩn/hiện thuộc tính Camera.";
@@ -1279,7 +1295,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.lblNumberOfImageSelected.Location = new System.Drawing.Point(985, 180);
             this.lblNumberOfImageSelected.Name = "lblNumberOfImageSelected";
             this.lblNumberOfImageSelected.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.lblNumberOfImageSelected.Size = new System.Drawing.Size(133, 20);
+            this.lblNumberOfImageSelected.Size = new System.Drawing.Size(111, 20);
             this.lblNumberOfImageSelected.StyleController = this.layoutControl1;
             this.lblNumberOfImageSelected.TabIndex = 64;
             this.lblNumberOfImageSelected.Text = "0";
@@ -1590,7 +1606,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.cboConnectionType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboConnectionType.Properties.NullText = "";
-            this.cboConnectionType.Size = new System.Drawing.Size(123, 20);
+            this.cboConnectionType.Size = new System.Drawing.Size(107, 20);
             this.cboConnectionType.StyleController = this.layoutControl1;
             this.cboConnectionType.TabIndex = 42;
             this.cboConnectionType.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboConnectionType_Closed);
@@ -1598,7 +1614,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             // btnCamera
             // 
             this.btnCamera.Image = global::HIS.Desktop.Plugins.ServiceExecute.Properties.Resources.connection_16x16;
-            this.btnCamera.Location = new System.Drawing.Point(1096, 128);
+            this.btnCamera.Location = new System.Drawing.Point(1074, 128);
             this.btnCamera.Name = "btnCamera";
             this.btnCamera.Size = new System.Drawing.Size(22, 22);
             this.btnCamera.StyleController = this.layoutControl1;
@@ -1634,7 +1650,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             // 
             this.panelControlCamera.Location = new System.Drawing.Point(938, 23);
             this.panelControlCamera.Name = "panelControlCamera";
-            this.panelControlCamera.Size = new System.Drawing.Size(182, 77);
+            this.panelControlCamera.Size = new System.Drawing.Size(160, 77);
             this.panelControlCamera.TabIndex = 34;
             // 
             // BtnChangeOption
@@ -1714,7 +1730,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.BtnChangeImage.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
             this.BtnChangeImage.Location = new System.Drawing.Point(940, 154);
             this.BtnChangeImage.Name = "BtnChangeImage";
-            this.BtnChangeImage.Size = new System.Drawing.Size(52, 22);
+            this.BtnChangeImage.Size = new System.Drawing.Size(40, 22);
             this.BtnChangeImage.StyleController = this.layoutControl1;
             this.BtnChangeImage.TabIndex = 28;
             this.BtnChangeImage.ToolTip = "Đổi ảnh";
@@ -1724,9 +1740,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             // 
             this.BtnChooseImage.Image = global::HIS.Desktop.Plugins.ServiceExecute.Properties.Resources.Choose_image_16x16;
             this.BtnChooseImage.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.BtnChooseImage.Location = new System.Drawing.Point(1051, 154);
+            this.BtnChooseImage.Location = new System.Drawing.Point(1034, 154);
             this.BtnChooseImage.Name = "BtnChooseImage";
-            this.BtnChooseImage.Size = new System.Drawing.Size(67, 22);
+            this.BtnChooseImage.Size = new System.Drawing.Size(34, 22);
             this.BtnChooseImage.StyleController = this.layoutControl1;
             this.BtnChooseImage.TabIndex = 27;
             this.BtnChooseImage.ToolTip = "Chọn ảnh";
@@ -1779,9 +1795,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             // 
             this.btnLoadImage.Image = global::HIS.Desktop.Plugins.ServiceExecute.Properties.Resources.Search_image_16x16;
             this.btnLoadImage.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.btnLoadImage.Location = new System.Drawing.Point(996, 154);
+            this.btnLoadImage.Location = new System.Drawing.Point(984, 154);
             this.btnLoadImage.Name = "btnLoadImage";
-            this.btnLoadImage.Size = new System.Drawing.Size(51, 22);
+            this.btnLoadImage.Size = new System.Drawing.Size(46, 22);
             this.btnLoadImage.StyleController = this.layoutControl1;
             this.btnLoadImage.TabIndex = 17;
             this.btnLoadImage.ToolTip = "Làm mới ảnh";
@@ -2128,7 +2144,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             // 
             // cardControl
             // 
-            this.cardControl.Location = new System.Drawing.Point(1122, 25);
+            this.cardControl.Location = new System.Drawing.Point(1100, 25);
             this.cardControl.MainView = this.tileView1;
             this.cardControl.Name = "cardControl";
             this.cardControl.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
@@ -2136,7 +2152,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.repositoryItemPictureEdit1,
             this.repositoryItembtnDelete,
             this.SpinEditSTTImage});
-            this.cardControl.Size = new System.Drawing.Size(171, 175);
+            this.cardControl.Size = new System.Drawing.Size(193, 175);
             this.cardControl.TabIndex = 4;
             this.cardControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.tileView1,
@@ -2488,7 +2504,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControlItem22,
             this.layoutControlItem36,
             this.layoutControlItem39,
-            this.layoutControlItem50});
+            this.layoutControlItem50,
+            this.layoutControlItem51});
             this.lcgImage.Location = new System.Drawing.Point(0, 0);
             this.lcgImage.Name = "lcgImage";
             this.lcgImage.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -2502,7 +2519,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControlItem25.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem25.Name = "layoutControlItem25";
             this.layoutControlItem25.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem25.Size = new System.Drawing.Size(182, 77);
+            this.layoutControlItem25.Size = new System.Drawing.Size(160, 77);
             this.layoutControlItem25.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem25.TextVisible = false;
             // 
@@ -2532,7 +2549,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControlItem19.Location = new System.Drawing.Point(0, 103);
             this.layoutControlItem19.Name = "layoutControlItem19";
             this.layoutControlItem19.OptionsToolTip.ToolTip = "Cổng kết nối";
-            this.layoutControlItem19.Size = new System.Drawing.Size(127, 26);
+            this.layoutControlItem19.Size = new System.Drawing.Size(111, 26);
             this.layoutControlItem19.Text = "Cổng KN:";
             this.layoutControlItem19.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
@@ -2544,16 +2561,16 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControlItem23.Control = this.BtnChangeImage;
             this.layoutControlItem23.Location = new System.Drawing.Point(0, 129);
             this.layoutControlItem23.Name = "layoutControlItem23";
-            this.layoutControlItem23.Size = new System.Drawing.Size(56, 26);
+            this.layoutControlItem23.Size = new System.Drawing.Size(44, 26);
             this.layoutControlItem23.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem23.TextVisible = false;
             // 
             // layoutControlItem14
             // 
             this.layoutControlItem14.Control = this.cardControl;
-            this.layoutControlItem14.Location = new System.Drawing.Point(182, 0);
+            this.layoutControlItem14.Location = new System.Drawing.Point(160, 0);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(175, 179);
+            this.layoutControlItem14.Size = new System.Drawing.Size(197, 179);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             // 
@@ -2566,7 +2583,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.lciForlblNumberOfImageSelected.Control = this.lblNumberOfImageSelected;
             this.lciForlblNumberOfImageSelected.Location = new System.Drawing.Point(0, 155);
             this.lciForlblNumberOfImageSelected.Name = "lciForlblNumberOfImageSelected";
-            this.lciForlblNumberOfImageSelected.Size = new System.Drawing.Size(182, 24);
+            this.lciForlblNumberOfImageSelected.Size = new System.Drawing.Size(160, 24);
             this.lciForlblNumberOfImageSelected.Text = "Chọn:";
             this.lciForlblNumberOfImageSelected.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciForlblNumberOfImageSelected.TextSize = new System.Drawing.Size(40, 20);
@@ -2575,7 +2592,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             // layoutControlItem32
             // 
             this.layoutControlItem32.Control = this.btnCamera;
-            this.layoutControlItem32.Location = new System.Drawing.Point(156, 103);
+            this.layoutControlItem32.Location = new System.Drawing.Point(134, 103);
             this.layoutControlItem32.MaxSize = new System.Drawing.Size(26, 26);
             this.layoutControlItem32.MinSize = new System.Drawing.Size(26, 26);
             this.layoutControlItem32.Name = "layoutControlItem32";
@@ -2587,18 +2604,18 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             // lciBtnLoad
             // 
             this.lciBtnLoad.Control = this.btnLoadImage;
-            this.lciBtnLoad.Location = new System.Drawing.Point(56, 129);
+            this.lciBtnLoad.Location = new System.Drawing.Point(44, 129);
             this.lciBtnLoad.Name = "lciBtnLoad";
-            this.lciBtnLoad.Size = new System.Drawing.Size(55, 26);
+            this.lciBtnLoad.Size = new System.Drawing.Size(50, 26);
             this.lciBtnLoad.TextSize = new System.Drawing.Size(0, 0);
             this.lciBtnLoad.TextVisible = false;
             // 
             // layoutControlItem22
             // 
             this.layoutControlItem22.Control = this.BtnChooseImage;
-            this.layoutControlItem22.Location = new System.Drawing.Point(111, 129);
+            this.layoutControlItem22.Location = new System.Drawing.Point(94, 129);
             this.layoutControlItem22.Name = "layoutControlItem22";
-            this.layoutControlItem22.Size = new System.Drawing.Size(71, 26);
+            this.layoutControlItem22.Size = new System.Drawing.Size(38, 26);
             this.layoutControlItem22.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem22.TextVisible = false;
             // 
@@ -2607,16 +2624,16 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControlItem36.Control = this.btnShowConfig;
             this.layoutControlItem36.Location = new System.Drawing.Point(94, 77);
             this.layoutControlItem36.Name = "layoutControlItem36";
-            this.layoutControlItem36.Size = new System.Drawing.Size(42, 26);
+            this.layoutControlItem36.Size = new System.Drawing.Size(38, 26);
             this.layoutControlItem36.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem36.TextVisible = false;
             // 
             // layoutControlItem39
             // 
             this.layoutControlItem39.Control = this.chkAutoCapture;
-            this.layoutControlItem39.Location = new System.Drawing.Point(127, 103);
+            this.layoutControlItem39.Location = new System.Drawing.Point(111, 103);
             this.layoutControlItem39.Name = "layoutControlItem39";
-            this.layoutControlItem39.Size = new System.Drawing.Size(29, 26);
+            this.layoutControlItem39.Size = new System.Drawing.Size(23, 26);
             this.layoutControlItem39.Text = " ";
             this.layoutControlItem39.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem39.TextSize = new System.Drawing.Size(0, 0);
@@ -2626,11 +2643,20 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             // layoutControlItem50
             // 
             this.layoutControlItem50.Control = this.btnCameramax;
-            this.layoutControlItem50.Location = new System.Drawing.Point(136, 77);
+            this.layoutControlItem50.Location = new System.Drawing.Point(132, 77);
             this.layoutControlItem50.Name = "layoutControlItem50";
-            this.layoutControlItem50.Size = new System.Drawing.Size(46, 26);
+            this.layoutControlItem50.Size = new System.Drawing.Size(28, 26);
             this.layoutControlItem50.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem50.TextVisible = false;
+            // 
+            // layoutControlItem51
+            // 
+            this.layoutControlItem51.Control = this.btnPdf;
+            this.layoutControlItem51.Location = new System.Drawing.Point(132, 129);
+            this.layoutControlItem51.Name = "layoutControlItem51";
+            this.layoutControlItem51.Size = new System.Drawing.Size(28, 26);
+            this.layoutControlItem51.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem51.TextVisible = false;
             // 
             // LciEndTime
             // 
@@ -3256,6 +3282,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem36)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem50)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem51)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciEndTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem35)).EndInit();
@@ -3531,5 +3558,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem4;
         private DevExpress.XtraEditors.SimpleButton btnCameramax;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem50;
+        private DevExpress.XtraEditors.SimpleButton btnPdf;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem51;
     }
 }

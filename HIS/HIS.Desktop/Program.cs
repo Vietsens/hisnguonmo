@@ -75,7 +75,7 @@ namespace HIS.Desktop
                 BonusSkins.Register();
                 SkinManager.EnableFormSkins();
                 HIS.Desktop.Base.ResouceManager.InitResourceLanguageManager();
-                //Inventec.Common.WebApiClient.IpAddressUtils.InitialIpAddressLocal();
+                Inventec.Common.WebApiClient.IpAddressUtils.InitialIpAddressLocal();
                 frmLoadConfigSystem frm = new frmLoadConfigSystem();
                 frm.ShowDialog();
                 if (!IsRunUnitTest && !String.IsNullOrEmpty(Inventec.Aup.Utility.AupConstant.BASE_URI))

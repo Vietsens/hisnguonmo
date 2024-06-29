@@ -69,6 +69,7 @@ namespace HIS.Desktop.Plugins.ServiceReqPatient
 
         List<HIS_IMP_MEST_MEDICINE> ListMobaImpMestMedicine = new List<HIS_IMP_MEST_MEDICINE>();
         List<HIS_IMP_MEST_MATERIAL> ListMobaImpMestMaterial = new List<HIS_IMP_MEST_MATERIAL>();
+        HIS_TREATMENT curentTreatment;
         #endregion
 
         #region construct
@@ -150,8 +151,9 @@ namespace HIS.Desktop.Plugins.ServiceReqPatient
                 if (lstTreatment != null && lstTreatment.Count > 0)
                 {
                     var _Treatment = lstTreatment.FirstOrDefault();
+                    curentTreatment = lstTreatment.FirstOrDefault();
                     txtName.Text = _Treatment.TDL_PATIENT_NAME;
-                    txtDBirth.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(_Treatment.TDL_PATIENT_DOB);
+                    txtDBirth.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(_Treatment.TDL_PATIENT_DOB) + " (" + CaculatorAge(_Treatment.TDL_PATIENT_DOB) + ")";
                     txtGender.Text = _Treatment.TDL_PATIENT_GENDER_NAME;
                     txtBHYT.Text = _Treatment.TDL_HEIN_CARD_NUMBER;
                     CommonParam param2 = new CommonParam();
@@ -160,16 +162,12 @@ namespace HIS.Desktop.Plugins.ServiceReqPatient
                     var PatientTypeAlter = new BackendAdapter(param).Get<List<HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeAlter/Get", ApiConsumers.MosConsumer, PatientTypeAlterFilter, param2).FirstOrDefault();
                     if (PatientTypeAlter.HEIN_CARD_FROM_TIME != null)
                     {
-                        txtFrom.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(PatientTypeAlter.HEIN_CARD_FROM_TIME ?? 0);
-                    }
-                    if (PatientTypeAlter.HEIN_CARD_TO_TIME != null)
-                    {
-                        txtTo.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(PatientTypeAlter.HEIN_CARD_TO_TIME ?? 0);
+                        txtFrom.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(PatientTypeAlter.HEIN_CARD_FROM_TIME ?? 0) + " - " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(PatientTypeAlter.HEIN_CARD_TO_TIME ?? 0); ;
                     }
                     txtDeparment.Text = DeparmentName;
-                    txtICDMain.Text = _Treatment.ICD_NAME;
-                    txtICDMainCode.Text = _Treatment.ICD_CODE;
+                    txtICDMain.Text = _Treatment.ICD_CODE +" - "+_Treatment.ICD_NAME;
                     txtICD.Text = _Treatment.ICD_TEXT;
+                    txtWeight.Text = CaculatorWeight() + "kg";
                     txtNVV.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(_Treatment.IN_TIME);
 
                     HisTreatmentBedRoomViewFilter bedRoomViewFilter = new HisTreatmentBedRoomViewFilter();
@@ -1348,5 +1346,132 @@ namespace HIS.Desktop.Plugins.ServiceReqPatient
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        #region handle new button to dieu tri, danh sach y lenh
+        private void btnToDieuTri_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.TreatmentID != null && this.TreatmentID > 0)
+                {
+                    WaitingManager.Show();
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add((long)(this.TreatmentID));
+
+                    WaitingManager.Hide();
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.HisTrackingList", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Debug(ex);
+            }
+        }
+
+        private void btnDsYlenh_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.TreatmentID != null && this.TreatmentID > 0)
+                {
+                    HIS_TREATMENT dataTreatment = new HIS_TREATMENT();
+                    WaitingManager.Show();
+                    List<object> listArgs = new List<object>();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(dataTreatment, this.curentTreatment);
+                    listArgs.Add(dataTreatment);
+                    WaitingManager.Hide();
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.ServiceReqList", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Debug(ex);
+            }
+        }
+        private string CaculatorAge(long date)
+        {
+            try
+            {
+                
+                //DateTime dob = ConvertLongToDateTime(date);
+                //DateTime currentDate = DateTime.Now;
+                //TimeSpan ageSpan = currentDate - dob;
+
+                //if (ageSpan.TotalHours < 24)
+                //{
+                //    return Math.Round(ageSpan.TotalHours)+" giờ tuổi";
+                //}
+                //else if (ageSpan.TotalDays < 30)
+                //{
+                //    return Math.Round(ageSpan.TotalDays)+" ngày tuổi";
+                //}
+                //else if (ageSpan.TotalDays < 72 * 30) // 72 tháng
+                //{
+                //    int months = (int)(ageSpan.TotalDays / 30);
+                //    return months+" tháng tuổi";
+                //}
+                //else
+                //{
+                   
+                //}
+                var age = MPS.AgeUtil.CalculateFullAge(date);
+                return age;
+                
+            }
+            catch (Exception ex)
+            {
+                return "";
+                LogSystem.Debug(ex);
+            }
+        }
+        private static DateTime ConvertLongToDateTime(long dateTimeLong)
+        {
+            string dateTimeString = dateTimeLong.ToString();
+            int year = int.Parse(dateTimeString.Substring(0, 4));
+            int month = int.Parse(dateTimeString.Substring(4, 2));
+            int day = int.Parse(dateTimeString.Substring(6, 2));
+            int hour = int.Parse(dateTimeString.Substring(8, 2));
+            int minute = int.Parse(dateTimeString.Substring(10, 2));
+            return new DateTime(year, month, day, hour, minute, 0);
+        }
+        private decimal CaculatorWeight()
+        {
+            try
+            {
+                decimal weight = 0;
+                HisDhstFilter  filter = new HisDhstFilter();
+                filter.ORDER_FIELD = "EXECUTE_TIME";
+                filter.ORDER_DIRECTION = "DESC";
+                filter.TREATMENT_ID = TreatmentID;
+                var result = new BackendAdapter(new CommonParam()).Get<List<HIS_DHST>>("/api/HisDhst/Get", ApiConsumers.MosConsumer, filter, null);
+                if (result != null)
+                {
+                    result = result.Where(s => s.WEIGHT != null).ToList();
+                    var maxExecuteTime = result.Max(x => x.EXECUTE_TIME);
+
+                    // Lấy tất cả các bản ghi có EXECUTE_TIME bằng maxExecuteTime
+                    var candidates = result.Where(x => x.EXECUTE_TIME == maxExecuteTime);
+
+                    // Trong số các bản ghi có EXECUTE_TIME bằng nhau, lấy bản ghi có ID lớn nhất
+                    var tempRs = candidates.OrderByDescending(x => x.ID).FirstOrDefault();
+
+                    if (tempRs != null)
+                    {
+                        weight = tempRs.WEIGHT ?? 0;
+
+                    }
+                }
+                return weight;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+                LogSystem.Debug(ex);
+            }
+        }
+        #endregion
+
+
+        
     }
 }

@@ -59,7 +59,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
-using static DevExpress.Data.Helpers.ExpressiveSortInfo;
 
 namespace HIS.Desktop.Plugins.BedRoomWithIn
 {
@@ -105,7 +104,8 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
         internal SecondaryIcdProcessor subIcdYhctProcessor;
         internal UserControl ucSecondaryIcdYhct;
         List<HIS_ICD> currentIcds;
-
+        string doctorLoginname = "";
+        string doctorUsername = "";
         const int MaxReq = 500;
 
         public frmBedRoomWithIn(Inventec.Desktop.Common.Modules.Module currentModule, MOS.EFMODEL.DataModels.V_HIS_DEPARTMENT_TRAN departmentTran)
@@ -194,6 +194,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 SetEnableControlTime();
                 this.SpNamGhep.EditValue = null;
                 Validation();
+                loadDoctor();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -1031,7 +1032,11 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             try
             {
                 if (btnSave.Enabled)
-                    ProcessDepartmentTranSaveClick(sender, e);
+                {
+                    
+                     ProcessDepartmentTranSaveClick(sender, e);
+                    
+                }
             }
             catch (Exception ex)
             {
@@ -2351,5 +2356,133 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             }
             return valid;
         }
+        #region loadDoctor, save Doctor Info
+        private List<HIS_EMPLOYEE> listDoctor = new List<HIS_EMPLOYEE>();
+        private HIS_TREATMENT updateDTO = new HIS_TREATMENT();
+        private void loadDoctor()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisEmployeeFilter filter = new HisEmployeeFilter();
+                filter.IS_ACTIVE = 1;
+                var data = new BackendAdapter(param).Get<List<HIS_EMPLOYEE>>("/api/HisEmployee/Get", ApiConsumers.MosConsumer, filter, param);
+                listDoctor.AddRange(data.Where(s => s.IS_DOCTOR == 1 && !string.IsNullOrEmpty(s.LOGINNAME) && !string.IsNullOrEmpty(s.TDL_USERNAME)).Distinct().ToList());
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("LOGINNAME", "Mã", 100, 2));
+                columnInfos.Add(new ColumnInfo("TDL_USERNAME", "Tên", 200, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("LOGINNAME", "TDL_USERNAME", columnInfos, false, 300);
+                ControlEditorLoader.Load(cbboDoctor, listDoctor, controlEditorADO);
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+        }
+        
+
+        private void cbbDoctor_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (cbboDoctor.EditValue != null)
+                {
+                    var selectedDoctor = listDoctor.Where(s => s.TDL_USERNAME == cbboDoctor.EditValue.ToString()).FirstOrDefault();
+                    updateDTO.DOCTOR_LOGINNAME = selectedDoctor.LOGINNAME;
+                    updateDTO.DOCTOR_USERNAME = selectedDoctor.TDL_USERNAME;
+                    cbbDoctor.Text = selectedDoctor.LOGINNAME;
+                    cbboDoctor.Properties.DisplayMember = "TDL_USERNAME";
+                }
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+        }
+       
+        private void cbbDoctor_KeyDown(object sender, KeyEventArgs e)
+        {
+            
+        }
+        
+
+        private void cbboDoctor_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cbboDoctor.EditValue != null)
+                {
+                    var selectedDoctor = listDoctor.Where(s => s.TDL_USERNAME == cbboDoctor.EditValue.ToString()).FirstOrDefault();
+                    if (selectedDoctor != null)
+                    {
+                        this.doctorLoginname = selectedDoctor.LOGINNAME;
+                        this.doctorUsername = selectedDoctor.TDL_USERNAME;
+                        cbbDoctor.Text = selectedDoctor.LOGINNAME;
+                        cbboDoctor.Properties.DisplayMember = "TDL_USERNAME";
+                    } 
+                }
+                else
+                {
+                    cbbDoctor.Text = "";
+                }
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+        }
+       
+
+        private void cbbDoctor_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    var data = listDoctor.FirstOrDefault(s => s.LOGINNAME == cbbDoctor.Text);
+                    if (data != null)
+                    {
+                        cbboDoctor.EditValue = data.TDL_USERNAME;
+                    }
+                }
+                if (string.IsNullOrEmpty(cbbDoctor.Text))
+                {
+                    cbboDoctor.EditValue = null;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        private void cbbDoctor_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var data = listDoctor.FirstOrDefault(s => s.LOGINNAME == cbbDoctor.Text);
+                if (data != null)
+                {
+                    cbboDoctor.EditValue = data.TDL_USERNAME;
+                }
+
+                if (string.IsNullOrEmpty(cbbDoctor.Text))
+                {
+                    cbboDoctor.EditValue = null;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        #endregion
+
+        
+
     }
 }

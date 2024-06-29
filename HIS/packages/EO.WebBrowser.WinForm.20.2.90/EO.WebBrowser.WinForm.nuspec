@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>EO.WebBrowser.WinForm</id>
+    <version>20.2.90</version>
+    <title>EO.WebBrowser.WinForm for .NET</title>
+    <authors>Essential Objects</authors>
+    <owners>Essential Objects</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>http://www.essentialobjects.com/Products/WebBrowser/EULA.aspx</licenseUrl>
+    <projectUrl>http://www.essentialobjects.com/Products/WebBrowser/Default.aspx</projectUrl>
+    <iconUrl>http://www.essentialobjects.com/eo.png</iconUrl>
+    <description>EO.WebBrowser.WinForm provides the Windows.Forms version of the WebControl.</description>
+    <summary>EO.WebBrowser.WinForm provides the Windows.Forms version of the WebControl.</summary>
+    <copyright>Essential Objects, Inc.</copyright>
+    <language>es-US</language>
+    <tags>EO WebBrowser, Chrome Embedded, Web Engine, HTML Engine</tags>
+    <dependencies>
+      <dependency id="EO.WebBrowser" version="[20.2.90]" />
+    </dependencies>
+    <references>
+      <reference file="EO.WebBrowser.WinForm.dll" />
+    </references>
+  </metadata>
+</package>

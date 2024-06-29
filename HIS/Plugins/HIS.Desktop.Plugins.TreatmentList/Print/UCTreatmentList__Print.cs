@@ -730,10 +730,29 @@ namespace HIS.Desktop.Plugins.TreatmentList
                           .Get<List<V_HIS_PATIENT>>("api/HisPatient/GetView", ApiConsumers.MosConsumer, patientFilter, param).FirstOrDefault();
                 WaitingManager.Hide();
 
+                #region bo sung V_HIS_DEPARTMENT_TRAN
+                V_HIS_DEPARTMENT_TRAN departmentDTO = new V_HIS_DEPARTMENT_TRAN();
+                HisDepartmentTranViewFilter deFilter = new HisDepartmentTranViewFilter();
+                deFilter.TREATMENT_ID = treatment4.ID;
+                deFilter.ORDER_DIRECTION = "DESC";
+                deFilter.ORDER_FIELD = "DEPARTMENT_IN_TIME";
+                var dataAPI = new BackendAdapter(param).Get<List<V_HIS_DEPARTMENT_TRAN>>("api/HisDepartmentTran/GetView", ApiConsumers.MosConsumer, deFilter, param);
+
+                if (dataAPI != null)
+                {
+                    var sortedList = dataAPI
+                                    .OrderByDescending(o => o.DEPARTMENT_IN_TIME.HasValue)  // NULL lên đầu
+                                    .ThenByDescending(o => o.DEPARTMENT_IN_TIME)            // Giảm dần theo DEPARTMENT_IN_TIME
+                                    .ThenByDescending(o => o.ID)                            // Giảm dần theo ID
+                                    .ToList();
+                    departmentDTO = dataAPI.First();
+                }
+                #endregion
                 MPS.Processor.Mps000178.PDO.Mps000178PDO mps000178RDO = new MPS.Processor.Mps000178.PDO.Mps000178PDO(
                    currentPatient,
                    currentHispatientTypeAlter,
-                   treatment4
+                   treatment4,
+                   departmentDTO
                    );
 
                 string printerName = "";

@@ -198,6 +198,9 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         case BedRoomPopupMenuProcessor.ModuleType.SuaHSDT:
                             btnEditICD();
                             break;
+                        case BedRoomPopupMenuProcessor.ModuleType.BacSiDt:
+                            btnBacSiDt();
+                            break;
                         case BedRoomPopupMenuProcessor.ModuleType.HisCoTreatmentCreate:
                             btnHisCoTreatmentCreate();
                             break;
@@ -279,6 +282,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void btnBacSiDt()
+        {
+            frmDoctorTreatment frmDoctorTreatment = new frmDoctorTreatment(treatmentBedRoomRow, (DelegateRefreshData)RefreshData);
+            frmDoctorTreatment.ShowDialog();
         }
 
         public void RefreshData()

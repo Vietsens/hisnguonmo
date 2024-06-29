@@ -71,7 +71,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         private const string KEY__WARNING_UNFINISHED_SERVICE_OPTION = "HIS.Desktop.Plugins.TreatmentFinish.WarningUnfinishedServiceOption";
         private const string KEY__MustChooseSeviceExam = "HIS.Desktop.Plugins.TreatmentFinish.MustChooseSeviceExam.Option";
         private const string KEY__IsAllowTreatmentFinishDepartmentIsActiveFee = "HIS.Desktop.Plugins.TreatmentFinish.IsAllowTreatmentFinishDepartmentIsActiveFee";
-
+        private const string KEY_TreatmentEndTypeIsTransfer = "HIS.Desktop.Plugins.TreatmentFinish.TreatmentEndTypeIsTransfer";
+        internal static string OptionTreatmentEndTypeIsTransfer;
         internal static string MustChooseSeviceExamOption;
         internal static string WarningUnfinishedServiceOption;
         internal static string PathologicalProcessOption;
@@ -107,6 +108,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         {
             try
             {
+                OptionTreatmentEndTypeIsTransfer = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_TreatmentEndTypeIsTransfer);
                 MustChooseSeviceExamOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MustChooseSeviceExam);
                 WarningUnfinishedServiceOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__WARNING_UNFINISHED_SERVICE_OPTION);
                 PathologicalProcessOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__PATHOLOCICAL_PROCESS_OPTION);

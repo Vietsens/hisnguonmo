@@ -201,4 +201,7 @@
   <data name="frmHisDebateTemp.lcTreatmentTracking.Text" xml:space="preserve">
     <value>4. Treatment tracking</value>
   </data>
+  <data name="frmHisDebateTemp.lciDiscussion.Text" xml:space="preserve">
+    <value>5. Discussion</value>
+  </data>
 </root>

@@ -37,20 +37,23 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         BarManager _BarManager = null;
         PopupMenu _PopupMenu = null;
         MouseRightClick _MouseRightClick;
+        bool IsMultilCheck = false;
         internal enum ItemType
         {
             CapNhatTinhTrangMau,
             LichSuXetNghiem,
             TaoEmr,
             PrintEmr,
-            CapNhatBarcode
+            CapNhatBarcode,
+            InGopBarcode
         }
 
-        internal PopupMenuProcessor(V_LIS_SAMPLE sample, BarManager barmanager, MouseRightClick mouseRightClick)
+        internal PopupMenuProcessor(V_LIS_SAMPLE sample, BarManager barmanager, MouseRightClick mouseRightClick, bool IsMultilCheck)
         {
             this._Sample = sample;
             this._MouseRightClick = mouseRightClick;
             this._BarManager = barmanager;
+            this.IsMultilCheck = IsMultilCheck;
         }
 
         internal void InitMenu()
@@ -75,6 +78,14 @@ namespace HIS.Desktop.Plugins.ConnectionTest
 
                 this._PopupMenu.AddItems(new BarItem[] { btnCapNhatBarcode });
 
+                if (IsMultilCheck)
+                {
+                    BarButtonItem btnInGopbarcode = new BarButtonItem(this._BarManager, "In gộp barcode", 1);
+                    btnInGopbarcode.Tag = ItemType.InGopBarcode;
+                    btnInGopbarcode.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+
+                    this._PopupMenu.AddItems(new BarItem[] { btnInGopbarcode });
+                }
                 if (_Sample.SAMPLE_STT_ID != IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI
                     && _Sample.SAMPLE_STT_ID != IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM)
                 {

@@ -48,6 +48,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 ValidMaxlengthConcentra();
                 ValidMaxlengthActiveBhyt();
                 ValidMaxlengthDosageForm();
+                ValidMaxlengthTenTT();
+                ValidMaxlengthTenBhyt();
             }
             catch (Exception ex)
             {
@@ -112,6 +114,38 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 validateMaxLength.maxLength = 100;
                 validateMaxLength.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                 dxValidationProviderLeft.SetValidationRule(txtDosageForm, validateMaxLength);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        void ValidMaxlengthTenBhyt()
+        {
+            try
+            {
+                ValidateMaxLength validateMaxLength = new ValidateMaxLength();
+                validateMaxLength.textEdit = txtTenBHYT;
+                validateMaxLength.maxLength = 1500;
+                validateMaxLength.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                dxValidationProviderLeft.SetValidationRule(txtTenBHYT, validateMaxLength);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        void ValidMaxlengthTenTT()
+        {
+            try
+            {
+                ValidateMaxLength validateMaxLength = new ValidateMaxLength();
+                validateMaxLength.textEdit = txtTenTT;
+                validateMaxLength.maxLength = 1500;
+                validateMaxLength.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                dxValidationProviderLeft.SetValidationRule(txtTenTT, validateMaxLength);
             }
             catch (Exception ex)
             {

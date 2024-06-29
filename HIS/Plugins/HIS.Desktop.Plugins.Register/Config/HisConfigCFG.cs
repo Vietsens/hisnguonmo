@@ -182,7 +182,7 @@ namespace HIS.Desktop.Plugins.Register.Config
             MOS.EFMODEL.DataModels.HIS_CAREER result = new MOS.EFMODEL.DataModels.HIS_CAREER();
             try
             {
-                result = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CAREER>().FirstOrDefault(o => o.CAREER_CODE == code);
+                result = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CAREER>().FirstOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.CAREER_CODE == code);
             }
             catch (Exception ex)
             {

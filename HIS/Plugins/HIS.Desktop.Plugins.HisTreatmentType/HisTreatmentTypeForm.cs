@@ -512,6 +512,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
                 currentDTO.IS_NOT_ALLOW_UNPAUSE = chkIS_NOT_ALLOW_UNPAUSE.Checked ? (short)1 : (short)0;
                 currentDTO.ALLOW_HOSPITALIZE_WHEN_PRES = chkAllowHospitalizeWhenPres.Checked ? (short)1 : (short)0;
                 currentDTO.IS_NOT_ALLOW_SHARE_BED = chkIsNotAllowShareBed.Checked ? (short)1 : (short)0;
+                currentDTO.IS_REQUIRED_SERVICE_BED = chkIsRequiredServiceBed.Checked ? (short?)1 : null;
                 //if (chkUnfinishedDeposit.Checked)
                 //{
                 //    currentDTO.IS_DIS_DEPOSIT = 1;
@@ -805,6 +806,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
                     chkIS_NOT_ALLOW_UNPAUSE.Checked = data.IS_NOT_ALLOW_UNPAUSE == 1;
                     chkAllowHospitalizeWhenPres.Checked = data.ALLOW_HOSPITALIZE_WHEN_PRES == 1;
                     chkIsNotAllowShareBed.Checked = data.IS_NOT_ALLOW_SHARE_BED == 1;
+                    chkIsRequiredServiceBed.Checked= data.IS_REQUIRED_SERVICE_BED == 1;
                     //chkUnfinishedServiceDeposit.Checked = data.IS_DIS_SERVICE_DEPOSIT == 1;
                     chkIsDisServiceRepay.Checked = data.IS_DIS_SERVICE_REPAY == 1;
                     //chkUnfinishedDeposit.Checked = data.IS_DIS_DEPOSIT == 1;

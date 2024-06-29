@@ -44,7 +44,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         private const string CONFIG_KEY__IS_CHECK_PREVIOUS_PRESCRIPTION = "HIS.Desktop.Plugins.AssignPrescriptionPK.IsCheckPreviousPrescripton";
         internal static bool IsNotRequiredFee;
         private const string CONFIG_KEY_IS_CHECK_ENABLE_EXAM_TYPE = "HIS.Desktop.Plugins.ExamServiceReqExecute.EnableByExamType";
-        private const string CONFIG_KEY__IS_REQUIRED_TREATMENT_METHOD_OPTION = "HIS.Desktop.Plugins.TreatmentFinish.RequiredTreatmentMethodOption";
+        private const string CONFIG_KEY__IS_REQUIRED_TREATMENT_METHOD_OPTION = "HIS.Desktop.Plugins.TreatmentFinish.RequiredTreatmentMethodOption"; 
+        private const string KEY_TreatmentEndTypeIsTransfer = "HIS.Desktop.Plugins.TreatmentFinish.TreatmentEndTypeIsTransfer";
+        internal static string OptionTreatmentEndTypeIsTransfer;
         internal static string enableExamtype;
 
         internal static bool IsAutoCloseAfterSolving;
@@ -89,7 +91,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         internal static string MustChooseSeviceExamOption;
         private const string KEY__IsRequiredTemperatureOption = "HIS.Desktop.Plugins.ExamServiceReqExecute.IsRequiredTemperatureOption";
         private const string KEY__RequiredAddressOption = "HIS.Desktop.Plugins.ExamServiceReqExecute.RequiredAddressOption";
-
+        private const string KEY__HospitalizationReasonRequiredByPatientCode = "HIS.Desktop.Plugins.ExamServiceReqExecute.HospitalizationReasonRequiredByPatientCode";
+        internal static string HospitalizationReasonRequiredByPatientCode;
         internal static bool IsRequiredTemperatureOption;
         internal static bool RequiredAddressOption;
         internal static string RequiredTreatmentMethodOption;
@@ -97,6 +100,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         {
             try
             {
+                OptionTreatmentEndTypeIsTransfer = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_TreatmentEndTypeIsTransfer);
+                HospitalizationReasonRequiredByPatientCode = GetValue(KEY__HospitalizationReasonRequiredByPatientCode);
                 IsRequiredTemperatureOption = GetValue(KEY__IsRequiredTemperatureOption) == GlobalVariables.CommonStringTrue;
                 RequiredAddressOption = GetValue(KEY__RequiredAddressOption) == GlobalVariables.CommonStringTrue;
                 MustChooseSeviceExamOption = GetValue(KEY__MustChooseSeviceExam);

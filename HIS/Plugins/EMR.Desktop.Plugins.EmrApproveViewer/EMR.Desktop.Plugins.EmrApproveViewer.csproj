@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{61DA39D5-51E5-41FA-9586-BE73879A1131}</ProjectGuid>
+    <ProjectGuid>{C71CA722-1211-4ECD-9344-E3DC6DAD0BDA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EMR.Desktop.Plugins.EmrApproveViewer</RootNamespace>

@@ -51,6 +51,8 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
         bool addSuccess;
         bool checkClick;
         Inventec.Desktop.Common.Modules.Module currentModule;
+        List<V_HIS_MEDICINE_TYPE> listMedicin;
+        List<HIS_ACTIVE_INGREDIENT> listAcin;
         #endregion
 
         #region contructor
@@ -100,10 +102,36 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                 btnSave.Enabled = false;
                 btnShowLineError.Enabled = false;
                 BtnExportErrorLine.Enabled = false;
+                LoadValue();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadValue()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisMedicineTypeViewFilter mediFilter = new MOS.Filter.HisMedicineTypeViewFilter();
+                mediFilter.ORDER_DIRECTION = "DESC";
+                mediFilter.ORDER_FIELD = "MODIFY_TIME";
+                listMedicin = new List<V_HIS_MEDICINE_TYPE>();
+                listMedicin = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_TYPE>>("/api/HisMedicineType/GetView", ApiConsumers.MosConsumer, mediFilter, param);
+                // load medicine acin
+                MOS.Filter.HisMedicineTypeAcinFilter acinFilter = new MOS.Filter.HisMedicineTypeAcinFilter();
+                acinFilter.ORDER_DIRECTION = "DESC";
+                acinFilter.ORDER_FIELD = "MODIFY_TIME";
+                listAcin = new List<HIS_ACTIVE_INGREDIENT>();
+                listAcin = new BackendAdapter(param).Get<List<HIS_ACTIVE_INGREDIENT>>("/api/HisActiveIngredient/Get", ApiConsumers.MosConsumer, acinFilter, param);
+
+            }
+            catch (Exception)
+            {
+                
+                throw;
             }
         }
         #endregion
@@ -303,8 +331,18 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     ser.PARENT_ID = null;
                     medi.HIS_SERVICE = ser;
                     medi.ID = 0;
+                    var valueList = listMediAcinCode.FirstOrDefault(x => x.Key == item.MEDICINE_TYPE_CODE).Value;
+                    if (valueList != null && valueList.Count > 0)
+                    {
+                        foreach (var _i in valueList)
+                        {
+                            medi.HIS_MEDICINE_TYPE_ACIN.Add(_i);
+                        }
+                        
+                    }
                     listMedi.Add(medi);
                 }
+                
                 Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("listMedi", listMedi));
                 CommonParam param = new CommonParam();
 
@@ -1223,7 +1261,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
 
                     if (!string.IsNullOrEmpty(item.HEIN_SERVICE_BHYT_NAME))
                     {
-                        if (item.HEIN_SERVICE_BHYT_NAME.Length > 500)
+                        if (item.HEIN_SERVICE_BHYT_NAME.Length > 1500)
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Tên BHYT");
                             mediAdo.HEIN_SERVICE_BHYT_NAME_ERROR = 1;
@@ -1433,16 +1471,22 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                             mediAdo.MEDICINE_TYPE_CODE_ERROR = 1;
                         }
 
-                        var check = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().Exists(o => o.MEDICINE_TYPE_CODE == item.MEDICINE_TYPE_CODE);
+                        var check = listMedicin.Exists(o => o.MEDICINE_TYPE_CODE == item.MEDICINE_TYPE_CODE);
+                        var _Data = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.MEDICINE_TYPE_CODE == item.MEDICINE_TYPE_CODE);
+                        Inventec.Common.Logging.LogSystem.Debug("_______Kiểm tra mã loại thuốc " + check);
+                        Inventec.Common.Logging.LogSystem.Debug("_______Kiểm tra mã loại thuốc data:" + Inventec.Common.Logging.LogUtil.TraceData("____HIS_MEDICINE_TYPE: ",_Data));
                         if (check)
                         {
+                            Inventec.Common.Logging.LogSystem.Debug("_______Kiểm tra mã loại thuốc: mã loại thuốc đã tồn tại ");
                             error += string.Format(Message.MessageImport.DaTonTai, "Mã loại thuốc");
                             mediAdo.MEDICINE_TYPE_CODE_ERROR = 1;
                         }
 
                         var checkExel = _medicineRef.FirstOrDefault(o => o.MEDICINE_TYPE_CODE == item.MEDICINE_TYPE_CODE);
+                        
                         if (checkExel != null)
                         {
+
                             error += string.Format(Message.MessageImport.TonTaiTrungNhauTrongFileImport, "Mã loại thuốc");
                             mediAdo.MEDICINE_TYPE_CODE_ERROR = 1;
                         }
@@ -1455,7 +1499,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
 
                     if (!string.IsNullOrEmpty(item.MEDICINE_TYPE_NAME))
                     {
-                        if (!CheckMaxLenth(item.MEDICINE_TYPE_NAME, 500))
+                        if (!CheckMaxLenth(item.MEDICINE_TYPE_NAME, 1500))
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Tên loại thuốc");
                             mediAdo.MEDICINE_TYPE_NAME_ERROR = 1;
@@ -2082,7 +2126,61 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                             mediAdo.HTU_CODE_ERROR = 1;
                         }
                     }
+                    List<string> listCode = new List<string>();
+                    MOS.Filter.HisActiveIngredientFilter filter = new MOS.Filter.HisActiveIngredientFilter();
+                    filter.ORDER_FIELD = "MODIFY_TIME";
+                    filter.ORDER_DIRECTION = "DESC";
+                    var _dataApi = new BackendAdapter(new CommonParam()).Get<List<HIS_ACTIVE_INGREDIENT>>("/api/HisActiveIngredient/Get", ApiConsumers.MosConsumer, filter, null);
+                    if (!string.IsNullOrEmpty(item.ACTIVE_INGREDIENT_CODE_STR))
+                    {
+                        mediAdo.ACTIVE_INGREDIENT_CODE_STR = item.ACTIVE_INGREDIENT_CODE_STR;
+                        string[] param = item.ACTIVE_INGREDIENT_CODE_STR.Split(';');
 
+                        mediAdo.ACTIVE_INGREDIENT_CODE_STR = "";
+                        this.listMediAcin = new List<HIS_MEDICINE_TYPE_ACIN>();
+                        string nameAcin = "";
+                        foreach (var _i in param)
+                        {
+                            listCode.Add(_i);
+                            if (_dataApi != null)
+                            {
+                                var _data = _dataApi.FirstOrDefault(s => s.ACTIVE_INGREDIENT_CODE == _i);
+                                if (_data != null)
+                                {
+                                    //DialogResult rs = MessageBox.Show("tim thay " + _i + " voi ten: " + _data.ACTIVE_INGREDIENT_NAME);
+                                    
+                                    HIS_MEDICINE_TYPE_ACIN mediAcin = new HIS_MEDICINE_TYPE_ACIN();
+                                    mediAcin.ACTIVE_INGREDIENT_ID = _data.ID;
+                                    if (!this.listMediAcin.Exists(s => s.ACTIVE_INGREDIENT_ID == _data.ID))
+                                    {
+                                        nameAcin += string.Format(_data.ACTIVE_INGREDIENT_NAME + ";");
+                                        this.listMediAcin.Add(mediAcin);
+                                    }
+                                }
+                                else
+                                {
+                                    error += string.Format("Mã hoạt chất " + _i + " không hợp lệ");
+                                }
+                            }
+                            
+                            
+                        }
+                        
+                        if (this.listMediAcin != null && this.listMediAcin.Count > 0)
+                        {
+                            listMediAcinCode.Add(item.MEDICINE_TYPE_CODE, this.listMediAcin);
+                            mediAdo.ACTIVE_INGREDIENT_CODE_STR = nameAcin;
+                        }
+                        else
+                        {
+
+                            mediAdo.ACTIVE_INGREDIENT_CODE_STR = item.ACTIVE_INGREDIENT_CODE_STR;
+                        }
+                        
+                    
+
+                    }
+                    
                     mediAdo.ERROR = error;
                     mediAdo.ID = i;
                     mediAdo.IS_LEAF = 1;
@@ -2095,7 +2193,9 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        
+        List<HIS_MEDICINE_TYPE_ACIN> listMediAcin;
+        Dictionary<string,List<HIS_MEDICINE_TYPE_ACIN>> listMediAcinCode = new Dictionary<string,List<HIS_MEDICINE_TYPE_ACIN>>();
         private bool CheckMaxLenth(string Str, int Length)
         {
             try

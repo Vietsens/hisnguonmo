@@ -390,55 +390,55 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
             try
             {
                 CommonParam paramCommon = new CommonParam();
-                HisSereServFilter sereServFilter = new HisSereServFilter();
+                HisSereServViewFilter sereServFilter = new HisSereServViewFilter();
                 sereServFilter.SERVICE_REQ_IDs = serviceReqIds;
-                var apiResult = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, sereServFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
+                var apiResult = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<V_HIS_SERE_SERV>>("api/HisSereServ/GetView", ApiConsumers.MosConsumer, sereServFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
                 if (apiResult != null && apiResult.Count > 0)
                 {
                     apiResult = apiResult.Where(o => o.IS_NO_EXECUTE != 1).ToList();
                     foreach (var item in apiResult)
                     {
-                        V_HIS_SERE_SERV ss11 = new V_HIS_SERE_SERV();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_SERE_SERV>(ss11, item);
+                        V_HIS_SERE_SERV ss11 = item;
+                        //Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_SERE_SERV>(ss11, item);
 
-                        var service = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_SERVICE>().FirstOrDefault(o => o.ID == ss11.SERVICE_ID);
-                        if (service != null)
-                        {
-                            ss11.TDL_SERVICE_CODE = service.SERVICE_CODE;
-                            ss11.TDL_SERVICE_NAME = service.SERVICE_NAME;
-                            ss11.SERVICE_TYPE_NAME = service.SERVICE_TYPE_NAME;
-                            ss11.SERVICE_TYPE_CODE = service.SERVICE_TYPE_CODE;
-                            ss11.SERVICE_UNIT_CODE = service.SERVICE_UNIT_CODE;
-                            ss11.SERVICE_UNIT_NAME = service.SERVICE_UNIT_NAME;
-                            ss11.HEIN_SERVICE_TYPE_CODE = service.HEIN_SERVICE_TYPE_CODE;
-                            ss11.HEIN_SERVICE_TYPE_NAME = service.HEIN_SERVICE_TYPE_NAME;
-                            ss11.HEIN_SERVICE_TYPE_NUM_ORDER = service.HEIN_SERVICE_TYPE_NUM_ORDER;
-                        }
+                        //var service = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_SERVICE>().FirstOrDefault(o => o.ID == ss11.SERVICE_ID);
+                        //if (service != null)
+                        //{
+                        //    ss11.TDL_SERVICE_CODE = service.SERVICE_CODE;
+                        //    ss11.TDL_SERVICE_NAME = service.SERVICE_NAME;
+                        //    ss11.SERVICE_TYPE_NAME = service.SERVICE_TYPE_NAME;
+                        //    ss11.SERVICE_TYPE_CODE = service.SERVICE_TYPE_CODE;
+                        //    ss11.SERVICE_UNIT_CODE = service.SERVICE_UNIT_CODE;
+                        //    ss11.SERVICE_UNIT_NAME = service.SERVICE_UNIT_NAME;
+                        //    ss11.HEIN_SERVICE_TYPE_CODE = service.HEIN_SERVICE_TYPE_CODE;
+                        //    ss11.HEIN_SERVICE_TYPE_NAME = service.HEIN_SERVICE_TYPE_NAME;
+                        //    ss11.HEIN_SERVICE_TYPE_NUM_ORDER = service.HEIN_SERVICE_TYPE_NUM_ORDER;
+                        //}
 
-                        var executeRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == item.TDL_EXECUTE_ROOM_ID);
-                        if (executeRoom != null)
-                        {
-                            ss11.EXECUTE_ROOM_CODE = executeRoom.ROOM_CODE;
-                            ss11.EXECUTE_ROOM_NAME = executeRoom.ROOM_NAME;
-                            ss11.EXECUTE_DEPARTMENT_CODE = executeRoom.DEPARTMENT_CODE;
-                            ss11.EXECUTE_DEPARTMENT_NAME = executeRoom.DEPARTMENT_NAME;
-                        }
+                        //var executeRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == item.TDL_EXECUTE_ROOM_ID);
+                        //if (executeRoom != null)
+                        //{
+                        //    ss11.EXECUTE_ROOM_CODE = executeRoom.ROOM_CODE;
+                        //    ss11.EXECUTE_ROOM_NAME = executeRoom.ROOM_NAME;
+                        //    ss11.EXECUTE_DEPARTMENT_CODE = executeRoom.DEPARTMENT_CODE;
+                        //    ss11.EXECUTE_DEPARTMENT_NAME = executeRoom.DEPARTMENT_NAME;
+                        //}
 
-                        var reqRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == item.TDL_REQUEST_ROOM_ID);
-                        if (reqRoom != null)
-                        {
-                            ss11.REQUEST_DEPARTMENT_CODE = reqRoom.DEPARTMENT_CODE;
-                            ss11.REQUEST_DEPARTMENT_NAME = reqRoom.DEPARTMENT_NAME;
-                            ss11.REQUEST_ROOM_CODE = reqRoom.ROOM_CODE;
-                            ss11.REQUEST_ROOM_NAME = reqRoom.ROOM_NAME;
-                        }
+                        //var reqRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == item.TDL_REQUEST_ROOM_ID);
+                        //if (reqRoom != null)
+                        //{
+                        //    ss11.REQUEST_DEPARTMENT_CODE = reqRoom.DEPARTMENT_CODE;
+                        //    ss11.REQUEST_DEPARTMENT_NAME = reqRoom.DEPARTMENT_NAME;
+                        //    ss11.REQUEST_ROOM_CODE = reqRoom.ROOM_CODE;
+                        //    ss11.REQUEST_ROOM_NAME = reqRoom.ROOM_NAME;
+                        //}
 
-                        var patientTpye = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == item.PATIENT_TYPE_ID);
-                        if (patientTpye != null)
-                        {
-                            ss11.PATIENT_TYPE_CODE = patientTpye.PATIENT_TYPE_CODE;
-                            ss11.PATIENT_TYPE_NAME = patientTpye.PATIENT_TYPE_NAME;
-                        }
+                        //var patientTpye = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == item.PATIENT_TYPE_ID);
+                        //if (patientTpye != null)
+                        //{
+                        //    ss11.PATIENT_TYPE_CODE = patientTpye.PATIENT_TYPE_CODE;
+                        //    ss11.PATIENT_TYPE_NAME = patientTpye.PATIENT_TYPE_NAME;
+                        //}
                         result.Add(ss11);
                     }
                 }

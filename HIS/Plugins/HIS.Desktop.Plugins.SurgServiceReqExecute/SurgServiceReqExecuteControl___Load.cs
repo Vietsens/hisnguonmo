@@ -621,10 +621,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 //nếu có thời gian bắt đầu/kết thúc đã lưu thì load theo thời gian đã lưu
                 CommonParam param = new CommonParam();
                 HisSereServExtFilter ssExtFilter = new HisSereServExtFilter();
+                ssExtFilter.SERE_SERV_IDs = new List<long>() { this.sereServ.ID };
                 if (dicSereServCopy != null && dicSereServCopy.Count > 0 && dicSereServCopy.ContainsKey(sereServ.ID))
-                    ssExtFilter.SERE_SERV_ID = dicSereServCopy[sereServ.ID];
-                else
-                    ssExtFilter.SERE_SERV_ID = this.sereServ.ID;
+                    ssExtFilter.SERE_SERV_IDs.Add(dicSereServCopy[sereServ.ID]);
                 var SereServExts = await new BackendAdapter(param)
                     .GetAsync<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumers.MosConsumer, ssExtFilter, param);
                 this.SereServExt = new HIS_SERE_SERV_EXT();//xuandv
@@ -639,12 +638,15 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         else
                             ListSereServExt.Add(item);
                     }
-
-                    this.SereServExt = SereServExts.FirstOrDefault();
+                    var dfSereServExt = SereServExts.FirstOrDefault(o => o.SERE_SERV_ID == this.sereServ.ID);
+                    if (dicSereServCopy != null && dicSereServCopy.Count > 0 && dicSereServCopy.ContainsKey(sereServ.ID))
+                        this.SereServExt = SereServExts.FirstOrDefault(o => o.SERE_SERV_ID == dicSereServCopy[sereServ.ID]);
+                    else
+                        this.SereServExt = dfSereServExt;
                     txtConclude.Text = this.SereServExt.CONCLUDE;
                     txtDescription.Text = this.SereServExt.DESCRIPTION;
                     txtResultNote.Text = this.SereServExt.NOTE;
-                    txtIntructionNote.Text = this.SereServExt.INSTRUCTION_NOTE;
+                    txtIntructionNote.Text = !string.IsNullOrEmpty(SereServExt.INSTRUCTION_NOTE) || (!txtIntructionNote.Text.Equals(SereServExt.INSTRUCTION_NOTE)) ? this.SereServExt.INSTRUCTION_NOTE : dfSereServExt.INSTRUCTION_NOTE;
                     txtMachineCode.Text = this.SereServExt.MACHINE_CODE;
                     cboMachine.EditValue = this.SereServExt.MACHINE_ID;
                     LogSystem.Info("SereServExts: " + SereServExts.Count);
@@ -1646,8 +1648,96 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     //}
                     //else
                     #endregion
+                    if (serviceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
+                    {
+                        if (this.isAllowEditInfo)
+                        {
+                            LogSystem.Debug("SetEnableControl.1.1");
+                            btnSwapService.Enabled = false;
+                            dropDownButtonGPBL.Enabled = false;
+                            btnDepartmentTran.Enabled = false;
+                        }
+                        else
+                        {
+                            LogSystem.Debug("SetEnableControl.1.2");
 
-                    if (HisConfigKeys.CheckPermissonOption == "1" && this.serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__PT)
+                            ReadOnlyICD(true, txtIcdCode1, txtIcd1, cboIcd1, chkIcd1);
+                            ReadOnlyICD(true, txtIcdCode2, txtIcd2, cboIcd2, chkIcd2);
+                            ReadOnlyICD(true, txtIcdCode3, txtIcd3, cboIcd3, chkIcd3);
+                            ReadOnlyICD(true, txtIcdCmCode, txtIcdCmName, cboIcdCmName, chkIcdCm);
+
+                            txtIcdCmSubCode.ReadOnly = true;
+                            txtIcdCmSubName.ReadOnly = true;
+                            txtLoaiPT.ReadOnly = true;
+                            cboLoaiPT.ReadOnly = true;
+                            txtBanMoCode.ReadOnly = true;
+                            cboBanMo.ReadOnly = true;
+                            txtPhuongPhap2.ReadOnly = true;
+                            cboPhuongPhap2.ReadOnly = true;
+                            txtPhuongPhapTT.ReadOnly = true;
+                            cboPhuongPhapThucTe.ReadOnly = true;
+                            txtKQVoCam.ReadOnly = true;
+                            cboKQVoCam.ReadOnly = true;
+                            txtMachineCode.ReadOnly = true;
+                            cboMachine.ReadOnly = true;
+                            txtMoKTCao.ReadOnly = true;
+                            cboMoKTCao.ReadOnly = true;
+
+                            cboEkipTemp.ReadOnly = true;
+                            txtIcdExtraCode.ReadOnly = true;
+                            txtIcdText.ReadOnly = true;
+                            txtPtttGroupCode.ReadOnly = true;
+                            cbbPtttGroup.ReadOnly = true;
+                            txtMethodCode.ReadOnly = true;
+                            cboMethod.ReadOnly = true;
+                            txtBlood.ReadOnly = true;
+                            cbbBlood.ReadOnly = true;
+                            txtEmotionlessMethod.ReadOnly = true;
+                            cbbEmotionlessMethod.ReadOnly = true;
+                            txtCondition.ReadOnly = true;
+                            cboCondition.ReadOnly = true;
+                            txtBloodRh.ReadOnly = true;
+                            cbbBloodRh.ReadOnly = true;
+                            txtCatastrophe.ReadOnly = true;
+                            cboCatastrophe.ReadOnly = true;
+                            txtDeathSurg.ReadOnly = true;
+                            cboDeathSurg.ReadOnly = true;
+                            dtStart.ReadOnly = true;
+                            dtFinish.ReadOnly = true;
+                            txtMANNER.ReadOnly = true;
+                            txtDescription.ReadOnly = true;
+                            txtConclude.ReadOnly = true;
+                            txtResultNote.ReadOnly = true;
+                            cbbPtttGroup.Properties.Buttons[0].Enabled = false;
+                            dtStart.Properties.Buttons[0].Enabled = false;
+                            dtFinish.Properties.Buttons[0].Enabled = false;
+                            cbbPtttGroup.Properties.Buttons[1].Enabled = false;
+                            dtStart.Properties.Buttons[1].Enabled = false;
+                            dtFinish.Properties.Buttons[1].Enabled = false;
+                            ucEkip.SetEnableControl(true);
+                            //lciInformationSurg.Enabled = false;                          
+                            //btnSwapService.Enabled = false;
+                            //btnTrackingCreate.Enabled = false;
+                            //layoutControlItem18.Enabled = false;
+                            //layoutControlItem22.Enabled = false;
+                            //layoutControlItem24.Enabled = false;
+                            //layoutControlItem16.Enabled = false;
+                            //layoutControlItem20.Enabled = false;
+                            //layoutControlItem26.Enabled = false;
+                            //layoutControlItem12.Enabled = false;
+
+                            btnSave.Enabled = false;
+                            btnFinish.Enabled = false;
+                            btnSaveEkipTemp.Enabled = false;
+                        }
+
+                        ddbPhatSinh.Enabled = false;
+                        btnKTDT.Enabled = false;
+                        btnAssignBlood.Enabled = false;
+                        btnTuTruc.Enabled = false;
+                        btnAssignPre.Enabled = false;
+                    }
+                    else if (HisConfigKeys.CheckPermissonOption == "1" && this.serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__PT)
                     {
                         var _employee = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_EMPLOYEE>().FirstOrDefault(p => p.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
                         if (_employee.DEPARTMENT_ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == this.Module.RoomId).DepartmentId)
@@ -2059,7 +2149,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             btnKTDT.Enabled = true;
                         }
                     }
-                    else if(HisConfigKeys.CheckPermissonOption != "1" && HisConfigKeys.CheckPermissonOption != "2")
+                    else if (HisConfigKeys.CheckPermissonOption != "1" && HisConfigKeys.CheckPermissonOption != "2")
                     {
                         btnSave.Enabled = true;
                         txtDescription.ReadOnly = false;

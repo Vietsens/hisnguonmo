@@ -144,6 +144,7 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
             {
                 WaitingManager.Show();
                 BHXHLoginCFG.LoadConfig();
+                checkConfig();
                 this.dicMediOrg = BackendDataWorker.Get<HIS_MEDI_ORG>().ToDictionary(o => o.MEDI_ORG_CODE, o => o);
                 LoadHisTreatment();
                 LoadHisPatient();
@@ -226,6 +227,31 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
             }
         }
 
+        List<string> connectInfors = new List<string>();
+        string api = "";
+        string nameCb = "";
+        string cccdCb = "";
+        private void checkConfig()
+        {
+            try
+            {
+                HisConfigCHECKHEINCARD.LoadConfig();
+                string connect_infor = HisConfigCHECKHEINCARD.CHECK_HEIN_CARD_BHXH__API;
+                if (!string.IsNullOrEmpty(connect_infor))
+                {
+                    connectInfors = connect_infor.Split('|').ToList();
+                    api = connectInfors[0];
+                    nameCb = connectInfors[1];
+                    cccdCb = connectInfors[2];
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
         private async void LoadPatientTypeAlter()
         {
             try
@@ -257,7 +283,7 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
                         {
                             PatientTypeAlterADO ado = new PatientTypeAlterADO(item);
 
-                            await CheckTTFull(item);
+                            await CheckTTFull(item, nameCb, cccdCb,api);
 
                             if (rsDataBHYT != null)
                             {
@@ -277,7 +303,7 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
                     V_HIS_PATIENT_TYPE_ALTER patientTypeAlert = new V_HIS_PATIENT_TYPE_ALTER();
                     patientTypeAlert.HEIN_CARD_NUMBER = this.checkInfoBhytADO.TDL_HEIN_CARD_NUMBER;
                     PatientTypeAlterADO ado = new PatientTypeAlterADO(patientTypeAlert);
-                    await CheckTTFull(patientTypeAlert);
+                    await CheckTTFull(patientTypeAlert, nameCb, cccdCb,api);
                     if (rsDataBHYT != null)
                     {
                         ado.ResultDataADO = rsDataBHYT;

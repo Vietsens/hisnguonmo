@@ -109,6 +109,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
         List<V_HIS_MEDICINE_TYPE> listHisMedicineType = new List<V_HIS_MEDICINE_TYPE>();
         List<V_HIS_MATERIAL_TYPE> listHisMaterialType = new List<V_HIS_MATERIAL_TYPE>();
         List<V_HIS_BLOOD_TYPE> listHisBloodType = new List<V_HIS_BLOOD_TYPE>();
+        List<V_HIS_BID_MATERIAL_TYPE> bidMaty = new List<V_HIS_BID_MATERIAL_TYPE>();
         #endregion
 
         #region Construct
@@ -764,7 +765,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 medicine.delete_ButtonClick = Delete_ButtonClick;
                 medicine.TYPE = GlobalConfig.THUOC;
 
-                ucMedicine = new UC_LoadEdit(medicine);
+                ucMedicine = new UC_LoadEdit(medicine, Module, bid_id);
                 ucMedicine.Dock = DockStyle.Fill;
 
                 ADO.BidEditADO material = new ADO.BidEditADO();
@@ -772,7 +773,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 material.delete_ButtonClick = Delete_ButtonClick;
                 material.TYPE = GlobalConfig.VATTU;
 
-                ucMaterial = new UC_LoadEdit(material);
+                ucMaterial = new UC_LoadEdit(material, Module, bid_id);
                 ucMaterial.Dock = DockStyle.Fill;
 
                 ADO.BidEditADO blood = new ADO.BidEditADO();
@@ -780,7 +781,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 blood.delete_ButtonClick = Delete_ButtonClick;
                 blood.TYPE = GlobalConfig.MAU;
 
-                ucBlood = new UC_LoadEdit(blood);
+                ucBlood = new UC_LoadEdit(blood, Module, bid_id);
                 ucBlood.Dock = DockStyle.Fill;
 
                 this.panelControl1.Controls.Add(ucMedicine);
@@ -875,7 +876,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
         {
             try
             {
-                
+
                 ResetLeftControl();
                 this.ActionType = GlobalVariables.ActionEdit;
                 VisibleButton(this.ActionType);
@@ -912,9 +913,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     this.materialType.MATERIAL_TYPE_CODE = data.MEDICINE_TYPE_CODE;
                     this.materialType.MATERIAL_TYPE_NAME = data.MEDICINE_TYPE_NAME;
                     this.materialType.SERVICE_UNIT_NAME = data.IMP_UNIT_ID.HasValue ? data.IMP_UNIT_NAME : data.SERVICE_UNIT_NAME;
-                    txtMaTT.Text = this.medicineType.BID_MATERIAL_TYPE_CODE;
+
+                    txtTenTT.Text = this.materialType.BID_MATERIAL_TYPE_NAME ?? "";
+                    txtMaTT.Text = this.materialType.BID_MATERIAL_TYPE_CODE ?? "";
                     txtMaDT.Text = this.medicineType.JOIN_BID_MATERIAL_TYPE_CODE;
-                    txtTenTT.Text = this.medicineType.BID_MATERIAL_TYPE_NAME;
                     txtNOTE.Text = this.materialType.NOTE;
                     txtTenBHYT.Text = this.materialType.HEIN_SERVICE_BHYT_NAME;
                     txtPackingType.Text = this.materialType.PACKING_TYPE_NAME;
@@ -1405,11 +1407,11 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         impFilter.CREATE_TIME_TO = Inventec.Common.DateTime.Get.Now();
                         impFilter.MEDICINE_TYPE_IDs = listIds;
                         var impMestsTemp = new BackendAdapter(new CommonParam()).Get<List<V_HIS_IMP_MEST_MEDICINE>>("api/HisImpMestMedicine/GetView", ApiConsumers.MosConsumer, impFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
-                        if(impMestsTemp != null && impMestsTemp.Count > 0)
-						{
+                        if (impMestsTemp != null && impMestsTemp.Count > 0)
+                        {
                             impMests.AddRange(impMestsTemp);
-						}                            
-                    }               
+                        }
+                    }
                     Dictionary<long, List<V_HIS_EXP_MEST_MEDICINE>> dicExpMest = new Dictionary<long, List<V_HIS_EXP_MEST_MEDICINE>>();
                     ProcessDataManuExpMest(bid_id, medicineType.Select(o => o.SUPPLIER_ID).Distinct().ToList(), ref dicExpMest);
 
@@ -1881,6 +1883,17 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     txtManufacture.Text = this.materialType.MANUFACTURER_CODE;
                     txtConcentra.Text = this.materialType.CONCENTRA;
 
+                    MOS.Filter.HisBidMaterialTypeViewFilter bidMatyFilter = new MOS.Filter.HisBidMaterialTypeViewFilter();
+                    bidMatyFilter.MATERIAL_TYPE_ID = materialType.ID;
+                    bidMaty = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_BID_MATERIAL_TYPE>>(ApiConsumer.HisRequestUriStore.HIS_BID_MATERIAL_TYPE_GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, bidMatyFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
+                    if (bidMaty != null && bidMaty.Count > 0)
+                    {
+                        this.materialType.BID_MATERIAL_TYPE_NAME = bidMaty[0].BID_MATERIAL_TYPE_NAME;
+                        this.materialType.BID_MATERIAL_TYPE_CODE = bidMaty[0].BID_MATERIAL_TYPE_CODE;
+                    }
+                    txtTenTT.Text = this.materialType.BID_MATERIAL_TYPE_NAME ?? "";
+                    txtMaTT.Text = this.materialType.BID_MATERIAL_TYPE_CODE ?? "";
+
                     if (this.materialType.DAY_LIFESPAN.HasValue)
                     {
                         spinDayLifeSpan.EditValue = this.materialType.DAY_LIFESPAN.Value;
@@ -1921,6 +1934,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 dxValidationProviderLeft.RemoveControlError(cboSupplier);
                 dxValidationProviderLeft.RemoveControlError(txtBidPackageCode);
                 dxValidationProviderLeft.RemoveControlError(txtBidGroupCode);
+                dxValidationProviderLeft.RemoveControlError(txtTenBHYT);
+                dxValidationProviderLeft.RemoveControlError(txtTenTT);
             }
             catch (Exception ex)
             {
@@ -2035,7 +2050,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     this.medicineType.MEDICINE_USE_FORM_NAME = null;
                 }
 
-                if (!string.IsNullOrEmpty(txtNOTE.Text)) 
+                if (!string.IsNullOrEmpty(txtNOTE.Text))
                 {
                     this.medicineType.NOTE = txtNOTE.Text;
                 }
@@ -2256,7 +2271,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 }
                 UpdateGrid();
                 SetValueForAdd();
-                
+
                 //FocusTab();
             }
             catch (Exception ex)
@@ -2344,6 +2359,51 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         return;
                     }
 
+                    if (bidModel.VALID_FROM_TIME.HasValue || bidModel.VALID_TO_TIME.HasValue)
+                    {
+                        List<string> lstAdjustTime = new List<string>();
+                        if (this.bidModel.HIS_BID_MEDICINE_TYPE != null && this.bidModel.HIS_BID_MEDICINE_TYPE.Count > 0)
+                        {
+                            CommonParam param = new CommonParam();
+                            MOS.Filter.HisBidMetyAdjustFilter Bmafilter = new MOS.Filter.HisBidMetyAdjustFilter();
+                            Bmafilter.TDL_BID_ID = bid_id;
+                            var BidMetys = new BackendAdapter(param)
+                        .Get<List<HIS_BID_METY_ADJUST>>("api/HisBidMetyAdjust/Get", ApiConsumers.MosConsumer, Bmafilter, param).ToList();
+                            if (BidMetys != null && BidMetys.Count > 0)
+                            {
+                                var lstMety = BidMetys.Where(o => this.bidModel.HIS_BID_MEDICINE_TYPE.ToList().Exists(p => p.ID == o.BID_MEDICINE_TYPE_ID) && o.ADJUST_TIME.HasValue && ((bidModel.VALID_FROM_TIME.HasValue && o.ADJUST_TIME < bidModel.VALID_FROM_TIME) || (bidModel.VALID_TO_TIME.HasValue && o.ADJUST_TIME > bidModel.VALID_TO_TIME))).ToList();
+                                if (lstMety != null && lstMety.Count > 0)
+                                {
+                                    lstAdjustTime.AddRange(listHisMedicineType.Where(p => this.bidModel.HIS_BID_MEDICINE_TYPE.ToList().Exists(k => lstMety.Exists(o => o.BID_MEDICINE_TYPE_ID == k.ID) && k.MEDICINE_TYPE_ID == p.ID)).ToList().Select(o => o.MEDICINE_TYPE_NAME).Distinct());
+                                }
+
+                            }
+                        }
+
+                        if (this.bidModel.HIS_BID_MATERIAL_TYPE != null && this.bidModel.HIS_BID_MATERIAL_TYPE.Count > 0)
+                        {
+                            CommonParam param = new CommonParam();
+                            MOS.Filter.HisBidMatyAdjustFilter Bmafilter = new MOS.Filter.HisBidMatyAdjustFilter();
+                            Bmafilter.TDL_BID_ID = bid_id;
+                            var BidMatys = new BackendAdapter(param)
+                        .Get<List<HIS_BID_MATY_ADJUST>>("api/HisBidMatyAdjust/Get", ApiConsumers.MosConsumer, Bmafilter, param).ToList();
+                            if (BidMatys != null && BidMatys.Count > 0)
+                            {
+                                var lstMaty = BidMatys.Where(o => this.bidModel.HIS_BID_MATERIAL_TYPE.ToList().Exists(p => p.ID == o.BID_MATERIAL_TYPE_ID) && o.ADJUST_TIME.HasValue && ((bidModel.VALID_FROM_TIME.HasValue && o.ADJUST_TIME < bidModel.VALID_FROM_TIME) || (bidModel.VALID_TO_TIME.HasValue && o.ADJUST_TIME > bidModel.VALID_TO_TIME))).ToList();
+                                if (lstMaty != null && lstMaty.Count > 0)
+                                {
+                                    lstAdjustTime.AddRange(listHisMaterialType.Where(p => this.bidModel.HIS_BID_MATERIAL_TYPE.ToList().Exists(k => lstMaty.Exists(o => o.BID_MATERIAL_TYPE_ID == k.ID) && (k.MATERIAL_TYPE_ID == p.ID))).ToList().Select(o => o.MATERIAL_TYPE_NAME).Distinct());
+                                }
+
+                            }
+                        }
+                        if (lstAdjustTime != null && lstAdjustTime.Count > 0)
+                        {
+                            XtraMessageBox.Show(string.Format("Tồn tại dữ liệu thuốc/vật tư {0} có ngày nhập điều tiết nằm ngoài khoảng thời gian hiệu lực thầu", string.Join(", ", lstAdjustTime)), "Thông báo");
+                            return;
+                        }
+                    }
+
                     if (ListMedicineTypeAdoProcess != null && ListMedicineTypeAdoProcess.Count > 0)
                     {
                         List<string> messages = new List<string>();
@@ -2386,6 +2446,19 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         txtNOTE.Text = "";
                         if (refeshData != null)
                             refeshData();
+                        ListMedicineTypeAdoProcess = new List<MedicineTypeADO>();
+                        CreateThreadLoadCurrentData();
+                        ucBlood.IsFirstLoad = true;
+                        ucMaterial.IsFirstLoad = true;
+                        ucMedicine.IsFirstLoad = true;
+                        var medi = ListMedicineTypeAdoProcess.Where(o => o.Type == Base.GlobalConfig.THUOC).ToList();
+                        var mate = ListMedicineTypeAdoProcess.Where(o => o.Type == Base.GlobalConfig.VATTU).ToList();
+                        var blo = ListMedicineTypeAdoProcess.Where(o => o.Type == Base.GlobalConfig.MAU).ToList();
+
+                        ucBlood.Reload(blo);
+                        ucMaterial.Reload(mate);
+                        ucMedicine.Reload(medi);
+
                     }
                     else
                         Inventec.Common.Logging.LogSystem.Warn("Tệp rỗng");
@@ -2461,12 +2534,12 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         {
                             bid_group_code = item.BID_GROUP_CODE;
                         }
-                        bidMedicineType.BID_GROUP_CODE = bid_group_code ;
+                        bidMedicineType.BID_GROUP_CODE = bid_group_code;
                         bidMedicineType.BID_PACKAGE_CODE = item.BID_PACKAGE_CODE;
                         bidMedicineType.EXPIRED_DATE = item.EXPIRED_DATE;
                         bidMedicineType.CONCENTRA = item.CONCENTRA;
                         bidMedicineType.MANUFACTURER_ID = item.MANUFACTURER_ID;
-
+                        bidMedicineType.MEDICINE_TYPE_ID = item.ID;
                         bidMedicineType.MEDICINE_REGISTER_NUMBER = item.REGISTER_NUMBER;
 
                         bidMedicineType.NATIONAL_NAME = item.NATIONAL_NAME;
@@ -2520,7 +2593,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         bidMaterialType.MONTH_LIFESPAN = item.MONTH_LIFESPAN;
                         bidMaterialType.HOUR_LIFESPAN = item.HOUR_LIFESPAN;
                         bidMaterialType.DAY_LIFESPAN = item.DAY_LIFESPAN;
-
+                        bidMaterialType.MATERIAL_TYPE_ID = item.ID;
                         bidMaterialType.JOIN_BID_MATERIAL_TYPE_CODE = item.JOIN_BID_MATERIAL_TYPE_CODE;
                         bidMaterialType.BID_MATERIAL_TYPE_CODE = item.BID_MATERIAL_TYPE_CODE;
                         bidMaterialType.BID_MATERIAL_TYPE_NAME = item.BID_MATERIAL_TYPE_NAME;

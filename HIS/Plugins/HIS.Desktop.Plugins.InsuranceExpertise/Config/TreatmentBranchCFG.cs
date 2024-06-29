@@ -34,11 +34,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise.Config
         {
             get
             {
-                if (!isShowAllBranch.HasValue)
-                {
-                    isShowAllBranch = Get(HisConfigCFG.GetValue(ConfigKey));
-                }
-                return isShowAllBranch.Value;
+                return Get(HisConfigCFG.GetValue(ConfigKey));
             }
         }
 

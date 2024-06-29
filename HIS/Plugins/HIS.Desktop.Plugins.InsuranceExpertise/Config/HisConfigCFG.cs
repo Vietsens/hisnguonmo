@@ -29,11 +29,26 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise.Config
         public const string MRS_HIS_REPORT_BHYT_NDS_ICD_CODE__OTHER = "MRS.HIS_REPORT_BHYT_NDS_ICD_CODE__OTHER";
         public const string MRS_HIS_REPORT_BHYT_NDS_ICD_CODE__TE = "MRS.HIS_REPORT_BHYT_NDS_ICD_CODE__TE";
         public const string MOS_HIS_HEIN_APPROVAL__IS_AUTO_EXPORT_XML = "MOS.HIS_HEIN_APPROVAL.IS_AUTO_EXPORT_XML";
-        public const string MOS_GENERATE_STORE_BORDEREAU_CODE_WHEN_LOCK_HEIN = "MOS.HIS_TREATMENT.GENERATE_STORE_BORDEREAU_CODE_WHEN_LOCK_HEIN";
-        public const string MOS_STORE_BORDEREAU_CODE_OPTION = "MOS.HIS_TREATMENT.STORE_BORDEREAU_CODE_OPTION";
+        private const string MOS_GENERATE_STORE_BORDEREAU_CODE_WHEN_LOCK_HEIN = "MOS.HIS_TREATMENT.GENERATE_STORE_BORDEREAU_CODE_WHEN_LOCK_HEIN";
+        private const string MOS_STORE_BORDEREAU_CODE_OPTION = "MOS.HIS_TREATMENT.STORE_BORDEREAU_CODE_OPTION";
+        private const string CONFIG_KEY = "MOS.HIS_TREATMENT.AUTO_LOCK_AFTER_HEIN_APPROVAL";
+        public static bool isGenerateStoreBordereauCodeWhenLockHein;
+        public static string OptionStoreBordereauCode;
+        internal static void LoadConfig()
+        {
 
-        public static bool isGenerateStoreBordereauCodeWhenLockHein = GetValue(MOS_GENERATE_STORE_BORDEREAU_CODE_WHEN_LOCK_HEIN) == "1";
-        public static string OptionStoreBordereauCode = GetValue(MOS_STORE_BORDEREAU_CODE_OPTION);
+            try
+            {
+                isGenerateStoreBordereauCodeWhenLockHein = GetValue(MOS_GENERATE_STORE_BORDEREAU_CODE_WHEN_LOCK_HEIN) == "1";
+                OptionStoreBordereauCode = GetValue(MOS_STORE_BORDEREAU_CODE_OPTION);
+                AutoLockAfterApprovalBHYTCFG.IsAutoLockAfterApprovalBHYT = GetValue(CONFIG_KEY) == "1";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
         internal static string GetValue(string key)
         {
             try

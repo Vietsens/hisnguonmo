@@ -1351,7 +1351,6 @@ namespace HIS.Desktop.Plugins.HisService
             this.txtBHYTName.MenuManager = this.barManager1;
             this.txtBHYTName.Name = "txtBHYTName";
             this.txtBHYTName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.txtBHYTName.Properties.MaxLength = 500;
             this.txtBHYTName.Size = new System.Drawing.Size(269, 20);
             this.txtBHYTName.StyleController = this.lcEditorInfo;
             this.txtBHYTName.TabIndex = 42;
@@ -1556,7 +1555,6 @@ namespace HIS.Desktop.Plugins.HisService
             // 
             this.txtMisuSerTypeName.Location = new System.Drawing.Point(97, 49);
             this.txtMisuSerTypeName.Name = "txtMisuSerTypeName";
-            this.txtMisuSerTypeName.Properties.MaxLength = 500;
             this.txtMisuSerTypeName.Size = new System.Drawing.Size(269, 20);
             this.txtMisuSerTypeName.StyleController = this.lcEditorInfo;
             this.txtMisuSerTypeName.TabIndex = 1;

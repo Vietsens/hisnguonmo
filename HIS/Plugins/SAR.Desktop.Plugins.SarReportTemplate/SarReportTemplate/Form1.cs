@@ -71,6 +71,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
 
         List<Inventec.Fss.Utility.FileUploadInfo> fileUploadInfos;
         List<SAR.EFMODEL.DataModels.V_SAR_REPORT_TEMPLATE> DataChecks { get; set; }
+        List<long> listID = new List<long>();
         #endregion
 
         public Form1()
@@ -103,6 +104,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
                 EnableControlChanged(this.ActionType);
                 //Fill data into datasource combo
                 Filldatatocombo();
+                
                 FillDataToComboStatus();
                 ValidateForm();
                 SetDefaultFocus();
@@ -168,16 +170,29 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
         {
             try
             {
+                
                 CommonParam param = new CommonParam();
+                string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                SarUserReportTypeFilter uFilter = new SarUserReportTypeFilter();
+                uFilter.LOGINNAME = loginName;
+                var listReport = new BackendAdapter(param).Get<List<SAR_USER_REPORT_TYPE>>("/api/SarUserReportType/Get", ApiConsumers.SarConsumer, uFilter, param);
+                
+                if(listReport != null && listReport.Count > 0)
+                    this.listID = listReport.Select(s=>s.REPORT_TYPE_ID).Distinct().ToList();
                 SarReportTemplateFilter filter = new SarReportTemplateFilter();
                 filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                var data = new BackendAdapter(param).Get<List<SAR_REPORT_TYPE>>("api/SarReportType/Get", ApiConsumers.SarConsumer, filter, null).ToList();
+                List<SAR_REPORT_TYPE> rs = new List<SAR_REPORT_TYPE>();
+                if (this.listID != null)
+                {
+                    var value = BackendDataWorker.Get<SAR_REPORT_TYPE>().ToList();
+                    rs = value.Where(s => this.listID.Contains(s.ID)).ToList();
+                }
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("REPORT_TYPE_CODE", "", 100, 1, true));
                 columnInfos.Add(new ColumnInfo("REPORT_TYPE_NAME", "", 400, 1, true));
-
                 ControlEditorADO controlEditorADO = new ControlEditorADO("REPORT_TYPE_NAME", "ID", columnInfos, false, 500);
-                ControlEditorLoader.Load(lkREPORT_TYPE_ID, data, controlEditorADO);
+                ControlEditorLoader.Load(lkREPORT_TYPE_ID, rs, controlEditorADO);
+                
             }
             catch (Exception ex)
             {
@@ -262,7 +277,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        
         private void LoadPaging(object param)
         {
             try
@@ -271,6 +286,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
                 int limit = ((CommonParam)param).Limit ?? 0;
                 CommonParam paramCommon = new CommonParam(startPage, limit);
                 Inventec.Core.ApiResultObject<List<SAR.EFMODEL.DataModels.V_SAR_REPORT_TEMPLATE>> apiResult = null;
+                //List<V_SAR_REPORT_TEMPLATE> listData = new List<V_SAR_REPORT_TEMPLATE>();
                 SarReportTemplateViewFilter filter = new SarReportTemplateViewFilter();
 
                 SetFilterNavBar(ref filter);
@@ -293,6 +309,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
                         dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
                     }
                 }
+                
                 gridView1.EndUpdate();
 
                 #region Process has exception

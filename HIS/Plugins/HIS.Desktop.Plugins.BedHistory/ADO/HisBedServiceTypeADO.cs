@@ -45,5 +45,6 @@ namespace HIS.Desktop.Plugins.BedHistory.ADO
         public bool HasConfigOtherSourcePay { get; set; }
         public bool IsContainAppliedPatientType { get; set; }
         public bool IsBedStretcher { get; set; }
+        public bool IsSplitDayOrResult { get; set; }
     }
 }

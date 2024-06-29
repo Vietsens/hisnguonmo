@@ -158,6 +158,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     Mps000478Item.Tag = PrintType.TOM_TAT_Y_LENH_PTTT_VA_DON_THUOC;
                     menu.Items.Add(Mps000478Item);
 
+                    DXMenuItem Mps000178Item = new DXMenuItem("In thẻ bệnh nhân", new EventHandler(clickInTheBn));
+                    Mps000178Item.Tag = PrintType.IN_THE_BN;
+                    menu.Items.Add(Mps000178Item);
                     #endregion
                 }
                 else
@@ -227,7 +230,17 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        private void clickInTheBn(object sender, EventArgs e)
+        {
+            try
+            {
+                PrintMps000178();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void clickTomTatYLenhPTTTVaDonThuoc(object sender, EventArgs e)
         {
             try
@@ -407,7 +420,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             IN_DON_THUOC,
             TOM_TAT_Y_LENH_PTTT_VA_DON_THUOC,
             PHIEU_THU_THANH_TOAN,
-            PHIEU_CHAN_DOAN_NGUYEN_NHAN_TU_VONG
+            PHIEU_CHAN_DOAN_NGUYEN_NHAN_TU_VONG,
+            IN_THE_BN
         }
 
         private void onClickInPhieuKhamBenh(object sender, EventArgs e)
@@ -487,6 +501,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         break;
                     case PrintTypeCodeWorker.PRINT_TYPE_CODE__NGUYEN_NHAN_TU_VONG:
                         ProcessPrintMps000485(printTypeCode, fileName, ref result);
+                        break;
+                    case "Mps000178":
+                        ProcessPrintMps000178(printTypeCode, fileName, ref result);
                         break;
                     default:
                         break;

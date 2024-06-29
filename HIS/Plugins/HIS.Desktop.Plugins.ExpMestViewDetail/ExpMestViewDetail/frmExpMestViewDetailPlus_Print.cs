@@ -5490,13 +5490,20 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 ExpBltyService = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_BLTY_SERVICE>>("api/HisExpBltyService/GetView", ApiConsumer.ApiConsumers.MosConsumer, BltyServicefilter, new CommonParam());
 
 
+                HisExpMestFilter expFilter = new HisExpMestFilter();
+                expFilter.EXP_MEST_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DM;
+                expFilter.EXP_MEST_STT_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE;
+                expFilter.TDL_TREATMENT_ID = this._CurrentExpMest.TDL_TREATMENT_ID;
+                var ExpMest = new BackendAdapter(new CommonParam()).Get<List<HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumer.ApiConsumers.MosConsumer, expFilter, new CommonParam());
+
                 WaitingManager.Hide();
                 MPS.Processor.Mps000421.PDO.Mps000421PDO pdo = new MPS.Processor.Mps000421.PDO.Mps000421PDO(
                  treatment,
                  patients,
                  _CurrentExpMest,
                  expMestBloods,
-                 ExpBltyService
+                 ExpBltyService,
+                 ExpMest
                  );
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
                 if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)

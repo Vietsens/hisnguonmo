@@ -1267,6 +1267,10 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                 }
                 else if (txtDescription.Text != "")
                 {
+                    var currentSsPdf = GetSereServFilesBySereServId(sereServ.ID).Where(o => o.FILE_TYPE == 2).ToList();
+                    string OutputFile = Utils.GenerateTempFileWithin();
+
+                    List<string> joinStreams = new List<string>();
                     DevExpress.XtraRichEdit.RichEditControl printDocument = ProcessDocumentBeforePrint(txtDescription);
                     if (printDocument == null)
                     {
@@ -1277,10 +1281,63 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                     String temFile = System.IO.Path.GetTempFileName();
                     temFile = temFile.Replace(".tmp", ".pdf");
                     printDocument.ExportToPdf(temFile);
+                    joinStreams.Add(temFile);
 
-                    libraryProcessor.ShowPopup(temFile, inputADO);//truyền vào đường dẫn file cần ký, các định dạng hỗ trợ là: pdf,doc,docx,xls,xlsx,rdlc,...
 
-                    System.IO.File.Delete(temFile);
+                    if (currentSsPdf != null && currentSsPdf.Count > 0)
+                    {
+                        var dataPdf = currentSsPdf.OrderBy(o => o.NUM_ORDER).ToList();
+                        foreach (var item in dataPdf)
+                        {
+                            var stream = Inventec.Fss.Client.FileDownload.GetFile(item.URL);
+
+                            if (stream != null && stream.Length > 0)
+                            {
+                                stream.Position = 0;
+                                string pdfFile = Utils.GenerateTempFileWithin();
+                                Utils.ByteToFile(Utils.StreamToByte(stream), pdfFile);
+                                joinStreams.Add(pdfFile);
+                            }
+                        }
+                    }
+                    Stream currentStream = File.Open(OutputFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+
+                    var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(currentStream);
+
+                    var pages = new List<int>();
+
+                    foreach (var file in joinStreams)
+                    {
+                        iTextSharp.text.pdf.PdfReader pdfReader = null;
+                        pdfReader = new iTextSharp.text.pdf.PdfReader(file);
+                        pages = new List<int>();
+                        for (int i = 0; i <= pdfReader.NumberOfPages; i++)
+                        {
+                            pages.Add(i);
+                        }
+                        pdfReader.SelectPages(pages);
+                        pdfConcat.AddPages(pdfReader);
+                        pdfReader.Close();
+                    }
+                    try
+                    {
+                        pdfConcat.Close();
+                    }
+                    catch { }
+
+                    foreach (var file in joinStreams)
+                    {
+                        try
+                        {
+                            File.Delete(file);
+                        }
+                        catch { }
+                    }
+
+
+                    libraryProcessor.ShowPopup(OutputFile, inputADO);//truyền vào đường dẫn file cần ký, các định dạng hỗ trợ là: pdf,doc,docx,xls,xlsx,rdlc,...
+
+                    System.IO.File.Delete(OutputFile);
                 }
                 else
                 {

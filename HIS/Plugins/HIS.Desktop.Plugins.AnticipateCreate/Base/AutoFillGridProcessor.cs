@@ -441,7 +441,8 @@ namespace HIS.Desktop.Plugins.AnticipateCreate.Base
                                     ado.IMP_PRICE = medicines.First().IMP_PRICE * (1 + medicines.First().IMP_VAT_RATIO);
 
                                     ado.isAmount = amountEstimated > AllowAmount;
-
+                                    ado.AMOUNT_EXPORT = AMOUNT_EXPORT;
+                                    ado.AMOUNT_MEDI_STOCK = AMOUNT_MEDI_STOCK;
                                     if (ado.AMOUNT > 0)
                                     {
                                         result.Add(ado);
@@ -498,7 +499,8 @@ namespace HIS.Desktop.Plugins.AnticipateCreate.Base
                                             }
 
                                             ado.isAmount = amountEstimated > AllowAmount;
-
+                                            ado.AMOUNT_EXPORT = AMOUNT_EXPORT;
+                                            ado.AMOUNT_MEDI_STOCK = AMOUNT_MEDI_STOCK;
                                             if (ado.AMOUNT > 0)
                                             {
                                                 result.Add(ado);
@@ -579,7 +581,8 @@ namespace HIS.Desktop.Plugins.AnticipateCreate.Base
                                 ado.IMP_PRICE = materials.First().IMP_PRICE * (1 + materials.First().IMP_VAT_RATIO);
 
                                 ado.isAmount = amountEstimated > AllowAmount;
-
+                                ado.AMOUNT_EXPORT = AMOUNT_EXPORT;
+                                ado.AMOUNT_MEDI_STOCK = AMOUNT_MEDI_STOCK;
                                 if (ado.AMOUNT > 0)
                                 {
                                     result.Add(ado);
@@ -633,7 +636,8 @@ namespace HIS.Desktop.Plugins.AnticipateCreate.Base
                                             ado.SUPPLIER_CODE = supplier.SUPPLIER_CODE;
                                             ado.SUPPLIER_NAME = supplier.SUPPLIER_NAME;
                                         }
-
+                                        ado.AMOUNT_EXPORT = AMOUNT_EXPORT;
+                                        ado.AMOUNT_MEDI_STOCK = AMOUNT_MEDI_STOCK;
                                         if (ado.AMOUNT > 0)
                                         {
                                             result.Add(ado);

@@ -225,7 +225,7 @@ namespace MPS.Processor.Mps000306.ADO
                 this.PRICE_BHYT = 0;
                 this.TOTAL_PRICE_BHYT = this.PRICE_BHYT * this.AMOUNT;
 
-                if (this.VIR_TOTAL_HEIN_PRICE.HasValue)
+                if (this.VIR_TOTAL_HEIN_PRICE.HasValue && this.AMOUNT > 0)
                 {
                     this.TOTAL_HEIN_PRICE_ONE_AMOUNT = this.VIR_TOTAL_HEIN_PRICE.Value / this.AMOUNT;
                 }
@@ -238,26 +238,33 @@ namespace MPS.Processor.Mps000306.ADO
                 }
 
                 decimal? t = null;
-                if (this.HEIN_LIMIT_PRICE.HasValue)
+                if (this.ORIGINAL_PRICE > 0)
                 {
-                    t = 100 * Math.Round(this.HEIN_LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), 2);
-                }
-                else if (this.LIMIT_PRICE.HasValue)
-                {
-                    t = 100 * Math.Round(this.LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), 2);
+                    if (this.HEIN_LIMIT_PRICE.HasValue)
+                    {
+                        t = 100 * Math.Round(this.HEIN_LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), 2);
+                    }
+                    else if (this.LIMIT_PRICE.HasValue)
+                    {
+                        t = 100 * Math.Round(this.LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), 2);
+                    }
+                    else
+                    {
+                        t = 100 * Math.Round(this.PRICE / this.ORIGINAL_PRICE, 2);
+                    }
                 }
                 else
                 {
-                    t = 100 * Math.Round(this.PRICE / this.ORIGINAL_PRICE, 2);
+                    t = 100;
                 }
 
                 //Ty le thanh toan dich vu
                 this.SERVICE_PAY_RATE = Math.Round(t ?? 0, 0);
                 //ty le thanh toan bao hiem
 
-                if (this.PRIMARY_PATIENT_TYPE_ID.HasValue)
+                if (this.PRIMARY_PATIENT_TYPE_ID.HasValue && this.PATIENT_TYPE_ID == patientTypeCFG.PATIENT_TYPE__BHYT)
                 {
-                    this.PRICE = (this.LIMIT_PRICE ?? 0);
+                    this.PRICE = (this.LIMIT_PRICE ?? this.PRICE);
                     this.VIR_TOTAL_PRICE_NO_EXPEND = (this.PRICE * this.AMOUNT) * ((this.SERVICE_PAY_RATE ?? 0) / 100);
                 }
 

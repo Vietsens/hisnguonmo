@@ -102,7 +102,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
                         product.TaxConvert = item.VAT_RATIO * 100;
                         product.ProdPrice = Math.Round(item.PRICE, 4);
-                        product.TaxAmount = Math.Round(item.PRICE * item.AMOUNT * item.VAT_RATIO, 0);
+                        product.TaxAmount = Math.Round(item.PRICE * item.AMOUNT * item.VAT_RATIO, 4);
 
                         if (HisConfigCFG.dicVatConvert != null && HisConfigCFG.dicVatConvert.Count > 0)
                         {
@@ -115,7 +115,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                             }
                         }
 
-                        product.AmountWithoutTax = Math.Round((product.ProdPrice ?? 0) * (product.ProdQuantity ?? 0), 0) - (item.DISCOUNT ?? 0);
+                        product.AmountWithoutTax = Math.Round((product.ProdPrice ?? 0) * (product.ProdQuantity ?? 0), 4) - (item.DISCOUNT ?? 0);
                         product.Amount = (product.AmountWithoutTax ?? 0) + (product.TaxAmount ?? 0);
 
                         if (HisConfigCFG.VatOption == "3")
@@ -148,7 +148,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                                 product.TaxPercentage = 99999;
                             }
                         }
-
+                        if (HisConfigCFG.RoundTransactionAmountOption == "1" || HisConfigCFG.RoundTransactionAmountOption == "2")
+                        {
+                            if (HisConfigCFG.RoundTransactionAmountOption == "1")
+                                product.ProdPrice = Math.Round(product.ProdPrice ?? 0, 0, MidpointRounding.AwayFromZero);
+                            product.Amount = Math.Round(product.Amount, 0, MidpointRounding.AwayFromZero);
+                            product.TaxAmount = Math.Round(product.TaxAmount ?? 0, 0, MidpointRounding.AwayFromZero);
+                            product.AmountWithoutTax = Math.Round(product.AmountWithoutTax ?? 0, 0, MidpointRounding.AwayFromZero);
+                        }
                         result.Add(product);
                     }
                 }

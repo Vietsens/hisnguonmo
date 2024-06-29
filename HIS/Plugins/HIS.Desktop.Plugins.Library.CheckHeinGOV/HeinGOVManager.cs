@@ -164,11 +164,14 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     bool isShowErrorMessage = true;
                     CommonParam param = new CommonParam();
                     ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
+                    apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.APIEGW;
                     CheckHistoryLDO checkHistoryLDO = new CheckHistoryLDO();
                     checkHistoryLDO.maThe = dataHein.HeinCardNumber.Replace("-", "").Replace("_", "");
                     checkHistoryLDO.ngaySinh = dataHein.Dob;
                     checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(dataHein.PatientName);
                     checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? dataHein.PatientName : checkHistoryLDO.hoTen);
+                    checkHistoryLDO.hoTenCb = BHXHLoginCFG.OFFICERNAME;
+                    checkHistoryLDO.cccdCb = BHXHLoginCFG.CCCDOFFICER;
                     Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 1");
                     if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
                         || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)
@@ -696,7 +699,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                 }
                 result = result || (isUsedNewCard ? (HeinCardHelper.TrimHeinCardNumber(dataHein.HeinCardNumber) != rsIns.maTheMoi) : (HeinCardHelper.TrimHeinCardNumber(dataHein.HeinCardNumber) != rsIns.maThe));
 
-                if (rsIns.ngaySinh.Length == 4)
+                if (!string.IsNullOrEmpty(rsIns.ngaySinh) && rsIns.ngaySinh.Length == 4)
                 {
                     result = result || (dataHein.Dob.Length == 4 ? dataHein.Dob.Substring(0, 4) != rsIns.ngaySinh : dataHein.Dob.Substring(6, 4) != rsIns.ngaySinh);
                 }
@@ -739,11 +742,14 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     bool isShowErrorMessage = true;
                     CommonParam param = new CommonParam();
                     ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
+                    apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.APIEGW;
                     CheckHistoryLDO checkHistoryLDO = new CheckHistoryLDO();
                     checkHistoryLDO.maThe = dataHein.HeinCardNumber.Replace("-", "").Replace("_", "");
                     checkHistoryLDO.ngaySinh = dataHein.Dob;
                     checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(dataHein.PatientName);
                     checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? dataHein.PatientName : checkHistoryLDO.hoTen);
+                    checkHistoryLDO.hoTenCb = BHXHLoginCFG.OFFICERNAME;
+                    checkHistoryLDO.cccdCb = BHXHLoginCFG.CCCDOFFICER;
                     Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 1");
                     if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
                         || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)

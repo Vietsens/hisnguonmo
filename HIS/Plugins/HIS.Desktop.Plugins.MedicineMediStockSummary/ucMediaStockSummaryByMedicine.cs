@@ -32,6 +32,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -133,7 +134,36 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                     }
 
                     lstMediInStocks = new MedicineTypeInHospitalSDO();
-                    lstMediInStocks = new BackendAdapter(param).Get<MedicineTypeInHospitalSDO>("api/HisMedicineType/GetInHospitalMedicineType", ApiConsumers.MosConsumer, mediFilter, param);
+                    List<MedicineTypeInHospitalSDO> MediHosList = new List<MedicineTypeInHospitalSDO>();
+                    int count = 0;
+                    while (mediStockIDs.Count - count > 0)
+                    {
+                        mediFilter.MEDI_STOCK_IDs = mediStockIDs.Skip(count).Take(100).ToList();
+                        var lstMediInStocksTmp = new BackendAdapter(param).Get<MedicineTypeInHospitalSDO>("api/HisMedicineType/GetInHospitalMedicineType", ApiConsumers.MosConsumer, mediFilter, param);
+                        if (lstMediInStocksTmp != null)
+                            MediHosList.Add(lstMediInStocksTmp);
+                        count += 100;
+                    }
+                    if (MediHosList != null && MediHosList.Count > 0)
+                    {
+                        List<string> MediStockNames = new List<string>();
+
+                        List<string> MediStockCodes = new List<string>();
+
+                        List<ExpandoObject> MedicineTypeDatas = new List<ExpandoObject>();
+                        foreach (var item in MediHosList)
+                        {
+                            MediStockNames.AddRange(item.MediStockNames);
+                            MediStockCodes.AddRange(item.MediStockCodes);
+                            MedicineTypeDatas.AddRange(item.MedicineTypeDatas);
+                        }
+                        lstMediInStocks = new MedicineTypeInHospitalSDO()
+                        {
+                            MediStockCodes = MediStockCodes,
+                            MediStockNames = MediStockNames,
+                            MedicineTypeDatas = MedicineTypeDatas
+                        };
+                    }
                     initGridMedicine(lstMediInStocks);
 
                     if (lstMediInStocks.MedicineTypeDatas != null && lstMediInStocks.MedicineTypeDatas.Count > 0)
@@ -174,7 +204,38 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                     }
 
                     lstMateInStocks = new MaterialTypeInHospitalSDO();
-                    lstMateInStocks = new BackendAdapter(param).Get<MaterialTypeInHospitalSDO>("api/HisMaterialType/GetInHospitalMaterialType", ApiConsumers.MosConsumer, mateFilter, param);
+                    List<MaterialTypeInHospitalSDO> MateHosList = new List<MaterialTypeInHospitalSDO>();
+                    int count = 0;
+                    while (mediStockIDs.Count - count > 0)
+                    {
+                        mateFilter.MEDI_STOCK_IDs = mediStockIDs.Skip(count).Take(100).ToList();
+
+                        var lstMateInStocksTmp = new BackendAdapter(param).Get<MaterialTypeInHospitalSDO>("api/HisMaterialType/GetInHospitalMaterialType", ApiConsumers.MosConsumer, mateFilter, param);
+                        if (lstMateInStocksTmp != null)
+                            MateHosList.Add(lstMateInStocksTmp);
+                        count += 100;
+                    }
+                    if (MateHosList != null && MateHosList.Count > 0)
+                    {
+                        List<string> MediStockNames = new List<string>();
+
+                        List<string> MediStockCodes = new List<string>();
+
+                        List<ExpandoObject> MaterialTypeDatas = new List<ExpandoObject>();
+                        foreach (var item in MateHosList)
+                        {
+                            MediStockNames.AddRange(item.MediStockNames);
+                            MediStockCodes.AddRange(item.MediStockCodes);
+                            MaterialTypeDatas.AddRange(item.MaterialTypeDatas);
+                        }
+                        lstMateInStocks = new MaterialTypeInHospitalSDO()
+                        {
+                            MediStockCodes = MediStockCodes,
+                            MediStockNames = MediStockNames,
+                            MaterialTypeDatas = MaterialTypeDatas
+                        };
+                    }
+
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lstMateInStocks), lstMateInStocks));
                     initGridMaterial(lstMateInStocks);
                     if (lstMateInStocks.MaterialTypeDatas != null && lstMateInStocks.MaterialTypeDatas.Count > 0)

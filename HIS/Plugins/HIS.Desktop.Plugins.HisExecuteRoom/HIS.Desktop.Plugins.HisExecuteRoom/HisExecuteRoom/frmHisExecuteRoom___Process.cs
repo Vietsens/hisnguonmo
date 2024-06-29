@@ -270,6 +270,14 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 {
                     room.BILL_ACCOUNT_BOOK_ID = null;
                 }
+                if (cboDefaultsCLS.EditValue != null)
+                {
+                    room.DEFAULT_INSTR_PATIENT_TYPE_ID = Int64.Parse(cboDefaultsCLS.EditValue.ToString());
+                }
+                else
+                {
+                    room.DEFAULT_INSTR_PATIENT_TYPE_ID = null;
+                }
             }
             catch (Exception ex)
             {

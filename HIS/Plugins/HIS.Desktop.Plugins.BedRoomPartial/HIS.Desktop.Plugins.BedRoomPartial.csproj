@@ -168,6 +168,9 @@
     <Reference Include="Inventec.Desktop.Core">
       <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Desktop.CustomControl">
+      <HintPath>..\..\..\..\..\..\..\RELEASE\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Fss.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Fss.Client\Inventec.Fss.Client.dll</HintPath>
@@ -248,6 +251,12 @@
     </Compile>
     <Compile Include="Base\UriApi.cs" />
     <Compile Include="CallModule.cs" />
+    <Compile Include="frmDoctorTreatment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDoctorTreatment.Designer.cs">
+      <DependentUpon>frmDoctorTreatment.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmFollow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -306,6 +315,9 @@
   <ItemGroup>
     <EmbeddedResource Include="ApprovalFinish\FormApprovalFinish.resx">
       <DependentUpon>FormApprovalFinish.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDoctorTreatment.resx">
+      <DependentUpon>frmDoctorTreatment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmFollow.resx">
       <DependentUpon>FrmFollow.cs</DependentUpon>
