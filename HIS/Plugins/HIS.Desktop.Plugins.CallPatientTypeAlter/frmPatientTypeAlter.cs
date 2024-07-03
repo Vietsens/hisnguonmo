@@ -2549,6 +2549,7 @@ listTL, lstSereServResult, DelegateSuccess);
                                     {
                                         heinCardData = null;
                                         mess = "Bệnh nhân thiếu thông tin địa chỉ";
+                                        //Commment
                                     }
                                     else
                                     {
