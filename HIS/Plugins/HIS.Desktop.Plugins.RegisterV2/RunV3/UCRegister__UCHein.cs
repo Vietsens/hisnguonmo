@@ -41,6 +41,7 @@ using HIS.Desktop.DelegateRegister;
 using HIS.UC.UCOtherServiceReqInfo.ADO;
 using MOS.EFMODEL.DataModels;
 using MOS.LibraryHein.Bhyt;
+using SDA.EFMODEL.DataModels;
 
 namespace HIS.Desktop.Plugins.RegisterV2.Run2
 {
@@ -83,6 +84,17 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     dataAddressPatient = this.ucAddressCombo1.GetValue() ?? new HIS.UC.AddressCombo.ADO.UCAddressADO();
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataAddressPatient), dataAddressPatient));
+                    Inventec.Common.Address.AddressProcessor adProc = new Inventec.Common.Address.AddressProcessor(BackendDataWorker.Get<V_SDA_PROVINCE>(), BackendDataWorker.Get<V_SDA_DISTRICT>(), BackendDataWorker.Get<V_SDA_COMMUNE>());
+                    var data = adProc.SplitFromFullAddress(heinCardData.Address);
+                    if (data != null)
+                    {
+                        dataAddressPatient.Province_Code = data.ProvinceCode;
+                        dataAddressPatient.Province_Name = data.ProvinceName;
+                        dataAddressPatient.District_Code = data.DistrictCode;
+                        dataAddressPatient.District_Name = data.DistrictName;
+                        dataAddressPatient.Commune_Code = data.CommuneCode;
+                        dataAddressPatient.Commune_Name = data.CommuneName;
+                    }
                     dataAddressPatient.Address = heinCardData.Address;
                     this.ucAddressCombo1.SetValue(dataAddressPatient);
                     Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.6");

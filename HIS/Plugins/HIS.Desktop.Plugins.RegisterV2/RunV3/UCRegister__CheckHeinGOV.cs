@@ -34,6 +34,9 @@ using Inventec.Core;
 using His.Bhyt.InsuranceExpertise;
 using HIS.UC.UCPatientRaw.ADO;
 using HIS.Desktop.Plugins.Library.CheckHeinGOV;
+using CHC.WCFClient.CheckHeinCardService;
+using SDA.EFMODEL.DataModels;
+using HeinCardData = Inventec.Common.QrCodeBHYT.HeinCardData;
 
 namespace HIS.Desktop.Plugins.RegisterV2.Run2
 {
@@ -181,11 +184,22 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         Inventec.Common.Logging.LogSystem.Debug("Ket thuc gan du lieu cho benh nhan khi doc the va khong co han den");
                     }
 
-                    if (this.ucPatientRaw1.ResultDataADO.IsAddress)
+                    if (this.ucPatientRaw1.ResultDataADO.IsAddress || this.ucPatientRaw1.ResultDataADO.IsThongTinNguoiDungThayDoiSoVoiCong__Choose)
                     {
                         if (AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 1)
                         {
                             dataAddressPatient = this.ucAddressCombo1.GetValue() ?? new HIS.UC.AddressCombo.ADO.UCAddressADO();
+                            Inventec.Common.Address.AddressProcessor adProc = new Inventec.Common.Address.AddressProcessor(BackendDataWorker.Get<V_SDA_PROVINCE>(), BackendDataWorker.Get<V_SDA_DISTRICT>(), BackendDataWorker.Get<V_SDA_COMMUNE>());
+                            var data = adProc.SplitFromFullAddress(this.ucPatientRaw1.ResultDataADO.ResultHistoryLDO.diaChi);
+                            if (data != null)
+                            {
+                                dataAddressPatient.Province_Code = data.ProvinceCode;
+                                dataAddressPatient.Province_Name = data.ProvinceName;
+                                dataAddressPatient.District_Code = data.DistrictCode;
+                                dataAddressPatient.District_Name = data.DistrictName;
+                                dataAddressPatient.Commune_Code = data.CommuneCode;
+                                dataAddressPatient.Commune_Name = data.CommuneName;
+                            }
                             dataAddressPatient.Address = this.ucPatientRaw1.ResultDataADO.ResultHistoryLDO.diaChi;
                             this.ucAddressCombo1.SetValue(dataAddressPatient);
                         }
@@ -211,13 +225,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
                         data.DOB = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtPatientDob) ?? 0;
                         this.ucPatientRaw1.UpdateValueAfterCheckTT(data);
-
-                        if (AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 1)
-                        {
-                            dataAddressPatient = this.ucAddressCombo1.GetValue() ?? new HIS.UC.AddressCombo.ADO.UCAddressADO();
-                            dataAddressPatient.Address = this.ucPatientRaw1.ResultDataADO.ResultHistoryLDO.diaChi;
-                            this.ucAddressCombo1.SetValue(dataAddressPatient);
-                        }
 
                         if (IsPatientTypeUsingHeinInfo())
                             this.ucHeinInfo1.FillDataByHeinCardData(this.ucPatientRaw1.ResultDataADO.HeinCardData);
