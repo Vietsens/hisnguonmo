@@ -29,6 +29,7 @@ using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.LibraryHein.Bhyt;
 using MOS.SDO;
+using SDA.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -325,7 +326,17 @@ namespace HIS.Desktop.Plugins.Register.Run
                     this.txtAddress.Text = String.IsNullOrEmpty(paAddress) ? dataHein.Address : paAddress;
                 else
                     this.txtAddress.Text = "";
-
+                Inventec.Common.Address.AddressProcessor adProc = new Inventec.Common.Address.AddressProcessor(BackendDataWorker.Get<V_SDA_PROVINCE>(), BackendDataWorker.Get<V_SDA_DISTRICT>(), BackendDataWorker.Get<V_SDA_COMMUNE>());
+                var data = adProc.SplitFromFullAddress(dataHein.Address);
+                if (currentPatientSDO == null || (currentPatientSDO != null && data != null && (currentPatientSDO.PROVINCE_CODE != data.ProvinceCode || currentPatientSDO.DISTRICT_CODE != data.DistrictCode || currentPatientSDO.COMMUNE_CODE != data.CommuneCode)))
+                {
+                    cboProvince.EditValue = data.ProvinceCode;
+                    txtProvinceCode.EditValue = data.ProvinceCode;
+                    cboDistrict.EditValue = data.DistrictCode;
+                    txtDistrictCode.EditValue = data.DistrictCode;
+                    cboCommune.EditValue = data.CommuneCode;
+                    txtCommuneCode.EditValue = data.CommuneCode;
+                }
                 //Cap nhat thong tin doc tu the vao vung thong tin bhyt
                 if (this.mainHeinProcessor != null && this.ucHeinBHYT != null)
                     this.mainHeinProcessor.FillDataAfterFindQrCode(this.ucHeinBHYT, dataHein);
