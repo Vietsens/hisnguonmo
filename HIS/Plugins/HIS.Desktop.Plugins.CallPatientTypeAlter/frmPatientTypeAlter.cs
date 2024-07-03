@@ -2545,7 +2545,7 @@ listTL, lstSereServResult, DelegateSuccess);
                                         heinCardData = null;
                                         mess = ResourceMessage.TheSaiNgaySinhGov070;
                                     }
-                                    else if(string.IsNullOrEmpty(patientSDO.COMMUNE_CODE) && string.IsNullOrEmpty(patientSDO.DISTRICT_CODE) && string.IsNullOrEmpty(patientSDO.PROVINCE_CODE))
+                                    else if(string.IsNullOrEmpty(patientSDO.COMMUNE_CODE) || string.IsNullOrEmpty(patientSDO.DISTRICT_CODE) || string.IsNullOrEmpty(patientSDO.PROVINCE_CODE))
                                     {
                                         heinCardData = null;
                                         mess = "Bệnh nhân thiếu thông tin địa chỉ";
