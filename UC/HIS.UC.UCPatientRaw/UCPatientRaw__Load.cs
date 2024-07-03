@@ -45,6 +45,7 @@ using MOS.EFMODEL.DataModels;
 using Inventec.Desktop.Common.Message;
 using Inventec.Common.QrCodeCCCD;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
+using System.Net;
 
 namespace HIS.UC.UCPatientRaw
 {
@@ -198,7 +199,10 @@ namespace HIS.UC.UCPatientRaw
 						string patientName = Inventec.Common.String.Convert.HexToUTF8Fix(heinCardDataForCheckGOV.PatientName);
 						if (!string.IsNullOrEmpty(patientName))
 							heinCardDataForCheckGOV.PatientName = patientName;
-						this._UCPatientRawADO = new HIS.UC.UCPatientRaw.ADO.UCPatientRawADO();
+                        string address = Inventec.Common.String.Convert.HexToUTF8Fix(heinCardDataForCheckGOV.Address);
+                        if (!string.IsNullOrEmpty(address))
+                            heinCardDataForCheckGOV.Address = address;
+                        this._UCPatientRawADO = new HIS.UC.UCPatientRaw.ADO.UCPatientRawADO();
 						this._UCPatientRawADO.PATIENT_NAME = heinCardDataForCheckGOV.PatientName;
 						this._UCPatientRawADO.DOB_STR = heinCardDataForCheckGOV.Dob;
 						this._UCPatientRawADO.GENDER_ID = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.Plugins.Library.RegisterConfig.GenderConvert.HisToHein(heinCardDataForCheckGOV.Gender));//FIX
