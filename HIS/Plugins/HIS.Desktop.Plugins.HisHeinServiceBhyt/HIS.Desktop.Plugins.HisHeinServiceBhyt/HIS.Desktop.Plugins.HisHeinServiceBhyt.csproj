@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{70FFA7F6-C304-41AA-A70C-D5958A85131E}</ProjectGuid>
+    <ProjectGuid>{8DC4268A-93B3-4DF5-BDF1-11680A80792B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HIS.Desktop.Plugins.HisHeinServiceBhyt</RootNamespace>

@@ -785,6 +785,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                                 var data = SearchByCode(patientInRegisterSearchByCard.PatientCode);
                                 if (data != null && data.Result != null && data.Result is HisPatientSDO)
                                 {
+                                    currentPatientSDO = data.Result as HisPatientSDO;
                                     //Benh nhan da dang ky tren he thong benh vien, da co thong tin ho so
                                     this.SetPatientSearchPanel(true);
                                     heinAddressOfPatient = ((HisPatientSDO)data.Result).HeinAddress;
@@ -3158,9 +3159,9 @@ namespace HIS.Desktop.Plugins.Register.Run
                 this.currentHisExamServiceReqResultSDO = null;
                 this.resultHisPatientProfileSDO = null;
                 this.serviceReqDetailSDOs = null;
-                this.InitComboCommon(this.cboProvince, BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE), "PROVINCE_CODE", "PROVINCE_NAME", "SEARCH_CODE");
-                this.InitComboCommon(this.cboDistrict, BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE), "DISTRICT_CODE", "RENDERER_DISTRICT_NAME", "SEARCH_CODE");
-                this.InitComboCommon(this.cboCommune, BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE), "COMMUNE_CODE", "RENDERER_COMMUNE_NAME", "SEARCH_CODE");
+                this.InitComboCommon(this.cboProvince, BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList(), "PROVINCE_CODE", "PROVINCE_NAME", "SEARCH_CODE");
+                this.InitComboCommon(this.cboDistrict, BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList(), "DISTRICT_CODE", "RENDERER_DISTRICT_NAME", "SEARCH_CODE");
+                this.InitComboCommon(this.cboCommune, BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList(), "COMMUNE_CODE", "RENDERER_COMMUNE_NAME", "SEARCH_CODE");
 
                 this.isNotCheckTT = true;
                 this.ResetPatientForm();

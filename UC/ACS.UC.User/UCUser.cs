@@ -43,7 +43,7 @@ namespace ACS.UC.User
         UserInitADO initADO = null;
 
         Grid_CustomUnboundColumnData gridView_CustomUnboundColumnData = null;
-        btn_Radio_Enable_Click_Medi btn_Radio_Enable_Click_Medi = null;
+        btn_Radio_Enable_Click_Medi  btn_Radio_Enable_Click_Medi = null;
         gridViewUser_MouseDownMedi gridViewUser_MouseDownMedi = null;
         Check__Enable_CheckedChanged Check__Enable_CheckedChanged = null;
 

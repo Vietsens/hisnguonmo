@@ -196,7 +196,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\YTE\DESKTOP\UC\HIS.UC\HIS.UC.Account\HIS.UC.Account.csproj">
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.Account\HIS.UC.Account.csproj">
       <Project>{5a5f75d2-a8e7-40dd-8d37-6bcf5a5f9742}</Project>
       <Name>HIS.UC.Account</Name>
     </ProjectReference>

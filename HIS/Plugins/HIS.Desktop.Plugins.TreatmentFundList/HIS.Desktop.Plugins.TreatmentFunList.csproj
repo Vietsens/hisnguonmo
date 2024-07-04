@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F498EB8A-854F-4542-9DC1-FE8A87F64F7A}</ProjectGuid>
+    <ProjectGuid>{4BB3C4E3-B911-401D-B020-875F90E0F9C4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HIS.Desktop.Plugins.TreatmentFundList</RootNamespace>

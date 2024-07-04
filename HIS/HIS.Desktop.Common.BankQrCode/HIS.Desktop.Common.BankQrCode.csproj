@@ -31,19 +31,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Inventec.Common.BankQrCode">
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.BankQrCode\Inventec.Common.BankQrCode.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.BankQrCode\Inventec.Common.BankQrCode.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.QRCoder">
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.QRCoder\Inventec.Common.QRCoder.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.QRCoder\Inventec.Common.QRCoder.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.String">
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\..\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\Lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -54,6 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PosProcessor.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="QrCodeProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

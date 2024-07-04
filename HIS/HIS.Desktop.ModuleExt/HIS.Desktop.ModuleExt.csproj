@@ -32,92 +32,89 @@
   <ItemGroup>
     <Reference Include="ACS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\RELEASE\ACS\ACS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\Lib\ACS\ACS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIBRARY\DevLib\DevExpress.Data.v15.2.dll</HintPath>
+      <HintPath>..\..\..\Lib\DEVEXPRESS\DevExpress.Data.v15.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Images.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIBRARY\DevLib\DevExpress.Images.v15.2.dll</HintPath>
+    <Reference Include="DevExpress.Images.v15.2">
+      <HintPath>..\..\..\Lib\DEVEXPRESS\DevExpress.Images.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIBRARY\DevLib\DevExpress.Utils.v15.2.dll</HintPath>
+      <HintPath>..\..\..\Lib\DEVEXPRESS\DevExpress.Utils.v15.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIBRARY\DevLib\DevExpress.XtraBars.v15.2.dll</HintPath>
+    <Reference Include="DevExpress.XtraBars.v15.2">
+      <HintPath>..\..\..\Lib\DEVEXPRESS\DevExpress.XtraBars.v15.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIBRARY\DevLib\DevExpress.XtraEditors.v15.2.dll</HintPath>
+    <Reference Include="DevExpress.XtraEditors.v15.2">
+      <HintPath>..\..\..\Lib\DEVEXPRESS\DevExpress.XtraEditors.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.VVA_RS">
-      <HintPath>..\..\..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.VVA_RS\IMSys.DbConfig.VVA_RS.dll</HintPath>
+      <HintPath>..\..\..\Lib\IMSys.DbConfig\IMSys.DbConfig.VVA_RS\IMSys.DbConfig.VVA_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.RichEditor">
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.RichEditor\Inventec.Common.RichEditor.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.RichEditor\Inventec.Common.RichEditor.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.TypeConvert">
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.WebApiClient">
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Message">
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Modules">
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Token">
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Token\Inventec.Desktop.Common.Token.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.Desktop\Inventec.Desktop.Common.Token\Inventec.Desktop.Common.Token.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.ClientSystem">
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.Core">
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.Token\Inventec.Token.Core\Inventec.Token.Core.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.Token\Inventec.Token.Core\Inventec.Token.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.ChangePassword">
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.UC\Inventec.UC.ChangePassword\Inventec.UC.ChangePassword.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.UC\Inventec.UC.ChangePassword\Inventec.UC.ChangePassword.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.ConfigApplication">
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.UC\Inventec.UC.ConfigApplication\Inventec.UC.ConfigApplication.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.UC\Inventec.UC.ConfigApplication\Inventec.UC.ConfigApplication.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.EventLogControl">
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.UC\Inventec.UC.EventLogControl\Inventec.UC.EventLogControl.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.UC\Inventec.UC.EventLogControl\Inventec.UC.EventLogControl.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Login, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.VoiceCommand, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\RELEASE\Inventec.VoiceCommand\Inventec.VoiceCommand.dll</HintPath>
+      <HintPath>..\..\..\Lib\Inventec.VoiceCommand\Inventec.VoiceCommand.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\..\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\Lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO">
-      <HintPath>..\..\..\..\..\RELEASE\MOS\MOS.SDO.dll</HintPath>
+      <HintPath>..\..\..\Lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -130,11 +127,11 @@
     <Reference Include="System.Xml" />
     <Reference Include="VVA.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\RELEASE\VVA\VVA.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\Lib\VVA\VVA.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="VVA.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\RELEASE\VVA\VVA.Filter.dll</HintPath>
+      <HintPath>..\..\..\Lib\VVA\VVA.Filter.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
