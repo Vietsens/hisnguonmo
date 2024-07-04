@@ -29,6 +29,7 @@ namespace HIS.Desktop.Common.BankQrCode
 {
     public class QrCodeProcessor
     {
+        public static Dictionary<string, string> DicContentBank = new Dictionary<string, string>();
         public static Dictionary<string, object> CreateQrImage(HIS_TRANS_REQ data, List<HIS_CONFIG> configValue)
         {
             Dictionary<string, object> result = null;
@@ -55,6 +56,7 @@ namespace HIS.Desktop.Common.BankQrCode
                             inputData.Purpose = data.TDL_TREATMENT_CODE;
                             BankQrCodeProcessor bankQrCode = new BankQrCodeProcessor(inputData);
                             ResultQrCode qrData = bankQrCode.GetQrCode(bankType);
+                            DicContentBank[data.TRANS_REQ_CODE] = qrData.Data;
                             if (!String.IsNullOrWhiteSpace(qrData.Data))
                             {
                                 QRCodeGenerator qrGenerator = new QRCodeGenerator();
