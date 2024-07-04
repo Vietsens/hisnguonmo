@@ -2545,7 +2545,7 @@ listTL, lstSereServResult, DelegateSuccess);
                                         heinCardData = null;
                                         mess = ResourceMessage.TheSaiNgaySinhGov070;
                                     }
-                                    else if(string.IsNullOrEmpty(patientSDO.COMMUNE_CODE) && string.IsNullOrEmpty(patientSDO.DISTRICT_CODE) && string.IsNullOrEmpty(patientSDO.PROVINCE_CODE))
+                                    else if(string.IsNullOrEmpty(patientSDO.COMMUNE_CODE) || string.IsNullOrEmpty(patientSDO.DISTRICT_CODE) || string.IsNullOrEmpty(patientSDO.PROVINCE_CODE))
                                     {
                                         heinCardData = null;
                                         mess = "Bệnh nhân thiếu thông tin địa chỉ";
@@ -2563,8 +2563,7 @@ listTL, lstSereServResult, DelegateSuccess);
                                     }
                                 }
                             }
-                            if (heinCardData != null && string.IsNullOrEmpty(mess))
-                            {
+                            if (heinCardData != null && string.IsNullOrEmpty(mess))                            {
                                 if (!IsCccd)
                                     this.ProcessQrCodeData(heinCardData);
                                 HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);

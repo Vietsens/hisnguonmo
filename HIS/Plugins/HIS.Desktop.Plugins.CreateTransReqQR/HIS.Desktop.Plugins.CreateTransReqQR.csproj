@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.UC\Inventec.UC.ImageLib.Old\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -65,92 +65,105 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_MSIL\DevExpress.XtraTreeList.v15.2\v4.0_15.2.9.0__b88d1754d700e49a\DevExpress.XtraTreeList.v15.2.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Library.CacheClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\ReferencedAssemblies\HIS.Desktop.Library.CacheClient.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
+      <HintPath>..\..\..\..\lib\HIS\ReferencedAssemblies\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.SereServTree">
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.SereServTree\HIS.UC.SereServTree.dll</HintPath>
+    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
-      <HintPath>..\..\..\..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+      <HintPath>..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Controls.EditorLoader">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.DateTime">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Mapper">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Number">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Number\Inventec.Common.Number.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Number\Inventec.Common.Number.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.QRCoder">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.QRCoder\Inventec.Common.QRCoder.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.QRCoder\Inventec.Common.QRCoder.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.RichEditor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.RichEditor\Inventec.Common.RichEditor.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.RichEditor\Inventec.Common.RichEditor.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.SignLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.String, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.TypeConvert">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.WebApiClient">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Controls">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Controls\Inventec.Desktop.Common.Controls.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Common.Controls\Inventec.Desktop.Common.Controls.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Controls.ValidationRule">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Controls.ValidationRule\Inventec.Desktop.Common.Controls.ValidationRule.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Common.Controls.ValidationRule\Inventec.Desktop.Common.Controls.ValidationRule.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.LanguageManager">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Message">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Modules">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Core">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Paging">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS">
-      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS\MPS.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000102.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000102.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000498.PDO">
-      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.PDO\MPS.Processor.Mps000498.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000498.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
-      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS\MPS.ProcessorBase.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.ProcessorBase.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -182,10 +195,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.SereServTree\HIS.UC.SereServTree.csproj">
-      <Project>{9b696b91-3b89-49be-b012-d7d7225074fa}</Project>
-      <Name>HIS.UC.SereServTree</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>
@@ -242,21 +251,23 @@
       <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
       <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.csproj">
-      <Project>{0aedfd21-7195-4fdb-a3ef-035640df48f3}</Project>
-      <Name>HIS.Desktop.Plugins.Library.EmrGenerate</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CreateTransReqQR\frmCreateTransReqQR.resx">
       <DependentUpon>frmCreateTransReqQR.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\check.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
