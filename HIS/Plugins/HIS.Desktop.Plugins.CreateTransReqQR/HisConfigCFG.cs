@@ -37,10 +37,16 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR
         internal static long PatientTypeId__BHYT;
         internal static string PatientTypeCode__VP;
         internal static long PatientTypeId__VP;
+
+
+        private const string CONFIG__ShowServiceByRoom = "HIS.Desktop.Plugins.CreateTransReqQR.ShowServiceByRoom";
+        internal static string ShowServiceByRoomOption;
+
         internal static void LoadConfig()
         {
             try
             {
+                ShowServiceByRoomOption = GetValue(CONFIG__ShowServiceByRoom);
                 PatientTypeCode__BHYT = GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__BHYT);
                 PatientTypeId__BHYT = GetPatientTypeByCode(PatientTypeCode__BHYT).ID;
                 PatientTypeCode__VP = GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__VP);
