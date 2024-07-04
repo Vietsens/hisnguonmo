@@ -72,11 +72,19 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000124
 
                 var parentIds = this.SereServs.Select(o => o.PARENT_ID).ToList();
                 var sereServKTCs = this.SereServs.Where(o => (o.TDL_SERVICE_TYPE_ID == serviceTypeCFG.SERVICE_TYPE_ID__SURG
-                    || o.TDL_SERVICE_TYPE_ID == serviceTypeCFG.SERVICE_TYPE_ID__MISU
-                    || o.TDL_SERVICE_TYPE_ID == serviceTypeCFG.SERVICE_TYPE_ID__DIIM)
+                    || parentIds.Contains(o.ID)
+                    && (o.TDL_SERVICE_TYPE_ID == serviceTypeCFG.SERVICE_TYPE_ID__MISU
+                    || o.TDL_SERVICE_TYPE_ID == serviceTypeCFG.SERVICE_TYPE_ID__DIIM))
                     && o.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
                     && o.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
-                    && parentIds.Contains(o.ID)).ToList();
+                   ).ToList();
+
+                //var sereServKTCs = this.SereServs.Where(o => (o.TDL_SERVICE_TYPE_ID == serviceTypeCFG.SERVICE_TYPE_ID__SURG
+                //   || o.TDL_SERVICE_TYPE_ID == serviceTypeCFG.SERVICE_TYPE_ID__MISU
+                //   || o.TDL_SERVICE_TYPE_ID == serviceTypeCFG.SERVICE_TYPE_ID__DIIM)
+                //   && o.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                //   && o.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                //   && parentIds.Contains(o.ID)).ToList();
                  
                 sereServKTC = null;
                 sereServKTCPrints = new List<HIS_SERE_SERV>();
