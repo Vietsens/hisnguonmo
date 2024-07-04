@@ -2563,8 +2563,7 @@ listTL, lstSereServResult, DelegateSuccess);
                                     }
                                 }
                             }
-                            if (heinCardData != null && string.IsNullOrEmpty(mess))
-                            {
+                            if (heinCardData != null && string.IsNullOrEmpty(mess))                            {
                                 if (!IsCccd)
                                     this.ProcessQrCodeData(heinCardData);
                                 HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
