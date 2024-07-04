@@ -17,6 +17,7 @@
  */
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.DelegateRegister;
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Plugins.Library.CheckHeinGOV;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
 using HIS.Desktop.Utility;
@@ -32,6 +33,7 @@ using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
+using SDA.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -480,6 +482,23 @@ namespace HIS.UC.UCPatientRaw
 									{
                                         long patientTypeId = this.cboPatientType.EditValue == null ? 0 : Inventec.Common.TypeConvert.Parse.ToInt64(this.cboPatientType.EditValue.ToString());
                                             dataResult.HisPatientSDO.ADDRESS = dataResult.HisPatientSDO.ADDRESS ?? (patientTypeId == HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__BHYT && dataResult.HisPatientSDO.ID > 0 ? "" : cccdCard.Address);
+
+                                        //171433 IVT - Sửa chức năng Tiếp đón. Bổ sung xử lý tách thông tin địa chỉ lấy thông tin Tỉnh, Huyện, Xã
+                                        Inventec.Common.Address.AddressProcessor adProc = new Inventec.Common.Address.AddressProcessor(BackendDataWorker.Get<V_SDA_PROVINCE>(), BackendDataWorker.Get<V_SDA_DISTRICT>(), BackendDataWorker.Get<V_SDA_COMMUNE>());
+                                        var data = adProc.SplitFromFullAddress(cccdCard.Address);
+                                        if (dataResult.HisPatientSDO.ID <= 0 || (data != null && (dataResult.HisPatientSDO.PROVINCE_CODE != data.ProvinceCode || dataResult.HisPatientSDO.DISTRICT_CODE != data.DistrictCode || dataResult.HisPatientSDO.COMMUNE_CODE != data.CommuneCode)))
+                                        {
+                                            if (data != null)
+                                            {
+                                                dataResult.HisPatientSDO.PROVINCE_CODE = data.ProvinceCode;
+                                                dataResult.HisPatientSDO.PROVINCE_NAME = data.ProvinceName;
+                                                dataResult.HisPatientSDO.DISTRICT_CODE = data.DistrictCode;
+                                                dataResult.HisPatientSDO.DISTRICT_NAME = data.DistrictName;
+                                                dataResult.HisPatientSDO.COMMUNE_CODE = data.CommuneCode;
+                                                dataResult.HisPatientSDO.COMMUNE_NAME = data.CommuneName;
+                                            }
+                                        }
+
                                         if (!string.IsNullOrEmpty(cccdCard.ReleaseDate))
 											dataResult.HisPatientSDO.CMND_DATE = Int64.Parse(cccdCard.ReleaseDate.Split('/')[2] + cccdCard.ReleaseDate.Split('/')[1] + cccdCard.ReleaseDate.Split('/')[0] + "000000");
 										if (cccdCard.CardData.Length == 9)

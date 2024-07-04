@@ -1,21 +1,4 @@
-/* IVT
- * @Project : hisnguonmo
- * Copyright (C) 2017 INVENTEC
- *  
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *  
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
- * GNU General Public License for more details.
- *  
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-using HIS.Desktop.ApiConsumer;
+﻿using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.Plugins.Library.PrintBordereau.Base;
 using HIS.Desktop.Plugins.Library.PrintBordereau.ChooseDepartment;
@@ -87,12 +70,14 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000124
                 if (sereServ != null)
                     patyBhyt = JsonConvert.DeserializeObject<HIS_PATIENT_TYPE_ALTER>(sereServ.JSON_PATIENT_TYPE_ALTER);
 
+                var parentIds = this.SereServs.Select(o => o.PARENT_ID).ToList();
                 var sereServKTCs = this.SereServs.Where(o => (o.TDL_SERVICE_TYPE_ID == serviceTypeCFG.SERVICE_TYPE_ID__SURG
                     || o.TDL_SERVICE_TYPE_ID == serviceTypeCFG.SERVICE_TYPE_ID__MISU
                     || o.TDL_SERVICE_TYPE_ID == serviceTypeCFG.SERVICE_TYPE_ID__DIIM)
                     && o.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
-                    && o.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
-
+                    && o.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                    && parentIds.Contains(o.ID)).ToList();
+                 
                 sereServKTC = null;
                 sereServKTCPrints = new List<HIS_SERE_SERV>();
                 frmBordereauChooseDepartment frm = new frmBordereauChooseDepartment(this.SereServs, sereServKTCs, this.CurrentDepartmentId ?? 0, delegateLoadData);
