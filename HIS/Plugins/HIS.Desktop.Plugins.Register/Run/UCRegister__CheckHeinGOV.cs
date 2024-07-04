@@ -29,6 +29,7 @@ using HIS.Desktop.Plugins.Library.RegisterConfig;
 using Inventec.Common.Logging;
 using HIS.Desktop.Plugins.Library.CheckHeinGOV;
 using MOS.SDO;
+using SDA.EFMODEL.DataModels;
 
 namespace HIS.Desktop.Plugins.Register.Run
 {
@@ -149,10 +150,6 @@ namespace HIS.Desktop.Plugins.Register.Run
                             this.mainHeinProcessor.FillDataAfterCheckBHYT(this.ucHeinBHYT, dataHein);
                         }
 
-                        if (HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 1)
-                        {
-                            this.txtAddress.Text = this.ResultDataADO.ResultHistoryLDO.diaChi;
-                        }
                     }
 
                     if (this.ResultDataADO.IsToDate)
@@ -165,10 +162,21 @@ namespace HIS.Desktop.Plugins.Register.Run
                         Inventec.Common.Logging.LogSystem.Debug("Ket thuc gan du lieu cho benh nhan khi doc the va khong co han den");
                     }
 
-                    if (this.ResultDataADO.IsAddress)
+                    if (this.ResultDataADO.IsAddress || this.ResultDataADO.IsThongTinNguoiDungThayDoiSoVoiCong__Choose || this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
                     {
                         if (AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 1)
                         {
+                            Inventec.Common.Address.AddressProcessor adProc = new Inventec.Common.Address.AddressProcessor(BackendDataWorker.Get<V_SDA_PROVINCE>(), BackendDataWorker.Get<V_SDA_DISTRICT>(), BackendDataWorker.Get<V_SDA_COMMUNE>());
+                            var data = adProc.SplitFromFullAddress(this.ResultDataADO.ResultHistoryLDO.diaChi);
+                            if (currentPatientSDO == null || (currentPatientSDO != null && data != null && (currentPatientSDO.PROVINCE_CODE != data.ProvinceCode || currentPatientSDO.DISTRICT_CODE != data.DistrictCode || currentPatientSDO.COMMUNE_CODE != data.CommuneCode)))
+                            {
+                                cboProvince.EditValue = data.ProvinceCode;
+                                txtProvinceCode.EditValue = data.ProvinceCode;
+                                cboDistrict.EditValue = data.DistrictCode;
+                                txtDistrictCode.EditValue = data.DistrictCode;
+                                cboCommune.EditValue = data.CommuneCode;
+                                txtCommuneCode.EditValue = data.CommuneCode;
+                            }
                             this.txtAddress.Text = this.ResultDataADO.ResultHistoryLDO.diaChi;
                         }
                     }
@@ -183,10 +191,6 @@ namespace HIS.Desktop.Plugins.Register.Run
                             this.txtGenderCode.Text = gender.GENDER_CODE;
                         }
                         this.txtPatientName.Text = this.ResultDataADO.ResultHistoryLDO.hoTen;
-                        if (AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 1)
-                        {
-                            this.txtAddress.Text = this.ResultDataADO.ResultHistoryLDO.diaChi;
-                        }
                         if (this.mainHeinProcessor != null && this.ucHeinBHYT != null)
                         {
                             this.mainHeinProcessor.FillDataAfterCheckBHYT(this.ucHeinBHYT, dataHein);

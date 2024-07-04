@@ -39,6 +39,7 @@ using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.LibraryHein.Bhyt;
 using MOS.SDO;
+using SDA.EFMODEL.DataModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -373,6 +374,17 @@ namespace HIS.Desktop.Plugins.Register.Run
                 if (isTE)
                 {
                     this.SetValidationByChildrenUnder6Years(isTE, false);
+                }
+                Inventec.Common.Address.AddressProcessor adProc = new Inventec.Common.Address.AddressProcessor(BackendDataWorker.Get<V_SDA_PROVINCE>(), BackendDataWorker.Get<V_SDA_DISTRICT>(), BackendDataWorker.Get<V_SDA_COMMUNE>());
+                var data = adProc.SplitFromFullAddress(this.ResultDataADO.ResultHistoryLDO.diaChi);
+                if (currentPatientSDO == null || (currentPatientSDO != null && data != null && (currentPatientSDO.PROVINCE_CODE != data.ProvinceCode || currentPatientSDO.DISTRICT_CODE != data.DistrictCode || currentPatientSDO.COMMUNE_CODE != data.CommuneCode)))
+                {
+                    cboProvince.EditValue = data.ProvinceCode;
+                    txtProvinceCode.EditValue = data.ProvinceCode;
+                    cboDistrict.EditValue = data.DistrictCode;
+                    txtDistrictCode.EditValue = data.DistrictCode;
+                    cboCommune.EditValue = data.CommuneCode;
+                    txtCommuneCode.EditValue = data.CommuneCode;
                 }
                 var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).FirstOrDefault(o => o.PROVINCE_NAME == patientDTO.PROVINCE_NAME);
                 if (province != null)
@@ -988,8 +1000,6 @@ namespace HIS.Desktop.Plugins.Register.Run
                                 this._HeinCardData.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maTheMoi;
                             }
                         }
-                        if (data is CccdCardData)
-                            FillDataAfterFindQrCodeNoExistsCard(_HeinCardData);
                     }
                     WaitingManager.Hide();
                     if (this.isReadQrCode)
