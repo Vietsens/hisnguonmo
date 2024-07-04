@@ -77,7 +77,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000124
                     && o.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
                     && o.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
                     && parentIds.Contains(o.ID)).ToList();
-
+                 
                 sereServKTC = null;
                 sereServKTCPrints = new List<HIS_SERE_SERV>();
                 frmBordereauChooseDepartment frm = new frmBordereauChooseDepartment(this.SereServs, sereServKTCs, this.CurrentDepartmentId ?? 0, delegateLoadData);
