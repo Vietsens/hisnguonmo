@@ -162,7 +162,7 @@ namespace HIS.Desktop.Plugins.HisDeathInfo
                 deathInitADO.DeathDataSource.HisDeathWithins = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_DEATH_WITHIN>();
 
                 BackendDataWorker.Reset<V_HIS_DEATH_CERT_BOOK>();
-                var deathCertBooks = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_DEATH_CERT_BOOK>().Where(o => o.IS_ACTIVE == 1 && o.TOTAL > 0 && (o.FROM_NUM_ORDER + o.TOTAL - 1 > o.CURRENT_DEATH_CERT_NUM) && (o.BRANCH_ID == null || o.BRANCH_ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId()));
+                var deathCertBooks = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_DEATH_CERT_BOOK>().Where(o => o.IS_ACTIVE == 1 && o.TOTAL > 0 && (o.FROM_NUM_ORDER + o.TOTAL - 1 > (o.CURRENT_DEATH_CERT_NUM ?? 0)) && (o.BRANCH_ID == null || o.BRANCH_ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId()));
 
                 if (deathCertBooks != null && deathCertBooks.Count() > 0)
                     deathInitADO.DeathDataSource.HisDeathCertBooks = deathCertBooks.ToList();
