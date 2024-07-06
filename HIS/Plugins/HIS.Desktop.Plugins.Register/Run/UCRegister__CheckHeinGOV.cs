@@ -168,7 +168,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                         {
                             Inventec.Common.Address.AddressProcessor adProc = new Inventec.Common.Address.AddressProcessor(BackendDataWorker.Get<V_SDA_PROVINCE>(), BackendDataWorker.Get<V_SDA_DISTRICT>(), BackendDataWorker.Get<V_SDA_COMMUNE>());
                             var data = adProc.SplitFromFullAddress(this.ResultDataADO.ResultHistoryLDO.diaChi);
-                            if (currentPatientSDO == null || (currentPatientSDO != null && data != null && (currentPatientSDO.PROVINCE_CODE != data.ProvinceCode || currentPatientSDO.DISTRICT_CODE != data.DistrictCode || currentPatientSDO.COMMUNE_CODE != data.CommuneCode)))
+                            if ((typeCodeFind == typeCodeFind__CCCDCMND && (currentPatientSDO == null)) || (currentPatientSDO != null && data != null && (currentPatientSDO.PROVINCE_CODE != data.ProvinceCode || currentPatientSDO.DISTRICT_CODE != data.DistrictCode || currentPatientSDO.COMMUNE_CODE != data.CommuneCode)))
                             {
                                 cboProvince.EditValue = data.ProvinceCode;
                                 txtProvinceCode.EditValue = data.ProvinceCode;
