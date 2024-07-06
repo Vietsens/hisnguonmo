@@ -789,6 +789,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         pbQr.Image = null;
                         IsCheckNode = true;
                         btnCreate.Enabled = true;
+                        if (pos != null && pos.IsOpen)
+                            pos.Send(null);
                     }
 
                 }
@@ -1182,7 +1184,10 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     this.currentControlStateRDO.Add(csAddOrUpdate);
                 }
                 this.controlStateWorker.SetData(this.currentControlStateRDO);
-
+                if (pos != null && pos.IsOpen)
+                {
+                    pos.DisposePort();
+                }
                 if (currentTransReq != null && currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)
                 {
                     btnNew_Click(null, null);
@@ -1233,6 +1238,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
 
         }
 
+        bool IsConnectCom = false;
         private void btnConnect_Click(object sender, EventArgs e)
         {
 
@@ -1249,22 +1255,77 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 }
                 else if (cboCom.EditValue != null)
                 {
-                    pos = new PosProcessor(cboCom.EditValue.ToString());
+                    IsConnectCom = true;
+                    pos = new PosProcessor(cboCom.EditValue.ToString(), GetRecivedMessageDevice);
                     string messError = null;
                     if (pos.ConnectPort(ref messError))
                     {
                         cboCom.Enabled = false;
                         btnConnect.Text = "Ngắt kết nối";
+
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => QrCodeProcessor.DicContentBank), QrCodeProcessor.DicContentBank));
+
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentTransReq), currentTransReq));
+                        if (currentTransReq != null && QrCodeProcessor.DicContentBank.ContainsKey(currentTransReq.TRANS_REQ_CODE))
+                            pos.Send(QrCodeProcessor.DicContentBank[currentTransReq.TRANS_REQ_CODE]);
+                        else
+                            pos.Send(null);
                     }
-                    if (QrCodeProcessor.DicContentBank.ContainsKey(currentTransReq.TRANS_REQ_CODE))
-                        pos.Send(QrCodeProcessor.DicContentBank[currentTransReq.TRANS_REQ_CODE]);
                     else
-                        pos.Send(null);
-                    XtraMessageBox.Show(messError);
+                    {
+                        XtraMessageBox.Show(messError);
+                    }
                 }
                 else if (pos != null)
                     pos.DisposePort();
 
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void GetRecivedMessageDevice(bool IsSuccess, string Message)
+        {
+
+            try
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new MethodInvoker(delegate { UpdateSttButton(IsSuccess, Message); }));
+                }
+                else
+                {
+                    UpdateSttButton(IsSuccess, Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+        private void UpdateSttButton(bool IsSuccess, string Message)
+        {
+            try
+            {
+                if (IsSuccess)
+                {
+                    cboCom.Enabled = false;
+                    btnConnect.Text = "Ngắt kết nối";
+                }
+                else
+                {
+                    cboCom.Enabled = true;
+                    btnConnect.Text = "Kết nối";
+                }
+                if (IsConnectCom)
+                {
+                    XtraMessageBox.Show(Message);
+                    IsConnectCom = false;
+                }
             }
             catch (Exception ex)
             {
