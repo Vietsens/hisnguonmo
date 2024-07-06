@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmDetailMarketReport.btnPurchase.Text" xml:space="preserve">
+    <value>ဝယ်ပါ (Ctrl B)</value>
+  </data>
+  <data name="frmDetailMarketReport.groupBox1.Text" xml:space="preserve">
+    <value>ဖော်ပြပါ။</value>
+  </data>
+  <data name="frmDetailMarketReport.groupBox2.Text" xml:space="preserve">
+    <value>မှတ်ချက်</value>
+  </data>
+  <data name="frmDetailMarketReport.labelControl1.Text" xml:space="preserve">
+    <value>အားလုံးကြည့်</value>
+  </data>
+  <data name="frmDetailMarketReport.labelControl2.Text" xml:space="preserve">
+    <value>သင့်သုံးသပ်ချက်-</value>
+  </data>
+  <data name="frmDetailMarketReport.labelControl3.Text" xml:space="preserve">
+    <value>ပထမ</value>
+  </data>
+  <data name="frmDetailMarketReport.labelControl5.Text" xml:space="preserve">
+    <value>၂</value>
+  </data>
+  <data name="frmDetailMarketReport.labelControl6.Text" xml:space="preserve">
+    <value>၃</value>
+  </data>
+  <data name="frmDetailMarketReport.labelControl7.Text" xml:space="preserve">
+    <value>၄</value>
+  </data>
+  <data name="frmDetailMarketReport.labelControl8.Text" xml:space="preserve">
+    <value>၅</value>
+  </data>
+  <data name="frmDetailMarketReport.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmDetailMarketReport.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmDetailMarketReport.layoutControlItem1.Text" xml:space="preserve">
+    <value>အစီရင်ခံကုဒ်-</value>
+  </data>
+  <data name="frmDetailMarketReport.layoutControlItem10.Text" xml:space="preserve">
+    <value>ဖော်ပြပါ-</value>
+  </data>
+  <data name="frmDetailMarketReport.layoutControlItem2.Text" xml:space="preserve">
+    <value>အမျိုးအစားခွဲရန်-</value>
+  </data>
+  <data name="frmDetailMarketReport.layoutControlItem3.Text" xml:space="preserve">
+    <value>အမည်ကို တိုင်ကြားရန်-</value>
+  </data>
+  <data name="frmDetailMarketReport.layoutControlItem4.Text" xml:space="preserve">
+    <value>စာရေးသူ-</value>
+  </data>
+  <data name="frmDetailMarketReport.layoutControlItem5.Text" xml:space="preserve">
+    <value>စျေးနှုန်း:</value>
+  </data>
+  <data name="frmDetailMarketReport.layoutControlItem6.Text" xml:space="preserve">
+    <value>ဝယ်ယူမှုအရေအတွက်-</value>
+  </data>
+  <data name="frmDetailMarketReport.layoutControlItem8.Text" xml:space="preserve">
+    <value>ဝယ်ရန်-</value>
+  </data>
+  <data name="frmDetailMarketReport.lblAverageRating.Text" xml:space="preserve">
+    <value>၄.၁</value>
+  </data>
+  <data name="frmDetailMarketReport.lblAverageRatings.Text" xml:space="preserve">
+    <value>၄.၁</value>
+  </data>
+  <data name="frmDetailMarketReport.lblNumAllRatings.Text" xml:space="preserve">
+    <value>၁၅.၆၅၆</value>
+  </data>
+  <data name="frmDetailMarketReport.showFullDescribe.Text" xml:space="preserve">
+    <value>ပိုကြည့်</value>
+  </data>
+  <data name="frmDetailMarketReport.Text" xml:space="preserve">
+    <value>အသေးစိတ် open source စျေးကွက်အစီရင်ခံစာ</value>
+  </data>
+  <data name="frmDetailMarketReport.txtAuthor.Text" xml:space="preserve">
+    <value>စာရေးသူ</value>
+  </data>
+  <data name="frmDetailMarketReport.txtCodeReport.Text" xml:space="preserve">
+    <value>ကုဒ်သတင်းပို့ပါ။</value>
+  </data>
+  <data name="frmDetailMarketReport.txtNameReport.Text" xml:space="preserve">
+    <value>အမည်ကို သတင်းပို့ပါ။</value>
+  </data>
+  <data name="frmDetailMarketReport.txtNumOfReview2.Text" xml:space="preserve">
+    <value>အဆင့်သတ်မှတ်ချက်များ</value>
+  </data>
+  <data name="frmDetailMarketReport.txtSummary.Text" xml:space="preserve">
+    <value>အနှစ်ချုပ်အချက်အလက်-</value>
+  </data>
+  <data name="frmDetailMarketReport.txtTypeReport.Text" xml:space="preserve">
+    <value>အမျိုးအစားခွဲပါ။</value>
+  </data>
+  <data name="frmListComment.btnSend.Text" xml:space="preserve">
+    <value>တုံ့ပြန်ချက်ပေးပို့ပါ။</value>
+  </data>
+  <data name="frmListComment.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmListComment.Text" xml:space="preserve">
+    <value>မှတ်ချက်အကျဉ်းချုပ်</value>
+  </data>
+  <data name="frmListComment.txtComment.Properties.NullText" xml:space="preserve">
+    <value>မှတ်ချက်များထည့်ပါ။</value>
+  </data>
+  <data name="frmListComment.txtComment.Properties.NullValuePrompt" xml:space="preserve">
+    <value>မှတ်ချက်များထည့်ပါ။</value>
+  </data>
+  <data name="FrmShowFull.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="UCItemComment.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="UCItemComment.layoutControlItem3.Text" xml:space="preserve">
+    <value>တုံ့ပြန်ချက်</value>
+  </data>
+  <data name="UCItemComment.lblContent.Text" xml:space="preserve">
+    <value>အနှစ်ချုပ်အချက်အလက်-</value>
+  </data>
+  <data name="UCItemComment.lblNumLike.Text" xml:space="preserve">
+    <value>(၂၉)၊</value>
+  </data>
+  <data name="UCItemComment.lblNumRepply.Text" xml:space="preserve">
+    <value>(တကျိပ်)</value>
+  </data>
+  <data name="UCItemComment.lblStatusLike.Text" xml:space="preserve">
+    <value>ဦးစားပေး</value>
+  </data>
+  <data name="UCItemComment.lblTimePost.Text" xml:space="preserve">
+    <value>|</value>
+  </data>
+  <data name="UCItemComment.lblUserName.Text" xml:space="preserve">
+    <value>0001_tungdt - Dang Thanh Tung</value>
+  </data>
+</root>
