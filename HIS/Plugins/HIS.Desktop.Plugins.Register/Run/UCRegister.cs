@@ -4484,9 +4484,11 @@ namespace HIS.Desktop.Plugins.Register.Run
                 {
                     var type = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.ID == Int64.Parse(cboTreatmentType.EditValue.ToString()));
                     lciHospitalizeReason.Visibility = type != null && type.HEIN_TREATMENT_TYPE_CODE == MOS.LibraryHein.Bhyt.HeinTreatmentType.HeinTreatmentTypeCode.TREAT ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    if (HisConfigCFG.InHospitalizationReasonRequired && lciHospitalizeReason.Visible)
+                    
+                    if (HisConfigCFG.InHospitalizationReasonRequired && lciHospitalizeReason.Visible )
                     {
                         lciHospitalizeReason.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        
                         ValidateComboHosspitalizeReason();
                     }
                 }
@@ -4546,6 +4548,34 @@ namespace HIS.Desktop.Plugins.Register.Run
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        /// <summary>
+        /// chon ly do vao noi tru tu viec double click
+        /// </summary>
+        public void reasonNT(string code, string name)
+        {
+            try
+            {
+                this.cboHosReason.Text = name;
+            }
+            catch (Exception ex)
+            {
+                
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void cboHosReason_DoubleClick(object sender, EventArgs e)
+        {
+            try
+            {
+                frmReasonNt frmReason = new frmReasonNt(reasonNT);
+                frmReason.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
