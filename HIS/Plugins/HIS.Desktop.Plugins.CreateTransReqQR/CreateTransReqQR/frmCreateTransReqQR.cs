@@ -789,6 +789,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         pbQr.Image = null;
                         IsCheckNode = true;
                         btnCreate.Enabled = true;
+                        if (pos != null && pos.IsOpen)
+                            pos.Send(null);
                     }
 
                 }
@@ -1260,7 +1262,11 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     {
                         cboCom.Enabled = false;
                         btnConnect.Text = "Ngắt kết nối";
-                        if (QrCodeProcessor.DicContentBank.ContainsKey(currentTransReq.TRANS_REQ_CODE))
+
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => QrCodeProcessor.DicContentBank), QrCodeProcessor.DicContentBank));
+
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentTransReq), currentTransReq));
+                        if (currentTransReq != null && QrCodeProcessor.DicContentBank.ContainsKey(currentTransReq.TRANS_REQ_CODE))
                             pos.Send(QrCodeProcessor.DicContentBank[currentTransReq.TRANS_REQ_CODE]);
                         else
                             pos.Send(null);
