@@ -46,10 +46,10 @@ namespace HIS.Desktop.Plugins.Register.Run
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCRegister));
             this.lciRegisterEditor = new DevExpress.XtraLayout.LayoutControl();
             this.txtReasonVV = new DevExpress.XtraEditors.TextEdit();
@@ -468,12 +468,13 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // txtReasonVV
             // 
-            this.txtReasonVV.Location = new System.Drawing.Point(989, 216);
+            this.txtReasonVV.Location = new System.Drawing.Point(983, 216);
             this.txtReasonVV.Name = "txtReasonVV";
-            this.txtReasonVV.Size = new System.Drawing.Size(109, 20);
+            this.txtReasonVV.Size = new System.Drawing.Size(115, 20);
             this.txtReasonVV.StyleController = this.lciRegisterEditor;
             this.txtReasonVV.TabIndex = 72;
             this.txtReasonVV.ToolTip = "Lý do vào viện";
+            this.txtReasonVV.Validated += new System.EventHandler(this.txtReasonVV_Validated);
             // 
             // chkSignExam
             // 
@@ -930,7 +931,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.cboTHX.Name = "cboTHX";
             this.cboTHX.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.cboTHX.Properties.NullText = "";
             this.cboTHX.Properties.PopupSizeable = false;
             this.cboTHX.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
@@ -1607,7 +1608,6 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.cboHosReason.Size = new System.Drawing.Size(134, 20);
             this.cboHosReason.StyleController = this.lciRegisterEditor;
             this.cboHosReason.TabIndex = 71;
-            this.cboHosReason.EditValueChanged += new System.EventHandler(this.cboHosReason_EditValueChanged);
             this.cboHosReason.VisibleChanged += new System.EventHandler(this.cboHosReason_VisibleChanged);
             this.cboHosReason.DoubleClick += new System.EventHandler(this.cboHosReason_DoubleClick);
             // 
@@ -2175,7 +2175,8 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.layoutControlReasonVV.Control = this.txtReasonVV;
             this.layoutControlReasonVV.Location = new System.Drawing.Point(365, 24);
             this.layoutControlReasonVV.Name = "layoutControlReasonVV";
-            this.layoutControlReasonVV.Padding = new DevExpress.XtraLayout.Utils.Padding(36, 2, 2, 2);
+            this.layoutControlReasonVV.OptionsToolTip.ToolTip = "Lý do vào viện";
+            this.layoutControlReasonVV.Padding = new DevExpress.XtraLayout.Utils.Padding(30, 2, 2, 2);
             this.layoutControlReasonVV.Size = new System.Drawing.Size(198, 41);
             this.layoutControlReasonVV.Text = "Lý do VV:";
             this.layoutControlReasonVV.TextSize = new System.Drawing.Size(48, 13);

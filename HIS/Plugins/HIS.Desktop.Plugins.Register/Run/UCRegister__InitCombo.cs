@@ -175,7 +175,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             {
                 List<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON> datas = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>().Where(o=>o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 this.InitComboCommon(this.cboHosReason, datas, "ID", "HOSPITALIZE_REASON_NAME", "HOSPITALIZE_REASON_CODE");
-                this.cboHosReason.Properties.ImmediatePopup = true;
+                //this.cboHosReason.Properties.ImmediatePopup = true;
             }
             catch (Exception ex)
             {

@@ -89,6 +89,7 @@ namespace HIS.Desktop.Plugins.Register.Run
         internal bool isShowMess;
         internal string HospitalizeReasonCode;
         internal string HospitalizeReasonName;
+        internal string HospitalizeReason;
         List<HIS_PATIENT_TYPE> currentPatientTypeAllowByPatientType;
         List<HisPatientSDO> currentSearchedPatients;
         HisServiceReqExamRegisterResultSDO currentHisExamServiceReqResultSDO { get; set; }
@@ -4479,12 +4480,14 @@ namespace HIS.Desktop.Plugins.Register.Run
                 cboHosReason.EditValue = null;
                 dxValidationProviderControl.SetValidationRule(cboHosReason, null);
                 lciHospitalizeReason.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlReasonVV.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 lciHospitalizeReason.AppearanceItemCaption.ForeColor = Color.Black;
                 if (cboTreatmentType.EditValue != null)
                 {
                     var type = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.ID == Int64.Parse(cboTreatmentType.EditValue.ToString()));
                     lciHospitalizeReason.Visibility = type != null && type.HEIN_TREATMENT_TYPE_CODE == MOS.LibraryHein.Bhyt.HeinTreatmentType.HeinTreatmentTypeCode.TREAT ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    
+                    layoutControlReasonVV.Visibility = type != null && type.HEIN_TREATMENT_TYPE_CODE == MOS.LibraryHein.Bhyt.HeinTreatmentType.HeinTreatmentTypeCode.TREAT ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
                     if (HisConfigCFG.InHospitalizationReasonRequired && lciHospitalizeReason.Visible )
                     {
                         lciHospitalizeReason.AppearanceItemCaption.ForeColor = Color.Maroon;
@@ -4507,11 +4510,11 @@ namespace HIS.Desktop.Plugins.Register.Run
             {
                 if(cboHosReason.EditValue != null)
                 {
-                    var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o=>o.ID == Int64.Parse(cboHosReason.EditValue.ToString()));
-                    if (data != null)
+                    //var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o=>o.ID == Int64.Parse(cboHosReason.EditValue.ToString()));
+                    if (selectedReason != null)
                     {
-                        HospitalizeReasonCode = data.HOSPITALIZE_REASON_CODE;
-                        HospitalizeReasonName = data.HOSPITALIZE_REASON_NAME;
+                        HospitalizeReasonCode = selectedReason.HOSPITALIZE_REASON_CODE;
+                        HospitalizeReasonName = selectedReason.HOSPITALIZE_REASON_NAME;
                     }    
                 }
                 else
@@ -4554,11 +4557,17 @@ namespace HIS.Desktop.Plugins.Register.Run
         /// <summary>
         /// chon ly do vao noi tru tu viec double click
         /// </summary>
-        public void reasonNT(string code, string name)
+        private HIS_HOSPITALIZE_REASON selectedReason = new HIS_HOSPITALIZE_REASON();
+        public void reasonNT(HIS_HOSPITALIZE_REASON selected)
         {
             try
             {
-                this.cboHosReason.Text = name;
+                if (selected != null)
+                {
+                    this.cboHosReason.Text = selected.HOSPITALIZE_REASON_NAME;
+                    this.selectedReason = selected;
+                }
+                
             }
             catch (Exception ex)
             {
@@ -4576,6 +4585,18 @@ namespace HIS.Desktop.Plugins.Register.Run
             catch (Exception ex)
             {
                 
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtReasonVV_Validated(object sender, EventArgs e)
+        {
+            try
+            {
+                HospitalizeReason = txtReasonVV.Text;
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

@@ -15,6 +15,9 @@ using HIS.Desktop.LocalStorage.ConfigApplication;
 using Inventec.Common.Adapter;
 using MOS.EFMODEL.DataModels;
 using HIS.Desktop.ApiConsumer;
+using System.Resources;
+using Inventec.Desktop.Common.LanguageManager;
+using HIS.Desktop.Controls.Session;
 
 namespace HIS.Desktop.Plugins.Register.Run
 {
@@ -31,13 +34,43 @@ namespace HIS.Desktop.Plugins.Register.Run
         {
             try
             {
+                SetCaptionByLanguageKey();
                 FillDataToControl();
+                if (this.txtReasonName != null) txtReasonName.Focus();
+
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+
+        #region load language
+
+        private void SetCaptionByLanguageKey()
+        {
+            try
+            {
+                ////Khoi tao doi tuong resource
+                Resources.ResourceLanguageManager.LanguagefrmReasonNT = new ResourceManager("HIS.Desktop.Plugins.Register.Resources.Lang", typeof(frmReasonNt).Assembly);
+
+                ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
+                this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmReasonNt.layoutControl1.Text", Resources.ResourceLanguageManager.LanguagefrmReasonNT, LanguageManager.GetCulture());
+                this.txtSearchvalue.Properties.NullText = Inventec.Common.Resource.Get.Value("frmReasonNt.txtSearchvalue.Properties.NullText", Resources.ResourceLanguageManager.LanguagefrmReasonNT, LanguageManager.GetCulture());
+                this.txtSearchvalue.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmReasonNt.txtSearchvalue.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguagefrmReasonNT, LanguageManager.GetCulture());
+                this.btnSave.Text = Inventec.Common.Resource.Get.Value("frmReasonNt.btnSave.Text", Resources.ResourceLanguageManager.LanguagefrmReasonNT, LanguageManager.GetCulture());
+                this.gridColumn1.Caption = Inventec.Common.Resource.Get.Value("frmReasonNt.gridColumn1.Caption", Resources.ResourceLanguageManager.LanguagefrmReasonNT, LanguageManager.GetCulture());
+                this.HOSPITALIZE_REASON_CODE.Caption = Inventec.Common.Resource.Get.Value("frmReasonNt.HOSPITALIZE_REASON_CODE.Caption", Resources.ResourceLanguageManager.LanguagefrmReasonNT, LanguageManager.GetCulture());
+                this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("frmReasonNt.gridColumn3.Caption", Resources.ResourceLanguageManager.LanguagefrmReasonNT, LanguageManager.GetCulture());
+                this.Text = Inventec.Common.Resource.Get.Value("frmReasonNt.Text", Resources.ResourceLanguageManager.LanguagefrmReasonNT, LanguageManager.GetCulture());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        #endregion
         int rowCount = 0;
         int dataTotal = 0;
         int startPage = 0;
@@ -87,17 +120,21 @@ namespace HIS.Desktop.Plugins.Register.Run
                 filter.ORDER_FIELD = "MODIFY_TIME";
                 SetFilter(ref filter);
                 Inventec.Core.ApiResultObject<List<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>> apiResult = null;
-                apiResult = new BackendAdapter(paramCommon).GetRO<List<HIS_HOSPITALIZE_REASON>>("/api/HisHospitalize/Get",ApiConsumers.MosConsumer,filter,paramCommon);
+                apiResult = new BackendAdapter(paramCommon).GetRO<List<HIS_HOSPITALIZE_REASON>>("/api/HisHospitalizeReason/Get",ApiConsumers.MosConsumer,filter,paramCommon);
                 if (apiResult != null)
                 {
                     var data = apiResult.Data;
                     if (data != null)
                     {
-                        grvReason.GridControl.DataSource = data;
+                        grcReason.DataSource = data;
                         rowCount = (data == null ? 0 : data.Count);
                         dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
                     }
                 }
+                grcReason.EndUpdate();
+                #region Process has exception
+                SessionManager.ProcessTokenLost(paramCommon);
+                #endregion
             }
             catch (Exception ex)
             {
@@ -123,11 +160,11 @@ namespace HIS.Desktop.Plugins.Register.Run
         {
             try
             {
-                if (e.Column.FieldName == "STT")
-                {
-
-                    e.Value = e.ListSourceRowIndex + 1 + startPage;
-                }
+                if (e.IsGetData && e.Column.UnboundType != DevExpress.Data.UnboundColumnType.Bound)
+                    if (e.Column.FieldName == "STT")
+                    {
+                        e.Value = e.ListSourceRowIndex + 1 + startPage;
+                    }
             }
             catch (Exception ex)
             {
@@ -161,9 +198,14 @@ namespace HIS.Desktop.Plugins.Register.Run
             {
                 if (selectedData != null)
                 {
-                    delegateData(selectedData.HOSPITALIZE_REASON_CODE, selectedData.HOSPITALIZE_REASON_NAME);
+                    delegateData(selectedData);
+                    this.Close();
                 }
-                else delegateData("", "");
+                else
+                {
+                    delegateData(null);
+                    this.Close();
+                }
             }
             catch (Exception ex)
             {
@@ -203,6 +245,56 @@ namespace HIS.Desktop.Plugins.Register.Run
                LogSystem.Error(ex);
             }
         }
+
+        private void txtReasonName_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                this.txtReasonCode.Text = "";
+                this.txtReasonName.Text = "";
+                this.selectedData = null;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
+        private void txtReasonName_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(txtReasonName.Text))
+                {
+                    txtReasonCode.Text = "";
+                    this.selectedData = null;
+                }
+                    
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Error(ex);
+            }
+        }
+
+        private void txtReasonCode_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(txtReasonCode.Text))
+                {
+                    txtReasonCode.Text = "";
+                    this.selectedData = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Error(ex);
+            }
+        }
     }
-    public delegate void DelegateLydoNT(string code, string name);
+    public delegate void DelegateLydoNT(HIS_HOSPITALIZE_REASON data);
 }

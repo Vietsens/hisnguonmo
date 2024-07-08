@@ -13,5 +13,6 @@ namespace HIS.Desktop.Plugins.Register.Resources
         public static ResourceManager LanguageUCRegister { get; set; }
         public static ResourceManager LanguagefrmPatientExtend { get; set; }
         public static ResourceManager LanguagefrmPatientChoice { get; set; }
+        public static ResourceManager LanguagefrmReasonNT { get; set; }
     }
 }
