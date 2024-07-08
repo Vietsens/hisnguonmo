@@ -1,0 +1,866 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A61418D7-2D72-4C4D-9E99-E0ADF913FC4E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HIS.UC.FormType</RootNamespace>
+    <AssemblyName>HIS.UC.FormType</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility" />
+    <Reference Include="ACS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\ACS\ACS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="ACS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\ACS\ACS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="AOS.EFMODEL">
+      <HintPath>..\..\..\RELEASE\AOS\AOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="AOS.Filter">
+      <HintPath>..\..\..\RELEASE\AOS\AOS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Charts.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DevExpress.Charts.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DevExpress.Data.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Docs.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DevExpress.Docs.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Office.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DevExpress.Office.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DevExpress.Printing.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Spreadsheet.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DevExpress.Spreadsheet.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DevExpress.Utils.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DevExpress.XtraBars.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DevExpress.XtraCharts.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DevExpress.XtraEditors.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DevExpress.XtraGrid.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DevExpress.XtraLayout.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraNavBar.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DevExpress.XtraNavBar.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DevExpress.XtraPrinting.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DevExpress.XtraReports.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraRichEdit.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DevExpress.XtraRichEdit.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraSpreadsheet.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DevExpress.XtraSpreadsheet.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DevExpress.XtraTreeList.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraVerticalGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DevExpress.XtraVerticalGrid.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="His.UC.LibraryMessage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\HIS\His.UC.LibraryMessage\His.UC.LibraryMessage.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.HIS_RS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.SAR_RS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.SAR_RS\IMSys.DbConfig.SAR_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Adapter">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Controls.EditorLoader, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.DateTime">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Mapper">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Repository">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Repository\Inventec.Common.Repository.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Resource, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.String">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.TypeConvert">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.WebApiClient">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.XmlConfig">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.XmlConfig\Inventec.Common.XmlConfig.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.Message">
+      <HintPath>..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.CustomControl">
+      <HintPath>..\..\..\RELEASE\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.ClientSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Login">
+      <HintPath>..\..\..\RELEASE\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Paging">
+      <HintPath>..\..\..\RELEASE\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\MOS\MOS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.LibraryHein.Bhyt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SAR.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\SAR\SAR.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\SAR\SAR.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\SAR\SAR.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\SDA\SDA.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\SDA\SDA.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\SDA\SDA.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Collections" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="THE.EFMODEL">
+      <HintPath>..\..\..\RELEASE\THE\THE.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="THE.Filter">
+      <HintPath>..\..\..\RELEASE\THE\THE.Filter.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApiConsumerStore.cs" />
+    <Compile Include="ApplicationStore.cs" />
+    <Compile Include="BackendDataWorker.cs" />
+    <Compile Include="Base\BusinessBase.cs" />
+    <Compile Include="Base\ConfigSystemStore.cs" />
+    <Compile Include="Base\GridCheckMarksSelection.cs" />
+    <Compile Include="Base\LanguageManager.cs" />
+    <Compile Include="Base\ManagerConstant.cs" />
+    <Compile Include="Base\MessageBoxManager.cs" />
+    <Compile Include="Base\MessageUtil.cs" />
+    <Compile Include="Base\NewLocalizerDX.cs" />
+    <Compile Include="Base\RegistryConstant.cs" />
+    <Compile Include="Base\ResouceManager.cs" />
+    <Compile Include="Config\AosFormTypeConfig.cs" />
+    <Compile Include="Config\SdaFormTypeConfig.cs" />
+    <Compile Include="Config\SarFormTypeConfig.cs" />
+    <Compile Include="Config\HisFormTypeConfig.cs" />
+    <Compile Include="Config\OtherFormTypeConfig.cs" />
+    <Compile Include="Config\TheFormTypeConfig.cs" />
+    <Compile Include="ConvertUtils.cs" />
+    <Compile Include="CopyFilter\CopyFilter.cs" />
+    <Compile Include="Core\AccountBookCombo_F23__\AccountBookComboFDO.cs" />
+    <Compile Include="Core\AccountBookCombo_F23__\AccountBookComboProcessor.cs" />
+    <Compile Include="Core\AccountBookCombo_F23__\UCAccountBookCombo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\AccountBookCombo_F23__\UCAccountBookCombo.Designer.cs">
+      <DependentUpon>UCAccountBookCombo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\AccountBookCombo_F23__\Validation\AccountBookValidationRule.cs" />
+    <Compile Include="Core\Checkbox_F19__\CheckFDO.cs" />
+    <Compile Include="Core\Checkbox_F19__\CheckProcessor.cs" />
+    <Compile Include="Core\Checkbox_F19__\UCCheck.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\Checkbox_F19__\UCCheck.Designer.cs">
+      <DependentUpon>UCCheck.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Checkbox_F19__\Validation\CheckValidationRule.cs" />
+    <Compile Include="Core\ComboBoxAtComboBox_F4__\ComboBoxAtComboBoxFDO.cs" />
+    <Compile Include="Core\ComboBoxAtComboBox_F4__\ComboBoxAtComboBoxProcessor.cs" />
+    <Compile Include="Core\ComboBoxAtComboBox_F4__\UCComboBoxAtComboBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\ComboBoxAtComboBox_F4__\UCComboBoxAtComboBox.Designer.cs">
+      <DependentUpon>UCComboBoxAtComboBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\ComboBoxAtComboBox_F4__\Validation\ComboBoxAtComboBoxServiceTypeValidationRule.cs" />
+    <Compile Include="Core\ComboBoxAtComboBox_F4__\Validation\ComboBoxAtComboBoxServiceValidationRule.cs" />
+    <Compile Include="Core\DepartmentCombo_F9__\UCDepartmentCombo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\DepartmentCombo_F9__\UCDepartmentCombo.Designer.cs">
+      <DependentUpon>UCDepartmentCombo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\F33\F33FDO.cs" />
+    <Compile Include="Core\F33\F33Processor.cs" />
+    <Compile Include="Core\F33\UCF33.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\F33\UCF33.Designer.cs">
+      <DependentUpon>UCF33.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\F33\Validation\F33GrandParentValidationRule.cs" />
+    <Compile Include="Core\F33\Validation\F33ChildValidationRule.cs" />
+    <Compile Include="Core\DateMonthYear_F10__\DateMonthYearFDO.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\DateMonthYear_F10__\DateMonthYearProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\DateMonthYear_F10__\UCDateMonthYear.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\DateMonthYear_F10__\UCDateMonthYear.Designer.cs">
+      <DependentUpon>UCDateMonthYear.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\DateMonthYear_F10__\Validation\DepartmentValidationRule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\DateTime_F18__\DateTimeFDO.cs" />
+    <Compile Include="Core\DateTime_F18__\DateTimeProcessor.cs" />
+    <Compile Include="Core\DateTime_F18__\UCDateTime.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\DateTime_F18__\UCDateTime.Designer.cs">
+      <DependentUpon>UCDateTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\DateTime_F18__\Validation\TimeValidationRule.cs" />
+    <Compile Include="Core\DepartmentCombo_F9__\DepartmentComboFDO.cs" />
+    <Compile Include="Core\DepartmentCombo_F9__\DepartmentComboProcessor.cs" />
+    <Compile Include="Core\DepartmentCombo_F9__\Validation\DepartmentValidationRule.cs" />
+    <Compile Include="Core\ExpMestTypeComboCheck_F24__\ExpMestTypeComboCheckFDO.cs" />
+    <Compile Include="Core\ExpMestTypeComboCheck_F24__\ExpMestTypeComboCheckProcessor.cs" />
+    <Compile Include="Core\ExpMestTypeComboCheck_F24__\UCExpMestTypeComboCheck.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\ExpMestTypeComboCheck_F24__\UCExpMestTypeComboCheck.Designer.cs">
+      <DependentUpon>UCExpMestTypeComboCheck.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\ExpMestTypeComboCheck_F24__\Validation\ExpMestTypeValidationRule.cs" />
+    <Compile Include="Core\F37\F37FDO.cs" />
+    <Compile Include="Core\F37\F37Processor.cs" />
+    <Compile Include="Core\F37\UCF37.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\F37\UCF37.Designer.cs">
+      <DependentUpon>UCF37.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\F37\Validation\F37ChildValidationRule.cs" />
+    <Compile Include="Core\F37\Validation\F37GrandParentValidationRule.cs" />
+    <Compile Include="Core\F38\F38FDO.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\F38\F38Processor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\F38\UCF38.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\F38\UCF38.Designer.cs">
+      <DependentUpon>UCF38.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\F38\Validation\F38ChildValidationRule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\F38\Validation\F38GrandParentValidationRule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\FilterExtra_F11__\FilterExtraProcessor.cs" />
+    <Compile Include="Core\FilterExtra_F11__\UCFilterExtra.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\FilterExtra_F11__\UCFilterExtra.Designer.cs">
+      <DependentUpon>UCFilterExtra.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\HeinTreatmentTypeRadio_F31__\HeinTreatmentTypeRadioFDO.cs" />
+    <Compile Include="Core\HeinTreatmentTypeRadio_F31__\HeinTreatmentTypeRadioProcessor.cs" />
+    <Compile Include="Core\HeinTreatmentTypeRadio_F31__\UCHeinTreatmentTypeRadio.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\HeinTreatmentTypeRadio_F31__\UCHeinTreatmentTypeRadio.Designer.cs">
+      <DependentUpon>UCHeinTreatmentTypeRadio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\HeinTreatmentTypeRadio_F31__\Validation\HeinTreatmentTypeValidationRule.cs" />
+    <Compile Include="Core\HourFromTo_F5__\HourFromToFDO.cs" />
+    <Compile Include="Core\HourFromTo_F5__\HourFromToProcessor.cs" />
+    <Compile Include="Core\HourFromTo_F5__\UCHourFromTo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\HourFromTo_F5__\UCHourFromTo.Designer.cs">
+      <DependentUpon>UCHourFromTo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\HourFromTo_F5__\Validation\FromHourValidationRule.cs" />
+    <Compile Include="Core\HourFromTo_F5__\Validation\ToHourValidationRule.cs" />
+    <Compile Include="Core\MaterialTypeComboByMediStockCombo_F27__\HisMedicineBeanDAL.cs" />
+    <Compile Include="Core\MaterialTypeComboByMediStockCombo_F27__\MaterialTypeComboFDO.cs" />
+    <Compile Include="Core\MaterialTypeComboByMediStockCombo_F27__\MaterialTypeComboProcessor.cs" />
+    <Compile Include="Core\MaterialTypeComboByMediStockCombo_F27__\UCMaterialTypeCombo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\MaterialTypeComboByMediStockCombo_F27__\UCMaterialTypeCombo.Designer.cs">
+      <DependentUpon>UCMaterialTypeCombo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\MaterialTypeComboByMediStockCombo_F27__\Validation\DepartmentValidationRule.cs" />
+    <Compile Include="Core\MaterialTypeComboByMediStockCombo_F27__\Validation\MaterialTypeValidationRule.cs" />
+    <Compile Include="Core\MaterialTypeComboByMediStockCombo_F27__\Validation\MediStockValidationRule.cs" />
+    <Compile Include="Core\Medicin_F29__\MedicinFDO.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\Medicin_F29__\MedicinProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\Medicin_F29__\UCMedicin.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\Medicin_F29__\UCMedicin.Designer.cs">
+      <DependentUpon>UCMedicin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Medicin_F29__\Validation\MedicinValidationRule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\MediStockComboFilterByDepartmentCombo_F2__\MediStockComboFilterByDepartmentComboFDO.cs" />
+    <Compile Include="Core\MediStockComboFilterByDepartmentCombo_F2__\MediStockComboFilterByDepartmentComboProcessor.cs" />
+    <Compile Include="Core\MediStockComboFilterByDepartmentCombo_F2__\UCMediStockComboFilterByDepartmentCombo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\MediStockComboFilterByDepartmentCombo_F2__\UCMediStockComboFilterByDepartmentCombo.Designer.cs">
+      <DependentUpon>UCMediStockComboFilterByDepartmentCombo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\MediStockComboFilterByDepartmentCombo_F2__\Validation\DepartmentValidationRule.cs" />
+    <Compile Include="Core\MediStockComboFilterByDepartmentCombo_F2__\Validation\RoomValidationRule.cs" />
+    <Compile Include="Core\MediStockPereiodByMediStock_F28__\MediStockPereiodByMediStockFDO.cs" />
+    <Compile Include="Core\MediStockPereiodByMediStock_F28__\MediStockPereiodByMediStockProcessor.cs" />
+    <Compile Include="Core\MediStockPereiodByMediStock_F28__\UCMediStockPereiodByMediStock.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\MediStockPereiodByMediStock_F28__\UCMediStockPereiodByMediStock.Designer.cs">
+      <DependentUpon>UCMediStockPereiodByMediStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\MediStockPereiodByMediStock_F28__\Validation\DepartmentValidationRule.cs" />
+    <Compile Include="Core\MediStockSttFilterCheckBoxGroup_F12__\MediStockSttFilterCheckBoxGroupFDO.cs" />
+    <Compile Include="Core\MediStockSttFilterCheckBoxGroup_F12__\MediStockSttFilterCheckBoxGroupProcessor.cs" />
+    <Compile Include="Core\MediStockSttFilterCheckBoxGroup_F12__\UCMediStockSttFilterCheckBoxGroup.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\MediStockSttFilterCheckBoxGroup_F12__\UCMediStockSttFilterCheckBoxGroup.Designer.cs">
+      <DependentUpon>UCMediStockSttFilterCheckBoxGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Mounth_F17__\MounthFDO.cs" />
+    <Compile Include="Core\Mounth_F17__\MounthProcessor.cs" />
+    <Compile Include="Core\Mounth_F17__\UCMounth.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\Mounth_F17__\UCMounth.Designer.cs">
+      <DependentUpon>UCMounth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Mounth_F17__\Validation\TimeValidationRule.cs" />
+    <Compile Include="Core\MultiMedicineGridCheckFilterByMediStockPeriodByMediStockByDepartment_F25__\MultiMedicineGridCheckFilterByMediStockPeriodByMediStockByDepartmentFDO.cs" />
+    <Compile Include="Core\MultiMedicineGridCheckFilterByMediStockPeriodByMediStockByDepartment_F25__\MultiMedicineGridCheckFilterByMediStockPeriodByMediStockByDepartmentProcessor.cs" />
+    <Compile Include="Core\MultiMedicineGridCheckFilterByMediStockPeriodByMediStockByDepartment_F25__\UCMultiMedicineGridCheckFilterByMediStockPeriodByMediStockByDepartment.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\MultiMedicineGridCheckFilterByMediStockPeriodByMediStockByDepartment_F25__\UCMultiMedicineGridCheckFilterByMediStockPeriodByMediStockByDepartment.Designer.cs">
+      <DependentUpon>UCMultiMedicineGridCheckFilterByMediStockPeriodByMediStockByDepartment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\F20__\F20FDO.cs" />
+    <Compile Include="Core\F20__\F20Processor.cs" />
+    <Compile Include="Core\F20__\UCF20.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\F20__\UCF20.Designer.cs">
+      <DependentUpon>UCF20.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\MultipleRoomComboCheckFilterByDepartmentComboCheck_F8__\MultipleRoomComboCheckFilterByDepartmentComboCheckFDO.cs" />
+    <Compile Include="Core\MultipleRoomComboCheckFilterByDepartmentComboCheck_F8__\MultipleRoomComboCheckFilterByDepartmentComboCheckProcessor.cs" />
+    <Compile Include="Core\MultipleRoomComboCheckFilterByDepartmentComboCheck_F8__\UCMultipleRoomComboCheckFilterByDepartmentComboCheck.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\MultipleRoomComboCheckFilterByDepartmentComboCheck_F8__\UCMultipleRoomComboCheckFilterByDepartmentComboCheck.Designer.cs">
+      <DependentUpon>UCMultipleRoomComboCheckFilterByDepartmentComboCheck.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Numericft_F30__\NumericftFDO.cs" />
+    <Compile Include="Core\Numericft_F30__\NumericProcessor.cs" />
+    <Compile Include="Core\Numericft_F30__\UCNumeric.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\Numericft_F30__\UCNumeric.Designer.cs">
+      <DependentUpon>UCNumeric.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Numericft_F30__\Validation\NumericValidationRule.cs" />
+    <Compile Include="Core\PatientTypeCombo_F13__\PatientTypeComboFDO.cs" />
+    <Compile Include="Core\PatientTypeCombo_F13__\PatientTypeComboProcessor.cs" />
+    <Compile Include="Core\PatientTypeCombo_F13__\UCPatientTypeCombo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\PatientTypeCombo_F13__\UCPatientTypeCombo.Designer.cs">
+      <DependentUpon>UCPatientTypeCombo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\PatientTypeCombo_F13__\Validation\PatientTypeValidationRule.cs" />
+    <Compile Include="Core\RoleUserGrid_F36__\ADO\HisMestInveUserAdo.cs" />
+    <Compile Include="Core\RoleUserGrid_F36__\ADO\RoleUserADO.cs" />
+    <Compile Include="Core\RoleUserGrid_F36__\config.cs" />
+    <Compile Include="Core\RoleUserGrid_F36__\RoleUserFDO.cs" />
+    <Compile Include="Core\RoleUserGrid_F36__\RoleUserProcessor.cs" />
+    <Compile Include="Core\RoleUserGrid_F36__\UCRoleUser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\RoleUserGrid_F36__\UCRoleUser.Designer.cs">
+      <DependentUpon>UCRoleUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\RoomCombo_F3__\RoomComboFDO.cs" />
+    <Compile Include="Core\RoomCombo_F3__\RoomComboProcessor.cs" />
+    <Compile Include="Core\RoomCombo_F3__\UCRoomCombo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\RoomCombo_F3__\UCRoomCombo.Designer.cs">
+      <DependentUpon>UCRoomCombo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\RoomCombo_F3__\Validation\RoomValidationRule.cs" />
+    <Compile Include="Core\ServiceGroupCombo_F32__\ServiceGroupComboFDO.cs" />
+    <Compile Include="Core\ServiceGroupCombo_F32__\ServiceGroupComboProcessor.cs" />
+    <Compile Include="Core\ServiceGroupCombo_F32__\UCServiceGroupCombo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\ServiceGroupCombo_F32__\UCServiceGroupCombo.Designer.cs">
+      <DependentUpon>UCServiceGroupCombo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\ServiceGroupCombo_F32__\Validation\ServiceTypeValidationRule.cs" />
+    <Compile Include="Core\SQLInput_F34__\SqlAdo.cs" />
+    <Compile Include="Core\SQLInput_F34__\SQLInputFDO.cs" />
+    <Compile Include="Core\SQLInput_F34__\SQLInputProcessor.cs" />
+    <Compile Include="Core\SQLInput_F34__\UCSql.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\SQLInput_F34__\UCSql.Designer.cs">
+      <DependentUpon>UCSql.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Str_F6__\StrFDO.cs" />
+    <Compile Include="Core\Str_F6__\StrProcessor.cs" />
+    <Compile Include="Core\Str_F6__\UCStr.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\Str_F6__\UCStr.Designer.cs">
+      <DependentUpon>UCStr.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Str_F6__\Validation\StrValidationRule.cs" />
+    <Compile Include="Core\ThuaThieuVienPhiRadio_F14__\ThuaThieuVienPhiRadioFDO.cs" />
+    <Compile Include="Core\ThuaThieuVienPhiRadio_F14__\ThuaThieuVienPhiRadioProcessor.cs" />
+    <Compile Include="Core\ThuaThieuVienPhiRadio_F14__\UCThuaThieuVienPhiRadio.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\ThuaThieuVienPhiRadio_F14__\UCThuaThieuVienPhiRadio.Designer.cs">
+      <DependentUpon>UCThuaThieuVienPhiRadio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\TimeFromTo_F1__\TimeFromToFDO.cs" />
+    <Compile Include="Core\TimeFromTo_F1__\TimeFromToProcessor.cs" />
+    <Compile Include="Core\TimeFromTo_F1__\UCTimeFromTo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\TimeFromTo_F1__\UCTimeFromTo.Designer.cs">
+      <DependentUpon>UCTimeFromTo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\TimeFromTo_F1__\Validation\FromTimeValidationRule.cs" />
+    <Compile Include="Core\TimeFromTo_F1__\Validation\ToTimeValidationRule.cs" />
+    <Compile Include="Core\TreatmentTypeComboCheck_F15__\TreatmentTypeComboCheckFDO.cs" />
+    <Compile Include="Core\TreatmentTypeComboCheck_F15__\TreatmentTypeComboCheckProcessor.cs" />
+    <Compile Include="Core\TreatmentTypeComboCheck_F15__\UCTreatmentTypeComboCheck.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\TreatmentTypeComboCheck_F15__\UCTreatmentTypeComboCheck.Designer.cs">
+      <DependentUpon>UCTreatmentTypeComboCheck.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\TreatmentTypeComboCheck_F15__\Validation\TreatmentTypeValidationRule.cs" />
+    <Compile Include="Core\TreatmentTypeCombo_F22__\TreatmentTypeComboFDO.cs" />
+    <Compile Include="Core\TreatmentTypeCombo_F22__\TreatmentTypeComboProcessor.cs" />
+    <Compile Include="Core\TreatmentTypeCombo_F22__\UCTreatmentTypeCombo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\TreatmentTypeCombo_F22__\UCTreatmentTypeCombo.Designer.cs">
+      <DependentUpon>UCTreatmentTypeCombo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\TreatmentTypeCombo_F22__\Validation\TreatmentTypeValidationRule.cs" />
+    <Compile Include="Base\GridViewCheckMarkSelection.cs" />
+    <Compile Include="Core\TreatmentTypeGridCheckBox_F16__\TreatmentTypeGridCheckBoxFDO.cs" />
+    <Compile Include="Core\TreatmentTypeGridCheckBox_F16__\TreatmentTypeGridCheckBoxProcessor.cs" />
+    <Compile Include="Core\TreatmentTypeGridCheckBox_F16__\UCTreatmentTypeGridCheckBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\TreatmentTypeGridCheckBox_F16__\UCTreatmentTypeGridCheckBox.Designer.cs">
+      <DependentUpon>UCTreatmentTypeGridCheckBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\TrueOrFalse_F7__\TrueOrFalseFDO.cs" />
+    <Compile Include="Core\TrueOrFalse_F7__\TrueOrFalseProcessor.cs" />
+    <Compile Include="Core\TrueOrFalse_F7__\UCTrueOrFalse.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\TrueOrFalse_F7__\UCTrueOrFalse.Designer.cs">
+      <DependentUpon>UCTrueOrFalse.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\TrueOrFalse_F7__\Validation\TrueOrFalseValidationRule.cs" />
+    <Compile Include="Core\UserNameCombo_F26__\UCUserNameCombo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\UserNameCombo_F26__\UCUserNameCombo.Designer.cs">
+      <DependentUpon>UCUserNameCombo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\UserNameCombo_F26__\UserNameComboFDO.cs" />
+    <Compile Include="Core\UserNameCombo_F26__\UserNameComboProcessor.cs" />
+    <Compile Include="Core\UserNameCombo_F26__\Validation\UserNameValidationRule.cs" />
+    <Compile Include="FormTypeDelegate.cs" />
+    <Compile Include="DelegateUC.cs" />
+    <Compile Include="Generate\GenerateRDO.cs" />
+    <Compile Include="Config\AcsFormTypeConfig.cs" />
+    <Compile Include="HisMultiGetString\AcsGetString.cs" />
+    <Compile Include="HisMultiGetString\AosGetString.cs" />
+    <Compile Include="HisMultiGetString\Input.cs" />
+    <Compile Include="HisMultiGetString\SdaGetString.cs" />
+    <Compile Include="HisMultiGetString\SarGetString.cs" />
+    <Compile Include="HisMultiGetString\InputData.cs" />
+    <Compile Include="HisMultiGetString\HisGetString.cs" />
+    <Compile Include="HisMultiGetString\HisMultiGetString.cs" />
+    <Compile Include="HisMultiGetString\FilterConfig.cs" />
+    <Compile Include="HisMultiGetString\OtherGetString.cs" />
+    <Compile Include="HisMultiGetString\TheGetString.cs" />
+    <Compile Include="IGetDataT.cs" />
+    <Compile Include="Loader\AccountBookLoader.cs" />
+    <Compile Include="Loader\ServiceLoader.cs" />
+    <Compile Include="Loader\HeadCard.cs" />
+    <Compile Include="Loader\TreatmentLoader.cs" />
+    <Compile Include="Loader\ExpMestTypeLoader.cs" />
+    <Compile Include="Loader\MaterialTypeLoader.cs" />
+    <Compile Include="Loader\MediStockPeriodLoader.cs" />
+    <Compile Include="Loader\ServiceTypeLoader.cs" />
+    <Compile Include="Loader\PatientTypeLoader.cs" />
+    <Compile Include="Loader\MediStockLoader.cs" />
+    <Compile Include="Loader\KskContractLoader.cs" />
+    <Compile Include="Loader\UserNameLoader.cs" />
+    <Compile Include="Core\F21__\F21FDO.cs" />
+    <Compile Include="Core\F21__\F21Processor.cs" />
+    <Compile Include="Core\F21__\UCF21.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\F21__\UCF21.Designer.cs">
+      <DependentUpon>UCF21.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PagingGet\HisMaterialPagingGetBehavior.cs" />
+    <Compile Include="PagingGet\HisMedicinePagingGetBehavior.cs" />
+    <Compile Include="PagingGet\HisTreatmentBedRoomGetBehavior.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PagingGet\HisTreatmentPagingGetBehavior.cs" />
+    <Compile Include="PagingGet\HisPatientPagingGetBehavior.cs" />
+    <Compile Include="PagingGet\IPagingGet.cs" />
+    <Compile Include="PagingGet\PagingGetFactory.cs" />
+    <Compile Include="RequestUriStore.cs" />
+    <Compile Include="Resources\ResourceLanguageManager.cs" />
+    <Compile Include="UriBaseStore.cs" />
+    <Compile Include="ValueContainer.cs" />
+    <Compile Include="FormTypeMain.cs" />
+    <Compile Include="Generate\IProcessorGenerate.cs" />
+    <Compile Include="FormTypeConfig.cs" />
+    <Compile Include="FormTypeValue.cs" />
+    <Compile Include="Generate\ProcessorBase.cs" />
+    <Compile Include="Generate\ProcessorFactory.cs" />
+    <Compile Include="Loader\TreatmentTypeLoader.cs" />
+    <Compile Include="Loader\RoomLoader.cs" />
+    <Compile Include="Loader\DepartmentLoader.cs" />
+    <Compile Include="Loader\ExecuteRoomLoader.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="FDOBase.cs" />
+    <EmbeddedResource Include="Core\AccountBookCombo_F23__\UCAccountBookCombo.resx">
+      <DependentUpon>UCAccountBookCombo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Checkbox_F19__\UCCheck.resx">
+      <DependentUpon>UCCheck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\ComboBoxAtComboBox_F4__\UCComboBoxAtComboBox.resx">
+      <DependentUpon>UCComboBoxAtComboBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\DepartmentCombo_F9__\UCDepartmentCombo.resx">
+      <DependentUpon>UCDepartmentCombo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\F33\UCF33.resx">
+      <DependentUpon>UCF33.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\DateMonthYear_F10__\UCDateMonthYear.resx">
+      <DependentUpon>UCDateMonthYear.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\DateTime_F18__\UCDateTime.resx">
+      <DependentUpon>UCDateTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\ExpMestTypeComboCheck_F24__\UCExpMestTypeComboCheck.resx">
+      <DependentUpon>UCExpMestTypeComboCheck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\F37\UCF37.resx">
+      <DependentUpon>UCF37.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\F38\UCF38.resx">
+      <DependentUpon>UCF38.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\FilterExtra_F11__\UCFilterExtra.resx">
+      <DependentUpon>UCFilterExtra.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\HeinTreatmentTypeRadio_F31__\UCHeinTreatmentTypeRadio.resx">
+      <DependentUpon>UCHeinTreatmentTypeRadio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\HourFromTo_F5__\UCHourFromTo.resx">
+      <DependentUpon>UCHourFromTo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\MaterialTypeComboByMediStockCombo_F27__\UCMaterialTypeCombo.resx">
+      <DependentUpon>UCMaterialTypeCombo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Medicin_F29__\UCMedicin.resx">
+      <DependentUpon>UCMedicin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\MediStockComboFilterByDepartmentCombo_F2__\UCMediStockComboFilterByDepartmentCombo.resx">
+      <DependentUpon>UCMediStockComboFilterByDepartmentCombo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\MediStockPereiodByMediStock_F28__\UCMediStockPereiodByMediStock.resx">
+      <DependentUpon>UCMediStockPereiodByMediStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\MediStockSttFilterCheckBoxGroup_F12__\UCMediStockSttFilterCheckBoxGroup.resx">
+      <DependentUpon>UCMediStockSttFilterCheckBoxGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Mounth_F17__\UCMounth.resx">
+      <DependentUpon>UCMounth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\MultiMedicineGridCheckFilterByMediStockPeriodByMediStockByDepartment_F25__\UCMultiMedicineGridCheckFilterByMediStockPeriodByMediStockByDepartment.resx">
+      <DependentUpon>UCMultiMedicineGridCheckFilterByMediStockPeriodByMediStockByDepartment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\F20__\UCF20.resx">
+      <DependentUpon>UCF20.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\MultipleRoomComboCheckFilterByDepartmentComboCheck_F8__\UCMultipleRoomComboCheckFilterByDepartmentComboCheck.resx">
+      <DependentUpon>UCMultipleRoomComboCheckFilterByDepartmentComboCheck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Numericft_F30__\UCNumeric.resx">
+      <DependentUpon>UCNumeric.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\PatientTypeCombo_F13__\UCPatientTypeCombo.resx">
+      <DependentUpon>UCPatientTypeCombo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\RoleUserGrid_F36__\UCRoleUser.resx">
+      <DependentUpon>UCRoleUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\RoomCombo_F3__\UCRoomCombo.resx">
+      <DependentUpon>UCRoomCombo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\ServiceGroupCombo_F32__\UCServiceGroupCombo.resx">
+      <DependentUpon>UCServiceGroupCombo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\SQLInput_F34__\UCSql.resx">
+      <DependentUpon>UCSql.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Str_F6__\UCStr.resx">
+      <DependentUpon>UCStr.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\ThuaThieuVienPhiRadio_F14__\UCThuaThieuVienPhiRadio.resx">
+      <DependentUpon>UCThuaThieuVienPhiRadio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\TimeFromTo_F1__\UCTimeFromTo.resx">
+      <DependentUpon>UCTimeFromTo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\TreatmentTypeComboCheck_F15__\UCTreatmentTypeComboCheck.resx">
+      <DependentUpon>UCTreatmentTypeComboCheck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\TreatmentTypeCombo_F22__\UCTreatmentTypeCombo.resx">
+      <DependentUpon>UCTreatmentTypeCombo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\TreatmentTypeGridCheckBox_F16__\UCTreatmentTypeGridCheckBox.resx">
+      <DependentUpon>UCTreatmentTypeGridCheckBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\TrueOrFalse_F7__\UCTrueOrFalse.resx">
+      <DependentUpon>UCTrueOrFalse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\UserNameCombo_F26__\UCUserNameCombo.resx">
+      <DependentUpon>UCUserNameCombo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\F21__\UCF21.resx">
+      <DependentUpon>UCF21.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Resources\Lang.en.resx" />
+    <EmbeddedResource Include="Resources\Lang.vi.resx" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Lib\AutoMapper.dll" />
+    <Content Include="Lib\DevExpress.Charts.v15.2.Core.dll" />
+    <Content Include="Lib\DevExpress.Data.v15.2.dll" />
+    <Content Include="Lib\DevExpress.Docs.v15.2.dll" />
+    <Content Include="Lib\DevExpress.Office.v15.2.Core.dll" />
+    <Content Include="Lib\DevExpress.Printing.v15.2.Core.dll" />
+    <Content Include="Lib\DevExpress.Spreadsheet.v15.2.Core.dll" />
+    <Content Include="Lib\DevExpress.Utils.v15.2.dll" />
+    <Content Include="Lib\DevExpress.XtraBars.v15.2.dll" />
+    <Content Include="Lib\DevExpress.XtraCharts.v15.2.dll" />
+    <Content Include="Lib\DevExpress.XtraEditors.v15.2.dll" />
+    <Content Include="Lib\DevExpress.XtraGrid.v15.2.dll" />
+    <Content Include="Lib\DevExpress.XtraLayout.v15.2.dll" />
+    <Content Include="Lib\DevExpress.XtraNavBar.v15.2.dll" />
+    <Content Include="Lib\DevExpress.XtraPrinting.v15.2.dll" />
+    <Content Include="Lib\DevExpress.XtraReports.v15.2.dll" />
+    <Content Include="Lib\DevExpress.XtraRichEdit.v15.2.dll" />
+    <Content Include="Lib\DevExpress.XtraSpreadsheet.v15.2.dll" />
+    <Content Include="Lib\DevExpress.XtraTreeList.v15.2.dll" />
+    <Content Include="Lib\DevExpress.XtraVerticalGrid.v15.2.dll" />
+    <Content Include="Lib\log4net.dll" />
+    <Content Include="Lib\Newtonsoft.Json.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\RoleUserGrid_F36__\Validation\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
