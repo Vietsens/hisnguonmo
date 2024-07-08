@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3FE38A92-0C75-475C-AAEA-F1C3A647963A}</ProjectGuid>
+    <ProjectGuid>{E54CFCD0-4353-453D-A6B2-9E472265F3D1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HIS.UC.UCOtherServiceReqInfo</RootNamespace>
