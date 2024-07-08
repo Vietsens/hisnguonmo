@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EFAE3B9C-2AFD-4CC7-8649-6063115B4B58}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>His.UC.CreateReport</RootNamespace>
+    <AssemblyName>His.UC.CreateReport</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="HIS.UC.FormType">
+      <HintPath>..\HIS.UC.FormType\bin\Debug\HIS.UC.FormType.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.HIS_RS">
+      <HintPath>..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.SAR_RS">
+      <HintPath>..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.SAR_RS\IMSys.DbConfig.SAR_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.DateTime">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.FlexCelPrint">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Print\Inventec.Common.FlexCelPrint.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Print">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Print\Inventec.Common.Print.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Resource, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core">
+      <HintPath>..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.Message">
+      <HintPath>..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Fss.Client">
+      <HintPath>..\..\..\RELEASE\Inventec.Fss.Client\Inventec.Fss.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MRS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\HIS\His.UC.CreateReport\MRS.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.EFMODEL">
+      <HintPath>..\..\..\RELEASE\SAR\SAR.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.Filter">
+      <HintPath>..\..\..\RELEASE\SAR\SAR.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\IDelegacy.cs" />
+    <Compile Include="Base\IDelegacyT.cs" />
+    <Compile Include="Base\LanguageManager.cs" />
+    <Compile Include="Base\BussinessBase.cs" />
+    <Compile Include="Base\LanguageWorker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Base\MessageBoxManager.cs" />
+    <Compile Include="Base\MessageUtil.cs" />
+    <Compile Include="Base\NewLocalizerDX.cs" />
+    <Compile Include="Base\RegistryConstant.cs" />
+    <Compile Include="Base\ResouceManager.cs" />
+    <Compile Include="Base\ResultManager.cs" />
+    <Compile Include="CreateReportDelegate.cs" />
+    <Compile Include="CreateReportConfig.cs" />
+    <Compile Include="Data\ReportTemplateADO.cs" />
+    <Compile Include="Design\CheckValid\CheckValidAccountBookComboBehavior.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Design\CheckValid\CheckValidCheckBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidComboBoxAtComboBoxBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidExpMestTypeCheckBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidFilterExtraBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidHeinTreatmentTypeRadioBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidHourFromToBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidMaterialTypeBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidMedicinBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidMediStockComboFilterByDepartmentComboBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidMediStockPereiodByMediStockBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidMultiMedicineGridCheckFilterByMediStockPeriodByMediStockByDepartmentBeHavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidF21Behavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidNumericBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidRoleUserBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidServiceGroupComboBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidSqlBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidStrBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidTreatmentTypeComboBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidTrueOrFalseBehavior.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Design\CheckValid\CheckValidUserNameComboBeHavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidMounthBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidDateMonthYearBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidF33Behavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidF37Behavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidF38Behavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidF20Behavior.cs" />
+    <Compile Include="Design\CheckValid\ICheckValid.cs" />
+    <Compile Include="Design\CheckValid\CheckValid.cs" />
+    <Compile Include="Design\CheckValid\CheckValidBehaviorFactory.cs" />
+    <Compile Include="Design\CheckValid\CheckValidDateTimeBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidDepartmentComboBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidMediStockSttFilterCheckBoxGroupBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidMultipleRoomComboCheckFilterByDepartmentComboCheckBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidPatientTypeComboBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidRoomComboBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidThuaThieuVienPhiRadioBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidTimeFromToBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidTreatmentTypeComboCheckBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidTreatmentTypeGridCheckBoxBehavior.cs" />
+    <Compile Include="Design\CreateReport1\CreateReport1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\CreateReport1\CreateReport1.Designer.cs">
+      <DependentUpon>CreateReport1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\CreateReport1\CreateReport1_Plus_Button.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\CreateReport1\CreateReport1_Plus_Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\CreateReport1\CreateReport1_Plus_Load.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\CreateReport1\CreateReport1_Plus_Set.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\CreateReport\CreateReport.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\CreateReport\CreateReport.Designer.cs">
+      <DependentUpon>CreateReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\CreateReport\CreateReport_Plus_Button.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\CreateReport\CreateReport_Plus_Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\CreateReport\CreateReport_Plus_Load.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\CreateReport\CreateReport_Plus_Set.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\JsonOutput\JsonOutputF20Behavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputF38Behavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputF37Behavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputF33Behavior.cs" />
+    <Compile Include="Design\JsonOutput\IJsonOutput.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutput.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputAccountBookComboBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputBehaviorFactory.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputCheckBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputComboBoxAtComboBox_F4__Behavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputDateMonthYearBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputDateTimeBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputDepartmentComboBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputExpMestTypeCheckBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputFilterExtraBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputHeinTreatmentTypeRadioBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputHourFromToBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputMaterialTypeComboBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputMedicinBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputMediStockPereiodByMediStockBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputMediStockSttFilterCheckBoxGroupBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputMounthBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputMultiMedicineGridCheckFilterByMediStockPeriodByMediStockByDepartmentBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputMultipleRoomComboCheckFilterByDepartmentComboCheckBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputF21Behavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputNumericBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputPatientTypeComboBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputRoleUserBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputRoomComboBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputServiceGroupComboBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputSqlBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputStrBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputThuaThieuVienPhiRadioBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputTimeFromToBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputTreatmentTypeComboBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputTreatmentTypeComboCheckBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputTreatmentTypeGridCheckBoxBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputTrueOrFalseBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputUserNameComboBehavior.cs" />
+    <Compile Include="Design\JsonOutput\OutputMediStockComboFilterByDepartmentComboBehavior.cs" />
+    <Compile Include="Design\Validation\ReportTemplateValidationRule.cs" />
+    <Compile Include="Generate1\CreateReportGenerate1.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generate1\CreateReportGenerate1Behavior.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generate1\CreateReportGenerate1BehaviorFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generate1\Generate1RDO.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generate1\ICreateReportGenerate1.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generate\CreateReportGenerate.cs" />
+    <Compile Include="Generate\CreateReportGenerateBehavior.cs" />
+    <Compile Include="Generate\CreateReportGenerateBehaviorFactory.cs" />
+    <Compile Include="Generate\GenerateRDO.cs" />
+    <Compile Include="Generate\ICreateReportGenerate.cs" />
+    <Compile Include="Loader\ReportTemplateLoader.cs" />
+    <Compile Include="MainCreateReport__Plus.cs" />
+    <Compile Include="Data\InitData.cs" />
+    <Compile Include="Data\TimeAndDepartmentDataClick.cs" />
+    <Compile Include="Data\TimeAndPatientTypeDataClick.cs" />
+    <Compile Include="Data\TimeAndTreatmentTypeDataClick.cs" />
+    <Compile Include="Data\TimeDepartmentAndRoomDataClick.cs" />
+    <Compile Include="Data\TimeDepartmentAndTreatmentTypeDataClick.cs" />
+    <Compile Include="Data\TimeFromAndToDataClick.cs" />
+    <Compile Include="Data\TimePatientTypeAndTreatmentTypeDataClick.cs" />
+    <Compile Include="DelegateUC.cs" />
+    <Compile Include="MainCreateReport__Plus1.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MessageLang\FrontendMessage.cs" />
+    <Compile Include="MessageLang\Message.cs" />
+    <Compile Include="MessageLang\MessageEnResource.Designer.cs" />
+    <Compile Include="MessageLang\MessagePartialEnum.cs" />
+    <Compile Include="MessageLang\MessagePartialGetMessage.cs" />
+    <Compile Include="MessageLang\MessageViResource.Designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ResourceLanguageManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Design\CreateReport1\CreateReport1.resx">
+      <DependentUpon>CreateReport1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\CreateReport\CreateReport.resx">
+      <DependentUpon>CreateReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageLang\MessageEnResource.resx" />
+    <EmbeddedResource Include="MessageLang\MessageViResource.resx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.en.resx" />
+    <EmbeddedResource Include="Resources\Lang.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="His.UC.CreateReport.sln" />
+    <Content Include="Lib\AutoMapper.dll" />
+    <Content Include="Lib\log4net.dll" />
+    <Content Include="Lib\Newtonsoft.Json.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="His.UC.CreateReport.v11.suo" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\FE\YTE\DESKTOP\HIS\HIS.Desktop.LocalStorage.ConfigSystem\HIS.Desktop.LocalStorage.ConfigSystem.csproj">
+      <Project>{48d25a6a-11bc-4f0f-8dd7-15e03a2bcada}</Project>
+      <Name>HIS.Desktop.LocalStorage.ConfigSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\FE\YTE\DESKTOP\HIS\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
+      <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
+      <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -55,6 +55,7 @@ using HIS.Desktop.Utility;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.HisConfig;
 using System.IO;
+using Inventec.Common.Address;
 
 namespace HIS.Desktop.Plugins.PatientUpdate
 {
@@ -67,6 +68,8 @@ namespace HIS.Desktop.Plugins.PatientUpdate
         bool isTxtPatientDobPreviewKeyDown = false;
         internal bool isNotPatientDayDob = false;
         internal int ActionType = 0;// No action    
+        bool activeDCFirtTime = false;
+        bool activeDCHTFirtTime = false;
         //V_HIS_TREATMENT currentTreatment;
         V_HIS_PATIENT currentPatient;
         HisPatientUpdateSDO patientUpdateSdo;
@@ -200,12 +203,66 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 ValidationClassify();
                 ValidationBHXH(txtBhxhFather, 10, 10);
                 ValidationBHXH(txtBhxhMother, 10, 10);
+                ValidationProvince();
+                ValidateDistricts();
+                ValidateCommune();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ValidateDistricts()
+        {
+            try
+            {
+                GridLookupEditWithTextEditValidationRule validate = new GridLookupEditWithTextEditValidationRule();
+                validate.cbo = this.cboDistricts;
+                validate.txtTextEdit = this.txtDistricts;
+                validate.ErrorText = "Trường dữ liệu bắt buộc";
+                validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                this.dxValidationProvider1.SetValidationRule(this.txtDistricts, validate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ValidateCommune()
+        {
+            try
+            {
+                GridLookupEditWithTextEditValidationRule validate = new GridLookupEditWithTextEditValidationRule();
+                validate.cbo = this.cboCommune;
+                validate.txtTextEdit = this.txtCommune;
+                validate.ErrorText = "Trường dữ liệu bắt buộc";
+                validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                this.dxValidationProvider1.SetValidationRule(this.txtCommune, validate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ValidationProvince()
+        {
+            try
+            {
+                GridLookupEditWithTextEditValidationRule validate = new GridLookupEditWithTextEditValidationRule();
+                validate.cbo = this.cboProvince;
+                validate.txtTextEdit = this.txtProvince;
+                validate.ErrorText = "Trường dữ liệu bắt buộc";
+                validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                this.dxValidationProvider1.SetValidationRule(this.txtProvince, validate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -3560,5 +3617,121 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void txtAddress_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (activeDCFirtTime == true)
+                {
+                    Inventec.Common.Address.AddressProcessor adProc = new Inventec.Common.Address.AddressProcessor(BackendDataWorker.Get<V_SDA_PROVINCE>(), BackendDataWorker.Get<V_SDA_DISTRICT>(), BackendDataWorker.Get<V_SDA_COMMUNE>());
+                    string adress = txtAddress.Text;
+                    AddressADO splitAdress = adProc.SplitFromFullAddress(adress);
+                    if (!string.IsNullOrEmpty(splitAdress.ProvinceName) && !string.IsNullOrEmpty(splitAdress.DistrictName) && !string.IsNullOrEmpty(splitAdress.CommuneName))
+                    {
+                        if (cboCommune.Text != "" && cboDistricts.Text != "" && cboProvince.Text != "" && txtProvince.Text != "" && txtDistricts.Text != "" && txtCommune.Text != "")
+                        {
+                            if (splitAdress.ProvinceCode != txtCommune.Text || splitAdress.DistrictCode != txtDistricts.Text || splitAdress.ProvinceCode != txtProvince.Text)
+                            {
+                                if (MessageBox.Show("Địa chỉ nhập khác với địa chỉ cũ. Bạn có muốn sử dụng thông tin địa chỉ này không?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                                {
+                                    cboProvince.EditValue = splitAdress.ProvinceCode;
+                                    LoadDistrictsCombo("", splitAdress.ProvinceCode, false);
+                                    txtProvince.Text = splitAdress.ProvinceCode; // search code
+
+                                    cboDistricts.EditValue = splitAdress.DistrictCode;
+                                    LoadCommuneCombo("", splitAdress.DistrictCode, false);
+                                    txtDistricts.Text = splitAdress.DistrictCode; // search code
+
+                                    cboCommune.EditValue = splitAdress.CommuneCode;
+                                    //LoadCommuneCombo("", splitAdress.CommuneCode, false);
+                                    txtCommune.Text = splitAdress.CommuneCode; // search code
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            cboProvince.EditValue = splitAdress.ProvinceCode;
+                            LoadDistrictsCombo("", splitAdress.ProvinceCode, false);
+                            txtProvince.Text = splitAdress.ProvinceCode; // search code
+
+                            cboDistricts.EditValue = splitAdress.DistrictCode;
+                            LoadCommuneCombo("", splitAdress.DistrictCode, false);
+                            txtDistricts.Text = splitAdress.DistrictCode; // search code
+
+                            cboCommune.EditValue = splitAdress.CommuneCode;
+                            //LoadCommuneCombo("", splitAdress.CommuneCode, false);
+                            txtCommune.Text = splitAdress.CommuneCode; // search code
+                        }
+
+                    }
+                }
+                activeDCFirtTime = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtHTAddress_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (activeDCHTFirtTime == true)
+                {
+                    Inventec.Common.Address.AddressProcessor adProc = new Inventec.Common.Address.AddressProcessor(BackendDataWorker.Get<V_SDA_PROVINCE>(), BackendDataWorker.Get<V_SDA_DISTRICT>(), BackendDataWorker.Get<V_SDA_COMMUNE>());
+                    string adress = txtHTAddress.Text;
+                    AddressADO splitAdress = adProc.SplitFromFullAddress(adress);
+                    if (!string.IsNullOrEmpty(splitAdress.ProvinceName) && !string.IsNullOrEmpty(splitAdress.DistrictName) && !string.IsNullOrEmpty(splitAdress.CommuneName))
+                    {
+                        if (cboHTCommuneName.Text != "" && cboHTDistrictName.Text != "" && cboHTProvinceName.Text != "" && txtHTProvinceCode.Text != "" && txtHTDistrictCode.Text != "" && txtHTCommuneCode.Text != "")
+                        {
+                            if (splitAdress.ProvinceCode != txtCommune.Text || splitAdress.DistrictCode != txtDistricts.Text || splitAdress.ProvinceCode != txtProvince.Text)
+                            {
+                                if (MessageBox.Show("Địa chỉ nhập khác với địa chỉ cũ. Bạn có muốn sử dụng thông tin địa chỉ này không?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                                {
+                                    cboHTProvinceName.EditValue = splitAdress.ProvinceCode;
+                                    LoadHTDistrictsCombo("", splitAdress.ProvinceCode, false);
+                                    txtHTProvinceCode.Text = splitAdress.ProvinceCode; // search code
+
+                                    cboHTDistrictName.EditValue = splitAdress.DistrictCode;
+                                    LoadHTCommuneCombo("", splitAdress.DistrictCode, false);
+                                    txtHTDistrictCode.Text = splitAdress.DistrictCode; // search code
+
+                                    cboHTCommuneName.EditValue = splitAdress.CommuneCode;
+                                    //LoadCommuneCombo("", splitAdress.CommuneCode, false);
+                                    txtHTCommuneCode.Text = splitAdress.CommuneCode; // search code
+                                }
+
+                            }
+
+                        }
+                        else
+                        {
+                            cboHTProvinceName.EditValue = splitAdress.ProvinceCode;
+                            LoadHTDistrictsCombo("", splitAdress.ProvinceCode, false);
+                            txtHTProvinceCode.Text = splitAdress.ProvinceCode; // search code
+
+                            cboHTDistrictName.EditValue = splitAdress.DistrictCode;
+                            LoadHTCommuneCombo("", splitAdress.DistrictCode, false);
+                            txtHTDistrictCode.Text = splitAdress.DistrictCode; // search code
+
+                            cboHTCommuneName.EditValue = splitAdress.CommuneCode;
+                            //LoadCommuneCombo("", splitAdress.CommuneCode, false);
+                            txtHTCommuneCode.Text = splitAdress.CommuneCode; // search code
+                        }
+
+                    }
+                }
+                activeDCHTFirtTime = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
     }
 }

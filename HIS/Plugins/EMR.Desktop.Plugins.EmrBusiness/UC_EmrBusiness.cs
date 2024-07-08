@@ -67,7 +67,6 @@ namespace EMR.Desktop.Plugins.EmrBusiness
         #endregion
 
         #region --private method
-
         public UC_EmrBusiness(Module mudule)
             : base(mudule)
         {

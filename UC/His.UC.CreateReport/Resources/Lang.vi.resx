@@ -1,0 +1,400 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="IVT_LANGUAGE_KEY_FRMLOGIN_BTN_CONFIG" xml:space="preserve">
+    <value>Cấu hình</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMLOGIN_BTN_EXIT" xml:space="preserve">
+    <value>Thoát</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMLOGIN_BTN_LOGIN" xml:space="preserve">
+    <value>Đăng nhập</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMLOGIN_CHK_AUTO_LOGIN" xml:space="preserve">
+    <value>Tự động đăng nhập</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMLOGIN_FRM_LOGIN" xml:space="preserve">
+    <value>Đăng nhập</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMLOGIN_LBL_ACCOUNT" xml:space="preserve">
+    <value>Tài khoản</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMLOGIN_LBL_FORGOT_PASSWORD" xml:space="preserve">
+    <value>Quên mật khẩu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMLOGIN_LBL_LANGUAGE" xml:space="preserve">
+    <value>Ngôn ngữ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMLOGIN_LBL_PASSWORD" xml:space="preserve">
+    <value>Mật khẩu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMLOGIN_PROGRESS_LOADING" xml:space="preserve">
+    <value>Đang tải cấu hình hệ thống</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_APPLICATIONTEXT" xml:space="preserve">
+    <value>Phần mềm giám định bảo hiểm y tế (MIE) - Hệ thống tích hợp quản lý bệnh viện (MOS)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_CHANGE_PASS" xml:space="preserve">
+    <value>Đổi mật khẩu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_CLOSE" xml:space="preserve">
+    <value>Đăng xuất</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_COMMON_CLOSE" xml:space="preserve">
+    <value>Đăng xuất</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_COMMON_INSURANCE_EXPERTISE" xml:space="preserve">
+    <value>Giám định</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_COMMON_MESSAGE" xml:space="preserve">
+    <value>Tin nhắn</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_COMMON_SYSTEM_CONFIG" xml:space="preserve">
+    <value>Cấu hình phần mềm</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_EVENT_LOG" xml:space="preserve">
+    <value>Lịch sử sử dụng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_FEED_BACK" xml:space="preserve">
+    <value>Phản hồi</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_HISTORY" xml:space="preserve">
+    <value>Lịch sử ứng dụng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_INSURANCEEXPERTISE" xml:space="preserve">
+    <value>Giám định BHYT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_INSURANCE_EXPERTISE" xml:space="preserve">
+    <value>Giám định BHYT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_LICK_TO_UCC" xml:space="preserve">
+    <value>Trang cấu hình tài khoản</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_LIST_REPORT" xml:space="preserve">
+    <value>Danh sách báo cáo</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_LIST_REPORT_COMMON" xml:space="preserve">
+    <value>Danh sách báo cáo</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_MESSAGE" xml:space="preserve">
+    <value>Tin nhắn</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_PATIENT_TYPE" xml:space="preserve">
+    <value>Chọn đối tượng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_SYSTEM_CONFIG" xml:space="preserve">
+    <value>Cấu hình phần mềm</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_TUTORIAL_COLOR" xml:space="preserve">
+    <value>Mã màu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_WORKING" xml:space="preserve">
+    <value>Bàn làm việc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_LANGUAGEMESSAGECONTROL_BTN_KEYWORD" xml:space="preserve">
+    <value>Tìm (Ctrl + F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_LANGUAGEMESSAGECONTROL_BTN_REFRESH" xml:space="preserve">
+    <value>Làm lại (Ctrl + R)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_LANGUAGEMESSAGECONTROL_LBL_CREATE_TIME_FROM" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_LANGUAGEMESSAGECONTROL_LBL_CREATE_TIME_TO" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_LANGUAGEMESSAGECONTROL_NAV_TITLE_CREATE_TIME" xml:space="preserve">
+    <value>Ngày tạo</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_LANGUAGEMESSAGECONTROL_NAV_TITLE_STATUS" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_LANGUAGEREPORTLISTCONTROL_BTN_REFRESH" xml:space="preserve">
+    <value>Làm lại (Ctrl + R)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_LANGUAGEREPORTLISTCONTROL_BTN_SEARCH" xml:space="preserve">
+    <value>Tìm (Ctrl + F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_LANGUAGEREPORTLISTCONTROL_LBL_TEMPLATE_CODE" xml:space="preserve">
+    <value>Mẫu:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_LANGUAGEREPORTLISTCONTROL_LBL_TIME_FROM" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_LANGUAGEREPORTLISTCONTROL_LBL_TIME_TO" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_LANGUAGEREPORTLISTCONTROL_LBL_TYPE_CODE" xml:space="preserve">
+    <value>Loại:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_LANGUAGEREPORTLISTCONTROL_NAV_TITLE_CREATE_TIME" xml:space="preserve">
+    <value>Ngày tạo</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_UCCONFIG_APPLICATION_BTN_SAVE" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_RPGROUP__GIAMDINH" xml:space="preserve">
+    <value>Giám định</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_RPGROUP__REPORT" xml:space="preserve">
+    <value>Báo cáo</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_RPGROUP__SYSTEMS" xml:space="preserve">
+    <value>Hệ thống</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE" xml:space="preserve">
+    <value>Giám định</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__CREATTIME_FROM" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__CREATTIME_TO" xml:space="preserve">
+    <value>đến</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__KEYWORD_PATIENT" xml:space="preserve">
+    <value>Từ khóa:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__SEARCH_TREATMENT_HEIN" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE_BTN__ACCEPT" xml:space="preserve">
+    <value>Duyệt (Ctrl D)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE_BTN__UNLOCK_IE" xml:space="preserve">
+    <value>Gỡ duyệt (Ctrl G)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE_BTN__PRINT_LISTPRICE" xml:space="preserve">
+    <value>In phơi (Ctrl P)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE_BTN__LOCK_HEIN" xml:space="preserve">
+    <value>Khóa (Ctrl K)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE_BTN__UNLOCK_HEIN" xml:space="preserve">
+    <value>Mở khóa (Ctrl M)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_TIME_ACCEPT" xml:space="preserve">
+    <value>Thời gian duyệt:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_ACCEPT_USER" xml:space="preserve">
+    <value>Người duyệt:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_ACCEPT_NUMBER" xml:space="preserve">
+    <value>STT duyệt:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_ACCEPT_MONTH" xml:space="preserve">
+    <value>Quý duyệt:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_PATIENT_CODE" xml:space="preserve">
+    <value>Mã bệnh nhân:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_TREATMENT_CODE" xml:space="preserve">
+    <value>Mã điều trị:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_STATUS_TREATMENT_HEIN" xml:space="preserve">
+    <value>Trạng thái:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_PATIENT_NAME" xml:space="preserve">
+    <value>Tên bệnh nhân:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_PAITENT_DOB" xml:space="preserve">
+    <value>Ngày sinh:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_PATIENT_GENDER_NAME" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_PATIENT_TYPE_NAME" xml:space="preserve">
+    <value>Đối tượng:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_HEIN_CARD_NAME" xml:space="preserve">
+    <value>Số thẻ BHYT:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_HEIN_CARD_FROM" xml:space="preserve">
+    <value>Hạn thẻ từ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_HEIN_CARD_TO" xml:space="preserve">
+    <value>Hạn thẻ đến:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_HEIN_ROUTE_NAME" xml:space="preserve">
+    <value>Tuyến:</value>
+  </data>
+    <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_HEIN_ORG_CODE" xml:space="preserve">
+    <value>Mã ĐKKCBBĐ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_HEIN_ORG_NAME" xml:space="preserve">
+    <value>Nơi ĐKKCBBĐ:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_HEIN_LIVE_AREA_CODE" xml:space="preserve">
+    <value>Khu vực sống:</value>
+  </data>
+    <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_WORK_PLACE" xml:space="preserve">
+    <value>Nơi làm việc:</value>
+  </data>
+    <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_VIR_ADDRESS" xml:space="preserve">
+    <value>Địa chỉ:</value>
+  </data>
+    <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_TOTAL_PRICE" xml:space="preserve">
+    <value>Tổng tiền:</value>
+  </data>
+    <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_TOTAL_HEIN_PRICE" xml:space="preserve">
+    <value>BHYT thanh toán:</value>
+  </data>
+    <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_TOTAL_PATIENT_PRICE" xml:space="preserve">
+    <value>BN thanh toán:</value>
+  </data>
+    <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_TOTAL_XUATTOAN_PRICE" xml:space="preserve">
+    <value>Xuất toán:</value>
+  </data>
+    <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_TOTAL_THAYTHE_PRICE" xml:space="preserve">
+    <value>Thay thế:</value>
+  </data>
+    <data name="IVT_LANGUAGE_KEY_FRMINSURANCE_EXPRERTISE__LBL_TOTAL_QUYETTOAN_PRICE" xml:space="preserve">
+    <value>Quyết toán:</value>
+  </data>
+      <data name="IVT_LANGUAGE_KEY_FRM_REPLACE_SERVICE" xml:space="preserve">
+    <value>Thay thế dịch vụ</value>
+  </data>
+      <data name="IVT_LANGUAGE_KEY_FRM_REPLACE_SERVICE__LBL_AMOUNT" xml:space="preserve">
+    <value>Số lượng:</value>
+  </data>
+    <data name="IVT_LANGUAGE_KEY_FRM_REPLACE_SERVICE__BTN_REPLACE_OK" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+    <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_AIA_EXPERTISE" xml:space="preserve">
+    <value>Bảo hiểm AIA</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY_FRMMAIN_BTN_RC_OTHER_EXPERTISE" xml:space="preserve">
+    <value>Giám định</value>
+  </data>
+
+  <data name="7689789789789789789789789789789" xml:space="preserve">
+    <value>ytrytrỷtytrytrytrytry</value>
+  </data>
+  <data name="7689789789789789789789789789789" xml:space="preserve">
+    <value>ytrytrỷtytrytrytrytry</value>
+  </data>
+<data name="IVT_LANGUAGE_KEY_UC_CREATE_REPORT_LAYOUT_REPORT_TYPE_CODE" xml:space="preserve"><value>Mã loại:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_CREATE_REPORT_LAYOUT_REPORT_TYPE_NAME" xml:space="preserve"><value>Tên Loại</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_CREATE_REPORT_LAYOUT_REPORT_TEMPLATE_CODE" xml:space="preserve"><value>Mẫu báo cáo:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_CREATE_REPORT_LAYOUT_REPORT_NAME" xml:space="preserve"><value>Tên báo cáo:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_CREATE_REPORT_LAYOUT_DESCRIPTION" xml:space="preserve"><value>Mô tả:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_CREATE_REPORT_BTN_SAVE" xml:space="preserve"><value>Lưu (Ctrl S)</value></data>
+
+
+
+</root>

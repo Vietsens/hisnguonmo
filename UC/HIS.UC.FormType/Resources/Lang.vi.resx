@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+	
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="IVT_LANGUAGE_KEY_UC_ACCOUNT_BOOK_COMBO" xml:space="preserve"><value>Sổ thu chi:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_DATE_TIME_LAYOUT_CONTROL_GROUP1" xml:space="preserve"><value>Ngày:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_DEPARTMENT_COMBO_LCI_TITLE_NAME" xml:space="preserve"><value>Khoa:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_EXP_MEST_TYPE_COMBO_CHECK_LCI_TITLE_NAME" xml:space="preserve"><value>Loại phiếu xuất:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_UC_KSK_CONTRACT_COMBO_LCI_TITLE_NAME" xml:space="preserve"><value>Hợp đồng KSK:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_MATERIAL_TYPE_COMBO_LAYOUT_CONTROL_ITEM6" xml:space="preserve"><value>Khoa:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MATERIAL_TYPE_COMBO_LAYOUT_CONTROL_ITEM4" xml:space="preserve"><value>Kho:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MATERIAL_TYPE_COMBO_LAYOUT_CONTROL_ITEM2" xml:space="preserve"><value>Tên thuốc/vật tư:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_MEDICINE_GRID_RADIO_FILTER_BY_MEDISTOCK_PERIOD_COMBO_LCI_MEDISTOCK_PERIOD_NAME" xml:space="preserve"><value>Chọn kỳ:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MEDICINE_GRID_RADIO_FILTER_BY_MEDISTOCK_PERIOD_COMBO_GRID_COLUMN1" xml:space="preserve"><value>Mã thuốc</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MEDICINE_GRID_RADIO_FILTER_BY_MEDISTOCK_PERIOD_COMBO_GRID_COLUMN2" xml:space="preserve"><value>Tên thuốc</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MEDICINE_GRID_RADIO_FILTER_BY_MEDISTOCK_PERIOD_COMBO_GRID_COLUMN3" xml:space="preserve"><value>Loại thuốc</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MEDICINE_GRID_RADIO_FILTER_BY_MEDISTOCK_PERIOD_COMBO_GRID_COLUMN4" xml:space="preserve"><value>Kỳ</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_MEDISTOCK_COMBO_FILTER_BY_DEPARTMENT_COMBO_LCI_DEPARTMENT" xml:space="preserve"><value>Khoa:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MEDISTOCK_COMBO_FILTER_BY_DEPARTMENT_COMBO_LCI_MEDISTOCK" xml:space="preserve"><value>Kho:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_MEDISTOCK_PERIOD_BY_MEDISTOCK_LAYOUT_CONTROL_ITEM5" xml:space="preserve"><value>Khoa:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MEDISTOCK_PERIOD_BY_MEDISTOCK_LAYOUT_CONTROL_ITEM6" xml:space="preserve"><value>Kho:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MEDISTOCK_PERIOD_BY_MEDISTOCK_LAYOUT_CONTROL_ITEM7" xml:space="preserve"><value>Kỳ:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_MEDISTOCK_PERIOD_MULTI_RADIO_LCI_TITLE_NAME" xml:space="preserve"><value>Thẻ của kho:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MEDISTOCK_PERIOD_MULTI_RADIO_RD_MEDISTOCK_PERIOD_SELECTED" xml:space="preserve"><value>Kỳ đang chọn</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MEDISTOCK_PERIOD_MULTI_RADIO_RD_MEDISTOCK_PERIOD_CURRENT" xml:space="preserve"><value>Kỳ hiện tại</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_MEDISTOCK_STR_FILTER_CHECKBOX_GROUP_RADIO_ALL" xml:space="preserve"><value>Tất cả</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MEDISTOCK_STR_FILTER_CHECKBOX_GROUP_RADIO_IMP" xml:space="preserve"><value>Nhập</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MEDISTOCK_STR_FILTER_CHECKBOX_GROUP_RADIO_EXP" xml:space="preserve"><value>Xuất</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MEDISTOCK_STR_FILTER_CHECKBOX_GROUP_RADIO_INVENTORY" xml:space="preserve"><value>Tồn</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_MULTI_MEDICINE_GRID_CHECK_FILTER_BY_MEDISTOCK_PERIOD_BY_MEDISTOCK_BY_DEPARTMENT_LAYOUT_CONTROL_ITEM5" xml:space="preserve"><value>Khoa:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MULTI_MEDICINE_GRID_CHECK_FILTER_BY_MEDISTOCK_PERIOD_BY_MEDISTOCK_BY_DEPARTMENT_LAYOUT_CONTROL_ITEM6" xml:space="preserve"><value>Kho:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MULTI_MEDICINE_GRID_CHECK_FILTER_BY_MEDISTOCK_PERIOD_BY_MEDISTOCK_BY_DEPARTMENT_LAYOUT_CONTROL_ITEM7" xml:space="preserve"><value>Kỳ:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MULTI_MEDICINE_GRID_CHECK_FILTER_BY_MEDISTOCK_PERIOD_BY_MEDISTOCK_BY_DEPARTMENT_GRID_COLUMN1" xml:space="preserve"><value>Mã thuốc</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MULTI_MEDICINE_GRID_CHECK_FILTER_BY_MEDISTOCK_PERIOD_BY_MEDISTOCK_BY_DEPARTMENT_GRID_COLUMN2" xml:space="preserve"><value>Tên thuốc</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_MULTI_ROOM_COMBO_CHECK_FILTER_BY_DEPARTMENT_COMBO_CHECK_RETURN_CODE_GRID_COLUMN2" xml:space="preserve"><value>Mã khoa</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MULTI_ROOM_COMBO_CHECK_FILTER_BY_DEPARTMENT_COMBO_CHECK_RETURN_CODE_GRID_COLUMN3" xml:space="preserve"><value>Tên khoa</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MULTI_ROOM_COMBO_CHECK_FILTER_BY_DEPARTMENT_COMBO_CHECK_RETURN_CODE_GRID_COLUMN1" xml:space="preserve"><value>Mã phòng</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MULTI_ROOM_COMBO_CHECK_FILTER_BY_DEPARTMENT_COMBO_CHECK_RETURN_CODE_GRID_COLUMN4" xml:space="preserve"><value>Tên Phòng</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_MULTI_ROOM_COMBO_CHECK_FILTER_BY_DEPARTMENT_COMBO_CHECK_RETURN_CODE_GRID_COLUMN5" xml:space="preserve"><value>Tên khoa</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_PATIENT_TYPE_COMBO_LCI_TITLE_NAME" xml:space="preserve"><value>Đối tượng:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_RADIO_LCI_TITLE_NAME" xml:space="preserve"><value>Tiêu đề:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_ROOM_COMBO_LCI_TITLE_NAME" xml:space="preserve"><value>Phòng:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_ROOM_COMBO_CHECK_LCI_TITLE_NAME" xml:space="preserve"><value>Phòng:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_ROOM_COMBO_CHECK_FILTER_BY_DEPARTMENT_COMBO_LAYOUT_DEPARTMENT" xml:space="preserve"><value>Khoa:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_ROOM_COMBO_CHECK_FILTER_BY_DEPARTMENT_COMBO_LAYOUT_ROOM" xml:space="preserve"><value>Phòng:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_ROOM_COMBO_FILTER_BY_DEPARTMENT_COMBO_LAYOUT_DEPARTMENT" xml:space="preserve"><value>Khoa:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_ROOM_COMBO_FILTER_BY_DEPARTMENT_COMBO_LAYOUT_ROOM" xml:space="preserve"><value>Phòng:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_ROOM_GRID_CHECKBOX_FILTER_BY_DEPARTMENT_COMBO_LCI_DEPARTMENT_NAME" xml:space="preserve"><value>Khoa:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_ROOM_GRID_CHECKBOX_FILTER_BY_DEPARTMENT_COMBO_GRID_COLUMN1" xml:space="preserve"><value>Mã phòng</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_ROOM_GRID_CHECKBOX_FILTER_BY_DEPARTMENT_COMBO_GRID_COLUMN2" xml:space="preserve"><value>Tên phòng</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_ROOM_GRID_CHECKBOX_FILTER_BY_DEPARTMENT_COMBO_GRID_COLUMN3" xml:space="preserve"><value>Loại phòng</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_ROOM_GRID_CHECKBOX_FILTER_BY_DEPARTMENT_COMBO_GRID_COLUMN4" xml:space="preserve"><value>Khoa</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_SERVICE_TYPE_COMBO_LCI_TITLE_NAME" xml:space="preserve"><value>Loại dịch vụ:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_TEXT_BOX_LCI_TITLE_NAME" xml:space="preserve"><value>Mô tả:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_THUA_THIEU_VIEN_PHI_RADIO_LBL_TITLE_NAME" xml:space="preserve"><value>Thừa/Thiếu:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_THUA_THIEU_VIEN_PHI_RADIO_RD_TAT_CA_VIEN_PHI" xml:space="preserve"><value>Tất cả</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_THUA_THIEU_VIEN_PHI_RADIO_RD_THUA_VIEN_PHI" xml:space="preserve"><value>Thừa</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_THUA_THIEU_VIEN_PHI_RADIO_RD_THIEU_VIEN_PHI" xml:space="preserve"><value>Thiếu</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_TIME_FROM_TO_LBL_TITLE_NAME" xml:space="preserve"><value>Thời gian tạo:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_TIME_FROM_TO_LAYOUT_TIME_FROM" xml:space="preserve"><value>Từ:</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_TIME_FROM_TO_LAYOUT_TIME_TO" xml:space="preserve"><value>Đến:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_TREATMENT_COMBO_LAYOUT_CONTROL_ITEM10" xml:space="preserve"><value>Hồ sơ điều trị:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_TREATMENT_TYPE_COMBO_LCI_TITLE_NAME" xml:space="preserve"><value>Phòng:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_TREATMENT_TYPE_COMBO_CHECK_LCI_TITLE_NAME" xml:space="preserve"><value>Loại điều trị:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_TREATMENT_TYPE_GRID_CHECKBOX_GRID_COLUMN5" xml:space="preserve"><value>Mã loại điều trị</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_TREATMENT_TYPE_GRID_CHECKBOX_GRID_COLUMN6" xml:space="preserve"><value>Tên loại điều trị</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_TREATMENT_TYPE_GRID_CHECKBOX_GRID_COLUMN7" xml:space="preserve"><value>Người tạo</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_TREATMENT_TYPE_GRID_CHECKBOX_GRID_COLUMN8" xml:space="preserve"><value>Thời gian tạo</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_TREATMENT_TYPE_GRID_CHECKBOX_GRID_COLUMN9" xml:space="preserve"><value>Người sửa</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_TREATMENT_TYPE_GRID_CHECKBOX_GRID_COLUMN10" xml:space="preserve"><value>Thời gian sửa</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_USER_GRID_CHECKBOX_GRID_COLUMN5" xml:space="preserve"><value>Tên đăng nhập</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_USER_GRID_CHECKBOX_GRID_COLUMN6" xml:space="preserve"><value>Tên tài khoản</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_USER_GRID_CHECKBOX_GRID_COLUMN7" xml:space="preserve"><value>Người tạo</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_USER_GRID_CHECKBOX_GRID_COLUMN8" xml:space="preserve"><value>Thời gian tạo</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_USER_GRID_CHECKBOX_GRID_COLUMN9" xml:space="preserve"><value>Người sửa</value></data>
+<data name="IVT_LANGUAGE_KEY_UC_USER_GRID_CHECKBOX_GRID_COLUMN10" xml:space="preserve"><value>Thời gian sửa</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_USER_NAME_COMBO_LAYOUT_CONTROL_ITEM2" xml:space="preserve"><value>Thu ngân:</value></data>
+
+<data name="IVT_LANGUAGE_KEY_UC_MEDICIN_LAYOUT_CONTROL_ITEM1" xml:space="preserve"><value>Mã thuốc:</value></data>
+
+
+</root>

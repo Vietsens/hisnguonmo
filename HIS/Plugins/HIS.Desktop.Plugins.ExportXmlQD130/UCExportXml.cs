@@ -1724,7 +1724,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     {
                         if (this.configSync != null && this.configSync.patientTypeTTIds != null && this.configSync.patientTypeTTIds.Count > 0)
                         {
-                            ssFilter.PATIENT_TYPE_IDs = this.patientTypeTTSelecteds.Select(o => o.ID).ToList();
+                            ssFilter.PATIENT_TYPE_IDs = this.configSync.patientTypeTTIds.ToList();
                         }
                     }
 
