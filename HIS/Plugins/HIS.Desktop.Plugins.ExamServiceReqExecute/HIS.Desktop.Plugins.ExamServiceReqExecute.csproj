@@ -268,7 +268,7 @@
       <HintPath>..\..\..\..\..\..\RELEASE\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Paging">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.VoiceCommand">
       <HintPath>..\..\..\..\..\..\RELEASE\Inventec.VoiceCommand\Inventec.VoiceCommand.dll</HintPath>
@@ -606,6 +606,7 @@
     <EmbeddedResource Include="Popup\frmPayment.resx">
       <DependentUpon>frmPayment.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -53,6 +53,8 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
                     Inventec.Common.Logging.LogUtil.TraceData("_ResultADO_____", ResultDataADO);
                     Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataHein), dataHein));
                     uCMainHein.SetResultDataADOBhyt(ucHein__BHYT, ResultDataADO);
+                    //if (uCMainHein != null && ucHein__BHYT != null)
+                    //    uCMainHein.FillDataAfterFindQrCode(ucHein__BHYT, dataHein);
                     if (ResultDataADO != null)
                     {
                         bool isNotWrongAddress = true;
