@@ -364,6 +364,7 @@ namespace HIS.Desktop.Plugins.OpensourceHisStore.frmHisStore
         {
             try
             {
+                
                 data = data.OrderByDescending(s => s.AverageRating).ThenBy(o => o.ServiceCode).ToList();
                 int rowIndex = listReport.RowCount;
                 int columnIndex = 0;
@@ -377,7 +378,7 @@ namespace HIS.Desktop.Plugins.OpensourceHisStore.frmHisStore
                     CardItem.CardItem cardItem = new CardItem.CardItem(item, this.moduleData) { Dock = DockStyle.Fill };
                     listReport.Controls.Add(cardItem, columnIndex, rowIndex);
                     columnIndex++;
-                    cardItem.Click += new EventHandler(CardItem_Click);
+                    
                     if (columnIndex >= listReport.ColumnCount)
                     {
                         columnIndex = 0;

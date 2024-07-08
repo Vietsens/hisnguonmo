@@ -117,6 +117,90 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="frmCheckHeinCardGOV.btnPrint.Text" xml:space="preserve">
+    <value>Print (Ctrl P)</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn1.Caption" xml:space="preserve">
+    <value>Profile code</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn2.Caption" xml:space="preserve">
+    <value>Medical facility code</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn3.Caption" xml:space="preserve">
+    <value>Name of medical facility</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn4.Caption" xml:space="preserve">
+    <value>Since</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn5.Caption" xml:space="preserve">
+    <value>To date</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn6.Caption" xml:space="preserve">
+    <value>Disease name</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn7.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn8.Caption" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem13.Text" xml:space="preserve">
+    <value>Full name:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem14.Text" xml:space="preserve">
+    <value>New card code:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem15.Text" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem16.Text" xml:space="preserve">
+    <value>Sex:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem17.Text" xml:space="preserve">
+    <value>Social insurance agency:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem18.Text" xml:space="preserve">
+    <value>Registration code:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem19.Text" xml:space="preserve">
+    <value>Magnetic card value:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem2.Text" xml:space="preserve">
+    <value>Medical examination and treatment history</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem20.Text" xml:space="preserve">
+    <value>Incoming card value:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem21.Text" xml:space="preserve">
+    <value>Date of completion of 5 years:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.lciKetQuaKiemTra.Text" xml:space="preserve">
+    <value>Test results:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.Text" xml:space="preserve">
+    <value>Medical examination and treatment history</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.treeListColumn1.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmCheckHeinCardGOV.treeListColumn2.Caption" xml:space="preserve">
+    <value>service name</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.treeListColumn3.Caption" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.treeListColumn4.Caption" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.treeListColumn5.Caption" xml:space="preserve">
+    <value>Unit price</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.treeListColumn6.Caption" xml:space="preserve">
+    <value>into money</value>
+  </data>
   <data name="frmPatientChoice.btnClose.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -142,7 +226,7 @@
     <value>layoutControl1</value>
   </data>
   <data name="frmPatientChoice.layoutControlItem3.Text" xml:space="preserve">
-    <value />
+    <value>Select the patient by pressing enter or double clicking on the patient.</value>
   </data>
   <data name="frmPatientChoice.lblDescription.Text" xml:space="preserve">
     <value>ENTER or DOUBLE CLICK to handle patent</value>
@@ -158,27 +242,6 @@
   </data>
   <data name="frmPatientExtend.btnSave.Text" xml:space="preserve">
     <value>Import (Ctrl S)</value>
-  </data>
-  <data name="frmPatientExtend.cboBlood.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="frmPatientExtend.cboBloodRh.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="frmPatientExtend.cboCommune.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="frmPatientExtend.cboDistrict.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="frmPatientExtend.cboProvince.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="frmPatientExtend.cboProvinceKS.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="frmPatientExtend.chkIsHead.Properties.Caption" xml:space="preserve">
-    <value />
   </data>
   <data name="frmPatientExtend.groupControl1.Text" xml:space="preserve">
     <value>Resident info</value>
@@ -222,6 +285,9 @@
   <data name="frmPatientExtend.layoutControlItem18.Text" xml:space="preserve">
     <value>Cummune:</value>
   </data>
+  <data name="frmPatientExtend.layoutControlItem2.Text" xml:space="preserve">
+    <value>Household number:</value>
+  </data>
   <data name="frmPatientExtend.layoutControlItem20.Text" xml:space="preserve">
     <value>Address:</value>
   </data>
@@ -246,17 +312,68 @@
   <data name="frmPatientExtend.layoutControlItem28.Text" xml:space="preserve">
     <value>Email:</value>
   </data>
-  <data name="frmPatientExtend.layoutControlItem5.Text" xml:space="preserve">
-    <value>Family register/ Resident Register No.:</value>
-  </data>
   <data name="frmPatientExtend.layoutControlItem6.Text" xml:space="preserve">
     <value> </value>
   </data>
   <data name="frmPatientExtend.layoutControlItem9.Text" xml:space="preserve">
     <value>Rh:</value>
   </data>
+  <data name="frmPatientExtend.lciHoldHouse.Text" xml:space="preserve">
+    <value>Relationship with head of household:</value>
+  </data>
   <data name="frmPatientExtend.Text" xml:space="preserve">
     <value>Extended info:</value>
+  </data>
+  <data name="frmReasonNt.btnSave.Text" xml:space="preserve">
+    <value>Select (Ctrl S)</value>
+  </data>
+  <data name="frmReasonNt.gridColumn1.Caption" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="frmReasonNt.gridColumn3.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="frmReasonNt.HOSPITALIZE_REASON_CODE.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="frmReasonNt.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmReasonNt.Text" xml:space="preserve">
+    <value>Reason for boarding</value>
+  </data>
+  <data name="frmReasonNt.txtSearchvalue.Properties.NullText" xml:space="preserve">
+    <value>Search keywords</value>
+  </data>
+  <data name="frmReasonNt.txtSearchvalue.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keywords</value>
+  </data>
+  <data name="frmServiceReqChoice.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmServiceReqChoice.bbntClose.Caption" xml:space="preserve">
+    <value>Close(Ctrl S)</value>
+  </data>
+  <data name="frmServiceReqChoice.gridColumn1.Caption" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="frmServiceReqChoice.gridColumn2.Caption" xml:space="preserve">
+    <value>Clinic</value>
+  </data>
+  <data name="frmServiceReqChoice.gridColumn3.Caption" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="frmServiceReqChoice.gridColumn4.Caption" xml:space="preserve">
+    <value>Day of the examination</value>
+  </data>
+  <data name="frmServiceReqChoice.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmServiceReqChoice.simpleButton1.Text" xml:space="preserve">
+    <value>Close (Ctrl S)</value>
+  </data>
+  <data name="frmServiceReqChoice.Text" xml:space="preserve">
+    <value>Service registration information</value>
   </data>
   <data name="IVT_LANGUAGE_KEY_UCSERVICEREQUESTREGITER_LCI_PATIENT_DOB" xml:space="preserve">
     <value>Birthday:</value>
@@ -264,17 +381,32 @@
   <data name="IVT_LANGUAGE_KEY_UCSERVICEREQUESTREGITER_LCI_PATIENT_DOB_YEAR" xml:space="preserve">
     <value>Year of birth:</value>
   </data>
+  <data name="Plugin_Register_BanCoMuonNhapThongTinKhuVuc" xml:space="preserve">
+    <value>Are you sure you want to enter 'Area' information?</value>
+  </data>
   <data name="UCRegister.btnBill.Text" xml:space="preserve">
     <value>Bill (Ctrl B)</value>
   </data>
+  <data name="UCRegister.btnCallPatient.Text" xml:space="preserve">
+    <value>Call (F5)</value>
+  </data>
   <data name="UCRegister.btnCodeFind.Text" xml:space="preserve">
     <value>Patient Code</value>
+  </data>
+  <data name="UCRegister.btnCodeFind.Text__CCCD" xml:space="preserve">
+    <value>CCCD/ID card</value>
   </data>
   <data name="UCRegister.btnCodeFind.Text__MaCT" xml:space="preserve">
     <value>Program Code</value>
   </data>
   <data name="UCRegister.btnCodeFind.Text__MaHK" xml:space="preserve">
     <value>Mã HK</value>
+  </data>
+  <data name="UCRegister.btnCodeFind.Text__MaNV" xml:space="preserve">
+    <value>NV code</value>
+  </data>
+  <data name="UCRegister.btnCodeFind.Text__SoThe" xml:space="preserve">
+    <value>Card number</value>
   </data>
   <data name="UCRegister.btnConnectTerminal.Text" xml:space="preserve">
     <value>Connect device</value>
@@ -297,6 +429,9 @@
   <data name="UCRegister.btnPrint.Text" xml:space="preserve">
     <value>Print (Ctrl P)</value>
   </data>
+  <data name="UCRegister.btnRecallPatient.Text" xml:space="preserve">
+    <value>Recall (F6)</value>
+  </data>
   <data name="UCRegister.btnSave.Text" xml:space="preserve">
     <value>Save (Ctrl S)</value>
   </data>
@@ -309,62 +444,17 @@
   <data name="UCRegister.btnTreatmentBedRoom.Text" xml:space="preserve">
     <value>Assign Room (Ctrl G)</value>
   </data>
-  <data name="UCRegister.cboAge.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCRegister.cboCareer.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCRegister.cboCashierRoom.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCRegister.cboCommune.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCRegister.cboDistrict.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCRegister.cboEmergencyTime.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCRegister.cboEthnic.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCRegister.cboGender.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCRegister.CboListPort.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCRegister.cboMilitaryRank.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCRegister.cboNational.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCRegister.cboPatientType.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCRegister.cboProgram.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCRegister.cboProvince.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCRegister.cboTHX.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCRegister.chkEmergency.Properties.Caption" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCRegister.chkIsNotRequireFee.Properties.Caption" xml:space="preserve">
-    <value />
-  </data>
   <data name="UCRegister.chkIsNotRequireFee.Tooltip.Text" xml:space="preserve">
     <value>If selected, patient will not have to pay fee immediately yet. The doctor (in clinic) still be able to execute.</value>
   </data>
-  <data name="UCRegister.chkPriority.Properties.Caption" xml:space="preserve">
-    <value />
+  <data name="UCRegister.chkSignExam.Properties.Caption" xml:space="preserve">
+    <value>Sign the examination form</value>
+  </data>
+  <data name="UCRegister.chkWNext.Properties.Caption" xml:space="preserve">
+    <value>Warning for next visit</value>
+  </data>
+  <data name="UCRegister.dropDownButton_Other.Text" xml:space="preserve">
+    <value>Other</value>
   </data>
   <data name="UCRegister.dtIntructionTime.Properties.NullValuePrompt" xml:space="preserve">
     <value>dd/MM/yyyy HH:mm</value>
@@ -386,111 +476,6 @@
   </data>
   <data name="UCRegister.gboxServiceRoomInformation.Text" xml:space="preserve">
     <value>Registed service info (F3)</value>
-  </data>
-  <data name="UCRegister.layoutControlItem20.Text" xml:space="preserve">
-    <value>layoutControlItem9</value>
-  </data>
-  <data name="UCRegister.layoutControlItem21.Text" xml:space="preserve">
-    <value>layoutControlItem6</value>
-  </data>
-  <data name="UCRegister.layoutControlItem5.Text" xml:space="preserve">
-    <value>Gender: </value>
-  </data>
-  <data name="UCRegister.layoutControlItem6.Text" xml:space="preserve">
-    <value>Code poor households:</value>
-  </data>
-  <data name="UCRegister.layoutControlItem8.Text" xml:space="preserve">
-    <value>Short Code:</value>
-  </data>
-  <data name="UCRegister.lciAddress.Text" xml:space="preserve">
-    <value>Address:</value>
-  </data>
-  <data name="UCRegister.lciAge.Text" xml:space="preserve">
-    <value>Age: </value>
-  </data>
-  <data name="UCRegister.lciCareer.Text" xml:space="preserve">
-    <value>Career:</value>
-  </data>
-  <data name="UCRegister.lcicboCashierRoom.Text" xml:space="preserve">
-    <value>Cashier's</value>
-  </data>
-  <data name="UCRegister.lciCommune.Text" xml:space="preserve">
-    <value>Commune:</value>
-  </data>
-  <data name="UCRegister.lciDistrict.Text" xml:space="preserve">
-    <value>District:</value>
-  </data>
-  <data name="UCRegister.lciEmergencyTime.Text" xml:space="preserve">
-    <value>Time of symptom/ sympton's time:</value>
-  </data>
-  <data name="UCRegister.lciEthnic.Text" xml:space="preserve">
-    <value>Ethnic:</value>
-  </data>
-  <data name="UCRegister.lciGender.Text" xml:space="preserve">
-    <value>Gender:</value>
-  </data>
-  <data name="UCRegister.lciIntructionTime.Text" xml:space="preserve">
-    <value>Admited time/Time in:</value>
-  </data>
-  <data name="UCRegister.lciIsEmergency.Text" xml:space="preserve">
-    <value>Emergency:</value>
-  </data>
-  <data name="UCRegister.lciIsNotRequireFee.Text" xml:space="preserve">
-    <value>Pay later</value>
-  </data>
-  <data name="UCRegister.lciNational.Text" xml:space="preserve">
-    <value>National:</value>
-  </data>
-  <data name="UCRegister.lciPatientCode.Text" xml:space="preserve">
-    <value>Search code:</value>
-  </data>
-  <data name="UCRegister.lciPatientDob.Text" xml:space="preserve">
-    <value>Birthday:</value>
-  </data>
-  <data name="UCRegister.lciPatientName.Text" xml:space="preserve">
-    <value>Patient name:</value>
-  </data>
-  <data name="UCRegister.lciPatientType.Text" xml:space="preserve">
-    <value>Patient type:</value>
-  </data>
-  <data name="UCRegister.lciPhone.Text" xml:space="preserve">
-    <value>Phone:</value>
-  </data>
-  <data name="UCRegister.lciPort.Text" xml:space="preserve">
-    <value>Port:</value>
-  </data>
-  <data name="UCRegister.lciPriority.Text" xml:space="preserve">
-    <value>Priority:</value>
-  </data>
-  <data name="UCRegister.lciProgram.Text" xml:space="preserve">
-    <value>Program:</value>
-  </data>
-  <data name="UCRegister.lciRegisterEditor.Text" xml:space="preserve">
-    <value>layoutControl1</value>
-  </data>
-  <data name="UCRegister.lcitxtCorrelated.Text" xml:space="preserve">
-    <value>Relationship:</value>
-  </data>
-  <data name="UCRegister.lcitxtHomePerson.Text" xml:space="preserve">
-    <value>Relatives:</value>
-  </data>
-  <data name="UCRegister.lcitxtMilitaryRankCode.Text" xml:space="preserve">
-    <value>Military rank:</value>
-  </data>
-  <data name="UCRegister.lcitxtProvince.Text" xml:space="preserve">
-    <value>Provicne:</value>
-  </data>
-  <data name="UCRegister.lcitxtRelativeAddress.Text" xml:space="preserve">
-    <value>Address:</value>
-  </data>
-  <data name="UCRegister.lciTreatmentType.Text" xml:space="preserve">
-    <value>Treatment type:</value>
-  </data>
-  <data name="UCRegister.btnCallPatient.Text" xml:space="preserve">
-    <value>Call (F5)</value>
-  </data>
-  <data name="UCRegister.btnRecallPatient.Text" xml:space="preserve">
-    <value>Recall (F6)</value>
   </data>
   <data name="UCRegister.grboxExecuteRoomInfo.Text" xml:space="preserve">
     <value>Number of visits per room</value>
@@ -525,16 +510,157 @@
   <data name="UCRegister.gridColumn_ExecuteRoomInfo_ExecuteRoom5.Caption" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="UCRegister.txtGateNumber.Properties.NullValuePrompt" xml:space="preserve">
-    <value>Port</value>
+  <data name="UCRegister.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
   </data>
-  <data name="UCRegister.txtStepNumber.Properties.NullValuePrompt" xml:space="preserve">
-    <value>Step</value>
+  <data name="UCRegister.layoutControlItem13.Text" xml:space="preserve">
+    <value>Note:</value>
+  </data>
+  <data name="UCRegister.layoutControlItem20.Text" xml:space="preserve">
+    <value>layoutControlItem9</value>
+  </data>
+  <data name="UCRegister.layoutControlItem21.Text" xml:space="preserve">
+    <value>layoutControlItem6</value>
+  </data>
+  <data name="UCRegister.layoutControlItem5.Text" xml:space="preserve">
+    <value>Gender: </value>
+  </data>
+  <data name="UCRegister.layoutControlItem6.Text" xml:space="preserve">
+    <value>Code poor households:</value>
+  </data>
+  <data name="UCRegister.layoutControlItem8.Text" xml:space="preserve">
+    <value>Short Code:</value>
+  </data>
+  <data name="UCRegister.layoutControlReasonVV.Text" xml:space="preserve">
+    <value>Reason VV:</value>
+  </data>
+  <data name="UCRegister.lciAddress.Text" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="UCRegister.lciAge.Text" xml:space="preserve">
+    <value>Age: </value>
+  </data>
+  <data name="UCRegister.lciBNManTinh.lciBNManTinh.Text" xml:space="preserve">
+    <value>Chronic</value>
+  </data>
+  <data name="UCRegister.lciBNManTinh.Text" xml:space="preserve">
+    <value>Chronic:</value>
+  </data>
+  <data name="UCRegister.lciCareer.Text" xml:space="preserve">
+    <value>Career:</value>
+  </data>
+  <data name="UCRegister.lcicboCashierRoom.Text" xml:space="preserve">
+    <value>Cashier's</value>
+  </data>
+  <data name="UCRegister.lciCommune.Text" xml:space="preserve">
+    <value>Commune:</value>
+  </data>
+  <data name="UCRegister.lciDistrict.Text" xml:space="preserve">
+    <value>District:</value>
+  </data>
+  <data name="UCRegister.lciEmergencyTime.Text" xml:space="preserve">
+    <value>Time of symptom/ sympton's time:</value>
+  </data>
+  <data name="UCRegister.lciEthnic.Text" xml:space="preserve">
+    <value>Ethnic:</value>
+  </data>
+  <data name="UCRegister.lciGender.Text" xml:space="preserve">
+    <value>Gender:</value>
+  </data>
+  <data name="UCRegister.lciHospitalizeReason.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Reason for boarding</value>
+  </data>
+  <data name="UCRegister.lciHospitalizeReason.Text" xml:space="preserve">
+    <value>Reasons for entering NT:</value>
+  </data>
+  <data name="UCRegister.lciIntructionTime.Text" xml:space="preserve">
+    <value>Admited time/Time in:</value>
+  </data>
+  <data name="UCRegister.lciIsEmergency.Text" xml:space="preserve">
+    <value>Emergency:</value>
+  </data>
+  <data name="UCRegister.lciIsNotRequireFee.Text" xml:space="preserve">
+    <value>Pay later</value>
+  </data>
+  <data name="UCRegister.lciKskCode.Text" xml:space="preserve">
+    <value>KSK batch code:</value>
+  </data>
+  <data name="UCRegister.lciNational.Text" xml:space="preserve">
+    <value>National:</value>
   </data>
   <data name="UCRegister.lciOweType.Text" xml:space="preserve">
     <value>Hospital debt:</value>
   </data>
-  <data name="UCRegister.btnCodeFind.Text__SoThe" xml:space="preserve">
-    <value>Card number</value>
+  <data name="UCRegister.lciPatientClassify.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Patient classification</value>
+  </data>
+  <data name="UCRegister.lciPatientClassify.Text" xml:space="preserve">
+    <value>Patient classification:</value>
+  </data>
+  <data name="UCRegister.lciPatientCode.Text" xml:space="preserve">
+    <value>Search code:</value>
+  </data>
+  <data name="UCRegister.lciPatientDob.Text" xml:space="preserve">
+    <value>Birthday:</value>
+  </data>
+  <data name="UCRegister.lciPatientName.Text" xml:space="preserve">
+    <value>Patient name:</value>
+  </data>
+  <data name="UCRegister.lciPatientType.Text" xml:space="preserve">
+    <value>Patient type:</value>
+  </data>
+  <data name="UCRegister.lciPhone.Text" xml:space="preserve">
+    <value>Phone:</value>
+  </data>
+  <data name="UCRegister.lciPort.Text" xml:space="preserve">
+    <value>Port:</value>
+  </data>
+  <data name="UCRegister.lciPriority.Text" xml:space="preserve">
+    <value>Priority:</value>
+  </data>
+  <data name="UCRegister.lciProgram.Text" xml:space="preserve">
+    <value>Program:</value>
+  </data>
+  <data name="UCRegister.lciProvinceKS.Text" xml:space="preserve">
+    <value>Province of birth:</value>
+  </data>
+  <data name="UCRegister.lciRegisterEditor.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCRegister.lciRelativeCMNDNumber.Text" xml:space="preserve">
+    <value>ID number:</value>
+  </data>
+  <data name="UCRegister.lciTreatmentType.Text" xml:space="preserve">
+    <value>Treatment type:</value>
+  </data>
+  <data name="UCRegister.lcitxtCorrelated.Text" xml:space="preserve">
+    <value>Relationship:</value>
+  </data>
+  <data name="UCRegister.lcitxtHomePerson.Text" xml:space="preserve">
+    <value>Relatives:</value>
+  </data>
+  <data name="UCRegister.lcitxtMilitaryRankCode.Text" xml:space="preserve">
+    <value>Military rank:</value>
+  </data>
+  <data name="UCRegister.lcitxtProvince.Text" xml:space="preserve">
+    <value>Provicne:</value>
+  </data>
+  <data name="UCRegister.lcitxtRelativeAddress.Text" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="UCRegister.PopupMenuOther.btnDHST" xml:space="preserve">
+    <value>Signs of vitality</value>
+  </data>
+  <data name="UCRegister.PopupMenuOther.btnTaiNanThuongTich" xml:space="preserve">
+    <value>Injury</value>
+  </data>
+  <data name="UCRegister.txtGateNumber.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="UCRegister.txtReasonVV.ToolTip" xml:space="preserve">
+    <value>Reason for hospitalization</value>
+  </data>
+  <data name="UCRegister.txtStepNumber.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Step</value>
   </data>
 </root>

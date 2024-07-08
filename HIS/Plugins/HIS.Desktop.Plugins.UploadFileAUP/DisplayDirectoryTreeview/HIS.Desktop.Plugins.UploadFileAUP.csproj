@@ -100,9 +100,7 @@
     <Compile Include="SignAUP\SignAUPBehavior.cs" />
     <Compile Include="SignAUP\SignAUPFactory.cs" />
     <Compile Include="SignAUP\SignAUPProcessor.cs" />
-    <Compile Include="UpdateAUP.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="UpdateAUP.cs" />
     <Compile Include="UpdateAUP.Designer.cs">
       <DependentUpon>UpdateAUP.cs</DependentUpon>
     </Compile>

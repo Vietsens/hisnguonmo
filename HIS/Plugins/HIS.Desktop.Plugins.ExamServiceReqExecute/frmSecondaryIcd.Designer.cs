@@ -47,7 +47,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSecondaryIcd));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
+//            this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
             this.txtIcdCodes = new DevExpress.XtraEditors.TextEdit();
             this.txtKeyword = new DevExpress.XtraEditors.TextEdit();
             this.txtIcdNames = new DevExpress.XtraEditors.TextEdit();
@@ -95,7 +95,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // 
             // layoutControl1
             // 
-            this.layoutControl1.Controls.Add(this.ucPaging1);
+//            this.layoutControl1.Controls.Add(this.ucPaging1);
             this.layoutControl1.Controls.Add(this.txtIcdCodes);
             this.layoutControl1.Controls.Add(this.txtKeyword);
             this.layoutControl1.Controls.Add(this.txtIcdNames);
@@ -113,11 +113,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // 
             // ucPaging1
             // 
-            this.ucPaging1.Location = new System.Drawing.Point(8, 516);
-            this.ucPaging1.Margin = new System.Windows.Forms.Padding(4);
-            this.ucPaging1.Name = "ucPaging1";
-            this.ucPaging1.Size = new System.Drawing.Size(1176, 20);
-            this.ucPaging1.TabIndex = 10;
+//            this.ucPaging1.Location = new System.Drawing.Point(8, 516);
+//            this.ucPaging1.Margin = new System.Windows.Forms.Padding(4);
+            //this.ucPaging1.Name = "ucPaging1";
+            //this.ucPaging1.Size = new System.Drawing.Size(1176, 20);
+            //this.ucPaging1.TabIndex = 10;
             // 
             // txtIcdCodes
             // 
