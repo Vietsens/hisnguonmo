@@ -65,5 +65,6 @@ namespace HIS.UC.UCOtherServiceReqInfo.ADO
         public string HospitalizeReasonCode { get; set; }
         public string HospitalizeReasonName { get; set; }
         public bool IsExamOnline { get; set; }
+        public string HospitalizationReason { get; set; }
     }
 }

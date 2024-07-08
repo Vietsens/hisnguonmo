@@ -33,7 +33,7 @@ namespace HIS.UC.UCOtherServiceReqInfo.Valid
             try
             {
                 if (txtText == null) return valid;
-                if (String.IsNullOrEmpty(txtText.Text))
+                if (String.IsNullOrEmpty(txtText.Text.Trim()))
                     return valid;
                 valid = true;
             }

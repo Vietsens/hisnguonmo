@@ -172,6 +172,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             UCServiceReqInfoADO dataServiceReqInfoADO = new UCServiceReqInfoADO();
             try
             {
+                dataServiceReqInfoADO.HospitalizationReason = !string.IsNullOrEmpty(txtHosReason.Text.Trim()) ? txtHosReason.Text.Trim() : null;
                 dataServiceReqInfoADO.IntructionTime = Inventec.Common.TypeConvert.Parse.ToInt64(DateTimeHelper.ConvertDateTimeStringToSystemTime(this.txtIntructionTime.Text).Value.ToString("yyyyMMddHHmm") + "00");
                 if (chkCapMaMS.Checked)
                     dataServiceReqInfoADO.IsCapMaMS = true;
@@ -258,6 +259,26 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 dataServiceReqInfoADO.IsTuberCulosis = this.chkTuberculosis.Checked;
                 dataServiceReqInfoADO.IsWarningForNext = this.chkWNext.Checked;
                 dataServiceReqInfoADO.IsHiv = this.chkIsHiv.Checked;
+
+                if (cboHosReason.EditValue != null)
+                {
+                    var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.ID == Int64.Parse(cboHosReason.EditValue.ToString()));
+                    if (data != null && data.HOSPITALIZE_REASON_NAME == txtHosReasonNt.Text.Trim())
+                    {
+                        HospitalizeReasonCode = data.HOSPITALIZE_REASON_CODE;
+                        HospitalizeReasonName = data.HOSPITALIZE_REASON_NAME;
+                    }
+                    else
+                    {
+                        HospitalizeReasonCode = null;
+                        HospitalizeReasonName = txtHosReasonNt.Text.Trim();
+                    }
+                }
+                else
+                {
+                    HospitalizeReasonCode = null;
+                    HospitalizeReasonName = txtHosReasonNt.Text.Trim();
+                }
                 dataServiceReqInfoADO.HospitalizeReasonCode = HospitalizeReasonCode;
                 dataServiceReqInfoADO.HospitalizeReasonName = HospitalizeReasonName;
                 dataServiceReqInfoADO.IsExamOnline = this.chkExamOnline.Checked;
@@ -278,6 +299,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
                     this.dlgFocusNextUserControl = dataServiceReqInfoADO._FocusNextUserControl;
                 if (dataServiceReqInfoADO != null)
                 {
+                    txtHosReason.Text = dataServiceReqInfoADO.HospitalizationReason;
                     if (dataServiceReqInfoADO.IsCapMaMS)
                         chkCapMaMS.Checked = true;
                     else
@@ -374,6 +396,23 @@ namespace HIS.UC.UCOtherServiceReqInfo
                         chkTuberculosis.Checked = true;
                     else
                         chkTuberculosis.Checked = false;
+
+                    if (!string.IsNullOrEmpty(dataServiceReqInfoADO.HospitalizeReasonCode))
+                    {
+                        var lst = cboHosReason.Properties.DataSource as List<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>;
+                        if(lst != null && lst.Count > 0 && lst.FirstOrDefault(o=>o.HOSPITALIZE_REASON_CODE == dataServiceReqInfoADO.HospitalizeReasonCode) != null)
+                        {
+                            cboHosReason.EditValue = lst.FirstOrDefault(o => o.HOSPITALIZE_REASON_CODE == dataServiceReqInfoADO.HospitalizeReasonCode).ID;
+                        }
+                        else
+                        {
+                            txtHosReasonNt.Text = dataServiceReqInfoADO.HospitalizeReasonName;
+                        }
+                    }
+                    else
+                    {
+                        txtHosReasonNt.Text = dataServiceReqInfoADO.HospitalizeReasonName;
+                    }
                 }
             }
             catch (Exception ex)
@@ -494,6 +533,8 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 this.txtGuaranteeReason.Text = "";
                 this.txtNote.Text = "";
                 this.chkTuberculosis.Checked = false;
+                this.txtHosReason.Text = null;
+                this.txtHosReasonNt.Text = null;
             }
             catch (Exception ex)
             {

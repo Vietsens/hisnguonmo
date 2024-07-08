@@ -284,7 +284,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             try
             {
                 List<MOS.EFMODEL.DataModels.HIS_PRIORITY_TYPE> dataValidPriorityTypes = null;
-                List<MOS.EFMODEL.DataModels.HIS_PRIORITY_TYPE> dataPriorityTypes = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PRIORITY_TYPE>().Where(o=>o.IS_FOR_EXAM_SUBCLINICAL == 1).ToList();
+                List<MOS.EFMODEL.DataModels.HIS_PRIORITY_TYPE> dataPriorityTypes = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PRIORITY_TYPE>().Where(o => o.IS_FOR_EXAM_SUBCLINICAL == 1).ToList();
                 if (dataPriorityTypes != null && dataPriorityTypes.Count > 0 && (patientDob > 0 || !String.IsNullOrEmpty(heinCardNumber)))
                 {
                     DateTime dtNgSinh = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(patientDob).Value;
@@ -345,7 +345,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
                             this.chkIsNotRequireFee.Checked = (lstKey != null && lstKey.Count > 0 && lstKey.Contains(this.workingPatientType.PATIENT_TYPE_CODE));
                         }
 
-                        var dataOtherPaySources = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_OTHER_PAY_SOURCE>();                  
+                        var dataOtherPaySources = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_OTHER_PAY_SOURCE>();
                         if (!String.IsNullOrEmpty(this.workingPatientType.OTHER_PAY_SOURCE_IDS))
                         {
                             dataOtherPaySources = dataOtherPaySources != null ? dataOtherPaySources.Where(o => o.IS_ACTIVE == 1 && ("," + this.workingPatientType.OTHER_PAY_SOURCE_IDS + ",").Contains("," + o.ID + ",")).ToList() : null;
@@ -1025,17 +1025,17 @@ namespace HIS.UC.UCOtherServiceReqInfo
             chkExamOnline.Checked = isChecked;
         }
         public void ShowOrtherPay(long payId)
-		{
-			try
-			{
+        {
+            try
+            {
                 if (payId > 0)
                 {
                     LoadOtherPaySource();
                     cboOtherPaySource.EditValue = payId;
                     cboOtherPaySource.Enabled = false;
                     IsChangeFromClassify = true;
-				}
-				else
+                }
+                else
                 {
                     IsChangeFromClassify = false;
                     this.InitComboCommon(this.cboOtherPaySource, dataOtherPayTemp, "ID", "OTHER_PAY_SOURCE_NAME", "OTHER_PAY_SOURCE_CODE");
@@ -1045,11 +1045,11 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 }
 
             }
-			catch (Exception ex)
-			{
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-		}
+        }
 
         private void btnAddCTT_Click(object sender, EventArgs e)
         {
@@ -1320,7 +1320,17 @@ namespace HIS.UC.UCOtherServiceReqInfo
                     lciFortxtIncode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     dxValidationUCOtherReqInfo.SetValidationRule(txtIncode, null);
                 }
-
+                var source = cboTreatmentType.Properties.DataSource as List<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE>;
+                if (source != null && source.FirstOrDefault(o => o.ID == treatmentTypeId).HEIN_TREATMENT_TYPE_CODE == MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.TRUE)
+                {
+                    layoutControlItem8.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    ValidateTextHosReason();
+                }
+                else
+                {
+                    layoutControlItem8.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    dxValidationUCOtherReqInfo.SetValidationRule(txtHosReason, null);
+                }
                 cboHosReason.EditValue = null;
                 dxValidationUCOtherReqInfo.SetValidationRule(cboHosReason, null);
                 lciHosReason.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -1527,37 +1537,37 @@ namespace HIS.UC.UCOtherServiceReqInfo
             }
         }
 
-		private void cboPatientClassify_EditValueChanged(object sender, EventArgs e)
-		{
-			try
-			{
-                if(cboPatientClassify!=null)
-				{
+        private void cboPatientClassify_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboPatientClassify != null)
+                {
                     var patientClassify = dataClassify.FirstOrDefault(o => o.ID == Int64.Parse(cboPatientClassify.EditValue.ToString()));
                     if (patientClassify != null && patientClassify.OTHER_PAY_SOURCE_ID != null)
                     {
-                        var currentOtherPaySource = dataOtherPayTemp.FirstOrDefault(o=>o.ID == patientClassify.OTHER_PAY_SOURCE_ID);
-                        if(currentOtherPaySource!=null)
-						{
+                        var currentOtherPaySource = dataOtherPayTemp.FirstOrDefault(o => o.ID == patientClassify.OTHER_PAY_SOURCE_ID);
+                        if (currentOtherPaySource != null)
+                        {
                             cboOtherPaySource.EditValue = patientClassify.OTHER_PAY_SOURCE_ID;
-						}
-						else
-						{
+                        }
+                        else
+                        {
                             List<HIS_OTHER_PAY_SOURCE> lstOtherPay = dataOtherPayTemp;
                             var dtAllOtherPaySource = BackendDataWorker.Get<HIS_OTHER_PAY_SOURCE>().Where(o => o.ID == patientClassify.OTHER_PAY_SOURCE_ID).FirstOrDefault();
-                            if(dtAllOtherPaySource!=null)
+                            if (dtAllOtherPaySource != null)
                                 lstOtherPay.Add(dtAllOtherPaySource);
                             this.InitComboCommon(this.cboOtherPaySource, lstOtherPay, "ID", "OTHER_PAY_SOURCE_NAME", "OTHER_PAY_SOURCE_CODE");
                             cboOtherPaySource.EditValue = patientClassify.OTHER_PAY_SOURCE_ID;
-                        }                            
-                    }                     
+                        }
+                    }
                 }
-			}
-			catch (Exception ex)
-			{
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-		}
+        }
 
         private void chkWNext_CheckedChanged(object sender, EventArgs e)
         {
@@ -1638,37 +1648,16 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        private void cboHosReason_EditValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (cboHosReason.EditValue != null)
-                {
-                    var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.ID == Int64.Parse(cboHosReason.EditValue.ToString()));
-                    if (data != null)
-                    {
-                        HospitalizeReasonCode = data.HOSPITALIZE_REASON_CODE;
-                        HospitalizeReasonName = data.HOSPITALIZE_REASON_NAME;
-                    }
-                }
-                else
-                {
-                    HospitalizeReasonCode = null;
-                    HospitalizeReasonName = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
 
         private void cboHosReason_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             try
             {
                 if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboHosReason.Text = null;
                     cboHosReason.EditValue = null;
+                }
             }
             catch (Exception ex)
             {
@@ -1676,15 +1665,57 @@ namespace HIS.UC.UCOtherServiceReqInfo
             }
         }
 
-        private void cboHosReason_VisibleChanged(object sender, EventArgs e)
+        private void txtHosReasonNt_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
+
             try
             {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboHosReason.EditValue = null;
+                    txtHosReasonNt.Text = null;
+                }
+                else if (e.Button.Kind == ButtonPredefines.Combo)
+                {
+                    cboHosReason.ShowPopup();
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+
+        }
+
+        private void cboHosReason_EditValueChanged(object sender, EventArgs e)
+        {
+
+            try
+            {
+                if (cboHosReason.EditValue != null)
+                {
+                    txtHosReasonNt.Text = (cboHosReason.Properties.DataSource as List<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>).FirstOrDefault(o => o.ID == Int64.Parse(cboHosReason.EditValue.ToString())).HOSPITALIZE_REASON_NAME;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void txtHosReasonNt_DoubleClick(object sender, EventArgs e)
+        {
+
+            try
+            {
+                cboHosReason.ShowPopup();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
     }
 }
