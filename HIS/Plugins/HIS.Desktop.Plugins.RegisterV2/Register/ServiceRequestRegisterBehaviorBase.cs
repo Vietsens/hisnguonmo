@@ -174,7 +174,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
         protected long? patientClassifyId { get; set; }
         protected string HospitalizeReasonCode { get; set; }
         protected string HospitalizeReasonName { get; set; }
-
+        protected string HospitalizationReason { get; set; }
         public string GUARANTEE_LOGINNAME { get; set; }
         public string GUARANTEE_USERNAME { get; set; }
         public string GUARANTEE_REASON { get; set; }
@@ -365,6 +365,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.FUND_CUSTOMER_NAME = this.serviceReqInfoValue.FUND_CUSTOMER_NAME;
                 this.HospitalizeReasonCode = this.serviceReqInfoValue.HospitalizeReasonCode;
                 this.HospitalizeReasonName = this.serviceReqInfoValue.HospitalizeReasonName;
+                this.HospitalizationReason = this.serviceReqInfoValue.HospitalizationReason;
                 //UcheinInfo
                 if (this.heinInfoValue != null && this.heinInfoValue.HisTreatment != null)
                 {
@@ -834,6 +835,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.patientProfile.HisTreatment.TDL_SOCIAL_INSURANCE_NUMBER = SocialInsuranceNumberPatient;
                 this.patientProfile.HisTreatment.HOSPITALIZE_REASON_CODE = this.HospitalizeReasonCode;
                 this.patientProfile.HisTreatment.HOSPITALIZE_REASON_NAME = this.HospitalizeReasonName;
+                this.patientProfile.HisTreatment.HOSPITALIZATION_REASON = this.HospitalizationReason;
             }
             catch (Exception ex)
             {
