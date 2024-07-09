@@ -248,6 +248,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
+                var countPrintConfig = this.currentControlStateRDO.Where(s => !string.IsNullOrEmpty(s.VALUE)).Distinct().ToList();
+                if (countPrintConfig.Count == 0 && this.serviceReqComboResultSDO.Transactions == null) return;
                 if (serviceReqComboResultSDO != null)
                 {
                     CommonParam param = new CommonParam();

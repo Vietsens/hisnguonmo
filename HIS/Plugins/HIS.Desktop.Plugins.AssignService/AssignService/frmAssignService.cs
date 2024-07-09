@@ -9261,6 +9261,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
         }
         List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
+        #region thanh toan QR
         private void CheckEnableBtnQR()
         {
             try
@@ -9471,7 +9472,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
         }
 
-
+        #endregion
 
     }
 }
