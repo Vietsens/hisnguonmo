@@ -3172,6 +3172,12 @@ namespace HIS.Desktop.Plugins.Register.Run
                 this.LoadConfigOweTypeDefault(BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_OWE_TYPE>());
                 this.isNotCheckTT = false;
                 this.typeReceptionForm = null;
+                this.txtReasonVV.Text = "";
+                this.cboHosReason.EditValue = null;
+                this.txtHosReason.Text = "";
+                this.HospitalizeReason = "";
+                this.HospitalizeReasonCode = "";
+                this.HospitalizeReasonName = "";
             }
             catch (Exception ex)
             {
