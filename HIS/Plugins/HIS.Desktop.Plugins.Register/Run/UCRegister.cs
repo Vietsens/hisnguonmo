@@ -30,11 +30,13 @@ using HIS.Desktop.Plugins.Register.ADO;
 using HIS.Desktop.Plugins.Register.PatientExtend;
 using HIS.Desktop.Plugins.Register.Process;
 using HIS.Desktop.Plugins.Register.Valid;
+using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.Utility;
 using HIS.UC.KskContract;
 using HIS.UC.RoomExamService;
 using HIS.UC.WorkPlace;
 using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Controls.PopupLoader;
 using Inventec.Common.Logging;
 using Inventec.Common.QrCodeBHYT;
@@ -195,6 +197,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 //LogSystem.Debug("Loaded InitExamServiceRoom");
 
                 this.InitPopupMenuOther();
+                this.loadHosReason();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -4479,19 +4482,21 @@ namespace HIS.Desktop.Plugins.Register.Run
             {
                 cboHosReason.EditValue = null;
                 dxValidationProviderControl.SetValidationRule(cboHosReason, null);
-                lciHospitalizeReason.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                panelLayoutHosReason.Visible = false;
+                layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 layoutControlReasonVV.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                lciHospitalizeReason.AppearanceItemCaption.ForeColor = Color.Black;
+                
                 if (cboTreatmentType.EditValue != null)
                 {
                     var type = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.ID == Int64.Parse(cboTreatmentType.EditValue.ToString()));
-                    lciHospitalizeReason.Visibility = type != null && type.HEIN_TREATMENT_TYPE_CODE == MOS.LibraryHein.Bhyt.HeinTreatmentType.HeinTreatmentTypeCode.TREAT ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    panelLayoutHosReason.Visible = type != null && type.HEIN_TREATMENT_TYPE_CODE == MOS.LibraryHein.Bhyt.HeinTreatmentType.HeinTreatmentTypeCode.TREAT ? true : false;
                     layoutControlReasonVV.Visibility = type != null && type.HEIN_TREATMENT_TYPE_CODE == MOS.LibraryHein.Bhyt.HeinTreatmentType.HeinTreatmentTypeCode.TREAT ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem16.Visibility = type != null && type.HEIN_TREATMENT_TYPE_CODE == MOS.LibraryHein.Bhyt.HeinTreatmentType.HeinTreatmentTypeCode.TREAT ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
 
-                    if (HisConfigCFG.InHospitalizationReasonRequired && lciHospitalizeReason.Visible )
+                    if (HisConfigCFG.InHospitalizationReasonRequired && panelLayoutHosReason.Visible )
                     {
-                        lciHospitalizeReason.AppearanceItemCaption.ForeColor = Color.Maroon;
-                        
+
+                        layoutControlItem16.AppearanceItemCaption.ForeColor = Color.Maroon;
                         ValidateComboHosspitalizeReason();
                     }
                 }
@@ -4504,70 +4509,32 @@ namespace HIS.Desktop.Plugins.Register.Run
 
         }
 
-        private void cboHosReason_EditValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if(cboHosReason.EditValue != null)
-                {
-                    //var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o=>o.ID == Int64.Parse(cboHosReason.EditValue.ToString()));
-                    if (selectedReason != null)
-                    {
-                        HospitalizeReasonCode = selectedReason.HOSPITALIZE_REASON_CODE;
-                        HospitalizeReasonName = selectedReason.HOSPITALIZE_REASON_NAME;
-                    }    
-                }
-                else
-                {
-                    HospitalizeReasonCode = null;
-                    HospitalizeReasonName = null;
-                }    
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
+        
+        
 
-        private void cboHosReason_ButtonClick(object sender, ButtonPressedEventArgs e)
-        {
-
-            try
-            {
-                if (e.Button.Kind == ButtonPredefines.Delete)
-                    cboHosReason.EditValue = null;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-
-        }
-
-        private void cboHosReason_VisibleChanged(object sender, EventArgs e)
-        {
-            try
-            {
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
+        
         /// <summary>
-        /// chon ly do vao noi tru tu viec double click
+        /// chon ly do vao noi tru tu viec double click_)
         /// </summary>
-        private HIS_HOSPITALIZE_REASON selectedReason = new HIS_HOSPITALIZE_REASON();
-        public void reasonNT(HIS_HOSPITALIZE_REASON selected)
+        /// 
+        List<HIS_HOSPITALIZE_REASON> listHospitalReason = new List<HIS_HOSPITALIZE_REASON>();
+        private void loadHosReason()
         {
             try
             {
-                if (selected != null)
+                HisHospitalizeReasonFilter reasonFilter = new HisHospitalizeReasonFilter();
+                reasonFilter.IS_ACTIVE = 1;
+                reasonFilter.ORDER_DIRECTION = "DESC";
+                reasonFilter.ORDER_FIELD = "MODIFY_TIME";
+                listHospitalReason = new BackendAdapter(new CommonParam()).Get<List<HIS_HOSPITALIZE_REASON>>("/api/HisHospitalizeReason/Get", ApiConsumers.MosConsumer, reasonFilter, new CommonParam());
+                if (listHospitalReason != null)
                 {
-                    this.cboHosReason.Text = selected.HOSPITALIZE_REASON_NAME;
-                    this.selectedReason = selected;
+                    List<ColumnInfo> columnInfo = new List<ColumnInfo>();
+                    columnInfo.Add(new ColumnInfo("HOSPITALIZE_REASON_CODE","",50,1));
+                    columnInfo.Add(new ColumnInfo("HOSPITALIZE_REASON_NAME", "", 150, 1));
+                    ControlEditorADO controlEditorADO = new ControlEditorADO("HOSPITALIZE_REASON_NAME", "ID", columnInfo, false, 100);
+                    ControlEditorLoader.Load(cboHosReason, listHospitalReason, controlEditorADO);
                 }
-                
             }
             catch (Exception ex)
             {
@@ -4575,20 +4542,6 @@ namespace HIS.Desktop.Plugins.Register.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private void cboHosReason_DoubleClick(object sender, EventArgs e)
-        {
-            try
-            {
-                frmReasonNt frmReason = new frmReasonNt(reasonNT);
-                frmReason.ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
         private void txtReasonVV_Validated(object sender, EventArgs e)
         {
             try
@@ -4597,6 +4550,116 @@ namespace HIS.Desktop.Plugins.Register.Run
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtHosReason_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)
+                {
+                    cboHosReason.ShowPopup();
+                }
+                else if(e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    cboHosReason.EditValue = null;
+                    GridCheckMarksSelection gridCheckMark = cboHosReason.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboHosReason.Properties.View);
+                    }
+                    txtHosReason.Text = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void setDataHosReasonSelected(HIS_HOSPITALIZE_REASON data)
+        {
+            try
+            {
+                this.HospitalizeReasonCode = data.HOSPITALIZE_REASON_CODE ?? "";
+                this.HospitalizeReasonName = data.HOSPITALIZE_REASON_NAME ?? "";
+                
+            }
+            catch (Exception ex)
+            {
+                
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void cboHosReason_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboHosReason.EditValue != null)
+                {
+                    txtHosReason.Text = this.listHospitalReason.Where(s => s.ID == Convert.ToInt64(cboHosReason.EditValue)).Select(o => o.HOSPITALIZE_REASON_NAME).FirstOrDefault();
+                    setDataHosReasonSelected(this.listHospitalReason.Where(s => s.ID == Convert.ToInt64(cboHosReason.EditValue)).FirstOrDefault());
+                }
+            }
+            catch (Exception ex)
+            {
+                
+               Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtHosReason_DoubleClick(object sender, EventArgs e)
+        {
+            try
+            {
+                cboHosReason.ShowPopup();
+            }
+            catch (Exception ex)
+            {
+                
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtHosReason_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if(e.KeyCode == Keys.Enter)
+                {
+                    txtCareerCode.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtHosReason_Validated(object sender, EventArgs e)
+        {
+            try
+            {
+                var data = this.listHospitalReason.FirstOrDefault(o => o.HOSPITALIZE_REASON_NAME == txtHosReason.Text);
+                if (data != null)
+                {
+                    cboHosReason.EditValue = data.ID;
+                    setDataHosReasonSelected(data);
+                }
+                else
+                {
+                    var newHosReason = new HIS_HOSPITALIZE_REASON();
+                    newHosReason.HOSPITALIZE_REASON_NAME = txtHosReason.Text;
+                    setDataHosReasonSelected(newHosReason);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
