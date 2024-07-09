@@ -9319,6 +9319,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 adoqr.DelegtePrint = (HIS.Desktop.Common.RefeshReference)IN_QR;
                                 listArgs.Add(adoqr);
                                 LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
+                                
                                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
 
                             };
@@ -9354,17 +9355,123 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
-                var PrintServiceReqProcessor = new HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(this.serviceReqComboResultSDO.ServiceReqs, currentModule != null ? this.currentModule.RoomId : 0);
+                //lstLoaiPhieu = new List<LoaiPhieuInADO>()
+                //{
+                //    new LoaiPhieuInADO("gridView7_1", "Phiếu yêu cầu dịch vụ",true),
+                //    new LoaiPhieuInADO("gridView7_2", "Hướng dẫn bệnh nhân"),
+                //    new LoaiPhieuInADO("gridView7_3", "Yêu cầu thanh toán QR")
+                //};
+                var selectedConfigPrint = new List<LoaiPhieuInADO>();
+                foreach (var item in this.currentControlStateRDO)
+                {
+                    if (!string.IsNullOrEmpty(item.VALUE))
+                    {
+                        var rs = this.lstLoaiPhieu.FirstOrDefault(s => s.ID == item.KEY);
+                        if(rs != null)
+                        {
+                            selectedConfigPrint.Add(rs);
+                        }
+                    }
+                }
+                foreach(var item in selectedConfigPrint)
+                {
+                    if(item.ID == "gridView7_1")
+                    {
+                        PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, null, currentModule != null ? currentModule.RoomId : 0);
 
-                LogTheadInSessionInfo(() => PrintServiceReqProcessor.Print("Mps000276", false), "btnPrintPhieuHuongDanBN_Click");
+                        InPhieuYeuCauDichVu(true);
+                    }
+                    if(item.ID == "gridView7_2")
+                    {
+                        var PrintServiceReqProcessor = new HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(this.serviceReqComboResultSDO.ServiceReqs, currentModule != null ? this.currentModule.RoomId : 0);
+
+                        LogTheadInSessionInfo(() => PrintServiceReqProcessor.Print("Mps000276", false), "btnPrintPhieuHuongDanBN_Click");
+                    }
+                    if(item.ID == "gridView7_3")
+                    {
+                        Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                        store.RunPrintTemplate("Mps000498", DelegateRunPrinter);
+                    }
+                }
+                
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private bool DelegateRunPrinter(string printTypeCode, string fileName)
+        {
+            bool result = false;
+            try
+            {
+                switch (printTypeCode)
+                {
 
-       
-        
+                    case "Mps000498":
+                        InPhieuThanhToan(printTypeCode, fileName, ref result);
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        private void InPhieuThanhToan(string printTypeCode, string fileName, ref bool result)
+        {
+            try
+            {
+                V_HIS_TREATMENT treatment = new V_HIS_TREATMENT();
+                CommonParam param = new CommonParam();
+
+                treatment = BackendDataWorker.Get<V_HIS_TREATMENT>().Where(s => s.ID == treatmentId).FirstOrDefault();
+
+                HisTransReqFilter filter = new HisTransReqFilter();
+                HIS_TRANS_REQ transReq = null;
+                filter.TREATMENT_ID = treatmentId;
+                var transReqLst = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_TRANS_REQ>>("api/HisTransReq/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                if (transReqLst != null && transReqLst.Count > 0)
+                    transReqLst = transReqLst.Where(o => o.TRANS_REQ_TYPE == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_TYPE.ID__BY_SERVICE).ToList();
+                if (transReqLst != null && transReqLst.Count > 0)
+                    transReq = transReqLst.OrderByDescending(o => o.CREATE_TIME).ToList()[0];
+
+                MPS.Processor.Mps000498.PDO.Mps000498PDO pdo = new MPS.Processor.Mps000498.PDO.Mps000498PDO(treatment, transReq, listConfig);
+
+
+                MPS.ProcessorBase.Core.PrintData printData = null;
+
+                string printerName = "";
+                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                {
+                    printerName = GlobalVariables.dicPrinter[printTypeCode];
+                }
+
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((""), printTypeCode, this.currentModule != null ? this.currentModule.RoomId : 0);
+                WaitingManager.Hide();
+                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                }
+                else
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO });
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
+
+
     }
 }
