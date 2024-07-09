@@ -993,10 +993,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                     }
                     if (documentTrackingADOs != null && documentTrackingADOs.Count > 0)
                     {
-                        if (documentTrackingADOs != null && documentTrackingADOs.Count > 0)
-                        {
-                            this.ucViewEmrDocument1.ReloadDocument(documentTrackingADOs,false);
-                        }
+                        this.ucViewEmrDocument1.ReloadDocument(documentTrackingADOs, documentTrackingADOs != null && documentTrackingADOs.Count > 0);
                         if(this.ucViewEmrDocument1.frmEmr != null && Form.ActiveForm == this.ucViewEmrDocument1.frmEmr)
                         {
                             this.ucViewEmrDocument1.frmEmr.ucViewEmrDocument1.ReloadDocument(documentTrackingADOs, documentTrackingADOs != null && documentTrackingADOs.Count > 0);
