@@ -117,6 +117,84 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="GoiSangCongBHXHTraVeMaLoi" xml:space="preserve">
+    <value>Error code: {0}</value>
+  </data>
+  <data name="Gov001" xml:space="preserve">
+    <value>The card is managed by the Ministry of National Defense Social Insurance, please check the card and identification information</value>
+  </data>
+  <data name="Gov002" xml:space="preserve">
+    <value>The card is managed by the Social Insurance Ministry of Public Security, please check the card and identification document information</value>
+  </data>
+  <data name="Gov010" xml:space="preserve">
+    <value>The card is no longer valid</value>
+  </data>
+  <data name="Gov050" xml:space="preserve">
+    <value>Can't find health insurance card information</value>
+  </data>
+  <data name="Gov051" xml:space="preserve">
+    <value>Card code is incorrect</value>
+  </data>
+  <data name="Gov052" xml:space="preserve">
+    <value>The card-issuing province code (4th and 5th characters of the card code) is incorrect</value>
+  </data>
+  <data name="Gov053" xml:space="preserve">
+    <value>Card benefit code (3rd character) is incorrect</value>
+  </data>
+  <data name="Gov060" xml:space="preserve">
+    <value>Card with wrong name\</value>
+  </data>
+  <data name="Gov061" xml:space="preserve">
+    <value>Card with wrong full name (correct first character)</value>
+  </data>
+  <data name="Gov070" xml:space="preserve">
+    <value>Card with wrong date of birth</value>
+  </data>
+  <data name="Gov080" xml:space="preserve">
+    <value>The card is the wrong gender</value>
+  </data>
+  <data name="Gov100" xml:space="preserve">
+    <value>Error when retrieving card number data</value>
+  </data>
+  <data name="Gov101" xml:space="preserve">
+    <value>Server Gov error</value>
+  </data>
+  <data name="Gov110" xml:space="preserve">
+    <value>Card has been revoked</value>
+  </data>
+  <data name="Gov120" xml:space="preserve">
+    <value>Card has been reported reduced</value>
+  </data>
+  <data name="Gov121" xml:space="preserve">
+    <value>Card has been reported reduced.</value>
+  </data>
+  <data name="Gov122" xml:space="preserve">
+    <value>Card has been reported reduced.</value>
+  </data>
+  <data name="Gov123" xml:space="preserve">
+    <value>Card has been reported reduced.</value>
+  </data>
+  <data name="Gov124" xml:space="preserve">
+    <value>Card has been reported reduced.</value>
+  </data>
+  <data name="Gov130" xml:space="preserve">
+    <value>Children do not present their cards</value>
+  </data>
+  <data name="GovError" xml:space="preserve">
+    <value>Invalid card</value>
+  </data>
+  <data name="Plugin_Register_BanChuaChonDichVuKham" xml:space="preserve">
+    <value>Not any exam services was selected yet, do you want continue?</value>
+  </data>
+  <data name="Plugin_Register_BanCoMuonNhapThongTinKhuVuc" xml:space="preserve">
+    <value>Are you sure you want to enter 'Area' information?</value>
+  </data>
+  <data name="Plugin_Register_BenhNhanChuaChonCongKham" xml:space="preserve">
+    <value>The patient has not chosen an examination, do you want to continue?</value>
+  </data>
+  <data name="Plugin_Register_CanhBaoDichVuDaDuocChiDinhTrongKhoangThoiGianCauHinh" xml:space="preserve">
+    <value>The following services have specified times within the disallowed time range: {0}.Do you want to continue?</value>
+  </data>
   <data name="Plugin_Register_CanhBaoTheBhytSapHatHan" xml:space="preserve">
     <value>The card is expiring soon ( {0} day remain), do you want to use?</value>
   </data>
@@ -126,11 +204,41 @@
   <data name="Plugin_Register_ChucNangNayChuaDuocHoTroTrongPhienBanNay" xml:space="preserve">
     <value>Current version is not support this function</value>
   </data>
+  <data name="Plugin_Register_DichVuDinhKemDichVuChuaCoChinhSachGia" xml:space="preserve">
+    <value>{0} service attached {1} does not have a pricing policy</value>
+  </data>
   <data name="Plugin_Register_DoiTuongBenhNhanLaBHYTBatBuocPhaiChonLaDungTuyen" xml:space="preserve">
     <value>"Health insurance" patient must select appropriate levels</value>
   </data>
+  <data name="Plugin_Register_DotDieuTriGanNhatCuaBenhNhanCoNgayRaLaHomNay" xml:space="preserve">
+    <value>Patients with treatment records: {0} discharged from the hospital today.</value>
+  </data>
+  <data name="Plugin_Register_DotKhamTruocCuaBenhNhanConNoTienVienPhi" xml:space="preserve">
+    <value>Session examination / treatment before the patient's hospital bills owed. Code treatment records {0}</value>
+  </data>
+  <data name="Plugin_Register_DotKhamTruocCuaBenhNhanCoThuocChuaUongHet" xml:space="preserve">
+    <value>Session examination / treatment before the patient's treatment records code {0} of {1} medicine also {2} {3} has not drank</value>
+  </data>
+  <data name="Plugin_Register_DuLieuRong" xml:space="preserve">
+    <value>Empty data</value>
+  </data>
   <data name="Plugin_Register_HeThongTBKetQuaTraVeCuaServerKhongHopLe" xml:space="preserve">
     <value>Result of server incorrect.</value>
+  </data>
+  <data name="Plugin_Register_HoDemBNVuotQuaMaxLength" xml:space="preserve">
+    <value>First name exceeds maximum length (70 characters)</value>
+  </data>
+  <data name="Plugin_Register_MaBenhNhanKhongTontai" xml:space="preserve">
+    <value>Patient information with corresponding code could not be found</value>
+  </data>
+  <data name="Plugin_Register_MaChuongTrinhKhongTontai" xml:space="preserve">
+    <value>No patient information found with program code</value>
+  </data>
+  <data name="Plugin_Register_MaCmndCccdKhongTontai" xml:space="preserve">
+    <value>Patient information with CCCD/ID card not found:</value>
+  </data>
+  <data name="Plugin_Register_MaHenKhamKhongTontai" xml:space="preserve">
+    <value>Patient information with appointment code not found</value>
   </data>
   <data name="Plugin_Register_MaHoNgheoKhongHopLe" xml:space="preserve">
     <value>Code must include 9 to 12 character. Case of 12 charater, Code must end with "VCN"</value>
@@ -147,8 +255,26 @@
   <data name="Plugin_Register_NhapNgaySinhKhongDungDinhDang" xml:space="preserve">
     <value>Date format is incorrect. Correct format: DDmmYYYY</value>
   </data>
+  <data name="Plugin_Register_NhapNgayThangKhongDungDinhDang" xml:space="preserve">
+    <value>Invalid date input (dd/MM/yyyy HH:mm)</value>
+  </data>
+  <data name="Plugin_Register_NhapQuaKyTuSoHoKhau" xml:space="preserve">
+    <value>The number of households entered exceeds the allowed characters</value>
+  </data>
   <data name="Plugin_Register_QuaGioiHanKiemTraTheQuaCongBHXH" xml:space="preserve">
     <value>Checkout time is expired</value>
+  </data>
+  <data name="Plugin_Register_SoTheBHYTKhongHopLe" xml:space="preserve">
+    <value>Invalid card {0}</value>
+  </data>
+  <data name="Plugin_Register_SoTheDaDuocSuDung" xml:space="preserve">
+    <value>Card number {0} has used</value>
+  </data>
+  <data name="Plugin_Register_SoTheKhongTontai" xml:space="preserve">
+    <value>Patient information with card number not found</value>
+  </data>
+  <data name="Plugin_Register_TenBNVuotQuaMaxLength" xml:space="preserve">
+    <value>Last name exceeds maximum length (30 characters)</value>
   </data>
   <data name="Plugin_Register_TheBhytChuaDenHanSuDung" xml:space="preserve">
     <value>The Card is not reached to used time yet</value>
@@ -162,8 +288,14 @@
   <data name="Plugin_Register_ThieuTruongDuLieuBatBuoc" xml:space="preserve">
     <value>Required Fields are missing</value>
   </data>
+  <data name="Plugin_Register_ThoiGianYLenhLonHonThoiGianHanDenCuaTheBHYT" xml:space="preserve">
+    <value>The order approval time is greater than the health insurance card's expiration date</value>
+  </data>
   <data name="Plugin_Register_ThongTinNgaySinhPhaiNhoHonNgayHienTai" xml:space="preserve">
     <value>Birthday must be less than current date</value>
+  </data>
+  <data name="Plugin_Register_ThuocCoThoiSuDungDen" xml:space="preserve">
+    <value>{0} limited use to {1}</value>
   </data>
   <data name="Plugin_Register_TieuDeCuaSoThongBaoLaCanhBao" xml:space="preserve">
     <value>Warning</value>
@@ -177,11 +309,23 @@
   <data name="Plugin_Register_TimDuocMotBNTheoThongTinNhap" xml:space="preserve">
     <value>1 patient found.</value>
   </data>
+  <data name="Plugin_Register_Title_InDichVuKham" xml:space="preserve">
+    <value>Examination services print</value>
+  </data>
+  <data name="Plugin_Register_Title_InPhieuYeuCauKham" xml:space="preserve">
+    <value>Print the examination request form</value>
+  </data>
+  <data name="Plugin_Register_Title_InTheBenhNhan" xml:space="preserve">
+    <value>Patient card print</value>
+  </data>
   <data name="Plugin_Register_TreEmCoGiayKhaiSinhPhaiNhapThongTinHanhChinh" xml:space="preserve">
     <value>Children who had birth certificate, must  fill administrative info.</value>
   </data>
   <data name="Plugin_Register_TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Required Fields</value>
+  </data>
+  <data name="Plugin_Register_VuotQuaLuotKhamBHYTTrongNgay" xml:space="preserve">
+    <value>Room {0} has exceeded {1} health insurance visits for the day.</value>
   </data>
   <data name="Plugin_Register_XuLyThatBai" xml:space="preserve">
     <value>Process fails</value>
@@ -191,41 +335,5 @@
   </data>
   <data name="ThongBaoKetQuaTimKiemBenhNhanKhiQuetTheDuLieuTraVeNull" xml:space="preserve">
     <value>Invalid card</value>
-  </data>
-  <data name="Plugin_Register_BanChuaChonDichVuKham" xml:space="preserve">
-    <value>Not any exam services was selected yet, do you want continue?</value>
-  </data>
-  <data name="Plugin_Register_DotKhamTruocCuaBenhNhanCoThuocChuaUongHet" xml:space="preserve">
-    <value>Session examination / treatment before the patient's treatment records code {0} of {1} medicine also {2} {3} has not drank</value>
-  </data>
-  <data name="Plugin_Register_ThuocCoThoiSuDungDen" xml:space="preserve">
-    <value>{0} limited use to {1}</value>
-  </data>
-  <data name="Plugin_Register_DotKhamTruocCuaBenhNhanConNoTienVienPhi" xml:space="preserve">
-    <value>Session examination / treatment before the patient's hospital bills owed. Code treatment records {0}</value>
-  </data>
-  <data name="Plugin_Register_SoTheDaDuocSuDung" xml:space="preserve">
-    <value>Card number {0} has used</value>
-  </data>
-  <data name="Plugin_Register_SoTheBHYTKhongHopLe" xml:space="preserve">
-    <value>Invalid card {0}</value>
-  </data>
-  <data name="Plugin_Register_HoDemBNVuotQuaMaxLength" xml:space="preserve">
-    <value>First name exceeds maximum length (70 characters)</value>
-  </data>
-  <data name="Plugin_Register_TenBNVuotQuaMaxLength" xml:space="preserve">
-    <value>Last name exceeds maximum length (30 characters)</value>
-  </data>
-  <data name="Plugin_Register_Title_InDichVuKham" xml:space="preserve">
-    <value>Examination services print</value>
-  </data>
-  <data name="Plugin_Register_Title_InTheBenhNhan" xml:space="preserve">
-    <value>Patient card print</value>
-  </data>
-  <data name="Plugin_Register_DichVuDinhKemDichVuChuaCoChinhSachGia" xml:space="preserve">
-    <value>{0} service attached {1} does not have a pricing policy</value>
-  </data>
-  <data name="GoiSangCongBHXHTraVeMaLoi" xml:space="preserve">
-    <value>Error code: {0}</value>
   </data>
 </root>

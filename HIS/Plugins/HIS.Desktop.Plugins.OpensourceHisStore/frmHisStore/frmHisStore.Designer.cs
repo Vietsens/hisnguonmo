@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.OpensourceHisStore.frmHisStore
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmHisStore));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
@@ -153,7 +154,7 @@ namespace HIS.Desktop.Plugins.OpensourceHisStore.frmHisStore
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearch.Font = new System.Drawing.Font("Tahoma", 10F);
             this.btnSearch.ForeColor = System.Drawing.Color.White;
-            this.btnSearch.Image = global::HIS.Desktop.Plugins.OpensourceHisStore.Properties.Resources.icons8_search_20;
+            this.btnSearch.Image = ((System.Drawing.Image)(resources.GetObject("btnSearch.Image")));
             this.btnSearch.Location = new System.Drawing.Point(714, 3);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.btnSearch.MaximumSize = new System.Drawing.Size(35, 32);
@@ -186,7 +187,7 @@ namespace HIS.Desktop.Plugins.OpensourceHisStore.frmHisStore
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup4.Size = new System.Drawing.Size(1049, 60);
+            this.layoutControlGroup4.Size = new System.Drawing.Size(1049, 37);
             this.layoutControlGroup4.TextVisible = false;
             // 
             // emptySpaceItem1
@@ -194,7 +195,7 @@ namespace HIS.Desktop.Plugins.OpensourceHisStore.frmHisStore
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(1049, 60);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(1049, 37);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // txtSearchValue

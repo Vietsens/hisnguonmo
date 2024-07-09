@@ -119,6 +119,7 @@ namespace HIS.Desktop.Plugins.Register.Register
         protected bool IsWarningForNext { get; set; }
         protected string HospitalizeReasonCode { get; set; }
         protected string HospitalizeReasonName { get; set; }
+        protected string HospitalizeReason { get; set; }
         internal ServiceRequestRegisterBehaviorBase(CommonParam param, UCRegister ucServiceRequestRegiter)
             : base(param)
         {
@@ -137,6 +138,7 @@ namespace HIS.Desktop.Plugins.Register.Register
                 this.chkEmergency = ucServiceRequestRegiter.chkEmergency.Checked;
                 this.HospitalizeReasonCode = ucServiceRequestRegiter.HospitalizeReasonCode;
                 this.HospitalizeReasonName = ucServiceRequestRegiter.HospitalizeReasonName;
+                this.HospitalizeReason = ucServiceRequestRegiter.HospitalizeReason;
                 this.cMNDDate = null;
                 this.cMNDNumber = "";
                 this.cMNDPlace = "";
@@ -481,6 +483,7 @@ namespace HIS.Desktop.Plugins.Register.Register
                 }
                 this.patientProfile.HisTreatment.HOSPITALIZE_REASON_CODE = this.HospitalizeReasonCode;
                 this.patientProfile.HisTreatment.HOSPITALIZE_REASON_NAME = this.HospitalizeReasonName;
+                this.patientProfile.HisTreatment.HOSPITALIZATION_REASON = this.HospitalizeReason;
 
             }
             catch (Exception ex)
