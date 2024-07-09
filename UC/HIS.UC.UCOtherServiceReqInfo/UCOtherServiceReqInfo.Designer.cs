@@ -46,24 +46,28 @@ namespace HIS.UC.UCOtherServiceReqInfo
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
             DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
             DevExpress.Utils.SuperToolTip superToolTip2 = new DevExpress.Utils.SuperToolTip();
             DevExpress.Utils.ToolTipItem toolTipItem2 = new DevExpress.Utils.ToolTipItem();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCOtherServiceReqInfo));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             this.lcUCOtherServiceReqInfo = new DevExpress.XtraLayout.LayoutControl();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.txtHosReasonNt = new DevExpress.XtraEditors.ButtonEdit();
+            this.cboHosReason = new Inventec.Desktop.CustomControl.CustomGrid.CustomGridLookUpEdit();
+            this.customGridLookUpEdit1View = new Inventec.Desktop.CustomControl.CustomGrid.CustomGridView();
             this.txtHosReason = new DevExpress.XtraEditors.TextEdit();
             this.chkExamOnline = new DevExpress.XtraEditors.CheckEdit();
             this.chkIsHiv = new DevExpress.XtraEditors.CheckEdit();
@@ -125,16 +129,16 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciHosReason = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationUCOtherReqInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxErrorProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.timerInitForm = new System.Windows.Forms.Timer(this.components);
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.lciHosReason = new DevExpress.XtraLayout.LayoutControlItem();
-            this.cboHosReason = new Inventec.Desktop.CustomControl.CustomGrid.CustomGridLookUpEdit();
-            this.customGridLookUpEdit1View = new Inventec.Desktop.CustomControl.CustomGrid.CustomGridView();
-            this.txtHosReasonNt = new DevExpress.XtraEditors.ButtonEdit();
             ((System.ComponentModel.ISupportInitialize)(this.lcUCOtherServiceReqInfo)).BeginInit();
             this.lcUCOtherServiceReqInfo.SuspendLayout();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtHosReasonNt.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboHosReason.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHosReason.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkExamOnline.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsHiv.Properties)).BeginInit();
@@ -196,13 +200,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHosReason)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationUCOtherReqInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderControl)).BeginInit();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.lciHosReason)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboHosReason.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEdit1View)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtHosReasonNt.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // lcUCOtherServiceReqInfo
@@ -242,6 +242,53 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.lcUCOtherServiceReqInfo.Size = new System.Drawing.Size(568, 269);
             this.lcUCOtherServiceReqInfo.TabIndex = 0;
             this.lcUCOtherServiceReqInfo.Text = "layoutControl1";
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.txtHosReasonNt);
+            this.panel2.Controls.Add(this.cboHosReason);
+            this.panel2.Location = new System.Drawing.Point(355, 45);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(210, 20);
+            this.panel2.TabIndex = 51;
+            // 
+            // txtHosReasonNt
+            // 
+            this.txtHosReasonNt.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtHosReasonNt.Location = new System.Drawing.Point(0, 0);
+            this.txtHosReasonNt.Name = "txtHosReasonNt";
+            this.txtHosReasonNt.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.txtHosReasonNt.Size = new System.Drawing.Size(210, 20);
+            this.txtHosReasonNt.TabIndex = 1;
+            this.txtHosReasonNt.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtHosReasonNt_ButtonClick);
+            this.txtHosReasonNt.DoubleClick += new System.EventHandler(this.txtHosReasonNt_DoubleClick);
+            // 
+            // cboHosReason
+            // 
+            this.cboHosReason.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cboHosReason.Location = new System.Drawing.Point(0, 0);
+            this.cboHosReason.Name = "cboHosReason";
+            this.cboHosReason.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboHosReason.Properties.AutoComplete = false;
+            this.cboHosReason.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboHosReason.Properties.NullText = "";
+            this.cboHosReason.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboHosReason.Properties.View = this.customGridLookUpEdit1View;
+            this.cboHosReason.Size = new System.Drawing.Size(210, 20);
+            this.cboHosReason.TabIndex = 0;
+            this.cboHosReason.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboHosReason_ButtonClick);
+            this.cboHosReason.EditValueChanged += new System.EventHandler(this.cboHosReason_EditValueChanged);
+            // 
+            // customGridLookUpEdit1View
+            // 
+            this.customGridLookUpEdit1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridLookUpEdit1View.Name = "customGridLookUpEdit1View";
+            this.customGridLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridLookUpEdit1View.OptionsView.ShowGroupPanel = false;
             // 
             // txtHosReason
             // 
@@ -385,7 +432,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.cboOtherPaySource.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboOtherPaySource.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.cboOtherPaySource.Properties.NullText = "";
             this.cboOtherPaySource.Properties.View = this.gridView1;
             this.cboOtherPaySource.Size = new System.Drawing.Size(198, 20);
@@ -427,7 +474,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.cboPriorityType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboPriorityType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Clear, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Clear, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.cboPriorityType.Properties.NullText = "";
             this.cboPriorityType.Size = new System.Drawing.Size(175, 20);
             this.cboPriorityType.StyleController = this.lcUCOtherServiceReqInfo;
@@ -501,7 +548,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.cboCTT.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboCTT.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.cboCTT.Properties.NullText = "";
             this.cboCTT.Properties.View = this.gridLookUpEdit1View;
             this.cboCTT.Size = new System.Drawing.Size(160, 20);
@@ -1071,7 +1118,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             // 
             // layoutControlItem8
             // 
-            this.layoutControlItem8.AppearanceItemCaption.ForeColor = System.Drawing.Color.DarkOrange;
+            this.layoutControlItem8.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
             this.layoutControlItem8.AppearanceItemCaption.Options.UseForeColor = true;
             this.layoutControlItem8.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem8.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
@@ -1085,23 +1132,6 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.layoutControlItem8.TextSize = new System.Drawing.Size(70, 20);
             this.layoutControlItem8.TextToControlDistance = 5;
             this.layoutControlItem8.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-            // 
-            // dxErrorProviderControl
-            // 
-            this.dxErrorProviderControl.ContainerControl = this;
-            // 
-            // timerInitForm
-            // 
-            this.timerInitForm.Interval = 500;
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.txtHosReasonNt);
-            this.panel2.Controls.Add(this.cboHosReason);
-            this.panel2.Location = new System.Drawing.Point(355, 45);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(210, 20);
-            this.panel2.TabIndex = 51;
             // 
             // lciHosReason
             // 
@@ -1117,43 +1147,13 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.lciHosReason.TextSize = new System.Drawing.Size(70, 20);
             this.lciHosReason.TextToControlDistance = 5;
             // 
-            // cboHosReason
+            // dxErrorProviderControl
             // 
-            this.cboHosReason.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cboHosReason.Location = new System.Drawing.Point(0, 0);
-            this.cboHosReason.Name = "cboHosReason";
-            this.cboHosReason.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.cboHosReason.Properties.AutoComplete = false;
-            this.cboHosReason.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
-            this.cboHosReason.Properties.NullText = "";
-            this.cboHosReason.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboHosReason.Properties.View = this.customGridLookUpEdit1View;
-            this.cboHosReason.Size = new System.Drawing.Size(210, 20);
-            this.cboHosReason.TabIndex = 0;
-            this.cboHosReason.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboHosReason_ButtonClick);
-            this.cboHosReason.EditValueChanged += new System.EventHandler(this.cboHosReason_EditValueChanged);
+            this.dxErrorProviderControl.ContainerControl = this;
             // 
-            // customGridLookUpEdit1View
+            // timerInitForm
             // 
-            this.customGridLookUpEdit1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.customGridLookUpEdit1View.Name = "customGridLookUpEdit1View";
-            this.customGridLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.customGridLookUpEdit1View.OptionsView.ShowGroupPanel = false;
-            // 
-            // txtHosReasonNt
-            // 
-            this.txtHosReasonNt.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtHosReasonNt.Location = new System.Drawing.Point(0, 0);
-            this.txtHosReasonNt.Name = "txtHosReasonNt";
-            this.txtHosReasonNt.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
-            this.txtHosReasonNt.Size = new System.Drawing.Size(210, 20);
-            this.txtHosReasonNt.TabIndex = 1;
-            this.txtHosReasonNt.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtHosReasonNt_ButtonClick);
-            this.txtHosReasonNt.DoubleClick += new System.EventHandler(this.txtHosReasonNt_DoubleClick);
+            this.timerInitForm.Interval = 500;
             // 
             // UCOtherServiceReqInfo
             // 
@@ -1165,6 +1165,10 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.Load += new System.EventHandler(this.UCOtherServiceReqInfo_Load);
             ((System.ComponentModel.ISupportInitialize)(this.lcUCOtherServiceReqInfo)).EndInit();
             this.lcUCOtherServiceReqInfo.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtHosReasonNt.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboHosReason.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHosReason.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkExamOnline.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsHiv.Properties)).EndInit();
@@ -1226,13 +1230,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHosReason)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationUCOtherReqInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderControl)).EndInit();
-            this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.lciHosReason)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboHosReason.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEdit1View)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtHosReasonNt.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
