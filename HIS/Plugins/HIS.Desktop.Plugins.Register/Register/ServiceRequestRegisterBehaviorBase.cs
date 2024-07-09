@@ -359,6 +359,9 @@ namespace HIS.Desktop.Plugins.Register.Register
                     this.patientProfile.HisPatient.HT_COMMUNE_NAME = this.patientInformationADO.HT_COMMUNE_NAME;
                     this.patientProfile.HisPatient.HT_DISTRICT_NAME = this.patientInformationADO.HT_DISTRICT_NAME;
                     this.patientProfile.HisPatient.HT_PROVINCE_NAME = this.patientInformationADO.HT_PROVINCE_NAME;
+                    this.patientProfile.HisPatient.HT_COMMUNE_CODE = this.patientInformationADO.HT_COMMUNE_CODE;
+                    this.patientProfile.HisPatient.HT_DISTRICT_CODE = this.patientInformationADO.HT_DISTRICT_CODE;
+                    this.patientProfile.HisPatient.HT_PROVINCE_CODE = this.patientInformationADO.HT_PROVINCE_CODE;
                     this.patientProfile.HisPatient.MOTHER_NAME = this.patientInformationADO.MOTHER_NAME;
                     this.patientProfile.HisPatient.FATHER_NAME = this.patientInformationADO.FATHER_NAME;
                     this.patientProfile.HisPatient.RELATIVE_MOBILE = this.patientInformationADO.RELATIVE_MOBILE;
