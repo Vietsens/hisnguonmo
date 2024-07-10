@@ -98,6 +98,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
         HisExamRegisterKioskSDO sdoData;
         List<HIS_PATIENT_TYPE> lstPatientType = new List<HIS_PATIENT_TYPE>();
         HisPatientForKioskSDO patientForKioskSDO;
+        
         long PrimaryTypeId = 0;
         string ServiceCode;
         #endregion
@@ -132,6 +133,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
                 this.requestRoomId = module.RoomId;
                 this.setNull = _setNull;
                 this.patientForKioskSDO = data.PatientForKiosk;
+                
                 this.PatientTypeId = patientTypeId;
                 this.sdoData = data.ExamRegisterKiosk;
                 this.DelegateClose = closingForm;
@@ -164,6 +166,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
                 getServices();
                 SetDefaultControl();
                 MapHisCardPatientSdo();
+                
                 if (hisCardPatientSdo != null && !string.IsNullOrEmpty(hisCardPatientSdo.HeinAddress) && string.IsNullOrEmpty(hisCardPatientSdo.Address))
                     hisCardPatientSdo.Address = hisCardPatientSdo.HeinAddress;
                 Inventec.Common.Logging.LogSystem.Debug("hisCardPatientSdo__2_" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisCardPatientSdo), hisCardPatientSdo));
@@ -240,6 +243,10 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
                     this.hisCardPatientSdo.CareerId = patientForKioskSDO.CAREER_ID;
                     this.hisCardPatientSdo.NationalCode = patientForKioskSDO.NATIONAL_CODE;
                     this.hisCardPatientSdo.MpsNationalCode = patientForKioskSDO.MPS_NATIONAL_CODE;
+                    this.hisCardPatientSdo.HtCommuneCode = patientForKioskSDO.COMMUNE_CODE;
+                    this.hisCardPatientSdo.HtDistrictCode = patientForKioskSDO.DISTRICT_CODE;
+                    this.hisCardPatientSdo.HtProvinceCode = patientForKioskSDO.PROVINCE_CODE;
+
                 }
             }
             catch (Exception ex)
@@ -1043,6 +1050,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
                     sdo.TransferInTimeTo = sdoData.TransferInTimeTo;
                     sdo.TransferInTimeFrom = sdoData.TransferInTimeFrom;
                     sdo.IsTransferIn = true;
+                    
                 }
 
                 if (layoutControlItem30.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Never)
@@ -1139,6 +1147,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
                 patientUpdateSdo.HisPatient.CCCD_PLACE = CccdPatientLocalADO.CccdPlace;
                 patientUpdateSdo.HisPatient.CCCD_DATE = CccdPatientLocalADO.CccdDate;
                 patientUpdateSdo.TreatmentId = treatmentId;
+                
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => patientUpdateSdo), patientUpdateSdo));
                 var resultData = new BackendAdapter(paramPatient).Post<HIS_PATIENT>("api/HisPatient/UpdateSdo", ApiConsumers.MosConsumer, patientUpdateSdo, paramPatient);
 
