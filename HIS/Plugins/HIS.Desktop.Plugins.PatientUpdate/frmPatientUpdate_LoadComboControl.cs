@@ -1,21 +1,4 @@
-/* IVT
- * @Project : hisnguonmo
- * Copyright (C) 2017 INVENTEC
- *  
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *  
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
- * GNU General Public License for more details.
- *  
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -314,40 +297,44 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 Inventec.Common.Logging.LogSystem.Debug("districtCode_:" + districtCode);
                 Inventec.Common.Logging.LogSystem.Debug("isExpand_:" + isExpand);
 
-                listResult = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => (o.SEARCH_CODE.Contains(searchCode) || o.COMMUNE_NAME.Contains(searchCode)) && o.DISTRICT_CODE == districtCode).ToList();
+                listResult = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => ((o.SEARCH_CODE?? "").Contains(searchCode) || o.COMMUNE_NAME.Contains(searchCode)) && o.DISTRICT_CODE == districtCode).ToList();
 
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("SEARCH_CODE", "", 100, 1));
-                columnInfos.Add(new ColumnInfo("COMMUNE_NAME", "", 200, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("COMMUNE_NAME", "COMMUNE_CODE", columnInfos, false, 300);
-                controlEditorADO.ImmediatePopup = true;
-                ControlEditorLoader.Load(cboCommune, listResult, controlEditorADO);
+                if (listResult != null)
+                {
+                    List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                    columnInfos.Add(new ColumnInfo("SEARCH_CODE", "", 100, 1));
+                    columnInfos.Add(new ColumnInfo("COMMUNE_NAME", "", 200, 2));
+                    ControlEditorADO controlEditorADO = new ControlEditorADO("COMMUNE_NAME", "COMMUNE_CODE", columnInfos, false, 300);
+                    controlEditorADO.ImmediatePopup = true;
+                    ControlEditorLoader.Load(cboCommune, listResult, controlEditorADO);
 
-                if (String.IsNullOrEmpty(searchCode) && String.IsNullOrEmpty(districtCode) && listResult.Count > 0)
-                {
-                    cboCommune.EditValue = null;
-                    txtCommune.Text = "";
-                    FocusShowPopup(cboCommune, gridView2);
-                    //PopupProcess.SelectFirstRowPopup(cboCommune);
-                }
-                else
-                {
-                    if (listResult.Count == 1)
+                    if (String.IsNullOrEmpty(searchCode) && String.IsNullOrEmpty(districtCode) && listResult.Count > 0)
                     {
-                        cboCommune.EditValue = listResult[0].COMMUNE_CODE;
-                        txtCommune.Text = listResult[0].SEARCH_CODE;
-                        if (isExpand)
+                        cboCommune.EditValue = null;
+                        txtCommune.Text = "";
+                        FocusShowPopup(cboCommune, gridView2);
+                        //PopupProcess.SelectFirstRowPopup(cboCommune);
+                    }
+                    else
+                    {
+                        if (listResult.Count == 1)
                         {
-                            FocusMoveText(txtAddress);
+                            cboCommune.EditValue = listResult[0].COMMUNE_CODE;
+                            txtCommune.Text = listResult[0].SEARCH_CODE;
+                            if (isExpand)
+                            {
+                                FocusMoveText(txtAddress);
+                            }
+                        }
+                        else if (isExpand && listResult.Count > 1)
+                        {
+                            cboCommune.Properties.DataSource = listResult;
+                            cboCommune.EditValue = null;
+                            FocusShowPopup(cboCommune, gridView2);
+                            // PopupProcess.SelectFirstRowPopup(cboCommune);
                         }
                     }
-                    else if (isExpand && listResult.Count > 1)
-                    {
-                        cboCommune.Properties.DataSource = listResult;
-                        cboCommune.EditValue = null;
-                        FocusShowPopup(cboCommune, gridView2);
-                        // PopupProcess.SelectFirstRowPopup(cboCommune);
-                    }
+
                 }
             }
             catch (Exception ex)
