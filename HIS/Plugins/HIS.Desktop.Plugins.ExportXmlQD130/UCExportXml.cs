@@ -2769,6 +2769,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     tempConfigSync.treatmentTypeIds = this.treatmentTypeSelecteds.Select(o => o.ID).ToList();
                     tempConfigSync.statusId = (int)cboStatus.EditValue;
                     tempConfigSync.period = 10;
+                    
                     tempConfigSync.isCheckOutTime = false;
                     tempConfigSync.isCheckCollinearXml = false;
                     frmSettingConfigSync frmSettingConfigSync = new frmSettingConfigSync(tempConfigSync, isAutoSync, UpdateConfigSign);
@@ -2946,6 +2947,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         filter.FEE_LOCK_TIME_FROM = Inventec.Common.DateTime.Get.StartDay();
                         filter.FEE_LOCK_TIME_TO = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
                     }
+                    filter.HAS_XML130_RESULT = false;
                     LogSystem.Debug("Treatment Filter: " + LogUtil.TraceData("Filter", filter));
                     result = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT_1>>("api/HisTreatment/GetView1", ApiConsumers.MosConsumer, filter, null);
                 }
