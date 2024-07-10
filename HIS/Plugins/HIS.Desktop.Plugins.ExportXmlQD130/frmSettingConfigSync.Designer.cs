@@ -46,10 +46,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
@@ -58,6 +58,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.chkCollinearXML = new DevExpress.XtraEditors.CheckEdit();
             this.cboPatientTypeTT = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.chkOutTime = new DevExpress.XtraEditors.CheckEdit();
@@ -84,11 +85,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.chkCollinearXML = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkCollinearXML.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPatientTypeTT.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkOutTime.Properties)).BeginInit();
@@ -114,7 +115,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkCollinearXML.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             this.SuspendLayout();
             // 
@@ -199,6 +199,17 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControl1.TabIndex = 5;
             this.layoutControl1.Text = "layoutControl1";
             // 
+            // chkCollinearXML
+            // 
+            this.chkCollinearXML.Location = new System.Drawing.Point(97, 170);
+            this.chkCollinearXML.MenuManager = this.barManager1;
+            this.chkCollinearXML.Name = "chkCollinearXML";
+            this.chkCollinearXML.Properties.Caption = "XML thông tuyến";
+            this.chkCollinearXML.Size = new System.Drawing.Size(274, 19);
+            this.chkCollinearXML.StyleController = this.layoutControl1;
+            this.chkCollinearXML.TabIndex = 19;
+            this.chkCollinearXML.CheckedChanged += new System.EventHandler(this.chkCollinearXML_CheckedChanged);
+            // 
             // cboPatientTypeTT
             // 
             this.cboPatientTypeTT.Location = new System.Drawing.Point(97, 98);
@@ -270,7 +281,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.cboLoaiHS.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboLoaiHS.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.cboLoaiHS.Properties.NullText = "";
             this.cboLoaiHS.Properties.View = this.gridLookUpEdit4View;
             this.cboLoaiHS.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboLoaiHS_Properties_ButtonClick);
@@ -512,17 +523,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem3.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem3.TextToControlDistance = 5;
             // 
-            // chkCollinearXML
-            // 
-            this.chkCollinearXML.Location = new System.Drawing.Point(97, 170);
-            this.chkCollinearXML.MenuManager = this.barManager1;
-            this.chkCollinearXML.Name = "chkCollinearXML";
-            this.chkCollinearXML.Properties.Caption = "XML thông tuyến";
-            this.chkCollinearXML.Size = new System.Drawing.Size(274, 19);
-            this.chkCollinearXML.StyleController = this.layoutControl1;
-            this.chkCollinearXML.TabIndex = 19;
-            this.chkCollinearXML.CheckedChanged += new System.EventHandler(this.chkCollinearXML_CheckedChanged);
-            // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.chkCollinearXML;
@@ -557,6 +557,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkCollinearXML.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPatientTypeTT.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkOutTime.Properties)).EndInit();
@@ -582,7 +583,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkCollinearXML.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
