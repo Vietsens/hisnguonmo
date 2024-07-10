@@ -1,21 +1,4 @@
-/* IVT
- * @Project : hisnguonmo
- * Copyright (C) 2017 INVENTEC
- *  
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *  
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
- * GNU General Public License for more details.
- *  
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-using HIS.Desktop.ApiConsumer;
+﻿using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using Inventec.Common.Adapter;
 using Inventec.Core;
@@ -1129,11 +1112,13 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                     if (province != null)
                     {
                         patientDTO.HT_PROVINCE_NAME = province.PROVINCE_NAME;
+                        patientDTO.HT_PROVINCE_CODE = province.PROVINCE_CODE;
                     }
                 }
                 else
                 {
                     patientDTO.HT_PROVINCE_NAME = "";
+                    patientDTO.HT_PROVINCE_CODE = "";
                 }
 
                 if (cboHTDistrictName.EditValue != null)
@@ -1142,11 +1127,13 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                     if (district != null)
                     {
                         patientDTO.HT_DISTRICT_NAME = district.DISTRICT_NAME;
+                        patientDTO.HT_DISTRICT_CODE = district.DISTRICT_CODE;
                     }
                 }
                 else
                 {
                     patientDTO.HT_DISTRICT_NAME = "";
+                    patientDTO.HT_DISTRICT_CODE = "";
 
                 }
 
@@ -1156,11 +1143,13 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                     if (commune != null)
                     {
                         patientDTO.HT_COMMUNE_NAME = commune.COMMUNE_NAME;
+                        patientDTO.HT_COMMUNE_CODE = commune.COMMUNE_CODE; 
                     }
                 }
                 else
                 {
                     patientDTO.HT_COMMUNE_NAME = "";
+                    patientDTO.HT_COMMUNE_CODE = "";
                 }
 
                 patientDTO.FATHER_NAME = txtFatherName.Text.Trim();
