@@ -402,6 +402,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 updateDTO.HT_PROVINCE_NAME = patientPlusInformationInfoValue.HT_PROVINCE_NAME;
                 updateDTO.HT_DISTRICT_NAME = patientPlusInformationInfoValue.HT_DISTRICT_NAME;
                 updateDTO.HT_COMMUNE_NAME = patientPlusInformationInfoValue.HT_COMMUNE_NAME;
+                updateDTO.HT_PROVINCE_CODE = patientPlusInformationInfoValue.HT_PROVINCE_CODE;
+                updateDTO.HT_DISTRICT_CODE = patientPlusInformationInfoValue.HT_DISTRICT_CODE;
+                updateDTO.HT_COMMUNE_CODE = patientPlusInformationInfoValue.HT_COMMUNE_CODE;
             }
             catch (Exception ex)
             {

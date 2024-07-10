@@ -110,6 +110,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         patientSDO.HT_COMMUNE_NAME = patientInRegisterSearchByCard.HtCommuneName;
                         patientSDO.HT_DISTRICT_NAME = patientInRegisterSearchByCard.HtDistrictName;
                         patientSDO.HT_PROVINCE_NAME = patientInRegisterSearchByCard.HtProvinceName;
+                        patientSDO.HT_COMMUNE_CODE = patientInRegisterSearchByCard.HtCommuneCode;
+                        patientSDO.HT_DISTRICT_CODE = patientInRegisterSearchByCard.HtDistrictCode;
+                        patientSDO.HT_PROVINCE_CODE = patientInRegisterSearchByCard.HtProvinceCode;
                         if (ucAddressCombo1 != null)
                             ucAddressCombo1.GetPatientSdo(patientSDO);
                         this.Invoke(new MethodInvoker(delegate()

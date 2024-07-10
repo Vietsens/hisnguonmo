@@ -668,6 +668,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.patientProfile.HisPatient.HT_COMMUNE_NAME = this.communeNowName;
                 this.patientProfile.HisPatient.HT_DISTRICT_NAME = this.districtNowName;
                 this.patientProfile.HisPatient.HT_PROVINCE_NAME = this.provinceNowName;
+                this.patientProfile.HisPatient.HT_COMMUNE_CODE = this.communeNowCode;
+                this.patientProfile.HisPatient.HT_DISTRICT_CODE = this.districtNowCode;
+                this.patientProfile.HisPatient.HT_PROVINCE_CODE = this.provinceNowCode;
                 this.patientProfile.HisPatient.RELATIVE_MOBILE = this.phone;
 
                 this.patientProfile.HisPatient.BLOOD_ABO_CODE = this.blood_ABO_Code;

@@ -89,6 +89,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 dataPatient.HT_COMMUNE_NAME = _currentPatientSDO.HT_COMMUNE_NAME;
                 dataPatient.HT_DISTRICT_NAME = _currentPatientSDO.HT_DISTRICT_NAME;
                 dataPatient.HT_PROVINCE_NAME = _currentPatientSDO.HT_PROVINCE_NAME;
+                dataPatient.HT_COMMUNE_CODE = _currentPatientSDO.HT_COMMUNE_CODE;
+                dataPatient.HT_DISTRICT_CODE = _currentPatientSDO.HT_DISTRICT_CODE;
+                dataPatient.HT_PROVINCE_CODE = _currentPatientSDO.HT_PROVINCE_CODE;
                 dataPatient.HT_ADDRESS = _currentPatientSDO.HT_ADDRESS;
                 dataPatient.BLOOD_ABO_CODE = _currentPatientSDO.BLOOD_ABO_CODE;
                 dataPatient.BLOOD_RH_CODE = _currentPatientSDO.BLOOD_RH_CODE;
