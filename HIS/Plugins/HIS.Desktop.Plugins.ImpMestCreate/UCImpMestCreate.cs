@@ -2016,7 +2016,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         DevExpress.XtraEditors.XtraMessageBox.Show(string.Format(ResourceMessageManager.ThoiGianNhapVuotHieuLucHopDong, Inventec.Common.DateTime.Convert.TimeNumberToDateString(this.currentContract.VALID_TO_DATE.Value)), Base.ResourceMessageManager.TieuDeCuaSoThongBaoLaCanhBao);
                         return;
                     }
-                    
+
                     if (this.MedicalContractMety != null && xtraTabControlMain.SelectedTabPage == xtraTabPageMedicine)
                     {
                         if (spinCanImpAmount.Value < spinImpAmount.Value)
@@ -2333,6 +2333,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         this.currrentServiceAdo.HisMedicine.TDL_BID_YEAR = this.currrentServiceAdo.TDL_BID_YEAR;
                         this.currrentServiceAdo.HisMedicine.TDL_BID_PACKAGE_CODE = this.currrentServiceAdo.TDL_BID_PACKAGE_CODE;
                         this.currrentServiceAdo.HisMedicine.TDL_BID_NUMBER = this.currrentServiceAdo.TDL_BID_NUMBER;
+
+                        this.currrentServiceAdo.HisMedicine.TT_THAU = string.Format("{0};{1};{2};{3}", this.currrentServiceAdo.HisMedicine.TDL_BID_NUMBER, this.currrentServiceAdo.HisMedicine.TDL_BID_PACKAGE_CODE, this.currrentServiceAdo.HisMedicine.TDL_BID_GROUP_CODE, this.currrentServiceAdo.HisMedicine.TDL_BID_YEAR);
                     }
 
                     this.currrentServiceAdo.BidId = medicineProcessor.GetBid(this.ucMedicineTypeTree);
@@ -2468,6 +2470,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             }
                         }
                     }
+
                 }
                 #endregion
 
@@ -2490,6 +2493,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         this.currrentServiceAdo.HisMaterial.TDL_BID_YEAR = this.currrentServiceAdo.TDL_BID_YEAR;
                         this.currrentServiceAdo.HisMaterial.TDL_BID_PACKAGE_CODE = this.currrentServiceAdo.TDL_BID_PACKAGE_CODE;
                         this.currrentServiceAdo.HisMaterial.TDL_BID_NUMBER = this.currrentServiceAdo.TDL_BID_NUMBER;
+
+                        this.currrentServiceAdo.HisMaterial.TT_THAU = this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 3 ? string.Format("{0};{1}", this.currrentServiceAdo.HisMaterial.TDL_BID_EXTRA_CODE, this.currrentServiceAdo.HisMaterial.TDL_BID_YEAR) : this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 4 ? string.Format("{0};{1};{2}", this.currrentServiceAdo.HisMaterial.TDL_BID_EXTRA_CODE, this.currrentServiceAdo.HisMaterial.TDL_BID_PACKAGE_CODE, this.currrentServiceAdo.HisMaterial.TDL_BID_YEAR) : string.Format("{0};{1};{2};{3}", this.currrentServiceAdo.HisMaterial.TDL_BID_EXTRA_CODE, this.currrentServiceAdo.HisMaterial.TDL_BID_PACKAGE_CODE, this.currrentServiceAdo.HisMaterial.TDL_BID_GROUP_CODE, this.currrentServiceAdo.HisMaterial.TDL_BID_YEAR);
                     }
 
                     this.currrentServiceAdo.BidId = materialProcessor.GetBid(this.ucMaterialTypeTree);
@@ -3158,7 +3163,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                 if (this.currentContract != null)
                 {
-                    
+
                     if (this.MedicalContractMety != null && xtraTabControlMain.SelectedTabPage == xtraTabPageMedicine)
                     {
                         if (spinCanImpAmount.Value < spinImpAmount.Value)

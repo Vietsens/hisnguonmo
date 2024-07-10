@@ -195,6 +195,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 colNhomThauA.VisibleIndex = -1;
                 adoMe.MedicineTypeColumns.Add(colNhomThauA);
 
+                // Thông tin thầu
+                MedicineTypeColumn colTTThau = new MedicineTypeColumn("Thông tin thầu", "TT_THAU", 130, false);
+                colTTThau.VisibleIndex = -1;
+                adoMe.MedicineTypeColumns.Add(colTTThau);
+
                 this.ucMedicineTypeTree = (UserControl)medicineProcessor.Run(adoMe);
                 if (this.ucMedicineTypeTree != null)
                 {
@@ -339,6 +344,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 MaterialTypeColumn colNhomThau = new MaterialTypeColumn("Nhóm thầu", "TDL_BID_GROUP_CODE", 70, false);
                 colNhomThau.VisibleIndex = -1;
                 adoMa.MaterialTypeColumns.Add(colNhomThau);
+
+                // Thông tin thầu
+                MaterialTypeColumn colTTThau = new MaterialTypeColumn("Thông tin thầu", "TT_THAU", 130, false);
+                colTTThau.VisibleIndex = -1;
+                adoMa.MaterialTypeColumns.Add(colTTThau);
 
                 this.ucMaterialTypeTree = (UserControl)materialProcessor.Run(adoMa);
                 if (this.ucMaterialTypeTree != null)
