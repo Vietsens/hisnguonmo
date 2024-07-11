@@ -3538,6 +3538,11 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 {
                     cboHTProvinceName.Properties.DataSource = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 }
+                cboHTDistrictName.EditValue = null;
+                txtHTDistrictCode.Text = "";
+                cboHTCommuneName.EditValue = null;
+                txtHTCommuneCode.Text = "";
+               
             }
             catch (Exception ex)
             {
@@ -3553,6 +3558,9 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 {
                     LoadHTDistrictsCombo("", cboHTProvinceName.EditValue.ToString(), true);
                 }
+                cboHTCommuneName.EditValue = null;
+                txtHTCommuneCode.Text = "";
+                         
             }
             catch (Exception ex)
             {
