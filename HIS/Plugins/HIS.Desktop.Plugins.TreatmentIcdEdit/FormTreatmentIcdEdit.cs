@@ -1269,6 +1269,8 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 ValidTextControlMaxlength(this.txtCongTy, 200, false);
                 ValidTextControlMaxlength(this.txtSanPham, 200, false);
                 ValidTextControlMaxlength(this.txtReasonVV, 200, false);
+                ValidTextControlMaxlength(this.txtReasonNTCode, 10, false);
+                ValidTextControlMaxlength(this.cboReasonNT, 1000, false);
                 if (dtClinicalInTime.EditValue != null)
                 {
                     ValidationRequired(txtReasonVV);
@@ -2247,6 +2249,22 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             }
         }
 
+        //private void cboReasonNT_Properties_ButtonClick(object sender, ButtonPressedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.Button.Kind == ButtonPredefines.Delete)
+        //        {
+        //            txtReasonNTCode.EditValue = null;
+        //            cboReasonNT.EditValue = null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
+
         private void cboUserName_EditValueChanged(object sender, EventArgs e)
         {
             try
@@ -2558,6 +2576,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 this.btnSave.Click -= new System.EventHandler(this.btnSave_Click);
                 this.dxValidationProviderTime.ValidationFailed -= new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProviderTime_ValidationFailed);
                 this.Load -= new System.EventHandler(this.FormTreatmentIcdEdit_Load);
+                //this.cboReasonNT.Properties.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboReasonNT_Properties_ButtonClick);
                 gridView1.GridControl.DataSource = null;
                 cboDoctorUserName.Properties.DataSource = null;
                 gridLookUpEdit1View.GridControl.DataSource = null;
@@ -2761,15 +2780,15 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
         {
             try
             {
-                string text = txtReasonVV.Text;
+                //string text = txtReasonVV.Text;
 
-                if (!CheckMaxLength(text, 100))
-                {
-                    MessageBox.Show("Không được nhập quá 200 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    string truncatedText = TruncateToMaxLength(text, 200);
-                    txtReasonVV.Text = truncatedText;
-                    txtReasonVV.SelectionStart = txtReasonVV.Text.Length;
-                }
+                //if (!CheckMaxLength(text, 200))
+                //{
+                //    //MessageBox.Show("Không được nhập quá 200 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //    string truncatedText = TruncateToMaxLength(text, 200);
+                //    txtReasonVV.Text = truncatedText;
+                //    txtReasonVV.SelectionStart = txtReasonVV.Text.Length;
+                //}
             }
             catch (Exception ex)
             {
@@ -2794,7 +2813,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 }
                 else
                 {
-                    cboDoctorUserName.Properties.Buttons[1].Visible = false;
+                    cboReasonNT.Properties.Buttons[1].Visible = false;
                 }
             }
             catch (Exception ex)
@@ -2820,6 +2839,69 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
 
                         this.inIcdProcessor.FocusControl(ucInIcd);
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void dtClinicalInTime_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(dtClinicalInTime.Text))
+                {
+                    lblReasonVV.AppearanceItemCaption.ForeColor = Color.Maroon;
+                }
+                else
+                {
+                    lblReasonVV.AppearanceItemCaption.ForeColor = Color.Black;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboReasonNT_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    txtReasonNTCode.EditValue = null;
+                    cboReasonNT.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboReasonNT_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (cboReasonNT.EditValue != null)
+                    {
+                        var data = this.HisHospitalizeReason.FirstOrDefault(o => o.HOSPITALIZE_REASON_CODE.ToLower() == cboReasonNT.EditValue.ToString().ToLower());
+                        if (data != null)
+                        {
+                            txtReasonNTCode.Text = data.HOSPITALIZE_REASON_CODE;
+                            cboReasonNT.Properties.Buttons[1].Visible = true;
+                        }
+                        this.inIcdProcessor.FocusControl(ucInIcd);
+                    }
+                }
+                else if (e.KeyCode == Keys.Down)
+                {
+                    cboReasonNT.ShowPopup();
                 }
             }
             catch (Exception ex)

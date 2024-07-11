@@ -2800,7 +2800,16 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 if (String.IsNullOrWhiteSpace(this.txtHTProvinceCode.Text))
                 {
                     this.cboHTProvinceName.Properties.DataSource = listProvince;
+                    this.cboHTProvinceName.Text = "";
+                    this.cboHTDistrictName.Text = "";
+                    this.txtHTDistrictCode.Text = "";
+                    this.cboHTCommuneName.Text = "";
+                    this.txtHTCommuneCode.Text = "";
+                    this.cboHTProvinceName.EditValue = null;
+                    this.cboHTDistrictName.Properties.DataSource = null;
+                    this.cboHTCommuneName.Properties.DataSource = null;
                 }
+
             }
             catch (Exception ex)
             {
@@ -2812,6 +2821,10 @@ namespace HIS.Desktop.Plugins.InfantInformation
         {
             try
             {
+                if (string.IsNullOrEmpty(txtHTProvinceCode.Text))
+                {
+                    cboHTProvinceName.Text = "";
+                }
                 if (e.KeyCode == Keys.Enter)
                 {
                     this.LoadComboTinhThanh_HT((sender as DevExpress.XtraEditors.TextEdit).Text.ToUpper(), true);
@@ -3698,6 +3711,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     this.cboProvinceNameHospital.Properties.DataSource = listProvince;
                     txtProvinceCodeHospital.Text = null;
                     cboDistrictNameHospital.EditValue = null;
+                    
                 }
             }
             catch (Exception ex)
@@ -3705,6 +3719,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
         private void cboDistrictNameHospital_EditValueChanged(object sender, EventArgs e)
         {
             try
@@ -3775,6 +3790,15 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+
+        //cboDistricts.EditValue = null;
+        //           txtDistricts.Text = "";
+        //           cboCommune.EditValue = null;
+        //           txtCommune.Text = "";
+        //           LoadDistrictsCombo("", null, false);
+        //           LoadCommuneCombo("", null, false);
+        //           cboProvince.Properties.Buttons[1].Visible = false;
 
         private void cboDistrictName_QueryPopUp(object sender, CancelEventArgs e)
         {
@@ -3959,6 +3983,62 @@ namespace HIS.Desktop.Plugins.InfantInformation
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+            }
+        }
+
+        bool isNullDistrict = false;
+        private void txtHTDistrictCode_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (String.IsNullOrWhiteSpace(this.txtHTDistrictCode.Text))
+                {
+                    this.cboHTDistrictName.Text = "";
+                    this.cboHTCommuneName.Text = "";
+                    this.txtHTCommuneCode.Text = "";
+                    cboHTCommuneName.Properties.DataSource = null;
+                }
+                if (isNullDistrict == true)
+                {
+                    if (String.IsNullOrWhiteSpace(cboHTProvinceName.Text) && (!String.IsNullOrWhiteSpace(cboHTDistrictName.Text) || !String.IsNullOrWhiteSpace(cboHTCommuneName.Text)))
+                    {
+                        MessageBox.Show("Vui lòng chọn thông tin tỉnh trước...");
+                        txtHTDistrictCode.Text = "";
+                        cboHTDistrictName.Text = "";
+                        txtHTCommuneCode.Text = "";
+                        cboHTCommuneName.Text = "";
+                    }
+                }
+                isNullDistrict = true;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+        bool isNullCommune= false;
+        private void txtHTCommuneCode_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (String.IsNullOrWhiteSpace(this.txtHTCommuneCode.Text))
+                {
+                    this.cboHTCommuneName.Text = "";
+                }
+                if (isNullCommune == true)
+                {
+                    if (String.IsNullOrWhiteSpace(cboHTProvinceName.Text) || String.IsNullOrWhiteSpace(cboHTDistrictName.Text))
+                    {
+                        MessageBox.Show("Vui lòng chọn thông tin tỉnh và huyện trước...");
+                        txtHTCommuneCode.Text = "";
+                        cboHTCommuneName.Text = "";
+                    }
+                }
+                isNullCommune = true;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
             }
         }
     }
