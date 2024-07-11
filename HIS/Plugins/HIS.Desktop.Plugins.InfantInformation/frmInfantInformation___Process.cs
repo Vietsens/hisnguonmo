@@ -336,11 +336,14 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     if (provinceHT != null)
                     {
                         currentDTO.HtProvinceName = provinceHT.PROVINCE_NAME;
+                        currentDTO.HtProvinceCode = provinceHT.PROVINCE_CODE;
+
                     }
                 }
                 else
                 {
                     currentDTO.HtProvinceName = null;
+                    currentDTO.HtProvinceCode = null;
                 }
 
                 if (cboHTDistrictName.EditValue != null)
@@ -349,11 +352,13 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     if (districtHT != null)
                     {
                         currentDTO.HtDistrictName = districtHT.DISTRICT_NAME;
+                        currentDTO.HtDistrictCode = districtHT.DISTRICT_CODE;
                     }
                 }
                 else
                 {
                     currentDTO.HtDistrictName = null;
+                    currentDTO.HtDistrictCode = null;
                 }
 
                 if (cboHTCommuneName.EditValue != null)
@@ -362,11 +367,13 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     if (communeHT != null)
                     {
                         currentDTO.HtCommuneName = communeHT.COMMUNE_NAME;
+                        currentDTO.HtCommuneCode = communeHT.COMMUNE_CODE;
                     }
                 }
                 else
                 {
                     currentDTO.HtCommuneName = null;
+                    currentDTO.HtCommuneCode = null;
                 }
                 if (txtNumberChildrenBirth.EditValue != null)
                     currentDTO.NumberChildrenBirth = (long)txtNumberChildrenBirth.Value;

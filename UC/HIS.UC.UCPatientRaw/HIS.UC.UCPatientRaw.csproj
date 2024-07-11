@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E3891201-0493-4164-B1DC-D99277BA6291}</ProjectGuid>
+    <ProjectGuid>{56FEA3A2-BE4C-4025-880D-E4A5F89B6FF6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HIS.UC.UCPatientRaw</RootNamespace>

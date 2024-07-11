@@ -156,7 +156,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControlItem32 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem33 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem34 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem37 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lblReasonVV = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem39 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem40 = new DevExpress.XtraLayout.LayoutControlItem();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
@@ -272,7 +272,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lblReasonVV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
@@ -1027,13 +1027,14 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.cboReasonNT.Properties.NullText = "";
             this.cboReasonNT.Properties.View = this.gridView3;
-            this.cboReasonNT.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboUserName_Properties_ButtonClick);
             this.cboReasonNT.Size = new System.Drawing.Size(277, 20);
             this.cboReasonNT.StyleController = this.layoutControl2;
             this.cboReasonNT.TabIndex = 29;
             this.cboReasonNT.ToolTip = "Lý do vào nội trú";
             this.cboReasonNT.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboReasonNT_Closed);
+            this.cboReasonNT.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboReasonNT_ButtonClick);
             this.cboReasonNT.EditValueChanged += new System.EventHandler(this.cboReasonNT_EditValueChanged);
+            this.cboReasonNT.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboReasonNT_PreviewKeyDown);
             // 
             // gridView3
             // 
@@ -1203,6 +1204,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.dtClinicalInTime.StyleController = this.layoutControl2;
             this.dtClinicalInTime.TabIndex = 13;
             this.dtClinicalInTime.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtClinicalInTime_Closed);
+            this.dtClinicalInTime.EditValueChanged += new System.EventHandler(this.dtClinicalInTime_EditValueChanged);
             // 
             // txtTreatmentOrder
             // 
@@ -1274,7 +1276,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControlItem32,
             this.layoutControlItem33,
             this.layoutControlItem34,
-            this.layoutControlItem37,
+            this.lblReasonVV,
             this.layoutControlItem39,
             this.layoutControlItem40});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
@@ -1481,22 +1483,21 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControlItem34.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem34.TextVisible = false;
             // 
-            // layoutControlItem37
+            // lblReasonVV
             // 
-            this.layoutControlItem37.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
-            this.layoutControlItem37.AppearanceItemCaption.Options.UseForeColor = true;
-            this.layoutControlItem37.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem37.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem37.Control = this.txtReasonVV;
-            this.layoutControlItem37.Location = new System.Drawing.Point(0, 139);
-            this.layoutControlItem37.Name = "layoutControlItem37";
-            this.layoutControlItem37.OptionsToolTip.ToolTip = "Lý do vào viện";
-            this.layoutControlItem37.OptionsToolTip.ToolTipTitle = "Lý do vào viện";
-            this.layoutControlItem37.Size = new System.Drawing.Size(437, 24);
-            this.layoutControlItem37.Text = "Lý do VV:";
-            this.layoutControlItem37.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem37.TextSize = new System.Drawing.Size(90, 20);
-            this.layoutControlItem37.TextToControlDistance = 5;
+            this.lblReasonVV.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
+            this.lblReasonVV.AppearanceItemCaption.Options.UseForeColor = true;
+            this.lblReasonVV.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lblReasonVV.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lblReasonVV.Control = this.txtReasonVV;
+            this.lblReasonVV.Location = new System.Drawing.Point(0, 139);
+            this.lblReasonVV.Name = "lblReasonVV";
+            this.lblReasonVV.OptionsToolTip.ToolTip = "Lý do vào viện";
+            this.lblReasonVV.Size = new System.Drawing.Size(437, 24);
+            this.lblReasonVV.Text = "Lý do VV:";
+            this.lblReasonVV.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lblReasonVV.TextSize = new System.Drawing.Size(90, 20);
+            this.lblReasonVV.TextToControlDistance = 5;
             // 
             // layoutControlItem39
             // 
@@ -1506,7 +1507,6 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControlItem39.Location = new System.Drawing.Point(437, 139);
             this.layoutControlItem39.Name = "layoutControlItem39";
             this.layoutControlItem39.OptionsToolTip.ToolTip = "Lý do vào nội trú";
-            this.layoutControlItem39.OptionsToolTip.ToolTipTitle = "Lý do vào nội trú";
             this.layoutControlItem39.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
             this.layoutControlItem39.Size = new System.Drawing.Size(180, 24);
             this.layoutControlItem39.Text = "Lý do vào NT:";
@@ -1519,6 +1519,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControlItem40.Control = this.cboReasonNT;
             this.layoutControlItem40.Location = new System.Drawing.Point(617, 139);
             this.layoutControlItem40.Name = "layoutControlItem40";
+            this.layoutControlItem40.OptionsToolTip.ToolTip = "Lý do vào nội trú";
             this.layoutControlItem40.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
             this.layoutControlItem40.Size = new System.Drawing.Size(279, 24);
             this.layoutControlItem40.TextSize = new System.Drawing.Size(0, 0);
@@ -1792,7 +1793,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lblReasonVV)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
@@ -1920,7 +1921,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem4;
         private DevExpress.XtraEditors.TextEdit txtReasonVV;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem37;
+        private DevExpress.XtraLayout.LayoutControlItem lblReasonVV;
         private DevExpress.XtraEditors.TextEdit txtReasonNTCode;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem39;
         private DevExpress.XtraEditors.GridLookUpEdit cboReasonNT;

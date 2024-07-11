@@ -227,6 +227,7 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 this.txtBidMaterialTypeName.Text = material.BID_MATERIAL_TYPE_NAME;
                 this.txtBidExtraCode.Text = material.TDL_BID_EXTRA_CODE;
                 this.txtBidYear.Text = material.TDL_BID_YEAR;
+                this.txtTTThau.Text = material.TT_THAU;
                 this.cboImpSource.EditValue = material.IMP_SOURCE_ID;
                 this.cboInformationBid.EditValue = material.INFORMATION_BID;
                 if (material.IS_SALE_EQUAL_IMP_PRICE == 1)
@@ -406,6 +407,7 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 result.BID_MATERIAL_TYPE_NAME = txtBidMaterialTypeName.Text;
                 result.TDL_BID_YEAR = txtBidYear.Text;
                 result.TDL_BID_EXTRA_CODE = txtBidExtraCode.Text;
+                result.TT_THAU = txtTTThau.Text;
                 if (cboImpSource.EditValue != null)
                     result.IMP_SOURCE_ID = (long)cboImpSource.EditValue;
                 else
@@ -578,7 +580,7 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 ValidBidControlMaxlength(txtBidMaterialTypeCode, 50, false);
                 ValidBidControlMaxlength(txtBidMaterialTypeName, 500, false);
                 ValidBidControlMaxlength(txtBidExtraCode, 50, false);
-
+                ValidBidControlMaxlength(txtTTThau, 50, false);
             }
             catch (Exception ex)
             {
