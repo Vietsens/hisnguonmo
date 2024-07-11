@@ -33,7 +33,7 @@
     <Reference Include="ACS.EFMODEL">
       <HintPath>..\..\..\Lib\ACS\ACS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="ACS.Filter">     
+    <Reference Include="ACS.Filter">
       <HintPath>..\..\..\Lib\ACS\ACS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="ACS.SDO">
@@ -43,14 +43,14 @@
       <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Mapper">
-      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+      <HintPath>..\..\..\LIB\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Desktop.Common.Modules, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Inventec.Desktop.Common.Modules">
+      <HintPath>..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Lib\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
-    </Reference>
-    <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\Lib\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -141,41 +141,9 @@
     <Compile Include="TreatmentLogADO.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
-      <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
-      <Name>HIS.Desktop.ApiConsumer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Common\HIS.Desktop.Common.csproj">
       <Project>{59fdcba7-0f9f-4257-b95a-e37a1ccfe107}</Project>
       <Name>HIS.Desktop.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
-      <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
-      <Name>HIS.Desktop.Controls.Session</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.EventLog\HIS.Desktop.EventLog.csproj">
-      <Project>{306cbc95-d95a-48e1-941e-f3ecc0cbee34}</Project>
-      <Name>HIS.Desktop.EventLog</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{8631edc1-de51-458e-acca-c9c2996d5f37}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
-      <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
-      <Name>HIS.Desktop.LocalStorage.ConfigApplication</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.LocalStorage.ConfigSystem\HIS.Desktop.LocalStorage.ConfigSystem.csproj">
-      <Project>{48d25a6a-11bc-4f0f-8dd7-15e03a2bcada}</Project>
-      <Name>HIS.Desktop.LocalStorage.ConfigSystem</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
-      <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
-      <Name>HIS.Desktop.LocalStorage.LocalData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
-      <Project>{56704e98-959c-4d0a-9a42-11cdc04cfac1}</Project>
-      <Name>HIS.Desktop.LocalStorage.Location</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

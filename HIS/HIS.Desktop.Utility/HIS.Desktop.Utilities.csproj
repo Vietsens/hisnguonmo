@@ -82,9 +82,6 @@
     <Reference Include="DevExpress.XtraTreeList.v15.2">
       <HintPath>..\..\..\Lib\DEVEXPRESS\DevExpress.XtraTreeList.v15.2.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.LocalStorage.ConfigCustomizaButton">
-      <HintPath>..\..\..\Lib\HIS\ReferencedAssemblies\HIS.Desktop.LocalStorage.ConfigCustomizaButton.dll</HintPath>
-    </Reference>
     <Reference Include="His.EventLog">
       <HintPath>..\..\..\Lib\HIS\His.EventLog\His.EventLog.dll</HintPath>
     </Reference>
@@ -343,6 +340,10 @@
     <ProjectReference Include="..\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
       <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
       <Name>HIS.Desktop.LocalStorage.ConfigApplication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.LocalStorage.ConfigCustomizaButton\HIS.Desktop.LocalStorage.ConfigCustomizaButton.csproj">
+      <Project>{3f7e0c18-1178-49e3-9c55-375867fbb0e9}</Project>
+      <Name>HIS.Desktop.LocalStorage.ConfigCustomizaButton</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.LocalStorage.ConfigHideControl\HIS.Desktop.LocalStorage.ConfigHideControl.csproj">
       <Project>{7058a480-4ce1-4a56-99e4-77378379fd77}</Project>
