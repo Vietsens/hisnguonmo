@@ -137,6 +137,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.ADO
         public decimal? PRICING_MAX_REUSE_COUNT { get; set; }
         public long? DISCOUNT_FROM_DATE { get; set; }
         public long? DISCOUNT_TO_DATE { get; set; }
+        public string TT_THAU { get; set; }
 
         public VHisServiceADO(V_HIS_MEDICINE_TYPE data)
         {

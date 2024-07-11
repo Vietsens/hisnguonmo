@@ -1242,6 +1242,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 var medicine = dataMedicines.FirstOrDefault(p => p.ID == item.MEDICINE_ID);
                                 if (medicine != null)
                                 {
+                                    ado.TT_THAU = medicine.TT_THAU;
                                     ado.TDL_BID_NUMBER = medicine.TDL_BID_NUMBER;
                                     ado.TDL_BID_EXTRA_CODE = medicine.TDL_BID_EXTRA_CODE;
                                     ado.TDL_BID_GROUP_CODE = medicine.TDL_BID_GROUP_CODE;
@@ -1417,7 +1418,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     ado.TDL_BID_NUM_ORDER = material.TDL_BID_NUM_ORDER;
                                     ado.TDL_BID_PACKAGE_CODE = material.TDL_BID_PACKAGE_CODE;
                                     ado.TDL_BID_YEAR = material.TDL_BID_YEAR;
-
+                                    ado.TT_THAU = material.TT_THAU;
                                     ado.MEDICAL_CONTRACT_ID = material.MEDICAL_CONTRACT_ID;
                                     ado.CONTRACT_PRICE = material.CONTRACT_PRICE;
                                     ado.packingTypeName = material.BID_MATERIAL_TYPE_CODE;
@@ -2333,10 +2334,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         this.currrentServiceAdo.HisMedicine.TDL_BID_YEAR = this.currrentServiceAdo.TDL_BID_YEAR;
                         this.currrentServiceAdo.HisMedicine.TDL_BID_PACKAGE_CODE = this.currrentServiceAdo.TDL_BID_PACKAGE_CODE;
                         this.currrentServiceAdo.HisMedicine.TDL_BID_NUMBER = this.currrentServiceAdo.TDL_BID_NUMBER;
-
-                        this.currrentServiceAdo.HisMedicine.TT_THAU = string.Format("{0};{1};{2};{3}", this.currrentServiceAdo.HisMedicine.TDL_BID_NUMBER, this.currrentServiceAdo.HisMedicine.TDL_BID_PACKAGE_CODE, this.currrentServiceAdo.HisMedicine.TDL_BID_GROUP_CODE, this.currrentServiceAdo.HisMedicine.TDL_BID_YEAR);
                     }
-
+                    this.currrentServiceAdo.TT_THAU = this.currrentServiceAdo.HisMedicine.TT_THAU = string.Format("{0};{1};{2};{3}", this.currrentServiceAdo.TDL_BID_NUMBER, this.currrentServiceAdo.HisMedicine.TDL_BID_PACKAGE_CODE, this.currrentServiceAdo.TDL_BID_GROUP_CODE, this.currrentServiceAdo.TDL_BID_YEAR);
                     this.currrentServiceAdo.BidId = medicineProcessor.GetBid(this.ucMedicineTypeTree);
                     if (this.currentBid != null && this.currrentServiceAdo.BidId == null)
                     {
@@ -2493,9 +2492,9 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         this.currrentServiceAdo.HisMaterial.TDL_BID_YEAR = this.currrentServiceAdo.TDL_BID_YEAR;
                         this.currrentServiceAdo.HisMaterial.TDL_BID_PACKAGE_CODE = this.currrentServiceAdo.TDL_BID_PACKAGE_CODE;
                         this.currrentServiceAdo.HisMaterial.TDL_BID_NUMBER = this.currrentServiceAdo.TDL_BID_NUMBER;
-
-                        this.currrentServiceAdo.HisMaterial.TT_THAU = this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 3 ? string.Format("{0};{1}", this.currrentServiceAdo.HisMaterial.TDL_BID_EXTRA_CODE, this.currrentServiceAdo.HisMaterial.TDL_BID_YEAR) : this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 4 ? string.Format("{0};{1};{2}", this.currrentServiceAdo.HisMaterial.TDL_BID_EXTRA_CODE, this.currrentServiceAdo.HisMaterial.TDL_BID_PACKAGE_CODE, this.currrentServiceAdo.HisMaterial.TDL_BID_YEAR) : string.Format("{0};{1};{2};{3}", this.currrentServiceAdo.HisMaterial.TDL_BID_EXTRA_CODE, this.currrentServiceAdo.HisMaterial.TDL_BID_PACKAGE_CODE, this.currrentServiceAdo.HisMaterial.TDL_BID_GROUP_CODE, this.currrentServiceAdo.HisMaterial.TDL_BID_YEAR);
                     }
+
+                    this.currrentServiceAdo.TT_THAU = this.currrentServiceAdo.HisMaterial.TT_THAU = this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 3 ? string.Format("{0};{1}", this.currrentServiceAdo.TDL_BID_EXTRA_CODE, this.currrentServiceAdo.TDL_BID_YEAR) : this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 4 ? string.Format("{0};{1};{2}", this.currrentServiceAdo.TDL_BID_EXTRA_CODE, this.currrentServiceAdo.TDL_BID_PACKAGE_CODE, this.currrentServiceAdo.TDL_BID_YEAR) : string.Format("{0};{1};{2};{3}", this.currrentServiceAdo.TDL_BID_EXTRA_CODE, this.currrentServiceAdo.TDL_BID_PACKAGE_CODE, this.currrentServiceAdo.TDL_BID_GROUP_CODE, this.currrentServiceAdo.TDL_BID_YEAR);
 
                     this.currrentServiceAdo.BidId = materialProcessor.GetBid(this.ucMaterialTypeTree);
                     if (this.currentBid != null && this.currrentServiceAdo.BidId == null)
@@ -5413,7 +5412,17 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         {
                             data.HisMaterial.PACKAGE_NUMBER = data.PACKAGE_NUMBER;
                         }
-                    }
+                    }else if(e.Column.FieldName == "TT_THAU")
+                    {
+                        if (data.IsMedicine)
+                        {
+                            data.HisMedicine.TT_THAU = data.TT_THAU;
+                        }
+                        else
+                        {
+                            data.HisMaterial.TT_THAU = data.TT_THAU;
+                        }
+                    }    
                 }
             }
             catch (Exception ex)
