@@ -230,7 +230,13 @@ namespace HIS.UC.UCPatientRaw
 				patientByCard.Paid6Month = cardSDO.Paid6Month;
 				patientByCard.RightRouteCode = cardSDO.RightRouteCode;
 				patientByCard.WORK_PLACE = cardSDO.WorkPlace;
-			}
+				patientByCard.HT_COMMUNE_CODE = cardSDO.HtCommuneCode;
+                patientByCard.HT_COMMUNE_NAME = cardSDO.HtCommuneName;
+                patientByCard.HT_DISTRICT_CODE = cardSDO.HtDistrictCode;
+                patientByCard.HT_DISTRICT_NAME = cardSDO.HtDistrictName;
+                patientByCard.HT_PROVINCE_CODE = cardSDO.HtProvinceCode;
+                patientByCard.HT_PROVINCE_NAME = cardSDO.HtProvinceName;
+            }
 			catch (Exception ex)
 			{
 				Inventec.Common.Logging.LogSystem.Error(ex);
