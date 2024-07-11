@@ -56,17 +56,17 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         dataPatient.CMND_DATE = _currentPatientSDO.CMND_DATE;
                     }
                 }
-                if (_currentPatientSDO == null || _currentPatientSDO.ID == 0)
+
+                this.ucPlusInfo1.RefreshUserControl();
+                if(_currentPatientSDO == null)
                 {
-                    this.ucPlusInfo1.RefreshUserControl();
                     var dt = this.ucPlusInfo1.GetValue();
                     dt.NATIONAL_NAME = dataPatient.NATIONAL_NAME;
                     dt.NATIONAL_CODE = dataPatient.NATIONAL_CODE;
-                    dt.CCCD_NUMBER = _currentPatientSDO != null ?  _currentPatientSDO.CCCD_NUMBER : null;
-                    dt.CMND_DATE = _currentPatientSDO != null ? _currentPatientSDO.CMND_DATE : null;
                     this.ucPlusInfo1.SetValue(dt);
                     return;
                 }
+
                 dataPatient.ETHNIC_NAME = _currentPatientSDO.ETHNIC_NAME;
                 dataPatient.ETHNIC_CODE = _currentPatientSDO.ETHNIC_CODE;
                 dataPatient.MILITARYRANK_ID = _currentPatientSDO.MILITARY_RANK_ID;

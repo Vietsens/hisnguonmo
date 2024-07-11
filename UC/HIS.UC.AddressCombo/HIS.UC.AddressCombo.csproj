@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{38F82DE7-3ECD-442B-91D6-CA54A5B954E0}</ProjectGuid>
+    <ProjectGuid>{C1883745-707D-4E4B-944F-8FE48D8EAE62}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HIS.UC.AddressCombo</RootNamespace>

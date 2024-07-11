@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -85,7 +85,13 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
             return success;
         }
-
+        public bool IsReadCardTheViet = false;
+        public string HtCommuneCode = null;
+        public string HtDistrictCode = null;
+        public string HtProvinceCode = null;
+        public string HtCommuneName = null;
+        public string HtDistrictName = null;
+        public string HtProvinceName = null;
         void SearchAndFillDataCardInfo(string serviceCode)
         {
             try
@@ -96,6 +102,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 CommonParam param = new CommonParam();
                 var patientInRegisterSearchByCard = new BackendAdapter(param).Get<HisCardSDO>(RequestUriStore.HIS_CARD_GETVIEWBYSERVICECODE, ApiConsumers.MosConsumer, serviceCode, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => patientInRegisterSearchByCard), patientInRegisterSearchByCard));
+                IsReadCardTheViet = false;
                 if (patientInRegisterSearchByCard != null)
                 { 
                     var data = this.SearchByCode(patientInRegisterSearchByCard.PatientCode);
@@ -107,12 +114,14 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         //this.SetPatientSearchPanel(true);
                         HisPatientSDO patientSDO = (HisPatientSDO)(data.Result);
                         patientSDO.HT_ADDRESS = patientInRegisterSearchByCard.HtAddress;
-                        patientSDO.HT_COMMUNE_NAME = patientInRegisterSearchByCard.HtCommuneName;
-                        patientSDO.HT_DISTRICT_NAME = patientInRegisterSearchByCard.HtDistrictName;
-                        patientSDO.HT_PROVINCE_NAME = patientInRegisterSearchByCard.HtProvinceName;
-                        patientSDO.HT_COMMUNE_CODE = patientInRegisterSearchByCard.HtCommuneCode;
-                        patientSDO.HT_DISTRICT_CODE = patientInRegisterSearchByCard.HtDistrictCode;
-                        patientSDO.HT_PROVINCE_CODE = patientInRegisterSearchByCard.HtProvinceCode;
+                        patientSDO.HT_COMMUNE_NAME = HtCommuneName = patientInRegisterSearchByCard.HtCommuneName;
+                        patientSDO.HT_DISTRICT_NAME = HtDistrictName = patientInRegisterSearchByCard.HtDistrictName;
+                        patientSDO.HT_PROVINCE_NAME = HtProvinceName = patientInRegisterSearchByCard.HtProvinceName;
+                        patientSDO.HT_COMMUNE_CODE = HtCommuneCode = patientInRegisterSearchByCard.HtCommuneCode;
+                        patientSDO.HT_DISTRICT_CODE = HtDistrictCode = patientInRegisterSearchByCard.HtDistrictCode;
+                        patientSDO.HT_PROVINCE_CODE = HtProvinceCode = patientInRegisterSearchByCard.HtProvinceCode;
+                        //Kiểm tra nếu táp thẻ việt thì lấy thông tin THX HT 
+                        IsReadCardTheViet = true;
                         if (ucAddressCombo1 != null)
                             ucAddressCombo1.GetPatientSdo(patientSDO);
                         this.Invoke(new MethodInvoker(delegate()
