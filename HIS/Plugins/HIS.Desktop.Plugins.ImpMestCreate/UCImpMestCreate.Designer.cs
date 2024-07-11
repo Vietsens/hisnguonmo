@@ -158,6 +158,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn_ImpMestDetail_ExpiredDate = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemDtExpiredDate = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_ImpMestDetail_PackageNumber = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemTxtPackageNumber = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -290,7 +291,6 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.dxValidationProvider2 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
-            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboInformationBid.Properties)).BeginInit();
@@ -1822,6 +1822,15 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.Visible = true;
             this.gridColumn7.VisibleIndex = 11;
+            // 
+            // gridColumn13
+            // 
+            this.gridColumn13.Caption = "Thông tin thầu";
+            this.gridColumn13.FieldName = "TT_THAU";
+            this.gridColumn13.Name = "gridColumn13";
+            this.gridColumn13.Visible = true;
+            this.gridColumn13.VisibleIndex = 12;
+            this.gridColumn13.Width = 130;
             // 
             // gridColumn_ImpMestDetail_PackageNumber
             // 
@@ -3597,15 +3606,6 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.backgroundWorker2.WorkerSupportsCancellation = true;
             this.backgroundWorker2.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker2_DoWork);
             this.backgroundWorker2.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker2_RunWorkerCompleted);
-            // 
-            // gridColumn13
-            // 
-            this.gridColumn13.Caption = "Thông tin thầu";
-            this.gridColumn13.FieldName = "TT_THAU";
-            this.gridColumn13.Name = "gridColumn13";
-            this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 12;
-            this.gridColumn13.Width = 130;
             // 
             // UCImpMestCreate
             // 
