@@ -279,6 +279,7 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 this.txtBidYear.Text = medicine.TDL_BID_YEAR;
                 this.txtBidExtraCode.Text = medicine.TDL_BID_EXTRA_CODE;
                 this.cboImpSource.EditValue = medicine.IMP_SOURCE_ID;
+                this.txtTTThau.Text = medicine.TT_THAU;
                 if (medicine.IS_SALE_EQUAL_IMP_PRICE == 1)
                 {
                     this.chkBBGN.CheckState = CheckState.Checked;
@@ -387,6 +388,7 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 result.TDL_BID_NUM_ORDER = txtSTTBid.Text.Trim();
                 result.TDL_BID_NUMBER = txtBidNumber.Text.Trim();
                 result.TDL_BID_YEAR = txtBidYear.Text.Trim();
+                result.TT_THAU = txtTTThau.Text.Trim();
                 if (chkBBGN.CheckState == CheckState.Checked)
                 {
                     result.IS_SALE_EQUAL_IMP_PRICE = 1;
@@ -613,6 +615,7 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 ValidBidControlMaxlength(txtHeinServiceBHYTName, 1500);
                 ValidBidControlMaxlength(txtTenHoatChatBHYT, 1000, false);
                 ValidBidControlMaxlength(txtBidExtraCode, 50, false);
+                ValidBidControlMaxlength(txtTTThau, 50, false);
             }
             catch (Exception ex)
             {
@@ -980,11 +983,13 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
 
         private void txtHeinServiceBHYTName_KeyDown(object sender, KeyEventArgs e)
         {
+       
             try
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    btnSave.Focus();
+                    txtHeinServiceBHYTName.Focus();
+                    txtHeinServiceBHYTName.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -1006,6 +1011,22 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void txtTTThau_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    btnSave.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
         }
     }
 }
