@@ -755,11 +755,22 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 			{
 				if (data != null)
 				{
+					this.IsReadCardTheViet = false;
 					string heinCardNumber = "";
                     Inventec.Common.QrCodeBHYT.HeinCardData dataCheck = new Inventec.Common.QrCodeBHYT.HeinCardData();
 					DataResultADO dataResult = (DataResultADO)data;
 					this.SetValueVariableUCAddressCombo(dataResult);
-					if (dataResult.OldPatient == false && dataResult.UCRelativeADO != null)
+                    if (dataResult.SearchTypePatient == 4)//Thẻ việt
+                    {
+						IsReadCardTheViet = true;
+                        HtProvinceCode = dataResult.HisPatientSDO != null ? dataResult.HisPatientSDO.HT_PROVINCE_CODE : null;
+                        HtDistrictCode = dataResult.HisPatientSDO != null ? dataResult.HisPatientSDO.HT_DISTRICT_CODE : null;
+                        HtCommuneCode = dataResult.HisPatientSDO != null ? dataResult.HisPatientSDO.HT_COMMUNE_CODE : null;
+                        HtProvinceName = dataResult.HisPatientSDO != null ? dataResult.HisPatientSDO.HT_PROVINCE_NAME : null;
+                        HtDistrictName = dataResult.HisPatientSDO != null ? dataResult.HisPatientSDO.HT_DISTRICT_NAME : null;
+                        HtCommuneName = dataResult.HisPatientSDO != null ? dataResult.HisPatientSDO.HT_COMMUNE_NAME : null;
+                    }
+                    if (dataResult.OldPatient == false && dataResult.UCRelativeADO != null)
 						FillDataIntoUCRelativeInfo(dataResult.UCRelativeADO);
 					else if (dataResult.OldPatient == false && dataResult.HeinCardData != null)
 					{
@@ -774,7 +785,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 							this.appointmentCode = dataResult.AppointmentCode;
 						this._TreatmnetIdByAppointmentCode = (dataResult.TreatmnetIdByAppointmentCode == null ? 0 : dataResult.TreatmnetIdByAppointmentCode);
 						this.currentPatientSDO = dataResult.HisPatientSDO;
-						FillDataIntoUCPlusInfo(currentPatientSDO, dataResult.IsReadQr);
+						FillDataIntoUCPlusInfo(currentPatientSDO, dataResult.IsReadQr);	
 						FillDataIntoUCRelativeInfo(currentPatientSDO);
 						FillDataIntoUCAddressInfo(currentPatientSDO);
 						if (dataResult.SearchTypePatient == 4 && dataResult.OldPatient == false)
@@ -800,6 +811,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 						dataCheck.FromDate = Inventec.Common.DateTime.Convert.TimeNumberToDateString(currentPatientSDO.HeinCardFromTime ?? 0);
 						dataCheck.MediOrgCode = currentPatientSDO.HeinMediOrgCode;
 						dataCheck.Address = currentPatientSDO.HeinAddress;
+						dataCheck.LiveAreaCode = currentPatientSDO.LiveAreaCode;
 						dataCheck.ToDate = Inventec.Common.DateTime.Convert.TimeNumberToDateString(currentPatientSDO.HeinCardToTime ?? 0);
 					}
 
@@ -1017,6 +1029,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 			try
 			{
 				this.isResetForm = true;
+				this.IsReadCardTheViet = false;
 				this.RefreshUserControl();
 				var patientTypeDefault = HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.PatientTypeDefault;
 				if (!(patientTypeDefault != null && patientTypeDefault.ID > 0) && !HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.UsingPatientTypeOfPreviousPatient)

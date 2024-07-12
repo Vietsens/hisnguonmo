@@ -381,12 +381,12 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.communeNameKS = patientPlusInformationInfoValue.COMMUNE_OfBIRTH_NAME;
                 this.addressKS = patientPlusInformationInfoValue.ADDRESS_OfBIRTH;
 
-                this.communeNowCode = patientPlusInformationInfoValue.HT_COMMUNE_CODE;
-                this.communeNowName = patientPlusInformationInfoValue.HT_COMMUNE_NAME;
-                this.provinceNowCode = patientPlusInformationInfoValue.HT_PROVINCE_CODE;
-                this.provinceNowName = patientPlusInformationInfoValue.HT_PROVINCE_NAME;
-                this.districtNowCode = patientPlusInformationInfoValue.HT_DISTRICT_CODE;
-                this.districtNowName = patientPlusInformationInfoValue.HT_DISTRICT_NAME;
+                this.communeNowCode = ucRequestService.IsReadCardTheViet ? ucRequestService.HtCommuneCode : patientPlusInformationInfoValue.HT_COMMUNE_CODE;
+                this.communeNowName = ucRequestService.IsReadCardTheViet ? ucRequestService.HtCommuneName : patientPlusInformationInfoValue.HT_COMMUNE_NAME;
+                this.provinceNowCode = ucRequestService.IsReadCardTheViet ? ucRequestService.HtProvinceCode : patientPlusInformationInfoValue.HT_PROVINCE_CODE;
+                this.provinceNowName = ucRequestService.IsReadCardTheViet ? ucRequestService.HtProvinceName : patientPlusInformationInfoValue.HT_PROVINCE_NAME;
+                this.districtNowCode = ucRequestService.IsReadCardTheViet ? ucRequestService.HtDistrictCode : patientPlusInformationInfoValue.HT_DISTRICT_CODE;
+                this.districtNowName = ucRequestService.IsReadCardTheViet ? ucRequestService.HtDistrictName : patientPlusInformationInfoValue.HT_DISTRICT_NAME;
                 this.addressNow = patientPlusInformationInfoValue.HT_ADDRESS;
 
                 if (HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.ChangeEthnic != 0)

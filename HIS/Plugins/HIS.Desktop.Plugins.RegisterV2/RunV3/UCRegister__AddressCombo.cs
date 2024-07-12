@@ -37,6 +37,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             try
             {
                 UCAddressADO dataAddress = new UCAddressADO();
+                dataAddress.Commune_Code = data.COMMUNE_CODE;
                 dataAddress.Commune_Name = data.COMMUNE_NAME;
                 dataAddress.District_Code = data.DISTRICT_CODE;
                 dataAddress.District_Name = data.DISTRICT_NAME;

@@ -64,7 +64,7 @@ namespace HIS.UC.AddressCombo
                         this.txtProvinceCode.Text = province.PROVINCE_CODE;
                         this.cboProvince.EditValue = province.PROVINCE_CODE;
                     }
-                    var district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => ((o.INITIAL_NAME + " " + o.DISTRICT_NAME) == data.District_Name || o.DISTRICT_CODE == data.District_Code) && o.PROVINCE_NAME == data.Province_Name);
+                    var district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => ((o.INITIAL_NAME + " " + o.DISTRICT_NAME) == data.District_Name || o.DISTRICT_NAME == data.District_Name || o.DISTRICT_CODE == data.District_Code) && o.PROVINCE_NAME == data.Province_Name);
                     if (district != null)
                     {
                         this.txtDistrictCode.Text = district.DISTRICT_CODE;
