@@ -2335,7 +2335,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         this.currrentServiceAdo.HisMedicine.TDL_BID_PACKAGE_CODE = this.currrentServiceAdo.TDL_BID_PACKAGE_CODE;
                         this.currrentServiceAdo.HisMedicine.TDL_BID_NUMBER = this.currrentServiceAdo.TDL_BID_NUMBER;
                     }
-                    this.currrentServiceAdo.TT_THAU = this.currrentServiceAdo.HisMedicine.TT_THAU = string.Format("{0};{1};{2};{3}", this.currrentServiceAdo.TDL_BID_NUMBER, this.currrentServiceAdo.HisMedicine.TDL_BID_PACKAGE_CODE, this.currrentServiceAdo.TDL_BID_GROUP_CODE, this.currrentServiceAdo.TDL_BID_YEAR);
+                    this.currrentServiceAdo.TT_THAU = this.currrentServiceAdo.HisMedicine.TT_THAU = string.Format("{0};{1};{2};{3}", this.currrentServiceAdo.TDL_BID_NUMBER, this.currrentServiceAdo.TDL_BID_PACKAGE_CODE, this.currrentServiceAdo.TDL_BID_GROUP_CODE, this.currrentServiceAdo.TDL_BID_YEAR);
                     this.currrentServiceAdo.BidId = medicineProcessor.GetBid(this.ucMedicineTypeTree);
                     if (this.currentBid != null && this.currrentServiceAdo.BidId == null)
                     {
@@ -3380,7 +3380,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     this.currrentServiceAdo.HisMedicine.ACTIVE_INGR_BHYT_NAME = this.currrentServiceAdo.activeIngrBhytName;
                     this.currrentServiceAdo.HisMedicine.DOSAGE_FORM = this.currrentServiceAdo.dosageForm;
                     this.currrentServiceAdo.HisMedicine.MEDICINE_USE_FORM_ID = this.currrentServiceAdo.medicineUseFormId;
-
+                    this.currrentServiceAdo.TT_THAU = this.currrentServiceAdo.HisMedicine.TT_THAU = string.Format("{0};{1};{2};{3}", this.currrentServiceAdo.TDL_BID_NUMBER, this.currrentServiceAdo.TDL_BID_PACKAGE_CODE, this.currrentServiceAdo.TDL_BID_GROUP_CODE, this.currrentServiceAdo.TDL_BID_YEAR);
                     if (this.currrentServiceAdo.HisMedicinePatys == null)
                     {
                         this.currrentServiceAdo.HisMedicinePatys = new List<HIS_MEDICINE_PATY>();
@@ -3477,6 +3477,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     this.currrentServiceAdo.HisMaterial.BID_MATERIAL_TYPE_CODE = this.currrentServiceAdo.packingTypeName;
                     this.currrentServiceAdo.HisMaterial.BID_MATERIAL_TYPE_NAME = this.currrentServiceAdo.heinServiceBhytName;
                     this.currrentServiceAdo.HisMaterial.INFORMATION_BID = this.cboInformationBid.SelectedIndex != -1 ? (long?)(this.cboInformationBid.SelectedIndex + 1) : null;
+                    this.currrentServiceAdo.TT_THAU = this.currrentServiceAdo.HisMaterial.TT_THAU = this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 3 ? string.Format("{0};{1}", this.currrentServiceAdo.TDL_BID_EXTRA_CODE, this.currrentServiceAdo.TDL_BID_YEAR) : this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 4 ? string.Format("{0};{1};{2}", this.currrentServiceAdo.TDL_BID_EXTRA_CODE, this.currrentServiceAdo.TDL_BID_PACKAGE_CODE, this.currrentServiceAdo.TDL_BID_YEAR) : string.Format("{0};{1};{2};{3}", this.currrentServiceAdo.TDL_BID_EXTRA_CODE, this.currrentServiceAdo.TDL_BID_PACKAGE_CODE, this.currrentServiceAdo.TDL_BID_GROUP_CODE, this.currrentServiceAdo.TDL_BID_YEAR);
                     if (this.currrentServiceAdo.HisMaterialPatys == null)
                     {
                         this.currrentServiceAdo.HisMaterialPatys = new List<HIS_MATERIAL_PATY>();
