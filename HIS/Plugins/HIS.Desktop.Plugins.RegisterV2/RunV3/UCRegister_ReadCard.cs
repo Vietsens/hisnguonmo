@@ -106,6 +106,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 if (patientInRegisterSearchByCard != null)
                 { 
                     var data = this.SearchByCode(patientInRegisterSearchByCard.PatientCode);
+                    //Kiểm tra nếu táp thẻ việt thì lấy thông tin THX HT 
+                    IsReadCardTheViet = true;
                     if (data != null && data.Result != null && data.Result is HisPatientSDO)
                     {
                         //xuandv --- ThongBaoCu
@@ -120,8 +122,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         patientSDO.HT_COMMUNE_CODE = HtCommuneCode = patientInRegisterSearchByCard.HtCommuneCode;
                         patientSDO.HT_DISTRICT_CODE = HtDistrictCode = patientInRegisterSearchByCard.HtDistrictCode;
                         patientSDO.HT_PROVINCE_CODE = HtProvinceCode = patientInRegisterSearchByCard.HtProvinceCode;
-                        //Kiểm tra nếu táp thẻ việt thì lấy thông tin THX HT 
-                        IsReadCardTheViet = true;
                         if (ucAddressCombo1 != null)
                             ucAddressCombo1.GetPatientSdo(patientSDO);
                         this.Invoke(new MethodInvoker(delegate()
