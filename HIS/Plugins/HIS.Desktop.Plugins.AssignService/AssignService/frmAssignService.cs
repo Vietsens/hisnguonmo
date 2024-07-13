@@ -9356,44 +9356,31 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
-                //lstLoaiPhieu = new List<LoaiPhieuInADO>()
-                //{
-                //    new LoaiPhieuInADO("gridView7_1", "Phiếu yêu cầu dịch vụ",true),
-                //    new LoaiPhieuInADO("gridView7_2", "Hướng dẫn bệnh nhân"),
-                //    new LoaiPhieuInADO("gridView7_3", "Yêu cầu thanh toán QR")
-                //};
-                var selectedConfigPrint = new List<LoaiPhieuInADO>();
-                foreach (var item in this.currentControlStateRDO)
-                {
-                    if (!string.IsNullOrEmpty(item.VALUE))
-                    {
-                        var rs = this.lstLoaiPhieu.FirstOrDefault(s => s.ID == item.KEY);
-                        if(rs != null)
-                        {
-                            selectedConfigPrint.Add(rs);
-                        }
-                    }
-                }
-                foreach(var item in selectedConfigPrint)
-                {
-                    if(item.ID == "gridView7_1")
-                    {
-                        PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, null, currentModule != null ? currentModule.RoomId : 0);
 
+                if (this.lstLoaiPhieu != null && this.lstLoaiPhieu.Count > 0)
+                {
+                    var checkHDBN = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_2");
+
+                    var checkYCDV = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_1");
+
+                    var checkQR = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_3");
+
+                    if (checkHDBN != null)
+                    {
+                        InPhieuHuoangDanBenhNhan(true);
+                    }
+
+                    if (checkYCDV != null)
+                    {
                         InPhieuYeuCauDichVu(true);
                     }
-                    if(item.ID == "gridView7_2")
-                    {
-                        var PrintServiceReqProcessor = new HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(this.serviceReqComboResultSDO.ServiceReqs, currentModule != null ? this.currentModule.RoomId : 0);
 
-                        LogTheadInSessionInfo(() => PrintServiceReqProcessor.Print("Mps000276", false), "btnPrintPhieuHuongDanBN_Click");
-                    }
-                    if(item.ID == "gridView7_3")
+                    if (checkQR != null)
                     {
-                        Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
-                        store.RunPrintTemplate("Mps000498", DelegateRunPrinter);
+                        InYeuCauThanhToanQR(chkPrint.Checked, false, true);
                     }
                 }
+                
                 
             }
             catch (Exception ex)
