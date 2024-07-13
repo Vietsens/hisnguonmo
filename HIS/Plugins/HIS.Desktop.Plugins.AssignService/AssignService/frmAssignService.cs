@@ -5927,8 +5927,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (LblBtnPrint.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && BtnPrint.Enabled)
                 {
                     PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, null, currentModule != null ? currentModule.RoomId : 0);
-
+                    
                     InPhieuYeuCauDichVu(true);
+                    
                     //PrintServiceReqProcessor.Print("Mps000340", false);
                 }
             }
