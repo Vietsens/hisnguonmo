@@ -1804,7 +1804,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             isSaveAndShow = true;
                         }
                     }
-                    InTamUng(isSaveAndShow, previewType);
+                    //InTamUng(isSaveAndShow, previewType);
                     Inventec.Common.Logging.LogSystem.Debug("SaveServiceReqCombo____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => previewType), previewType)
                         + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => isSaveAndPrint), isSaveAndPrint)
                         + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => isSign), isSign)
