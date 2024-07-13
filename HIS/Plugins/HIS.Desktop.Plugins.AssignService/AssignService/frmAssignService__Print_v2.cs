@@ -230,7 +230,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
-                InTamUng(isSaveAndShow);
+                
                 var PrintServiceReqProcessor = new HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(this.serviceReqComboResultSDO.ServiceReqs, currentModule != null ? this.currentModule.RoomId : 0);
                 PrintServiceReqProcessor.DlgSendResultSigned = GetDocmentSigned;
                 PrintServiceReqProcessor.Print("Mps000276", true);
@@ -244,7 +244,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
         bool IsSaveAndShowMps000102 = true;
         MPS.ProcessorBase.PrintConfig.PreviewType? PreviewTypeMps000102 = null;
-        private void InTamUng(bool isSaveAndShow, MPS.ProcessorBase.PrintConfig.PreviewType? previewType = null)
+        private void InTamUng(bool isSaveAndShow, MPS.ProcessorBase.PrintConfig.PreviewType? previewType)
         {
             try
             {
@@ -267,7 +267,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
-                InTamUng(isSaveAndShow);
+                
                 if (serviceReqComboResultSDO != null)
                 {
                     CommonParam param = new CommonParam();
@@ -598,7 +598,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
-                InTamUng(isPrintPreview);
+                
                 if (serviceReqComboResultSDO != null || IsActionButtonPrintBill)
                 {
                     BordereauInitData data = new BordereauInitData();

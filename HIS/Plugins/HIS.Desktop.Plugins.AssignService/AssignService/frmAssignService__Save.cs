@@ -1827,7 +1827,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             var checkYCDV = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_1");
 
                             var checkQR = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_3");
-
+                            InTamUng(isSaveAndShow, previewType);
                             if (checkHDBN != null)
                             {
                                 InPhieuHuoangDanBenhNhan(isSaveAndShow);
