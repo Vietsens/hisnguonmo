@@ -249,7 +249,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             try
             {
                 var countPrintConfig = this.currentControlStateRDO.Where(s => !string.IsNullOrEmpty(s.VALUE)).Distinct().ToList();
-                if (countPrintConfig.Count == 0 && this.serviceReqComboResultSDO.Transactions == null) return;
+                // điều kiện in : có ít nhất 1 cấu hình và có giao dịch tạm ứng
+                if (countPrintConfig.Count == 0 && serviceReqComboResultSDO.SereServDeposits == null && serviceReqComboResultSDO.SereServDeposits.Count == 0) return;
                 if (serviceReqComboResultSDO != null)
                 {
                     CommonParam param = new CommonParam();
