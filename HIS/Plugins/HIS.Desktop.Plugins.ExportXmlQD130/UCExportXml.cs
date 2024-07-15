@@ -2702,6 +2702,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     short xmlCheckinResult = Inventec.Common.TypeConvert.Parse.ToInt16((gridViewTreatment.GetRowCellValue(e.RowHandle, "XML_CHECKIN_RESULT") ?? "").ToString());
                     string xmlCheckinDesc = (gridViewTreatment.GetRowCellValue(e.RowHandle, "XML_CHECKIN_DESC") ?? "").ToString();
                     string xmlCheckinUrl = (gridViewTreatment.GetRowCellValue(e.RowHandle, "XML_CHECKIN_URL") ?? "").ToString();
+                    var data = (V_HIS_TREATMENT_1)gridViewTreatment.GetRow(e.RowHandle);
                     if (e.Column.FieldName == "ErrorLine")
                     {
                         if (xml130Result == 1)
@@ -2713,7 +2714,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         }
                         else if (xml130Result == 2)
                         {
-                            e.RepositoryItem = Btn_Success;
+                            if (data.XML130_CHECK_CODE != null)
+                                e.RepositoryItem = Btn_Success;
+                            else
+                                e.RepositoryItem = Btn_SaveSuccess;
                         }
                     }
                     else if (e.Column.FieldName == "VIEW_XML_CHECKIN")
@@ -2810,7 +2814,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void UpdateConfigSign(ConfigSyncADO config)
         {
             try
@@ -2844,7 +2847,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void btnSettingConfigSync_Click(object sender, EventArgs e)
         {
             try
@@ -2889,8 +2891,20 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 LogSystem.Info("Begin Run Thread Auto Sync");
 
 
-
-                listTreatmentSync = this.GetTreatment();
+                if (this.configSync.isCheckCollinearXml)
+                {
+                    listTreatmentSync = new List<V_HIS_TREATMENT_1>();
+                    //lay ho so khoa bhyt
+                    this.configSync.isCheckOutTime = true;
+                    var listTreatmentLockBHYT = this.GetTreatment();
+                    listTreatmentSync.AddRange(listTreatmentLockBHYT);
+                    //lay ho so ket thuc dieu tri
+                    this.configSync.isCheckOutTime = false;
+                    var listTreatmentEnd = this.GetTreatment();
+                    listTreatmentSync.AddRange(listTreatmentEnd);
+                }
+                else
+                    listTreatmentSync = this.GetTreatment();
                 if (listTreatmentSync != null && listTreatmentSync.Count > 0)
                 {
                     LogSystem.Info("Thread Auto Sync. TreatmentCount: " + listTreatmentSync.Count);
@@ -2948,6 +2962,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         filter.FEE_LOCK_TIME_FROM = Inventec.Common.DateTime.Get.StartDay();
                         filter.FEE_LOCK_TIME_TO = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
                     }
+                    
                     filter.HAS_XML130_RESULT = false;
                     LogSystem.Debug("Treatment Filter: " + LogUtil.TraceData("Filter", filter));
                     result = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT_1>>("api/HisTreatment/GetView1", ApiConsumers.MosConsumer, filter, null);
@@ -3385,99 +3400,208 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             His.Bhyt.ExportXml.XML130.CreateXmlProcessor xmlProcessor = new His.Bhyt.ExportXml.XML130.CreateXmlProcessor(ado);
                             SyncResultADO syncResult = null;
                             SyncResultADO syncResult12 = null;
-                            if (sendXml12)
+                            MemoryStream resultSync = null;
+                            MemoryStream resultSync12 = null;
+                            MemoryStream resultSyncTT = null;
+                            string errorMess = "";
+                            if (!this.configSync.dontSend)
                             {
-                                if ((isAutoSync && configSync != null && configSync.isCheckCollinearXml) || (isSendCollinearXml))
+                                if (sendXml12)
                                 {
-                                    Task task = Task.Run(async () => syncResult = await xmlProcessor.SyncDataCollinear());
-                                    Task taskXml12 = Task.Run(async () => syncResult12 = await xmlProcessor.SyncDataXml12());
-                                    Task.WaitAll(task, taskXml12);
-                                }
-                                else
-                                {
-                                    Task task = Task.Run(async () => syncResult = await xmlProcessor.SyncData());
-                                    Task taskXml12 = Task.Run(async () => syncResult12 = await xmlProcessor.SyncDataXml12());
-                                    Task.WaitAll(task, taskXml12);
-                                }
 
-
-                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("syncResult__" + Inventec.Common.Logging.LogUtil.GetMemberName(() => syncResult), syncResult));
-                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("syncResult12__" + Inventec.Common.Logging.LogUtil.GetMemberName(() => syncResult12), syncResult12));
-
-
-                                if (syncResult != null && syncResult12 != null)
-                                {
-                                    string errorCode = syncResult.ErrorCode;
-                                    if (errorCode == "01" || errorCode == "02" || errorCode == "03")
+                                    if ((isAutoSync && configSync != null && configSync.isCheckCollinearXml) || (isSendCollinearXml))
                                     {
-                                        XtraMessageBox.Show(String.Format("{0} - {1}", errorCode, syncResult.Message), Resources.ResourceMessageLang.ThongBao);
-                                        autoSync.Stop();
-                                        isAutoSync = false;
-                                        return;
+                                        Task task = Task.Run(async () => syncResult = await xmlProcessor.SyncDataCollinear());
+                                        resultSyncTT = xmlProcessor.RunCollinearXml(ref errorMess);
+                                        Task taskXml12 = Task.Run(async () => syncResult12 = await xmlProcessor.SyncDataXml12());
+                                        resultSync12 = xmlProcessor.RunXml12(ref errorMess);
+                                        Task.WaitAll(task, taskXml12);
                                     }
                                     else
                                     {
-                                        callSyncSuccess = true;
-                                        if (!syncResult.Success)
+                                        Task task = Task.Run(async () => syncResult = await xmlProcessor.SyncData());
+                                        resultSync = xmlProcessor.Run(ref errorMess);
+                                        Task taskXml12 = Task.Run(async () => syncResult12 = await xmlProcessor.SyncDataXml12());
+                                        resultSync12 = xmlProcessor.RunXml12(ref errorMess);
+                                        Task.WaitAll(task, taskXml12);
+                                    }
+
+
+                                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("syncResult__" + Inventec.Common.Logging.LogUtil.GetMemberName(() => syncResult), syncResult));
+                                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("syncResult12__" + Inventec.Common.Logging.LogUtil.GetMemberName(() => syncResult12), syncResult12));
+
+
+                                    if (syncResult != null && syncResult12 != null)
+                                    {
+                                        if (!string.IsNullOrEmpty(configSync.folderPath))
                                         {
-                                            listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE, syncResult.ErrorCode, syncResult.Message));
+                                            
+                                            string fullFileName = xmlProcessor.GetFileName();
+                                            
+                                            if(resultSync != null)
+                                            {
+                                                string saveFilePathXml = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
+                                                FileStream file12 = new FileStream(saveFilePathXml, FileMode.Create, FileAccess.Write);
+                                                resultSync.WriteTo(file12);
+                                                file12.Close();
+                                                resultSync.Close();
+                                                
+                                            }
+                                            if(resultSync12 != null)
+                                            {
+                                                string saveFilePathXml12 = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML12_", fullFileName);
+                                                FileStream file12 = new FileStream(saveFilePathXml12, FileMode.Create, FileAccess.Write);
+                                                resultSync12.WriteTo(file12);
+                                                file12.Close();
+                                                resultSync12.Close();
+                                            }
+                                            if(resultSyncTT != null)
+                                            {
+                                                string saveFilePathXmlTT = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XMLTT_", fullFileName);
+                                                FileStream file12 = new FileStream(saveFilePathXmlTT, FileMode.Create, FileAccess.Write);
+                                                resultSyncTT.WriteTo(file12);
+                                                file12.Close();
+                                                resultSyncTT.Close();
+                                            }
+
                                         }
-                                        if (!syncResult12.Success)
+
+
+                                        string errorCode = syncResult.ErrorCode;
+                                        if (errorCode == "01" || errorCode == "02" || errorCode == "03")
                                         {
-                                            listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE, syncResult12.ErrorCode, syncResult12.Message));
+                                            XtraMessageBox.Show(String.Format("{0} - {1}", errorCode, syncResult.Message), Resources.ResourceMessageLang.ThongBao);
+                                            autoSync.Stop();
+                                            isAutoSync = false;
+                                            return;
                                         }
-                                        if (!((isAutoSync && configSync != null && configSync.isCheckCollinearXml) || isSendCollinearXml))
+                                        else
                                         {
-                                            List<string> xmlDescription = new List<string> { syncResult.Message, syncResult12.Message };
-                                            List<string> xmlCheckCode = new List<string> { syncResult.CheckCode, syncResult12.CheckCode };
-                                            HisTreatmentXmlResultSDO xmlResultSDO = new HisTreatmentXmlResultSDO();
-                                            xmlResultSDO.TreatmentId = treatment.ID;
-                                            xmlResultSDO.XmlResult = syncResult.Success && syncResult12.Success ? 2 : 1;
-                                            xmlResultSDO.Description = String.Join(". ", xmlDescription.Where(o => !String.IsNullOrEmpty(o)).Distinct());
-                                            xmlResultSDO.CheckCode = String.Join(";", xmlCheckCode.Where(o => !String.IsNullOrEmpty(o)).Distinct());
-                                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => xmlResultSDO), xmlResultSDO));
-                                            var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info", ApiConsumers.MosConsumer, xmlResultSDO, paramUpdateXml130);
+                                            callSyncSuccess = true;
+                                            if (!syncResult.Success)
+                                            {
+                                                listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE, syncResult.ErrorCode, syncResult.Message));
+                                            }
+                                            if (!syncResult12.Success)
+                                            {
+                                                listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE, syncResult12.ErrorCode, syncResult12.Message));
+                                            }
+                                            if (!((isAutoSync && configSync != null && configSync.isCheckCollinearXml) || isSendCollinearXml))
+                                            {
+                                                List<string> xmlDescription = new List<string> { syncResult.Message, syncResult12.Message };
+                                                List<string> xmlCheckCode = new List<string> { syncResult.CheckCode, syncResult12.CheckCode };
+                                                HisTreatmentXmlResultSDO xmlResultSDO = new HisTreatmentXmlResultSDO();
+                                                xmlResultSDO.TreatmentId = treatment.ID;
+                                                xmlResultSDO.XmlResult = syncResult.Success && syncResult12.Success ? 2 : 1;
+                                                xmlResultSDO.Description = String.Join(". ", xmlDescription.Where(o => !String.IsNullOrEmpty(o)).Distinct());
+                                                xmlResultSDO.CheckCode = String.Join(";", xmlCheckCode.Where(o => !String.IsNullOrEmpty(o)).Distinct());
+                                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => xmlResultSDO), xmlResultSDO));
+                                                var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info", ApiConsumers.MosConsumer, xmlResultSDO, paramUpdateXml130);
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (treatment.HEIN_LOCK_TIME != null)
+                                    {
+                                        syncResult = await xmlProcessor.SyncData();
+                                        resultSync = xmlProcessor.Run(ref errorMess);
+                                    }
+                                    else
+                                    {
+                                        syncResult = await xmlProcessor.SyncDataCollinear();
+                                        resultSync = xmlProcessor.RunCollinearXml(ref errorMess);
+                                    }
+                                    //if ((isAutoSync && configSync != null && configSync.isCheckCollinearXml) || (isSendCollinearXml))
+                                    //    syncResult = await xmlProcessor.SyncDataCollinear();
+                                    //else
+                                    //    syncResult = await xmlProcessor.SyncData();
+                                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("syncResult__" + Inventec.Common.Logging.LogUtil.GetMemberName(() => syncResult), syncResult));
+                                    if (syncResult != null)
+                                    {
+                                        if (resultSync != null)
+                                        {
+                                            string fullFileName = xmlProcessor.GetFileName();
+                                            string saveFilePathXml = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
+                                            FileStream file12 = new FileStream(saveFilePathXml, FileMode.Create, FileAccess.Write);
+                                            resultSync.WriteTo(file12);
+                                            file12.Close();
+                                            resultSync.Close();
+
+                                        }
+                                        
+                                        string errorCode = syncResult.ErrorCode;
+                                        if (errorCode == "01" || errorCode == "02" || errorCode == "03")
+                                        {
+                                            XtraMessageBox.Show(String.Format("{0} - {1}", errorCode, syncResult.Message), Resources.ResourceMessageLang.ThongBao);
+                                            autoSync.Stop();
+                                            isAutoSync = false;
+                                            return;
+                                        }
+                                        else
+                                        {
+                                            callSyncSuccess = true;
+                                            if (!syncResult.Success)
+                                            {
+                                                listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE, syncResult.ErrorCode, syncResult.Message));
+                                            }
+                                            if (!((isAutoSync && configSync != null && configSync.isCheckCollinearXml) || isSendCollinearXml))
+                                            {
+                                                HisTreatmentXmlResultSDO xmlResultSDO = new HisTreatmentXmlResultSDO();
+                                                xmlResultSDO.TreatmentId = treatment.ID;
+                                                xmlResultSDO.XmlResult = syncResult.Success ? 2 : 1;
+                                                xmlResultSDO.Description = syncResult.Message;
+                                                xmlResultSDO.CheckCode = syncResult.CheckCode;
+                                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => xmlResultSDO), xmlResultSDO));
+                                                var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info", ApiConsumers.MosConsumer, xmlResultSDO, paramUpdateXml130);
+                                            }
                                         }
                                     }
                                 }
                             }
                             else
                             {
-                                if ((isAutoSync && configSync != null && configSync.isCheckCollinearXml) || (isSendCollinearXml))
-                                    syncResult = await xmlProcessor.SyncDataCollinear();
-                                else
-                                    syncResult = await xmlProcessor.SyncData();
-                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("syncResult__" + Inventec.Common.Logging.LogUtil.GetMemberName(() => syncResult), syncResult));
-                                if (syncResult != null)
+                                string errMessage = "";
+                                bool success = false;
+                                try
                                 {
-                                    string errorCode = syncResult.ErrorCode;
-                                    if (errorCode == "01" || errorCode == "02" || errorCode == "03")
+                                    resultSync = xmlProcessor.Run(ref errorMess);
+                                    if (resultSync != null)
                                     {
-                                        XtraMessageBox.Show(String.Format("{0} - {1}", errorCode, syncResult.Message), Resources.ResourceMessageLang.ThongBao);
-                                        autoSync.Stop();
-                                        isAutoSync = false;
-                                        return;
+                                        string fullFileName = xmlProcessor.GetFileName();
+                                        string saveFilePathXml = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
+                                        FileStream file12 = new FileStream(saveFilePathXml, FileMode.Create, FileAccess.Write);
+                                        resultSync.WriteTo(file12);
+                                        file12.Close();
+                                        resultSync.Close();
+                                        success = true;
                                     }
-                                    else
-                                    {
-                                        callSyncSuccess = true;
-                                        if (!syncResult.Success)
-                                        {
-                                            listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE, syncResult.ErrorCode, syncResult.Message));
-                                        }
-                                        if (!((isAutoSync && configSync != null && configSync.isCheckCollinearXml) || isSendCollinearXml))
-                                        {
-                                            HisTreatmentXmlResultSDO xmlResultSDO = new HisTreatmentXmlResultSDO();
-                                            xmlResultSDO.TreatmentId = treatment.ID;
-                                            xmlResultSDO.XmlResult = syncResult.Success ? 2 : 1;
-                                            xmlResultSDO.Description = syncResult.Message;
-                                            xmlResultSDO.CheckCode = syncResult.CheckCode;
-                                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => xmlResultSDO), xmlResultSDO));
-                                            var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info", ApiConsumers.MosConsumer, xmlResultSDO, paramUpdateXml130);
-                                        }
-                                    }
+                                    
                                 }
+                                catch (Exception error)
+                                {
+                                    success = false;
+                                    errorMess = error.Message;
+                                }
+                                if (resultSync == null)
+                                {
+                                    listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE,"", errMessage));
+                                }
+                                else
+                                {
+                                    HisTreatmentXmlResultSDO xmlResultSDO = new HisTreatmentXmlResultSDO();
+                                    xmlResultSDO.TreatmentId = treatment.ID;
+                                    xmlResultSDO.XmlResult = success ? 2 : 1;
+                                    xmlResultSDO.Description = errMessage;
+                                    //xmlResultSDO.CheckCode = syncResult.CheckCode;
+                                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => xmlResultSDO), xmlResultSDO));
+                                    var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info", ApiConsumers.MosConsumer, xmlResultSDO, paramUpdateXml130);
+
+                                }
+
                             }
+
                         }
                     }
                 }

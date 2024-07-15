@@ -28,5 +28,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         public string pathXml { get; set; }
         public string pathXmlGDYK { get; set; }
         public string pathCollinearXml { get; set; }
+        public string pathToSaveXml { get; set; }
     }
 }
