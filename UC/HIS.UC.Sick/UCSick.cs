@@ -113,6 +113,7 @@ namespace HIS.UC.Sick
                     layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem6.TextSize = new Size(100, 20);
                     layoutControlItem6.TextToControlDistance = 5;
+                    dxValidationProvider1.SetValidationRule(memTreatmentMethod, null);
                 }
                 else
                 {
@@ -134,6 +135,8 @@ namespace HIS.UC.Sick
                     lciPregnancyTerminationReason.MinSize = new Size(lciIsPregnancyTermination.MinSize.Width, 50);
                     lciTreatmentMethod.MinSize = new Size(lciIsPregnancyTermination.MinSize.Width, 50);
                     lciIsPregnancyTermination.MinSize = new Size(lciIsPregnancyTermination.MinSize.Width, 50);
+                    lciTreatmentMethod.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    ValidationSingleControl(memTreatmentMethod, dxValidationProvider1, null, null);
                 }
 
                 LoadComboGender();
