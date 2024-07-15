@@ -762,6 +762,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     this.chkIsChronic.Checked = false;
                     this.chkIsChronic.ReadOnly = false;
                     this.oldValue = strValue;
+                    IsReadCardTheViet = false;
                     if (!String.IsNullOrEmpty(strValue))
                     {
                         LogSystem.Debug("txtPatientCode_KeyDown");
@@ -787,9 +788,16 @@ namespace HIS.Desktop.Plugins.Register.Run
                                 this.cardSearch = patientInRegisterSearchByCard;
                                 string heinAddressOfPatient = "";
                                 var data = SearchByCode(patientInRegisterSearchByCard.PatientCode);
+                                IsReadCardTheViet = true;
                                 if (data != null && data.Result != null && data.Result is HisPatientSDO)
                                 {
                                     currentPatientSDO = data.Result as HisPatientSDO;
+                                    currentPatientSDO.HT_COMMUNE_NAME = HtCommuneName = patientInRegisterSearchByCard.HtCommuneName;
+                                    currentPatientSDO.HT_DISTRICT_NAME = HtDistrictName = patientInRegisterSearchByCard.HtDistrictName;
+                                    currentPatientSDO.HT_PROVINCE_NAME = HtProvinceName = patientInRegisterSearchByCard.HtProvinceName;
+                                    currentPatientSDO.HT_COMMUNE_CODE = HtCommuneCode = patientInRegisterSearchByCard.HtCommuneCode;
+                                    currentPatientSDO.HT_DISTRICT_CODE = HtDistrictCode = patientInRegisterSearchByCard.HtDistrictCode;
+                                    currentPatientSDO.HT_PROVINCE_CODE = HtProvinceCode = patientInRegisterSearchByCard.HtProvinceCode;
                                     //Benh nhan da dang ky tren he thong benh vien, da co thong tin ho so
                                     this.SetPatientSearchPanel(true);
                                     heinAddressOfPatient = ((HisPatientSDO)data.Result).HeinAddress;
@@ -3160,6 +3168,7 @@ namespace HIS.Desktop.Plugins.Register.Run
         {
             try
             {
+                this.IsReadCardTheViet = false;
                 this.currentHisExamServiceReqResultSDO = null;
                 this.resultHisPatientProfileSDO = null;
                 this.serviceReqDetailSDOs = null;

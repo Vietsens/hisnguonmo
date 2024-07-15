@@ -1131,10 +1131,27 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 ValidMaxLengthRequired(false, txtPregnancyTerminationReason, 1000, null);
                 ValidateRelativeType();
                 ValidateAgeRelativeName();
+                
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ValidationRequired(BaseEdit control)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule validate = new ControlEditValidationRule();
+                validate.editor = control;
+                validate.ErrorText = "Trường dữ liệu bắt buộc";
+                validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                this.dxValidationProvider1.SetValidationRule(control, validate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -1230,6 +1247,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
         {
             try
             {
+                lblPPDT.AppearanceItemCaption.ForeColor = Color.Black;
                 ClearValidControl(this.txtSickUserName);
                 ClearValidControl(this.txtCodeWorkPlace);
                 ClearValidControl(this.DtRestTimeFrom);
@@ -1295,6 +1313,9 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                         lciGestationalAge.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                         lciPregnancyTerminationReason.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                         lciPregnancyTerminationTime.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                        lblPPDT.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        ValidationRequired(txtTreatmentMethod);
                     }
                 }
                 else

@@ -198,27 +198,15 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCBidCreate.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCBidCreate.cs" />
     <Compile Include="UCBidCreate.Designer.cs">
       <DependentUpon>UCBidCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCBidCreate_Event.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCBidCreate_Import.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCBidCreate_Task.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCBidCreate_Print.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCBidCreate_Validation.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCBidCreate_Event.cs" />
+    <Compile Include="UCBidCreate_Import.cs" />
+    <Compile Include="UCBidCreate_Task.cs" />
+    <Compile Include="UCBidCreate_Print.cs" />
+    <Compile Include="UCBidCreate_Validation.cs" />
     <Compile Include="validatetxtbid.cs" />
     <Compile Include="Validation\AmountValidationRule.cs" />
     <Compile Include="Validation\BidGroupCodeValidationRule.cs" />

@@ -376,15 +376,18 @@ namespace HIS.Desktop.Plugins.Register.Run
                     this.SetValidationByChildrenUnder6Years(isTE, false);
                 }
                 Inventec.Common.Address.AddressProcessor adProc = new Inventec.Common.Address.AddressProcessor(BackendDataWorker.Get<V_SDA_PROVINCE>(), BackendDataWorker.Get<V_SDA_DISTRICT>(), BackendDataWorker.Get<V_SDA_COMMUNE>());
-                var data = adProc.SplitFromFullAddress(this.ResultDataADO.ResultHistoryLDO.diaChi);
-                if (AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 1 ||  (typeCodeFind == typeCodeFind__CCCDCMND && (currentPatientSDO == null)) || (currentPatientSDO != null && data != null && (currentPatientSDO.PROVINCE_CODE != data.ProvinceCode || currentPatientSDO.DISTRICT_CODE != data.DistrictCode || currentPatientSDO.COMMUNE_CODE != data.CommuneCode)))
+                if (ResultDataADO != null && ResultDataADO.ResultHistoryLDO != null)
                 {
-                    cboProvince.EditValue = data.ProvinceCode;
-                    txtProvinceCode.EditValue = data.ProvinceCode;
-                    cboDistrict.EditValue = data.DistrictCode;
-                    txtDistrictCode.EditValue = data.DistrictCode;
-                    cboCommune.EditValue = data.CommuneCode;
-                    txtCommuneCode.EditValue = data.CommuneCode;
+                    var data = adProc.SplitFromFullAddress(this.ResultDataADO.ResultHistoryLDO.diaChi);
+                    if (AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 1 || (typeCodeFind == typeCodeFind__CCCDCMND && (currentPatientSDO == null)) || (currentPatientSDO != null && data != null && (currentPatientSDO.PROVINCE_CODE != data.ProvinceCode || currentPatientSDO.DISTRICT_CODE != data.DistrictCode || currentPatientSDO.COMMUNE_CODE != data.CommuneCode)))
+                    {
+                        cboProvince.EditValue = data.ProvinceCode;
+                        txtProvinceCode.EditValue = data.ProvinceCode;
+                        cboDistrict.EditValue = data.DistrictCode;
+                        txtDistrictCode.EditValue = data.DistrictCode;
+                        cboCommune.EditValue = data.CommuneCode;
+                        txtCommuneCode.EditValue = data.CommuneCode;
+                    }
                 }
                 var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).FirstOrDefault(o => o.PROVINCE_NAME == patientDTO.PROVINCE_NAME);
                 if (province != null)
@@ -393,7 +396,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     this.txtProvinceCode.Text = province.PROVINCE_CODE;
                     this.LoadHuyenCombo("", province.PROVINCE_CODE, false);
                 }
-                var district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).FirstOrDefault(o => (o.INITIAL_NAME + " " + o.DISTRICT_NAME) == patientDTO.DISTRICT_NAME && o.PROVINCE_NAME == patientDTO.PROVINCE_NAME);
+                var district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).FirstOrDefault(o => ((o.INITIAL_NAME + " " + o.DISTRICT_NAME) == patientDTO.DISTRICT_NAME || o.DISTRICT_CODE == patientDTO.DISTRICT_CODE || o.DISTRICT_NAME == patientDTO.DISTRICT_NAME )&& o.PROVINCE_NAME == patientDTO.PROVINCE_NAME);
                 if (district != null)
                 {
                     this.cboDistrict.EditValue = district.DISTRICT_CODE;
@@ -401,8 +404,8 @@ namespace HIS.Desktop.Plugins.Register.Run
                     this.LoadXaCombo("", district.DISTRICT_CODE, false);
                 }
                 var commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).FirstOrDefault(o =>
-                    (o.INITIAL_NAME + " " + o.COMMUNE_NAME) == patientDTO.COMMUNE_NAME
-                    && (o.DISTRICT_INITIAL_NAME + " " + o.DISTRICT_NAME) == patientDTO.DISTRICT_NAME
+                    ((o.INITIAL_NAME + " " + o.COMMUNE_NAME) == patientDTO.COMMUNE_NAME || o.COMMUNE_CODE == patientDTO.COMMUNE_CODE)
+                    && ((o.DISTRICT_INITIAL_NAME + " " + o.DISTRICT_NAME) == patientDTO.DISTRICT_NAME || o.DISTRICT_CODE == patientDTO.DISTRICT_CODE || o.DISTRICT_NAME == patientDTO.DISTRICT_NAME)
                     //&& o.COMMUNE_CODE == patientDTO.COMMUNE_CODE//TODO
                     );
                 if (commune != null)
