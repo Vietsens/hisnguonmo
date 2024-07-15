@@ -1041,6 +1041,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 //Ẩn form hiện tại mở form frmRegisterExamKiosk
                 NameForm.CloseAllForm();
                 SetDefaultHost();
+                //UpdatePatient(PatientData.PatientForKiosk, PatientData.CardInfo);
                 if (patienType != null && patienType.GetType() == typeof(long))
                 {
                     long patientTypeId = (long)patienType;
@@ -1059,7 +1060,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        
         private async Task CheckheinCardFromHeinInsuranceApi(HeinCardData dataHein)
         {
             try

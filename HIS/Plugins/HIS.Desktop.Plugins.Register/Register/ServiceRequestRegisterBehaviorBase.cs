@@ -103,6 +103,12 @@ namespace HIS.Desktop.Plugins.Register.Register
         protected PatientInformationADO patientInformationADO { get; set; }
         protected bool isReadQrCccdData { get; set; }
         protected string CccdReadFromQr { get; set; }
+        protected string communeNowCode { get; set; }
+        protected string communeNowName { get; set; }
+        protected string provinceNowCode { get; set; }
+        protected string provinceNowName { get; set; }
+        protected string districtNowCode { get; set; }
+        protected string districtNowName { get; set; }
         protected long? dateReleaseFromQr { get; set; }
         protected HisPatientSDO patientData { get; set; }
         protected HisPatientProfileSDO patientProfile { get; set; }
@@ -216,6 +222,12 @@ namespace HIS.Desktop.Plugins.Register.Register
                 this.isReadQrCccdData = ucServiceRequestRegiter.isReadQrCccdData;
                 this.dateReleaseFromQr = ucServiceRequestRegiter.dateReleaseFromQr;
                 this.CccdReadFromQr = ucServiceRequestRegiter.CccdReadFromQr;
+                this.communeNowCode = ucServiceRequestRegiter.IsReadCardTheViet ? ucServiceRequestRegiter.HtCommuneCode : null;
+                this.communeNowName = ucServiceRequestRegiter.IsReadCardTheViet ? ucServiceRequestRegiter.HtCommuneName : null;
+                this.provinceNowCode = ucServiceRequestRegiter.IsReadCardTheViet ? ucServiceRequestRegiter.HtProvinceCode : null;
+                this.provinceNowName = ucServiceRequestRegiter.IsReadCardTheViet ? ucServiceRequestRegiter.HtProvinceName : null;
+                this.districtNowCode = ucServiceRequestRegiter.IsReadCardTheViet ? ucServiceRequestRegiter.HtDistrictCode : null;
+                this.districtNowName = ucServiceRequestRegiter.IsReadCardTheViet ? ucServiceRequestRegiter.HtDistrictName : null;
             }
             catch (Exception ex)
             {
@@ -422,7 +434,12 @@ namespace HIS.Desktop.Plugins.Register.Register
                 this.patientProfile.HisPatient.RELATIVE_TYPE = this.relativeType;
                 this.patientProfile.HisPatient.RELATIVE_ADDRESS = this.relativeAddress;
                 this.patientProfile.HisPatient.RELATIVE_CMND_NUMBER = this.relativeCMNDNumber;
-
+                this.patientProfile.HisPatient.HT_COMMUNE_NAME = this.communeNowName;
+                this.patientProfile.HisPatient.HT_DISTRICT_NAME = this.districtNowName;
+                this.patientProfile.HisPatient.HT_PROVINCE_NAME = this.provinceNowName;
+                this.patientProfile.HisPatient.HT_COMMUNE_CODE = this.communeNowCode;
+                this.patientProfile.HisPatient.HT_DISTRICT_CODE = this.districtNowCode;
+                this.patientProfile.HisPatient.HT_PROVINCE_CODE = this.provinceNowCode;
                 this.patientProfile.IsChronic = this.chkChronic;
                 if (this.chkChronic)
                     this.patientProfile.HisPatient.IS_CHRONIC = 1;

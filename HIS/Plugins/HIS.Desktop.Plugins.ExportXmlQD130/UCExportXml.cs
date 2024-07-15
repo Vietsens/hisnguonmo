@@ -671,6 +671,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         }
                     }
                 }
+                //filter.HAS_XML130_RESULT = false;
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("filter__:", filter));
 
                 var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_TREATMENT_1>>("api/HisTreatment/GetView1", ApiConsumers.MosConsumer, filter, paramCommon);

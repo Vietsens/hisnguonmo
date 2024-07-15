@@ -536,6 +536,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ServiceRoom
                 LogSystem.Info(LogUtil.TraceData("Du kieu dang ky kham tra ve", examServiceReqRegisterResultSDO));
                 if (examServiceReqRegisterResultSDO != null)
                 {
+                    LogSystem.Debug("-----------Update Patient");
+                    UpdatePatient(sdo.CardSDO, examServiceReqRegisterResultSDO.HisPatientProfile.HisPatient);
                     hisCardPatientSdo.PatientId = examServiceReqRegisterResultSDO.HisPatientProfile.HisPatient.ID;
                     hisCardPatientSdo.PatientCode = examServiceReqRegisterResultSDO.HisPatientProfile.HisPatient.PATIENT_CODE;
                     success = true;
@@ -582,7 +584,36 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ServiceRoom
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void UpdatePatient(HisCardSDO cardSdo, HIS_PATIENT patient)
+        {
+            try
+            {
+                CommonParam paramPatient = new CommonParam();
+                HisPatientUpdateSDO patientUpdateSdo = new MOS.SDO.HisPatientUpdateSDO();
 
+                //var currentPatient = BackendDataWorker.Get<HIS_PATIENT>().FirstOrDefault(s => s.ID == (cardSdo.PatientId??0));
+                patientUpdateSdo.HisPatient = new HIS_PATIENT();
+                patientUpdateSdo.HisPatient = patient;
+                patientUpdateSdo.HisPatient.HT_COMMUNE_CODE = cardSdo.HtCommuneCode;
+                patientUpdateSdo.HisPatient.HT_DISTRICT_CODE = cardSdo.HtDistrictCode;
+                patientUpdateSdo.HisPatient.HT_PROVINCE_CODE = cardSdo.HtProvinceCode;
+                patientUpdateSdo.HisPatient.HT_COMMUNE_NAME = cardSdo.HtCommuneName;
+                patientUpdateSdo.HisPatient.HT_DISTRICT_NAME = cardSdo.HtDistrictName;
+                patientUpdateSdo.HisPatient.HT_PROVINCE_NAME = cardSdo.HtProvinceName;
+                LogSystem.Debug("Update Patient Data: " + LogUtil.TraceData("__HisPatientSdo: ", patientUpdateSdo));
+                var resultData = new BackendAdapter(paramPatient).Post<HIS_PATIENT>("api/HisPatient/UpdateSdo", ApiConsumers.MosConsumer, patientUpdateSdo, paramPatient);
+                if (resultData != null)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("Update Patient" + LogUtil.TraceData("__HisPatientSdo: ", resultData));
+                }
+                else LogSystem.Debug("Update Patient Faild: " + LogUtil.TraceData("__HisPatientSdo: ", patientUpdateSdo));
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void frmServiceRoom_FormClosing(object sender, FormClosingEventArgs e)
         {
             try

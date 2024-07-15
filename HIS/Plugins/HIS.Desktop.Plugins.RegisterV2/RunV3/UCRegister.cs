@@ -811,6 +811,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 						dataCheck.FromDate = Inventec.Common.DateTime.Convert.TimeNumberToDateString(currentPatientSDO.HeinCardFromTime ?? 0);
 						dataCheck.MediOrgCode = currentPatientSDO.HeinMediOrgCode;
 						dataCheck.Address = currentPatientSDO.HeinAddress;
+						dataCheck.LiveAreaCode = currentPatientSDO.LiveAreaCode;
 						dataCheck.ToDate = Inventec.Common.DateTime.Convert.TimeNumberToDateString(currentPatientSDO.HeinCardToTime ?? 0);
 					}
 
@@ -1028,6 +1029,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 			try
 			{
 				this.isResetForm = true;
+				this.IsReadCardTheViet = false;
 				this.RefreshUserControl();
 				var patientTypeDefault = HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.PatientTypeDefault;
 				if (!(patientTypeDefault != null && patientTypeDefault.ID > 0) && !HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.UsingPatientTypeOfPreviousPatient)

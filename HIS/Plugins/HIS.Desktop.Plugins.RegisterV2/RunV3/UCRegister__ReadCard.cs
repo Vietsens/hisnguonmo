@@ -80,6 +80,12 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 patientByCard.WORK_PLACE = cardSDO.WorkPlace;
                 patientByCard.VIR_ADDRESS = cardSDO.VirAddress;
                 patientByCard.PERSON_CODE = cardSDO.PersonCode;
+                patientByCard.HT_COMMUNE_NAME = HtCommuneName = cardSDO.HtCommuneName;
+                patientByCard.HT_DISTRICT_NAME = HtDistrictName = cardSDO.HtDistrictName;
+                patientByCard.HT_PROVINCE_NAME = HtProvinceName = cardSDO.HtProvinceName;
+                patientByCard.HT_COMMUNE_CODE = HtCommuneCode = cardSDO.HtCommuneCode;
+                patientByCard.HT_DISTRICT_CODE = HtDistrictCode = cardSDO.HtDistrictCode;
+                patientByCard.HT_PROVINCE_CODE = HtProvinceCode = cardSDO.HtProvinceCode;
             }
             catch (Exception ex)
             {
