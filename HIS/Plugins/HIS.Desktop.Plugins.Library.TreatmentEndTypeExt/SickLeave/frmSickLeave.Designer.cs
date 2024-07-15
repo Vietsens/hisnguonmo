@@ -935,6 +935,8 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
             // 
             // lciTreatmentMethod
             // 
+            this.lciTreatmentMethod.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.lciTreatmentMethod.AppearanceItemCaption.Options.UseForeColor = true;
             this.lciTreatmentMethod.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciTreatmentMethod.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTreatmentMethod.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
