@@ -162,6 +162,7 @@
     <Compile Include="ADO\ConfigSyncADO.cs" />
     <Compile Include="ADO\HisConfigCFG.cs" />
     <Compile Include="ADO\SavePathADO.cs" />
+    <Compile Include="ADO\SearchFilterADO.cs" />
     <Compile Include="ADO\TreatmentDetailExportADO.cs" />
     <Compile Include="ADO\TreatmentImportADO.cs" />
     <Compile Include="Base\ConfigStore.cs" />

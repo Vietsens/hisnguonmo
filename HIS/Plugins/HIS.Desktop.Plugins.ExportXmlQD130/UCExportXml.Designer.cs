@@ -139,6 +139,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.Btn_Success = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.Btn_ViewXmlCheckinEnable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.Btn_ViewXmlCheckinDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.Btn_SaveSuccess = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.btnFind = new DevExpress.XtraEditors.SimpleButton();
             this.txtHeinCardPrefix = new DevExpress.XtraEditors.TextEdit();
             this.dtTimeTo = new DevExpress.XtraEditors.DateEdit();
@@ -177,7 +178,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem26 = new DevExpress.XtraLayout.LayoutControlItem();
             this.autoSync = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.Btn_SaveSuccess = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboPatientTypeTT.Properties)).BeginInit();
@@ -205,6 +205,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.Btn_Success)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Btn_ViewXmlCheckinEnable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Btn_ViewXmlCheckinDisable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Btn_SaveSuccess)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHeinCardPrefix.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtTimeTo.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtTimeTo.Properties)).BeginInit();
@@ -242,7 +243,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Btn_SaveSuccess)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -345,6 +345,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.cboXml130Result.Size = new System.Drawing.Size(238, 20);
             this.cboXml130Result.StyleController = this.layoutControl1;
             this.cboXml130Result.TabIndex = 50;
+            this.cboXml130Result.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboXml130Result_Closed);
             // 
             // gridView4
             // 
@@ -496,6 +497,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.cboStatus.Size = new System.Drawing.Size(105, 20);
             this.cboStatus.StyleController = this.layoutControl1;
             this.cboStatus.TabIndex = 26;
+            this.cboStatus.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboStatus_Closed);
             // 
             // gridView1
             // 
@@ -1001,6 +1003,14 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.Btn_ViewXmlCheckinDisable.Name = "Btn_ViewXmlCheckinDisable";
             this.Btn_ViewXmlCheckinDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
+            // Btn_SaveSuccess
+            // 
+            this.Btn_SaveSuccess.AutoHeight = false;
+            this.Btn_SaveSuccess.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_SaveSuccess.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "Lưu Thành công", null, null, true)});
+            this.Btn_SaveSuccess.Name = "Btn_SaveSuccess";
+            this.Btn_SaveSuccess.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
             // btnFind
             // 
             this.btnFind.Location = new System.Drawing.Point(669, 52);
@@ -1453,13 +1463,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
-            // Btn_SaveSuccess
-            // 
-            this.Btn_SaveSuccess.AutoHeight = false;
-            this.Btn_SaveSuccess.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_SaveSuccess.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "Lưu Thành công", null, null, true)});
-            this.Btn_SaveSuccess.Name = "Btn_SaveSuccess";
-            // 
             // UCExportXml
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1495,6 +1498,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.Btn_Success)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Btn_ViewXmlCheckinEnable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Btn_ViewXmlCheckinDisable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Btn_SaveSuccess)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHeinCardPrefix.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtTimeTo.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtTimeTo.Properties)).EndInit();
@@ -1532,7 +1536,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Btn_SaveSuccess)).EndInit();
             this.ResumeLayout(false);
 
         }

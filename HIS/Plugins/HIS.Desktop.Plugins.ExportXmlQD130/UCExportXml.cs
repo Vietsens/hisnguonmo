@@ -119,7 +119,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         public SavePathADO savePathADO;
         bool isExportXml;
         bool isSendCollinearXml;
-
+        public SearchFilterADO searchFilter = new SearchFilterADO();
         public UCExportXml(Inventec.Desktop.Common.Modules.Module moduleData)
             : base(moduleData)
         {
@@ -231,6 +231,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 this.SetCaptionByLanguageKey();
+                
                 this.AddFilterItem();
                 this.InItCboFeeLockOrEndTreatment();
                 this.GeneratePopupMenu();
@@ -243,6 +244,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.InitComboPatientType();
                 this.InitComboPatientTypeTT();
                 this.InitControlState();
+                this.SetDefaultSearchFilter();
             }
             catch (Exception ex)
             {
@@ -346,11 +348,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        List<FilterTypeADO> ListStatusAll = new List<FilterTypeADO>();
         public void InitComboStatus()
         {
             try
             {
-                List<FilterTypeADO> ListStatusAll = new List<FilterTypeADO>();
+                
                 FilterTypeADO tatCa = new FilterTypeADO(0, Resources.ResourceMessageLang.TatCa);
                 ListStatusAll.Add(tatCa);
 
@@ -373,11 +376,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        List<FilterTypeADO> ListXml130ResultAll = new List<FilterTypeADO>();
         public void InitComboXml130Result()
         {
             try
             {
-                List<FilterTypeADO> ListXml130ResultAll = new List<FilterTypeADO>();
+                
                 FilterTypeADO tatCa = new FilterTypeADO(0, Resources.ResourceMessageLang.TatCa);
                 ListXml130ResultAll.Add(tatCa);
 
@@ -905,11 +909,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     return;
                 WaitingManager.Show();
                 FillDataToGridTreatment();
+                
                 if (listTreatment1 != null && listTreatment1.Count == 1)
                 {
                     FillDataToSereServTreeByTreatment(listTreatment1.First());
                 }
                 gridControlTreatment.Focus();
+                SaveSearchFilter();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -2036,15 +2042,19 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             try
             {
+                
                 GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cbo.Properties);
                 gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(eventSelect);
                 cbo.Properties.Tag = gridCheck;
                 cbo.Properties.View.OptionsSelection.MultiSelect = true;
                 GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                
                 if (gridCheckMark != null)
                 {
                     gridCheckMark.ClearSelection(cbo.Properties.View);
                 }
+                
+                
             }
             catch (Exception ex)
             {
@@ -2143,10 +2153,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 StringBuilder sb = new StringBuilder();
                 GridCheckMarksSelection gridCheckMark = sender is GridLookUpEdit ? (sender as GridLookUpEdit).Properties.Tag as GridCheckMarksSelection : (sender as RepositoryItemGridLookUpEdit).Tag as GridCheckMarksSelection;
                 if (gridCheckMark == null) return;
+                this.searchFilter.listBranch = new List<HIS_BRANCH>();
                 foreach (MOS.EFMODEL.DataModels.HIS_BRANCH rv in gridCheckMark.Selection)
                 {
                     if (sb.ToString().Length > 0) { sb.Append(", "); }
+                    this.searchFilter.listBranch.Add(rv);
                     sb.Append(rv.BRANCH_NAME.ToString());
+                    
                 }
                 e.DisplayText = sb.ToString();
             }
@@ -2538,6 +2551,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             configSync = !String.IsNullOrWhiteSpace(item.VALUE) ? Newtonsoft.Json.JsonConvert.DeserializeObject<ConfigSyncADO>(item.VALUE) : null;
                         }
+                        else if(item.KEY == btnFind.Name)
+                        {
+                            this.searchFilter = !String.IsNullOrWhiteSpace(item.VALUE) ? Newtonsoft.Json.JsonConvert.DeserializeObject<SearchFilterADO>(item.VALUE) : new SearchFilterADO();
+                        }
                     }
                 }
                 isNotLoadWhileChangeControlStateInFirst = false;
@@ -2559,10 +2576,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     e.DisplayText = "";
                     return;
                 }
+                this.searchFilter.listPatientType = new List<HIS_PATIENT_TYPE>();
                 foreach (MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE rv in gridCheckMark.Selection)
                 {
                     if (sb.ToString().Length > 0) { sb.Append(", "); }
-
+                    this.searchFilter.listPatientType.Add(rv);
                     sb.Append(rv.PATIENT_TYPE_NAME.ToString());
                 }
                 e.DisplayText = sb.ToString();
@@ -2584,10 +2602,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     e.DisplayText = "";
                     return;
                 }
+                this.searchFilter.listPTreattmentType = new List<HIS_TREATMENT_TYPE>();
                 foreach (MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE rv in gridCheckMark.Selection)
                 {
                     if (sb.ToString().Length > 0) { sb.Append(", "); }
-
+                    this.searchFilter.listPTreattmentType.Add(rv);
                     sb.Append(rv.TREATMENT_TYPE_NAME.ToString());
                 }
                 e.DisplayText = sb.ToString();
@@ -3908,10 +3927,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     e.DisplayText = "";
                     return;
                 }
+                this.searchFilter.listDTTT = new List<HIS_PATIENT_TYPE>();
                 foreach (MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE rv in gridCheckMark.Selection)
                 {
                     if (sb.ToString().Length > 0) { sb.Append(", "); }
-
+                    this.searchFilter.listDTTT.Add(rv);
                     sb.Append(rv.PATIENT_TYPE_NAME.ToString());
                 }
                 e.DisplayText = sb.ToString();
@@ -3959,6 +3979,92 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        #region luu tim kiem
+        private void cboStatus_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                if(cboStatus.EditValue != null)
+                {
+                    this.searchFilter.prfileType = this.ListStatusAll.Where(s=>s.id == Convert.ToInt64(cboStatus.EditValue)).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                
+            }
+        }
+        #endregion
+
+        private void cboXml130Result_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                if (cboXml130Result.EditValue != null)
+                {
+                    this.searchFilter.statusXml = this.ListXml130ResultAll.Where(s => s.id == Convert.ToInt64(cboXml130Result.EditValue)).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void SaveSearchFilter()
+        {
+            try
+            {
+                string value = Newtonsoft.Json.JsonConvert.SerializeObject(this.searchFilter);
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == btnFind.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = value;
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = btnFind.Name;
+                    csAddOrUpdate.VALUE = value;
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void SetDefaultSearchFilter()
+        {
+            try
+            {
+                if(this.searchFilter!= null)
+                {
+                    if(this.searchFilter.listBranch != null)
+                    {
+                        GridCheckMarksSelection gridCheck = CboBranch.Properties.Tag as GridCheckMarksSelection;
+                        if (gridCheck != null)
+                        {
+                            gridCheck.ClearSelection(CboBranch.Properties.View);
+                            gridCheck.SelectAll(this.searchFilter.listBranch);
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
