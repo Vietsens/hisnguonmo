@@ -53,6 +53,16 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                 ValidationControlMaxLength(txtRelativeName, 100);
                 ValidateGridLookupWithTextEdit(cboUser, txtLoginName, dxValidationProvider1);
                 ValidationControlBHXH(txtBhxhCode);
+                if (type == FormEnum.TYPE.NGHI_OM)
+                {
+                    lciTreatmentMethod.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    ValidationSingleControl(memTreatmentMethod, dxValidationProvider1);
+                }
+                else
+                {
+                    lciTreatmentMethod.AppearanceItemCaption.ForeColor = Color.Black;
+                    dxValidationProvider1.SetValidationRule(memTreatmentMethod, null);
+                }
             }
             catch (Exception ex)
             {
