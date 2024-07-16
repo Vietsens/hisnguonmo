@@ -189,16 +189,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ado\EkipTempUserADO.cs" />
-    <Compile Include="EkipTempForm\EkipTempForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="EkipTempForm\EkipTempForm.cs" />
     <Compile Include="EkipTempForm\EkipTempForm.Designer.cs">
       <DependentUpon>EkipTempForm.cs</DependentUpon>
     </Compile>
     <Compile Include="EkipTempProcesser.cs" />
-    <Compile Include="frmEdit\frmEditEkipTemp.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmEdit\frmEditEkipTemp.cs" />
     <Compile Include="frmEdit\frmEditEkipTemp.Designer.cs">
       <DependentUpon>frmEditEkipTemp.cs</DependentUpon>
     </Compile>

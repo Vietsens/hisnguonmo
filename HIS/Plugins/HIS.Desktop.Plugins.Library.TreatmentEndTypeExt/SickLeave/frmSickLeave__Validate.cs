@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -53,16 +53,24 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                 ValidationControlMaxLength(txtRelativeName, 100);
                 ValidateGridLookupWithTextEdit(cboUser, txtLoginName, dxValidationProvider1);
                 ValidationControlBHXH(txtBhxhCode);
-                if (type == FormEnum.TYPE.NGHI_OM)
-                {
-                    lciTreatmentMethod.AppearanceItemCaption.ForeColor = Color.Maroon;
-                    ValidationSingleControl(memTreatmentMethod, dxValidationProvider1);
-                }
-                else
-                {
-                    lciTreatmentMethod.AppearanceItemCaption.ForeColor = Color.Black;
-                    dxValidationProvider1.SetValidationRule(memTreatmentMethod, null);
-                }
+                ValidationRequired(memTreatmentMethod);
+                
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ValidationRequired(BaseEdit control)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule validate = new ControlEditValidationRule();
+                validate.editor = control;
+                validate.ErrorText = "Trường dữ liệu băt buộc";
+                validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                this.dxValidationProvider1.SetValidationRule(control, validate);
             }
             catch (Exception ex)
             {

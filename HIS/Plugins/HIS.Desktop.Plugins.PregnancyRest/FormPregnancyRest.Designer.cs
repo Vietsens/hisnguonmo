@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.PregnancyRest
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPregnancyRest));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -65,7 +64,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtPatientFatherName = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barBtnPrint = new DevExpress.XtraBars.BarButtonItem();
             this.barBtnSaveNPrint = new DevExpress.XtraBars.BarButtonItem();
@@ -130,7 +129,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.LciTreatmentEndTypeExt = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lblPPDT = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciMaBHXH = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -154,7 +153,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             this.lciCheckTT = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.comboBoxEdit1 = new DevExpress.XtraEditors.ComboBoxEdit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -209,7 +208,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciTreatmentEndTypeExt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lblPPDT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciMaBHXH)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
@@ -945,7 +944,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             this.layoutControlItem6,
             this.LciTreatmentEndTypeExt,
             this.layoutControlItem2,
-            this.layoutControlItem1,
+            this.lblPPDT,
             this.layoutControlItem3,
             this.lciMaBHXH,
             this.layoutControlItem7,
@@ -1045,18 +1044,18 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             this.layoutControlItem2.TextSize = new System.Drawing.Size(120, 17);
             this.layoutControlItem2.TextToControlDistance = 5;
             // 
-            // layoutControlItem1
+            // lblPPDT
             // 
-            this.layoutControlItem1.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem1.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem1.Control = this.txtTreatmentMethod;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 265);
-            this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(643, 24);
-            this.layoutControlItem1.Text = "Phương pháp ĐT:";
-            this.layoutControlItem1.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem1.TextSize = new System.Drawing.Size(120, 20);
-            this.layoutControlItem1.TextToControlDistance = 5;
+            this.lblPPDT.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lblPPDT.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lblPPDT.Control = this.txtTreatmentMethod;
+            this.lblPPDT.Location = new System.Drawing.Point(0, 265);
+            this.lblPPDT.Name = "lblPPDT";
+            this.lblPPDT.Size = new System.Drawing.Size(643, 24);
+            this.lblPPDT.Text = "Phương pháp ĐT:";
+            this.lblPPDT.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lblPPDT.TextSize = new System.Drawing.Size(120, 20);
+            this.lblPPDT.TextToControlDistance = 5;
             // 
             // layoutControlItem3
             // 
@@ -1435,7 +1434,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciTreatmentEndTypeExt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lblPPDT)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciMaBHXH)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
@@ -1523,7 +1522,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
         private DevExpress.XtraEditors.TextEdit txtHeinCardNumber;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraEditors.MemoEdit txtTreatmentMethod;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
+        private DevExpress.XtraLayout.LayoutControlItem lblPPDT;
         private DevExpress.XtraEditors.TextEdit txtSickUserName;
         private DevExpress.XtraEditors.TextEdit txtWorkPlace;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
