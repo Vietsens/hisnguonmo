@@ -1730,6 +1730,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         }
                         serviceReqUpdateSDO.TreatmentFinishSDO = new HisTreatmentFinishSDO();
                         serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentEndTypeExtId = treatmentFinish.TreatmentFinishSDO.TreatmentEndTypeExtId;
+                      
                         if (this.treatment != null
                             && this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
                             && treatmentFinish.TreatmentFinishSDO.TreatmentEndTypeExtId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM)
@@ -1945,6 +1946,20 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         isPrintHosTransfer = treatmentFinish.IsPrintHosTransfer;
                         IsSignExam = treatmentFinish.IsSignExam;
                         IsPrintExam = treatmentFinish.IsPrintExam;
+
+                        if (string.IsNullOrEmpty(serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalNote))
+                        {
+                            serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalNote = serviceReq.PATHOLOGICAL_PROCESS;
+                        }
+                        if (string.IsNullOrEmpty(serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult))
+                        {
+                            serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = serviceReq.SUBCLINICAL;
+                        }
+                        if (string.IsNullOrEmpty(serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod))
+                        {
+                            serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = serviceReq.TREATMENT_INSTRUCTION;
+                        }
+                        
                     }
                 }
                 //else
