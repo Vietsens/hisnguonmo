@@ -497,7 +497,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.cboStatus.Size = new System.Drawing.Size(105, 20);
             this.cboStatus.StyleController = this.layoutControl1;
             this.cboStatus.TabIndex = 26;
-            this.cboStatus.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboStatus_Closed);
+            
             // 
             // gridView1
             // 
