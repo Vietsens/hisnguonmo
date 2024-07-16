@@ -238,13 +238,14 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.InitComboStatus();
                 this.InitComboXml130Result();
                 this.SetDefaultValueControl();
-                this.FillDataToGridTreatment();
+                
                 this.InitComboTreatmentType();
                 this.InitComboBranch();
                 this.InitComboPatientType();
                 this.InitComboPatientTypeTT();
                 this.InitControlState();
                 this.SetDefaultSearchFilter();
+                this.FillDataToGridTreatment();
             }
             catch (Exception ex)
             {
@@ -4050,7 +4051,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             {
                 if(this.searchFilter!= null)
                 {
-                    if(this.searchFilter.listBranch != null)
+                    if (this.searchFilter.listBranch != null)
                     {
                         GridCheckMarksSelection gridCheck = CboBranch.Properties.Tag as GridCheckMarksSelection;
                         if (gridCheck != null)
@@ -4060,6 +4061,45 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                         }
                     }
+                    if(this.searchFilter.listPatientType != null)
+                    {
+                        GridCheckMarksSelection gridCheck = cboPatientType.Properties.Tag as GridCheckMarksSelection;
+                        if (gridCheck != null)
+                        {
+                            gridCheck.ClearSelection(cboPatientType.Properties.View);
+                            gridCheck.SelectAll(this.searchFilter.listPatientType);
+
+                        }
+                    }
+                    if (this.searchFilter.listPTreattmentType != null)
+                    {
+                        GridCheckMarksSelection gridCheck = cboFilterTreatmentType.Properties.Tag as GridCheckMarksSelection;
+                        if (gridCheck != null)
+                        {
+                            gridCheck.ClearSelection(cboFilterTreatmentType.Properties.View);
+                            gridCheck.SelectAll(this.searchFilter.listPTreattmentType);
+
+                        }
+                    }
+                    if (this.searchFilter.listDTTT != null)
+                    {
+                        GridCheckMarksSelection gridCheck = cboPatientTypeTT.Properties.Tag as GridCheckMarksSelection;
+                        if (gridCheck != null)
+                        {
+                            gridCheck.ClearSelection(cboPatientTypeTT.Properties.View);
+                            gridCheck.SelectAll(this.searchFilter.listDTTT);
+
+                        }
+                    }
+                    if(this.searchFilter.prfileType != null)
+                    {
+                        cboStatus.EditValue = this.searchFilter.prfileType.id;
+                    }
+                    if(this.searchFilter.statusXml != null)
+                    {
+                        cboXml130Result.EditValue = this.searchFilter.statusXml.id;
+                    }
+
                 }
             }
             catch (Exception ex)
