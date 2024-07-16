@@ -1990,27 +1990,40 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
             return rs;
         }
+        /// <summary>
+        /// init combo branch
+        /// </summary>
+        private List<HIS_BRANCH> listBranchDataSource = BackendDataWorker.Get<HIS_BRANCH>().ToList();
         private void InitComboBranch()
         {
             try
             {
                 InitCheck(CboBranch, SelectionGrid__cboBranch);
-                InitCombo(CboBranch, BackendDataWorker.Get<HIS_BRANCH>(), "BRANCH_NAME");
+                InitCombo(CboBranch, listBranchDataSource, "BRANCH_NAME");
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        /// <summary>
+        /// init data doi tuong banh nhan
+        /// lay du lieu tu RAM load len danh sach
+        /// </summary>
+        private List<HIS_PATIENT_TYPE> listPatientTypeDataSource = BackendDataWorker.Get<HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
         private void InitComboPatientType()
         {
             InitCheck(cboPatientType, SelectionGrid__cboPatientType);
-            InitCombo(cboPatientType, BackendDataWorker.Get<HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), "PATIENT_TYPE_NAME");
+            InitCombo(cboPatientType, listPatientTypeDataSource, "PATIENT_TYPE_NAME");
         }
+        /// <summary>
+        /// init data doi tuong thanh toan
+        /// </summary>
+        private List<HIS_PATIENT_TYPE> listPatientTypeTTDataSource = BackendDataWorker.Get<HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
         private void InitComboPatientTypeTT()
         {
             InitCheck(cboPatientTypeTT, SelectionGrid__cboPatientTypeTT);
-            InitCombo(cboPatientTypeTT, BackendDataWorker.Get<HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), "PATIENT_TYPE_NAME");
+            InitCombo(cboPatientTypeTT, listPatientTypeTTDataSource, "PATIENT_TYPE_NAME");
         }
         private void InitCombo(GridLookUpEdit cbo, object data, string DisplayValue)
         {
@@ -2127,6 +2140,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
                 if (gridCheckMark != null)
                 {
+                    
                     List<HIS_BRANCH> sgSelectedNews = new List<HIS_BRANCH>();
                     foreach (MOS.EFMODEL.DataModels.HIS_BRANCH rv in (gridCheckMark).Selection)
                     {
@@ -2137,6 +2151,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             sgSelectedNews.Add(rv);
                         }
                     }
+                    
                     this.branchSelecteds = new List<HIS_BRANCH>();
                     this.branchSelecteds.AddRange(sgSelectedNews);
                 }
@@ -2169,10 +2184,14 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        /// <summary>
+        /// init combo doi tuong dieu tri
+        /// </summary>
+        private List<HIS_TREATMENT_TYPE> listTreatmentTypeDataSource = BackendDataWorker.Get<HIS_TREATMENT_TYPE>().ToList();
         private void InitComboTreatmentType()
         {
             InitCheck(cboFilterTreatmentType, SelectionGrid__cboFilterTreatmentType);
-            cboFilterTreatmentType.Properties.DataSource = BackendDataWorker.Get<HIS_TREATMENT_TYPE>();
+            cboFilterTreatmentType.Properties.DataSource = listTreatmentTypeDataSource;
             cboFilterTreatmentType.Properties.DisplayMember = "TREATMENT_TYPE_NAME";
             cboFilterTreatmentType.Properties.ValueMember = "ID";
             DevExpress.XtraGrid.Columns.GridColumn col1 = cboFilterTreatmentType.Properties.View.Columns.AddField("TREATMENT_TYPE_CODE");
@@ -3980,7 +3999,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             catch (Exception ex)
             {
                 WaitingManager.Hide();
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                
             }
         }
         #region luu tim kiem
@@ -3996,10 +4015,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             catch (Exception ex)
             {
 
-                
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        #endregion
+        
 
         private void cboXml130Result_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
         {
@@ -4045,6 +4064,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        #endregion
         private void SetDefaultSearchFilter()
         {
             try
@@ -4057,18 +4077,19 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         if (gridCheck != null)
                         {
                             gridCheck.ClearSelection(CboBranch.Properties.View);
-                            gridCheck.SelectAll(this.searchFilter.listBranch);
+                            var rs = listBranchDataSource.Where(s => this.searchFilter.listBranch.Select(o => o.ID).Contains(s.ID)).Distinct().ToList();
+                            gridCheck.SelectAll(rs);
 
                         }
                     }
-                    if(this.searchFilter.listPatientType != null)
+                    if (this.searchFilter.listPatientType != null)
                     {
                         GridCheckMarksSelection gridCheck = cboPatientType.Properties.Tag as GridCheckMarksSelection;
                         if (gridCheck != null)
                         {
                             gridCheck.ClearSelection(cboPatientType.Properties.View);
-                            gridCheck.SelectAll(this.searchFilter.listPatientType);
-
+                            var rs = listPatientTypeDataSource.Where(s => this.searchFilter.listPatientType.Select(o => o.ID).Contains(s.ID)).Distinct().ToList();
+                            gridCheck.SelectAll(rs);
                         }
                     }
                     if (this.searchFilter.listPTreattmentType != null)
@@ -4077,8 +4098,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         if (gridCheck != null)
                         {
                             gridCheck.ClearSelection(cboFilterTreatmentType.Properties.View);
-                            gridCheck.SelectAll(this.searchFilter.listPTreattmentType);
-
+                            var rs = listTreatmentTypeDataSource.Where(s => this.searchFilter.listPTreattmentType.Select(o => o.ID).Contains(s.ID)).Distinct().ToList();
+                            gridCheck.SelectAll(rs);
                         }
                     }
                     if (this.searchFilter.listDTTT != null)
@@ -4087,15 +4108,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         if (gridCheck != null)
                         {
                             gridCheck.ClearSelection(cboPatientTypeTT.Properties.View);
-                            gridCheck.SelectAll(this.searchFilter.listDTTT);
-
+                            var rs = listPatientTypeTTDataSource.Where(s => this.searchFilter.listDTTT.Select(o => o.ID).Contains(s.ID)).Distinct().ToList();
+                            gridCheck.SelectAll(rs);
                         }
                     }
-                    if(this.searchFilter.prfileType != null)
+                    if (this.searchFilter.prfileType != null)
                     {
                         cboStatus.EditValue = this.searchFilter.prfileType.id;
                     }
-                    if(this.searchFilter.statusXml != null)
+                    if (this.searchFilter.statusXml != null)
                     {
                         cboXml130Result.EditValue = this.searchFilter.statusXml.id;
                     }
