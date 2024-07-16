@@ -51,7 +51,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>256x256x1_WbD_icon.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup />
@@ -70,13 +71,13 @@
       <HintPath>..\..\..\Lib\ACS\ACS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="ACS.SDO">
-      <HintPath>..\..\..\Lib\ACS\ACS.SDO.dll</HintPath>
+      <HintPath>..\..\..\lib\ACS\ACS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\..\Lib\HIS\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\lib\MRS\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="AxInterop.WMPLib">
-      <HintPath>..\..\..\Lib\HIS\ReferencedAssemblies\AxInterop.WMPLib.dll</HintPath>
+    <Reference Include="AxInterop.SIGNVIEWLib">
+      <HintPath>..\..\..\lib\WCF\EMR.WCF\EMR.SignProcessor\AxInterop.SIGNVIEWLib.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.BonusSkins.v15.2">
       <HintPath>..\..\..\Lib\DEVEXPRESS\DevExpress.BonusSkins.v15.2.dll</HintPath>
@@ -162,18 +163,30 @@
       <HintPath>..\..\..\Lib\FRD\FRD.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.ConfigCustomizaButton">
-      <HintPath>..\..\..\Lib\HIS\ReferencedAssemblies\HIS.Desktop.LocalStorage.ConfigCustomizaButton.dll</HintPath>
+      <HintPath>..\..\..\lib\HIS\HIS.UC.UCPatientRaw\HIS.Desktop.LocalStorage.ConfigCustomizaButton.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.Location, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Lib\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.LocalStorage.Location.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.ModuleExt">
+      <HintPath>..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.ModuleExt.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.ConnectBloodPressure, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Lib\HIS\HIS.Desktop.Plugins.Library.ConnectBloodPressure\HIS.Desktop.Plugins.Library.ConnectBloodPressure.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.IntegrateAssignPrescription">
-      <HintPath>..\..\..\Lib\HIS\ReferencedAssemblies\HIS.Desktop.Plugins.Library.IntegrateAssignPrescription.dll</HintPath>
+      <HintPath>..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.IntegrateAssignPrescription.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.LocalCacheManager">
+      <HintPath>..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.LocalCacheManager.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Print">
+      <HintPath>..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment\HIS.Desktop.Print.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Utility">
+      <HintPath>..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="His.EventLog, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -190,10 +203,6 @@
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\Lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
-    </Reference>
-    <Reference Include="Interop.WMPLib">
-      <HintPath>..\..\..\Lib\HIS\ReferencedAssemblies\Interop.WMPLib.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Inventec.Aup.Client">
       <HintPath>..\..\..\Lib\Inventec.Aup.Client\Inventec.Aup.Client.dll</HintPath>
@@ -371,7 +380,7 @@
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Lib\HIS\ReferencedAssemblies\log4net.dll</HintPath>
+      <HintPath>..\..\..\lib\Library packages\log4net.1.2.10\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -406,8 +415,9 @@
     <Reference Include="MRS.SDO">
       <HintPath>..\..\..\Lib\MRS\MRS.SDO.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\Lib\HIS\ReferencedAssemblies\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Library packages\Newtonsoft.Json.6.0.8\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RDCACHE.SDO">
       <HintPath>..\..\..\Lib\RDCACHE\RDCACHE.SDO.dll</HintPath>
@@ -707,18 +717,6 @@
       <Project>{e791eade-c034-4b2a-873c-8fdb26fdeb8d}</Project>
       <Name>HIS.Desktop.LocalStorage.PubSub</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
-      <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>
-      <Name>HIS.Desktop.ModuleExt</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Print\HIS.Desktop.Print.csproj">
-      <Project>{aeeca321-fd65-407a-8d70-ba5362883b87}</Project>
-      <Name>HIS.Desktop.Print</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
-      <Name>HIS.Desktop.Utilities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Plugins\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
@@ -727,13 +725,6 @@
       <Project>{f22facd5-3da1-4f80-bb8e-dc83a0ab5cdb}</Project>
       <Name>HIS.Desktop.Plugins.HisTutorial</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Plugins\HIS.Desktop.Plugins.LocalCacheManager\HIS.Desktop.Plugins.LocalCacheManager.csproj">
-      <Project>{5317499f-b8bb-4f85-8c5d-a6b01476d810}</Project>
-      <Name>HIS.Desktop.Plugins.LocalCacheManager</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="256x256x1_WbD_icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

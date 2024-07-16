@@ -62,6 +62,7 @@ using Inventec.Common.CardReader;
 using Inventec.Common.Logging;
 using Inventec.Common.ThreadCustom;
 using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
@@ -348,6 +349,30 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void ValidateForm()
+        {
+            ValidationRequired(txtPathologicalProcess);
+            ValidationRequired(txtSubclinical);
+            ValidationRequired(txtTreatmentInstruction);
+        }
+
+        private void ValidationRequired(BaseEdit control)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule validate = new ControlEditValidationRule();
+                validate.editor = control;
+                validate.ErrorText = ResourceMessage.TruongDuLieuBatBuoc;
+                validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                this.dxValidationProviderForLeftPanel.SetValidationRule(control, validate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
 
         private void InitControlState()
         {
@@ -2210,6 +2235,22 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     if (this.isTimeServer) treatmentFinishInitADO.Treatment.OUT_TIME = loadParam().Now;
                     this.ucTreatmentFinish = (UserControl)treatmentFinishProcessor.Run(treatmentFinishInitADO);
                     LoadUCToPanelExecuteExt(this.ucTreatmentFinish, chkTreatmentFinish);
+
+                    if (treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU
+                    || treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU
+                    || treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY)
+                    {
+                        lblCaptionPathologicalProcess.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        ValidateForm();
+                    }
+                    else
+                    {
+                        lblCaptionPathologicalProcess.AppearanceItemCaption.ForeColor = Color.Black;
+                        lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Black;
+                        lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Black;
+                    }
 
                 }
                 else
