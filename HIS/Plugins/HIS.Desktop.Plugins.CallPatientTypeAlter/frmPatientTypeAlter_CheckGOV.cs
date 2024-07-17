@@ -76,41 +76,40 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
                     {
                         bool isNotWrongAddress = true;
                         string maKQ = ResultDataADO.ResultHistoryLDO.maKetQua;
-                        if (maKQ == "060" || maKQ == "061" || maKQ == "070" || maKQ == "051" || maKQ == "052" || maKQ == "053" || maKQ == "050" || maKQ == "000")
+                        string message = "";
+                        if (maKQ == "000")
                         {
-                            string message = "";
-                            if (maKQ == "000")
+                            if (currenPatient != null)
                             {
-                                if(currenPatient!= null)
+                                HIS_PATIENT patient = GetCurrentpatient(currenPatient);
+                                if (string.IsNullOrEmpty(patient.COMMUNE_CODE) || string.IsNullOrEmpty(patient.PROVINCE_CODE) || string.IsNullOrEmpty(patient.DISTRICT_CODE))
                                 {
-                                    HIS_PATIENT patient =  GetCurrentpatient(currenPatient);
-                                    if(string.IsNullOrEmpty(patient.COMMUNE_CODE) || string.IsNullOrEmpty(patient.PROVINCE_CODE) || string.IsNullOrEmpty(patient.DISTRICT_CODE))
-                                    {
-                                        message = "Bệnh nhân thiếu thông tin địa chỉ ";
-                                    }
-                                    else
-                                    {
-                                        isNotWrongAddress = false;
-                                    }
+                                    message = "Bệnh nhân thiếu thông tin địa chỉ ";
                                 }
-
+                                else
+                                {
+                                    isNotWrongAddress = false;
+                                }
                             }
+
+                        }
+                        string thongBao = "";
+                        if (maKQ == "060" || maKQ == "061" || maKQ == "070" || maKQ == "051" || maKQ == "052" || maKQ == "053" || maKQ == "050" || isNotWrongAddress)
+                        {
+                            
                             if(string.IsNullOrEmpty(message)) message = ResultDataADO.ResultHistoryLDO.message;
-                            string thongBao = message + ". Bạn có muốn sửa thông tin bệnh nhân?";
-                            if(isNotWrongAddress)
+                            thongBao = message + ". Bạn có muốn sửa thông tin bệnh nhân?";
+                            
+                            DialogResult drReslt = DevExpress.XtraEditors.XtraMessageBox.Show(thongBao, "Thông báo!", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, DevExpress.Utils.DefaultBoolean.True);
+                            if (drReslt == DialogResult.OK)
                             {
-                                DialogResult drReslt = DevExpress.XtraEditors.XtraMessageBox.Show(thongBao, "Thông báo!", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, DevExpress.Utils.DefaultBoolean.True);
-                                if (drReslt == DialogResult.OK)
-                                {
-                                    List<object> listArgs = new List<object>();
-                                    listArgs.Add(this._HisTreatment.PATIENT_ID);
-                                    listArgs.Add(this.treatmentId);
-                                    listArgs.Add((RefeshReference)RefeshTreatment);
-                                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.PatientUpdate", this.module.RoomId, this.module.RoomTypeId, listArgs);
-                                }
+                                List<object> listArgs = new List<object>();
+                                listArgs.Add(this._HisTreatment.PATIENT_ID);
+                                listArgs.Add(this.treatmentId);
+                                listArgs.Add((RefeshReference)RefeshTreatment);
+                                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.PatientUpdate", this.module.RoomId, this.module.RoomTypeId, listArgs);
                             }
                             
-
                             Inventec.Common.Logging.LogSystem.Info("CheckThongTuyen____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => maKQ), maKQ) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => thongBao), thongBao));
                         }
                         else

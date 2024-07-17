@@ -20,6 +20,8 @@ using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.ViewInfo;
 using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
+using HIS.Desktop.Library.CacheClient;
+using HIS.Desktop.Library.CacheClient.ControlState;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.Location;
 using HIS.Desktop.Plugins.ExportXmlQD130.ADO;
@@ -99,6 +101,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 SetCaptionByLanguageKey();
                 InitCombobox();
                 SetDefaultValue();
+                
             }
             catch (Exception ex)
             {
@@ -574,6 +577,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     spnPeriod.Enabled = !autoSyncIsRunning;
                     chkOutTime.Checked = configSync.isCheckOutTime;
                     chkCollinearXML.Checked = configSync.isCheckCollinearXml;
+                    chkDontSend.Enabled = false;
+                    chkDontSend.Checked = configSync.dontSend;
+                    txtFolder.Text = configSync.folderPath;
                 }
             }
             catch (Exception ex)
@@ -630,7 +636,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.configSync.period = spnPeriod.Value;
                 this.configSync.isCheckOutTime = chkOutTime.Checked;
                 this.configSync.isCheckCollinearXml = chkCollinearXML.Checked;
-
+                #region bo sung folder luu
+                this.configSync.folderPath = txtFolder.Text;
+                this.configSync.dontSend = chkDontSend.Checked;
+                #endregion
                 if (this.actAfterSave != null)
                 {
                     this.actAfterSave(this.configSync);
@@ -802,5 +811,42 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        #region xu li folder luu
+        public SavePathADO savePathADO = new SavePathADO();
+        private void txtFolder_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                FolderBrowserDialog fbd = new FolderBrowserDialog();
+                if (fbd.ShowDialog() == DialogResult.OK)
+                {
+                    this.savePathADO.pathXml = fbd.SelectedPath;
+                    txtFolder.Text = this.savePathADO.pathXml;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtFolder_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(txtFolder.Text))
+                {
+                    chkDontSend.Enabled = false;
+                }
+                else chkDontSend.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        #endregion
     }
 }
