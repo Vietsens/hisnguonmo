@@ -52,6 +52,7 @@ namespace HIS.UC.AddressCombo
                 this.cboTHX.Properties.Buttons[1].Visible = false;
                 this.txtPhone.Text = "";
                 this.IsPressEnter = false;
+                ResetRequiredField();
                 #endregion
 
                 if (data != null)
@@ -76,8 +77,8 @@ namespace HIS.UC.AddressCombo
                     if (commune != null)
                     {
                         this.LoadXaCombo("", commune.DISTRICT_CODE, false);
-                        this.cboCommune.EditValue = commune.COMMUNE_CODE;
                         this.txtCommuneCode.Text = commune.COMMUNE_CODE;
+                        this.cboCommune.EditValue = commune.COMMUNE_CODE;
                         this.cboTHX.EditValue = "C" + commune.ID;//ID_RAW
                         bool isSearchOrderByXHT = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS_DESKTOP_REGISTER__SEARCH_CODE__X/H/T") == "1" ? true : false;
 
@@ -134,6 +135,8 @@ namespace HIS.UC.AddressCombo
 
         public UCAddressADO GetValue()
         {
+            if (!ValidateRequiredField())
+                return null;
             UCAddressADO getData = new UCAddressADO();
             try
             {

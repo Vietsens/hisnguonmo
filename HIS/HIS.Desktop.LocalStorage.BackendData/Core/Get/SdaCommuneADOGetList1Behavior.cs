@@ -41,9 +41,9 @@ namespace HIS.Desktop.LocalStorage.BackendData.Get
             try
             {
                 List<ADO.CommuneADO> result = new List<ADO.CommuneADO>();
-                var communes = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>();
-                var districts = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
-                var provinces = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
+                var communes = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o=>o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                var districts = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                var provinces = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 if (communes != null && communes.Count > 0
                     && districts != null && districts.Count > 0
                     && provinces != null && provinces.Count > 0
@@ -83,7 +83,7 @@ namespace HIS.Desktop.LocalStorage.BackendData.Get
                     }
                 }
 
-                return result.OrderBy(o => o.SEARCH_CODE_COMMUNE).ToList();
+                return result.Where(o=> (string.IsNullOrEmpty(o.COMMUNE_CODE) || communes.Exists(p=>p.COMMUNE_CODE.Equals(o.COMMUNE_CODE))) && (string.IsNullOrEmpty(o.DISTRICT_CODE) || districts.Exists(p=>p.DISTRICT_CODE == o.DISTRICT_CODE)) && (string.IsNullOrEmpty(o.PROVINCE_CODE) || provinces.Exists(p=>p.PROVINCE_CODE == o.PROVINCE_CODE))).OrderBy(o => o.SEARCH_CODE_COMMUNE).ToList();
             }
             catch (Exception ex)
             {

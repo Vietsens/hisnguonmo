@@ -162,6 +162,7 @@
     <Compile Include="ADO\ConfigSyncADO.cs" />
     <Compile Include="ADO\HisConfigCFG.cs" />
     <Compile Include="ADO\SavePathADO.cs" />
+    <Compile Include="ADO\SearchFilterADO.cs" />
     <Compile Include="ADO\TreatmentDetailExportADO.cs" />
     <Compile Include="ADO\TreatmentImportADO.cs" />
     <Compile Include="Base\ConfigStore.cs" />
@@ -205,7 +206,6 @@
     <EmbeddedResource Include="frmSettingConfigSync.resx">
       <DependentUpon>frmSettingConfigSync.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
