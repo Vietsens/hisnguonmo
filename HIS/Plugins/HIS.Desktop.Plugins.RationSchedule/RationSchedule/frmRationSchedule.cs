@@ -683,7 +683,7 @@ namespace HIS.Desktop.Plugins.RationSchedule.RationSchedule
                     data.IsForHomie = chkForHome.Checked;
                     data.HalfInFirstDay = chkHalfInFirstDay.Checked;
                     data.Note = memNote.Text.Trim();
-                    if (data.FromTime <= treatmentBedRoom.CLINICAL_IN_TIME && DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Thời gian từ nhỏ hơn thời gian vào điều trị {0}. Bạn có muốn thực hiện không?", treatmentBedRoom.TREATMENT_CODE), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.No)
+                    if (data.FromTime < treatmentBedRoom.CLINICAL_IN_TIME && DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Thời gian từ nhỏ hơn thời gian vào điều trị {0}.", treatmentBedRoom.CLINICAL_IN_TIME), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK) == DialogResult.OK)
                             return;
                     if (data.RationScheduleId != null && currentData.LAST_ASSIGN_DATE != null && DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Lịch báo ăn đã có chỉ định suất ăn tương ứng. Bạn có muốn thực hiện không?", treatmentBedRoom.TREATMENT_CODE), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.No)
                         return;
