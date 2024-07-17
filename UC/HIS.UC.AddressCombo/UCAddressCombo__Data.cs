@@ -52,6 +52,7 @@ namespace HIS.UC.AddressCombo
                 this.cboTHX.Properties.Buttons[1].Visible = false;
                 this.txtPhone.Text = "";
                 this.IsPressEnter = false;
+                ResetRequiredField();
                 #endregion
 
                 if (data != null)
