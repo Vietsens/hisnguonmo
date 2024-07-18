@@ -1831,21 +1831,21 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             
                             if (checkHDBN != null)
                             {
-                                InTamUng(isSaveAndShow, previewType);
+                                if(!isPrinted) InTamUng(isSaveAndShow, previewType);
                                 InPhieuHuoangDanBenhNhan(isSaveAndShow);
                                 
                             }
 
                             if (checkYCDV != null)
                             {
-                                InTamUng(isSaveAndShow, previewType);
+                                if (!isPrinted) InTamUng(isSaveAndShow, previewType);
                                 InPhieuYeuCauDichVu(isSaveAndShow, previewType);
                                 
                             }
 
                             if (checkQR != null)
                             {
-                                InTamUng(isSaveAndShow, previewType);
+                                if (!isPrinted) InTamUng(isSaveAndShow, previewType);
                                 InYeuCauThanhToanQR(isSaveAndPrint, isSign, isPrintPreview);
                                 
                             }
