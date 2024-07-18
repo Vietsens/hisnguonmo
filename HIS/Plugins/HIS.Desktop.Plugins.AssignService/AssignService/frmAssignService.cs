@@ -5490,6 +5490,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.LoadIcdDefault();
                 this.DisablecheckEmergencyPriorityByConfig();
                 this.treeService.UncheckAll();
+                this.isPrinted = false;
 
                 foreach (var item in this.ServiceIsleafADOs)
                 {
