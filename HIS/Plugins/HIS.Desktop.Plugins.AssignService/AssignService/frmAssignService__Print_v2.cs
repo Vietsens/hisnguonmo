@@ -244,6 +244,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
         bool IsSaveAndShowMps000102 = true;
         MPS.ProcessorBase.PrintConfig.PreviewType? PreviewTypeMps000102 = null;
+        bool isPrinted = false;
         private void InTamUng(bool isSaveAndShow, MPS.ProcessorBase.PrintConfig.PreviewType? previewType)
         {
             try
@@ -256,6 +257,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     this.PreviewTypeMps000102 = previewType;
                     Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, LanguageManager.GetLanguage(), LocalStorage.LocalData.GlobalVariables.TemnplatePathFolder);
                     richEditorMain.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__MPS000102, ProcessPrintMps000102);
+                    isPrinted = true;
                 }
             }
             catch (Exception ex)
