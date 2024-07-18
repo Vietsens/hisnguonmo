@@ -160,6 +160,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         if (item.KEY == cboCom.Name && !string.IsNullOrEmpty(item.VALUE) && comQRs != null && comQRs.Exists(o => o.comName == item.VALUE))
                         {
                             cboCom.EditValue = item.VALUE;
+                            IsConnectOld = true;
                             btnConnect_Click(null, null);
                         }
                     }
@@ -786,6 +787,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     InitPopupMenuOther();
                     if (currentTransReq != null)
                     {
+                        QrCodeProcessor.DicContentBank = new Dictionary<string, string>();
                         pbQr.Image = null;
                         IsCheckNode = true;
                         btnCreate.Enabled = true;
@@ -1184,13 +1186,21 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     this.currentControlStateRDO.Add(csAddOrUpdate);
                 }
                 this.controlStateWorker.SetData(this.currentControlStateRDO);
+                if (currentTransReq != null && currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)
+                {
+                    if (XtraMessageBox.Show("Bạn có muốn tắt chức năng và hủy yêu cầu thanh toán hay không?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        btnNew_Click(null, null);
+                    }
+                    else
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
+                }
                 if (pos != null && pos.IsOpen)
                 {
                     pos.DisposePort();
-                }
-                if (currentTransReq != null && currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)
-                {
-                    btnNew_Click(null, null);
                 }
             }
             catch (Exception ex)
@@ -1237,7 +1247,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             }
 
         }
-
+        bool IsConnectOld = false;
         bool IsConnectCom = false;
         private void btnConnect_Click(object sender, EventArgs e)
         {
@@ -1323,7 +1333,11 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 }
                 if (IsConnectCom)
                 {
-                    XtraMessageBox.Show(Message);
+                    if ((IsConnectOld && !IsSuccess) || !IsConnectOld)
+                    {
+                        XtraMessageBox.Show(Message);
+                        IsConnectOld = false;
+                    }
                     IsConnectCom = false;
                 }
             }

@@ -281,11 +281,7 @@ namespace HIS.UC.UCPatientRaw
                 this.cardSearch = null;
                 this.txtCareerCode.Text = null;
                 this.cboCareer.EditValue = null;
-                HIS_CAREER career = HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CareerHS;
-                if(career == null || career.ID == 0)
-                {
-                    career = HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CareerBase;
-                }
+                HIS_CAREER career = HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CareerBase;
                 if(career != null && (cboCareer.Properties.DataSource as List<HIS_CAREER>).Exists(o=>o.ID == career.ID))
                 {
                     this.txtCareerCode.Text = career.CAREER_CODE;
