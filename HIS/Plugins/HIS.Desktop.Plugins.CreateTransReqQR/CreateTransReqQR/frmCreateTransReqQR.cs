@@ -787,6 +787,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     InitPopupMenuOther();
                     if (currentTransReq != null)
                     {
+                        QrCodeProcessor.DicContentBank = new Dictionary<string, string>();
                         pbQr.Image = null;
                         IsCheckNode = true;
                         btnCreate.Enabled = true;
