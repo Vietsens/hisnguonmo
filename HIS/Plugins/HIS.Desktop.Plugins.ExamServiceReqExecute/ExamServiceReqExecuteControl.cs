@@ -2252,6 +2252,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Black;
                     }
 
+                    if (this.requiredControl != null && this.requiredControl == 1 )
+                    {
+                        lblCaptionPathologicalProcess.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        //ValidationRequired(txtPathologicalProcess);
+                    }
                 }
                 else
                 {
@@ -2700,6 +2705,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (this.requiredControl != null && this.requiredControl == 1 && string.IsNullOrEmpty(this.txtPathologicalProcess.Text.Trim()))
                 {
                     MessageBox.Show("Quá trình bệnh lý bạn nhập không hợp lệ", ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    lblCaptionPathologicalProcess.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    ValidationRequired(txtPathologicalProcess);
                     return;
                 }
 
