@@ -1073,8 +1073,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 //nếu ko phải admin sẽ khóa lại
                 //nếu hoàn thành và không phải ng xử lý và ko phải admin thì disable
                 if (currentServiceReq != null &&
-                    currentServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT &&
-                    currentServiceReq.EXECUTE_LOGINNAME != Loginname && !HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(Loginname))
+                    currentServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
+                    //&& currentServiceReq.EXECUTE_LOGINNAME != Loginname && !HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(Loginname))
                 {
                     SetEnableControl(false);
                 }
@@ -1145,7 +1145,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 BtnEmr.Enabled = false;
                 PACS.PacsCFG.Reload();
                 Gc_SendSancy.VisibleIndex = -1;
-                if (ServiceReqConstruct != null && ServiceReqConstruct.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA && HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ServiceExecuteCFG.NumberOfFilmCFG).Trim() == "1")
+                var numOfFilm = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ServiceExecuteCFG.NumberOfFilmCFG);
+                if (ServiceReqConstruct != null && ServiceReqConstruct.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA && !string.IsNullOrEmpty(numOfFilm) && numOfFilm.Trim() == "1")
                     lciMunberOfFilm.AppearanceItemCaption.ForeColor = Color.Maroon;
                 //lcgForDescriptionNote.Expanded = !HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsHideConcludeAndNoteByDefault;
             }
@@ -4088,13 +4089,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 this.sereServExt.FILM_SIZE_ID = cboSizeOfFilm.EditValue != null ? (long?)cboSizeOfFilm.EditValue : null;
                 ProcessDescriptionContent();
 
-                if (ProcessSereServExt__DescriptionPrint(param, sereServ))
-                {
-                    Inventec.Desktop.Common.Message.WaitingManager.Hide();
-                    Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, success);
-                    return;
-                }
-
                 List<FileHolder> listFileHolder = new List<FileHolder>();
 
                 //đã gán và kiểm tra theo datasource
@@ -4159,6 +4153,16 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         data.Files = new List<FileSDO>();
                     data.Files.AddRange(ProcessPdfList(currentSsPdf));
                 }
+
+                if (!IsCheckDataSereServExt(data))
+                    return;
+                if (ProcessSereServExt__DescriptionPrint(param, sereServ))
+                {
+                    Inventec.Desktop.Common.Message.WaitingManager.Hide();
+                    Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, success);
+                    return;
+                }
+
 
                 Inventec.Common.Logging.LogSystem.Debug("INPUT DATA: ___ " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
                 MOS.SDO.HisSereServExtWithFileSDO apiResult = new Inventec.Common.Adapter.BackendAdapter(param).Post
@@ -4283,6 +4287,25 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             }
         }
 
+        private bool IsCheckDataSereServExt(HisSereServExtSDO sdo)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                var res = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>("api/HisSereServExt/CheckData", ApiConsumer.ApiConsumers.MosConsumer, sdo, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+                if (!res)
+                {
+                    Inventec.Desktop.Common.Message.WaitingManager.Hide();
+                    Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, false);
+                }
+                return res;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return false;
+        }
         private List<FileSDO> ProcessPdfList(List<SereServFileADO> currentSsPdf)
         {
             List<FileSDO> result = new List<FileSDO>();
@@ -4459,12 +4482,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     }
                     sereServExt.DESCRIPTION = Inventec.Common.String.CountVi.SubStringVi(description, index, 3000);
 
-                    if (ProcessSereServExt__DescriptionPrint(param, sereServ, sereServExt))
-                    {
-                        Inventec.Desktop.Common.Message.WaitingManager.Hide();
-                        Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, success);
-                        return;
-                    }
                     List<FileHolder> listFileHolder = new List<FileHolder>();
 
                     HisSereServExtSDO data = new HisSereServExtSDO();
@@ -4486,6 +4503,15 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             data.Files = new List<FileSDO>();
                         data.Files.AddRange(ProcessPdfList(currentSsPdf));
                     }
+                    if (!IsCheckDataSereServExt(data))
+                        return;
+                    if (ProcessSereServExt__DescriptionPrint(param, sereServ, sereServExt))
+                    {
+                        Inventec.Desktop.Common.Message.WaitingManager.Hide();
+                        Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, success);
+                        return;
+                    }
+
                     apiResult = new Inventec.Common.Adapter.BackendAdapter(param).Post
                         <MOS.SDO.HisSereServExtWithFileSDO>
                         (sereServExt.ID == 0 ?
@@ -6009,8 +6035,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 //nếu ko phải admin sẽ khóa lại
                 //nếu hoàn thành và không phải ng xử lý và ko phải admin thì disable
                 if (currentServiceReq != null &&
-                    currentServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT &&
-                    currentServiceReq.EXECUTE_LOGINNAME != Loginname && !HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(Loginname))
+                    currentServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
+                    //&& currentServiceReq.EXECUTE_LOGINNAME != Loginname && !HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(Loginname))
                 {
                     return true;
                 }
