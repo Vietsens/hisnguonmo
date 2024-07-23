@@ -169,24 +169,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Lib\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.LocalStorage.Location.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.ModuleExt">
-      <HintPath>..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.ModuleExt.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.ConnectBloodPressure, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Lib\HIS\HIS.Desktop.Plugins.Library.ConnectBloodPressure\HIS.Desktop.Plugins.Library.ConnectBloodPressure.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.IntegrateAssignPrescription">
-      <HintPath>..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.IntegrateAssignPrescription.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.Plugins.LocalCacheManager">
-      <HintPath>..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.LocalCacheManager.dll</HintPath>
+      <HintPath>..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.IntegrateAssignPrescription\HIS.Desktop.Plugins.Library.IntegrateAssignPrescription.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Print">
       <HintPath>..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment\HIS.Desktop.Print.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="His.EventLog, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -717,6 +708,14 @@
       <Project>{e791eade-c034-4b2a-873c-8fdb26fdeb8d}</Project>
       <Name>HIS.Desktop.LocalStorage.PubSub</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
+      <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>
+      <Name>HIS.Desktop.ModuleExt</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
+      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
+      <Name>HIS.Desktop.Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Plugins\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
@@ -724,6 +723,10 @@
     <ProjectReference Include="..\Plugins\HIS.Desktop.Plugins.HisTutorial\HIS.Desktop.Plugins.HisTutorial.csproj">
       <Project>{f22facd5-3da1-4f80-bb8e-dc83a0ab5cdb}</Project>
       <Name>HIS.Desktop.Plugins.HisTutorial</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Plugins\HIS.Desktop.Plugins.LocalCacheManager\HIS.Desktop.Plugins.LocalCacheManager.csproj">
+      <Project>{5317499f-b8bb-4f85-8c5d-a6b01476d810}</Project>
+      <Name>HIS.Desktop.Plugins.LocalCacheManager</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
