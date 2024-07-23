@@ -34,7 +34,7 @@ namespace MPS.Processor.Mps000203.PDO
         public long expMesttSttId__Reject = 3;// không duyệt
         public long expMesttSttId__Approval = 4; // duyệt
         public long expMesttSttId__Export = 5;// đã xuất
-
+        public List<HIS_BLOOD_GIVER> listBloodGiver = null;// danh sách người hiến máu
         public Mps000203PDO() { }
 
         public Mps000203PDO(V_HIS_EXP_MEST ExpMest, List<V_HIS_EXP_MEST_BLOOD> listBlood)
@@ -59,6 +59,18 @@ namespace MPS.Processor.Mps000203.PDO
             this.expMesttSttId__Reject = _expMesttSttId__Reject;
             this.expMesttSttId__Approval = _expMesttSttId__Approval;
             this.expMesttSttId__Export = _expMesttSttId__Export;
+        }
+
+        public Mps000203PDO(V_HIS_EXP_MEST ExpMest, List<V_HIS_EXP_MEST_BLOOD> listBlood, long _expMesttSttId__Draft, long _expMesttSttId__Request, long _expMesttSttId__Reject, long _expMesttSttId__Approval, long _expMesttSttId__Export,List<HIS_BLOOD_GIVER> listBloodGiver)
+        {
+            this._ExpMest = ExpMest;
+            this._Bloods = listBlood;
+            this.expMesttSttId__Draft = _expMesttSttId__Draft;
+            this.expMesttSttId__Request = _expMesttSttId__Request;
+            this.expMesttSttId__Reject = _expMesttSttId__Reject;
+            this.expMesttSttId__Approval = _expMesttSttId__Approval;
+            this.expMesttSttId__Export = _expMesttSttId__Export;
+            this.listBloodGiver = listBloodGiver;
         }
     }
 }
