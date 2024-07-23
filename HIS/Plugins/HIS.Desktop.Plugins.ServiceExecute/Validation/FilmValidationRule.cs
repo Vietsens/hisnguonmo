@@ -43,7 +43,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute.Validation
                         return vaild;
                     }
                 }
-                if (serviceReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA && HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ServiceExecuteCFG.NumberOfFilmCFG).Trim() == "1")
+
+                var numOfFilm = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ServiceExecuteCFG.NumberOfFilmCFG);
+                if (serviceReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA && !string.IsNullOrEmpty(numOfFilm) && numOfFilm.Trim() == "1")
                 {
                     if (string.IsNullOrEmpty(txtNumberOfFilm.Text.Trim()))
                     {

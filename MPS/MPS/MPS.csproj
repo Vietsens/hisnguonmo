@@ -31,117 +31,117 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
-      <HintPath>Lib\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\lib\MRS\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
-      <HintPath>..\..\..\IMSys\RELEASE\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+      <HintPath>..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.BarcodeLib, Version=1.0.0.19, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.BarcodeLib\Inventec.Common.BarcodeLib.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.BarcodeLib\Inventec.Common.BarcodeLib.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.DateTime, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.FlexCelExport">
-      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.FlexCelExport\Inventec.Common.FlexCelExport.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelExport\Inventec.Common.FlexCelExport.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.FlexCelPrint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
-      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Mapper">
-      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Number">
-      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.Number\Inventec.Common.Number.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Number\Inventec.Common.Number.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Print, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.Print\Inventec.Common.Print.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Print\Inventec.Common.Print.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.QRCoder">
-      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.QRCoder\Inventec.Common.QRCoder.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.QRCoder\Inventec.Common.QRCoder.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Repository">
-      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.Repository\Inventec.Common.Repository.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Repository\Inventec.Common.Repository.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.String">
-      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.TypeConvert">
-      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
-      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.ClientSystem">
-      <HintPath>..\..\..\IMSys\RELEASE\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Login">
-      <HintPath>..\..\..\IMSys\RELEASE\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
     <Reference Include="LIS.EFMODEL">
-      <HintPath>..\..\..\IMSys\RELEASE\LIS\LIS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\lib\LIS\LIS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="LIS.SDO">
-      <HintPath>..\..\..\IMSys\RELEASE\LIS\LIS.SDO.dll</HintPath>
+      <HintPath>..\..\..\lib\LIS\LIS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>Lib\log4net.dll</HintPath>
+      <HintPath>..\..\..\lib\WCF\Inventec.WCF\Client\.Net 4.5\Inventec.WCFClient.ResultSaleClient\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.Filter.dll</HintPath>
+      <HintPath>..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
+      <HintPath>..\..\..\lib\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.LibraryHein.Common.dll</HintPath>
+      <HintPath>..\..\..\lib\MOS\MOS.LibraryHein.Common.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Factory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.LibraryHein.Factory.dll</HintPath>
+      <HintPath>..\..\..\lib\MOS\MOS.LibraryHein.Factory.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.HcmPoorFund, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.LibraryHein.HcmPoorFund.dll</HintPath>
+      <HintPath>..\..\..\lib\MOS\MOS.LibraryHein.HcmPoorFund.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Ksk, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.LibraryHein.Ksk.dll</HintPath>
+      <HintPath>..\..\..\lib\MOS\MOS.LibraryHein.Ksk.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.SDO.dll</HintPath>
+      <HintPath>..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MOS.ServicePaty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.ServicePaty.dll</HintPath>
+      <HintPath>..\..\..\lib\MOS\MOS.ServicePaty.dll</HintPath>
     </Reference>
     <Reference Include="MOS.TDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\IMSys\RELEASE\MOS\MOS.TDO.dll</HintPath>
+      <HintPath>..\..\..\lib\MOS\MOS.TDO.dll</HintPath>
     </Reference>
     <Reference Include="SAR.EFMODEL">
-      <HintPath>..\..\..\IMSys\RELEASE\SAR\SAR.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\lib\SAR\SAR.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="SAR.Filter">
-      <HintPath>..\..\..\IMSys\RELEASE\SAR\SAR.Filter.dll</HintPath>
+      <HintPath>..\..\..\lib\SAR\SAR.Filter.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
