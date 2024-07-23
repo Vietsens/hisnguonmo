@@ -48,6 +48,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
         List<V_HIS_EXP_MEST_MEDICINE> lstGayNghien = new List<V_HIS_EXP_MEST_MEDICINE>();
         List<V_HIS_EXP_MEST_MEDICINE> lstGopGayNgienHuongThan = new List<V_HIS_EXP_MEST_MEDICINE>();
         List<V_HIS_EXP_MEST_MEDICINE> lstThuong = new List<V_HIS_EXP_MEST_MEDICINE>();
+        List<HIS_BLOOD_GIVER> lstBloodGiver = new List<HIS_BLOOD_GIVER>();
         HisExpMestResultSDO resultSdo = null;
         string Req_Department_Name = "";
         string Req_Room_Name = "";
@@ -1517,6 +1518,14 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         expMestBlood = AutoMapper.Mapper.Map<V_HIS_EXP_MEST_BLOOD>(item);
                         expMestBloods.Add(expMestBlood);
                     }
+
+                    var distinctBloodGiveIds = expMestBloods
+                         .Where(s => s.BLOOD_GIVE_ID != null)
+                         .Select(s => s.BLOOD_GIVE_ID)
+                         .Distinct()
+                         .ToList();
+                    lstBloodGiver = BackendDataWorker.Get<HIS_BLOOD_GIVER>().Where(s => distinctBloodGiveIds.Contains(s.ID)).ToList();
+                    //GetBloodGiver(distinctBloodGiveIds);
                     // TODO
                     //var bloods = dicMediMateAdo.Select(s => s.Value).Where(o => o.IsBlood == true).ToList();
 
@@ -1538,7 +1547,8 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     (
                      this._CurrentExpMest,
                      expMestBloods,
-                     mps000203Ado
+                     mps000203Ado,
+                     lstBloodGiver
                       );
                     MPS.ProcessorBase.Core.PrintData PrintData = null;
                     if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
@@ -1563,6 +1573,20 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             }
         }
 
+        //private void GetBloodGiver (List<long?> bloodGiveIds)
+        //{
+        //    try
+        //    {
+        //        CommonParam param = new CommonParam();
+        //        HisBloodGiverFilter filter = new HisBloodGiverFilter();
+        //        filter.IMP_MEST_IDs
+        //        lstBloodGiver = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_BLOOD_GIVER>>("api/HisBloodGiver/Get", ApiConsumers.MosConsumer, bloodGiveIds, param);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
         private void InPhieuXuatKhac(string printTypeCode, string fileName, ref bool result)
         {
             try
