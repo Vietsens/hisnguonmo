@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -72,7 +72,7 @@ namespace MPS.Processor.Mps000203
                 foreach(var blood in bloods)
                 {
                     Mps000203RDO rdo = new Mps000203RDO();
-                    Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_BLOOD>(rdo, bloods);
+                    Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_BLOOD>(rdo, blood);
                     if(blood.BLOOD_GIVE_ID != null)
                     {
                         var giver = this.rdo.listBloodGiver.FirstOrDefault(o => o.ID == blood.BLOOD_GIVE_ID);
@@ -95,15 +95,15 @@ namespace MPS.Processor.Mps000203
             {
                 if(giver != null)
                 {
-                    rdo.TEST_AFTER_HIV = giver.TEST_AFTER_HIV ?? 0;
-                    rdo.TEST_AFTER_HBV = giver.TEST_AFTER_HBV ?? 0;
-                    rdo.TEST_AFTER_HCV = giver.TEST_AFTER_HCV ?? 0;
-                    rdo.TEST_AFTER_GM = giver.TEST_AFTER_GM ?? 0;
-                    rdo.TEST_AFTER_KTBT = giver.TEST_AFTER_KTBT ?? 0;
+                    rdo.TEST_AFTER_HIV = giver.TEST_AFTER_HIV != null ? (giver.TEST_AFTER_HIV == 0 ? "Âm tính" : "Dương tính") : "";
+                    rdo.TEST_AFTER_HBV = giver.TEST_AFTER_HBV != null ? (giver.TEST_AFTER_HBV == 0 ? "Âm tính" : "Dương tính") : "";
+                    rdo.TEST_AFTER_HCV = giver.TEST_AFTER_HCV != null ? (giver.TEST_AFTER_HCV == 0 ? "Âm tính" : "Dương tính") : "";
+                    rdo.TEST_AFTER_GM = giver.TEST_AFTER_GM != null ? (giver.TEST_AFTER_GM == 0 ? "Âm tính" : "Dương tính") : "";
+                    rdo.TEST_AFTER_KTBT = giver.TEST_AFTER_KTBT != null ? (giver.TEST_AFTER_KTBT == 0 ? "Âm tính" : "Dương tính") : "";
                     //NAT
-                    rdo.TEST_AFTER_NAT_HIV = giver.TEST_AFTER_NAT_HIV ?? 0;
-                    rdo.TEST_AFTER_NAT_HBV = giver.TEST_AFTER_NAT_HBV ?? 0;
-                    rdo.TEST_AFTER_NAT_HCV = giver.TEST_AFTER_NAT_HCV ?? 0;
+                    rdo.TEST_AFTER_NAT_HIV = giver.TEST_AFTER_NAT_HIV != null ? (giver.TEST_AFTER_NAT_HIV == 0 ? "Âm tính" : "Dương tính") : "";
+                    rdo.TEST_AFTER_NAT_HBV = giver.TEST_AFTER_NAT_HBV != null ? (giver.TEST_AFTER_NAT_HBV == 0 ? "Âm tính" : "Dương tính") : "";
+                    rdo.TEST_AFTER_NAT_HCV = giver.TEST_AFTER_NAT_HCV != null ? (giver.TEST_AFTER_NAT_HCV == 0 ? "Âm tính" : "Dương tính") : "";
                 }
             }
             catch (Exception ex)
@@ -214,13 +214,13 @@ namespace MPS.Processor.Mps000203
     //}
     public class Mps000203RDO : V_HIS_EXP_MEST_BLOOD
     {
-        public long TEST_AFTER_HIV { get; set; }
-        public long TEST_AFTER_HBV { get; set; }
-        public long TEST_AFTER_HCV { get; set; }
-        public long TEST_AFTER_GM { get; set; }
-        public long TEST_AFTER_KTBT { get; set; }
-        public long TEST_AFTER_NAT_HIV { get; set; }
-        public long TEST_AFTER_NAT_HCV { get; set; }
-        public long TEST_AFTER_NAT_HBV { get; set; }
+        public string TEST_AFTER_HIV { get; set; }
+        public string TEST_AFTER_HBV { get; set; }
+        public string TEST_AFTER_HCV { get; set; }
+        public string TEST_AFTER_GM { get; set; }
+        public string TEST_AFTER_KTBT { get; set; }
+        public string TEST_AFTER_NAT_HIV { get; set; }
+        public string TEST_AFTER_NAT_HCV { get; set; }
+        public string TEST_AFTER_NAT_HBV { get; set; }
     }
 }
