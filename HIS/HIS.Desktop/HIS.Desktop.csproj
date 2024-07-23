@@ -173,6 +173,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Lib\HIS\HIS.Desktop.Plugins.Library.ConnectBloodPressure\HIS.Desktop.Plugins.Library.ConnectBloodPressure.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.IntegrateAssignPrescription">
+      <HintPath>..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.IntegrateAssignPrescription\HIS.Desktop.Plugins.Library.IntegrateAssignPrescription.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Print">
       <HintPath>..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment\HIS.Desktop.Print.dll</HintPath>
     </Reference>
@@ -720,10 +723,6 @@
     <ProjectReference Include="..\Plugins\HIS.Desktop.Plugins.HisTutorial\HIS.Desktop.Plugins.HisTutorial.csproj">
       <Project>{f22facd5-3da1-4f80-bb8e-dc83a0ab5cdb}</Project>
       <Name>HIS.Desktop.Plugins.HisTutorial</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Plugins\HIS.Desktop.Plugins.Library.IntegrateAssignPrescription\HIS.Desktop.Plugins.Library.IntegrateAssignPrescription.csproj">
-      <Project>{6f4853d9-8fb1-4dee-bcf5-c456bed5e9a9}</Project>
-      <Name>HIS.Desktop.Plugins.Library.IntegrateAssignPrescription</Name>
     </ProjectReference>
     <ProjectReference Include="..\Plugins\HIS.Desktop.Plugins.LocalCacheManager\HIS.Desktop.Plugins.LocalCacheManager.csproj">
       <Project>{5317499f-b8bb-4f85-8c5d-a6b01476d810}</Project>
