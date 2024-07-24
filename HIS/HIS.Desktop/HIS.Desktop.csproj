@@ -322,6 +322,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Lib\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Desktop.CustomControl">
+      <HintPath>..\..\..\LIB\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Desktop.Plugins.ChangePassword">
       <HintPath>..\..\..\Lib\Inventec.Desktop\Inventec.Desktop.Plugins.ChangePassword\Inventec.Desktop.Plugins.ChangePassword.dll</HintPath>
     </Reference>
