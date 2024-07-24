@@ -32,15 +32,15 @@
   <ItemGroup>
     <Reference Include="ACS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\ACS\ACS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\ACS\ACS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="ACS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\ACS\ACS.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\ACS\ACS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="ACS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\ACS\ACS.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\ACS\ACS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper">
       <HintPath>..\..\ReferencedAssemblies\AutoMapper.dll</HintPath>
@@ -53,19 +53,19 @@
       <HintPath>..\..\..\..\..\..\..\Test\His.Desktop\ReferencedAssemblies\HIS.Desktop.ApplicationFont.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.LIS_RS">
-      <HintPath>..\..\..\..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.LIS_RS\IMSys.DbConfig.LIS_RS.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.LIS_RS\IMSys.DbConfig.LIS_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.DateTime, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.String, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.TripleDes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.TripleDes\Inventec.Common.TripleDes.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.TripleDes\Inventec.Common.TripleDes.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -73,52 +73,52 @@
     <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="Inventec.Common.Adapter">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.HardDrive">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.HardDrive\Inventec.Common.HardDrive.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.HardDrive\Inventec.Common.HardDrive.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.RegistryUtil, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.RegistryUtil\Inventec.Common.RegistryUtil.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.RegistryUtil\Inventec.Common.RegistryUtil.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Resource, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.WebApiClient">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.LanguageManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Message">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Modules">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Core">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
     <Reference Include="LIS.EFMODEL">
-      <HintPath>..\..\..\..\..\..\RELEASE\LIS\LIS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\LIS\LIS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="LIS.Filter">
-      <HintPath>..\..\..\..\..\..\RELEASE\LIS\LIS.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\LIS\LIS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="LIS.Parser">
-      <HintPath>..\..\..\..\..\..\RELEASE\LIS\LIS.Parser.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\LIS\LIS.Parser.dll</HintPath>
     </Reference>
     <Reference Include="LIS.SDO">
-      <HintPath>..\..\..\..\..\..\RELEASE\LIS\LIS.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\LIS\LIS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

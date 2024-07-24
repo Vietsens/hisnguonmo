@@ -42,7 +42,7 @@
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="HIS.Desktop.LocalStorage.Location">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Plugins.EventLog\HIS.Desktop.LocalStorage.Location.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Plugins.EventLog\HIS.Desktop.LocalStorage.Location.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.Adapter.dll</HintPath>
@@ -54,10 +54,10 @@
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.ExcelImport.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.FlexCelExport">
-      <HintPath>..\..\..\..\..\..\RELEASE\MPSv2\MPS.ProcessorBase\Inventec.Common.FlexCelExport.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\Inventec.Common.FlexCelExport.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\..\..\..\RELEASE\WCF\CDA.WCF\Service\CDA.WCFService.SaleService\Inventec.Common.Logging.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\WCF\CDA.WCF\Service\CDA.WCFService.SaleService\Inventec.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Mapper">
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.Mapper.dll</HintPath>
@@ -90,10 +90,10 @@
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.UC.Paging.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

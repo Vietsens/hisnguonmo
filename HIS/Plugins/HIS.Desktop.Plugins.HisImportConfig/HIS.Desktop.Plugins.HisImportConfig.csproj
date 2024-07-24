@@ -42,28 +42,28 @@
     <Reference Include="DevExpress.XtraNavBar.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="HIS.Desktop.ApiConsumer">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.Desktop.Plugins.Library.PrintPublicMedicines\HIS.Desktop.ApiConsumer.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintPublicMedicines\HIS.Desktop.ApiConsumer.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Common">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.Desktop.Plugins.Library.PrintPublicMedicines\HIS.Desktop.Common.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintPublicMedicines\HIS.Desktop.Common.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.BackendData">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.Desktop.Plugins.Library.PrintPublicMedicines\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintPublicMedicines\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.ConfigSystem">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.Desktop.Plugins.Library.PrintPublicMedicines\HIS.Desktop.LocalStorage.ConfigSystem.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintPublicMedicines\HIS.Desktop.LocalStorage.ConfigSystem.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.LocalData">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.Desktop.Plugins.Library.PrintPublicMedicines\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintPublicMedicines\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.Location">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.Desktop.Plugins.Library.PrintPublicMedicines\HIS.Desktop.LocalStorage.Location.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintPublicMedicines\HIS.Desktop.LocalStorage.Location.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.Desktop.ModuleExt.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.Desktop.Plugins.Library.PrintPublicMedicines\HIS.Desktop.Utility.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintPublicMedicines\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -72,7 +72,7 @@
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.ExcelExport">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.ExcelExport\Inventec.Common.ExcelExport.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.ExcelExport\Inventec.Common.ExcelExport.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.ExcelImport">
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.ExcelImport.dll</HintPath>
@@ -93,25 +93,25 @@
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Message">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Modules">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\His.UC.Icd\Inventec.Desktop.Common.Modules.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\His.UC.Icd\Inventec.Desktop.Common.Modules.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Core">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Plugins.Plugin">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Plugins.Plugin\Inventec.Desktop.Plugins.Plugin.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Plugins.Plugin\Inventec.Desktop.Plugins.Plugin.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

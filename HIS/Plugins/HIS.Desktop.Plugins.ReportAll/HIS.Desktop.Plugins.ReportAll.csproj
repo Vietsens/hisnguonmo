@@ -31,10 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ACS.EFMODEL">
-      <HintPath>..\..\..\..\..\..\RELEASE\ACS\ACS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\ACS\ACS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="ACS.Filter">
-      <HintPath>..\..\..\..\..\..\RELEASE\ACS\ACS.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\ACS\ACS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.BonusSkins.v15.2">
       <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.BonusSkins.v15.2.dll</HintPath>
@@ -203,99 +203,99 @@
     </Reference>
     <Reference Include="His.UC.CreateReport, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\His.UC.CreateReport\His.UC.CreateReport.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\His.UC.CreateReport\His.UC.CreateReport.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.FormType, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\His.UC.FormType\HIS.UC.FormType.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\His.UC.FormType\HIS.UC.FormType.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
-      <HintPath>..\..\..\..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.SAR_RS">
-      <HintPath>..\..\..\..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.SAR_RS\IMSys.DbConfig.SAR_RS.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.SAR_RS\IMSys.DbConfig.SAR_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.WebApiClient">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.LanguageManager">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Message">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Modules">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Core">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.ClientSystem">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Token\Inventec.Token.Core\Inventec.Token.Core.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Token\Inventec.Token.Core\Inventec.Token.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.ListReports">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.UC\Inventec.UC.ListReports\Inventec.UC.ListReports.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.ListReports\Inventec.UC.ListReports.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.ListReportType">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.UC\Inventec.UC.ListReportType\Inventec.UC.ListReportType.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.ListReportType\Inventec.UC.ListReportType.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.ListReportTypeGroup">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.UC\Inventec.UC.ListReportTypeGroup\Inventec.UC.ListReportTypeGroup.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.ListReportTypeGroup\Inventec.UC.ListReportTypeGroup.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Login">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MRS.SDO">
-      <HintPath>..\..\..\..\..\..\RELEASE\MRS\MRS.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MRS\MRS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.UC\Inventec.UC.Paging\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SAR.EFMODEL">
-      <HintPath>..\..\..\..\..\..\RELEASE\SAR\SAR.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\SAR\SAR.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="SAR.Filter">
-      <HintPath>..\..\..\..\..\..\RELEASE\SAR\SAR.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\SAR\SAR.Filter.dll</HintPath>
     </Reference>
     <Reference Include="SDA.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\SDA\SDA.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\SDA\SDA.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="SDA.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\SDA\SDA.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\SDA\SDA.Filter.dll</HintPath>
     </Reference>
     <Reference Include="SDA.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\SDA\SDA.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\SDA\SDA.SDO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

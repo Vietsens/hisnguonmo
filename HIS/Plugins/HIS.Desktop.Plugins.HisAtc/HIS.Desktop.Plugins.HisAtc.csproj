@@ -41,7 +41,7 @@
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.Desktop.Common.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.Location">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Plugins.EventLog\HIS.Desktop.LocalStorage.Location.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Plugins.EventLog\HIS.Desktop.LocalStorage.Location.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -101,10 +101,10 @@
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.UC.Paging.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
