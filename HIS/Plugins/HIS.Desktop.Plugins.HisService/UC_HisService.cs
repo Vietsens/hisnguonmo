@@ -2166,7 +2166,7 @@ namespace HIS.Desktop.Plugins.HisService
                         {
                             ProcessSelectChiSo(string.Join(",", listHisSuimSety.Select(o=>o.SUIM_INDEX_ID).ToList()), gridCheckChiSo);
                         }
-                        else
+                        else if(data.SUIM_INDEX_ID == null)
                         {
                             gridCheckChiSo.ClearSelection(cboChiSo.Properties.View);
                             cboChiSo.EditValue = null;
