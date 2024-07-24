@@ -550,7 +550,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 bbtnChoose = null;
                 bar2 = null;
                 barManager1 = null;
-                lciPaging = null;
                 ucPaging1 = null;
                 emptySpaceItem1 = null;
                 layoutControlItem3 = null;

@@ -57,7 +57,7 @@
       <HintPath>..\SDA.Desktop.Plugins.SdaProvince\bin\Debug\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ApiConsumer">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.TranPati\HIS.Desktop.ApiConsumer.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TranPati\HIS.Desktop.ApiConsumer.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Common">
       <HintPath>..\SDA.Desktop.Plugins.SdaProvince\bin\Debug\HIS.Desktop.Common.dll</HintPath>
@@ -87,7 +87,7 @@
       <HintPath>..\SDA.Desktop.Plugins.SdaProvince\bin\Debug\HIS.Desktop.LocalStorage.HisConfig.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.LocalData">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.TranPati\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TranPati\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.Location">
       <HintPath>..\SDA.Desktop.Plugins.SdaProvince\bin\Debug\HIS.Desktop.LocalStorage.Location.dll</HintPath>
@@ -96,7 +96,7 @@
       <HintPath>..\SDA.Desktop.Plugins.SdaProvince\bin\Debug\HIS.Desktop.Plugins.HisTutorial.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.TreatmentFinish\HIS.Desktop.Utility.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TreatmentFinish\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.XmlCacheMonitor">
       <HintPath>..\SDA.Desktop.Plugins.SdaProvince\bin\Debug\HIS.Desktop.XmlCacheMonitor.dll</HintPath>
