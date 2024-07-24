@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
         long RoomTypeId;
         string tenkhoHientai;
         List<long> roomIds = new List<long>();
-        List<long> mediStockIDs = new List<long>();
         bool loadFirst = true;
 
         string fileNameMedicine = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.IO.Path.Combine("ModuleDesign", "HIS.Desktop.Plugins.MedicineMediStockSummary.gridViewMediMateStockSum1.xml"));
@@ -102,6 +101,7 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                 gridViewMediMateStockSum.Columns.Clear();
                 string keyword = Inventec.Common.String.Convert.UnSignVNese(this.txtKeyword.Text.ToLower().Trim());
 
+                List<HIS_MEDI_STOCK> MediStock = new List<HIS_MEDI_STOCK>();
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
                 if (chkMedicine.Checked)
@@ -115,10 +115,11 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                         {
                             HIS_MEDI_STOCK medi = BackendDataWorker.Get<HIS_MEDI_STOCK>().Where(o => o.ROOM_ID == roomID).FirstOrDefault();
                             if (medi != null && medi.IS_BUSINESS == 1)
-                                mediStockIDs.Add(medi.ID);
+                            {
+                                MediStock.Add(medi);
+                            }
                         }
 
-                        mediFilter.MEDI_STOCK_IDs = mediStockIDs;
                     }
                     else
                     {
@@ -127,23 +128,22 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                         {
                             HIS_MEDI_STOCK medi = BackendDataWorker.Get<HIS_MEDI_STOCK>().Where(o => o.ROOM_ID == roomID).FirstOrDefault();
                             if (medi != null && medi.IS_BUSINESS != 1)
-                                mediStockIDs.Add(medi.ID);
+                                MediStock.Add(medi);
                         }
-
-                        mediFilter.MEDI_STOCK_IDs = mediStockIDs;
                     }
 
                     lstMediInStocks = new MedicineTypeInHospitalSDO();
                     List<MedicineTypeInHospitalSDO> MediHosList = new List<MedicineTypeInHospitalSDO>();
                     int count = 0;
-                    while (mediStockIDs.Count - count > 0)
+                    while (MediStock.Count - count > 0)
                     {
-                        mediFilter.MEDI_STOCK_IDs = mediStockIDs.Skip(count).Take(100).ToList();
+                        mediFilter.MEDI_STOCK_IDs = MediStock.Select(o => o.ID).Skip(count).Take(100).ToList();
                         var lstMediInStocksTmp = new BackendAdapter(param).Get<MedicineTypeInHospitalSDO>("api/HisMedicineType/GetInHospitalMedicineType", ApiConsumers.MosConsumer, mediFilter, param);
                         if (lstMediInStocksTmp != null)
                             MediHosList.Add(lstMediInStocksTmp);
                         count += 100;
                     }
+
                     if (MediHosList != null && MediHosList.Count > 0)
                     {
                         List<string> MediStockNames = new List<string>();
@@ -153,14 +153,31 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                         List<ExpandoObject> MedicineTypeDatas = new List<ExpandoObject>();
                         foreach (var item in MediHosList)
                         {
+                            if (item.MediStockNames == null || item.MediStockNames.Count == 0)
+                                continue;
                             MediStockNames.AddRange(item.MediStockNames);
                             MediStockCodes.AddRange(item.MediStockCodes);
                             MedicineTypeDatas.AddRange(item.MedicineTypeDatas);
                         }
+
+                        var ListMedicineTypeTemp = new List<ExpandoObject>();
+                        foreach (var item in MedicineTypeDatas)
+                        {
+                            foreach (var codeStock in MediStockCodes)
+                            {
+                                if (!((IDictionary<string, object>)item).ContainsKey(codeStock))
+                                {
+                                    ((IDictionary<string, object>)item).Add(codeStock, 0);
+                                }
+                            }
+                            ListMedicineTypeTemp.Add(item);
+                        }
+                        MedicineTypeDatas = ListMedicineTypeTemp;
+
                         lstMediInStocks = new MedicineTypeInHospitalSDO()
                         {
-                            MediStockCodes = MediStockCodes,
-                            MediStockNames = MediStockNames,
+                            MediStockCodes = MediStockCodes.Distinct().ToList(),
+                            MediStockNames = MediStockNames.Distinct().ToList(),
                             MedicineTypeDatas = MedicineTypeDatas
                         };
                     }
@@ -185,10 +202,9 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                         {
                             HIS_MEDI_STOCK medi = BackendDataWorker.Get<HIS_MEDI_STOCK>().Where(o => o.ROOM_ID == roomID).FirstOrDefault();
                             if (medi != null && medi.IS_BUSINESS == 1)
-                                mediStockIDs.Add(medi.ID);
+                                MediStock.Add(medi);
                         }
 
-                        mateFilter.MEDI_STOCK_IDs = mediStockIDs;
                     }
                     else
                     {
@@ -197,18 +213,17 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                         {
                             HIS_MEDI_STOCK medi = BackendDataWorker.Get<HIS_MEDI_STOCK>().Where(o => o.ROOM_ID == roomID).FirstOrDefault();
                             if (medi != null && medi.IS_BUSINESS != 1)
-                                mediStockIDs.Add(medi.ID);
+                                MediStock.Add(medi);
                         }
 
-                        mateFilter.MEDI_STOCK_IDs = mediStockIDs;
                     }
 
                     lstMateInStocks = new MaterialTypeInHospitalSDO();
                     List<MaterialTypeInHospitalSDO> MateHosList = new List<MaterialTypeInHospitalSDO>();
                     int count = 0;
-                    while (mediStockIDs.Count - count > 0)
+                    while (MediStock.Count - count > 0)
                     {
-                        mateFilter.MEDI_STOCK_IDs = mediStockIDs.Skip(count).Take(100).ToList();
+                        mateFilter.MEDI_STOCK_IDs = MediStock.Select(o=>o.ID).Skip(count).Take(100).ToList();
 
                         var lstMateInStocksTmp = new BackendAdapter(param).Get<MaterialTypeInHospitalSDO>("api/HisMaterialType/GetInHospitalMaterialType", ApiConsumers.MosConsumer, mateFilter, param);
                         if (lstMateInStocksTmp != null)
@@ -228,6 +243,21 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                             MediStockCodes.AddRange(item.MediStockCodes);
                             MaterialTypeDatas.AddRange(item.MaterialTypeDatas);
                         }
+
+                        var ListMaterialTypeTemp = new List<ExpandoObject>();
+                        foreach (var item in MaterialTypeDatas)
+                        {
+                            foreach (var codeStock in MediStockCodes)
+                            {
+                                if (!((IDictionary<string, object>)item).ContainsKey(codeStock))
+                                {
+                                    ((IDictionary<string, object>)item).Add(codeStock, 0);
+                                }
+                            }
+                            ListMaterialTypeTemp.Add(item);
+                        }
+                        MaterialTypeDatas = ListMaterialTypeTemp;
+
                         lstMateInStocks = new MaterialTypeInHospitalSDO()
                         {
                             MediStockCodes = MediStockCodes,
