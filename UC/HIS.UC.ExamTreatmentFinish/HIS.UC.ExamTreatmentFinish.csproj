@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5B54B82F-A2C4-439A-9ED0-7C0CBDE6D224}</ProjectGuid>
+    <ProjectGuid>{BFBC4F29-FBEB-4EA0-896A-1A7362AE75AF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HIS.UC.ExamTreatmentFinish</RootNamespace>
@@ -430,55 +430,55 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\HIS\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS\HIS.Desktop.ApplicationFont\HIS.Desktop.ApplicationFont.csproj">
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.ApplicationFont\HIS.Desktop.ApplicationFont.csproj">
       <Project>{ee6bba16-7e46-49bd-9707-a2069e480302}</Project>
       <Name>HIS.Desktop.ApplicationFont</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS\HIS.Desktop.Common\HIS.Desktop.Common.csproj">
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.Common\HIS.Desktop.Common.csproj">
       <Project>{59fdcba7-0f9f-4257-b95a-e37a1ccfe107}</Project>
       <Name>HIS.Desktop.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
       <Name>HIS.Desktop.LocalStorage.BackendData</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
       <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
       <Name>HIS.Desktop.LocalStorage.ConfigApplication</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS\HIS.Desktop.LocalStorage.ConfigSystem\HIS.Desktop.LocalStorage.ConfigSystem.csproj">
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.ConfigSystem\HIS.Desktop.LocalStorage.ConfigSystem.csproj">
       <Project>{48d25a6a-11bc-4f0f-8dd7-15e03a2bcada}</Project>
       <Name>HIS.Desktop.LocalStorage.ConfigSystem</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
       <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
       <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
       <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
       <Name>HIS.Desktop.LocalStorage.LocalData</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
       <Name>HIS.Desktop.LocalStorage.Location</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
       <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>
       <Name>HIS.Desktop.ModuleExt</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
       <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
       <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS\Plugins\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
+    <ProjectReference Include="..\..\..\HIS\Plugins\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
     </ProjectReference>

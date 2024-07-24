@@ -161,9 +161,7 @@
     <Compile Include="EmrFlowProcessors.cs" />
     <Compile Include="EmrFlow\EmrFlowBehavior.cs" />
     <Compile Include="EmrFlow\EmrFlowFactory.cs" />
-    <Compile Include="EmrFlow\frmEmrFlow.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="EmrFlow\frmEmrFlow.cs" />
     <Compile Include="EmrFlow\frmEmrFlow.Designer.cs">
       <DependentUpon>frmEmrFlow.cs</DependentUpon>
     </Compile>

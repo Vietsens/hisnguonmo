@@ -76,9 +76,6 @@
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\..\..\..\lib\HIS\ReferencedAssemblies\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReqTreatment">
-      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>

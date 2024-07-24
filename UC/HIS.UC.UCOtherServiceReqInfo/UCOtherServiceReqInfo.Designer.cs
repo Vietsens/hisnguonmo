@@ -46,23 +46,23 @@ namespace HIS.UC.UCOtherServiceReqInfo
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SuperToolTip superToolTip3 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem3 = new DevExpress.Utils.ToolTipItem();
-            DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCOtherServiceReqInfo));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip2 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem2 = new DevExpress.Utils.ToolTipItem();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCOtherServiceReqInfo));
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             this.lcUCOtherServiceReqInfo = new DevExpress.XtraLayout.LayoutControl();
             this.panel2 = new System.Windows.Forms.Panel();
             this.txtHosReasonNt = new DevExpress.XtraEditors.ButtonEdit();
@@ -432,7 +432,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.cboOtherPaySource.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboOtherPaySource.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.cboOtherPaySource.Properties.NullText = "";
             this.cboOtherPaySource.Properties.View = this.gridView1;
             this.cboOtherPaySource.Size = new System.Drawing.Size(198, 20);
@@ -474,13 +474,13 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.cboPriorityType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboPriorityType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Clear, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Clear, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.cboPriorityType.Properties.NullText = "";
             this.cboPriorityType.Size = new System.Drawing.Size(175, 20);
             this.cboPriorityType.StyleController = this.lcUCOtherServiceReqInfo;
-            toolTipItem3.Text = "Trường hợp ưu tiên";
-            superToolTip3.Items.Add(toolTipItem3);
-            this.cboPriorityType.SuperTip = superToolTip3;
+            toolTipItem1.Text = "Trường hợp ưu tiên";
+            superToolTip1.Items.Add(toolTipItem1);
+            this.cboPriorityType.SuperTip = superToolTip1;
             this.cboPriorityType.TabIndex = 4;
             this.cboPriorityType.ToolTip = "Trường hợp ưu tiên";
             this.cboPriorityType.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboPriorityType_Closed);
@@ -523,9 +523,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             0});
             this.txtSTTPriority.Size = new System.Drawing.Size(67, 20);
             this.txtSTTPriority.StyleController = this.lcUCOtherServiceReqInfo;
-            toolTipItem1.Text = "Số thứ tự ưu tiên dành cho bệnh nhân đăng ký khám qua tổng đài";
-            superToolTip1.Items.Add(toolTipItem1);
-            this.txtSTTPriority.SuperTip = superToolTip1;
+            toolTipItem2.Text = "Số thứ tự ưu tiên dành cho bệnh nhân đăng ký khám qua tổng đài";
+            superToolTip2.Items.Add(toolTipItem2);
+            this.txtSTTPriority.SuperTip = superToolTip2;
             this.txtSTTPriority.TabIndex = 13;
             this.txtSTTPriority.EditValueChanged += new System.EventHandler(this.txtSTTPriority_EditValueChanged);
             // 
@@ -548,7 +548,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.cboCTT.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboCTT.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.cboCTT.Properties.NullText = "";
             this.cboCTT.Properties.View = this.gridLookUpEdit1View;
             this.cboCTT.Size = new System.Drawing.Size(160, 20);

@@ -253,7 +253,6 @@ namespace HIS.UC.UCPatientRaw
             {
                 DisableControlOldPatientInformationOption(true);
                 popupControlContainer1.HidePopup();
-                this.dataHeinCardFromQrCccd = null;
                 this.dlgSendPatientSdo(null);
                 this.lstSend = null;
                 this.ResultDataADO = new Desktop.Plugins.Library.CheckHeinGOV.ResultDataADO();

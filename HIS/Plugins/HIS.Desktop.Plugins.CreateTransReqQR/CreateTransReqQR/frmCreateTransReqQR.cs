@@ -722,17 +722,6 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                                 btnNew.Enabled = btnCreate.Enabled = false;
                                 if (inputTransReq.DelegtePrint != null)
                                     inputTransReq.DelegtePrint();
-                                else
-                                {
-                                    HisServiceReqViewFilter filter = new HisServiceReqViewFilter();
-                                    filter.TREATMENT_ID = currentTransReq.TREATMENT_ID;
-                                    var serviceReq = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>>("/api/HisServiceReq/GetView", ApiConsumers.MosConsumer, filter, null);
-                                    if (serviceReq != null && serviceReq.Count > 0)
-                                    {
-                                        HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor proc = new Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(serviceReq, currentModule.RoomId);
-                                        proc.Print("Mps000276");
-                                    }
-                                }    
                             }
                             else
                             {

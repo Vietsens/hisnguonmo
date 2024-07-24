@@ -48,7 +48,6 @@ namespace HIS.Desktop.Common.BankQrCode
             this.DtrEnable = true;
             this.RtsEnable = true;
             this.ReadTimeout = 3000;
-            this.WriteTimeout = 5000;
             this.DataReceived += PosProcessor_DataReceived;
         }
 
@@ -56,7 +55,6 @@ namespace HIS.Desktop.Common.BankQrCode
         {
             try
             {
-                Inventec.Common.Logging.LogSystem.Info("Start DataReceived");
                 SerialPort com = sender as SerialPort;
                 int a = com.BytesToRead;
                 byte[] buffer = new byte[a];
@@ -65,7 +63,6 @@ namespace HIS.Desktop.Common.BankQrCode
                 Inventec.Common.Logging.LogSystem.Debug(MessageError + ": " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => System.Text.Encoding.ASCII.GetString(buffer)), System.Text.Encoding.ASCII.GetString(buffer)));
                 if (delegateSend != null)
                     delegateSend(System.Text.Encoding.ASCII.GetString(buffer).EndsWith(RESULT_FORMAT), MessageError);
-                Inventec.Common.Logging.LogSystem.Info("End DataReceived");
             }
             catch (Exception ex)
             {
@@ -78,18 +75,13 @@ namespace HIS.Desktop.Common.BankQrCode
         {
             try
             {
-                Inventec.Common.Logging.LogSystem.Info("Start ConnectPort");
                 this.Open();
-                Inventec.Common.Logging.LogSystem.Info("Check ConnectPort");
                 if (this.IsOpen)
                 {
-                    Inventec.Common.Logging.LogSystem.Info("Check SendData");
                     this.Send(null);
                     try
                     {
-                        Inventec.Common.Logging.LogSystem.Info("Read Result");
                         var key = this.ReadChar();//Kết nối đúng thiết bị sẽ không nhảy vào Exception
-                        Inventec.Common.Logging.LogSystem.Info("Result valid, ConnectPort Success");
                         return true;
                     }
                     catch (Exception ex)
@@ -102,7 +94,6 @@ namespace HIS.Desktop.Common.BankQrCode
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-            Inventec.Common.Logging.LogSystem.Info("ConnectPort Fail");
             messageError = string.Format("Kết nối tới thiết bị IPOS thất bại. Vui lòng kiểm tra lại kết nối cổng {0}", this.PortName);
             DisposePort();
             return false;

@@ -1640,76 +1640,13 @@ namespace HIS.UC.UCOtherServiceReqInfo
             try
             {
                 List<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON> datas = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
-                await InitComboHisHospitalizeReason(datas);
-                //this.InitComboCommon(this.cboHosReason, datas, "ID", "HOSPITALIZE_REASON_NAME", "HOSPITALIZE_REASON_CODE");
-                //this.cboHosReason.Properties.ImmediatePopup = true;
+                this.InitComboCommon(this.cboHosReason, datas, "ID", "HOSPITALIZE_REASON_NAME", "HOSPITALIZE_REASON_CODE");
+                this.cboHosReason.Properties.ImmediatePopup = true;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        }
-
-        private async Task InitComboHisHospitalizeReason(List<HIS_HOSPITALIZE_REASON> data)
-        {
-            try
-            {
-                try
-                {
-                    cboHosReason.Properties.DataSource = data;
-                    cboHosReason.Properties.DisplayMember = "HOSPITALIZE_REASON_NAME";
-                    cboHosReason.Properties.ValueMember = "ID";
-
-                    cboHosReason.Properties.View.OptionsView.GroupDrawMode = DevExpress.XtraGrid.Views.Grid.GroupDrawMode.Office;
-                    cboHosReason.Properties.View.OptionsView.HeaderFilterButtonShowMode = DevExpress.XtraEditors.Controls.FilterButtonShowMode.SmartTag;
-                    cboHosReason.Properties.View.OptionsView.ShowAutoFilterRow = true;
-                    cboHosReason.Properties.View.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
-                    cboHosReason.Properties.View.OptionsView.ShowDetailButtons = false;
-                    cboHosReason.Properties.View.OptionsView.ShowGroupPanel = false;
-                    cboHosReason.Properties.View.OptionsView.ShowIndicator = false;
-                    cboHosReason.Properties.View.RowCellClick += View_RowCellClick;
-
-
-                    DevExpress.XtraGrid.Columns.GridColumn column = cboHosReason.Properties.View.Columns.AddField("HOSPITALIZE_REASON_CODE");
-                    column.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
-                    column.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
-                    column.VisibleIndex = 1;
-                    column.Width = 150;
-                    column.Caption = "Mã";
-
-                    DevExpress.XtraGrid.Columns.GridColumn column1 = cboHosReason.Properties.View.Columns.AddField("HOSPITALIZE_REASON_NAME");
-                    column1.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
-                    column1.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
-                    column1.VisibleIndex = 2;
-                    column1.Width = 250;
-                    column1.Caption = "Tên";
-                    cboHosReason.Properties.View.OptionsView.ShowColumnHeaders = true;
-                    cboHosReason.Properties.View.OptionsSelection.MultiSelect = true;
-                    cboHosReason.Properties.ImmediatePopup = true;
-                }
-                catch (Exception ex)
-                {
-                    Inventec.Common.Logging.LogSystem.Warn(ex);
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void View_RowCellClick(object sender, DevExpress.XtraGrid.Views.Grid.RowCellClickEventArgs e)
-        {
-            try
-            {
-                cboHosReason.EditValue = ((HIS_HOSPITALIZE_REASON)cboHosReason.Properties.View.GetFocusedRow()).ID;
-                cboHosReason.ClosePopup();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-
         }
 
         private void cboHosReason_ButtonClick(object sender, ButtonPressedEventArgs e)
