@@ -3254,13 +3254,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 {
                     List<SereServADO> serviceCheckeds__Send = this.ServiceIsleafADOs.FindAll(o => o.IsChecked);
                     this.btnSave.Enabled = this.btnSaveAndPrint.Enabled = this.btnCreateServiceGroup.Enabled = (serviceCheckeds__Send != null && serviceCheckeds__Send.Count > 0);
-                    this.pnlPrintAssignService.Enabled = this.btnShowDetail.Enabled = this.btnCreateBill.Enabled = this.btnDepositService.Enabled = this.btnPrintPhieuHuongDanBN.Enabled = this.BtnPrint.Enabled = this.btnEdit.Enabled = this.btnQRPay.Enabled = false;
+                    this.pnlPrintAssignService.Enabled = this.btnShowDetail.Enabled = this.btnCreateBill.Enabled = this.btnDepositService.Enabled = this.btnPrintPhieuHuongDanBN.Enabled = this.BtnPrint.Enabled = this.btnEdit.Enabled = false;
 
                 }
                 else
                 {
                     this.btnSave.Enabled = this.btnSaveAndPrint.Enabled = this.btnCreateServiceGroup.Enabled = false;
-                    this.pnlPrintAssignService.Enabled = this.btnShowDetail.Enabled = this.btnCreateBill.Enabled = this.btnDepositService.Enabled = this.btnPrintPhieuHuongDanBN.Enabled = this.BtnPrint.Enabled = this.btnEdit.Enabled = this.btnQRPay.Enabled = true;
+                    this.pnlPrintAssignService.Enabled = this.btnShowDetail.Enabled = this.btnCreateBill.Enabled = this.btnDepositService.Enabled = this.btnPrintPhieuHuongDanBN.Enabled = this.BtnPrint.Enabled = this.btnEdit.Enabled = true;
                 }
 
                 //hiển thị ảnh checkbox
@@ -9269,10 +9269,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             try
             {
                 listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
-                if (listConfig != null)
-               {
-                   btnQRPay.Enabled = true;
-               }
+                
+                btnQRPay.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -9319,7 +9317,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 adoqr.TreatmentId = this.treatmentId;
                                 adoqr.ConfigValue = selectedConfig;
                                 adoqr.TransReqId = 0;
-                                adoqr.DelegtePrint = (HIS.Desktop.Common.RefeshReference)IN_QR;
+                                adoqr.DelegtePrint = this.serviceReqComboResultSDO != null  ? (HIS.Desktop.Common.RefeshReference)IN_QR : null;
                                 listArgs.Add(adoqr);
                                 LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
                                 
@@ -9339,7 +9337,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         adoqr.TreatmentId = this.treatmentId;
                         adoqr.ConfigValue = selectedConfig;
                         adoqr.TransReqId = 0;
-                        adoqr.DelegtePrint = (HIS.Desktop.Common.RefeshReference)IN_QR;
+                        adoqr.DelegtePrint = this.serviceReqComboResultSDO != null ? (HIS.Desktop.Common.RefeshReference)IN_QR : null;
                         listArgs.Add(adoqr);
                         LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
                         HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);

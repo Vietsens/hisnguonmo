@@ -3133,7 +3133,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 listMessageError = new List<string>();
-                paramUpdateXml130 = new CommonParam();
                 string connect_infor = HisConfigCFG.QD_130_BYT__CONNECTION_INFO;
                 string username = null, password = null, address = null, typeXml = null;
                 string xml130Api = null, xmlGdykApi = null;
@@ -3358,6 +3357,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         #endregion
                         foreach (var treatment in HisTreatments)
                         {
+
+                            paramUpdateXml130 = new CommonParam();
                             #region
                             bool sendXml12 = true;
                             InputADO ado = new InputADO();
@@ -3443,6 +3444,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             MemoryStream resultSyncTT = null;
                             string errorMess = "";
                             Inventec.Common.Logging.LogSystem.Debug("__Cau hinh gui ,configSync khong gui : "+ this.configSync.dontSend);
+                            Inventec.Common.Logging.LogSystem.Debug("Dang xu ly gui  : " + treatment.TDL_PATIENT_NAME+" Ma dieu tri: "+treatment.TREATMENT_CODE);
                             if (!this.configSync.dontSend)
                             {
 
@@ -3582,29 +3584,29 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                             {
                                                 listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE, syncResult.ErrorCode, syncResult.Message));
                                             }
-                                            if(!((isAutoSync && configSync != null && configSync.isCheckCollinearXml) || isSendCollinearXml) || (treatment.HEIN_LOCK_TIME == null)) // 
-                                            {
+                                            
                                                 
-                                                HisTreatmentXmlResultSDO xmlResultSDO = new HisTreatmentXmlResultSDO();
-                                                xmlResultSDO.TreatmentId = treatment.ID;
-                                                xmlResultSDO.XmlResult = syncResult.Success ? 2 : 1;
-                                                xmlResultSDO.Description = syncResult.Message;
-                                                xmlResultSDO.CheckCode = syncResult.CheckCode;
-                                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => xmlResultSDO), xmlResultSDO));
-                                                var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info", ApiConsumers.MosConsumer, xmlResultSDO, paramUpdateXml130);
-                                                //luu file
-                                                if (resultSync != null)
-                                                {
-                                                    string fullFileName = xmlProcessor.GetFileName();
-                                                    string saveFilePathXml = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
-                                                    FileStream file12 = new FileStream(saveFilePathXml, FileMode.Create, FileAccess.Write);
-                                                    resultSync.WriteTo(file12);
-                                                    file12.Close();
-                                                    resultSync.Close();
-                                                    Inventec.Common.Logging.LogSystem.Debug("__Luu XMl vao client folder thanh cong. path: " + saveFilePathXml);
+                                            HisTreatmentXmlResultSDO xmlResultSDO = new HisTreatmentXmlResultSDO();
+                                            xmlResultSDO.TreatmentId = treatment.ID;
+                                            xmlResultSDO.XmlResult = syncResult.Success ? 2 : 1;
+                                            xmlResultSDO.Description = syncResult.Message;
+                                            xmlResultSDO.CheckCode = syncResult.CheckCode;
+                                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => xmlResultSDO), xmlResultSDO));
+                                            var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info", ApiConsumers.MosConsumer, xmlResultSDO, paramUpdateXml130);
+                                            Inventec.Common.Logging.LogSystem.Debug("Update thanh cong  : "+rs+" du lieu: " + treatment.TDL_PATIENT_NAME + " Ma dieu tri: " + treatment.TREATMENT_CODE);
+                                            //luu file
+                                            if (resultSync != null)
+                                            {
+                                                string fullFileName = xmlProcessor.GetFileName();
+                                                string saveFilePathXml = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
+                                                FileStream file12 = new FileStream(saveFilePathXml, FileMode.Create, FileAccess.Write);
+                                                resultSync.WriteTo(file12);
+                                                file12.Close();
+                                                resultSync.Close();
+                                                Inventec.Common.Logging.LogSystem.Debug("__Luu XMl vao client folder thanh cong. path: " + saveFilePathXml);
 
-                                                }
                                             }
+                                            
                                         }
                                     }
                                 }
@@ -3615,7 +3617,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 bool success = false;
                                 try
                                 {
-                                    resultSync = xmlProcessor.Run(ref errorMess);
+                                    resultSync = xmlProcessor.RunCollinearXml(ref errorMess);
+                                    if (string.IsNullOrEmpty(errMessage)) success = true;
                                 }
                                 catch (Exception error)
                                 {

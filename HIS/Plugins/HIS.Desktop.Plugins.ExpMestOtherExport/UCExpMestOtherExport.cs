@@ -78,6 +78,7 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport
         List<HisMedicineInStockSDO> listMediInStock;
         List<HisMaterialInStockSDO> listMateInStock;
         List<V_HIS_BLOOD> listBloodInStock;
+        List<HIS_BLOOD_GIVER> lstBloodGiver = new List<HIS_BLOOD_GIVER>();
 
         Dictionary<long, Dictionary<long, MediMateTypeADO>> dicTypeAdo = new Dictionary<long, Dictionary<long, MediMateTypeADO>>();
         MediMateTypeADO currentMediMate = null;
@@ -550,6 +551,12 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport
                             //listExpBloods.FirstOrDefault(o => o.BLOOD_ID == item.BLOOD_ID). = item.BLOOD_ABO_CODE;
                         }
                     }
+                    var distinctBloodGiveIds = listExpBloods
+                       .Where(s => s.BLOOD_GIVE_ID != null)
+                       .Select(s => s.BLOOD_GIVE_ID)
+                       .Distinct()
+                       .ToList();
+                    lstBloodGiver = BackendDataWorker.Get<HIS_BLOOD_GIVER>().Where(s => distinctBloodGiveIds.Contains(s.ID)).ToList();
 
                     MPS.Processor.Mps000203.PDO.Mps000203ADO mps000203Ado = new MPS.Processor.Mps000203.PDO.Mps000203ADO();
                     if (this.resultSdo.ExpMest.EXP_MEST_REASON_ID != null)
@@ -564,7 +571,8 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport
                     (
                      expMest,
                      listExpBloods,
-                     mps000203Ado
+                     mps000203Ado,
+                     lstBloodGiver
                       );
                     MPS.ProcessorBase.Core.PrintData PrintData = null;
                     if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)

@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -34,6 +34,7 @@ namespace MPS.Processor.Mps000203
     class Mps000203Processor : AbstractProcessor
     {
         Mps000203PDO rdo;
+        List<Mps000203RDO> ListExpMestBlood;
         public Mps000203Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -46,13 +47,15 @@ namespace MPS.Processor.Mps000203
             {
                 Inventec.Common.FlexCellExport.ProcessSingleTag singleTag = new Inventec.Common.FlexCellExport.ProcessSingleTag();
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
-
+                ListExpMestBlood = new List<Mps000203RDO>();
+                ProcessBloodGover(rdo._Bloods);
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 ProcessSingleKey();
                 singleTag.ProcessData(store, singleValueDictionary);
                 objectTag.AddObjectData(store, "ListBlood1", rdo._Bloods);
                 objectTag.AddObjectData(store, "ListBlood2", rdo._Bloods);
                 objectTag.AddObjectData(store, "ListBlood3", rdo._Bloods);
+                objectTag.AddObjectData(store, "ListExpMestBlood", ListExpMestBlood);
                 result = true;
             }
             catch (Exception ex)
@@ -60,6 +63,54 @@ namespace MPS.Processor.Mps000203
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+
+        private void ProcessBloodGover(List<V_HIS_EXP_MEST_BLOOD> bloods)
+        {
+            try
+            {
+                foreach(var blood in bloods)
+                {
+                    Mps000203RDO rdo = new Mps000203RDO();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_BLOOD>(rdo, blood);
+                    if(blood.BLOOD_GIVE_ID != null)
+                    {
+                        var giver = this.rdo.listBloodGiver.FirstOrDefault(o => o.ID == blood.BLOOD_GIVE_ID);
+                        MapDataToGiver(giver,ref rdo);
+                    }
+                    
+                    ListExpMestBlood.Add(rdo);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void MapDataToGiver(HIS_BLOOD_GIVER giver,ref Mps000203RDO rdo)
+        {
+            try
+            {
+                if(giver != null)
+                {
+                    rdo.TEST_AFTER_HIV = giver.TEST_AFTER_HIV != null ? (giver.TEST_AFTER_HIV == 0 ? "Âm tính" : "Dương tính") : "";
+                    rdo.TEST_AFTER_HBV = giver.TEST_AFTER_HBV != null ? (giver.TEST_AFTER_HBV == 0 ? "Âm tính" : "Dương tính") : "";
+                    rdo.TEST_AFTER_HCV = giver.TEST_AFTER_HCV != null ? (giver.TEST_AFTER_HCV == 0 ? "Âm tính" : "Dương tính") : "";
+                    rdo.TEST_AFTER_GM = giver.TEST_AFTER_GM != null ? (giver.TEST_AFTER_GM == 0 ? "Âm tính" : "Dương tính") : "";
+                    rdo.TEST_AFTER_KTBT = giver.TEST_AFTER_KTBT != null ? (giver.TEST_AFTER_KTBT == 0 ? "Âm tính" : "Dương tính") : "";
+                    //NAT
+                    rdo.TEST_AFTER_NAT_HIV = giver.TEST_AFTER_NAT_HIV != null ? (giver.TEST_AFTER_NAT_HIV == 0 ? "Âm tính" : "Dương tính") : "";
+                    rdo.TEST_AFTER_NAT_HBV = giver.TEST_AFTER_NAT_HBV != null ? (giver.TEST_AFTER_NAT_HBV == 0 ? "Âm tính" : "Dương tính") : "";
+                    rdo.TEST_AFTER_NAT_HCV = giver.TEST_AFTER_NAT_HCV != null ? (giver.TEST_AFTER_NAT_HCV == 0 ? "Âm tính" : "Dương tính") : "";
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         void ProcessSingleKey()
@@ -73,7 +124,10 @@ namespace MPS.Processor.Mps000203
                     SetSingleKey(new KeyValue(Mps000203ExtendSingleKey.CREATE_DATE_SEPARATE, Inventec.Common.DateTime.Convert.TimeNumberToDateStringSeparateString(this.rdo._ExpMest.CREATE_TIME ?? 0)));
                     SetSingleKey(new KeyValue(Mps000203ExtendSingleKey.EXP_REASON_STR,(this.rdo._mps000203ADO.EXP_REASON_NAME)));
                     SetSingleKey(new KeyValue(Mps000203ExtendSingleKey.EXP_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(this.rdo._ExpMest.FINISH_TIME ?? 0)));
-                    
+                    SetSingleKey(new KeyValue(Mps000203ExtendSingleKey.DATE, (this.rdo._ExpMest.CREATE_TIME ?? 0).ToString().Substring(6,2)));
+                    SetSingleKey(new KeyValue(Mps000203ExtendSingleKey.MONTH, (this.rdo._ExpMest.CREATE_TIME ?? 0).ToString().Substring(4, 2)));
+                    SetSingleKey(new KeyValue(Mps000203ExtendSingleKey.YEAR, (this.rdo._ExpMest.CREATE_TIME ?? 0).ToString().Substring(0, 4)));
+
                     AddObjectKeyIntoListkey(this.rdo._ExpMest, false);
                     AddObjectKeyIntoListkey(this.rdo._mps000203ADO, false);
                 }
@@ -158,4 +212,15 @@ namespace MPS.Processor.Mps000203
     //        return result;
     //    }
     //}
+    public class Mps000203RDO : V_HIS_EXP_MEST_BLOOD
+    {
+        public string TEST_AFTER_HIV { get; set; }
+        public string TEST_AFTER_HBV { get; set; }
+        public string TEST_AFTER_HCV { get; set; }
+        public string TEST_AFTER_GM { get; set; }
+        public string TEST_AFTER_KTBT { get; set; }
+        public string TEST_AFTER_NAT_HIV { get; set; }
+        public string TEST_AFTER_NAT_HCV { get; set; }
+        public string TEST_AFTER_NAT_HBV { get; set; }
+    }
 }

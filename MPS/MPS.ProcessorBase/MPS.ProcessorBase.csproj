@@ -66,86 +66,88 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraPrinting.v15.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraReports.v18.1, Version=18.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\RELEASE\Inventec.Common\Inventec.Common.XtraReportExport\DevExpress.XtraReports.v18.1.dll</HintPath>
+    <Reference Include="DevExpress.XtraReports.v18.1">
+      <HintPath>..\..\..\lib\DEVEXPRESS\DevExpress.XtraReports.v18.1.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraTreeList.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="EMR.EFMODEL">
-      <HintPath>..\..\..\RELEASE\EMR\EMR.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\lib\EMR\EMR.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.SAR_RS">
-      <HintPath>..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.SAR_RS\IMSys.DbConfig.SAR_RS.dll</HintPath>
+      <HintPath>..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.SAR_RS\IMSys.DbConfig.SAR_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.BarcodeLib">
-      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.BarcodeLib\Inventec.Common.BarcodeLib.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.BarcodeLib\Inventec.Common.BarcodeLib.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.DateTime">
-      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.FileConvert">
-      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.FileConvert\Inventec.Common.FileConvert.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.FileConvert\Inventec.Common.FileConvert.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.FlexCelExport">
-      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.FlexCelExport\Inventec.Common.FlexCelExport.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelExport\Inventec.Common.FlexCelExport.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.FlexCelPrint">
-      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Print">
-      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Print\Inventec.Common.Print.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Print\Inventec.Common.Print.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.QRCoder">
-      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.QRCoder\Inventec.Common.QRCoder.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.QRCoder\Inventec.Common.QRCoder.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.RichEditor">
-      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.RichEditor\Inventec.Common.RichEditor.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.RichEditor\Inventec.Common.RichEditor.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.SignLibrary">
-      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.TemplaterExport">
-      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.TemplaterExport\Inventec.Common.TemplaterExport.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.TemplaterExport\Inventec.Common.TemplaterExport.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.WebApiClient">
-      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.WordContent">
-      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.WordContent\Inventec.Common.WordContent.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.WordContent\Inventec.Common.WordContent.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.XtraReportExport">
-      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.XtraReportExport\Inventec.Common.XtraReportExport.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.XtraReportExport\Inventec.Common.XtraReportExport.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
-      <HintPath>..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.ClientSystem">
-      <HintPath>..\..\..\RELEASE\Inventec.UC\Inventec.UC.Login\Inventec.Token.ClientSystem.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.Token.ClientSystem.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.Core">
-      <HintPath>..\..\..\RELEASE\Inventec.UC\Inventec.UC.Login\Inventec.Token.Core.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.Token.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Login">
-      <HintPath>..\..\..\RELEASE\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="MOS.MANAGER">
+      <HintPath>..\..\..\lib\MRS\MOS.MANAGER.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.1.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\MPS\Lib\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\lib\Library packages\Newtonsoft.Json.6.0.8\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SAR.EFMODEL">
-      <HintPath>..\..\..\RELEASE\SAR\SAR.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\lib\SAR\SAR.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="SAR.Filter">
-      <HintPath>..\..\..\RELEASE\SAR\SAR.Filter.dll</HintPath>
+      <HintPath>..\..\..\lib\SAR\SAR.Filter.dll</HintPath>
     </Reference>
     <Reference Include="SAR.SDO">
-      <HintPath>..\..\..\RELEASE\SAR\SAR.SDO.dll</HintPath>
+      <HintPath>..\..\..\lib\SAR\SAR.SDO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />

@@ -33,5 +33,9 @@ namespace MPS.Processor.Mps000203
         internal static string SUM_TOTAL_PRICE_TEXT = "SUM_TOTAL_PRICE_TEXT";
         internal static string EXP_REASON_STR = "EXP_REASON_STR";
         internal static string EXP_TIME_STR = "EXP_TIME_STR";
+        //
+        internal static string DATE = "DATE";
+        internal static string MONTH = "MONTH";
+        internal static string YEAR = "YEAR";
     }
 }
