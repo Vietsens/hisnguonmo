@@ -42,14 +42,14 @@
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="Inventec.Aup.Client">
-      <HintPath>..\..\..\..\..\..\..\RELEASE\Inventec.Aup.Client\Inventec.Aup.Client.dll</HintPath>
+      <HintPath>..\..\..\..\..\LIB\Inventec.Aup.Client\Inventec.Aup.Client.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Aup.Utility">
-      <HintPath>..\..\..\..\..\..\..\RELEASE\Inventec.Aup.Client\Inventec.Aup.Utility.dll</HintPath>
+      <HintPath>..\..\..\..\..\LIB\Inventec.Aup.Client\Inventec.Aup.Utility.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\RELEASE\WCF\HIS.WCF\HIS.WCF.Service.AssignPrescriptionService\Inventec.Common.Logging.dll</HintPath>
+      <HintPath>..\..\..\..\..\LIB\WCF\HIS.WCF\HIS.WCF.Service.AssignPrescriptionService\Inventec.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

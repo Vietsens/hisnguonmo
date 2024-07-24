@@ -43,25 +43,25 @@
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="HIS.Desktop.LocalStorage.Location">
-      <HintPath>..\..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Plugins.EventLog\HIS.Desktop.LocalStorage.Location.dll</HintPath>
+      <HintPath>..\..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Plugins.EventLog\HIS.Desktop.LocalStorage.Location.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Utility">
       <HintPath>..\..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Aup.Utility">
-      <HintPath>..\..\..\..\..\..\..\RELEASE\Inventec.Aup.Client\Inventec.Aup.Utility.dll</HintPath>
+      <HintPath>..\..\..\..\..\LIB\Inventec.Aup.Client\Inventec.Aup.Utility.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\..\..\..\..\RELEASE\WCF\HIS.WCF\HIS.WCF.Service.AssignPrescriptionService\Inventec.Common.Logging.dll</HintPath>
+      <HintPath>..\..\..\..\..\LIB\WCF\HIS.WCF\HIS.WCF.Service.AssignPrescriptionService\Inventec.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
-      <HintPath>..\..\..\..\..\..\..\RELEASE\HIS\HIS.UC.UCPatientRaw\Inventec.Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\LIB\HIS\HIS.UC.UCPatientRaw\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Modules">
-      <HintPath>..\..\..\..\..\..\..\RELEASE\HIS\HIS.UC.UCPatientRaw\Inventec.Desktop.Common.Modules.dll</HintPath>
+      <HintPath>..\..\..\..\..\LIB\HIS\HIS.UC.UCPatientRaw\Inventec.Desktop.Common.Modules.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Core">
-      <HintPath>..\..\..\..\..\..\..\RELEASE\HIS\HIS.UC.UCPatientRaw\Inventec.Desktop.Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\LIB\HIS\HIS.UC.UCPatientRaw\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />

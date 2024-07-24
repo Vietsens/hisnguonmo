@@ -33,10 +33,10 @@
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="ACS.Filter">
-      <HintPath>..\..\..\..\..\..\RELEASE\ACS\ACS.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\ACS\ACS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="ACS.SDO">
-      <HintPath>..\..\..\..\..\..\RELEASE\ACS\ACS.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\ACS\ACS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
@@ -51,209 +51,209 @@
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DotNetZip">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\DotNetZip.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\DotNetZip.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\EntityFramework.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ApiConsumer">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.TranPati\HIS.Desktop.ApiConsumer.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TranPati\HIS.Desktop.ApiConsumer.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Common">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.AddressCombo\HIS.Desktop.Common.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.AddressCombo\HIS.Desktop.Common.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Controls.Session">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.AddressCombo\HIS.Desktop.Controls.Session.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.AddressCombo\HIS.Desktop.Controls.Session.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Library.CacheClient">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.SecondaryIcd\HIS.Desktop.Library.CacheClient.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SecondaryIcd\HIS.Desktop.Library.CacheClient.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LibraryMessage">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.AddressCombo\HIS.Desktop.LibraryMessage.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.AddressCombo\HIS.Desktop.LibraryMessage.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.BackendData">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.UCServiceRoomInfo\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.UCServiceRoomInfo\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.ConfigApplication">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.TreatmentFinish\HIS.Desktop.LocalStorage.ConfigApplication.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TreatmentFinish\HIS.Desktop.LocalStorage.ConfigApplication.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.ConfigHideControl">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.AddressCombo\HIS.Desktop.LocalStorage.ConfigHideControl.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.AddressCombo\HIS.Desktop.LocalStorage.ConfigHideControl.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.ConfigSystem">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.SecondaryIcd\HIS.Desktop.LocalStorage.ConfigSystem.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SecondaryIcd\HIS.Desktop.LocalStorage.ConfigSystem.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.HisConfig">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.AddressCombo\HIS.Desktop.LocalStorage.HisConfig.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.AddressCombo\HIS.Desktop.LocalStorage.HisConfig.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.LisConfig">
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.LisConfig.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.LocalData">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.TranPati\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TranPati\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.Location">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.SecondaryIcd\HIS.Desktop.LocalStorage.Location.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SecondaryIcd\HIS.Desktop.LocalStorage.Location.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.HisTutorial">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.TreatmentFinish\HIS.Desktop.Plugins.HisTutorial.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TreatmentFinish\HIS.Desktop.Plugins.HisTutorial.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.TreatmentFinish\HIS.Desktop.Utility.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TreatmentFinish\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.XmlCacheMonitor">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.TreatmentFinish\HIS.Desktop.XmlCacheMonitor.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TreatmentFinish\HIS.Desktop.XmlCacheMonitor.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.XmlRamMonitor">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.SecondaryIcd\HIS.Desktop.XmlRamMonitor.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SecondaryIcd\HIS.Desktop.XmlRamMonitor.dll</HintPath>
     </Reference>
     <Reference Include="His.EventLog">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.SecondaryIcd\His.EventLog.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SecondaryIcd\His.EventLog.dll</HintPath>
     </Reference>
     <Reference Include="HTC.EFMODEL">
       <HintPath>..\..\..\..\..\..\USERCONTROL\RELEASE\HTC\HTC.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
-      <HintPath>..\..\..\..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Controls.EditorLoader">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\Inventec.Common.Controls.EditorLoader.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\Inventec.Common.Controls.EditorLoader.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.DateTime">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.DateTime.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Logging.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Mapper">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\Inventec.Common.Mapper.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\Inventec.Common.Mapper.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.RedisCache">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.SecondaryIcd\Inventec.Common.RedisCache.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SecondaryIcd\Inventec.Common.RedisCache.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.RegistryUtil">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.RegistryUtil.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.RegistryUtil.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Repository">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Repository.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Repository.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Resource">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\Inventec.Common.Resource.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\Inventec.Common.Resource.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Sqlite">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.SecondaryIcd\Inventec.Common.Sqlite.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SecondaryIcd\Inventec.Common.Sqlite.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.String">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt\Inventec.Common.String.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt\Inventec.Common.String.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.TypeConvert">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.SecondaryIcd\Inventec.Common.TypeConvert.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SecondaryIcd\Inventec.Common.TypeConvert.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.WebApiClient">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.WebApiClient.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.WebApiClient.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Xml">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.AddressCombo\Inventec.Common.Xml.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.AddressCombo\Inventec.Common.Xml.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.XmlConfig">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.AddressCombo\Inventec.Common.XmlConfig.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.AddressCombo\Inventec.Common.XmlConfig.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Core.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Controls">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Controls\Inventec.Desktop.Common.Controls.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Controls\Inventec.Desktop.Common.Controls.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Controls.ValidationRule">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.AddressCombo\Inventec.Desktop.Common.Controls.ValidationRule.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.AddressCombo\Inventec.Desktop.Common.Controls.ValidationRule.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Core">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.TreatmentFinish\Inventec.Desktop.Common.Core.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TreatmentFinish\Inventec.Desktop.Common.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.LanguageManager">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Controls.ValidationRule\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Controls.ValidationRule\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.LibraryMessage">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\ReferencedAssemblies\Inventec.Desktop.Common.LibraryMessage.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\ReferencedAssemblies\Inventec.Desktop.Common.LibraryMessage.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.LocalStorage.Location">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.LocalStorage.Location\Inventec.Desktop.Common.LocalStorage.Location.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.LocalStorage.Location\Inventec.Desktop.Common.LocalStorage.Location.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Message">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.SecondaryIcd\Inventec.Desktop.Common.Message.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SecondaryIcd\Inventec.Desktop.Common.Message.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Modules">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.AddressCombo\Inventec.Desktop.Common.Modules.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.AddressCombo\Inventec.Desktop.Common.Modules.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Token">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Token\Inventec.Desktop.Common.Token.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Token\Inventec.Desktop.Common.Token.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Core">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Plugins.TrackingUser\Inventec.Desktop.Core.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Plugins.TrackingUser\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.CustomControl">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.AddressCombo\Inventec.Desktop.CustomControl.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.AddressCombo\Inventec.Desktop.CustomControl.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Fss.Client">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.SecondaryIcd\Inventec.Fss.Client.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SecondaryIcd\Inventec.Fss.Client.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.ClientSystem">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Token.ClientSystem.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Token.ClientSystem.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.Core">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Token.Core.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Token.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Login">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.AddressCombo\Inventec.UC.Login.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.AddressCombo\Inventec.UC.Login.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Paging">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.AddressCombo\Inventec.UC.Paging.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.AddressCombo\Inventec.UC.Paging.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\log4net.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MessagePack">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\MessagePack.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\MessagePack.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Common">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.LibraryHein.Common.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Common.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MOS.UTILITY">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.UTILITY.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.UTILITY.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="SAR.EFMODEL">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.AddressCombo\SAR.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.AddressCombo\SAR.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.SecondaryIcd\ServiceStack.Interfaces.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SecondaryIcd\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Redis">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.TreatmentFinish\ServiceStack.Redis.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TreatmentFinish\ServiceStack.Redis.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Text">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.RedisCache\ServiceStack.Text.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.RedisCache\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -261,7 +261,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Data.SQLite">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.SecondaryIcd\System.Data.SQLite.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SecondaryIcd\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
@@ -275,11 +275,11 @@
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Threading.Tasks.Extensions">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\System.Threading.Tasks.Extensions.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
     <Reference Include="System.ValueTuple">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\System.ValueTuple.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />

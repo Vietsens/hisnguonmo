@@ -228,8 +228,8 @@ namespace HIS.UC.UCPatientRaw
 						this.ResultDataADO = await heinGOVManager.CheckCccdQrCode(heinCardDataForCheckGOV, null, dtIntructionTime);
 
 					}
-
-					if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
+                    dataHeinCardFromQrCccd = null;
+                    if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
 					{
 						heinCardDataForCheckGOV.LiveAreaCode = this.ResultDataADO.ResultHistoryLDO.maKV;
                         if (!string.IsNullOrEmpty(this.ResultDataADO.ResultHistoryLDO.gioiTinh))
