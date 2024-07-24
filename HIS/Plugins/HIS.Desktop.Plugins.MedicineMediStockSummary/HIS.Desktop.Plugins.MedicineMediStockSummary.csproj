@@ -44,8 +44,20 @@
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraReports.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="HIS.Desktop.ModuleExt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Print, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.BloodTypeInStock">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.BloodTypeInStock\HIS.UC.BloodTypeInStock.dll</HintPath>
@@ -293,18 +305,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
       <Name>HIS.Desktop.LocalStorage.Location</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
-      <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>
-      <Name>HIS.Desktop.ModuleExt</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Print\HIS.Desktop.Print.csproj">
-      <Project>{aeeca321-fd65-407a-8d70-ba5362883b87}</Project>
-      <Name>HIS.Desktop.Print</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
-      <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
