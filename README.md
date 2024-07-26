@@ -15,8 +15,8 @@
 
 <div align="center">
 
-[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Vietsens/hisnguonmo/blob/Develop/LICENSE)
-[![GitHub branch status](https://img.shields.io/github/checks-status/mui/material-ui/HEAD)](https://github.com/mui/material-ui/commits/HEAD/)
+[![license](https://img.shields.io/badge/license-GPL3-blue.svg)](https://github.com/Vietsens/hisnguonmo/blob/Develop/LICENSE)
+![GitHub branch status](https://img.shields.io/github/checks-status/:user/:repo/:branch)
 [![DevExpress 15.2.9](https://www.devexpress.com/Content/Core/favicon.ico)](https://www.devexpress.com/)
 [![log4net 1.2.10]](https://www.nuget.org/packages/log4net/1.2.10)
 [![FlexCell 5.7.6.0]](https://www.tmssoftware.com/site/flexcelnet.asp)
@@ -50,7 +50,7 @@
 - git clone https://github.com/Vietsens/lib.git
 
 
-#### Setup
+## Setup
 
 - Sau khi clone các git cần thiết về tổ chức folder theo cây folder như sau:
 
@@ -80,10 +80,10 @@
 
   $ script build
   ```  
-#### Hướng dẫn build
+## Hướng dẫn build
 
 	Vào đây https://docs.google.com/document/d/1pH4kG4GTyQZkT12sCan25hZuzfyXzIsp/edit để xem chi tiết.
 
 ## Changelog
 
-	https://gitlab.vietsens.vn/ivt-dev/frontend/hisnguonmo/-/blob/Develop/CHANGELOG.md để xem chi tiết.
+	Vào đây https://gitlab.vietsens.vn/ivt-dev/frontend/hisnguonmo/-/blob/Develop/CHANGELOG.md để xem chi tiết.
