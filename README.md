@@ -53,10 +53,15 @@
 #### Setup
 
 - Sau khi clone các git cần thiết về tổ chức folder theo cây folder như sau:
+
 	++ HISNGUONMO
+	
 	++++++++ HIS
+	
 	++++++++ UC
+	
 	++++++++ MPS
+	
 	++ LIB
 	
   > Các lệnh cmd
@@ -75,5 +80,10 @@
 
   $ script build
   ```  
+#### Hướng dẫn build
 
-Hướng dẫn build [https://docs.google.com/document/d/1pH4kG4GTyQZkT12sCan25hZuzfyXzIsp/edit) để xem chi tiết.
+	Vào đây https://docs.google.com/document/d/1pH4kG4GTyQZkT12sCan25hZuzfyXzIsp/edit để xem chi tiết.
+
+## Changelog
+
+	https://gitlab.vietsens.vn/ivt-dev/frontend/hisnguonmo/-/blob/Develop/CHANGELOG.md để xem chi tiết.
