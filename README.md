@@ -42,11 +42,7 @@
 •	Microsoft Build Engine(MSBuild): Có thể dùng phiên bản tích hợp sẵn trong .net framework 
 	hoặc tải phiên bản tùy chọn ở đây https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild?view=vs-2022
 
-#### Clone
 
-- git clone https://github.com/Vietsens/hisnguonmo.git
-
-- git clone https://github.com/Vietsens/lib.git
 
 
 ## Setup
@@ -63,12 +59,37 @@
 	
 	++ LIB
 	
-  > Các lệnh cmd
-	```shell
-	Gõ cd C:\Windows\Microsoft.NET\Framework\v4.0.30319 với win 32 bit
-	hoặc Gõ cd C:\Windows\Microsoft.NET\Framework64\v4.0.30319 với win 64 bit
+- Clone source code	từ git
+  > Tạo folder HISNGUONMO và chạy lệnh bên dưới để clone về máy
+  ```shell
+	cd HISNGUONMO
+	git clone https://github.com/Vietsens/hisnguonmo.git
+	  $ script build
+  ```  	
+	
+  > Tạo folder LIB và chạy lệnh bên dưới để clone về máy
+  ```shell
+	cd LIB
+	git clone https://github.com/Vietsens/lib.git
+	  $ script build
+  ```  
   
-	Gõ MSBuild.exe E:\HisNguonMo\Desktop\HIS\HIS.Desktop\HIS.Desktop.csproj /p:Configuration=Release /p:Platform=AnyCPU /p:TargetFrameworkSDKToolsDirectory="C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools" 
+- Lệnh build
+  > với win 32 bit
+	```shell
+	cd C:\Windows\Microsoft.NET\Framework\v4.0.30319 với win 32 bit
+	  $ script build
+  ``` 
+  > với win 64 bit
+  ```shell
+	cd C:\Windows\Microsoft.NET\Framework64\v4.0.30319 với win 64 bit
+  	  $ script build
+  ``` 
+  > chạy lệnh build project main
+  ```shell
+	MSBuild.exe E:\HisNguonMo\Desktop\HIS\HIS.Desktop\HIS.Desktop.csproj /p:Configuration=Release /p:Platform=AnyCPU /p:TargetFrameworkSDKToolsDirectory="C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools"
+  	  $ script build
+  ```  	
 	Lưu ý: cần sửa lại tham số cấu hình trong lệnh build cho khớp với môi trường thực tế của máy tính
 	Trong đó
 	-	E:\HisNguonMo\Desktop\HIS\HIS.Desktop\HIS.Desktop.csproj là đường dẫn đến file cs project của main project his nguồn mở đã tải về
@@ -76,9 +97,7 @@
 	-	/p:Platform=AnyCPU: chọn flatform để build: AnyCPU|x86|x64
 	-	/p:TargetFrameworkSDKToolsDirectory="C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools": chọn đường dẫn SDKTools
 
-
-  $ script build
-  ```  
+ 
 ## Hướng dẫn build
 
 	Vào đây https://docs.google.com/document/d/1pH4kG4GTyQZkT12sCan25hZuzfyXzIsp/edit để xem chi tiết.
