@@ -285,10 +285,10 @@ namespace MPS.Processor.Mps000302.ADO
                 this.TOTAL_PRICE_BHYT = (this.PRICE_BHYT * this.AMOUNT) * ((this.BHYT_PAY_RATE ?? 0) / 100) * ((this.SERVICE_PAY_RATE ?? 0) / 100);
                 //this.PRIMARY_PRICE = this.VIR_PRICE;
                 //khôi phục lại code cho bộ key cũ
-                if (this.PRIMARY_PATIENT_TYPE_ID.HasValue)
-                {
-                    this.PRIMARY_PRICE = this.LIMIT_PRICE;
-                }
+                //if (this.PRIMARY_PATIENT_TYPE_ID.HasValue)
+                //{
+                //    this.PRIMARY_PRICE = this.LIMIT_PRICE;
+                //}
 
                 if (!this.PRIMARY_PRICE.HasValue)
                     this.PRIMARY_PRICE = this.VIR_PRICE;
