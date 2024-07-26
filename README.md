@@ -7,11 +7,9 @@
 
 **His nguồn mở** Phần mềm desktop chạy trên hệ điều hành Window của hệ thống quản lý bệnh viện HisPro:
 
-- [HIS](https://github.com/Vietsens/hisnguonmo/tree/Develop/HIS) source code HIS main project và các tính năng nghiệp vụ(plugin).
-
-- [MPS](https://github.com/Vietsens/hisnguonmo/tree/Develop/MPS) source code các tính năng in ấn.
-
-- [UC](https://github.com/Vietsens/hisnguonmo/tree/Develop/UC) source code các thành phần giao diện dùng chung, được nhúng trong các plugin.
+- [HIS](https://github.com/Vietsens/hisnguonmo/tree/Develop/HIS) source code HIS main project và các tính năng nghiệp vụ(plugin).  
+- [MPS](https://github.com/Vietsens/hisnguonmo/tree/Develop/MPS) source code các tính năng in ấn.  
+- [UC](https://github.com/Vietsens/hisnguonmo/tree/Develop/UC) source code các thành phần giao diện dùng chung, được nhúng trong các plugin.  
 
 <div align="center">
 
@@ -32,7 +30,7 @@
 
 
 
-## Yêu cầu môi trường hệ thống
+## Cài đặt môi trường
 	Máy tính cần cài đặt sẵn các phần mềm sau:
 
 •	Git: https://git-scm.com/downloads
@@ -62,15 +60,11 @@
   
 - Sau khi clone các git cần thiết về tổ chức folder theo cây folder như sau:
 
-	++ HISNGUONMO
-	
-	++++++++ HIS
-	
-	++++++++ UC
-	
-	++++++++ MPS
-	
-	++ LIB
+	++ hisnguonmo  
+	++++++++ HIS  
+	++++++++ UC  
+	++++++++ MPS  
+	++ lib  
 	
 ## Build
 - Lệnh build:
@@ -86,12 +80,12 @@
 	```    
   > chạy lệnh build project main
   ```shell
-	MSBuild.exe E:\HisNguonMo\Desktop\HIS\HIS.Desktop\HIS.Desktop.csproj /p:Configuration=Release /p:Platform=AnyCPU /p:TargetFrameworkSDKToolsDirectory="C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools"
+	MSBuild.exe E:\HisNguonMo\hisnguonmo\HIS\HIS.Desktop\HIS.Desktop.csproj /p:Configuration=Release /p:Platform=AnyCPU /p:TargetFrameworkSDKToolsDirectory="C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools"
   	  $ script build
   ```  	
 	Lưu ý: cần sửa lại tham số cấu hình trong lệnh build cho khớp với môi trường thực tế của máy tính
 	Trong đó
-	-	E:\HisNguonMo\Desktop\HIS\HIS.Desktop\HIS.Desktop.csproj là đường dẫn đến file cs project của main project his nguồn mở đã tải về
+	-	E:\HisNguonMo\hisnguonmo\HIS\HIS.Desktop\HIS.Desktop.csproj là đường dẫn đến file cs project của main project his nguồn mở đã tải về
 	-	/p:Configuration=Release: chọn cấu hình build: Debug|Release
 	-	/p:Platform=AnyCPU: chọn flatform để build: AnyCPU|x86|x64
 	-	/p:TargetFrameworkSDKToolsDirectory="C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools": chọn đường dẫn SDKTools
@@ -99,9 +93,9 @@
 - Chạy thử với các thành phần build sẵn
   Bạn có thể tạo một script PowerShell để thực hiện việc tải và lưu các thành phần build sẵn vào folder chứa phiên bản his sau khi build ở trên:
     ```shell
-		$zipUrl = "http://fsstest.onelink.vn/Upload/EMR/000000054876/3f6ab7a7-7f4d-430b-88f0-41b97c6929b3.zip"
-		$zipPath = "F:\Project\HisnguonMoGitLab\hisnguonmo_extend.zip"
-		$extractPath = "F:\Project\HisnguonMoGitLab\hisnguonmo_extend"
+		$zipUrl = "http://fsstest.onelink.vn/Upload/HIS/hisnguonmo_extend.zip"
+		$zipPath = "E:\HisNguonMo\hisnguonmo\Build\hisnguonmo_extend.zip"
+		$extractPath = "E:\HisNguonMo\hisnguonmo\Build"
 
 		# Tải file zip
 		Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath
@@ -114,7 +108,7 @@
    	  $ script build
 	```   
 	cần sửa lại zipPath và extractPath cho đúng với đường dẫn cần lưu
-	lưu script này ra file DownloadAndExtractExtend.ps1, và sau đó chạy file này trong PowerShell:
+	có thể chạy từng dòng lệnh một hoặc muốn chạy tất cả các lệnh 1 lần thì lưu script này ra file DownloadAndExtractExtend.ps1, và sau đó chạy file này trong PowerShell:
     ```shell
 		.\DownloadAndExtractExtend.ps1
 		$ script build
@@ -126,7 +120,7 @@
 	```  
 ## Hướng dẫn
 
-- Build: https://docs.google.com/document/d/1pH4kG4GTyQZkT12sCan25hZuzfyXzIsp/edit?usp=drive_link&ouid=100318684171831156204&rtpof=true&sd=true
+- Build và tổ chức folder sau khi build: https://docs.google.com/document/d/1pH4kG4GTyQZkT12sCan25hZuzfyXzIsp/edit?usp=drive_link&ouid=100318684171831156204&rtpof=true&sd=true
 - Tạo project plugin: https://docs.google.com/document/d/1exLo2zBCBG6u2YSK9LK00ggYSsFr-nNN/edit?usp=sharing&ouid=100318684171831156204&rtpof=true&sd=true
 
 ## Changelog
