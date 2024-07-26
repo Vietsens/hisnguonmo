@@ -252,11 +252,13 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 }
                 if (Config.ConfigKey.deleteFileOption == "1")
                 {
-                    checkIncludeDelete.Visible = false;
+                    //checkIncludeDelete.Visible = false;
+                    lciIncludeDelete.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
                 else
                 {
-                    checkIncludeDelete.Visible = true;
+                    lciIncludeDelete.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    //checkIncludeDelete.Visible = true;
                 }
                 this.InitControlState();
                 this.ProcessGroupRow();
