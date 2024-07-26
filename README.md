@@ -25,16 +25,16 @@
 [[Aspose 11.1]](https://www.nuget.org/packages/Aspose.Words/11.1.0)
 [[EO.Pdf]](https://www.nuget.org/packages/EO.Pdf/20.3.34)
 [[EO.WebBrowser]](https://www.nuget.org/packages/EO.WebBrowser/20.3.34)
-[[BarTender 10.1.0]]
+[BarTender 10.1.0]
 [[STPadLibNet 8.5.2.6]](https://en.signotec.com/portal/seiten/signopad-api-device-api--900000170-10002.html)
 
 </div>
 
 
 
-## Documentation
+## Yêu cầu môi trường hệ thống
+	Máy tính cần cài đặt sẵn các phần mềm sau:
 
-### Yêu cầu môi trường hệ thống
 •	Git: https://git-scm.com/downloads
 
 •	.Net framework 4.5:  https://www.microsoft.com/en-us/download/details.aspx?id=42642
@@ -45,20 +45,8 @@
 
 
 
-## Setup
+## Clone
 
-- Sau khi clone các git cần thiết về tổ chức folder theo cây folder như sau:
-
-	++ HISNGUONMO
-	
-	++++++++ HIS
-	
-	++++++++ UC
-	
-	++++++++ MPS
-	
-	++ LIB
-	
 - Clone source code	từ git
   > Tạo folder HISNGUONMO và chạy lệnh bên dưới để clone về máy
   ```shell	
@@ -72,6 +60,18 @@
 	  $ script build
 	```  
   
+- Sau khi clone các git cần thiết về tổ chức folder theo cây folder như sau:
+
+	++ HISNGUONMO
+	
+	++++++++ HIS
+	
+	++++++++ UC
+	
+	++++++++ MPS
+	
+	++ LIB
+	
 - Lệnh build
   > với win 32 bit
 	```shell
@@ -98,7 +98,7 @@
 - Chạy thử với các thành phần build sẵn
   Bạn có thể tạo một script PowerShell để thực hiện việc tải và lưu các thành phần build sẵn vào folder chứa phiên bản his sau khi build ở trên:
     ```shell
-		$zipUrl = "http://192.168.1.201:85/Upload/EMR/000000054876/3f6ab7a7-7f4d-430b-88f0-41b97c6929b3.zip"
+		$zipUrl = "http://fsstest.onelink.vn/Upload/EMR/000000054876/3f6ab7a7-7f4d-430b-88f0-41b97c6929b3.zip"
 		$zipPath = "F:\Project\HisnguonMoGitLab\hisnguonmo_extend.zip"
 		$extractPath = "F:\Project\HisnguonMoGitLab\hisnguonmo_extend"
 
