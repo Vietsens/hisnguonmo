@@ -45,7 +45,7 @@
 
 
 
-## Clone
+## Clone source code
 
 - Clone source code	từ git
   > Tạo folder HISNGUONMO và chạy lệnh bên dưới để clone về máy
@@ -72,7 +72,8 @@
 	
 	++ LIB
 	
-- Lệnh build
+## Build
+- Lệnh build:
   > với win 32 bit
 	```shell
 	cd C:\Windows\Microsoft.NET\Framework\v4.0.30319 với win 32 bit
@@ -118,7 +119,11 @@
 		.\DownloadAndExtractExtend.ps1
 		$ script build
 	```  
-	
+	Nếu bạn chưa bao giờ chạy script PowerShell trước đây, bạn có thể cần thay đổi chính sách thực thi để cho phép chạy script:
+	 ```shell
+		Set-ExecutionPolicy RemoteSigned
+		$ script build
+	```  
 ## Hướng dẫn
 
 - Build: https://docs.google.com/document/d/1pH4kG4GTyQZkT12sCan25hZuzfyXzIsp/edit?usp=drive_link&ouid=100318684171831156204&rtpof=true&sd=true
