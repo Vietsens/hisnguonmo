@@ -46,7 +46,6 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -66,7 +65,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.cboInformationBid = new DevExpress.XtraEditors.ComboBoxEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -159,6 +158,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn_ImpMestDetail_ExpiredDate = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemDtExpiredDate = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_ImpMestDetail_PackageNumber = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemTxtPackageNumber = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -287,8 +287,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.layoutControlItem34 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutDescriptionPaty = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem33 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxValidationProvider2 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProvider2 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -1596,6 +1596,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn3,
             this.gridColumn_ImpMestDetail_ExpiredDate,
             this.gridColumn7,
+            this.gridColumn13,
             this.gridColumn_ImpMestDetail_PackageNumber,
             this.gridColumn1,
             this.gridColumn2,
@@ -1822,6 +1823,15 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn7.Visible = true;
             this.gridColumn7.VisibleIndex = 11;
             // 
+            // gridColumn13
+            // 
+            this.gridColumn13.Caption = "Thông tin thầu";
+            this.gridColumn13.FieldName = "TT_THAU";
+            this.gridColumn13.Name = "gridColumn13";
+            this.gridColumn13.Visible = true;
+            this.gridColumn13.VisibleIndex = 12;
+            this.gridColumn13.Width = 130;
+            // 
             // gridColumn_ImpMestDetail_PackageNumber
             // 
             this.gridColumn_ImpMestDetail_PackageNumber.AppearanceHeader.Options.UseTextOptions = true;
@@ -1831,7 +1841,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn_ImpMestDetail_PackageNumber.FieldName = "PACKAGE_NUMBER";
             this.gridColumn_ImpMestDetail_PackageNumber.Name = "gridColumn_ImpMestDetail_PackageNumber";
             this.gridColumn_ImpMestDetail_PackageNumber.Visible = true;
-            this.gridColumn_ImpMestDetail_PackageNumber.VisibleIndex = 12;
+            this.gridColumn_ImpMestDetail_PackageNumber.VisibleIndex = 13;
             this.gridColumn_ImpMestDetail_PackageNumber.Width = 43;
             // 
             // repositoryItemTxtPackageNumber
@@ -1856,7 +1866,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn2.Name = "gridColumn2";
             this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 13;
+            this.gridColumn2.VisibleIndex = 14;
             this.gridColumn2.Width = 186;
             // 
             // gridColumn4
@@ -1866,7 +1876,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 14;
+            this.gridColumn4.VisibleIndex = 15;
             this.gridColumn4.Width = 80;
             // 
             // gridColumn5
@@ -1877,7 +1887,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn5.OptionsColumn.AllowEdit = false;
             this.gridColumn5.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 15;
+            this.gridColumn5.VisibleIndex = 16;
             this.gridColumn5.Width = 100;
             // 
             // gridColumn6
@@ -1887,7 +1897,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 16;
+            this.gridColumn6.VisibleIndex = 17;
             this.gridColumn6.Width = 80;
             // 
             // gridColumn9
@@ -1897,7 +1907,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.ToolTip = "Tên bảo hiểm y tế";
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 17;
+            this.gridColumn9.VisibleIndex = 18;
             this.gridColumn9.Width = 100;
             // 
             // gridColumn11
@@ -1908,7 +1918,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 18;
+            this.gridColumn11.VisibleIndex = 19;
             this.gridColumn11.Width = 100;
             // 
             // gridColumn12
@@ -1919,7 +1929,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn12.OptionsColumn.AllowEdit = false;
             this.gridColumn12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 19;
+            this.gridColumn12.VisibleIndex = 20;
             this.gridColumn12.Width = 100;
             // 
             // repositoryItemMemoEdit1
@@ -3190,7 +3200,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.layoutControlItem35.Name = "layoutControlItem35";
             this.layoutControlItem35.OptionsToolTip.ToolTip = "Thông tin thầu theo công văn 4750";
             this.layoutControlItem35.Size = new System.Drawing.Size(246, 48);
-            this.layoutControlItem35.Text = "TT_Thầu:";
+            this.layoutControlItem35.Text = "Loại TT Thầu:";
             this.layoutControlItem35.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem35.TextSize = new System.Drawing.Size(80, 20);
             this.layoutControlItem35.TextToControlDistance = 5;
@@ -4030,5 +4040,6 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
         private DevExpress.XtraEditors.ComboBoxEdit cboInformationBid;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem35;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
     }
 }

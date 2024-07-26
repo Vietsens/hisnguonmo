@@ -70,12 +70,36 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
                     Inventec.Common.Logging.LogUtil.TraceData("_ResultADO_____", ResultDataADO);
                     Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataHein), dataHein));
                     uCMainHein.SetResultDataADOBhyt(ucHein__BHYT, ResultDataADO);
+                    //if (uCMainHein != null && ucHein__BHYT != null)
+                    //    uCMainHein.FillDataAfterFindQrCode(ucHein__BHYT, dataHein);
                     if (ResultDataADO != null)
                     {
+                        bool isNotWrongAddress = true;
                         string maKQ = ResultDataADO.ResultHistoryLDO.maKetQua;
-                        if (maKQ == "060" || maKQ == "061" || maKQ == "070" || maKQ == "051" || maKQ == "052" || maKQ == "053" || maKQ == "050")
+                        string message = "";
+                        if (maKQ == "000")
                         {
-                            string thongBao = ResultDataADO.ResultHistoryLDO.message + ". Bạn có muốn sửa thông tin bệnh nhân?";
+                            if (currenPatient != null)
+                            {
+                                HIS_PATIENT patient = GetCurrentpatient(currenPatient);
+                                if (string.IsNullOrEmpty(patient.COMMUNE_CODE) || string.IsNullOrEmpty(patient.PROVINCE_CODE) || string.IsNullOrEmpty(patient.DISTRICT_CODE))
+                                {
+                                    message = "Bệnh nhân thiếu thông tin địa chỉ ";
+                                }
+                                else
+                                {
+                                    isNotWrongAddress = false;
+                                }
+                            }
+
+                        }
+                        string thongBao = "";
+                        if (maKQ == "060" || maKQ == "061" || maKQ == "070" || maKQ == "051" || maKQ == "052" || maKQ == "053" || maKQ == "050" || isNotWrongAddress)
+                        {
+                            
+                            if(string.IsNullOrEmpty(message)) message = ResultDataADO.ResultHistoryLDO.message;
+                            thongBao = message + ". Bạn có muốn sửa thông tin bệnh nhân?";
+                            
                             DialogResult drReslt = DevExpress.XtraEditors.XtraMessageBox.Show(thongBao, "Thông báo!", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, DevExpress.Utils.DefaultBoolean.True);
                             if (drReslt == DialogResult.OK)
                             {
@@ -85,7 +109,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
                                 listArgs.Add((RefeshReference)RefeshTreatment);
                                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.PatientUpdate", this.module.RoomId, this.module.RoomTypeId, listArgs);
                             }
-
+                            
                             Inventec.Common.Logging.LogSystem.Info("CheckThongTuyen____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => maKQ), maKQ) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => thongBao), thongBao));
                         }
                         else
@@ -111,6 +135,27 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private HIS_PATIENT GetCurrentpatient(HIS_PATIENT currenPatient)
+        {
+            HIS_PATIENT result = new HIS_PATIENT();
+            try
+            {
+                var id = currenPatient.ID;
+                HisPatientFilter PatientFilter = new HisPatientFilter();
+                PatientFilter.ID = id;
+                var rs = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("/api/HisPatient/Get", ApiConsumers.MosConsumer, PatientFilter, new CommonParam());
+                if(rs != null)
+                {
+                    result = rs.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         private void RefeshTreatment()

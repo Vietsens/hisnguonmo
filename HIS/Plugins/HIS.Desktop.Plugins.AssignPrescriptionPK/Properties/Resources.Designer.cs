@@ -69,7 +69,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-       
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_down1 {
+            get {
+                object obj = ResourceManager.GetObject("arrow-down1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
@@ -81,6 +90,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_up1 {
+            get {
+                object obj = ResourceManager.GetObject("arrow-up1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.

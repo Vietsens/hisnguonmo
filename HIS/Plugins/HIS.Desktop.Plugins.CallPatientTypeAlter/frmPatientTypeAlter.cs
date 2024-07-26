@@ -2562,6 +2562,12 @@ listTL, lstSereServResult, DelegateSuccess);
                                         heinCardData = null;
                                         mess = ResourceMessage.TheSaiNgaySinhGov070;
                                     }
+                                    else if(string.IsNullOrEmpty(patientSDO.COMMUNE_CODE) || string.IsNullOrEmpty(patientSDO.DISTRICT_CODE) || string.IsNullOrEmpty(patientSDO.PROVINCE_CODE))
+                                    {
+                                        heinCardData = null;
+                                        mess = "Bệnh nhân thiếu thông tin địa chỉ";
+                                        //Commment
+                                    }
                                     else
                                     {
                                         heinAddressOfPatient = patientSDO.HeinAddress;
@@ -2574,8 +2580,7 @@ listTL, lstSereServResult, DelegateSuccess);
                                     }
                                 }
                             }
-                            if (heinCardData != null && string.IsNullOrEmpty(mess))
-                            {
+                            if (heinCardData != null && string.IsNullOrEmpty(mess))                            {
                                 if (!IsCccd)
                                     this.ProcessQrCodeData(heinCardData);
                                 HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
@@ -2669,6 +2674,12 @@ listTL, lstSereServResult, DelegateSuccess);
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => patientUpdateSdo), patientUpdateSdo));
                             currenPatient = new BackendAdapter(paramPatient).Post<HIS_PATIENT>("api/HisPatient/UpdateSdo", ApiConsumers.MosConsumer, patientUpdateSdo, paramPatient);
                             LoadCurrentHisTreatment();
+                            if (string.IsNullOrEmpty(currenPatient.COMMUNE_CODE) && string.IsNullOrEmpty(currenPatient.DISTRICT_CODE) && string.IsNullOrEmpty(currenPatient.PROVINCE_CODE))
+                            {
+
+                                DialogResult drReslt = DevExpress.XtraEditors.XtraMessageBox.Show("Bệnh nhân thiếu thông tin địa chỉ", "Thông báo!", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, DevExpress.Utils.DefaultBoolean.True);
+
+                            }
                         }
                     }
 

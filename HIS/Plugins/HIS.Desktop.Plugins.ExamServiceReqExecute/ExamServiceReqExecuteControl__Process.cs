@@ -46,6 +46,7 @@ using MOS.Filter;
 using MOS.SDO;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -680,23 +681,23 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             isNotCheckValidateIcdUC = true;
                         }
                     }
-                    string messErr = null;
-                    if (!checkIcdManager.ProcessCheckIcd(icdCode, icdSubCode, ref messErr, HisConfigCFG.CheckIcdWhenSave == "1" || HisConfigCFG.CheckIcdWhenSave == "2"))
-                    {
-                        if (HisConfigCFG.CheckIcdWhenSave == "1")
-                        {
-                            if (DevExpress.XtraEditors.XtraMessageBox.Show(messErr + ". Bạn có muốn tiếp tục?",
-                         HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
-                         MessageBoxButtons.YesNo) == DialogResult.No) valid = false;
-                        }
-                        else
-                        {
-                            DevExpress.XtraEditors.XtraMessageBox.Show(messErr,
-                         HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
-                         MessageBoxButtons.OK);
-                            valid = false;
-                        }
-                    }
+                    //string messErr = null;
+                    //if (!checkIcdManager.ProcessCheckIcd(icdCode, icdSubCode, ref messErr, HisConfigCFG.CheckIcdWhenSave == "1" || HisConfigCFG.CheckIcdWhenSave == "2"))
+                    //{
+                    //    if (HisConfigCFG.CheckIcdWhenSave == "1")
+                    //    {
+                    //        if (DevExpress.XtraEditors.XtraMessageBox.Show(messErr + ". Bạn có muốn tiếp tục?",
+                    //     HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                    //     MessageBoxButtons.YesNo) == DialogResult.No) valid = false;
+                    //    }
+                    //    else
+                    //    {
+                    //        DevExpress.XtraEditors.XtraMessageBox.Show(messErr,
+                    //     HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                    //     MessageBoxButtons.OK);
+                    //        valid = false;
+                    //    }
+                    //}
                 }
 
                 Inventec.Common.Logging.LogSystem.Debug("ValidForSave 5");
@@ -1665,7 +1666,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     string str1 = null;
                     string str2 = null;
                     ExamTreatmentFinishResult treatmentFinish = this.treatmentFinishProcessor.GetValue(this.ucTreatmentFinish) as ExamTreatmentFinishResult;
-
+                    serviceReqUpdateSDO.TreatmentFinishSDO = new HisTreatmentFinishSDO();
                     if (treatmentFinish != null && treatmentFinish.TreatmentFinishSDO != null)
                     {
                         var cboThongTinBoSung = treatmentFinish.TreatmentFinishSDO.TreatmentEndTypeExtId;
@@ -1728,8 +1729,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                                 return;
                             }
                         }
-                        serviceReqUpdateSDO.TreatmentFinishSDO = new HisTreatmentFinishSDO();
+                       
                         serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentEndTypeExtId = treatmentFinish.TreatmentFinishSDO.TreatmentEndTypeExtId;
+                      
                         if (this.treatment != null
                             && this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
                             && treatmentFinish.TreatmentFinishSDO.TreatmentEndTypeExtId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM)
@@ -1945,7 +1947,35 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         isPrintHosTransfer = treatmentFinish.IsPrintHosTransfer;
                         IsSignExam = treatmentFinish.IsSignExam;
                         IsPrintExam = treatmentFinish.IsPrintExam;
+
                     }
+                    if (string.IsNullOrEmpty(treatment.CLINICAL_NOTE))
+                    {
+                        serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalNote = txtPathologicalProcess.Text.Trim();
+                    }
+                    else
+                    {
+                        serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalNote = treatment.CLINICAL_NOTE;
+                    }
+
+                    if (string.IsNullOrEmpty(treatment.SUBCLINICAL_RESULT))
+                    {
+                        serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = txtSubclinical.Text.Trim();
+
+                    }
+                    else
+                    {
+                        serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = treatment.SUBCLINICAL_RESULT;
+                    }
+
+                    if (string.IsNullOrEmpty(treatment.TREATMENT_METHOD))
+                    {
+                        serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = txtTreatmentInstruction.Text.Trim();
+                    }
+                    else
+                    {
+                        serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = treatment.TREATMENT_METHOD;
+                    } 
                 }
                 //else
                 //{

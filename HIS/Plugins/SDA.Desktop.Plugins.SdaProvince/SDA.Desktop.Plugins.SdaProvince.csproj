@@ -70,7 +70,7 @@
       <HintPath>..\..\..\..\..\..\REPORT\FRD\FRD\bin\Debug\HIS.Desktop.LocalStorage.Location.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.TreatmentFinish\HIS.Desktop.Utility.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TreatmentFinish\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.SDA_RS">
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\IMSys.DbConfig.SDA_RS.dll</HintPath>
@@ -82,7 +82,7 @@
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.Controls.EditorLoader.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.DateTime">
-      <HintPath>..\..\..\..\..\..\RELEASE\MPS\Inventec.Common.DateTime.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MPS\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.Logging.dll</HintPath>
@@ -143,7 +143,7 @@
     </Reference>
     <Reference Include="SDA.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.TreatmentFinish\SDA.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TreatmentFinish\SDA.SDO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />

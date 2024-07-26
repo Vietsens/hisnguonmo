@@ -56,17 +56,17 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         dataPatient.CMND_DATE = _currentPatientSDO.CMND_DATE;
                     }
                 }
-                if (_currentPatientSDO == null || _currentPatientSDO.ID == 0)
+
+                this.ucPlusInfo1.RefreshUserControl();
+                if(_currentPatientSDO == null)
                 {
-                    this.ucPlusInfo1.RefreshUserControl();
                     var dt = this.ucPlusInfo1.GetValue();
                     dt.NATIONAL_NAME = dataPatient.NATIONAL_NAME;
                     dt.NATIONAL_CODE = dataPatient.NATIONAL_CODE;
-                    dt.CCCD_NUMBER = _currentPatientSDO != null ?  _currentPatientSDO.CCCD_NUMBER : null;
-                    dt.CMND_DATE = _currentPatientSDO != null ? _currentPatientSDO.CMND_DATE : null;
                     this.ucPlusInfo1.SetValue(dt);
                     return;
                 }
+
                 dataPatient.ETHNIC_NAME = _currentPatientSDO.ETHNIC_NAME;
                 dataPatient.ETHNIC_CODE = _currentPatientSDO.ETHNIC_CODE;
                 dataPatient.MILITARYRANK_ID = _currentPatientSDO.MILITARY_RANK_ID;
@@ -89,6 +89,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 dataPatient.HT_COMMUNE_NAME = _currentPatientSDO.HT_COMMUNE_NAME;
                 dataPatient.HT_DISTRICT_NAME = _currentPatientSDO.HT_DISTRICT_NAME;
                 dataPatient.HT_PROVINCE_NAME = _currentPatientSDO.HT_PROVINCE_NAME;
+                dataPatient.HT_COMMUNE_CODE = _currentPatientSDO.HT_COMMUNE_CODE;
+                dataPatient.HT_DISTRICT_CODE = _currentPatientSDO.HT_DISTRICT_CODE;
+                dataPatient.HT_PROVINCE_CODE = _currentPatientSDO.HT_PROVINCE_CODE;
                 dataPatient.HT_ADDRESS = _currentPatientSDO.HT_ADDRESS;
                 dataPatient.BLOOD_ABO_CODE = _currentPatientSDO.BLOOD_ABO_CODE;
                 dataPatient.BLOOD_RH_CODE = _currentPatientSDO.BLOOD_RH_CODE;

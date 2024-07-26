@@ -85,6 +85,15 @@ namespace HIS.UC.UCOtherServiceReqInfo
             dxValidationUCOtherReqInfo.SetValidationRule(this.txtIntructionTime, icdMainRule);
         }
 
+        private void ValidateTextHosReason()
+        {
+            TextValidationRule rule = new TextValidationRule();
+            rule.txtText = this.txtHosReason;
+            rule.ErrorText = HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+            rule.ErrorType = ErrorType.Warning;
+            dxValidationUCOtherReqInfo.SetValidationRule(this.txtHosReason, rule);
+        }
+
         private void ValidateFrmFun()
         {
             try

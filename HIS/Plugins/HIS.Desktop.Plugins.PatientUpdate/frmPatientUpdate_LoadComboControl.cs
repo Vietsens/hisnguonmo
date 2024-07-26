@@ -314,40 +314,44 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 Inventec.Common.Logging.LogSystem.Debug("districtCode_:" + districtCode);
                 Inventec.Common.Logging.LogSystem.Debug("isExpand_:" + isExpand);
 
-                listResult = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => (o.SEARCH_CODE.Contains(searchCode) || o.COMMUNE_NAME.Contains(searchCode)) && o.DISTRICT_CODE == districtCode).ToList();
+                listResult = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => ((o.SEARCH_CODE?? "").Contains(searchCode) || o.COMMUNE_NAME.Contains(searchCode)) && o.DISTRICT_CODE == districtCode).ToList();
 
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("SEARCH_CODE", "", 100, 1));
-                columnInfos.Add(new ColumnInfo("COMMUNE_NAME", "", 200, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("COMMUNE_NAME", "COMMUNE_CODE", columnInfos, false, 300);
-                controlEditorADO.ImmediatePopup = true;
-                ControlEditorLoader.Load(cboCommune, listResult, controlEditorADO);
+                if (listResult != null)
+                {
+                    List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                    columnInfos.Add(new ColumnInfo("SEARCH_CODE", "", 100, 1));
+                    columnInfos.Add(new ColumnInfo("COMMUNE_NAME", "", 200, 2));
+                    ControlEditorADO controlEditorADO = new ControlEditorADO("COMMUNE_NAME", "COMMUNE_CODE", columnInfos, false, 300);
+                    controlEditorADO.ImmediatePopup = true;
+                    ControlEditorLoader.Load(cboCommune, listResult, controlEditorADO);
 
-                if (String.IsNullOrEmpty(searchCode) && String.IsNullOrEmpty(districtCode) && listResult.Count > 0)
-                {
-                    cboCommune.EditValue = null;
-                    txtCommune.Text = "";
-                    FocusShowPopup(cboCommune, gridView2);
-                    //PopupProcess.SelectFirstRowPopup(cboCommune);
-                }
-                else
-                {
-                    if (listResult.Count == 1)
+                    if (String.IsNullOrEmpty(searchCode) && String.IsNullOrEmpty(districtCode) && listResult.Count > 0)
                     {
-                        cboCommune.EditValue = listResult[0].COMMUNE_CODE;
-                        txtCommune.Text = listResult[0].SEARCH_CODE;
-                        if (isExpand)
+                        cboCommune.EditValue = null;
+                        txtCommune.Text = "";
+                        FocusShowPopup(cboCommune, gridView2);
+                        //PopupProcess.SelectFirstRowPopup(cboCommune);
+                    }
+                    else
+                    {
+                        if (listResult.Count == 1)
                         {
-                            FocusMoveText(txtAddress);
+                            cboCommune.EditValue = listResult[0].COMMUNE_CODE;
+                            txtCommune.Text = listResult[0].SEARCH_CODE;
+                            if (isExpand)
+                            {
+                                FocusMoveText(txtAddress);
+                            }
+                        }
+                        else if (isExpand && listResult.Count > 1)
+                        {
+                            cboCommune.Properties.DataSource = listResult;
+                            cboCommune.EditValue = null;
+                            FocusShowPopup(cboCommune, gridView2);
+                            // PopupProcess.SelectFirstRowPopup(cboCommune);
                         }
                     }
-                    else if (isExpand && listResult.Count > 1)
-                    {
-                        cboCommune.Properties.DataSource = listResult;
-                        cboCommune.EditValue = null;
-                        FocusShowPopup(cboCommune, gridView2);
-                        // PopupProcess.SelectFirstRowPopup(cboCommune);
-                    }
+
                 }
             }
             catch (Exception ex)

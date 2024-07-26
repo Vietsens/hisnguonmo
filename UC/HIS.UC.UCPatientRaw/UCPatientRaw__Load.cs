@@ -45,6 +45,7 @@ using MOS.EFMODEL.DataModels;
 using Inventec.Desktop.Common.Message;
 using Inventec.Common.QrCodeCCCD;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
+using System.Net;
 
 namespace HIS.UC.UCPatientRaw
 {
@@ -198,7 +199,10 @@ namespace HIS.UC.UCPatientRaw
 						string patientName = Inventec.Common.String.Convert.HexToUTF8Fix(heinCardDataForCheckGOV.PatientName);
 						if (!string.IsNullOrEmpty(patientName))
 							heinCardDataForCheckGOV.PatientName = patientName;
-						this._UCPatientRawADO = new HIS.UC.UCPatientRaw.ADO.UCPatientRawADO();
+                        string address = Inventec.Common.String.Convert.HexToUTF8Fix(heinCardDataForCheckGOV.Address);
+                        if (!string.IsNullOrEmpty(address))
+                            heinCardDataForCheckGOV.Address = address;
+                        this._UCPatientRawADO = new HIS.UC.UCPatientRaw.ADO.UCPatientRawADO();
 						this._UCPatientRawADO.PATIENT_NAME = heinCardDataForCheckGOV.PatientName;
 						this._UCPatientRawADO.DOB_STR = heinCardDataForCheckGOV.Dob;
 						this._UCPatientRawADO.GENDER_ID = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.Plugins.Library.RegisterConfig.GenderConvert.HisToHein(heinCardDataForCheckGOV.Gender));//FIX
@@ -224,10 +228,11 @@ namespace HIS.UC.UCPatientRaw
 						this.ResultDataADO = await heinGOVManager.CheckCccdQrCode(heinCardDataForCheckGOV, null, dtIntructionTime);
 
 					}
-
-					if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
+                    dataHeinCardFromQrCccd = null;
+                    if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
 					{
-						if(!string.IsNullOrEmpty(this.ResultDataADO.ResultHistoryLDO.gioiTinh))
+						heinCardDataForCheckGOV.LiveAreaCode = this.ResultDataADO.ResultHistoryLDO.maKV;
+                        if (!string.IsNullOrEmpty(this.ResultDataADO.ResultHistoryLDO.gioiTinh))
 							heinCardDataForCheckGOV.Gender = this.ResultDataADO.ResultHistoryLDO.gioiTinh.ToUpper() == "NAM" ? "1" : "2";
 						heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maThe ?? this.ResultDataADO.HeinCardData.HeinCardNumber;
 						//Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới

@@ -253,6 +253,7 @@ namespace HIS.UC.UCPatientRaw
             {
                 DisableControlOldPatientInformationOption(true);
                 popupControlContainer1.HidePopup();
+                this.dataHeinCardFromQrCccd = null;
                 this.dlgSendPatientSdo(null);
                 this.lstSend = null;
                 this.ResultDataADO = new Desktop.Plugins.Library.CheckHeinGOV.ResultDataADO();
@@ -279,6 +280,14 @@ namespace HIS.UC.UCPatientRaw
                 this.cboGender.EditValue = null;
                 this.currentPatientSDO = null;
                 this.cardSearch = null;
+                this.txtCareerCode.Text = null;
+                this.cboCareer.EditValue = null;
+                HIS_CAREER career = HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CareerBase;
+                if(career != null && (cboCareer.Properties.DataSource as List<HIS_CAREER>).Exists(o=>o.ID == career.ID))
+                {
+                    this.txtCareerCode.Text = career.CAREER_CODE;
+                    this.cboCareer.EditValue = career.ID;
+                }
                 lciWorkPlaceNameNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 lciMilitaryRankNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 lciPositionNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;

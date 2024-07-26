@@ -45,6 +45,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -63,8 +64,12 @@ namespace HIS.UC.UCOtherServiceReqInfo
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             this.lcUCOtherServiceReqInfo = new DevExpress.XtraLayout.LayoutControl();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.txtHosReasonNt = new DevExpress.XtraEditors.ButtonEdit();
             this.cboHosReason = new Inventec.Desktop.CustomControl.CustomGrid.CustomGridLookUpEdit();
             this.customGridLookUpEdit1View = new Inventec.Desktop.CustomControl.CustomGrid.CustomGridView();
+            this.txtHosReason = new DevExpress.XtraEditors.TextEdit();
+            this.chkExamOnline = new DevExpress.XtraEditors.CheckEdit();
             this.chkIsHiv = new DevExpress.XtraEditors.CheckEdit();
             this.chkWNext = new DevExpress.XtraEditors.CheckEdit();
             this.txtNote = new DevExpress.XtraEditors.MemoEdit();
@@ -122,16 +127,20 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.lciHosReason = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationUCOtherReqInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxErrorProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.timerInitForm = new System.Windows.Forms.Timer();
-            this.chkExamOnline = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciHosReason = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxValidationUCOtherReqInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.timerInitForm = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.lcUCOtherServiceReqInfo)).BeginInit();
             this.lcUCOtherServiceReqInfo.SuspendLayout();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtHosReasonNt.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboHosReason.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEdit1View)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtHosReason.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExamOnline.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsHiv.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkWNext.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNote.Properties)).BeginInit();
@@ -189,17 +198,18 @@ namespace HIS.UC.UCOtherServiceReqInfo
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHosReason)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationUCOtherReqInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderControl)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkExamOnline.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             this.SuspendLayout();
             // 
             // lcUCOtherServiceReqInfo
             // 
+            this.lcUCOtherServiceReqInfo.Controls.Add(this.panel2);
+            this.lcUCOtherServiceReqInfo.Controls.Add(this.txtHosReason);
             this.lcUCOtherServiceReqInfo.Controls.Add(this.chkExamOnline);
-            this.lcUCOtherServiceReqInfo.Controls.Add(this.cboHosReason);
             this.lcUCOtherServiceReqInfo.Controls.Add(this.chkIsHiv);
             this.lcUCOtherServiceReqInfo.Controls.Add(this.chkWNext);
             this.lcUCOtherServiceReqInfo.Controls.Add(this.txtNote);
@@ -233,9 +243,32 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.lcUCOtherServiceReqInfo.TabIndex = 0;
             this.lcUCOtherServiceReqInfo.Text = "layoutControl1";
             // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.txtHosReasonNt);
+            this.panel2.Controls.Add(this.cboHosReason);
+            this.panel2.Location = new System.Drawing.Point(355, 45);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(210, 20);
+            this.panel2.TabIndex = 51;
+            // 
+            // txtHosReasonNt
+            // 
+            this.txtHosReasonNt.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtHosReasonNt.Location = new System.Drawing.Point(0, 0);
+            this.txtHosReasonNt.Name = "txtHosReasonNt";
+            this.txtHosReasonNt.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.txtHosReasonNt.Size = new System.Drawing.Size(210, 20);
+            this.txtHosReasonNt.TabIndex = 1;
+            this.txtHosReasonNt.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtHosReasonNt_ButtonClick);
+            this.txtHosReasonNt.DoubleClick += new System.EventHandler(this.txtHosReasonNt_DoubleClick);
+            // 
             // cboHosReason
             // 
-            this.cboHosReason.Location = new System.Drawing.Point(78, 45);
+            this.cboHosReason.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cboHosReason.Location = new System.Drawing.Point(0, 0);
             this.cboHosReason.Name = "cboHosReason";
             this.cboHosReason.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboHosReason.Properties.AutoComplete = false;
@@ -245,12 +278,10 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.cboHosReason.Properties.NullText = "";
             this.cboHosReason.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboHosReason.Properties.View = this.customGridLookUpEdit1View;
-            this.cboHosReason.Size = new System.Drawing.Size(487, 20);
-            this.cboHosReason.StyleController = this.lcUCOtherServiceReqInfo;
-            this.cboHosReason.TabIndex = 48;
+            this.cboHosReason.Size = new System.Drawing.Size(210, 20);
+            this.cboHosReason.TabIndex = 0;
             this.cboHosReason.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboHosReason_ButtonClick);
             this.cboHosReason.EditValueChanged += new System.EventHandler(this.cboHosReason_EditValueChanged);
-            this.cboHosReason.VisibleChanged += new System.EventHandler(this.cboHosReason_VisibleChanged);
             // 
             // customGridLookUpEdit1View
             // 
@@ -258,6 +289,25 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.customGridLookUpEdit1View.Name = "customGridLookUpEdit1View";
             this.customGridLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.customGridLookUpEdit1View.OptionsView.ShowGroupPanel = false;
+            // 
+            // txtHosReason
+            // 
+            this.txtHosReason.Location = new System.Drawing.Point(78, 45);
+            this.txtHosReason.Name = "txtHosReason";
+            this.txtHosReason.Size = new System.Drawing.Size(198, 20);
+            this.txtHosReason.StyleController = this.lcUCOtherServiceReqInfo;
+            this.txtHosReason.TabIndex = 50;
+            // 
+            // chkExamOnline
+            // 
+            this.chkExamOnline.Enabled = false;
+            this.chkExamOnline.Location = new System.Drawing.Point(242, 246);
+            this.chkExamOnline.Name = "chkExamOnline";
+            this.chkExamOnline.Properties.Caption = "Khám trực tuyến";
+            this.chkExamOnline.Properties.ReadOnly = true;
+            this.chkExamOnline.Size = new System.Drawing.Size(109, 19);
+            this.chkExamOnline.StyleController = this.lcUCOtherServiceReqInfo;
+            this.chkExamOnline.TabIndex = 49;
             // 
             // chkIsHiv
             // 
@@ -368,9 +418,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             // 
             // txtIncode
             // 
-            this.txtIncode.Location = new System.Drawing.Point(339, 69);
+            this.txtIncode.Location = new System.Drawing.Point(355, 69);
             this.txtIncode.Name = "txtIncode";
-            this.txtIncode.Size = new System.Drawing.Size(226, 20);
+            this.txtIncode.Size = new System.Drawing.Size(210, 20);
             this.txtIncode.StyleController = this.lcUCOtherServiceReqInfo;
             this.txtIncode.TabIndex = 5;
             this.txtIncode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtIncode_PreviewKeyDown);
@@ -401,32 +451,32 @@ namespace HIS.UC.UCOtherServiceReqInfo
             // txtMaMS
             // 
             this.txtMaMS.Enabled = false;
-            this.txtMaMS.Location = new System.Drawing.Point(515, 246);
+            this.txtMaMS.Location = new System.Drawing.Point(511, 246);
             this.txtMaMS.Name = "txtMaMS";
             this.txtMaMS.Properties.ReadOnly = true;
-            this.txtMaMS.Size = new System.Drawing.Size(50, 20);
+            this.txtMaMS.Size = new System.Drawing.Size(54, 20);
             this.txtMaMS.StyleController = this.lcUCOtherServiceReqInfo;
             this.txtMaMS.TabIndex = 17;
             // 
             // chkCapMaMS
             // 
-            this.chkCapMaMS.Location = new System.Drawing.Point(437, 246);
+            this.chkCapMaMS.Location = new System.Drawing.Point(430, 246);
             this.chkCapMaMS.Name = "chkCapMaMS";
             this.chkCapMaMS.Properties.Caption = "";
-            this.chkCapMaMS.Size = new System.Drawing.Size(19, 19);
+            this.chkCapMaMS.Size = new System.Drawing.Size(22, 19);
             this.chkCapMaMS.StyleController = this.lcUCOtherServiceReqInfo;
             this.chkCapMaMS.TabIndex = 16;
             // 
             // cboPriorityType
             // 
-            this.cboPriorityType.Location = new System.Drawing.Point(100, 69);
+            this.cboPriorityType.Location = new System.Drawing.Point(101, 69);
             this.cboPriorityType.Name = "cboPriorityType";
             this.cboPriorityType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboPriorityType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Clear, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.cboPriorityType.Properties.NullText = "";
-            this.cboPriorityType.Size = new System.Drawing.Size(160, 20);
+            this.cboPriorityType.Size = new System.Drawing.Size(175, 20);
             this.cboPriorityType.StyleController = this.lcUCOtherServiceReqInfo;
             toolTipItem1.Text = "Trường hợp ưu tiên";
             superToolTip1.Items.Add(toolTipItem1);
@@ -611,13 +661,13 @@ namespace HIS.UC.UCOtherServiceReqInfo
             // 
             // chkIsNotRequireFee
             // 
-            this.chkIsNotRequireFee.Location = new System.Drawing.Point(162, 93);
+            this.chkIsNotRequireFee.Location = new System.Drawing.Point(163, 93);
             this.chkIsNotRequireFee.Name = "chkIsNotRequireFee";
             this.chkIsNotRequireFee.Properties.AppearanceFocused.BackColor = System.Drawing.Color.Silver;
             this.chkIsNotRequireFee.Properties.AppearanceFocused.Options.UseBackColor = true;
             this.chkIsNotRequireFee.Properties.Caption = "";
             this.chkIsNotRequireFee.Properties.FullFocusRect = true;
-            this.chkIsNotRequireFee.Size = new System.Drawing.Size(50, 19);
+            this.chkIsNotRequireFee.Size = new System.Drawing.Size(49, 19);
             this.chkIsNotRequireFee.StyleController = this.lcUCOtherServiceReqInfo;
             this.chkIsNotRequireFee.TabIndex = 7;
             this.chkIsNotRequireFee.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkIsNotRequireFee_PreviewKeyDown);
@@ -634,7 +684,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.chkPriority.Properties.AppearanceFocused.Options.UseBackColor = true;
             this.chkPriority.Properties.Caption = "";
             this.chkPriority.Properties.FullFocusRect = true;
-            this.chkPriority.Size = new System.Drawing.Size(21, 19);
+            this.chkPriority.Size = new System.Drawing.Size(22, 19);
             this.chkPriority.StyleController = this.lcUCOtherServiceReqInfo;
             this.chkPriority.TabIndex = 3;
             this.chkPriority.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkPriority_PreviewKeyDown);
@@ -647,7 +697,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.chkEmergency.Properties.AppearanceFocused.Options.UseBackColor = true;
             this.chkEmergency.Properties.Caption = "";
             this.chkEmergency.Properties.FullFocusRect = true;
-            this.chkEmergency.Size = new System.Drawing.Size(21, 19);
+            this.chkEmergency.Size = new System.Drawing.Size(22, 19);
             this.chkEmergency.StyleController = this.lcUCOtherServiceReqInfo;
             this.chkEmergency.TabIndex = 6;
             this.chkEmergency.EditValueChanged += new System.EventHandler(this.chkEmergency_EditValueChanged);
@@ -694,8 +744,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.layoutControlItem4,
             this.layoutControlItem5,
             this.layoutControlItem6,
-            this.lciHosReason,
-            this.layoutControlItem7});
+            this.layoutControlItem7,
+            this.layoutControlItem8,
+            this.lciHosReason});
             this.lcgOtherRequest.Location = new System.Drawing.Point(0, 0);
             this.lcgOtherRequest.Name = "lcgOtherRequest";
             this.lcgOtherRequest.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -723,10 +774,10 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.lciIsNotRequireFee.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciIsNotRequireFee.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciIsNotRequireFee.Control = this.chkIsNotRequireFee;
-            this.lciIsNotRequireFee.Location = new System.Drawing.Point(97, 72);
+            this.lciIsNotRequireFee.Location = new System.Drawing.Point(98, 72);
             this.lciIsNotRequireFee.Name = "lciIsNotRequireFee";
             this.lciIsNotRequireFee.OptionsToolTip.ToolTip = "Khám thu sau";
-            this.lciIsNotRequireFee.Size = new System.Drawing.Size(116, 24);
+            this.lciIsNotRequireFee.Size = new System.Drawing.Size(115, 24);
             this.lciIsNotRequireFee.Text = "Thu sau:";
             this.lciIsNotRequireFee.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciIsNotRequireFee.TextSize = new System.Drawing.Size(60, 20);
@@ -755,7 +806,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.lciEmergency.MaxSize = new System.Drawing.Size(110, 24);
             this.lciEmergency.MinSize = new System.Drawing.Size(95, 24);
             this.lciEmergency.Name = "lciEmergency";
-            this.lciEmergency.Size = new System.Drawing.Size(97, 24);
+            this.lciEmergency.Size = new System.Drawing.Size(98, 24);
             this.lciEmergency.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciEmergency.Text = "Cấp cứu:";
             this.lciEmergency.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -782,9 +833,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.lciFortxtMaMS.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciFortxtMaMS.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciFortxtMaMS.Control = this.txtMaMS;
-            this.lciFortxtMaMS.Location = new System.Drawing.Point(457, 225);
+            this.lciFortxtMaMS.Location = new System.Drawing.Point(453, 225);
             this.lciFortxtMaMS.Name = "lciFortxtMaMS";
-            this.lciFortxtMaMS.Size = new System.Drawing.Size(109, 24);
+            this.lciFortxtMaMS.Size = new System.Drawing.Size(113, 24);
             this.lciFortxtMaMS.Text = "Mã MS:";
             this.lciFortxtMaMS.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciFortxtMaMS.TextSize = new System.Drawing.Size(50, 20);
@@ -796,9 +847,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.lciForchkCapMaMS.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciForchkCapMaMS.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciForchkCapMaMS.Control = this.chkCapMaMS;
-            this.lciForchkCapMaMS.Location = new System.Drawing.Point(359, 225);
+            this.lciForchkCapMaMS.Location = new System.Drawing.Point(352, 225);
             this.lciForchkCapMaMS.Name = "lciForchkCapMaMS";
-            this.lciForchkCapMaMS.Size = new System.Drawing.Size(98, 24);
+            this.lciForchkCapMaMS.Size = new System.Drawing.Size(101, 24);
             this.lciForchkCapMaMS.Text = "Cấp mã MS:";
             this.lciForchkCapMaMS.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciForchkCapMaMS.TextSize = new System.Drawing.Size(70, 20);
@@ -814,7 +865,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.lciPriority.MaxSize = new System.Drawing.Size(110, 24);
             this.lciPriority.MinSize = new System.Drawing.Size(95, 24);
             this.lciPriority.Name = "lciPriority";
-            this.lciPriority.Size = new System.Drawing.Size(97, 24);
+            this.lciPriority.Size = new System.Drawing.Size(98, 24);
             this.lciPriority.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciPriority.Text = "Ưu tiên:";
             this.lciPriority.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -826,10 +877,10 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.layoutControlItem1.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem1.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem1.Control = this.cboPriorityType;
-            this.layoutControlItem1.Location = new System.Drawing.Point(97, 48);
+            this.layoutControlItem1.Location = new System.Drawing.Point(98, 48);
             this.layoutControlItem1.Name = "layoutControlItem1";
             this.layoutControlItem1.OptionsToolTip.ToolTip = "Trường hợp ưu tiên";
-            this.layoutControlItem1.Size = new System.Drawing.Size(164, 24);
+            this.layoutControlItem1.Size = new System.Drawing.Size(179, 24);
             this.layoutControlItem1.Text = "TH ưu tiên:";
             this.layoutControlItem1.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -841,9 +892,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.lciFortxtIncode.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciFortxtIncode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciFortxtIncode.Control = this.txtIncode;
-            this.lciFortxtIncode.Location = new System.Drawing.Point(261, 48);
+            this.lciFortxtIncode.Location = new System.Drawing.Point(277, 48);
             this.lciFortxtIncode.Name = "lciFortxtIncode";
-            this.lciFortxtIncode.Size = new System.Drawing.Size(305, 24);
+            this.lciFortxtIncode.Size = new System.Drawing.Size(289, 24);
             this.lciFortxtIncode.Text = "Số vào viện:";
             this.lciFortxtIncode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciFortxtIncode.TextSize = new System.Drawing.Size(70, 20);
@@ -1056,15 +1107,41 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
+            // layoutControlItem7
+            // 
+            this.layoutControlItem7.Control = this.chkExamOnline;
+            this.layoutControlItem7.Location = new System.Drawing.Point(239, 225);
+            this.layoutControlItem7.Name = "layoutControlItem7";
+            this.layoutControlItem7.Size = new System.Drawing.Size(113, 24);
+            this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem7.TextVisible = false;
+            // 
+            // layoutControlItem8
+            // 
+            this.layoutControlItem8.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.layoutControlItem8.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutControlItem8.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem8.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem8.Control = this.txtHosReason;
+            this.layoutControlItem8.Location = new System.Drawing.Point(0, 24);
+            this.layoutControlItem8.Name = "layoutControlItem8";
+            this.layoutControlItem8.OptionsToolTip.ToolTip = "Lý do vào viện";
+            this.layoutControlItem8.Size = new System.Drawing.Size(277, 24);
+            this.layoutControlItem8.Text = "Lý do VV:";
+            this.layoutControlItem8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem8.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem8.TextToControlDistance = 5;
+            this.layoutControlItem8.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            // 
             // lciHosReason
             // 
             this.lciHosReason.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciHosReason.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lciHosReason.Control = this.cboHosReason;
-            this.lciHosReason.Location = new System.Drawing.Point(0, 24);
+            this.lciHosReason.Control = this.panel2;
+            this.lciHosReason.Location = new System.Drawing.Point(277, 24);
             this.lciHosReason.Name = "lciHosReason";
             this.lciHosReason.OptionsToolTip.ToolTip = "Lý do vào nội trú";
-            this.lciHosReason.Size = new System.Drawing.Size(566, 24);
+            this.lciHosReason.Size = new System.Drawing.Size(289, 24);
             this.lciHosReason.Text = "Lý do vào NT:";
             this.lciHosReason.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciHosReason.TextSize = new System.Drawing.Size(70, 20);
@@ -1078,26 +1155,6 @@ namespace HIS.UC.UCOtherServiceReqInfo
             // 
             this.timerInitForm.Interval = 500;
             // 
-            // chkExamOnline
-            // 
-            this.chkExamOnline.Location = new System.Drawing.Point(242, 246);
-            this.chkExamOnline.Name = "chkExamOnline";
-            this.chkExamOnline.Properties.Caption = "Khám trực tuyến";
-            this.chkExamOnline.Size = new System.Drawing.Size(116, 19);
-            this.chkExamOnline.StyleController = this.lcUCOtherServiceReqInfo;
-            this.chkExamOnline.TabIndex = 49;
-            this.chkExamOnline.Enabled = false;
-            this.chkExamOnline.ReadOnly = true;
-            // 
-            // layoutControlItem7
-            // 
-            this.layoutControlItem7.Control = this.chkExamOnline;
-            this.layoutControlItem7.Location = new System.Drawing.Point(239, 225);
-            this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(120, 24);
-            this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem7.TextVisible = false;
-            // 
             // UCOtherServiceReqInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1108,8 +1165,12 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.Load += new System.EventHandler(this.UCOtherServiceReqInfo_Load);
             ((System.ComponentModel.ISupportInitialize)(this.lcUCOtherServiceReqInfo)).EndInit();
             this.lcUCOtherServiceReqInfo.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtHosReasonNt.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboHosReason.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEdit1View)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtHosReason.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExamOnline.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsHiv.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkWNext.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNote.Properties)).EndInit();
@@ -1167,11 +1228,11 @@ namespace HIS.UC.UCOtherServiceReqInfo
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHosReason)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationUCOtherReqInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderControl)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkExamOnline.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1241,10 +1302,14 @@ namespace HIS.UC.UCOtherServiceReqInfo
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         private DevExpress.XtraEditors.CheckEdit chkIsHiv;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
-        private Inventec.Desktop.CustomControl.CustomGrid.CustomGridLookUpEdit cboHosReason;
-        private Inventec.Desktop.CustomControl.CustomGrid.CustomGridView customGridLookUpEdit1View;
-        private DevExpress.XtraLayout.LayoutControlItem lciHosReason;
         private DevExpress.XtraEditors.CheckEdit chkExamOnline;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
+        private DevExpress.XtraEditors.TextEdit txtHosReason;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
+        private System.Windows.Forms.Panel panel2;
+        private DevExpress.XtraLayout.LayoutControlItem lciHosReason;
+        private Inventec.Desktop.CustomControl.CustomGrid.CustomGridLookUpEdit cboHosReason;
+        private Inventec.Desktop.CustomControl.CustomGrid.CustomGridView customGridLookUpEdit1View;
+        private DevExpress.XtraEditors.ButtonEdit txtHosReasonNt;
     }
 }

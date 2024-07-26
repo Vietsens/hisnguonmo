@@ -230,6 +230,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
+                
                 var PrintServiceReqProcessor = new HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(this.serviceReqComboResultSDO.ServiceReqs, currentModule != null ? this.currentModule.RoomId : 0);
                 PrintServiceReqProcessor.DlgSendResultSigned = GetDocmentSigned;
                 PrintServiceReqProcessor.Print("Mps000276", true);
@@ -243,22 +244,36 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
         bool IsSaveAndShowMps000102 = true;
         MPS.ProcessorBase.PrintConfig.PreviewType? PreviewTypeMps000102 = null;
-
+        bool isPrinted = false;
+        private void InTamUng(bool isSaveAndShow, MPS.ProcessorBase.PrintConfig.PreviewType? previewType)
+        {
+            try
+            {
+                var countPrintConfig = this.lstLoaiPhieu.Where(s => s.Check == true).Distinct().ToList().Count;
+                // điều kiện in : có ít nhất 1 cấu hình và có giao dịch tạm ứng /// nếu có tạm ứng thì in trước
+                if (serviceReqComboResultSDO.SereServDeposits != null && serviceReqComboResultSDO.SereServDeposits.Count > 0 && countPrintConfig > 0)
+                {
+                    this.IsSaveAndShowMps000102 = isSaveAndShow;
+                    this.PreviewTypeMps000102 = previewType;
+                    Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, LanguageManager.GetLanguage(), LocalStorage.LocalData.GlobalVariables.TemnplatePathFolder);
+                    richEditorMain.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__MPS000102, ProcessPrintMps000102);
+                    isPrinted = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void InPhieuYeuCauDichVu(bool isSaveAndShow, MPS.ProcessorBase.PrintConfig.PreviewType? previewType = null)
         {
             try
             {
+                
                 if (serviceReqComboResultSDO != null)
                 {
                     CommonParam param = new CommonParam();
-                    // nếu có tạm ứng dịch vụ thì in trước.
-                    if (serviceReqComboResultSDO.SereServDeposits != null && serviceReqComboResultSDO.SereServDeposits.Count > 0)
-                    {
-                        this.IsSaveAndShowMps000102 = isSaveAndShow;
-                        this.PreviewTypeMps000102 = previewType;
-                        Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, LanguageManager.GetLanguage(), LocalStorage.LocalData.GlobalVariables.TemnplatePathFolder);
-                        richEditorMain.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__MPS000102, ProcessPrintMps000102);
-                    }
+                    
 
                     List<V_HIS_BED_LOG> bedLogs = new List<V_HIS_BED_LOG>();
                     // get bedLog
@@ -585,6 +600,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
+                
                 if (serviceReqComboResultSDO != null || IsActionButtonPrintBill)
                 {
                     BordereauInitData data = new BordereauInitData();

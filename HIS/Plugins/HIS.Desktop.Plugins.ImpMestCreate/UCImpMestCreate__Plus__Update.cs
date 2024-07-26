@@ -343,6 +343,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             ado.TDL_BID_NUMBER = mate.TDL_BID_NUMBER;
                             ado.TDL_BID_EXTRA_CODE = mate.TDL_BID_EXTRA_CODE;
                             ado.TDL_BID_PACKAGE_CODE = mate.TDL_BID_PACKAGE_CODE;
+                            ado.TT_THAU = mate.TT_THAU;
                             ado.BidId = mate.BID_ID;
                             ado.EXPIRED_DATE = mate.EXPIRED_DATE;
                             ado.NATIONAL_NAME = mate.NATIONAL_NAME;
@@ -536,7 +537,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         if (medi != null)
                         {
                             ado.HisMedicine = new HIS_MEDICINE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_MATERIAL>(ado.HisMedicine, medi);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_MEDICINE>(ado.HisMedicine, medi);
                             ado.HisMedicine.TDL_BID_GROUP_CODE = medi.TDL_BID_GROUP_CODE;
                             ado.HisMedicine.TDL_BID_NUM_ORDER = medi.TDL_BID_NUM_ORDER;
                             ado.HisMedicine.TDL_BID_NUMBER = medi.TDL_BID_NUMBER;
@@ -552,6 +553,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             ado.TDL_BID_NUMBER = medi.TDL_BID_NUMBER;
                             ado.TDL_BID_EXTRA_CODE = medi.TDL_BID_EXTRA_CODE;
                             ado.TDL_BID_PACKAGE_CODE = medi.TDL_BID_PACKAGE_CODE;
+                            ado.TT_THAU = medi.TT_THAU;
                             ado.BidId = medi.BID_ID;
                             ado.EXPIRED_DATE = medi.EXPIRED_DATE;
                             ado.NATIONAL_NAME = medi.NATIONAL_NAME;

@@ -36,7 +36,7 @@ DevExpress.XtraEditors.DXErrorProvider.ValidationRule
         internal DevExpress.XtraEditors.TextEdit maBenhPhuTxt;
         internal DevExpress.XtraEditors.TextEdit tenBenhPhuTxt;
         private string[] icdSeparators = new string[] { ";" };
-        internal List<HIS_ICD> listIcd = BackendDataWorker.Get<HIS_ICD>();
+        internal List<HIS_ICD> listIcd = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_TRADITIONAL != 1).OrderBy(o => o.ICD_CODE).ToList();
         internal DelegateGetIcdMain getIcdMain;
 
         public override bool Validate(Control control, object value)

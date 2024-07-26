@@ -98,6 +98,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
         HisExamRegisterKioskSDO sdoData;
         List<HIS_PATIENT_TYPE> lstPatientType = new List<HIS_PATIENT_TYPE>();
         HisPatientForKioskSDO patientForKioskSDO;
+        
         long PrimaryTypeId = 0;
         string ServiceCode;
         #endregion
@@ -132,6 +133,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
                 this.requestRoomId = module.RoomId;
                 this.setNull = _setNull;
                 this.patientForKioskSDO = data.PatientForKiosk;
+                
                 this.PatientTypeId = patientTypeId;
                 this.sdoData = data.ExamRegisterKiosk;
                 this.DelegateClose = closingForm;
@@ -164,6 +166,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
                 getServices();
                 SetDefaultControl();
                 MapHisCardPatientSdo();
+                
                 if (hisCardPatientSdo != null && !string.IsNullOrEmpty(hisCardPatientSdo.HeinAddress) && string.IsNullOrEmpty(hisCardPatientSdo.Address))
                     hisCardPatientSdo.Address = hisCardPatientSdo.HeinAddress;
                 Inventec.Common.Logging.LogSystem.Debug("hisCardPatientSdo__2_" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisCardPatientSdo), hisCardPatientSdo));
@@ -240,6 +243,10 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
                     this.hisCardPatientSdo.CareerId = patientForKioskSDO.CAREER_ID;
                     this.hisCardPatientSdo.NationalCode = patientForKioskSDO.NATIONAL_CODE;
                     this.hisCardPatientSdo.MpsNationalCode = patientForKioskSDO.MPS_NATIONAL_CODE;
+                    this.hisCardPatientSdo.HtCommuneCode = patientForKioskSDO.HT_COMMUNE_CODE;
+                    this.hisCardPatientSdo.HtDistrictCode = patientForKioskSDO.HT_DISTRICT_CODE;
+                    this.hisCardPatientSdo.HtProvinceCode = patientForKioskSDO.HT_PROVINCE_CODE;
+
                 }
             }
             catch (Exception ex)
@@ -786,6 +793,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
                 this.vlistService = new List<V_HIS_SERVICE>();
                 Inventec.Common.Logging.LogSystem.Debug("this.PatientTypeId 1 là : " + this.PatientTypeId);
                 getService((V_HIS_EXECUTE_ROOM_1)e.Item.Tag, hisCardPatientSdo, ref vlistService, true);
+                
                 if (vlistService != null && vlistService.Count > 1)
                 {
                     //frmServiceRoom = new frmServiceRoom((V_HIS_EXECUTE_ROOM_1)e.Item.Tag, hisCardPatientSdo, requestRoomId, patient, vlistService, this.currentModule);
@@ -948,6 +956,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
                 Inventec.Common.Logging.LogSystem.Debug("btnRegister_Click 1 là : " + this.PatientTypeId);
                 WaitingManager.Show();
                 sdo.PatientTypeId = this.PatientTypeId;
+                
                 //sdo.PatientTypeId = string.IsNullOrEmpty(hisCardPatientSdo.HeinCardNumber) ? GetId(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.HOSPITAL_FEE")) : GetId(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT"));
                 if (sdo.CardSDO.AppointmentServices != null && sdo.CardSDO.AppointmentServices.Count > 0)
                 {
@@ -1043,6 +1052,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
                     sdo.TransferInTimeTo = sdoData.TransferInTimeTo;
                     sdo.TransferInTimeFrom = sdoData.TransferInTimeFrom;
                     sdo.IsTransferIn = true;
+                    
                 }
 
                 if (layoutControlItem30.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Never)
@@ -1079,11 +1089,14 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
                     Inventec.Common.Logging.LogSystem.Debug("IsNotRequireFee 2" + chkRecieveLater.Checked);
                     sdo.IsNotRequireFee = chkRecieveLater.Checked ? true : false;
                 }
+                
                 LogSystem.Info(LogUtil.TraceData("Du kieu gui len khi dkk kios:", sdo));
                 examServiceReqRegisterResultSDO = new BackendAdapter(param).Post<HisServiceReqExamRegisterResultSDO>("api/HisServiceReq/ExamRegisterKiosk", ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
                 LogSystem.Info(LogUtil.TraceData("Du kieu dang ky kham tra ve", examServiceReqRegisterResultSDO));
                 if (examServiceReqRegisterResultSDO != null)
                 {
+                    LogSystem.Debug("-----------Update Patient");
+                    UpdatePatient(sdo.CardSDO, examServiceReqRegisterResultSDO.HisPatientProfile.HisPatient);
                     //UpdateCccdPatient(examServiceReqRegisterResultSDO.HisPatientProfile.HisPatient, examServiceReqRegisterResultSDO.HisPatientProfile.HisTreatment.ID);
                     hisCardPatientSdo.PatientId = examServiceReqRegisterResultSDO.HisPatientProfile.HisPatient.ID;
                     hisCardPatientSdo.PatientCode = examServiceReqRegisterResultSDO.HisPatientProfile.HisPatient.PATIENT_CODE;
@@ -1124,6 +1137,36 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void UpdatePatient(HisCardSDO cardSdo,HIS_PATIENT patient)
+        {
+            try
+            {
+                CommonParam paramPatient = new CommonParam();
+                HisPatientUpdateSDO patientUpdateSdo = new MOS.SDO.HisPatientUpdateSDO();
+                
+                //var currentPatient = BackendDataWorker.Get<HIS_PATIENT>().FirstOrDefault(s => s.ID == (cardSdo.PatientId??0));
+                patientUpdateSdo.HisPatient = new HIS_PATIENT();
+                patientUpdateSdo.HisPatient = patient;
+                patientUpdateSdo.HisPatient.HT_COMMUNE_CODE = cardSdo.HtCommuneCode;
+                patientUpdateSdo.HisPatient.HT_DISTRICT_CODE = cardSdo.HtDistrictCode;
+                patientUpdateSdo.HisPatient.HT_PROVINCE_CODE = cardSdo.HtProvinceCode;
+                patientUpdateSdo.HisPatient.HT_COMMUNE_NAME = cardSdo.HtCommuneName;
+                patientUpdateSdo.HisPatient.HT_DISTRICT_NAME = cardSdo.HtDistrictName;
+                patientUpdateSdo.HisPatient.HT_PROVINCE_NAME = cardSdo.HtProvinceName;
+                LogSystem.Debug("Update Patient Data: " + LogUtil.TraceData("__HisPatientSdo: ", patientUpdateSdo));
+                var resultData = new BackendAdapter(paramPatient).Post<HIS_PATIENT>("api/HisPatient/UpdateSdo", ApiConsumers.MosConsumer, patientUpdateSdo, paramPatient);
+                if (resultData != null)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("Update Patient Result" + LogUtil.TraceData("__HisPatientSdo Result: ", resultData));
+                }
+                else LogSystem.Debug("Update Patient Faild: " + LogUtil.TraceData("__HisPatientSdo: ", patientUpdateSdo));
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
 
         private async Task UpdateCccdPatient(HIS_PATIENT hisPatient, long treatmentId)
@@ -1138,7 +1181,9 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
                 patientUpdateSdo.HisPatient.CCCD_NUMBER = CccdPatientLocalADO.CccdNumber;
                 patientUpdateSdo.HisPatient.CCCD_PLACE = CccdPatientLocalADO.CccdPlace;
                 patientUpdateSdo.HisPatient.CCCD_DATE = CccdPatientLocalADO.CccdDate;
+                
                 patientUpdateSdo.TreatmentId = treatmentId;
+                
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => patientUpdateSdo), patientUpdateSdo));
                 var resultData = new BackendAdapter(paramPatient).Post<HIS_PATIENT>("api/HisPatient/UpdateSdo", ApiConsumers.MosConsumer, patientUpdateSdo, paramPatient);
 

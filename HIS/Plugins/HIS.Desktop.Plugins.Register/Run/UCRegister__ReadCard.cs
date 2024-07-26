@@ -92,19 +92,27 @@ namespace HIS.Desktop.Plugins.Register.Run
         {
             try
             {
+                IsReadCardTheViet = false;
                 CommonParam param = new CommonParam();
                 var patientInRegisterSearchByCard = new BackendAdapter(param).Get<HisCardSDO>(RequestUriStore.HIS_CARD_GETVIEWBYSERVICECODE, ApiConsumers.MosConsumer, serviceCode, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
                 if (patientInRegisterSearchByCard != null)
                 {
                     this.actionType = GlobalVariables.ActionAdd;
                     this.cardSearch = patientInRegisterSearchByCard;
-
+                    IsReadCardTheViet = true;
                     var data = this.SearchByCode(patientInRegisterSearchByCard.PatientCode);
                     if (data != null && data.Result != null && data.Result is HisPatientSDO)
                     {
                         //xuandv --- ThongBaoCu
-                       // DevExpress.Utils.WaitDialogForm waitLoad = new DevExpress.Utils.WaitDialogForm(MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.HeThongThongBaoMoTaChoWaitDialogForm));
+                        // DevExpress.Utils.WaitDialogForm waitLoad = new DevExpress.Utils.WaitDialogForm(MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.HeThongThongBaoMoTaChoWaitDialogForm));
                         //Benh nhan da dang ky tren he thong benh vien, da co thong tin ho so
+                        currentPatientSDO = data.Result as HisPatientSDO;
+                        currentPatientSDO.HT_COMMUNE_NAME = HtCommuneName = patientInRegisterSearchByCard.HtCommuneName;
+                        currentPatientSDO.HT_DISTRICT_NAME = HtDistrictName = patientInRegisterSearchByCard.HtDistrictName;
+                        currentPatientSDO.HT_PROVINCE_NAME = HtProvinceName = patientInRegisterSearchByCard.HtProvinceName;
+                        currentPatientSDO.HT_COMMUNE_CODE = HtCommuneCode = patientInRegisterSearchByCard.HtCommuneCode;
+                        currentPatientSDO.HT_DISTRICT_CODE = HtDistrictCode = patientInRegisterSearchByCard.HtDistrictCode;
+                        currentPatientSDO.HT_PROVINCE_CODE = HtProvinceCode = patientInRegisterSearchByCard.HtProvinceCode;
                         this.SetPatientSearchPanel(true);
                         this.Invoke(new MethodInvoker(delegate()
                         {
@@ -163,7 +171,13 @@ namespace HIS.Desktop.Plugins.Register.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        public bool IsReadCardTheViet = false;
+        public string HtCommuneCode = null;
+        public string HtDistrictCode = null;
+        public string HtProvinceCode = null;
+        public string HtCommuneName = null;
+        public string HtDistrictName = null;
+        public string HtProvinceName = null;
         private void SetPatientDTOFromCardSDO(HisCardSDO cardSDO, HisPatientSDO patientByCard)
         {
             try
@@ -199,6 +213,13 @@ namespace HIS.Desktop.Plugins.Register.Run
                 //patientByCard.GENDER_CODE = cardSDO.GenderCode;
                 //patientByCard.GENDER_NAME = cardSDO.GenderName;            
                 patientByCard.GENDER_ID = cardSDO.GenderId;
+
+                patientByCard.HT_COMMUNE_NAME = HtCommuneName = cardSDO.HtCommuneName;
+                patientByCard.HT_DISTRICT_NAME = HtDistrictName = cardSDO.HtDistrictName;
+                patientByCard.HT_PROVINCE_NAME = HtProvinceName = cardSDO.HtProvinceName;
+                patientByCard.HT_COMMUNE_CODE = HtCommuneCode = cardSDO.HtCommuneCode;
+                patientByCard.HT_DISTRICT_CODE = HtDistrictCode = cardSDO.HtDistrictCode;
+                patientByCard.HT_PROVINCE_CODE = HtProvinceCode = cardSDO.HtProvinceCode;
             }
             catch (Exception ex)
             {

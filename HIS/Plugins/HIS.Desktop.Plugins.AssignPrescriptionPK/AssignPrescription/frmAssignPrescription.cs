@@ -1810,11 +1810,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     return;
                 }
 
-                if (!ProccessorByIcdCode(null))
-                {
-                    return;
-                }
-
                 IsMultilPatient = IsSelectMultiPatient();
                 if ((intructionTimeSelecteds != null && intructionTimeSelected.Count > 1) || (mediMatyTypeADOs != null && mediMatyTypeADOs.Count > 0 && (mediMatyTypeADOs.Select(o => o.IntructionTime).Distinct().ToList().Count > 1 || mediMatyTypeADOs.Select(o => o.IntructionTime).Distinct().First() != InstructionTime)) || IsMultilPatient || (this.oldServiceReq != null && this.oldServiceReq.ID > 0))
                 {
@@ -8275,7 +8270,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 {
                     string strIcdSubText = "";
 
-                    txtIcdText.Refresh();
+                  txtIcdText.Refresh();
                     if (txtIcdText.Text.LastIndexOf(";") > -1)
                     {
                         strIcdSubText = txtIcdText.Text.Substring(txtIcdText.Text.LastIndexOf(";")).Replace(";", "");

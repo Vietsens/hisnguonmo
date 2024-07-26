@@ -1804,6 +1804,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             isSaveAndShow = true;
                         }
                     }
+                    //InTamUng(isSaveAndShow, previewType);
                     Inventec.Common.Logging.LogSystem.Debug("SaveServiceReqCombo____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => previewType), previewType)
                         + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => isSaveAndPrint), isSaveAndPrint)
                         + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => isSign), isSign)
@@ -1827,20 +1828,26 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             var checkYCDV = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_1");
 
                             var checkQR = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_3");
-
+                            
                             if (checkHDBN != null)
                             {
+                                if(!isPrinted) InTamUng(isSaveAndShow, previewType);
                                 InPhieuHuoangDanBenhNhan(isSaveAndShow);
+                                
                             }
 
                             if (checkYCDV != null)
                             {
+                                if (!isPrinted) InTamUng(isSaveAndShow, previewType);
                                 InPhieuYeuCauDichVu(isSaveAndShow, previewType);
+                                
                             }
 
                             if (checkQR != null)
                             {
+                                if (!isPrinted) InTamUng(isSaveAndShow, previewType);
                                 InYeuCauThanhToanQR(isSaveAndPrint, isSign, isPrintPreview);
+                                
                             }
                         }
 

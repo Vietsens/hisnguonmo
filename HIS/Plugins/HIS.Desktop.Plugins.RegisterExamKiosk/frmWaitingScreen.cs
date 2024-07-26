@@ -947,7 +947,9 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                     if (hisCardSdo != null)
                     {
                         this.PatientData.CardInfo = hisCardSdo;
+                        
                     }
+                    
                 }, serviceCode);
                 taskAll.Add(tsCard);
 
@@ -1039,9 +1041,11 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 //Ẩn form hiện tại mở form frmRegisterExamKiosk
                 NameForm.CloseAllForm();
                 SetDefaultHost();
+                //UpdatePatient(PatientData.PatientForKiosk, PatientData.CardInfo);
                 if (patienType != null && patienType.GetType() == typeof(long))
                 {
                     long patientTypeId = (long)patienType;
+                    
                     var frm = new frmRegisterExamKiosk(PatientData, (HIS.Desktop.Common.DelegateRefreshData)SetNull, this.currentModule, (HIS.Desktop.Common.DelegateCloseForm_Uc)closingForm, patientTypeId);
                     frm.ShowDialog();
                 }
@@ -1056,7 +1060,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        
         private async Task CheckheinCardFromHeinInsuranceApi(HeinCardData dataHein)
         {
             try
@@ -1088,7 +1092,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                             }
                             this.PatientData.PatientForKiosk = GetPatientInfoByFilter(filter);
                         }
-
+                        
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => PatientData), PatientData));
                         if (!string.IsNullOrEmpty(rsIns.gtTheTu))
                         {
@@ -1109,7 +1113,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                                 }
                             }
                         }
-
+                        
                         DateTime dTheDen = DateTime.MinValue;
                         if (!string.IsNullOrEmpty(rsIns.gtTheDen))
                         {
@@ -1271,6 +1275,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             {
                 hein = new HeinCardData();
                 hein.Address = patient.HeinAddress;
+                
                 if (patient.IsHasNotDayDob == 1)
                 {
                     hein.Dob = patient.Dob.ToString().Substring(0, 4);
@@ -1787,6 +1792,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                     string dtDate = card.Dob.Replace("/", "");
                     result.DOB = Int64.Parse(dtDate.Substring(4, 4) + dtDate.Substring(2, 2) + dtDate.Substring(0, 2) + "000000");
                 }
+                
             }
             catch (Exception ex)
             {

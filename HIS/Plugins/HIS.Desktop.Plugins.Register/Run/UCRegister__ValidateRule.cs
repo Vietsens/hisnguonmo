@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 this.ValidationPatientDobControl();
                 this.ValidationIntructionTimeControl();
                 ValidateTreatmentType();
+                ValidControlRequired(txtReasonVV);
                 if (HisConfigCFG.MustHaveNCSInfoForChild)
                 {
                     if (this.lcitxtHomePerson.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
@@ -86,6 +87,22 @@ namespace HIS.Desktop.Plugins.Register.Run
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ValidControlRequired(TextEdit control)
+        {
+            try
+            {
+                ControlEditValidationRule validate = new ControlEditValidationRule();
+                validate.editor = control;
+                validate.ErrorText = "Thiếu trường dữ liệu bắt buộc";
+                validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                dxValidationProviderControl.SetValidationRule(control, validate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

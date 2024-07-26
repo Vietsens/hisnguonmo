@@ -250,6 +250,16 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 {
                     cboStatus.EditValue = "Tất cả";
                 }
+                if (Config.ConfigKey.deleteFileOption == "1")
+                {
+                    //checkIncludeDelete.Visible = false;
+                    lciIncludeDelete.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
+                else
+                {
+                    lciIncludeDelete.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    //checkIncludeDelete.Visible = true;
+                }
                 this.InitControlState();
                 this.ProcessGroupRow();
                 MeShow();

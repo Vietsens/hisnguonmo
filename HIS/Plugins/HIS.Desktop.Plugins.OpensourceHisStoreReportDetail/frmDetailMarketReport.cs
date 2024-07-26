@@ -31,7 +31,6 @@ using Inventec.Common.Adapter;
 using HIS.Desktop.ApiConsumer;
 using SDA.EFMODEL.DataModels;
 using SDA.Filter;
-using MOS.SDO;
 using SAR.SDO;
 using System.IO;
 using Inventec.Common.SignLibrary;
@@ -40,6 +39,9 @@ using iTextSharp.text.pdf.parser;
 using System.Net;
 using System.Resources;
 using Inventec.Desktop.Common.LanguageManager;
+using MOS.SDO;
+using MOS.Filter;
+using DevExpress.XtraCharts;
 
 namespace HIS.Desktop.Plugins.OpensourceHisStoreReportDetail
 {
@@ -49,14 +51,20 @@ namespace HIS.Desktop.Plugins.OpensourceHisStoreReportDetail
         HisStoreServiceReportDetailSDO ListData;
         HisStoreServiceReportBuySDO ListReportBuySDO;
         HisStoreServiceReportSDO resultData = null;
+        List<string> lstImageUrls;
+        ReportReviewResultSDO lstEvaluate;
         Inventec.Desktop.Common.Modules.Module moduleData;
+        long? yourRating;
+        bool IsAcctive = false;
+        private int currentIndex = 0;
         public frmDetailMarketReport(Inventec.Desktop.Common.Modules.Module moduleData, HisStoreServiceReportSDO listData)
         {
             InitializeComponent();
             try
             {
                 this.StartPosition = FormStartPosition.CenterScreen;
-                this.WindowState = FormWindowState.Maximized;
+                //this.WindowState = FormWindowState.Maximized;
+                //this.AutoScroll = false;
                 this.moduleData = moduleData;
                 this.Text = moduleData.text;
                 this.resultData = listData;
@@ -67,16 +75,51 @@ namespace HIS.Desktop.Plugins.OpensourceHisStoreReportDetail
             }
         }
 
+        //private int currentPage = 0;
+        private int pageSize = 10;
+        //private int totalLoadedData = 0;
         private void frmDetailMarketReport_Load(object sender, EventArgs e)
         {
             try
             {
-            //WaitingManager.Show();
-            string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
-            this.Icon = Icon.ExtractAssociatedIcon(iconPath);
-            GetData();
-            FillDataToControl();
-            SetCaptionByLanguageKey();
+                WaitingManager.Show();
+                string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
+                this.Icon = Icon.ExtractAssociatedIcon(iconPath);
+                GetData();
+                SetCaptionByLanguageKey();
+                LoadDataForm();
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadPaging(object param, bool isLoadMore)
+        {
+            try
+            {
+                //get data comment
+                Inventec.Common.Logging.LogSystem.Debug("Load data to list");
+                int limit = ((CommonParam)param).Limit ?? 0;
+                int start = isLoadMore ? 0 : ((CommonParam)param).Start ?? 0;
+                CommonParam paramCommon = new CommonParam(start, limit);
+                Inventec.Core.ApiResultObject<List<ReportCommentGetPagingResultSDO>> apiResult = null;
+
+                ReportCommentGetPagingFilter Filter = new ReportCommentGetPagingFilter();
+                Filter.ServiceCode = resultData.ServiceCode;
+                Filter.ParentId = null;
+                apiResult = new BackendAdapter(paramCommon).GetRO<List<ReportCommentGetPagingResultSDO>>("api/HisStoreService/ReportCommentGetPaging", ApiConsumers.MosConsumer, Filter, paramCommon);
+                if (apiResult != null)
+                {
+                    var data = apiResult.Data;
+                    if (data != null)
+                    {
+                        LoadUC(data);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -93,16 +136,32 @@ namespace HIS.Desktop.Plugins.OpensourceHisStoreReportDetail
 
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.labelControl8.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.labelControl8.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.labelControl7.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.labelControl7.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.labelControl6.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.labelControl6.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.labelControl5.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.labelControl5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.labelControl3.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.labelControl3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.labelControl1.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.labelControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.showFullDescribe.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.showFullDescribe.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.groupBox2.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.groupBox2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.groupBox1.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.groupBox1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnPurchase.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.btnPurchase.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem1.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.layoutControlItem1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem4.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.layoutControlItem4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem5.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.layoutControlItem5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem10.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.layoutControlItem10.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.layoutControl2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtSummary.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.txtSummary.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lblAverageRating.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.lblAverageRating.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.labelControl2.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.labelControl2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtAuthor.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.txtAuthor.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtTypeReport.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.txtTypeReport.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtNameReport.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.txtNameReport.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtCodeReport.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.txtCodeReport.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem3.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.layoutControlItem3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem1.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.layoutControlItem1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem2.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.layoutControlItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem6.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.layoutControlItem6.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem8.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.layoutControlItem8.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem4.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.layoutControlItem4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lblNumAllRatings.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.lblNumAllRatings.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lblAverageRatings.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.lblAverageRatings.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmDetailMarketReport.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
             }
             catch (Exception ex)
             {
@@ -115,9 +174,8 @@ namespace HIS.Desktop.Plugins.OpensourceHisStoreReportDetail
             try
             {
                 CommonParam param = new CommonParam();
-                //var a = new BackendAdapter(param).Get<List<HisStoreServiceReportDetailSDO>>("api/HisStoreService/ReportGetDetail", ApiConsumers.MosConsumer, filter, param);
                 ListData = new BackendAdapter(param).Get<HisStoreServiceReportDetailSDO>("api/HisStoreService/ReportGetDetail", ApiConsumers.MosConsumer, resultData.ServiceCode, param);
-                
+
             }
             catch (Exception ex)
             {
@@ -130,61 +188,196 @@ namespace HIS.Desktop.Plugins.OpensourceHisStoreReportDetail
             try
             {
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListData),
-                    ListData) 
+                    ListData)
                 );
 
                 if (ListData != null)
                 {
-                    decimal? formatPrice = ListData.Price;
-                    if (formatPrice.HasValue)
-                    {
-                        string formattedPrice = formatPrice.Value.ToString("N0");
-                        txtPrice.Text = formattedPrice;
-                    }
-                    else
-                    {
-                        txtPrice.Text = "";
-                    }
-                    //txtPrice.Text = ListData.Price.ToString();
-                    //decimal price = ListData.Price ?? 0;
+                    txtSummary.Text = ListData.Summary;
                     txtCodeReport.Text = ListData.ServiceCode;
                     txtNameReport.Text = ListData.ServiceName;
                     txtTypeReport.Text = ListData.ServiceCategoryName;
                     txtAuthor.Text = ListData.AuthorFullName;
-                  
-                    txtPurchaseNum.Text = ListData.BuyingCount.ToString();
-                    if (ListData.IsPurchased == true)
-                    { 
-                        txtPurchaseStatus.Text = "Đã mua";
-                        txtPurchaseStatus.ForeColor = System.Drawing.Color.FromArgb(50, 205, 50);
-                        btnPurchase.Enabled = false;
-                    }
-                    else
+                    lblAverageRating.Text = ListData.AverageRating.ToString();
+                    lblNumAllRatings.Text = string.Format("{0} Ratings", ListData.NumOfReview);
+                    //lblDescribe.Text = ListData.Description;
+                    //lblDescribe.AutoSizeInLayoutControl = true;
+                    //lblDescribe.Text = !string.IsNullOrEmpty(ListData.Description) ? (ListData.Description.Length > 2000 ? ListData.Description.Substring(0, 2000).ToString() + "..." : ListData.Description) : "Description";
+                    txtSummary.Text = ListData.Summary.ToString();
+                    yourRating = ListData.YourRating;
+                    lstImageUrls = ListData.ImageUrls;
+                    showDetaiDescribe.DocumentText = ListData.Description;
+                    if (ListData.IsInstalled == true)
                     {
-                        txtPurchaseStatus.Text = "Chưa mua";
-                        btnPurchase.Enabled = true;
+                        IsAcctive = true;
                     }
-                    txtDescribe.Text = ListData.Description;
-                    if (ListData.DescriptionUrl != null)
+
+                    if (!String.IsNullOrEmpty(ListData.AuthorLogoUrl))
                     {
-                        string tempFilePath = Path.Combine(Path.GetTempPath(), "temp.pdf");
-                       
-                        if (File.Exists(tempFilePath))
-                        {
-                            // Nếu tồn tại, xóa tệp
-                            File.Delete(tempFilePath);
-                        }
-                        // Tải tệp PDF từ URL
                         using (WebClient webClient = new WebClient())
                         {
-                            webClient.DownloadFile(new Uri(ListData.DescriptionUrl), tempFilePath);
+                            byte[] imageBytes = webClient.DownloadData(ListData.AuthorLogoUrl);
+                            using (var ms = new System.IO.MemoryStream(imageBytes))
+                            {
+                                picAuthor.Image = Image.FromStream(ms);
+                            }
                         }
-                        // Hiển thị tệp PDF trong PdfViewer
-                        pdfViewer.LoadDocument(tempFilePath);
-                        pdfViewer.ZoomMode = DevExpress.XtraPdfViewer.PdfZoomMode.FitToWidth;
                     }
+
+                    if (lstImageUrls.Count > 0)
+                    {
+                        string firstImageUrl = lstImageUrls[0];
+                        using (WebClient webClient = new WebClient())
+                        {
+                            byte[] imageBytes = webClient.DownloadData(firstImageUrl);
+                            using (var ms = new System.IO.MemoryStream(imageBytes))
+                            {
+                                picReportIMG.Image = Image.FromStream(ms);
+                            }
+                        }
+                    }
+                    LoadRating();
+                    LoadChartRating();
                 }
 
+            }
+
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadChartRating()
+        {
+            try
+            {
+                long NumOf1 = ListData.NumOfRating1 ?? 0;
+                long NumOf2 = ListData.NumOfRating2 ?? 0;
+                long NumOf3 = ListData.NumOfRating3 ?? 0;
+                long NumOf4 = ListData.NumOfRating4 ?? 0;
+                long NumOf5 = ListData.NumOfRating5 ?? 0;
+                long NumOfAll = ListData.NumOfReview ?? 0;
+
+                chartRating.Series.Clear();
+                Series series = new Series("Ratings", ViewType.Bar);
+
+                if (NumOfAll != null && NumOfAll > 0)
+                {
+                    // Thêm các điểm dữ liệu vào Series
+                    series.Points.Add(new SeriesPoint("1", new double[] { (NumOf1 * 100) / NumOfAll }));
+                    series.Points.Add(new SeriesPoint("2", new double[] { (NumOf2 * 100) / NumOfAll }));
+                    series.Points.Add(new SeriesPoint("3", new double[] { (NumOf3 * 100) / NumOfAll }));
+                    series.Points.Add(new SeriesPoint("4", new double[] { (NumOf4 * 100) / NumOfAll }));
+                    series.Points.Add(new SeriesPoint("5", new double[] { (NumOf5 * 100) / NumOfAll }));
+
+                    // Thêm Series vào ChartControl
+                    chartRating.Series.Add(series);
+                }
+
+                // Lấy đối tượng XYDiagram từ ChartControl
+                XYDiagram diagram = (XYDiagram)chartRating.Diagram;
+
+                // Thiết lập thuộc tính Rotated để làm cho biểu đồ nằm ngang
+                diagram.Rotated = true;
+                diagram.AxisX.Label.Visible = false;
+                diagram.AxisY.Label.Visible = false;
+                //// Tùy chỉnh trục X và Y
+                //diagram.AxisX.Title.Text = "Percentage";
+                //diagram.AxisX.Title.Visible = true;
+                //diagram.AxisY.Title.Text = "Ratings";
+                //diagram.AxisY.Title.Visible = true;
+
+                // Tùy chỉnh hiển thị thanh ngang
+                BarSeriesView view = (BarSeriesView)series.View;
+                view.BarWidth = 0.5;
+
+                // Tùy chỉnh màu sắc của các thanh
+                series.Points[0].Color = Color.Orange;
+                series.Points[1].Color = Color.Orange;
+                series.Points[2].Color = Color.Orange;
+                series.Points[3].Color = Color.Orange;
+                series.Points[4].Color = Color.Orange;
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void LoadUC(List<ReportCommentGetPagingResultSDO> lstComment)
+        {
+            try
+            {
+                int rowIndex = tableComment.ColumnCount;
+                int columnIndex = 0;
+                if (lstComment.Count > 0)
+                {
+                    foreach (var item in lstComment)
+                    {
+                        bool isShowRepply = false;
+                        UCItemComment ItemComment = new UCItemComment(item, this.moduleData, resultData, isShowRepply,
+                            null) { Dock = DockStyle.Fill };
+                        tableComment.Controls.Add(ItemComment, columnIndex, rowIndex);
+                        //columnIndex++;
+                        //ItemComment.Click += new EventHandler(CardItem_Click);
+                         rowIndex++;
+                         tableComment.RowCount = rowIndex + 1;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                  Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        public void LoadDataForm()
+        {
+            FillDataToControl();
+            tableComment.DataBindings.Clear();
+            CommonParam param = new CommonParam();
+            param.Limit = pageSize;
+            //param.Count = totalLoadedData;
+            LoadPaging(param, false);
+        }
+
+
+        private void LoadRating()
+        {
+            try
+            {
+
+                if (ListData.YourRating == 1)
+                {
+                    Star1();
+                }
+                else if (ListData.YourRating == 2)
+                {
+                    Star2();
+                }
+                else if (ListData.YourRating == 3)
+                {
+                    Star3();
+                }
+                else if (ListData.YourRating == 4)
+                {
+                    Star4();
+                }
+                else if (ListData.YourRating == 5)
+                {
+                    Star5();
+                }
+                else
+                {
+                    picStar1.Image = Properties.Resources.StarNotRated;
+                    picStar2.Image = Properties.Resources.StarNotRated;
+                    picStar3.Image = Properties.Resources.StarNotRated;
+                    picStar4.Image = Properties.Resources.StarNotRated;
+                    picStar5.Image = Properties.Resources.StarNotRated;
+                }
             }
             catch (Exception ex)
             {
@@ -196,40 +389,33 @@ namespace HIS.Desktop.Plugins.OpensourceHisStoreReportDetail
         {
             try
             {
-                if (MessageBox.Show("Bạn muốn mua báo cáo này?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (ListData.IsInstalled == true)
                 {
-                    WaitingManager.Show();
-                    CommonParam param = new CommonParam();
-                    HisStoreServiceReportBuyInputSDO filter = new HisStoreServiceReportBuyInputSDO();
-                    filter.ServiceCode = resultData.ServiceCode;
-                    ListReportBuySDO = new BackendAdapter(param).Post<HisStoreServiceReportBuySDO>("api/HisStoreService/ReportBuy", ApiConsumers.MosConsumer, filter, param);
-                    if (ListReportBuySDO != null)
+                    if (MessageBox.Show("Bạn đã tải báo cáo này. Bạn muốn tiếp tục tải lại?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        if (ListReportBuySDO.Licenses != null && ListReportBuySDO.Licenses.Count > 0)
-                        {
-                            //GetData();
-                            //FillDataToControl();
-                            Licenses.AddRange(ListReportBuySDO.Licenses);
-                            //MessageManager.Show(this, param, true);
-                            CreateReport();
-                            WaitingManager.Hide();
-                        }
-                        else
-                        {
-                            Inventec.Common.Logging.LogSystem.Warn("Goi api huy yeu cau mua bao cao that bai____Api uri:api/HisStoreService/ReportBuy");
-                            WaitingManager.Hide();
-                            MessageManager.Show(this, param, false);
-                        }
+                        ReportBuy();
                     }
                     else
-                    {
-                        Inventec.Common.Logging.LogSystem.Warn("Goi api huy yeu cau mua bao cao that bai____Api uri:api/HisStoreService/ReportBuy");
-                        WaitingManager.Hide();
-                        MessageManager.Show(this, param, false);
-                    }
+                        return;
                 }
-                else
-                    return;
+                else if (ListData.FeeType == "FREE")
+                {
+                    if (MessageBox.Show("Bạn muốn tải báo cáo này?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        ReportBuy();
+                    }
+                    else
+                        return;
+                }
+                else if (ListData.FeeType == "PAID")
+                {
+                    if (MessageBox.Show("Bạn muốn mua báo cáo này?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        ReportBuy();
+                    }
+                    else
+                        return;
+                }
 
             }
             catch (Exception ex)
@@ -237,19 +423,59 @@ namespace HIS.Desktop.Plugins.OpensourceHisStoreReportDetail
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-    
+
+        private void ReportBuy()
+        {
+            try
+            {
+                WaitingManager.Show();
+                CommonParam param = new CommonParam();
+                HisStoreServiceReportBuyInputSDO InputSDO = new HisStoreServiceReportBuyInputSDO();
+                InputSDO.ServiceCode = resultData.ServiceCode;
+                ListReportBuySDO = new BackendAdapter(param).Post<HisStoreServiceReportBuySDO>("api/HisStoreService/ReportDownload", ApiConsumers.MosConsumer, InputSDO, param);
+                if (ListReportBuySDO != null)
+                {
+                    if (ListReportBuySDO.Licenses != null && ListReportBuySDO.Licenses.Count > 0)
+                    {
+                        //GetData();
+                        //FillDataToControl();
+                        Licenses.AddRange(ListReportBuySDO.Licenses);
+                        //MessageManager.Show(this, param, true);
+                        CreateReport();
+                        WaitingManager.Hide();
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Goi api huy yeu cau mua bao cao that bai____Api uri:api/HisStoreService/ReportDownload");
+                        WaitingManager.Hide();
+                        MessageManager.Show(this, param, false);
+                    }
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Goi api huy yeu cau mua bao cao that bai____Api uri:api/HisStoreService/ReportBuy");
+                    WaitingManager.Hide();
+                    MessageManager.Show(this, param, false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void CreateReport()
         {
-            try 
+            try
             {
                 CommonParam param = new CommonParam();
-                SarReportTypeMakeFromStoreSDO filter = new SarReportTypeMakeFromStoreSDO();
-                filter.ReportTypeCode = ListReportBuySDO.ServiceCode;
-                filter.SqlScript = ListReportBuySDO.SqlScript;
-                filter.Description = ListReportBuySDO.Description;
-                filter.ReportTypeName = ListReportBuySDO.ServiceName;
-                filter.StoreTemplateUrl = ListReportBuySDO.TemplateUrl;
-                bool suscess = new BackendAdapter(param).Post<bool>("api/SarReportType/MakeFromStore", ApiConsumers.SarConsumer, filter, param);
+                SarReportTypeMakeFromStoreSDO updateSDO = new SarReportTypeMakeFromStoreSDO();
+                updateSDO.ReportTypeCode = ListReportBuySDO.ServiceCode;
+                updateSDO.SqlScript = ListReportBuySDO.SqlScript;
+                updateSDO.Description = ListReportBuySDO.Summary;
+                updateSDO.ReportTypeName = ListReportBuySDO.ServiceName;
+                updateSDO.StoreTemplateUrl = ListReportBuySDO.TemplateUrl;
+                bool suscess = new BackendAdapter(param).Post<bool>("api/SarReportType/MakeFromStore", ApiConsumers.SarConsumer, updateSDO, param);
                 if (suscess == true)
                 {
                     CreSDALICENSE();
@@ -285,21 +511,21 @@ namespace HIS.Desktop.Plugins.OpensourceHisStoreReportDetail
                 }
                 if (lstSda != null && lstSda.Count >= 0)
                 {
-                        CommonParam paramCommon = new CommonParam();
-                        //SdaLicenseFilter filter = new SdaLicenseFilter();
-                        List<SDA_LICENSE> resuilt = new List<SDA_LICENSE>();
-                        resuilt = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Post<List<SDA_LICENSE>>("api/SdaLicense/CreateList", ApiConsumers.SdaConsumer, lstSda, paramCommon);
-                        if (resuilt != null && resuilt.Count > 0)
-                        {
-                            MessageManager.Show(this, paramCommon, true);
-                            GetData();
-                            FillDataToControl();
-                        }
-                        else
-                        {
-                            Inventec.Common.Logging.LogSystem.Error("api/SdaLicense/CreateList khong hoat dong." + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resuilt), resuilt));
-                            MessageManager.Show(this, paramCommon, false);
-                        }
+                    CommonParam paramCommon = new CommonParam();
+                    //SdaLicenseFilter filter = new SdaLicenseFilter();
+                    List<SDA_LICENSE> resuilt = new List<SDA_LICENSE>();
+                    resuilt = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Post<List<SDA_LICENSE>>("api/SdaLicense/CreateList", ApiConsumers.SdaConsumer, lstSda, paramCommon);
+                    if (resuilt != null && resuilt.Count > 0)
+                    {
+                        MessageManager.Show(this, paramCommon, true);
+                        GetData();
+                        FillDataToControl();
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("api/SdaLicense/CreateList khong hoat dong." + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resuilt), resuilt));
+                        MessageManager.Show(this, paramCommon, false);
+                    }
                 }
             }
             catch (Exception ex)
@@ -308,31 +534,326 @@ namespace HIS.Desktop.Plugins.OpensourceHisStoreReportDetail
             }
         }
 
-        private void frmDetailMarketReport_KeyDown(object sender, KeyEventArgs e)
+        private void picStar1_Click(object sender, EventArgs e)
         {
             try
             {
-                 if (e.Control && e.KeyCode == Keys.B)
+                yourRating = 1;
+                if (IsAcctive == true)
+                {
+                    if (Evaluate(yourRating) == true)
                     {
-                        btnPurchase_Click(null, null);
+                        //Star1();
+                        GetData();
+                        FillDataToControl();
                     }
+                }
             }
+
             catch (Exception ex)
             {
-               Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
-        private void frmDetailMarketReport_FormClosed(object sender, FormClosedEventArgs e)
+        private void picStar2_Click(object sender, EventArgs e)
         {
             try
             {
-                pdfViewer.CloseDocument();
+                yourRating = 2;
+                if (IsAcctive == true)
+                {
+                    if (Evaluate(yourRating) == true)
+                    {
+                        //Star2();
+                        GetData();
+                        FillDataToControl();
+                    }
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void picStar3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                yourRating = 3;
+                if (IsAcctive == true)
+                {
+                    //picStar1.Image = Properties.Resources.StarRated;
+                    if (Evaluate(yourRating) == true)
+                    {
+                        //Star3();
+                        GetData();
+                        FillDataToControl();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void picStar4_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                yourRating = 4;
+                if (IsAcctive == true)
+                {
+                    if (Evaluate(yourRating) == true)
+                    {
+                        //Star4();
+                        GetData();
+                        FillDataToControl();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void picStar5_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                yourRating = 5;
+                if (IsAcctive == true)
+                {
+                    if (Evaluate(yourRating) == true)
+                    {
+                        //Star5();
+                        GetData();
+                        FillDataToControl();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void Star1()
+        {
+            try
+            {
+                picStar1.Image = Properties.Resources.StarRated;
+                picStar2.Image = Properties.Resources.StarNotRated;
+                picStar3.Image = Properties.Resources.StarNotRated;
+                picStar4.Image = Properties.Resources.StarNotRated;
+                picStar5.Image = Properties.Resources.StarNotRated;
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void Star2()
+        {
+            try
+            {
+                picStar1.Image = Properties.Resources.StarRated;
+                picStar2.Image = Properties.Resources.StarRated;
+                picStar3.Image = Properties.Resources.StarNotRated;
+                picStar4.Image = Properties.Resources.StarNotRated;
+                picStar5.Image = Properties.Resources.StarNotRated;
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void Star3()
+        {
+            try
+            {
+                picStar1.Image = Properties.Resources.StarRated;
+                picStar2.Image = Properties.Resources.StarRated;
+                picStar3.Image = Properties.Resources.StarRated;
+                picStar4.Image = Properties.Resources.StarNotRated;
+                picStar5.Image = Properties.Resources.StarNotRated;
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void Star4()
+        {
+            try
+            {
+                picStar1.Image = Properties.Resources.StarRated;
+                picStar2.Image = Properties.Resources.StarRated;
+                picStar3.Image = Properties.Resources.StarRated;
+                picStar4.Image = Properties.Resources.StarRated;
+                picStar5.Image = Properties.Resources.StarNotRated;
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void Star5()
+        {
+            try
+            {
+                picStar1.Image = Properties.Resources.StarRated;
+                picStar2.Image = Properties.Resources.StarRated;
+                picStar3.Image = Properties.Resources.StarRated;
+                picStar4.Image = Properties.Resources.StarRated;
+                picStar5.Image = Properties.Resources.StarRated;
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private bool Evaluate(long? Rating)
+        {
+            bool sucssess = true;
+            try
+            {
+                WaitingManager.Show();
+                CommonParam paramCommon = new CommonParam();
+                ReportReviewInputSDO filter = new ReportReviewInputSDO();
+                filter.ServiceCode = resultData.ServiceCode;
+                filter.Rating = Rating ?? 0;
+                lstEvaluate = new BackendAdapter(paramCommon).Post<ReportReviewResultSDO>("api/HisStoreService/ReportReview", ApiConsumers.MosConsumer, filter, paramCommon);
+                if (lstEvaluate != null)
+                {
+                    MessageManager.Show(this, paramCommon, true);
+                }
+                else
+                {
+                    MessageManager.Show(this, paramCommon, false);
+                }
+                WaitingManager.Hide();
+                return sucssess;
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
+            }
+        }
+
+        private void picPrev_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                currentIndex = (currentIndex + 1) % lstImageUrls.Count;
+                string currentImageUrl = lstImageUrls[currentIndex];
+
+                if (lstImageUrls.Count > 0)
+                {
+                    // string firstImageUrl = lstImageUrls[0];
+                    using (WebClient webClient = new WebClient())
+                    {
+                        byte[] imageBytes = webClient.DownloadData(currentImageUrl);
+                        using (var ms = new System.IO.MemoryStream(imageBytes))
+                        {
+                            picReportIMG.Image = Image.FromStream(ms);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void picNext_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // currentIndex = (currentIndex + lstImageUrls.Count) % lstImageUrls.Count;
+                currentIndex = (currentIndex + 1) % lstImageUrls.Count;
+                string currentImageUrl = lstImageUrls[currentIndex];
+
+                if (lstImageUrls.Count > 0)
+                {
+                    // string firstImageUrl = lstImageUrls[0];
+                    using (WebClient webClient = new WebClient())
+                    {
+                        byte[] imageBytes = webClient.DownloadData(currentImageUrl);
+                        using (var ms = new System.IO.MemoryStream(imageBytes))
+                        {
+                            picReportIMG.Image = Image.FromStream(ms);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnShowComment_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                frmListComment ListComment = new frmListComment(resultData, this.moduleData, null, false);
+                ListComment.Show();
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void showFullDescribe_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FrmShowFull showFullDetail = new FrmShowFull(true, ListData.Description, null);
+                showFullDetail.Show();
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void picReportIMG_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (picReportIMG.Image != null)
+                {
+                    string currentImageUrl = lstImageUrls[currentIndex];
+                    FrmShowFull showFullDetail = new FrmShowFull(false, null, currentImageUrl);
+                    showFullDetail.Show();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
+
     }
 }

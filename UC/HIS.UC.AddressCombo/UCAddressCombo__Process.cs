@@ -143,8 +143,8 @@ namespace HIS.UC.AddressCombo
                         }
                         if (isReLoadRef)
                         {
-                            this.cboProvince.EditValue = listResult[0].PROVINCE_CODE;
                             this.txtProvinceCode.Text = listResult[0].SEARCH_CODE;
+                            this.cboProvince.EditValue = listResult[0].PROVINCE_CODE;
                             this.LoadHuyenCombo("", listResult[0].PROVINCE_CODE, false);
                         }
                         if (isExpand)
@@ -214,12 +214,12 @@ namespace HIS.UC.AddressCombo
                 {
                     if (listResult.Count == 1)
                     {
-                        this.cboDistrict.EditValue = listResult[0].DISTRICT_CODE;
                         this.txtDistrictCode.Text = listResult[0].SEARCH_CODE;
+                        this.cboDistrict.EditValue = listResult[0].DISTRICT_CODE;
                         if (String.IsNullOrEmpty(this.cboProvince.Text))
                         {
-                            this.cboProvince.EditValue = listResult[0].PROVINCE_CODE;
                             this.txtProvinceCode.Text = listResult[0].PROVINCE_CODE;
+                            this.cboProvince.EditValue = listResult[0].PROVINCE_CODE;
                         }
                         this.LoadXaCombo("", listResult[0].DISTRICT_CODE, false);
 
@@ -266,10 +266,11 @@ namespace HIS.UC.AddressCombo
                 {
                     if (listResult.Count == 1)
                     {
-                        this.cboCommune.EditValue = listResult[0].COMMUNE_CODE;
                         this.txtCommuneCode.Text = listResult[0].SEARCH_CODE;
-                        this.cboDistrict.EditValue = listResult[0].DISTRICT_CODE;
+                        this.cboCommune.EditValue = listResult[0].COMMUNE_CODE;
+
                         this.txtDistrictCode.Text = listResult[0].DISTRICT_CODE;
+                        this.cboDistrict.EditValue = listResult[0].DISTRICT_CODE;
                         if (this.dlgSetAddressUCProvinceOfBirth != null)
                             this.dlgSetAddressUCProvinceOfBirth(listResult[0], true);
                         if (String.IsNullOrEmpty(this.cboProvince.Text))
@@ -277,8 +278,8 @@ namespace HIS.UC.AddressCombo
                             SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => o.ID == listResult[0].DISTRICT_ID).FirstOrDefault();
                             if (district != null)
                             {
-                                this.cboProvince.EditValue = district.PROVINCE_CODE;
                                 this.txtProvinceCode.Text = district.PROVINCE_CODE;
+                                this.cboProvince.EditValue = district.PROVINCE_CODE;
                             }
                         }
 

@@ -177,7 +177,8 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 MPS.Processor.Mps000178.PDO.Mps000178PDO mps000178RDO = new MPS.Processor.Mps000178.PDO.Mps000178PDO(
                    _PatientPrint,
                    currentHispatientTypeAlter,
-                   treatment4
+                   treatment4,
+                   null
                    );
 
                 string printerName = "";

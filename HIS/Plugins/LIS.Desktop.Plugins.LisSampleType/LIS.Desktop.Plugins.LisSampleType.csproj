@@ -63,7 +63,7 @@
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.Resource.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.String">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.TypeConvert">
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.TypeConvert.dll</HintPath>
@@ -99,7 +99,7 @@
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.UC.Paging.dll</HintPath>
     </Reference>
     <Reference Include="LIS.EFMODEL">
-      <HintPath>..\..\..\..\..\..\RELEASE\LIS\LIS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\LIS\LIS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="LIS.Filter">
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\LIS.Filter.dll</HintPath>

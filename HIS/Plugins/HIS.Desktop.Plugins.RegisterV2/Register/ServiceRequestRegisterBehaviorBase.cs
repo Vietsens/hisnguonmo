@@ -174,7 +174,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
         protected long? patientClassifyId { get; set; }
         protected string HospitalizeReasonCode { get; set; }
         protected string HospitalizeReasonName { get; set; }
-
+        protected string HospitalizationReason { get; set; }
         public string GUARANTEE_LOGINNAME { get; set; }
         public string GUARANTEE_USERNAME { get; set; }
         public string GUARANTEE_REASON { get; set; }
@@ -365,6 +365,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.FUND_CUSTOMER_NAME = this.serviceReqInfoValue.FUND_CUSTOMER_NAME;
                 this.HospitalizeReasonCode = this.serviceReqInfoValue.HospitalizeReasonCode;
                 this.HospitalizeReasonName = this.serviceReqInfoValue.HospitalizeReasonName;
+                this.HospitalizationReason = this.serviceReqInfoValue.HospitalizationReason;
                 //UcheinInfo
                 if (this.heinInfoValue != null && this.heinInfoValue.HisTreatment != null)
                 {
@@ -380,12 +381,12 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.communeNameKS = patientPlusInformationInfoValue.COMMUNE_OfBIRTH_NAME;
                 this.addressKS = patientPlusInformationInfoValue.ADDRESS_OfBIRTH;
 
-                this.communeNowCode = patientPlusInformationInfoValue.HT_COMMUNE_CODE;
-                this.communeNowName = patientPlusInformationInfoValue.HT_COMMUNE_NAME;
-                this.provinceNowCode = patientPlusInformationInfoValue.HT_PROVINCE_CODE;
-                this.provinceNowName = patientPlusInformationInfoValue.HT_PROVINCE_NAME;
-                this.districtNowCode = patientPlusInformationInfoValue.HT_DISTRICT_CODE;
-                this.districtNowName = patientPlusInformationInfoValue.HT_DISTRICT_NAME;
+                this.communeNowCode = ucRequestService.IsReadCardTheViet ? ucRequestService.HtCommuneCode : patientPlusInformationInfoValue.HT_COMMUNE_CODE;
+                this.communeNowName = ucRequestService.IsReadCardTheViet ? ucRequestService.HtCommuneName : patientPlusInformationInfoValue.HT_COMMUNE_NAME;
+                this.provinceNowCode = ucRequestService.IsReadCardTheViet ? ucRequestService.HtProvinceCode : patientPlusInformationInfoValue.HT_PROVINCE_CODE;
+                this.provinceNowName = ucRequestService.IsReadCardTheViet ? ucRequestService.HtProvinceName : patientPlusInformationInfoValue.HT_PROVINCE_NAME;
+                this.districtNowCode = ucRequestService.IsReadCardTheViet ? ucRequestService.HtDistrictCode : patientPlusInformationInfoValue.HT_DISTRICT_CODE;
+                this.districtNowName = ucRequestService.IsReadCardTheViet ? ucRequestService.HtDistrictName : patientPlusInformationInfoValue.HT_DISTRICT_NAME;
                 this.addressNow = patientPlusInformationInfoValue.HT_ADDRESS;
 
                 if (HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.ChangeEthnic != 0)
@@ -667,6 +668,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.patientProfile.HisPatient.HT_COMMUNE_NAME = this.communeNowName;
                 this.patientProfile.HisPatient.HT_DISTRICT_NAME = this.districtNowName;
                 this.patientProfile.HisPatient.HT_PROVINCE_NAME = this.provinceNowName;
+                this.patientProfile.HisPatient.HT_COMMUNE_CODE = this.communeNowCode;
+                this.patientProfile.HisPatient.HT_DISTRICT_CODE = this.districtNowCode;
+                this.patientProfile.HisPatient.HT_PROVINCE_CODE = this.provinceNowCode;
                 this.patientProfile.HisPatient.RELATIVE_MOBILE = this.phone;
 
                 this.patientProfile.HisPatient.BLOOD_ABO_CODE = this.blood_ABO_Code;
@@ -834,6 +838,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.patientProfile.HisTreatment.TDL_SOCIAL_INSURANCE_NUMBER = SocialInsuranceNumberPatient;
                 this.patientProfile.HisTreatment.HOSPITALIZE_REASON_CODE = this.HospitalizeReasonCode;
                 this.patientProfile.HisTreatment.HOSPITALIZE_REASON_NAME = this.HospitalizeReasonName;
+                this.patientProfile.HisTreatment.HOSPITALIZATION_REASON = this.HospitalizationReason;
             }
             catch (Exception ex)
             {

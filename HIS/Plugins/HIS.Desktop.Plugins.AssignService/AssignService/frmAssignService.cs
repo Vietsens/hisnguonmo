@@ -3254,13 +3254,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 {
                     List<SereServADO> serviceCheckeds__Send = this.ServiceIsleafADOs.FindAll(o => o.IsChecked);
                     this.btnSave.Enabled = this.btnSaveAndPrint.Enabled = this.btnCreateServiceGroup.Enabled = (serviceCheckeds__Send != null && serviceCheckeds__Send.Count > 0);
-                    this.pnlPrintAssignService.Enabled = this.btnShowDetail.Enabled = this.btnCreateBill.Enabled = this.btnDepositService.Enabled = this.btnPrintPhieuHuongDanBN.Enabled = this.BtnPrint.Enabled = this.btnEdit.Enabled = this.btnQRPay.Enabled = false;
+                    this.pnlPrintAssignService.Enabled = this.btnShowDetail.Enabled = this.btnCreateBill.Enabled = this.btnDepositService.Enabled = this.btnPrintPhieuHuongDanBN.Enabled = this.BtnPrint.Enabled = this.btnEdit.Enabled = false;
 
                 }
                 else
                 {
                     this.btnSave.Enabled = this.btnSaveAndPrint.Enabled = this.btnCreateServiceGroup.Enabled = false;
-                    this.pnlPrintAssignService.Enabled = this.btnShowDetail.Enabled = this.btnCreateBill.Enabled = this.btnDepositService.Enabled = this.btnPrintPhieuHuongDanBN.Enabled = this.BtnPrint.Enabled = this.btnEdit.Enabled = this.btnQRPay.Enabled = true;
+                    this.pnlPrintAssignService.Enabled = this.btnShowDetail.Enabled = this.btnCreateBill.Enabled = this.btnDepositService.Enabled = this.btnPrintPhieuHuongDanBN.Enabled = this.BtnPrint.Enabled = this.btnEdit.Enabled = true;
                 }
 
                 //hiển thị ảnh checkbox
@@ -5490,6 +5490,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.LoadIcdDefault();
                 this.DisablecheckEmergencyPriorityByConfig();
                 this.treeService.UncheckAll();
+                this.isPrinted = false;
 
                 foreach (var item in this.ServiceIsleafADOs)
                 {
@@ -5927,8 +5928,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (LblBtnPrint.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && BtnPrint.Enabled)
                 {
                     PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, null, currentModule != null ? currentModule.RoomId : 0);
-
+                    
                     InPhieuYeuCauDichVu(true);
+                    
                     //PrintServiceReqProcessor.Print("Mps000340", false);
                 }
             }
@@ -9261,15 +9263,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
         }
         List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
+        #region thanh toan QR
         private void CheckEnableBtnQR()
         {
             try
             {
                 listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
-                if (listConfig != null)
-               {
-                   btnQRPay.Enabled = true;
-               }
+                
+                btnQRPay.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -9316,9 +9317,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 adoqr.TreatmentId = this.treatmentId;
                                 adoqr.ConfigValue = selectedConfig;
                                 adoqr.TransReqId = 0;
-                                adoqr.DelegtePrint = (HIS.Desktop.Common.RefeshReference)IN_QR;
+                                adoqr.DelegtePrint = this.serviceReqComboResultSDO != null  ? (HIS.Desktop.Common.RefeshReference)IN_QR : null;
                                 listArgs.Add(adoqr);
                                 LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
+                                
                                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
 
                             };
@@ -9335,7 +9337,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         adoqr.TreatmentId = this.treatmentId;
                         adoqr.ConfigValue = selectedConfig;
                         adoqr.TransReqId = 0;
-                        adoqr.DelegtePrint = (HIS.Desktop.Common.RefeshReference)IN_QR;
+                        adoqr.DelegtePrint = this.serviceReqComboResultSDO != null ? (HIS.Desktop.Common.RefeshReference)IN_QR : null;
                         listArgs.Add(adoqr);
                         LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
                         HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
@@ -9354,17 +9356,110 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
-                PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, null, currentModule != null ? currentModule.RoomId : 0);
 
-                InPhieuYeuCauDichVu(true);
+                if (this.lstLoaiPhieu != null && this.lstLoaiPhieu.Count > 0)
+                {
+                    var checkHDBN = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_2");
+
+                    var checkYCDV = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_1");
+
+                    var checkQR = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_3");
+
+                    if (checkHDBN != null)
+                    {
+                        InPhieuHuoangDanBenhNhan(true);
+                    }
+
+                    if (checkYCDV != null)
+                    {
+                        InPhieuYeuCauDichVu(true);
+                    }
+
+                    if (checkQR != null)
+                    {
+                        InYeuCauThanhToanQR(chkPrint.Checked, false, true);
+                    }
+                }
+                
+                
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private bool DelegateRunPrinter(string printTypeCode, string fileName)
+        {
+            bool result = false;
+            try
+            {
+                switch (printTypeCode)
+                {
 
-       
-        
+                    case "Mps000498":
+                        InPhieuThanhToan(printTypeCode, fileName, ref result);
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        private void InPhieuThanhToan(string printTypeCode, string fileName, ref bool result)
+        {
+            try
+            {
+                V_HIS_TREATMENT treatment = new V_HIS_TREATMENT();
+                CommonParam param = new CommonParam();
+
+                treatment = BackendDataWorker.Get<V_HIS_TREATMENT>().Where(s => s.ID == treatmentId).FirstOrDefault();
+
+                HisTransReqFilter filter = new HisTransReqFilter();
+                HIS_TRANS_REQ transReq = null;
+                filter.TREATMENT_ID = treatmentId;
+                var transReqLst = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_TRANS_REQ>>("api/HisTransReq/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                if (transReqLst != null && transReqLst.Count > 0)
+                    transReqLst = transReqLst.Where(o => o.TRANS_REQ_TYPE == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_TYPE.ID__BY_SERVICE).ToList();
+                if (transReqLst != null && transReqLst.Count > 0)
+                    transReq = transReqLst.OrderByDescending(o => o.CREATE_TIME).ToList()[0];
+
+                MPS.Processor.Mps000498.PDO.Mps000498PDO pdo = new MPS.Processor.Mps000498.PDO.Mps000498PDO(treatment, transReq, listConfig);
+
+
+                MPS.ProcessorBase.Core.PrintData printData = null;
+
+                string printerName = "";
+                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                {
+                    printerName = GlobalVariables.dicPrinter[printTypeCode];
+                }
+
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((""), printTypeCode, this.currentModule != null ? this.currentModule.RoomId : 0);
+                WaitingManager.Hide();
+                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                }
+                else
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO });
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
+        #endregion
+
     }
 }

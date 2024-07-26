@@ -87,11 +87,18 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000124
                 if (sereServ != null)
                     patyBhyt = JsonConvert.DeserializeObject<HIS_PATIENT_TYPE_ALTER>(sereServ.JSON_PATIENT_TYPE_ALTER);
 
+                //var parentIds = this.SereServs.Select(o => o.PARENT_ID).ToList();
+                var parentIds = this.SereServs
+                    .Where(o => o.PARENT_ID != null)   
+                    .Select(o => o.PARENT_ID)          
+                    .Distinct()                      
+                    .ToList();     
                 var sereServKTCs = this.SereServs.Where(o => (o.TDL_SERVICE_TYPE_ID == serviceTypeCFG.SERVICE_TYPE_ID__SURG
-                    || o.TDL_SERVICE_TYPE_ID == serviceTypeCFG.SERVICE_TYPE_ID__MISU
-                    || o.TDL_SERVICE_TYPE_ID == serviceTypeCFG.SERVICE_TYPE_ID__DIIM)
+                    || parentIds.Contains(o.ID)
+                    && (o.TDL_SERVICE_TYPE_ID == serviceTypeCFG.SERVICE_TYPE_ID__DIIM))
                     && o.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
-                    && o.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                    && o.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                   ).ToList();
 
                 sereServKTC = null;
                 sereServKTCPrints = new List<HIS_SERE_SERV>();
@@ -101,7 +108,8 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000124
                 int type = 0;
                 if (sereServKTC == null)
                 {
-                    sereServKTCPrints = sereServKTCs;
+                    var sereServKTCsNew = this.SereServs.Where(o => (o.TDL_SERVICE_TYPE_ID == serviceTypeCFG.SERVICE_TYPE_ID__SURG)).ToList();
+                    sereServKTCPrints = sereServKTCsNew;
                     type = 2;
                 }
                 else
