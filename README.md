@@ -125,4 +125,4 @@
 
 ## Changelog
 
-	Vào đây https://gitlab.vietsens.vn/ivt-dev/frontend/hisnguonmo/-/blob/Develop/CHANGELOG.md để xem chi tiết.
+	Vào đây https://github.com/Vietsens/hisnguonmo/blob/Develop/CHANGELOG.md để xem chi tiết.
