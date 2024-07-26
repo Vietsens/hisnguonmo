@@ -20,7 +20,7 @@
 [[log4net 1.2.10]](https://www.nuget.org/packages/log4net/1.2.10)
 [[FlexCell 5.7.6.0]](https://www.tmssoftware.com/site/flexcelnet.asp)
 [[Telerik UI for WinForms 2019.3.1022]](https://www.telerik.com/)
-[[AForge 2.2.5.0](https://api.nuget.org/v3-flatcontainer/aforge/2.2.5/icon)](https://www.nuget.org/packages/AForge/2.2.5)
+[[AForge 2.2.5.0]](https://www.nuget.org/packages/AForge/2.2.5)
 [[itextsharp 5.5.3.0]](https://www.nuget.org/packages/iTextSharp/5.5.3)
 [[Aspose 11.1]](https://www.nuget.org/packages/Aspose.Words/11.1.0)
 [[EO.Pdf]](https://www.nuget.org/packages/EO.Pdf/20.3.34)
