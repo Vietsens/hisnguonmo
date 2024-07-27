@@ -259,7 +259,6 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 dataServiceReqInfoADO.IsTuberCulosis = this.chkTuberculosis.Checked;
                 dataServiceReqInfoADO.IsWarningForNext = this.chkWNext.Checked;
                 dataServiceReqInfoADO.IsHiv = this.chkIsHiv.Checked;
-
                 if (cboHosReason.EditValue != null)
                 {
                     var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.ID == Int64.Parse(cboHosReason.EditValue.ToString()));
