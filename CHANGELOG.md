@@ -1,3 +1,9 @@
+### Release 2.321.0
+* Cảnh báo hoặc chặn Bác sĩ đang thực hiện CLS cùng thời gian chỉ định y lệnh của BN khác
+* Sửa biểu mẫu phiếu xuất máu khác bổ sung thông tin người hiến
+* Sửa chức năng thanh toán QR bổ sung các tính năng tiện ích cho người dùng
+* Sửa thông tin trong XML phục vụ XML 130 và QĐ 4750/QĐ-BYT 
+
 ### Release 2.320.0
 * Sửa lại in ngay phiếu thu khi thanh toán QR thành công
 * Chặn tiếp nhận chuyển khoa khi thời gian vào khoa nhỏ hơn thời gian y lệnh của khoa khác
