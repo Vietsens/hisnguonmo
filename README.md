@@ -5,7 +5,7 @@
 
 <h1 align="center">His nguồn mở</h1>
 
-**His nguồn mở** Phần mềm desktop chạy trên hệ điều hành Window của hệ thống quản lý bệnh viện HisPro:
+**His nguồn mở** Phần mềm chạy trên hệ điều hành Window của hệ thống quản lý bệnh viện HisPro, phát hành theo [[giấy phép GPL v3.0]](https://github.com/Vietsens/hisnguonmo?tab=GPL-3.0-1-ov-file):
 
 - [HIS](https://github.com/Vietsens/hisnguonmo/tree/Develop/HIS) source code HIS main project và các tính năng nghiệp vụ(plugin).  
 - [MPS](https://github.com/Vietsens/hisnguonmo/tree/Develop/MPS) source code các tính năng in ấn.  
@@ -93,7 +93,7 @@
 - Chạy thử với các thành phần build sẵn
   Bạn có thể tạo một script PowerShell để thực hiện việc tải và lưu các thành phần build sẵn vào folder chứa phiên bản his sau khi build ở trên:
     ```shell
-		$zipUrl = "http://fsstest.onelink.vn/Upload/HIS/hisnguonmo_extend.zip"
+		$zipUrl = "http://fsstest.onelink.vn/Upload/HIS/HisNguonMo/extend.zip"
 		$zipPath = "E:\HisNguonMo\hisnguonmo\Build\hisnguonmo_extend.zip"
 		$extractPath = "E:\HisNguonMo\hisnguonmo\Build"
 
@@ -118,11 +118,11 @@
 		Set-ExecutionPolicy RemoteSigned
 		$ script build
 	```  
-## Hướng dẫn
+## Tham khảo
 
 - Build và tổ chức folder sau khi build: https://docs.google.com/document/d/1pH4kG4GTyQZkT12sCan25hZuzfyXzIsp/edit?usp=drive_link&ouid=100318684171831156204&rtpof=true&sd=true
 - Tạo project plugin: https://docs.google.com/document/d/1exLo2zBCBG6u2YSK9LK00ggYSsFr-nNN/edit?usp=sharing&ouid=100318684171831156204&rtpof=true&sd=true
 
-## Changelog
+## Thông tin phát hành
 
 	Vào đây https://github.com/Vietsens/hisnguonmo/blob/Develop/CHANGELOG.md để xem chi tiết.
