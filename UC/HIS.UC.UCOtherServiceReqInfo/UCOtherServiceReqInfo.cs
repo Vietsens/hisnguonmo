@@ -1332,7 +1332,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
                     dxValidationUCOtherReqInfo.SetValidationRule(txtHosReason, null);
                 }
                 cboHosReason.EditValue = null;
-                dxValidationUCOtherReqInfo.SetValidationRule(cboHosReason, null);
+                dxValidationUCOtherReqInfo.SetValidationRule(txtHosReasonNt, null);
                 lciHosReason.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 lciHosReason.AppearanceItemCaption.ForeColor = Color.Black;
                 if (cboTreatmentType.EditValue != null)
@@ -1355,11 +1355,11 @@ namespace HIS.UC.UCOtherServiceReqInfo
         {
             try
             {
-                Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule validRule = new ControlEditValidationRule();
-                validRule.editor = this.cboHosReason;
+                ControlEditValidationRule validRule = new ControlEditValidationRule();
+                validRule.editor = this.txtHosReasonNt;
                 validRule.ErrorText = "Trường dữ liệu bắt buộc";
                 validRule.ErrorType = ErrorType.Warning;
-                dxValidationUCOtherReqInfo.SetValidationRule(this.cboHosReason, validRule);
+                dxValidationUCOtherReqInfo.SetValidationRule(this.txtHosReasonNt, validRule);
             }
             catch (Exception ex)
             {
