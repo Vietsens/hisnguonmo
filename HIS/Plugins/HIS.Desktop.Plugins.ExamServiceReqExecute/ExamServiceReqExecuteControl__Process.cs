@@ -1949,30 +1949,30 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         IsPrintExam = treatmentFinish.IsPrintExam;
 
                     }
-                    if (string.IsNullOrEmpty(treatment.CLINICAL_NOTE))
+                    if (string.IsNullOrEmpty(treatment.CLINICAL_NOTE) && string.IsNullOrEmpty(treatmentFinish.TreatmentFinishSDO.ClinicalNote))
                     {
                         serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalNote = txtPathologicalProcess.Text.Trim();
                     }
-                    else
+                    else if(!string.IsNullOrEmpty(treatment.CLINICAL_NOTE))
                     {
                         serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalNote = treatment.CLINICAL_NOTE;
                     }
 
-                    if (string.IsNullOrEmpty(treatment.SUBCLINICAL_RESULT))
+                    if (string.IsNullOrEmpty(treatment.SUBCLINICAL_RESULT) && string.IsNullOrEmpty(treatmentFinish.TreatmentFinishSDO.SubclinicalResult))
                     {
                         serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = txtSubclinical.Text.Trim();
 
                     }
-                    else
+                    else if (!string.IsNullOrEmpty(treatment.SUBCLINICAL_RESULT))
                     {
                         serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = treatment.SUBCLINICAL_RESULT;
                     }
 
-                    if (string.IsNullOrEmpty(treatment.TREATMENT_METHOD))
+                    if (string.IsNullOrEmpty(treatment.TREATMENT_METHOD) && string.IsNullOrEmpty(treatmentFinish.TreatmentFinishSDO.TreatmentMethod))
                     {
                         serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = txtTreatmentInstruction.Text.Trim();
                     }
-                    else
+                    else if (!string.IsNullOrEmpty(treatment.TREATMENT_METHOD))
                     {
                         serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = treatment.TREATMENT_METHOD;
                     } 
