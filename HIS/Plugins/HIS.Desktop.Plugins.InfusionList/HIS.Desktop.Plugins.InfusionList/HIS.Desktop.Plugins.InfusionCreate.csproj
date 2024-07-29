@@ -77,9 +77,6 @@
     <Reference Include="EMR.Filter">
       <HintPath>..\..\..\..\..\LIB\EMR\EMR.Filter.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.LocalStorage.HisConfig">
-      <HintPath>..\..\..\..\..\LIB\HIS\ReferencedAssemblies\HIS.Desktop.LocalStorage.HisConfig.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.UC.ServiceUnit, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\LIB\HIS\HIS.UC.ServiceUnit\HIS.UC.ServiceUnit.dll</HintPath>
@@ -311,6 +308,10 @@
     <ProjectReference Include="..\..\..\HIS.Desktop.LocalStorage.ConfigSystem\HIS.Desktop.LocalStorage.ConfigSystem.csproj">
       <Project>{48d25a6a-11bc-4f0f-8dd7-15e03a2bcada}</Project>
       <Name>HIS.Desktop.LocalStorage.ConfigSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
+      <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
+      <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
       <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>

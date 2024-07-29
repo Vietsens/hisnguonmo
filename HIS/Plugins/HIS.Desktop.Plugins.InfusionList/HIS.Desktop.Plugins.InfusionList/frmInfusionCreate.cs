@@ -1300,6 +1300,8 @@ namespace HIS.Desktop.Plugins.InfusionCreate
 
                     if (medicine != null)
                     {
+                        var medi = BackendDataWorker.Get<HIS_MEDICINE_TYPE>().FirstOrDefault(s => s.ID == medicine.MEDICINE_TYPE_ID);
+                        if (medi != null) spinEditVolumn.EditValue = medi.VOLUME;
                         if (medicine.MIXED_INFUSION != null)
                         {
                             List<ComboSelectMedicineADO> lstSelectMedicineADO = new List<ComboSelectMedicineADO>();
@@ -1359,11 +1361,16 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                     {
                         txtMedicinetype.Text = department.MEDICINE_TYPE_CODE;
                         txtMedicine.Text = department.MEDICINE_TYPE_NAME;
-                        if (department.PACKAGE_NUMBER != null)
+                            if (department.PACKAGE_NUMBER != null)
                             txtPackageNumber.Text = department.PACKAGE_NUMBER;
                         else
+                        {
+
+                        }
                             txtPackageNumber.EditValue = null;
                         spinAmount.EditValue = department.AMOUNT;
+                        var medi = BackendDataWorker.Get<HIS_MEDICINE_TYPE>().FirstOrDefault(s => s.MEDICINE_TYPE_CODE == department.MEDICINE_TYPE_CODE);
+                        if (medi != null) spinEditVolumn.EditValue = medi.VOLUME;
                         ServiceUnitInputADO serviceUnit = new ServiceUnitInputADO();
                         if (department.SERVICE_UNIT_ID != null && department.SERVICE_UNIT_ID > 0)
                         {
