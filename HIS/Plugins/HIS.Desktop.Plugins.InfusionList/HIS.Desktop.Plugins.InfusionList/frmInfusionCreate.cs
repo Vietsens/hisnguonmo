@@ -1308,6 +1308,7 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                             var lstMedicine = lstExpMestMedicine6.Where(o => o.MIXED_INFUSION == medicine.MIXED_INFUSION && o.EXP_MEST_ID == medicine.EXP_MEST_ID);
                             foreach (var item in lstMedicine)
                             {
+                                
                                 ComboSelectMedicineADO ado = new ComboSelectMedicineADO(item);
                                 if (item.ID != medicine.ID)
                                 {
@@ -1321,6 +1322,7 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                                         ado.isDisableVolume = 0;
                                         ado.isDisableAmount = 1;
                                     }
+                                    
                                     lstSelectMedicineADO.Add(ado);
                                 }
 
