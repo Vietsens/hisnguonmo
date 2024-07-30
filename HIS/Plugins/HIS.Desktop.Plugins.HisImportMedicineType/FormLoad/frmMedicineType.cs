@@ -254,7 +254,8 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                                     && string.IsNullOrEmpty(item.USED_PART)
                                     && string.IsNullOrEmpty(item.CONTRAINDICATION)
                                     && string.IsNullOrEmpty(item.DISTRIBUTED_AMOUNT)
-                                        && string.IsNullOrEmpty(item.DOSAGE_FORM);
+                                    && string.IsNullOrEmpty(item.DOSAGE_FORM)
+                                    && string.IsNullOrEmpty(item.VOLUME_STR);
 
                                 if (checkNull)
                                 {
@@ -698,6 +699,17 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                         catch (Exception ex)
                         {
                             Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot ngay sua BILL_OPTION", ex);
+                        }
+                    }
+                    else if (e.Column.FieldName == "VOLUME_STR")
+                    {
+                        try
+                        {
+                            e.Value = pData.VOLUME_STR;
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot dung tich truyen", ex);
                         }
                     }
                     if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
@@ -1388,6 +1400,24 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                         {
                             error += string.Format(Message.MessageImport.KhongHopLe, "Giá nhập");
                             mediAdo.IMP_PRICE_STR_ERROR = 1;
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(item.VOLUME_STR))
+                    {
+                        if (Inventec.Common.Number.Check.IsDecimal(item.VOLUME_STR))
+                        {
+                            mediAdo.VOLUME = Inventec.Common.TypeConvert.Parse.ToDecimal(item.VOLUME_STR);
+                            if (mediAdo.VOLUME.Value > 99999999999999 || mediAdo.VOLUME < 0)
+                            {
+                                error += string.Format(Message.MessageImport.KhongHopLe, "Dung tich truyen");
+                                mediAdo.VOLUME_STR_ERROR = 1;
+                            }
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Dung tich truyen");
+                            mediAdo.VOLUME_STR_ERROR = 1;
                         }
                     }
 
