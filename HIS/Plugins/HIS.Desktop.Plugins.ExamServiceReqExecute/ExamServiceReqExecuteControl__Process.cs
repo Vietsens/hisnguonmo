@@ -1949,10 +1949,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         IsPrintExam = treatmentFinish.IsPrintExam;
 
                     }
-                    if (treatment.HIS_TREATMENT_END_TYPE.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
-                    {
-                    }
-                    else
+
+                    if (serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentEndTypeId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
                     {
                         if (string.IsNullOrEmpty(treatment.CLINICAL_NOTE))
                         {
@@ -1980,7 +1978,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         else
                         {
                             serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = treatment.TREATMENT_METHOD;
-                        }
+                        } 
                     }
                 }
                 //else
