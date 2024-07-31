@@ -110,7 +110,7 @@ namespace HIS.UC.UCPatientRaw
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => patientInRegisterSearchByCard), patientInRegisterSearchByCard));
 						if (patientInRegisterSearchByCard != null)
 						{
-							SetDataFromCardSDO(patientInRegisterSearchByCard);
+                            await SetDataFromCardSDO(patientInRegisterSearchByCard);
 						}
 						else
 						{
@@ -220,14 +220,15 @@ namespace HIS.UC.UCPatientRaw
 								}
 								if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
 								{
-									heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maThe;
-									//Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
-									if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
+									heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maThe ?? this.ResultDataADO.ResultHistoryLDO.maTheMoi ?? this.ResultDataADO.HeinCardData.HeinCardNumber;
+                                    //Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
+                                    if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
 									{
 										if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
 										{
-											heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maTheMoi;
-										}
+                                            heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
+                                            dataResult.HeinCardData = heinCardDataForCheckGOV;
+                                        }
 									}
 								}
 
@@ -276,11 +277,6 @@ namespace HIS.UC.UCPatientRaw
 						else
 						{
 							ProcessGetDataHrm(strValue.Trim());//GetDataHrm return _PatientSDOByHrm
-						}
-
-						if (this.dlgSearchPatient1 != null)
-						{
-							this.dlgSearchPatient1(dataResult);
 						}
 					}
 					#endregion
@@ -332,14 +328,15 @@ namespace HIS.UC.UCPatientRaw
 
 							if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
 							{
-								heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maThe;
-								//Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
-								if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
+                                heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maThe ?? this.ResultDataADO.ResultHistoryLDO.maTheMoi ?? this.ResultDataADO.HeinCardData.HeinCardNumber;
+                                //Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
+                                if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
 								{
 									if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
-									{
-										heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maTheMoi;
-									}
+                                    {
+                                        heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
+                                        dataResult.HeinCardData = heinCardDataForCheckGOV;
+                                    }
 								}
 							}
 						}
@@ -409,14 +406,15 @@ namespace HIS.UC.UCPatientRaw
 
 										if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
 										{
-											heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maThe;
-											//Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
-											if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
+											heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maThe ?? this.ResultDataADO.ResultHistoryLDO.maTheMoi ?? this.ResultDataADO.HeinCardData.HeinCardNumber;
+                                        //Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
+                                        if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
 											{
 												if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
-												{
-													heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maTheMoi;
-												}
+                                            {
+                                                heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
+                                                dataResult.HeinCardData = heinCardDataForCheckGOV;
+                                            }
 											}
 										}
 									}
@@ -599,9 +597,11 @@ namespace HIS.UC.UCPatientRaw
 									if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
 									{
 										if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
-										{
-											heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maTheMoi;
-										}
+                                        {
+                                            heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
+
+                                            dataResult.HeinCardData = heinCardDataForCheckGOV;
+                                        }
 									}
 								}
 							}
@@ -681,7 +681,9 @@ namespace HIS.UC.UCPatientRaw
                                 {
                                     if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
                                     {
-                                        heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maTheMoi;
+                                        heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
+
+                                        dataResult.HeinCardData = heinCardDataForCheckGOV;
                                     }
                                 }
                             }
@@ -700,8 +702,8 @@ namespace HIS.UC.UCPatientRaw
 						dataResult.IsReadQr = true;
 
 					}
-
-					Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataResult), dataResult));
+                    MapHeinCardToPatientSDO();
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataResult), dataResult));
                     if (!this.isAlertTreatmentEndInDay && this.dlgSearchPatient1 != null)
 						this.dlgSearchPatient1(dataResult);
 				}
@@ -720,8 +722,34 @@ namespace HIS.UC.UCPatientRaw
 				Inventec.Common.Logging.LogSystem.Warn(ex);
 			}
 		}
+        private void MapHeinCardToPatientSDO()
+        {
 
-		private async void SetDataFromCardSDO(HisCardSDO patientInRegisterSearchByCard)
+            try
+            {
+                if (dataResult.HeinCardData != null)
+                {
+                    dataResult.HisPatientSDO.HeinCardNumber = dataResult.HeinCardData.HeinCardNumber;
+                    dataResult.HisPatientSDO.HeinMediOrgCode = dataResult.HeinCardData.MediOrgCode;
+                    if (!string.IsNullOrEmpty(dataResult.HeinCardData.FromDate))
+                        dataResult.HisPatientSDO.HeinCardFromTime = Int64.Parse(dataResult.HeinCardData.FromDate.Split('/')[2] + dataResult.HeinCardData.FromDate.Split('/')[1] + dataResult.HeinCardData.FromDate.Split('/')[0] + "000000");
+                    else
+                        dataResult.HisPatientSDO.HeinCardFromTime = null;
+                    if (!string.IsNullOrEmpty(dataResult.HeinCardData.ToDate))
+                        dataResult.HisPatientSDO.HeinCardToTime = Int64.Parse(dataResult.HeinCardData.ToDate.Split('/')[2] + dataResult.HeinCardData.ToDate.Split('/')[1] + dataResult.HeinCardData.ToDate.Split('/')[0] + "000000");
+                    else
+                        dataResult.HisPatientSDO.HeinCardToTime = null;
+                    dataResult.HisPatientSDO.HeinAddress = dataResult.HeinCardData.Address;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+        private async Task SetDataFromCardSDO(HisCardSDO patientInRegisterSearchByCard)
         {
             try
             {
@@ -778,14 +806,15 @@ namespace HIS.UC.UCPatientRaw
 				}
 				if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
 				{
-					heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maThe;
-					//Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
-					if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
+					heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maThe ?? this.ResultDataADO.ResultHistoryLDO.maTheMoi ?? this.ResultDataADO.HeinCardData.HeinCardNumber;
+                    //Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
+                    if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
 					{
 						if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
 						{
-							heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maTheMoi;
-						}
+							heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
+                            dataResult.HeinCardData = heinCardDataForCheckGOV;
+                        }
 					}
 				}
 

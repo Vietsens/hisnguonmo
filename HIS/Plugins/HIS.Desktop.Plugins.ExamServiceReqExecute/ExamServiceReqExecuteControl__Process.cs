@@ -1949,33 +1949,37 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         IsPrintExam = treatmentFinish.IsPrintExam;
 
                     }
-                    if (string.IsNullOrEmpty(treatment.CLINICAL_NOTE))
-                    {
-                        serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalNote = txtPathologicalProcess.Text.Trim();
-                    }
-                    else
-                    {
-                        serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalNote = treatment.CLINICAL_NOTE;
-                    }
 
-                    if (string.IsNullOrEmpty(treatment.SUBCLINICAL_RESULT))
+                    if (serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentEndTypeId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
                     {
-                        serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = txtSubclinical.Text.Trim();
+                        if (string.IsNullOrEmpty(treatment.CLINICAL_NOTE))
+                        {
+                            serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalNote = txtPathologicalProcess.Text.Trim();
+                        }
+                        else
+                        {
+                            serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalNote = treatment.CLINICAL_NOTE;
+                        }
 
-                    }
-                    else
-                    {
-                        serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = treatment.SUBCLINICAL_RESULT;
-                    }
+                        if (string.IsNullOrEmpty(treatment.SUBCLINICAL_RESULT))
+                        {
+                            serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = txtSubclinical.Text.Trim();
 
-                    if (string.IsNullOrEmpty(treatment.TREATMENT_METHOD))
-                    {
-                        serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = txtTreatmentInstruction.Text.Trim();
+                        }
+                        else
+                        {
+                            serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = treatment.SUBCLINICAL_RESULT;
+                        }
+
+                        if (string.IsNullOrEmpty(treatment.TREATMENT_METHOD))
+                        {
+                            serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = txtTreatmentInstruction.Text.Trim();
+                        }
+                        else
+                        {
+                            serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = treatment.TREATMENT_METHOD;
+                        } 
                     }
-                    else
-                    {
-                        serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = treatment.TREATMENT_METHOD;
-                    } 
                 }
                 //else
                 //{

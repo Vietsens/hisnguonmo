@@ -472,6 +472,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 spinInternalPrice.EditValue = null;
                 spinLastExpPrice.EditValue = null;
                 spinLastExpVatRatio.EditValue = null;
+                spinVolume.EditValue = null;
                 dtHeinLimitPriceIntrTime.EditValue = null;
                 dtHSD.EditValue = null;
                 txtDescription.Text = "";
@@ -774,6 +775,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 txtPackingTypeCode.Text = hIS_MEDICINE_TYPE.PACKING_TYPE_NAME;
                 txtMedicineUseFormCode.Text = hIS_MEDICINE_TYPE.MEDICINE_USE_FORM_CODE;
                 cboMedicineUseForm.EditValue = hIS_MEDICINE_TYPE.MEDICINE_USE_FORM_ID;
+                spinVolume.EditValue = hIS_MEDICINE_TYPE.VOLUME;
 
                 if (hIS_MEDICINE_TYPE.IS_REQUIRE_HSD == 1)
                 {
@@ -1861,7 +1863,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     medicineType.MANUFACTURER_ID = null;
                 }
 
-
                 if (cboHowToUse.EditValue != null)
                 {
                     medicineType.HTU_ID = Inventec.Common.TypeConvert.Parse.ToInt32((cboHowToUse.EditValue ?? "").ToString());
@@ -2326,6 +2327,14 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 else
                 {
                     medicineType.IS_OXYGEN = null;
+                }
+                if (spinVolume.EditValue != null)
+                {
+                    medicineType.VOLUME = ((decimal)spinVolume.Value);
+                }
+                else
+                {
+                    medicineType.VOLUME = null;
                 }
 
                 medicineType.ATC_CODES = txtACT_Code.Text.Trim();
@@ -4408,8 +4417,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    txtTcyNumOrder.Focus();
-                    txtTcyNumOrder.SelectAll();
+                    spinVolume.Focus();
+                    spinVolume.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -7647,6 +7656,22 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 {
                     txtHeinLimitRatio.Focus();
                     txtHeinLimitRatio.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private void spinVolume_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    txtTcyNumOrder.Focus();
+                    txtTcyNumOrder.SelectAll();
                 }
             }
             catch (Exception ex)

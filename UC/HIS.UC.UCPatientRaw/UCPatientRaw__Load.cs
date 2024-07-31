@@ -234,14 +234,16 @@ namespace HIS.UC.UCPatientRaw
 						heinCardDataForCheckGOV.LiveAreaCode = this.ResultDataADO.ResultHistoryLDO.maKV;
                         if (!string.IsNullOrEmpty(this.ResultDataADO.ResultHistoryLDO.gioiTinh))
 							heinCardDataForCheckGOV.Gender = this.ResultDataADO.ResultHistoryLDO.gioiTinh.ToUpper() == "NAM" ? "1" : "2";
-						heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maThe ?? this.ResultDataADO.HeinCardData.HeinCardNumber;
-						//Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
-						if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
+                        heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maThe ?? this.ResultDataADO.ResultHistoryLDO.maTheMoi ?? this.ResultDataADO.HeinCardData.HeinCardNumber;
+                        //Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
+                        if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
 						{
 							if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
-							{
-								heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maTheMoi;
-							}
+                            {
+                                heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
+
+                                dataResult.HeinCardData = heinCardDataForCheckGOV;
+                            }
 						}
 						dataHeinCardFromQrCccd = this.ResultDataADO.HeinCardData;				
 							if (this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw != null)

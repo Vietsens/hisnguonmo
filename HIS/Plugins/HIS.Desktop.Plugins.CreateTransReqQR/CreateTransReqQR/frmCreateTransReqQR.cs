@@ -724,8 +724,12 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                                     inputTransReq.DelegtePrint();
                                 else
                                 {
+                                    HisSereServFilter ssfilter = new HisSereServFilter();
+                                    ssfilter.IDs = SereServIds;
+                                    var sereServs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>("/api/HisSereServ/Get", ApiConsumers.MosConsumer, ssfilter, null);
+
                                     HisServiceReqViewFilter filter = new HisServiceReqViewFilter();
-                                    filter.TREATMENT_ID = currentTransReq.TREATMENT_ID;
+                                    filter.IDs = sereServs.Select(o=>o.SERVICE_REQ_ID ?? 0).Distinct().ToList();
                                     var serviceReq = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>>("/api/HisServiceReq/GetView", ApiConsumers.MosConsumer, filter, null);
                                     if (serviceReq != null && serviceReq.Count > 0)
                                     {
