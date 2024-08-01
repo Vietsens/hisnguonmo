@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{38ECDDB9-08E6-4697-90E5-AF731792B90D}</ProjectGuid>
+    <ProjectGuid>{DFA6E196-BAE2-4BA0-81F6-7363E985C083}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HIS.UC.PlusInfo</RootNamespace>
@@ -56,6 +56,10 @@
     </Reference>
     <Reference Include="HID.Filter">
       <HintPath>..\..\..\..\..\..\Release\HID\HID.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="His.UC.LibraryMessage">
       <HintPath>..\..\..\..\..\..\Release\HIS\ReferencedAssemblies\His.UC.LibraryMessage.dll</HintPath>
@@ -435,43 +439,39 @@
     <Compile Include="Validate\ValidControl.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
+    <ProjectReference Include="..\..\HIS\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
+    <ProjectReference Include="..\..\HIS\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
       <Name>HIS.Desktop.Controls.Session</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.DelegateRegister\HIS.Desktop.DelegateRegister.csproj">
+    <ProjectReference Include="..\..\HIS\HIS.Desktop.DelegateRegister\HIS.Desktop.DelegateRegister.csproj">
       <Project>{e85ee8f3-8e6b-46cd-adbd-b292f67ccffb}</Project>
       <Name>HIS.Desktop.DelegateRegister</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
+    <ProjectReference Include="..\..\HIS\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
       <Name>HIS.Desktop.LocalStorage.BackendData</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
+    <ProjectReference Include="..\..\HIS\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
       <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
       <Name>HIS.Desktop.LocalStorage.ConfigApplication</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
+    <ProjectReference Include="..\..\HIS\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
       <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
       <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
+    <ProjectReference Include="..\..\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
       <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
       <Name>HIS.Desktop.LocalStorage.LocalData</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
+    <ProjectReference Include="..\..\HIS\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
       <Name>HIS.Desktop.LocalStorage.Location</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
-      <Name>HIS.Desktop.Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\HIS\Plugins\HIS.Desktop.Plugins.Library.RegisterConfig\HIS.Desktop.Plugins.Library.RegisterConfig.csproj">
+    <ProjectReference Include="..\..\HIS\Plugins\HIS.Desktop.Plugins.Library.RegisterConfig\HIS.Desktop.Plugins.Library.RegisterConfig.csproj">
       <Project>{9247dd49-482c-4227-88df-616a8aaf3f38}</Project>
       <Name>HIS.Desktop.Plugins.Library.RegisterConfig</Name>
     </ProjectReference>
@@ -576,7 +576,6 @@
     <EmbeddedResource Include="Popup\frmTreatmentDetail.resx">
       <DependentUpon>frmTreatmentDetail.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
