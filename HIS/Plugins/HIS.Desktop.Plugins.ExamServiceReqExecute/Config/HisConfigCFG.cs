@@ -93,6 +93,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         private const string KEY__RequiredAddressOption = "HIS.Desktop.Plugins.ExamServiceReqExecute.RequiredAddressOption";
         private const string KEY__HospitalizationReasonRequiredByPatientCode = "HIS.Desktop.Plugins.ExamServiceReqExecute.HospitalizationReasonRequiredByPatientCode";
         internal static string HospitalizationReasonRequiredByPatientCode;
+        private const string KEY__AutoCreatePaymentTransactions = "HIS.Desktop.Plugins.ExamServiceReqExecute.AutoCreatePaymentTransactions";
+        internal static string AutoCreatePaymentTransactions;
         internal static bool IsRequiredTemperatureOption;
         internal static bool RequiredAddressOption;
         internal static string RequiredTreatmentMethodOption;
@@ -100,6 +102,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         {
             try
             {
+                AutoCreatePaymentTransactions = GetValue(KEY__AutoCreatePaymentTransactions);
                 OptionTreatmentEndTypeIsTransfer = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_TreatmentEndTypeIsTransfer);
                 HospitalizationReasonRequiredByPatientCode = GetValue(KEY__HospitalizationReasonRequiredByPatientCode);
                 IsRequiredTemperatureOption = GetValue(KEY__IsRequiredTemperatureOption) == GlobalVariables.CommonStringTrue;
