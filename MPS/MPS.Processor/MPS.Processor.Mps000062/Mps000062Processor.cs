@@ -490,12 +490,12 @@ namespace MPS.Processor.Mps000062
                                         if (_DataNumber != null)
                                         {
                                             var _DataNumbers = _DicCountNumberByGroup[check.MEDICINE_GROUP_ID ?? 0].Where(p => p.INTRUCTION_DATE == ado.INTRUCTION_DATE).OrderByDescending(p => p.num).FirstOrDefault();
-                                            ado.num = _DataNumbers.num + 1;
+                                            ado.num = _DataNumbers != null ? _DataNumbers.num + 1 : 0;
                                         }
                                         else
                                         {
                                             var _DataNumbers = _DicCountNumberByGroup[check.MEDICINE_GROUP_ID ?? 0].Where(p => p.INTRUCTION_DATE == ado.INTRUCTION_DATE).OrderByDescending(p => p.num).FirstOrDefault();
-                                            ado.num = _DataNumbers.num + 1;
+                                            ado.num = _DataNumbers != null ? _DataNumbers.num + 1 : 0;
                                         }
                                         ado.Num_Order = (short)(medicinegroup != null ? medicinegroup.NUM_ORDER ?? 0 : 0);
                                         _DicCountNumberByGroup[check.MEDICINE_GROUP_ID ?? 0].Add(ado);
