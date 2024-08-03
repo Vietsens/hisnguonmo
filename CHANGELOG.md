@@ -1,3 +1,9 @@
+### Release 2.322.0
+* Bổ sung cấu hình hệ thống tự động tạo giao dịch thanh toán và khóa viện phí
+* Bổ sung thông tin dung tích truyền dịch trong thông tin thuốc
+* Sửa thông tin ngày kết quả đối với ngày giường phục vụ XML 130 và QĐ 4750/QĐ-BYT
+* Sửa làm tròn tiền nguồn khác để phục vụ XML 130 và QĐ 4750/QĐ-BYT 
+
 ### Release 2.321.0
 * Cảnh báo hoặc chặn Bác sĩ đang thực hiện CLS cùng thời gian chỉ định y lệnh của BN khác
 * Sửa biểu mẫu phiếu xuất máu khác bổ sung thông tin người hiến
