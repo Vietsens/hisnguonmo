@@ -29,6 +29,8 @@ using HIS.Desktop.Plugins.ExamServiceReqExecute.Config;
 using HIS.Desktop.Plugins.ExamServiceReqExecute.ConnectCOM;
 using HIS.Desktop.Plugins.ExamServiceReqExecute.Resources;
 using HIS.Desktop.Plugins.ExamServiceReqExecute.Sda.SdaEventLogCreate;
+using HIS.Desktop.Plugins.Library.ElectronicBill;
+using HIS.Desktop.Plugins.Library.ElectronicBill.Base;
 using HIS.Desktop.Plugins.Library.PrintPrescription;
 using HIS.Desktop.Plugins.Library.PrintTreatmentFinish;
 using HIS.Desktop.Utility;
@@ -1729,9 +1731,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                                 return;
                             }
                         }
-                       
+
                         serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentEndTypeExtId = treatmentFinish.TreatmentFinishSDO.TreatmentEndTypeExtId;
-                      
+
                         if (this.treatment != null
                             && this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
                             && treatmentFinish.TreatmentFinishSDO.TreatmentEndTypeExtId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM)
@@ -1949,33 +1951,37 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         IsPrintExam = treatmentFinish.IsPrintExam;
 
                     }
-                    if (string.IsNullOrEmpty(treatment.CLINICAL_NOTE) && string.IsNullOrEmpty(treatmentFinish.TreatmentFinishSDO.ClinicalNote))
-                    {
-                        serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalNote = txtPathologicalProcess.Text.Trim();
-                    }
-                    else if(!string.IsNullOrEmpty(treatment.CLINICAL_NOTE))
-                    {
-                        serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalNote = treatment.CLINICAL_NOTE;
-                    }
 
-                    if (string.IsNullOrEmpty(treatment.SUBCLINICAL_RESULT) && string.IsNullOrEmpty(treatmentFinish.TreatmentFinishSDO.SubclinicalResult))
+                    if (serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentEndTypeId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
                     {
-                        serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = txtSubclinical.Text.Trim();
+                        if (string.IsNullOrEmpty(treatment.CLINICAL_NOTE))
+                        {
+                            serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalNote = txtPathologicalProcess.Text.Trim();
+                        }
+                        else
+                        {
+                            serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalNote = treatment.CLINICAL_NOTE;
+                        }
 
-                    }
-                    else if (!string.IsNullOrEmpty(treatment.SUBCLINICAL_RESULT))
-                    {
-                        serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = treatment.SUBCLINICAL_RESULT;
-                    }
+                        if (string.IsNullOrEmpty(treatment.SUBCLINICAL_RESULT))
+                        {
+                            serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = txtSubclinical.Text.Trim();
 
-                    if (string.IsNullOrEmpty(treatment.TREATMENT_METHOD) && string.IsNullOrEmpty(treatmentFinish.TreatmentFinishSDO.TreatmentMethod))
-                    {
-                        serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = txtTreatmentInstruction.Text.Trim();
+                        }
+                        else
+                        {
+                            serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = treatment.SUBCLINICAL_RESULT;
+                        }
+
+                        if (string.IsNullOrEmpty(treatment.TREATMENT_METHOD))
+                        {
+                            serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = txtTreatmentInstruction.Text.Trim();
+                        }
+                        else
+                        {
+                            serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = treatment.TREATMENT_METHOD;
+                        }
                     }
-                    else if (!string.IsNullOrEmpty(treatment.TREATMENT_METHOD))
-                    {
-                        serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = treatment.TREATMENT_METHOD;
-                    } 
                 }
                 //else
                 //{
@@ -2190,9 +2196,168 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void UpdateDictionaryNumOrderAccountBook()
+        {
+            try
+            {
+                var accountBook = ListAcountBook.FirstOrDefault(o => o.ID == (Room.BILL_ACCOUNT_BOOK_ID ?? 0));
+
+                if (accountBook != null && HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook != null && HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook.Count > 0 && HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook.ContainsKey(accountBook.ID))
+                {
+                    CommonParam param = new CommonParam();
+                    HisAccountBookFilter filter = new HisAccountBookFilter();
+                    filter.ID = accountBook.ID;
+                    var apiResult = new BackendAdapter(param).Get<List<V_HIS_TRANSACTION>>("api/HisAccountBook/Get", ApiConsumers.MosConsumer, filter, param);
+                    if (apiResult != null && apiResult.Count > 0)
+                    {
+                        HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook[accountBook.ID] = apiResult.First().NUM_ORDER;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private decimal setDataToDicNumOrderInAccountBook(V_HIS_ACCOUNT_BOOK accountBook)
+        {
+            decimal result = (accountBook.CURRENT_NUM_ORDER ?? 0) + 1;
+            try
+            {
+                if (accountBook != null)
+                {
+                    if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook == null || HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook.Count == 0 || (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook != null && HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook.Count > 0 && !HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook.ContainsKey(accountBook.ID)))
+                    {
+                        if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook == null)
+                        {
+                            HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook = new Dictionary<long, decimal>();
+                        }
+
+                        CommonParam param = new CommonParam();
+                        MOS.Filter.HisAccountBookViewFilter hisAccountBookViewFilter = new MOS.Filter.HisAccountBookViewFilter();
+                        hisAccountBookViewFilter.ID = accountBook.ID;
+                        var accountBooks = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_ACCOUNT_BOOK>>(ApiConsumer.HisRequestUriStore.HIS_ACCOUNT_BOOK_GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, hisAccountBookViewFilter, param);
+                        if (accountBooks != null && accountBooks.Count > 0)
+                        {
+                            var accountBookNew = accountBooks.FirstOrDefault();
+                            decimal num = 0;
+                            if ((accountBookNew.CURRENT_NUM_ORDER ?? 0) > 0)
+                            {
+                                num = (accountBookNew.CURRENT_NUM_ORDER ?? 0);
+                            }
+                            else
+                            {
+                                num = (decimal)accountBookNew.FROM_NUM_ORDER - 1;
+                            }
+
+                            HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook.Add(accountBookNew.ID, num);
+                            result = (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook[accountBook.ID]) + 1;
+                        }
+                    }
+                    else
+                    {
+                        result = (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook[accountBook.ID]) + 1;
+                    }
+                }
+                else
+                {
+                    result = (accountBook.CURRENT_NUM_ORDER ?? 0) + 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        private List<V_HIS_ACCOUNT_BOOK> LoadAccountBookList(long cashierRoomId)
+        {
+            var ListAccountBook = new List<V_HIS_ACCOUNT_BOOK>();
+            try
+            {
+                string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                HisAccountBookViewFilter acFilter = new HisAccountBookViewFilter();
+                acFilter.CASHIER_ROOM_ID = cashierRoomId;//Kiểm tra sổ còn hay k
+                acFilter.LOGINNAME = loginName;//Kiểm tra sổ còn hay k
+                acFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                acFilter.FOR_BILL = true;
+                acFilter.IS_OUT_OF_BILL = false;
+                acFilter.ORDER_DIRECTION = "DESC";
+                acFilter.ORDER_FIELD = "ID";
+                ListAccountBook = new BackendAdapter(new CommonParam()).Get<List<V_HIS_ACCOUNT_BOOK>>("api/HisAccountBook/GetView", ApiConsumers.MosConsumer, acFilter, null);
+                if (ListAccountBook != null && ListAccountBook.Count > 0)
+                {
+                    if (WorkPlace.WorkInfoSDO != null && WorkPlace.WorkInfoSDO.WorkingShiftId.HasValue)
+                    {
+                        ListAccountBook = ListAccountBook.Where(o => !o.WORKING_SHIFT_ID.HasValue || o.WORKING_SHIFT_ID == WorkPlace.WorkInfoSDO.WorkingShiftId.Value).ToList();
+                    }
+                    else
+                    {
+                        ListAccountBook = ListAccountBook.Where(o => !o.WORKING_SHIFT_ID.HasValue).ToList();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return ListAccountBook;
+        }
+        List<V_HIS_ACCOUNT_BOOK> ListAcountBook { get; set; }
+        V_HIS_ROOM Room { get; set; }
+        private ElectronicBillResult TaoHoaDonDienTuBenThu3CungCap(V_HIS_TREATMENT_FEE row, V_HIS_TRANSACTION transaction, List<HIS_SERE_SERV_BILL> sereServs)
+        {
+            ElectronicBillResult result = new ElectronicBillResult();
+            try
+            {
+                if (sereServs == null)
+                {
+                    result.Success = false;
+                    Inventec.Common.Logging.LogSystem.Debug("Khong co dich vu thanh toan nao duoc chon!");
+                    return result;
+                }
+
+                HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transaction);
+
+
+                ElectronicBillDataInput dataInput = new ElectronicBillDataInput();
+                dataInput.Amount = transaction.AMOUNT;
+                dataInput.Branch = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId());
+                if (transaction.EXEMPTION.HasValue)
+                {
+                    dataInput.Discount = transaction.EXEMPTION;
+                    dataInput.DiscountRatio = Math.Round(transaction.EXEMPTION.Value / transaction.AMOUNT, 2);
+                }
+                dataInput.PaymentMethod = transaction.PAY_FORM_NAME;
+                dataInput.SereServBill = sereServs;
+                dataInput.Treatment = row;
+                dataInput.Currency = "VND";
+                dataInput.Transaction = tran;
+                dataInput.TransactionTime = transaction.TRANSACTION_TIME;
+                dataInput.SymbolCode = transaction.SYMBOL_CODE;
+                dataInput.TemplateCode = transaction.TEMPLATE_CODE;
+                dataInput.EinvoiceTypeId = transaction.EINVOICE_TYPE_ID;
+
+                WaitingManager.Show();
+                ElectronicBillProcessor electronicBillProcessor = new ElectronicBillProcessor(dataInput);
+                result = electronicBillProcessor.Run(ElectronicBillType.ENUM.CREATE_INVOICE);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
 
         void SaveExamServiceReq(HisServiceReqExamUpdateSDO serviceReqExamUpdateSDO)
         {
+            Thread threadCreateInvoice = null;
+            paramCreateVoice = new CommonParam();
             CommonParam param = new CommonParam();
             bool success = false;
             try
@@ -2240,6 +2405,18 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         else
                         {
                             btnAggrExam.Enabled = false;
+                        }
+                        Room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.moduleData.RoomId);
+                        if (Room.DEFAULT_CASHIER_ROOM_ID.HasValue && Room.BILL_ACCOUNT_BOOK_ID.HasValue && this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && !string.IsNullOrEmpty(HisConfigCFG.AutoCreatePaymentTransactions))
+                        {
+                            var PatientTypes = BackendDataWorker.Get<HIS_PATIENT_TYPE>().Where(o => HisConfigCFG.AutoCreatePaymentTransactions.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList().Contains(o.PATIENT_TYPE_CODE)).ToList();
+                            ListAcountBook = LoadAccountBookList(Room.DEFAULT_CASHIER_ROOM_ID ?? 0);
+                            if (PatientTypes != null && PatientTypes.Count > 0 && ListAcountBook != null && ListAcountBook.Count > 0)
+                            {
+                                threadCreateInvoice = new Thread(CreateInvoice);
+                                threadCreateInvoice.Start();
+
+                            }
                         }
                     }
 
@@ -2434,7 +2611,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     }
                 }
                 WaitingManager.Hide();
-                MessageManager.Show(this.ParentForm, param, success);
                 if (success)
                 {
                     long WarningOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(SdaConfigKeys.WARNING_OPTION);
@@ -2447,12 +2623,106 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         }
                     }
                 }
+                if (threadCreateInvoice != null)
+                {
+                    threadCreateInvoice.Join();
+                    if (paramCreateVoice.Messages != null && paramCreateVoice.Messages.Count > 0)
+                    {
+                        param.Messages.AddRange(paramCreateVoice.Messages);
+                    }
+                    else
+                    {
+                        UpdateDictionaryNumOrderAccountBook();
+                    }
+                }
+                MessageManager.Show(this.ParentForm, param, success);
+
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Fatal(ex);
             }
+        }
+
+        CommonParam paramCreateVoice = new CommonParam();
+        private void CreateInvoice()
+        {
+            try
+            {
+                V_HIS_TREATMENT_FEE treatmentFees = LoadTreatmentFee().FirstOrDefault();
+                var accountBook = ListAcountBook.FirstOrDefault(o => o.ID == (Room.BILL_ACCOUNT_BOOK_ID ?? 0));
+
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => accountBook), accountBook));
+                if (accountBook != null && treatmentFees != null && (treatmentFees.TOTAL_PATIENT_PRICE ?? 0) - (treatmentFees.TOTAL_DEPOSIT_AMOUNT ?? 0) - (treatmentFees.TOTAL_BILL_AMOUNT ?? 0) + (treatmentFees.TOTAL_BILL_TRANSFER_AMOUNT ?? 0) - (treatmentFees.TOTAL_BILL_TRANSFER_AMOUNT ?? 0) + (treatmentFees.TOTAL_REPAY_AMOUNT ?? 0) - (treatmentFees.TOTAL_BILL_EXEMPTION ?? 0) + (treatmentFees.LOCKING_AMOUNT ?? 0) == 0)
+                {
+
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => "StartBillByDeposit"), "StartBillByDeposit"));
+                    HisTransactionBillByDepositSDO sdo = new HisTransactionBillByDepositSDO();
+                    sdo.AccountBookId = Room.BILL_ACCOUNT_BOOK_ID ?? 0;
+                    sdo.NumOrder = (long?)setDataToDicNumOrderInAccountBook(accountBook);
+                    sdo.PayformId = IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK;
+                    sdo.TransactionTime = Inventec.Common.DateTime.Get.Now() ?? 0;
+                    sdo.TreatmentId = this.treatment.ID;
+                    sdo.WorkingRoomId = Room.ID;
+                    sdo.CashierRoomId = Room.DEFAULT_CASHIER_ROOM_ID;
+                    sdo.IsSplitByCashierDeposit = true;
+                    var apiResult = new BackendAdapter(paramCreateVoice).Post<List<HisTransactionBillResultSDO>>("api/HisTransaction/BillByDeposit", ApiConsumers.MosConsumer, sdo, paramCreateVoice);
+
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => "EndBillByDeposit"), "EndBillByDeposit"));
+                    if (apiResult != null && apiResult.Count > 0)
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => "StartGetSSBill"), "StartGetSSBill"));
+                        HisSereServBillFilter ssbFilter = new HisSereServBillFilter();
+                        ssbFilter.BILL_IDs = apiResult.Select(s => s.TransactionBill.ID).ToList();
+                        var apiSsbResult = new BackendAdapter(paramCreateVoice).Get<List<HIS_SERE_SERV_BILL>>("api/HisSereServBill/Get", ApiConsumers.MosConsumer, ssbFilter, paramCreateVoice);
+                        foreach (var item in apiResult)
+                        {
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => "StartCreateInvoice"), "StartCreateInvoice"));
+                            ElectronicBillResult electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(treatmentFees, item.TransactionBill, apiSsbResult.Where(o => o.BILL_ID == item.TransactionBill.ID).ToList());
+
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => electronicBillResult), electronicBillResult));
+                            if (electronicBillResult == null || !electronicBillResult.Success)
+                            {
+                                if (electronicBillResult.Messages != null && electronicBillResult.Messages.Count > 0)
+                                {
+                                    paramCreateVoice.Messages.AddRange(electronicBillResult.Messages.Distinct().ToList());
+                                }
+                                else
+                                {
+                                    paramCreateVoice.Messages.Add("Tạo hóa đơn điện tử thất bại.");
+                                }
+                            }
+                            else
+                            {
+                                HisTransactionInvoiceInfoSDO tsdo = new HisTransactionInvoiceInfoSDO();
+                                tsdo.EinvoiceLoginname = electronicBillResult.InvoiceLoginname;
+                                tsdo.InvoiceCode = electronicBillResult.InvoiceCode;
+                                tsdo.InvoiceSys = electronicBillResult.InvoiceSys;
+                                tsdo.EinvoiceNumOrder = electronicBillResult.InvoiceNumOrder;
+                                tsdo.EInvoiceTime = electronicBillResult.InvoiceTime ?? (Inventec.Common.DateTime.Get.Now() ?? 0);
+                                tsdo.Id = item.TransactionBill.ID;
+                                tsdo.InvoiceLookupCode = electronicBillResult.InvoiceLookupCode;
+                                var apiResultUpdate = new BackendAdapter(paramCreateVoice).Post<bool>("api/HisTransaction/UpdateInvoiceInfo", ApiConsumers.MosConsumer, tsdo, paramCreateVoice);
+                                if (apiResultUpdate)
+                                {
+                                    Inventec.Common.Logging.LogSystem.Info("UpdateInvoiceInfo Success");
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => apiResult), apiResult));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         bool SaveExamExecute()

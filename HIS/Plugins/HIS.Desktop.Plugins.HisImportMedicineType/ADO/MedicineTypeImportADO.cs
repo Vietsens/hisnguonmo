@@ -57,7 +57,8 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.ADO
         public string PARENT_CODE { get; set; }
         public string TDL_GENDER_CODE { get; set; }
         public string TDL_GENDER_NAME { get; set; }
-        
+        public string VOLUME_STR { get; set; }
+
         public string ERROR { get; set; }
         public bool IS_LESS_MANUFACTURER { get; set; }
         public string ATC_CODES_STR { get; set; }
@@ -154,5 +155,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.ADO
         public int ALERT_MAX_IN_DAY_STR_ERROR { get; set; }
         public int IS_BLOCK_MAX_IN_DAY_STR_ERROR { get; set; }
         public string ACTIVE_INGREDIENT_CODE_STR { get; set; }
+
+        public int VOLUME_STR_ERROR { get; set; }
     }
 }

@@ -1258,7 +1258,7 @@ namespace HIS.UC.AddressCombo
                 if (!string.IsNullOrEmpty(address) && !string.IsNullOrEmpty(cmd))
                 {
                     string[] addressSplit = address.Split(new string[] { "," },StringSplitOptions.RemoveEmptyEntries);
-                    var datas = addressSplit.Where(p => p.Contains(cmd)).ToList();
+                    var datas = addressSplit.Where(p => p.ToLower().Contains(cmd.ToLower()) || cmd.ToLower().Contains(p.ToLower())).ToList();
                     if (datas != null && datas.Count > 0)
                     {
                         if (datas.Count == 1)
@@ -1276,7 +1276,7 @@ namespace HIS.UC.AddressCombo
                         else
                         {
                             string addressV2 = lever + " " + cmd;
-                            var data = datas.FirstOrDefault(p => p.Contains(addressV2));
+                            var data = datas.FirstOrDefault(p => p.ToLower().Contains(addressV2.ToLower()));
                             if (data != null)
                             {
                                 string addressNew = "," + data;
@@ -1287,6 +1287,19 @@ namespace HIS.UC.AddressCombo
                                 else
                                 {
                                     address = address.Replace(data, "");
+                                }
+                            }
+                            var dataEquals = datas.FirstOrDefault(p => p.Trim().ToLower().Equals(cmd.ToLower()));
+                            if (dataEquals != null)
+                            {
+                                string addressNew = "," + dataEquals;
+                                if (address.Contains(addressNew))
+                                {
+                                    address = address.Replace(addressNew, "");
+                                }
+                                else
+                                {
+                                    address = address.Replace(dataEquals, "");
                                 }
                             }
                         }

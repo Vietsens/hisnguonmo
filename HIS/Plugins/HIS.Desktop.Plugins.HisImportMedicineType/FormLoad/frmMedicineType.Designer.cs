@@ -45,6 +45,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMedicineType));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -126,6 +127,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn60 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn61 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn68 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn69 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Btn_ErrorLine = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.Btn_Delete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.BtnExportErrorLine = new DevExpress.XtraEditors.SimpleButton();
@@ -143,7 +145,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
@@ -270,7 +272,8 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn59,
             this.gridColumn60,
             this.gridColumn61,
-            this.gridColumn68});
+            this.gridColumn68,
+            this.gridColumn69});
             this.gridViewMedicineType.GridControl = this.gridControlMedicineType;
             this.gridViewMedicineType.Name = "gridViewMedicineType";
             this.gridViewMedicineType.OptionsCustomization.AllowFilter = false;
@@ -953,6 +956,15 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn68.Visible = true;
             this.gridColumn68.VisibleIndex = 66;
             // 
+            // gridColumn69
+            // 
+            this.gridColumn69.Caption = "Dung tích truyền";
+            this.gridColumn69.FieldName = "VOLUME_STR";
+            this.gridColumn69.Name = "gridColumn69";
+            this.gridColumn69.OptionsColumn.AllowEdit = false;
+            this.gridColumn69.Visible = true;
+            this.gridColumn69.VisibleIndex = 67;
+            // 
             // Btn_ErrorLine
             // 
             this.Btn_ErrorLine.AutoHeight = false;
@@ -1321,5 +1333,6 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn66;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn67;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn68;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn69;
 	}
 }

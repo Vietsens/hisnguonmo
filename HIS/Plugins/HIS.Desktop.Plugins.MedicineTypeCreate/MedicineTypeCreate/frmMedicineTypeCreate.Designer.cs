@@ -551,6 +551,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.layoutControl6 = new DevExpress.XtraLayout.LayoutControl();
+            this.spinVolume = new DevExpress.XtraEditors.SpinEdit();
             this.txtATCGroup_Name = new DevExpress.XtraEditors.TextEdit();
             this.txtATCGroup_Code = new DevExpress.XtraEditors.TextEdit();
             this.chkOriginal = new DevExpress.XtraEditors.CheckEdit();
@@ -705,6 +706,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.emptySpaceItem11 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lcATCGroup = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem406 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.txtVolume = new DevExpress.XtraLayout.LayoutControlItem();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.cboMedicineType = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -1692,6 +1694,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).BeginInit();
             this.layoutControl6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinVolume.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtATCGroup_Name.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtATCGroup_Code.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkOriginal.Properties)).BeginInit();
@@ -1840,6 +1843,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcATCGroup)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem406)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtVolume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboMedicineType.Properties)).BeginInit();
@@ -6840,6 +6844,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // layoutControl6
             // 
+            this.layoutControl6.Controls.Add(this.spinVolume);
             this.layoutControl6.Controls.Add(this.txtATCGroup_Name);
             this.layoutControl6.Controls.Add(this.txtATCGroup_Code);
             this.layoutControl6.Controls.Add(this.chkOriginal);
@@ -6915,6 +6920,30 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControl6.Size = new System.Drawing.Size(500, 583);
             this.layoutControl6.TabIndex = 0;
             this.layoutControl6.Text = "layoutControl6";
+            // 
+            // spinVolume
+            // 
+            this.spinVolume.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.spinVolume.Location = new System.Drawing.Point(334, 316);
+            this.spinVolume.Name = "spinVolume";
+            this.spinVolume.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.spinVolume.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spinVolume.Properties.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Default;
+            this.spinVolume.Properties.MaxLength = 16;
+            this.spinVolume.Properties.MaxValue = new decimal(new int[] {
+            1874919423,
+            2328306,
+            0,
+            0});
+            this.spinVolume.Size = new System.Drawing.Size(147, 20);
+            this.spinVolume.StyleController = this.layoutControl6;
+            this.spinVolume.TabIndex = 86;
+            this.spinVolume.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spinVolume_PreviewKeyDown);
             // 
             // txtATCGroup_Name
             // 
@@ -7562,7 +7591,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             this.txtPackingTypeCode.Location = new System.Drawing.Point(99, 316);
             this.txtPackingTypeCode.Name = "txtPackingTypeCode";
-            this.txtPackingTypeCode.Size = new System.Drawing.Size(382, 20);
+            this.txtPackingTypeCode.Size = new System.Drawing.Size(132, 20);
             this.txtPackingTypeCode.StyleController = this.layoutControl6;
             this.txtPackingTypeCode.TabIndex = 27;
             this.txtPackingTypeCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtPackingTypeCode_PreviewKeyDown_1);
@@ -7949,7 +7978,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.emptySpaceItem6,
             this.emptySpaceItem11,
             this.lcATCGroup,
-            this.layoutControlItem406});
+            this.layoutControlItem406,
+            this.txtVolume});
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Size = new System.Drawing.Size(483, 704);
@@ -8182,7 +8212,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lciPackingType.Control = this.txtPackingTypeCode;
             this.lciPackingType.Location = new System.Drawing.Point(0, 314);
             this.lciPackingType.Name = "lciPackingType";
-            this.lciPackingType.Size = new System.Drawing.Size(483, 24);
+            this.lciPackingType.Size = new System.Drawing.Size(233, 24);
             this.lciPackingType.Text = "Quy cách đ/gói:";
             this.lciPackingType.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPackingType.TextSize = new System.Drawing.Size(92, 13);
@@ -8883,6 +8913,20 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem406.Size = new System.Drawing.Size(243, 24);
             this.layoutControlItem406.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem406.TextVisible = false;
+            // 
+            // txtVolume
+            // 
+            this.txtVolume.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.txtVolume.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.txtVolume.Control = this.spinVolume;
+            this.txtVolume.Location = new System.Drawing.Point(233, 314);
+            this.txtVolume.Name = "txtVolume";
+            this.txtVolume.OptionsToolTip.ToolTip = "Dung tích truyền dịch";
+            this.txtVolume.Size = new System.Drawing.Size(250, 24);
+            this.txtVolume.Text = "Dung tích(ml):";
+            this.txtVolume.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.txtVolume.TextSize = new System.Drawing.Size(94, 13);
+            this.txtVolume.TextToControlDistance = 5;
             // 
             // Root
             // 
@@ -17820,6 +17864,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).EndInit();
             this.layoutControl6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.spinVolume.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtATCGroup_Name.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtATCGroup_Code.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkOriginal.Properties)).EndInit();
@@ -17968,6 +18013,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcATCGroup)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem406)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtVolume)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboMedicineType.Properties)).EndInit();
@@ -19793,5 +19839,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem406;
         private DevExpress.XtraEditors.TextEdit txtBhytWhiteListCodes;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem405;
+        private DevExpress.XtraEditors.SpinEdit spinVolume;
+        private DevExpress.XtraLayout.LayoutControlItem txtVolume;
     }
 }

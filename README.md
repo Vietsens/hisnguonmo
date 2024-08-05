@@ -5,32 +5,15 @@
 
 <h1 align="center">His nguồn mở</h1>
 
-**His nguồn mở** Phần mềm desktop chạy trên hệ điều hành Window của hệ thống quản lý bệnh viện HisPro:
+**His nguồn mở** Phần mềm chạy trên hệ điều hành Window của hệ thống quản lý bệnh viện HisPro, phát hành theo [[giấy phép GPL v3.0]](https://github.com/Vietsens/hisnguonmo?tab=GPL-3.0-1-ov-file):
 
 - [HIS](https://github.com/Vietsens/hisnguonmo/tree/Develop/HIS) source code HIS main project và các tính năng nghiệp vụ(plugin).  
 - [MPS](https://github.com/Vietsens/hisnguonmo/tree/Develop/MPS) source code các tính năng in ấn.  
 - [UC](https://github.com/Vietsens/hisnguonmo/tree/Develop/UC) source code các thành phần giao diện dùng chung, được nhúng trong các plugin.  
 
-<div align="center">
-
-[![license](https://img.shields.io/badge/license-GPL3-blue.svg)](https://github.com/Vietsens/hisnguonmo/blob/Develop/LICENSE)
-[[DevExpress 15.2.9]](https://www.devexpress.com/)
-[[log4net 1.2.10]](https://www.nuget.org/packages/log4net/1.2.10)
-[[FlexCell 5.7.6.0]](https://www.tmssoftware.com/site/flexcelnet.asp)
-[[Telerik UI for WinForms 2019.3.1022]](https://www.telerik.com/)
-[[AForge 2.2.5.0]](https://www.nuget.org/packages/AForge/2.2.5)
-[[itextsharp 5.5.3.0]](https://www.nuget.org/packages/iTextSharp/5.5.3)
-[[Aspose 11.1]](https://www.nuget.org/packages/Aspose.Words/11.1.0)
-[[EO.Pdf]](https://www.nuget.org/packages/EO.Pdf/20.3.34)
-[[EO.WebBrowser]](https://www.nuget.org/packages/EO.WebBrowser/20.3.34)
-[BarTender 10.1.0]
-[[STPadLibNet 8.5.2.6]](https://en.signotec.com/portal/seiten/signopad-api-device-api--900000170-10002.html)
-
-</div>
 
 
-
-## Cài đặt môi trường
+## Yêu cầu môi trường
 	Máy tính cần cài đặt sẵn các phần mềm sau:
 
 •	Git: https://git-scm.com/downloads
@@ -93,7 +76,7 @@
 - Chạy thử với các thành phần build sẵn
   Bạn có thể tạo một script PowerShell để thực hiện việc tải và lưu các thành phần build sẵn vào folder chứa phiên bản his sau khi build ở trên:
     ```shell
-		$zipUrl = "http://fsstest.onelink.vn/Upload/HIS/hisnguonmo_extend.zip"
+		$zipUrl = "http://fsstest.onelink.vn/Upload/HIS/HisNguonMo/extend.zip"
 		$zipPath = "E:\HisNguonMo\hisnguonmo\Build\hisnguonmo_extend.zip"
 		$extractPath = "E:\HisNguonMo\hisnguonmo\Build"
 
@@ -118,11 +101,11 @@
 		Set-ExecutionPolicy RemoteSigned
 		$ script build
 	```  
-## Hướng dẫn
+## Tham khảo
 
 - Build và tổ chức folder sau khi build: https://docs.google.com/document/d/1pH4kG4GTyQZkT12sCan25hZuzfyXzIsp/edit?usp=drive_link&ouid=100318684171831156204&rtpof=true&sd=true
 - Tạo project plugin: https://docs.google.com/document/d/1exLo2zBCBG6u2YSK9LK00ggYSsFr-nNN/edit?usp=sharing&ouid=100318684171831156204&rtpof=true&sd=true
 
-## Changelog
+## Thông tin phát hành
 
 	Vào đây https://github.com/Vietsens/hisnguonmo/blob/Develop/CHANGELOG.md để xem chi tiết.

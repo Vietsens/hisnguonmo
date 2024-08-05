@@ -276,8 +276,7 @@ namespace HIS.UC.PlusInfo.Design
                 }
                 else
                 {
-                    this.txtEthnicCode.Text = "";
-                    this.cboEthnic.EditValue = null;
+                    LoadEthnicBase();
                 }
                 //this.txtEthnicCode.TabIndex = this.cboEthnic.TabIndex = this.TabIndex;
             }
