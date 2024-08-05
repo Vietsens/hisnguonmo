@@ -108,7 +108,7 @@
 	
 ## Kênh liên lạc
 
-- Mailing lists: inventec.vietsens@gmail.com
+- Mailing lists: hisnguonmo@googlegroups.com
 	
 	
 ## Tham khảo
