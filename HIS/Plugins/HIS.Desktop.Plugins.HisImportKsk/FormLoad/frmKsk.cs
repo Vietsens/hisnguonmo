@@ -569,7 +569,7 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                         else
                         {
                             kskAdo.PATIENT_CLASSIFY_NAME_STR = item.PATIENT_CLASSIFY_CODE_STR;
-                            error += "Mã đối tượng chi tiết phải dưới 10 ký tự";
+                            error += "Mã đối tượng chi tiết phải dưới 10 ký tự|";
                         }
                     }
                     if (!string.IsNullOrEmpty(item.CAREER_CODE_STR))
@@ -588,7 +588,7 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                         else
                         {
                             kskAdo.CAREER_NAME_STR = item.CAREER_CODE_STR;
-                            error += string.Format("Mã nghề nghiệp không chính xác");
+                            error += string.Format("Mã nghề nghiệp không chính xác|");
                         }
                     }
                     if (!string.IsNullOrEmpty(item.HT_ADDRESS_STR))
@@ -598,7 +598,7 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                     }
 
                     if (!string.IsNullOrEmpty(item.HRM_KSK_CODE_STR) && string.IsNullOrEmpty(item.HRM_EMPLOYEE_CODE_STR))
-                        error += "Bắt buộc phải có thông tin Mã nhân viên";
+                        error += "Bắt buộc phải có thông tin Mã nhân viên|";
 
                     if (!string.IsNullOrEmpty(item.ICD_CODE_STR))
                     {
@@ -609,13 +609,13 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                         }
                         else
                         {
-                            error += string.Format("Mã {0} không có trong danh mục ICD.", item.ICD_CODE_STR);
+                            error += string.Format("Mã {0} không có trong danh mục ICD.|", item.ICD_CODE_STR);
                         }
 
                     }
                     if (!string.IsNullOrEmpty(item.ICD_NAME) && string.IsNullOrEmpty(item.ICD_CODE_STR))
                     {
-                        error += "Không được để trống Mã bệnh chính khi có Tên bệnh chính";
+                        error += "Không được để trống Mã bệnh chính khi có Tên bệnh chính|";
                     }
                     if (!string.IsNullOrEmpty(item.ICD_SUB_CODE_STR))
                     {
@@ -652,12 +652,33 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                         }
                         if (attachIcdSubErrors.Count() > 0)
                         {
-                            error += string.Format("ICD {0} không hợp lệ", string.Join(";", attachIcdSubErrors));
+                            error += string.Format("ICD {0} không hợp lệ|", string.Join(";", attachIcdSubErrors));
                         }
                     }
                     if (!string.IsNullOrEmpty(item.ICD_TEXT) && string.IsNullOrEmpty(item.ICD_SUB_CODE_STR))
                     {
-                        error += "Không được để trống Mã bệnh phụ khi có Tên bệnh phụ";
+                        error += "Không được để trống Mã bệnh phụ khi có Tên bệnh phụ|";
+                    }
+                    if (!string.IsNullOrEmpty(item.NATIONAL_CODE_STR))
+                    {
+                        var national = BackendDataWorker.Get<SDA_NATIONAL>().Where(o => o.IS_ACTIVE == 1 && o.NATIONAL_CODE.ToLower() == item.NATIONAL_CODE_STR.ToLower()).ToList();
+
+                        if (national != null && national.Count > 0)
+                        {
+                            kskAdo.nationalId = national.FirstOrDefault().ID;
+                            kskAdo.NATIONAL_CODE = national.FirstOrDefault().NATIONAL_CODE;
+                            kskAdo.NATIONAL_NAME = national.FirstOrDefault().NATIONAL_NAME;
+                            kskAdo.MPS_NATIONAL_CODE = national.FirstOrDefault().MPS_NATIONAL_CODE;
+                        }
+                        else
+                        {
+                            kskAdo.NATIONAL_CODE_STR = item.NATIONAL_CODE_STR;
+                            error += string.Format("Mã quốc gia {0} không có trong danh mục|", item.NATIONAL_CODE_STR);
+                        }
+                    }
+                    else if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.HisImportKsk.National_Required") == "1")
+                    {
+                        error += "Bắt buộc nhập mã quốc gia|";
                     }
 
                     if (!string.IsNullOrEmpty(item.PROVINCE_CODE_STR))
@@ -666,15 +687,45 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
 
                         if (lstSdaProvince != null && lstSdaProvince.Count > 0)
                         {
-                            kskAdo.provinceId = lstSdaProvince.FirstOrDefault().ID;
-                            kskAdo.PROVINCE_CODE = lstSdaProvince.FirstOrDefault().PROVINCE_CODE;
-                            kskAdo.PROVINCE_NAME = lstSdaProvince.FirstOrDefault().PROVINCE_NAME;
+                            if (kskAdo.nationalId.HasValue)
+                            {
+                                kskAdo.provinceId = lstSdaProvince.FirstOrDefault().ID;
+                                var lstSdaProvinceTmp = lstSdaProvince.Where(o => o.NATIONAL_ID == kskAdo.nationalId.Value).ToList();
+                                if (lstSdaProvinceTmp != null && lstSdaProvinceTmp.Count > 0)
+                                {
+                                    kskAdo.provinceId = lstSdaProvinceTmp.FirstOrDefault().ID;
+                                    kskAdo.PROVINCE_CODE = lstSdaProvinceTmp.FirstOrDefault().PROVINCE_CODE;
+                                    kskAdo.PROVINCE_NAME = lstSdaProvinceTmp.FirstOrDefault().PROVINCE_NAME;
+                                }
+                                else
+                                {
+                                    error += string.Format("Tỉnh {0} có mã {1} không thuộc quốc gia {2}|", lstSdaProvince.FirstOrDefault().PROVINCE_NAME, lstSdaProvince.FirstOrDefault().PROVINCE_CODE, kskAdo.NATIONAL_NAME);
+                                }
+                            }
+                            else
+                            {
+                                kskAdo.provinceId = lstSdaProvince.FirstOrDefault().ID;
+                                kskAdo.PROVINCE_CODE = lstSdaProvince.FirstOrDefault().PROVINCE_CODE;
+                                kskAdo.PROVINCE_NAME = lstSdaProvince.FirstOrDefault().PROVINCE_NAME;
+                                var national = BackendDataWorker.Get<SDA_NATIONAL>().Where(o => o.IS_ACTIVE == 1 && o.ID == lstSdaProvince.FirstOrDefault().NATIONAL_ID).ToList();
+                                if (national != null && national.Count > 0)
+                                {
+                                    kskAdo.nationalId = national.FirstOrDefault().ID;
+                                    kskAdo.NATIONAL_CODE = national.FirstOrDefault().NATIONAL_CODE;
+                                    kskAdo.NATIONAL_NAME = national.FirstOrDefault().NATIONAL_NAME;
+                                    kskAdo.MPS_NATIONAL_CODE = national.FirstOrDefault().MPS_NATIONAL_CODE;
+                                }
+                            }
                         }
                         else
                         {
                             kskAdo.PROVINCE_CODE_STR = item.PROVINCE_CODE_STR;
-                            error += string.Format("Mã tỉnh {0} không có trong danh mục", item.PROVINCE_CODE_STR);
+                            error += string.Format("Mã tỉnh {0} không có trong danh mục|", item.PROVINCE_CODE_STR);
                         }
+                    }
+                    else if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.HisImportKsk.National_Required") == "1")
+                    {
+                        error += "Bắt buộc nhập mã tỉnh|";
                     }
                     if (!string.IsNullOrEmpty(item.DISTRICT_CODE_STR))
                     {
@@ -684,6 +735,7 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                         {
                             if (kskAdo.provinceId.HasValue)
                             {
+                                kskAdo.districtId = lstSdaDistrict.FirstOrDefault().ID;
                                 var sdaDistrict = lstSdaDistrict.Where(o => o.PROVINCE_ID == kskAdo.provinceId.Value).ToList();
                                 if (sdaDistrict != null && sdaDistrict.Count > 0)
                                 {
@@ -693,11 +745,12 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                                 }
                                 else
                                 {
-                                    error += string.Format("Huyện {0} có mã {1} không thuộc tỉnh {2}", lstSdaDistrict.FirstOrDefault().DISTRICT_NAME, lstSdaDistrict.FirstOrDefault().DISTRICT_CODE, kskAdo.PROVINCE_NAME);
+                                    error += string.Format("Huyện {0} có mã {1} không thuộc tỉnh {2}|", lstSdaDistrict.FirstOrDefault().DISTRICT_NAME, lstSdaDistrict.FirstOrDefault().DISTRICT_CODE, kskAdo.PROVINCE_NAME);
                                 }
                             }
                             else
                             {
+                                error += "Nhập mã huyện nhưng chưa nhập mã tỉnh|";
                                 kskAdo.districtId = lstSdaDistrict.FirstOrDefault().ID;
                                 kskAdo.DISTRICT_CODE = lstSdaDistrict.FirstOrDefault().DISTRICT_CODE;
                                 kskAdo.DISTRICT_NAME = lstSdaDistrict.FirstOrDefault().DISTRICT_NAME;
@@ -706,7 +759,7 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                         else
                         {
                             kskAdo.DISTRICT_CODE_STR = item.DISTRICT_CODE_STR;
-                            error += string.Format("Mã huyện {0} không có trong danh mục", item.DISTRICT_CODE_STR);
+                            error += string.Format("Mã huyện {0} không có trong danh mục|", item.DISTRICT_CODE_STR);
                         }
                     }
                     if (!string.IsNullOrEmpty(item.COMMUNE_CODE_STR))
@@ -725,11 +778,12 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                                 }
                                 else
                                 {
-                                    error += string.Format("Xã {0} có mã {1} không thuộc huyện {2}", lstSdaCommune.FirstOrDefault().COMMUNE_NAME, lstSdaCommune.FirstOrDefault().COMMUNE_CODE, kskAdo.DISTRICT_NAME);
+                                    error += string.Format("Xã {0} có mã {1} không thuộc huyện {2}|", lstSdaCommune.FirstOrDefault().COMMUNE_NAME, lstSdaCommune.FirstOrDefault().COMMUNE_CODE, kskAdo.DISTRICT_NAME);
                                 }
                             }
                             else
                             {
+                                error += "Nhập mã xã nhưng chưa nhập mã huyện|";
                                 kskAdo.COMMUNE_CODE = lstSdaCommune.FirstOrDefault().COMMUNE_CODE;
                                 kskAdo.COMMUNE_NAME = lstSdaCommune.FirstOrDefault().COMMUNE_NAME;
                             }
@@ -737,7 +791,7 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                         else
                         {
                             kskAdo.COMMUNE_CODE_STR = item.COMMUNE_CODE_STR;
-                            error += string.Format("Mã xã {0} không có trong danh mục", item.COMMUNE_CODE_STR);
+                            error += string.Format("Mã xã {0} không có trong danh mục|", item.COMMUNE_CODE_STR);
                         }
                     }
 
@@ -962,7 +1016,7 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                         #region Hien thi message thong bao
                         MessageManager.Show(this.ParentForm, param, rs.Success);
                     }
-                        #endregion
+                    #endregion
 
                     #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
                     SessionManager.ProcessTokenLost(param);
