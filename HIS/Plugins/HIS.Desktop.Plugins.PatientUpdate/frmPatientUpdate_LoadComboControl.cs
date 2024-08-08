@@ -149,7 +149,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 else
                 {
                     List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
-                    listResult = BackendDataWorker.Get<V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => o.SEARCH_CODE.Contains(searchCode) || o.PROVINCE_NAME.Contains(searchCode)).ToList();
+                    listResult = BackendDataWorker.Get<V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => o.SEARCH_CODE != null && o.SEARCH_CODE.Contains(searchCode) || (o.PROVINCE_NAME != null && o.PROVINCE_NAME.Contains(searchCode))).ToList();
                     if (listResult.Count == 1)
                     {
                         cboHTProvinceName.EditValue = listResult[0].PROVINCE_CODE;
@@ -192,7 +192,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             try
             {
                 List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
-                listResult = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => (o.SEARCH_CODE.Contains(searchCode) || o.DISTRICT_NAME.Contains(searchCode)) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
+                listResult = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => ((o.SEARCH_CODE != null && o.SEARCH_CODE.Contains(searchCode)) || (o.DISTRICT_NAME != null && o.DISTRICT_NAME.Contains(searchCode))) && (provinceCode == "" || (o.PROVINCE_CODE != null && o.PROVINCE_CODE == provinceCode))).ToList();
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("SEARCH_CODE", "", 100, 1));
@@ -247,7 +247,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             try
             {
                 List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
-                listResult = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => (o.SEARCH_CODE.Contains(searchCode) || o.DISTRICT_NAME.Contains(searchCode)) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
+                listResult = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => ((o.SEARCH_CODE != null && o.SEARCH_CODE.Contains(searchCode)) || (o.DISTRICT_NAME != null && o.DISTRICT_NAME.Contains(searchCode))) && (provinceCode == "" || (o.PROVINCE_CODE != null && o.PROVINCE_CODE == provinceCode))).ToList();
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("SEARCH_CODE", "", 100, 1));
