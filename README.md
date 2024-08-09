@@ -117,4 +117,4 @@
 	
 ## Tham khảo
 
-[Tài liệu tham khảo] (https://github.com/Vietsens/hisnguonmo/wiki)
+[Tài liệu tham khảo](https://github.com/Vietsens/hisnguonmo/wiki)
