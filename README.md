@@ -117,5 +117,5 @@
 	
 ## Tham khảo
 
-- Build và tổ chức folder sau khi build: https://docs.google.com/document/d/1pH4kG4GTyQZkT12sCan25hZuzfyXzIsp/edit?usp=drive_link&ouid=100318684171831156204&rtpof=true&sd=true
-- Tạo project plugin: https://docs.google.com/document/d/1exLo2zBCBG6u2YSK9LK00ggYSsFr-nNN/edit?usp=sharing&ouid=100318684171831156204&rtpof=true&sd=true
+- Build và tổ chức folder sau khi build: https://github.com/Vietsens/hisnguonmo/wiki/H%C6%AF%E1%BB%9ANG-D%E1%BA%AAN-BUILD-HIS-NGU%E1%BB%92N-M%E1%BB%9E-T%E1%BB%AA-B%E1%BB%98-SOURCE-CODE
+- Tạo project plugin: https://github.com/Vietsens/hisnguonmo/wiki/T%C3%80I-LI%E1%BB%86U-H%C6%AF%E1%BB%9ANG-D%E1%BA%AAN-C%C3%81C-B%C6%AF%E1%BB%9AC-X%C3%82Y-D%E1%BB%B0NG-&-RELEASE-1-MODULE
