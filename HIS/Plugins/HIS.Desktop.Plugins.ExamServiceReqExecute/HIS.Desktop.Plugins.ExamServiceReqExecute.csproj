@@ -712,6 +712,10 @@
       <Project>{2e5f2fa1-1b7d-40e4-b0c5-069231fb7746}</Project>
       <Name>HIS.Desktop.Plugins.Library.CheckIcd</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.ElectronicBill\HIS.Desktop.Plugins.Library.ElectronicBill.csproj">
+      <Project>{C5AECD51-4BE8-4937-A6C3-04F25B11B33F}</Project>
+      <Name>HIS.Desktop.Plugins.Library.ElectronicBill</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\demostration.png" />

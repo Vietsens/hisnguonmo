@@ -26,5 +26,6 @@ namespace HIS.Desktop.Plugins.TreatmentList.Base
     class ControlCode
     {
         internal const string BtnDelete = "HIS000027";
+        internal const string RadEntireHospital = "HIS000045";
     }
 }

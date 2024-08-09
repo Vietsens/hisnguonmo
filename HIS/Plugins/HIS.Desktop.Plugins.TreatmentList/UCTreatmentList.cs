@@ -186,6 +186,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             try
             {
                 WaitingManager.Show();
+                HisConfigCFG.LoadConfig();
                 isLoadForm = true;
                 SetCaptionByLanguageKey();
                 InitTypeFind();
@@ -205,13 +206,12 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 InitCombo(cboTrangThai, listTrangThai, "TrangThai", "ID");
                 InitComboPatientTypeCheck();
                 InitComboPatientType();
+                LoadAcsControls();
                 SetDefaultControl();
                 FillDataToGrid();
-                LoadAcsControls();
                 InitCboKhoaVaoVien();
                 InitCboTreatmentEndTypeExt();
                 InitControlState();
-                HisConfigCFG.LoadConfig();
                 isLoadForm = false;
                 WaitingManager.Hide();
             }
@@ -646,6 +646,21 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     btnGuiHS.Enabled = false;
                 }
 
+                if (HisConfigCFG.SearchPatientsAcrossHospital)
+                {
+                    if (controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == ControlCode.RadEntireHospital) != null)
+                    {
+                        layoutRadEntireHospital.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    }
+                    else
+                    {
+                        layoutRadEntireHospital.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    }
+                }
+                else
+                {
+                    layoutRadEntireHospital.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                }
             }
             catch (Exception ex)
             {

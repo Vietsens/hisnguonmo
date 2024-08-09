@@ -27,6 +27,7 @@ using HIS.Desktop.LocalStorage.LocalData;
 using HIS.UC.Icd.ADO;
 using HIS.UC.SecondaryIcd.ADO;
 using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using Inventec.Desktop.Plugins.BedRoomWithIn;
@@ -204,6 +205,36 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                     }
                 }
 
+                #region kiem tra key -- 173789
+                var key = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_DEPARTMENT_TRAN.DEPARTMENT_IN_TIME_GREATER_THAN_INSTRUCTION_TIME");
+                if (key == "2")
+                {
+                    WaitingManager.Hide();
+                    HisSereServFilter serFilter = new HisSereServFilter();
+                    serFilter.HAS_EXECUTE = false;
+                    serFilter.TDL_REQUEST_DEPARTMENT_ID = this.currentTreatment.LAST_DEPARTMENT_ID;
+                    serFilter.TREATMENT_ID = this.treatmentId;
+                    var listSereServ = new BackendAdapter(param).Get<List<HIS_SERE_SERV>>("/api/HisSereServ/Get", ApiConsumers.MosConsumer, serFilter, param);
+                    listSereServ = listSereServ.Where(s => s.TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN
+                                                        && s.TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KHAC
+                                                         && s.AMOUNT > 0).ToList();
+                    if (listSereServ != null && listSereServ.Count() > 0)
+                    {
+                        var maxIntructionTime = listSereServ.OrderByDescending(s => s.TDL_INTRUCTION_TIME).FirstOrDefault();
+                        if(departmentTranReceiveSDO.InTime <= maxIntructionTime.TDL_INTRUCTION_TIME)
+                        {
+                            if(MessageBox.Show(this, "Thời gian vào khoa nhỏ hơn thời gian y lệnh "
+                                                +Inventec.Common.DateTime.Convert.TimeNumberToTimeString(maxIntructionTime.TDL_INTRUCTION_TIME )
+                                                + ". Bạn có muốn tiếp tục?","Cảnh báo",MessageBoxButtons.YesNo) 
+                                                == DialogResult.No)
+                            {
+                                return;
+                            }
+                        }
+                    }
+                    Inventec.Common.Logging.LogSystem.Debug("DS dich vu, List Sere Serv: " + LogUtil.TraceData("__listSereServ", listSereServ));
+                }
+                #endregion
                 if (lciTxtInCode.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
                 {
                     departmentTranReceiveSDO.InCode = txtInCode.Text.Trim();

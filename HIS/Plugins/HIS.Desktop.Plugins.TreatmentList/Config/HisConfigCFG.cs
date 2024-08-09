@@ -41,6 +41,8 @@ namespace HIS.Desktop.Plugins.TreatmentList.Config
         private const string CONFIG_KEY__MPS_PrintPrescription = "HIS.Desktop.Plugins.Library.PrintPrescription.Mps";
         private const string CONFIG_KEY__UnlockConditionOption = "HIS.Desktop.Plugins.TreatmentList.UnlockConditionOption";
         private const string CONFIG_KEY__IsRequiredReasonWhenOpenTreatment = "HIS.Desktop.Plugins.TreatmentList.IsRequiredReasonWhenOpenTreatment";
+        private const string CONFIG_KEY__SearchPatientsAcrossHospital = "HIS.Desktop.Plugins.TreatmentList.SearchPatientsAcrossHospital";
+        internal static bool SearchPatientsAcrossHospital;
         internal static bool IsRequiredReasonWhenOpenTreatment;
         internal static bool IsUnlockConditionOption;
         internal static string HSSKAddress;
@@ -88,6 +90,7 @@ namespace HIS.Desktop.Plugins.TreatmentList.Config
                 SYNC_XML_FPT_OPTION = GetValue(CONFIG_KEY_MOS_HIS_HEIN_APPROVAL_SYNC_XML_FPT_OPTION);
                 IsAllowPrintNoMedicine = GetValue(CONFIG_KEY__IS_ALLOW_PRINT_NO_MEDICINE) == GlobalVariables.CommonStringTrue;
                 MPS_PrintPrescription = GetValue(CONFIG_KEY__MPS_PrintPrescription);
+                SearchPatientsAcrossHospital = GetValue(CONFIG_KEY__SearchPatientsAcrossHospital) == "1";
             }
             catch (Exception ex)
             {
