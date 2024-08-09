@@ -108,8 +108,12 @@
 	
 ## Kênh liên lạc
 
-- Mailing lists: inventec.vietsens@gmail.com
-	
+- Mailing lists: hisnguonmo@googlegroups.com
+- Cách tham gia kênh https://support.google.com/groups/answer/1067205
+
+## Issues
+
+- Các vấn đề liên quan đến sản phẩm vui lòng phản hồi tại [đây](https://github.com/Vietsens/hisnguonmo/issues)
 	
 ## Tham khảo
 
