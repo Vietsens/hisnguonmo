@@ -127,9 +127,12 @@
 ## Kênh liên lạc
 
 - Mailing lists: hisnguonmo@googlegroups.com
-	
+- Cách tham gia kênh https://support.google.com/groups/answer/1067205
+
+## Issues
+
+- Các vấn đề liên quan đến sản phẩm vui lòng phản hồi tại [đây](https://github.com/Vietsens/hisnguonmo/issues)
 	
 ## Tham khảo
 
-- Build và tổ chức folder sau khi build: https://docs.google.com/document/d/1pH4kG4GTyQZkT12sCan25hZuzfyXzIsp/edit?usp=drive_link&ouid=100318684171831156204&rtpof=true&sd=true
-- Tạo project plugin: https://docs.google.com/document/d/1exLo2zBCBG6u2YSK9LK00ggYSsFr-nNN/edit?usp=sharing&ouid=100318684171831156204&rtpof=true&sd=true
+[Tài liệu tham khảo](https://github.com/Vietsens/hisnguonmo/wiki)

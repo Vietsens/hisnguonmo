@@ -74,9 +74,10 @@ namespace HIS.Desktop.Plugins.HisImportKsk.ADO
         public string PROVINCE_CODE_STR { get; set; }
         public string DISTRICT_CODE_STR { get; set; }
         public string COMMUNE_CODE_STR { get; set; }
+        public string NATIONAL_CODE_STR { get; set; }
         public long? provinceId { get; set; }
         public long? districtId { get; set; }
-
+        public long? nationalId { get; set; }
 
         public KskImportADO()
         {

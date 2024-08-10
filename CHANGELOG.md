@@ -1,3 +1,8 @@
+### Release 2.323.0
+* Bổ sung mã quốc gia khi nhập khẩu đoàn khám sức khỏe
+* Bổ sung phân quyền tìm kiếm hồ sơ toàn viện
+* Sửa thông tin trong XML phục vụ XML 130 và QĐ 4750/QĐ-BYT 
+
 ### Release 2.322.0
 * Bổ sung cấu hình hệ thống tự động tạo giao dịch thanh toán và khóa viện phí
 * Bổ sung thông tin dung tích truyền dịch trong thông tin thuốc

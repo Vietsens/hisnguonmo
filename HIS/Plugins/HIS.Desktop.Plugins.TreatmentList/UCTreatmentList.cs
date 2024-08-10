@@ -651,6 +651,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     if (controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == ControlCode.RadEntireHospital) != null)
                     {
                         layoutRadEntireHospital.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                        radioButton1.Checked = true;
                     }
                     else
                     {
@@ -660,6 +661,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 else
                 {
                     layoutRadEntireHospital.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    radioButton1.Checked = true;
                 }
             }
             catch (Exception ex)
