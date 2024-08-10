@@ -10,7 +10,7 @@
 - [HIS](https://github.com/Vietsens/hisnguonmo/tree/Develop/HIS) source code HIS main project và các tính năng nghiệp vụ(plugin).  
 - [MPS](https://github.com/Vietsens/hisnguonmo/tree/Develop/MPS) source code các tính năng in ấn.  
 - [UC](https://github.com/Vietsens/hisnguonmo/tree/Develop/UC) source code các thành phần giao diện dùng chung, được nhúng trong các plugin.  
-
+- [Lib](https://github.com/Vietsens/lib) Cá thư viện mở sử dụng trong dự án.  
 
 
 ## Yêu cầu môi trường
@@ -28,18 +28,36 @@
 
 ## Clone source code
 
-- Clone source code	từ git
-  > Tạo folder HISNGUONMO và chạy lệnh bên dưới để clone về máy
+- Clone source code	từ git: mở windows powershell và thực hiện chạy các lệnh sau
+  > Tạo sẵn folder HISNGUONMO để lưu source code tải về và chạy lệnh bên dưới để clone về máy
   ```shell	
 	git clone https://github.com/Vietsens/hisnguonmo.git
 	  $ script build
   ```  	
 	
-  > Tạo folder LIB và chạy lệnh bên dưới để clone về máy
+  > Tạo sẵn folder LIB để lưu bộ thư viện tải về và chạy các lệnh sau để clone các thư viện mở phiên bản tương thích về máy. Hoặc có thể vào trực tiếp các trang cung cấp thư viện nguồn mở nhưng lưu ý tính tương thich của phiên bản sử dụng với mã nguồn
 	```shell	
 	git clone https://github.com/Vietsens/lib.git
 	  $ script build
 	```  
+  
+  > Tải các thư viện mở rộng về lưu trong folder LIB ở trên
+	```shell	
+		$zipUrl = "http://fsstest.onelink.vn/Upload/HIS/HisNguonMo/lib_extend.zip"
+		$zipPath = "G:\HISNGMOGITHUB\lib\lib_extend.zip"
+		$extractPath = "G:\HISNGMOGITHUB\lib"
+
+		# Tải file zip
+		Invoke-WebRequest -Uri "http://fsstest.onelink.vn/Upload/HIS/HisNguonMo/lib_extend.zip" -OutFile "G:\HISNGMOGITHUB\lib\lib_extend.zip"
+
+		# Giải nén file zip
+		Expand-Archive -Path "G:\HISNGMOGITHUB\lib\lib_extend.zip" -DestinationPath "G:\HISNGMOGITHUB\lib"
+		
+		# Xóa file zip sau khi giải nén
+		Remove-Item -Path "G:\HISNGMOGITHUB\lib\lib_extend.zip"
+	  $ script build
+	```    
+  
   
 - Sau khi clone các git cần thiết về tổ chức folder theo cây folder như sau:
 
