@@ -48,13 +48,13 @@
 		$extractPath = "G:\HISNGMOGITHUB\lib"
 
 		# Tải file zip
-		Invoke-WebRequest -Uri "http://fsstest.onelink.vn/Upload/HIS/HisNguonMo/lib_extend.zip" -OutFile "G:\HISNGMOGITHUB\lib\lib_extend.zip"
+		Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath
 
 		# Giải nén file zip
-		Expand-Archive -Path "G:\HISNGMOGITHUB\lib\lib_extend.zip" -DestinationPath "G:\HISNGMOGITHUB\lib"
+		Expand-Archive -Path $zipPath -DestinationPath $extractPath
 		
 		# Xóa file zip sau khi giải nén
-		Remove-Item -Path "G:\HISNGMOGITHUB\lib\lib_extend.zip"
+		Remove-Item -Path $zipPath
 	  $ script build
 	```    
   
