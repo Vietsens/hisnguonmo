@@ -122,6 +122,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.Popup
                 lblPatientCode.Text = this.currentTreatment.TDL_PATIENT_CODE;
                 lblPatientName.Text = this.currentTreatment.TDL_PATIENT_NAME;
                 lblTreatmentCode.Text = this.currentTreatment.TREATMENT_CODE;
+                txtRejectStoreReason.Text = this.currentTreatment.REJECT_STORE_REASON;
             }
             catch (Exception ex)
             {
