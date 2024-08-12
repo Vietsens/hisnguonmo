@@ -54,10 +54,6 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItemSave = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dteTuberculosisTreatmentBegin = new DevExpress.XtraEditors.DateEdit();
             this.cboTuberculosisTreatmentResult = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit7View = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -115,6 +111,10 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem60 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -130,6 +130,8 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             this.barDockControl8 = new DevExpress.XtraBars.BarDockControl();
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.btnDel = new DevExpress.XtraEditors.SimpleButton();
+            this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -200,10 +202,12 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.btnDel);
             this.layoutControl1.Controls.Add(this.btnSave);
             this.layoutControl1.Controls.Add(this.groupBox2);
             this.layoutControl1.Controls.Add(this.groupBox1);
@@ -217,9 +221,9 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(939, 212);
+            this.btnSave.Location = new System.Drawing.Point(969, 212);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(228, 22);
+            this.btnSave.Size = new System.Drawing.Size(198, 22);
             this.btnSave.StyleController = this.layoutControl1;
             this.btnSave.TabIndex = 61;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -287,10 +291,6 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItemSave});
@@ -314,34 +314,6 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             this.barButtonItemSave.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
             this.barButtonItemSave.Name = "barButtonItemSave";
             this.barButtonItemSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItemSave_ItemClick);
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1169, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 265);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1169, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 236);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1169, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 236);
             // 
             // dteTuberculosisTreatmentBegin
             // 
@@ -1053,7 +1025,8 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             this.layoutControlItem2,
             this.layoutControlItem3,
             this.layoutControlItem60,
-            this.emptySpaceItem1});
+            this.emptySpaceItem1,
+            this.layoutControlItem6});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1083,9 +1056,9 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             // layoutControlItem60
             // 
             this.layoutControlItem60.Control = this.btnSave;
-            this.layoutControlItem60.Location = new System.Drawing.Point(937, 210);
+            this.layoutControlItem60.Location = new System.Drawing.Point(967, 210);
             this.layoutControlItem60.Name = "layoutControlItem60";
-            this.layoutControlItem60.Size = new System.Drawing.Size(232, 26);
+            this.layoutControlItem60.Size = new System.Drawing.Size(202, 26);
             this.layoutControlItem60.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem60.TextVisible = false;
             // 
@@ -1094,8 +1067,36 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 210);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(937, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(792, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1169, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 265);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1169, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 236);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1169, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 236);
             // 
             // emptySpaceItem2
             // 
@@ -1219,6 +1220,25 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             // 
             this.dxValidationProvider1.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
             // 
+            // btnDel
+            // 
+            this.btnDel.Location = new System.Drawing.Point(794, 212);
+            this.btnDel.Name = "btnDel";
+            this.btnDel.Size = new System.Drawing.Size(171, 22);
+            this.btnDel.StyleController = this.layoutControl1;
+            this.btnDel.TabIndex = 62;
+            this.btnDel.Text = "Xóa";
+            this.btnDel.Click += new System.EventHandler(this.btnDel_Click);
+            // 
+            // layoutControlItem6
+            // 
+            this.layoutControlItem6.Control = this.btnDel;
+            this.layoutControlItem6.Location = new System.Drawing.Point(792, 210);
+            this.layoutControlItem6.Name = "layoutControlItem6";
+            this.layoutControlItem6.Size = new System.Drawing.Size(175, 26);
+            this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem6.TextVisible = false;
+            // 
             // frmTuberclusisTreatment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1308,6 +1328,7 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1401,5 +1422,7 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
         private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
         private DevExpress.XtraEditors.GridLookUpEdit cboTuberculosisTreatmentType;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView3;
+        private DevExpress.XtraEditors.SimpleButton btnDel;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
     }
 }
