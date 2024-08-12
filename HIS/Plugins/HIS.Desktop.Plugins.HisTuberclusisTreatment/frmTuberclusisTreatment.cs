@@ -492,6 +492,8 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
                         {
                             control.Text = "";
                         }
+                        btnDel.Enabled = false;
+                        currentTuberclusisTreatment = null;
                     }
                 }
             }
