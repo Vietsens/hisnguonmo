@@ -477,6 +477,7 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             try
             {
                 bool rs = false;
+                
                 CommonParam param = new CommonParam();
                 if (this.btnDel.Enabled == false) return;
                 if (MessageBox.Show(this, "Xóa thông tin điều trị bệnh lao?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -485,7 +486,13 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
                     rs = new BackendAdapter(param).Post<bool>("api/HisTuberculosisTreat/Delete", ApiConsumers.MosConsumer, ID, param);
                     
                     MessageManager.Show(this,param,rs);
-                    
+                    if (rs)
+                    {
+                        foreach (Control control in this.layoutControl3.Controls)
+                        {
+                            control.Text = "";
+                        }
+                    }
                 }
             }
             catch (Exception ex)
