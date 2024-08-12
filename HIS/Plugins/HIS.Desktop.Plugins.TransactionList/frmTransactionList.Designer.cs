@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.TransactionList
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTransactionList));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -124,7 +125,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject76 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtTransactionCode = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnRCFind = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnRCRefresh = new DevExpress.XtraBars.BarButtonItem();
@@ -133,10 +134,6 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnCodePayQr = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnCodeTransaction = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.txtCodePayQr = new DevExpress.XtraEditors.TextEdit();
             this.layoutControl7 = new DevExpress.XtraLayout.LayoutControl();
             this.btnWarning = new DevExpress.XtraEditors.SimpleButton();
@@ -297,6 +294,13 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtTransactionCode.Properties)).BeginInit();
@@ -438,7 +442,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             // txtTransactionCode
             // 
             this.txtTransactionCode.Location = new System.Drawing.Point(132, 50);
-            this.txtTransactionCode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtTransactionCode.Margin = new System.Windows.Forms.Padding(2);
             this.txtTransactionCode.MenuManager = this.barManager1;
             this.txtTransactionCode.Name = "txtTransactionCode";
             this.txtTransactionCode.Properties.NullValuePrompt = "Mã giao dịch (F4)";
@@ -454,10 +458,6 @@ namespace HIS.Desktop.Plugins.TransactionList
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnRCFind,
@@ -542,38 +542,10 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.bbtnCodeTransaction.Name = "bbtnCodeTransaction";
             this.bbtnCodeTransaction.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnCodeTransaction_ItemClick);
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1304, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 733);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1304, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 704);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1304, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 704);
-            // 
             // txtCodePayQr
             // 
             this.txtCodePayQr.Location = new System.Drawing.Point(2, 50);
-            this.txtCodePayQr.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtCodePayQr.Margin = new System.Windows.Forms.Padding(2);
             this.txtCodePayQr.MenuManager = this.barManager1;
             this.txtCodePayQr.Name = "txtCodePayQr";
             this.txtCodePayQr.Properties.NullValuePrompt = "Mã thanh toán Qr (F3)";
@@ -1263,7 +1235,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             // cbStatusNoLook
             // 
             this.cbStatusNoLook.Location = new System.Drawing.Point(88, 26);
-            this.cbStatusNoLook.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbStatusNoLook.Margin = new System.Windows.Forms.Padding(2);
             this.cbStatusNoLook.MenuManager = this.barManager1;
             this.cbStatusNoLook.Name = "cbStatusNoLook";
             this.cbStatusNoLook.Properties.Caption = "Không khoá";
@@ -1276,7 +1248,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             // cbStatusLook
             // 
             this.cbStatusLook.Location = new System.Drawing.Point(185, 26);
-            this.cbStatusLook.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbStatusLook.Margin = new System.Windows.Forms.Padding(2);
             this.cbStatusLook.MenuManager = this.barManager1;
             this.cbStatusLook.Name = "cbStatusLook";
             this.cbStatusLook.Properties.Caption = "Khoá";
@@ -1290,7 +1262,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             // 
             this.cbStatusAll1.EditValue = true;
             this.cbStatusAll1.Location = new System.Drawing.Point(17, 26);
-            this.cbStatusAll1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbStatusAll1.Margin = new System.Windows.Forms.Padding(2);
             this.cbStatusAll1.MenuManager = this.barManager1;
             this.cbStatusAll1.Name = "cbStatusAll1";
             this.cbStatusAll1.Properties.Caption = "Tất cả";
@@ -1542,6 +1514,9 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_NumOrder,
             this.gridColumn_Transaction_AccountBookCode,
             this.gridColumn_Transaction_AccountBookName,
+            this.gridColumn14,
+            this.gridColumn15,
+            this.gridColumn16,
             this.gridColumn_Transaction_TreatmentCode,
             this.gridColumn_Transaction_VirPatientName,
             this.gridColumn_Transaction_Dob,
@@ -1960,7 +1935,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_TreatmentCode.Name = "gridColumn_Transaction_TreatmentCode";
             this.gridColumn_Transaction_TreatmentCode.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_TreatmentCode.Visible = true;
-            this.gridColumn_Transaction_TreatmentCode.VisibleIndex = 33;
+            this.gridColumn_Transaction_TreatmentCode.VisibleIndex = 36;
             this.gridColumn_Transaction_TreatmentCode.Width = 90;
             // 
             // gridColumn_Transaction_VirPatientName
@@ -1972,7 +1947,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_VirPatientName.Name = "gridColumn_Transaction_VirPatientName";
             this.gridColumn_Transaction_VirPatientName.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_VirPatientName.Visible = true;
-            this.gridColumn_Transaction_VirPatientName.VisibleIndex = 34;
+            this.gridColumn_Transaction_VirPatientName.VisibleIndex = 37;
             this.gridColumn_Transaction_VirPatientName.Width = 90;
             // 
             // gridColumn_Transaction_Dob
@@ -1987,7 +1962,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_Dob.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_Dob.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Transaction_Dob.Visible = true;
-            this.gridColumn_Transaction_Dob.VisibleIndex = 35;
+            this.gridColumn_Transaction_Dob.VisibleIndex = 38;
             this.gridColumn_Transaction_Dob.Width = 80;
             // 
             // gridColumn_Transaction_GenderName
@@ -2001,7 +1976,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_GenderName.Name = "gridColumn_Transaction_GenderName";
             this.gridColumn_Transaction_GenderName.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_GenderName.Visible = true;
-            this.gridColumn_Transaction_GenderName.VisibleIndex = 36;
+            this.gridColumn_Transaction_GenderName.VisibleIndex = 39;
             this.gridColumn_Transaction_GenderName.Width = 55;
             // 
             // gridColumn_Transaction_PatientCode
@@ -2013,7 +1988,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_PatientCode.Name = "gridColumn_Transaction_PatientCode";
             this.gridColumn_Transaction_PatientCode.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_PatientCode.Visible = true;
-            this.gridColumn_Transaction_PatientCode.VisibleIndex = 37;
+            this.gridColumn_Transaction_PatientCode.VisibleIndex = 40;
             this.gridColumn_Transaction_PatientCode.Width = 90;
             // 
             // gridColumn13
@@ -2024,7 +1999,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 38;
+            this.gridColumn13.VisibleIndex = 41;
             // 
             // gridColumn12
             // 
@@ -2034,7 +2009,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn12.OptionsColumn.AllowEdit = false;
             this.gridColumn12.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 39;
+            this.gridColumn12.VisibleIndex = 42;
             // 
             // gridColumn11
             // 
@@ -2044,7 +2019,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 40;
+            this.gridColumn11.VisibleIndex = 43;
             // 
             // gridColumn10
             // 
@@ -2054,7 +2029,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn10.OptionsColumn.AllowEdit = false;
             this.gridColumn10.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 41;
+            this.gridColumn10.VisibleIndex = 44;
             // 
             // gridColumn_Transaction_NationalTransactionCode
             // 
@@ -2063,7 +2038,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_NationalTransactionCode.Name = "gridColumn_Transaction_NationalTransactionCode";
             this.gridColumn_Transaction_NationalTransactionCode.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_NationalTransactionCode.Visible = true;
-            this.gridColumn_Transaction_NationalTransactionCode.VisibleIndex = 42;
+            this.gridColumn_Transaction_NationalTransactionCode.VisibleIndex = 45;
             this.gridColumn_Transaction_NationalTransactionCode.Width = 90;
             // 
             // gridColumn_Transaction_CreateTime
@@ -2078,7 +2053,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_CreateTime.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_CreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Transaction_CreateTime.Visible = true;
-            this.gridColumn_Transaction_CreateTime.VisibleIndex = 43;
+            this.gridColumn_Transaction_CreateTime.VisibleIndex = 46;
             this.gridColumn_Transaction_CreateTime.Width = 120;
             // 
             // gridColumn_Transaction_Creator
@@ -2090,7 +2065,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_Creator.Name = "gridColumn_Transaction_Creator";
             this.gridColumn_Transaction_Creator.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_Creator.Visible = true;
-            this.gridColumn_Transaction_Creator.VisibleIndex = 44;
+            this.gridColumn_Transaction_Creator.VisibleIndex = 47;
             // 
             // gridColumn_Transaction_ModifyTime
             // 
@@ -2104,7 +2079,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_ModifyTime.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_ModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Transaction_ModifyTime.Visible = true;
-            this.gridColumn_Transaction_ModifyTime.VisibleIndex = 45;
+            this.gridColumn_Transaction_ModifyTime.VisibleIndex = 48;
             this.gridColumn_Transaction_ModifyTime.Width = 120;
             // 
             // gridColumn_Transaction_Modifier
@@ -2116,7 +2091,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_Modifier.Name = "gridColumn_Transaction_Modifier";
             this.gridColumn_Transaction_Modifier.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_Modifier.Visible = true;
-            this.gridColumn_Transaction_Modifier.VisibleIndex = 46;
+            this.gridColumn_Transaction_Modifier.VisibleIndex = 49;
             // 
             // gridColumn1
             // 
@@ -2455,6 +2430,64 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControlItem24.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem24.TextVisible = false;
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1304, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 733);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1304, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 704);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1304, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 704);
+            // 
+            // gridColumn14
+            // 
+            this.gridColumn14.Caption = "Lý do hủy";
+            this.gridColumn14.FieldName = "CANCEL_REASON_str";
+            this.gridColumn14.Name = "gridColumn14";
+            this.gridColumn14.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn14.Visible = true;
+            this.gridColumn14.VisibleIndex = 33;
+            this.gridColumn14.Width = 120;
+            // 
+            // gridColumn15
+            // 
+            this.gridColumn15.Caption = "Người hủy";
+            this.gridColumn15.FieldName = "CANCEL_LOGINNAME_str";
+            this.gridColumn15.Name = "gridColumn15";
+            this.gridColumn15.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn15.Visible = true;
+            this.gridColumn15.VisibleIndex = 34;
+            this.gridColumn15.Width = 120;
+            // 
+            // gridColumn16
+            // 
+            this.gridColumn16.Caption = "Thời gian hủy";
+            this.gridColumn16.FieldName = "CANCEL_TIME_str";
+            this.gridColumn16.Name = "gridColumn16";
+            this.gridColumn16.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn16.Visible = true;
+            this.gridColumn16.VisibleIndex = 35;
+            this.gridColumn16.Width = 100;
+            // 
             // frmTransactionList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2771,5 +2804,8 @@ namespace HIS.Desktop.Plugins.TransactionList
         private DevExpress.XtraEditors.TextEdit txtTransactionCode;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem24;
         private DevExpress.XtraBars.BarButtonItem bbtnCodeTransaction;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn14;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn15;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn16;
     }
 }
