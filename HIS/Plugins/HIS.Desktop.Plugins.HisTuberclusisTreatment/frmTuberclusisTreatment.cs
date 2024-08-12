@@ -313,6 +313,7 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
                 if (success)
                 {
                     BackendDataWorker.Reset<HIS_TUBERCULOSIS_TREAT>();
+                    btnDel.Enabled = true;
                 }
 
                 WaitingManager.Hide();

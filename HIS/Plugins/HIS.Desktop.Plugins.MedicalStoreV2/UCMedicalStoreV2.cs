@@ -1771,10 +1771,9 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                         }
                         else if (e.Column.FieldName == "REJECT_STORE_REASON_STR")
                         {
-                            if (data.APPROVAL_STORE_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT.APPROVAL_STORE_STT_ID__TU_CHOI)
-                            {
-                                e.Value = data.REJECT_STORE_REASON;
-                            }
+                            
+                            e.Value = data.REJECT_STORE_REASON;
+                            
                         }
                         else if (e.Column.FieldName == "CLINICAL_IN_TIME_STR")
                         {
