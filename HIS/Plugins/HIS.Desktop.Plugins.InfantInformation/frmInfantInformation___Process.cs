@@ -216,6 +216,23 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     currentDTO.IssuerUsername = null;
                 }
 
+                if (txtDirectorLoginname.Text != null && txtDirectorLoginname.Text != "")
+                {
+                    currentDTO.DirectorLoginname = txtDirectorLoginname.Text;
+                }
+                else
+                {
+                    currentDTO.DirectorLoginname = null;
+                }
+                if (cboDirectorUsername.EditValue != null && cboDirectorUsername.EditValue.ToString() != "")
+                {
+                    currentDTO.DirectorUsername = cboDirectorUsername.EditValue.ToString();
+                }
+                else
+                {
+                    currentDTO.DirectorUsername = null;
+                }
+
 
                 currentDTO.IdentityNumber = txtCMT.Text;
 
