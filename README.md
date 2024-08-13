@@ -10,7 +10,7 @@
 - [HIS](https://github.com/Vietsens/hisnguonmo/tree/Develop/HIS) source code HIS main project và các tính năng nghiệp vụ(plugin).  
 - [MPS](https://github.com/Vietsens/hisnguonmo/tree/Develop/MPS) source code các tính năng in ấn.  
 - [UC](https://github.com/Vietsens/hisnguonmo/tree/Develop/UC) source code các thành phần giao diện dùng chung, được nhúng trong các plugin.  
-
+- [Lib](https://github.com/Vietsens/lib) Cá thư viện mở sử dụng trong dự án.  
 
 
 ## Yêu cầu môi trường
@@ -28,18 +28,36 @@
 
 ## Clone source code
 
-- Clone source code	từ git
-  > Tạo folder HISNGUONMO và chạy lệnh bên dưới để clone về máy
+- Clone source code	từ git: mở windows powershell và thực hiện chạy các lệnh sau
+  > Tạo sẵn folder HISNGUONMO để lưu source code tải về và chạy lệnh bên dưới để clone về máy
   ```shell	
 	git clone https://github.com/Vietsens/hisnguonmo.git
 	  $ script build
   ```  	
 	
-  > Tạo folder LIB và chạy lệnh bên dưới để clone về máy
+  > Tạo sẵn folder LIB để lưu bộ thư viện tải về và chạy các lệnh sau để clone các thư viện mở phiên bản tương thích về máy. Hoặc có thể vào trực tiếp các trang cung cấp thư viện nguồn mở nhưng lưu ý tính tương thich của phiên bản sử dụng với mã nguồn
 	```shell	
 	git clone https://github.com/Vietsens/lib.git
 	  $ script build
 	```  
+  
+  > Tải các thư viện mở rộng về lưu trong folder LIB ở trên
+	```shell	
+		$zipUrl = "http://fsstest.onelink.vn/Upload/HIS/HisNguonMo/lib_extend.zip"
+		$zipPath = "G:\HISNGMOGITHUB\lib\lib_extend.zip"
+		$extractPath = "G:\HISNGMOGITHUB\lib"
+
+		# Tải file zip
+		Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath
+
+		# Giải nén file zip
+		Expand-Archive -Path $zipPath -DestinationPath $extractPath
+		
+		# Xóa file zip sau khi giải nén
+		Remove-Item -Path $zipPath
+	  $ script build
+	```    
+  
   
 - Sau khi clone các git cần thiết về tổ chức folder theo cây folder như sau:
 
@@ -108,10 +126,13 @@
 	
 ## Kênh liên lạc
 
-- Mailing lists: inventec.vietsens@gmail.com
-	
+- Mailing lists: hisnguonmo@googlegroups.com
+- Cách tham gia kênh https://support.google.com/groups/answer/1067205
+
+## Issues
+
+- Các vấn đề liên quan đến sản phẩm vui lòng phản hồi tại [đây](https://github.com/Vietsens/hisnguonmo/issues)
 	
 ## Tham khảo
 
-- Build và tổ chức folder sau khi build: https://docs.google.com/document/d/1pH4kG4GTyQZkT12sCan25hZuzfyXzIsp/edit?usp=drive_link&ouid=100318684171831156204&rtpof=true&sd=true
-- Tạo project plugin: https://docs.google.com/document/d/1exLo2zBCBG6u2YSK9LK00ggYSsFr-nNN/edit?usp=sharing&ouid=100318684171831156204&rtpof=true&sd=true
+[Tài liệu tham khảo](https://github.com/Vietsens/hisnguonmo/wiki)
