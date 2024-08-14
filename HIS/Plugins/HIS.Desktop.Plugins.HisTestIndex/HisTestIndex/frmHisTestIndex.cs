@@ -2279,5 +2279,22 @@ namespace HIS.Desktop.Plugins.HisTestIndex
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void cboTestIndexUnit_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if(e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboTestIndexUnit.EditValue = null;
+                    cboTestIndexUnit.Text = "";
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }

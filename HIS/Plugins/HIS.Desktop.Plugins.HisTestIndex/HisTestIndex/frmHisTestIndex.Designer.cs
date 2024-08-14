@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.HisTestIndex
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -67,17 +66,13 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl7 = new DevExpress.XtraLayout.LayoutControl();
             this.cboTestServiceType = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnEdit = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnAdd = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnReset = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnFocusDefault = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.btnImport = new DevExpress.XtraEditors.SimpleButton();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
@@ -206,9 +201,13 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController(this.components);
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
             this.layoutControl4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl7)).BeginInit();
@@ -356,10 +355,6 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnSearch,
@@ -423,34 +418,6 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.bbtnFocusDefault.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F2);
             this.bbtnFocusDefault.Name = "bbtnFocusDefault";
             this.bbtnFocusDefault.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnFocusDefault_ItemClick);
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1236, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 585);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1236, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 556);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1236, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 556);
             // 
             // gridView1
             // 
@@ -1119,7 +1086,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             // 
             this.txtResultsGroupO.Enabled = false;
             this.txtResultsGroupO.Location = new System.Drawing.Point(112, 457);
-            this.txtResultsGroupO.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtResultsGroupO.Margin = new System.Windows.Forms.Padding(2);
             this.txtResultsGroupO.MenuManager = this.barManager1;
             this.txtResultsGroupO.Name = "txtResultsGroupO";
             this.txtResultsGroupO.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1133,7 +1100,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             // 
             this.txtResultsRHMinus.Enabled = false;
             this.txtResultsRHMinus.Location = new System.Drawing.Point(112, 529);
-            this.txtResultsRHMinus.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtResultsRHMinus.Margin = new System.Windows.Forms.Padding(2);
             this.txtResultsRHMinus.MenuManager = this.barManager1;
             this.txtResultsRHMinus.Name = "txtResultsRHMinus";
             this.txtResultsRHMinus.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1147,7 +1114,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             // 
             this.txtResultsRHPlus.Enabled = false;
             this.txtResultsRHPlus.Location = new System.Drawing.Point(112, 505);
-            this.txtResultsRHPlus.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtResultsRHPlus.Margin = new System.Windows.Forms.Padding(2);
             this.txtResultsRHPlus.MenuManager = this.barManager1;
             this.txtResultsRHPlus.Name = "txtResultsRHPlus";
             this.txtResultsRHPlus.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1161,7 +1128,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             // 
             this.txtResultsGroupAB.Enabled = false;
             this.txtResultsGroupAB.Location = new System.Drawing.Point(112, 433);
-            this.txtResultsGroupAB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtResultsGroupAB.Margin = new System.Windows.Forms.Padding(2);
             this.txtResultsGroupAB.MenuManager = this.barManager1;
             this.txtResultsGroupAB.Name = "txtResultsGroupAB";
             this.txtResultsGroupAB.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1175,7 +1142,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             // 
             this.txtResultsGroupB.Enabled = false;
             this.txtResultsGroupB.Location = new System.Drawing.Point(112, 409);
-            this.txtResultsGroupB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtResultsGroupB.Margin = new System.Windows.Forms.Padding(2);
             this.txtResultsGroupB.MenuManager = this.barManager1;
             this.txtResultsGroupB.Name = "txtResultsGroupB";
             this.txtResultsGroupB.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1189,7 +1156,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             // 
             this.txtResultsGroupA.Enabled = false;
             this.txtResultsGroupA.Location = new System.Drawing.Point(112, 385);
-            this.txtResultsGroupA.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtResultsGroupA.Margin = new System.Windows.Forms.Padding(2);
             this.txtResultsGroupA.MenuManager = this.barManager1;
             this.txtResultsGroupA.Name = "txtResultsGroupA";
             this.txtResultsGroupA.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1204,7 +1171,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.txtMLCT.EditValue = "";
             this.txtMLCT.Enabled = false;
             this.txtMLCT.Location = new System.Drawing.Point(274, 337);
-            this.txtMLCT.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtMLCT.Margin = new System.Windows.Forms.Padding(2);
             this.txtMLCT.MenuManager = this.barManager1;
             this.txtMLCT.Name = "txtMLCT";
             this.txtMLCT.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1480,12 +1447,14 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.cboTestIndexUnit.MenuManager = this.barManager1;
             this.cboTestIndexUnit.Name = "cboTestIndexUnit";
             this.cboTestIndexUnit.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboTestIndexUnit.Properties.NullText = "";
             this.cboTestIndexUnit.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboTestIndexUnit.Size = new System.Drawing.Size(246, 20);
             this.cboTestIndexUnit.StyleController = this.lcEditorInfo;
             this.cboTestIndexUnit.TabIndex = 29;
+            this.cboTestIndexUnit.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboTestIndexUnit_ButtonClick);
             this.cboTestIndexUnit.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboDepartment_KeyUp);
             // 
             // btnEdit
@@ -2052,6 +2021,34 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlItem5.Size = new System.Drawing.Size(855, 591);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1236, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 585);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1236, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 556);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1236, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 556);
             // 
             // dxValidationProviderEditorInfo
             // 
