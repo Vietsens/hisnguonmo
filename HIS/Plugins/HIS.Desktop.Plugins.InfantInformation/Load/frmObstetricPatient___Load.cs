@@ -400,11 +400,20 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     {
                         txtDirectorLoginname.Text = data.DIRECTOR_LOGINNAME;
                     }
+                    else
+                    {
+                        txtDirectorLoginname.Text = "";
+                    }
                     if (!String.IsNullOrEmpty(data.DIRECTOR_USERNAME))
                     {
                         //cboUserGCS.EditValue = data.ISSUER_LOGINNAME;
                         txtDirectorLoginname.Text = data.DIRECTOR_LOGINNAME;
                         cboDirectorUsername.EditValue = data.DIRECTOR_USERNAME;
+                    }
+                    else
+                    {
+                        txtDirectorLoginname.Text = "";
+                        cboDirectorUsername.EditValue = null;
                     }
                     if (data.ISSUED_DATE != null)
                         dteIssue.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.ISSUED_DATE ?? 0) ?? DateTime.Now;
