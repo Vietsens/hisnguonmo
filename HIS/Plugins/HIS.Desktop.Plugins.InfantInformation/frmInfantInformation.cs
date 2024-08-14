@@ -4155,8 +4155,8 @@ namespace HIS.Desktop.Plugins.InfantInformation
         private void cboDirectorUsername_Closed(object sender, ClosedEventArgs e)
         {
              cboDirectorUsername.Properties.DataSource = null;
-             var cboDirectorUser = BackendDataWorker.Get<HIS_BRANCH>().Where(o => o.DIRECTOR_USERNAME != null && o.DIRECTOR_LOGINNAME != null).ToList();
-             cboDirectorUsername.Properties.DataSource = cboDirectorUser;
+             //var cboDirectorUser = BackendDataWorker.Get<HIS_BRANCH>().Where(o => o.DIRECTOR_USERNAME != null && o.DIRECTOR_LOGINNAME != null).ToList();
+             cboDirectorUsername.Properties.DataSource = hisBranch;
             try
             {
                 if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
