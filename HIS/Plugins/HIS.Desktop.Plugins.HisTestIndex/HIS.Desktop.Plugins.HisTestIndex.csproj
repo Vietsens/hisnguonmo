@@ -165,7 +165,6 @@
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="Validate1.cs" />
     <Compile Include="ValidMaxlength.cs" />
-    <Compile Include="ValidMaxlengthText.cs" />
     <Compile Include="ValidTextEditMaxLenght.cs" />
     <EmbeddedResource Include="HisTestIndex\frmHisTestIndex.resx">
       <DependentUpon>frmHisTestIndex.cs</DependentUpon>

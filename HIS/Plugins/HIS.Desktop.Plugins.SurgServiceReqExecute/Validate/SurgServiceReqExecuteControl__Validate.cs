@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -82,7 +82,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private void ValidationGridLookUpWithTextEdit(GridLookUpEdit cboLoaiPT, TextEdit txtLoaiPT)
         {
             try
