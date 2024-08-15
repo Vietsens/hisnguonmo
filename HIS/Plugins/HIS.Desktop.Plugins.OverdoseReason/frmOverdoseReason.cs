@@ -603,6 +603,21 @@ namespace HIS.Desktop.Plugins.OverdoseReason
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void txtSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    FillDataToGrid();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
        
         #endregion
 
@@ -764,26 +779,6 @@ namespace HIS.Desktop.Plugins.OverdoseReason
 
         #endregion
 
-       
 
-     
-       
-
-       
-
-
-      
-      
-
-
-     
-       
-
-        
-
-       
-      
-
-       
     }
 }
