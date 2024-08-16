@@ -199,7 +199,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                                     {
                                         amount += item.Sum(s => s.PRICE);
                                     }
-
+                                    if (amount == 0)
+                                        continue;
                                     V_HIS_SERVICE service = services != null ? services.FirstOrDefault(o => o.ID == item.First().TDL_SERVICE_ID) : null;
                                     ProductBase product1 = new ProductBase();
                                     product1.ProdName = item.First().TDL_SERVICE_NAME;
@@ -235,7 +236,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                                 {
                                     product.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(sereServs.Sum(o => o.PRICE));
                                 }
-
+                                if (product.Amount == 0)
+                                    continue;
                                 decimal ratio = (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(DataInput.LastPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, DataInput.LastPatientTypeAlter.HEIN_CARD_NUMBER, DataInput.LastPatientTypeAlter.LEVEL_CODE, DataInput.LastPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100;
 
                                 string display = "";
@@ -305,15 +307,17 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                         {
                             amount = sereServsTotal.Sum(s => s.PRICE);
                         }
-
-                        ProductBase product = new ProductBase();
-                        product.ProdName = "Dịch vụ khác";
-                        product.ProdUnit = "Lần";
-                        product.ProdCode = "DVK";
-                        product.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(amount);
-                        product.Type = sereServsTotal.Count() == sereServsTotal.Count(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC) ? 1 : 0;
-                        product.Stt = long.MaxValue;
-                        result.Add(product);
+                        if (amount != 0)
+                        {
+                            ProductBase product = new ProductBase();
+                            product.ProdName = "Dịch vụ khác";
+                            product.ProdUnit = "Lần";
+                            product.ProdCode = "DVK";
+                            product.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(amount);
+                            product.Type = sereServsTotal.Count() == sereServsTotal.Count(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC) ? 1 : 0;
+                            product.Stt = long.MaxValue;
+                            result.Add(product);
+                        }
                     }
                 }
                 else
