@@ -47,22 +47,22 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Popup
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDieuChinhLieu));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
@@ -493,7 +493,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Popup
             // 
             this.repositoryItemButtonDelete.AutoHeight = false;
             this.repositoryItemButtonDelete.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonDelete.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonDelete.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
             this.repositoryItemButtonDelete.Name = "repositoryItemButtonDelete";
             this.repositoryItemButtonDelete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonDelete.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonDelete_ButtonClick);
@@ -560,7 +560,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Popup
             this.txtValueServiceFrom.Size = new System.Drawing.Size(147, 20);
             this.txtValueServiceFrom.StyleController = this.layoutControl3;
             this.txtValueServiceFrom.TabIndex = 5;
-            this.txtValueServiceFrom.ToolTip = "Chỉ số chức năng thận lớn hơn hoặc bằng giá trị khai báo";
             this.txtValueServiceFrom.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtValueServiceFrom_KeyDown);
             // 
             // txtValueServiceTo
@@ -575,7 +574,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Popup
             this.txtValueServiceTo.Size = new System.Drawing.Size(183, 20);
             this.txtValueServiceTo.StyleController = this.layoutControl3;
             this.txtValueServiceTo.TabIndex = 6;
-            this.txtValueServiceTo.ToolTip = "Chỉ số chức năng thận nhỏ hơn giá trị được cấu hình";
             this.txtValueServiceTo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtValueServiceTo_KeyDown);
             // 
             // txtAmountIndayFrom
@@ -590,7 +588,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Popup
             this.txtAmountIndayFrom.Size = new System.Drawing.Size(147, 20);
             this.txtAmountIndayFrom.StyleController = this.layoutControl3;
             this.txtAmountIndayFrom.TabIndex = 7;
-            this.txtAmountIndayFrom.ToolTip = "Tổng số lượng thuốc đã kê trong ngày lớn hơn giá trị khai báo";
             this.txtAmountIndayFrom.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAmountIndayFrom_KeyDown);
             // 
             // txtAmountIndayTo
@@ -605,7 +602,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Popup
             this.txtAmountIndayTo.Size = new System.Drawing.Size(183, 20);
             this.txtAmountIndayTo.StyleController = this.layoutControl3;
             this.txtAmountIndayTo.TabIndex = 8;
-            this.txtAmountIndayTo.ToolTip = "Tổng số lượng thuốc đã kê trong ngày nhỏ hơn hoặc bằng giá trị khai báo";
             this.txtAmountIndayTo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAmountIndayTo_KeyDown);
             // 
             // cboService
@@ -617,7 +613,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Popup
             this.cboService.Properties.AutoComplete = false;
             this.cboService.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
             this.cboService.Properties.NullText = "";
             this.cboService.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboService.Properties.View = this.customGridLookUpEditWithFilterMultiColumn1View;
@@ -734,6 +730,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Popup
             this.layoutControlItem10.Control = this.txtValueServiceFrom;
             this.layoutControlItem10.Location = new System.Drawing.Point(0, 96);
             this.layoutControlItem10.Name = "layoutControlItem10";
+            this.layoutControlItem10.OptionsToolTip.ToolTip = "Chỉ số chức năng thận lớn hơn hoặc bằng giá trị khai báo";
             this.layoutControlItem10.Size = new System.Drawing.Size(326, 24);
             this.layoutControlItem10.Text = "Chỉ số chức năng thận từ:";
             this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -747,6 +744,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Popup
             this.layoutControlItem11.Control = this.txtValueServiceTo;
             this.layoutControlItem11.Location = new System.Drawing.Point(326, 96);
             this.layoutControlItem11.Name = "layoutControlItem11";
+            this.layoutControlItem11.OptionsToolTip.ToolTip = "Chỉ số chức năng thận nhỏ hơn giá trị được cấu hình";
             this.layoutControlItem11.Size = new System.Drawing.Size(242, 24);
             this.layoutControlItem11.Text = "Đến:";
             this.layoutControlItem11.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -760,6 +758,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Popup
             this.layoutControlItem12.Control = this.txtAmountIndayFrom;
             this.layoutControlItem12.Location = new System.Drawing.Point(0, 120);
             this.layoutControlItem12.Name = "layoutControlItem12";
+            this.layoutControlItem12.OptionsToolTip.ToolTip = "Tổng số lượng thuốc đã kê trong ngày lớn hơn giá trị khai báo";
             this.layoutControlItem12.Size = new System.Drawing.Size(326, 24);
             this.layoutControlItem12.Text = "Số lượng thuốc kê trong ngày:";
             this.layoutControlItem12.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -773,6 +772,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Popup
             this.layoutControlItem13.Control = this.txtAmountIndayTo;
             this.layoutControlItem13.Location = new System.Drawing.Point(326, 120);
             this.layoutControlItem13.Name = "layoutControlItem13";
+            this.layoutControlItem13.OptionsToolTip.ToolTip = "Tổng số lượng thuốc đã kê trong ngày nhỏ hơn hoặc bằng giá trị khai báo";
             this.layoutControlItem13.Size = new System.Drawing.Size(242, 24);
             this.layoutControlItem13.Text = "Đến:";
             this.layoutControlItem13.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -964,7 +964,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Popup
             // 
             this.repositoryItemButtonDelete2.AutoHeight = false;
             this.repositoryItemButtonDelete2.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonDelete2.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonDelete2.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.repositoryItemButtonDelete2.Name = "repositoryItemButtonDelete2";
             this.repositoryItemButtonDelete2.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonDelete2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonDelete2_ButtonClick);
@@ -1114,7 +1114,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Popup
             this.cboService2.Properties.AutoComplete = false;
             this.cboService2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, true)});
             this.cboService2.Properties.NullText = "";
             this.cboService2.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboService2.Properties.View = this.customGridViewWithFilterMultiColumn2;
