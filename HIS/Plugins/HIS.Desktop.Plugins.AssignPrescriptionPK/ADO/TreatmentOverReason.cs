@@ -27,5 +27,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
     {
         public long treatmentId { get; set; }
         public string overReason { get; set; }
+        public long overReasonId { get; set; }
     }
 }
