@@ -1685,6 +1685,11 @@ namespace HIS.Desktop.Plugins.BloodTransfusion
 
         private void gridViewExpMestBlood_Click(object sender, EventArgs e)
         {
+           
+        }
+
+        private void GridViewExpMestBlood_RowCellClick(object sender, DevExpress.XtraGrid.Views.Grid.RowCellClickEventArgs e)
+        {
             try
             {
                 btnPrint.Enabled = false;

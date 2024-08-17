@@ -1044,8 +1044,9 @@ listTL, lstSereServResult, DelegateSuccess);
             {
                 HisPatientProfileSDO dataPatientProfile = new HisPatientProfileSDO();
                 dataPatientProfile.HisPatientTypeAlter = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE_ALTER();
-                //Đồng bộ dữ liệu thay đổi từ uchein sang đối tượng dữ liệu phục vụ làm đầu vào cho gọi api
-                this.uCMainHein.UpdateDataFormIntoPatientTypeAlter(this.ucHein__BHYT, dataPatientProfile);
+                if (uCMainHein != null)
+                    //Đồng bộ dữ liệu thay đổi từ uchein sang đối tượng dữ liệu phục vụ làm đầu vào cho gọi api
+                    this.uCMainHein.UpdateDataFormIntoPatientTypeAlter(this.ucHein__BHYT, dataPatientProfile);
                 if (this.cboPatientType.EditValue != null && Inventec.Common.TypeConvert.Parse.ToInt64((this.cboPatientType.EditValue ?? "0").ToString()) == HisConfigCFG.PatientTypeId__BHYT)
                 {
                     if (dataPatientProfile != null && !string.IsNullOrEmpty(dataPatientProfile.HisPatientTypeAlter.HEIN_MEDI_ORG_CODE))
@@ -2562,7 +2563,7 @@ listTL, lstSereServResult, DelegateSuccess);
                                         heinCardData = null;
                                         mess = ResourceMessage.TheSaiNgaySinhGov070;
                                     }
-                                    else if(string.IsNullOrEmpty(patientSDO.COMMUNE_CODE) || string.IsNullOrEmpty(patientSDO.DISTRICT_CODE) || string.IsNullOrEmpty(patientSDO.PROVINCE_CODE))
+                                    else if (string.IsNullOrEmpty(patientSDO.COMMUNE_CODE) || string.IsNullOrEmpty(patientSDO.DISTRICT_CODE) || string.IsNullOrEmpty(patientSDO.PROVINCE_CODE))
                                     {
                                         heinCardData = null;
                                         mess = "Bệnh nhân thiếu thông tin địa chỉ";
@@ -2580,7 +2581,8 @@ listTL, lstSereServResult, DelegateSuccess);
                                     }
                                 }
                             }
-                            if (heinCardData != null && string.IsNullOrEmpty(mess))                            {
+                            if (heinCardData != null && string.IsNullOrEmpty(mess))
+                            {
                                 if (!IsCccd)
                                     this.ProcessQrCodeData(heinCardData);
                                 HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);

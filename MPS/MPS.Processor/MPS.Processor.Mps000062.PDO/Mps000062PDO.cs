@@ -59,7 +59,7 @@ namespace MPS.Processor.Mps000062.PDO
         public List<V_HIS_EXP_MEST_BLTY_REQ_2> _ExpMestBltyReq2 { get; set; }
         public List<V_HIS_SERVICE> _HisServiceViews { get; set; }
         public List<V_HIS_IMP_MEST_BLOOD> _ImpMestBlood_TL { get; set; }
-    
+        public HIS_PATIENT_TYPE_ALTER PatientTypeAlter { get; set; }
         #region -------------
         //public Mps000062PDO(
         //    HIS_TREATMENT _treatment,
@@ -145,11 +145,13 @@ namespace MPS.Processor.Mps000062.PDO
             List<V_HIS_IMP_MEST_MATERIAL> ImpMestMaterial_TL,
             List<V_HIS_EXP_MEST_BLTY_REQ_2> ExpMestBltyReq2,
             List<V_HIS_SERVICE> HisServiceViews,
-            List<V_HIS_IMP_MEST_BLOOD> _ImpMestBlood_TL
+            List<V_HIS_IMP_MEST_BLOOD> _ImpMestBlood_TL, 
+            HIS_PATIENT_TYPE_ALTER PatientTypeAlter
            )
         {
             try
             {
+                this.PatientTypeAlter = PatientTypeAlter;
                 this._Treatment = _treatment;
                 this._TreatmentBedRooms = _treatmentBedRooms;
                 this._Trackings = _trackings;

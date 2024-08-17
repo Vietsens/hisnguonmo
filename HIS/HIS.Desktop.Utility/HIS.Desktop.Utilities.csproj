@@ -369,10 +369,6 @@
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Plugins\HIS.Desktop.Plugins.HisTutorial\HIS.Desktop.Plugins.HisTutorial.csproj">
-      <Project>{f22facd5-3da1-4f80-bb8e-dc83a0ab5cdb}</Project>
-      <Name>HIS.Desktop.Plugins.HisTutorial</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FormBase.resx">
