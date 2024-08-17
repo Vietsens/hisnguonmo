@@ -1,3 +1,10 @@
+### Release 2.324.0
+* Bổ sung thông tin cho api kết nối xét nghiệm
+* Sửa chức năng cảnh báo liều theo chức năng chạy thận
+* Hiển thị thông tin lý do từ chối bệnh án
+* Thêm cấu hình bắt buộc nhập kết luận ở màn hình xử lý PTTT
+* Sửa lỗi QR thanh toán hồ sơ
+
 ### Release 2.323.0
 * Bổ sung mã quốc gia khi nhập khẩu đoàn khám sức khỏe
 * Bổ sung phân quyền tìm kiếm hồ sơ toàn viện
