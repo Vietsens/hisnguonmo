@@ -2653,6 +2653,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     .ThenByDescending(p => p.NUM_ORDER).ToList();
                 }
                 this.ProcessAutoSelectMachine(lstLisResultADOs);
+                int stt = 1;
+                lstLisResultADOs.ForEach(o => o.STT = o.IS_PARENT == 1 ? (int?)stt++ : null);
                 // treeList
                 records = new BindingList<TestLisResultADO>(lstLisResultADOs);
                 this.treeListSereServTein.RefreshDataSource();
