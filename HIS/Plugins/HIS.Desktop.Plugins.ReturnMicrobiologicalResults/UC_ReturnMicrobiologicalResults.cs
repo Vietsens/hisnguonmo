@@ -334,7 +334,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
         #endregion
         bool CheckEmployIsAdmin()
         {
-            bool result = false;
+            bool result = false; 
             try
             {
                 if (currentEmployee == null)

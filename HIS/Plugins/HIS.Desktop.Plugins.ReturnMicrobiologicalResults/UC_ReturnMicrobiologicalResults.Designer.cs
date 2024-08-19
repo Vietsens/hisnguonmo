@@ -307,6 +307,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnBarCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn40 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -366,7 +367,6 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.gridColumn40 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtTreatmentCode.Properties)).BeginInit();
@@ -1968,6 +1968,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn14});
             this.gridViewSample.GridControl = this.gridControlSample;
             this.gridViewSample.Name = "gridViewSample";
+            this.gridViewSample.OptionsBehavior.EditorShowMode = DevExpress.Utils.EditorShowMode.MouseDownFocused;
             this.gridViewSample.OptionsView.ColumnAutoWidth = false;
             this.gridViewSample.OptionsView.ShowGroupPanel = false;
             this.gridViewSample.OptionsView.ShowIndicator = false;
@@ -2146,6 +2147,16 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn8.Visible = true;
             this.gridColumn8.VisibleIndex = 11;
             this.gridColumn8.Width = 150;
+            // 
+            // gridColumn40
+            // 
+            this.gridColumn40.Caption = "Mã điều trị";
+            this.gridColumn40.FieldName = "TREATMENT_CODE";
+            this.gridColumn40.Name = "gridColumn40";
+            this.gridColumn40.OptionsColumn.ReadOnly = true;
+            this.gridColumn40.Visible = true;
+            this.gridColumn40.VisibleIndex = 12;
+            this.gridColumn40.Width = 90;
             // 
             // gridColumn15
             // 
@@ -2724,16 +2735,6 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             // timer2
             // 
             this.timer2.Interval = 1000;
-            // 
-            // gridColumn40
-            // 
-            this.gridColumn40.Caption = "Mã điều trị";
-            this.gridColumn40.FieldName = "TREATMENT_CODE";
-            this.gridColumn40.Name = "gridColumn40";
-            this.gridColumn40.OptionsColumn.ReadOnly = true;
-            this.gridColumn40.Visible = true;
-            this.gridColumn40.VisibleIndex = 12;
-            this.gridColumn40.Width = 90;
             // 
             // UC_ReturnMicrobiologicalResults
             // 
