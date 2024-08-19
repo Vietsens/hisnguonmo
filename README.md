@@ -10,7 +10,7 @@
 - [HIS](https://github.com/Vietsens/hisnguonmo/tree/Develop/HIS) source code HIS main project và các tính năng nghiệp vụ(plugin).  
 - [MPS](https://github.com/Vietsens/hisnguonmo/tree/Develop/MPS) source code các tính năng in ấn.  
 - [UC](https://github.com/Vietsens/hisnguonmo/tree/Develop/UC) source code các thành phần giao diện dùng chung, được nhúng trong các plugin.  
-- [Lib](https://github.com/Vietsens/libshare) Cá thư viện mở sử dụng trong dự án.  
+- [LibShare](https://github.com/Vietsens/libshare) Cá thư viện mở sử dụng trong dự án.  
 
 
 ## Yêu cầu môi trường
