@@ -152,10 +152,6 @@
     <Compile Include="Utils\CallModule.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\COMMON\DESKTOP\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.csproj">
-      <Project>{72b4c86a-7b66-43d4-a535-6653c76aebe9}</Project>
-      <Name>Inventec.Desktop.Common.Message</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>

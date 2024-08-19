@@ -73,5 +73,6 @@ namespace MPS.Processor.Mps000062.PDO
         public const string BED_NAME = "BED_NAME";
         public const string BED_ROOM_CODE = "BED_ROOM_CODE";
         public const string BED_ROOM_NAME = "BED_ROOM_NAME";
+        public const string HEIN_CARD_ADDRESS = "HEIN_CARD_ADDRESS";
     }
 }

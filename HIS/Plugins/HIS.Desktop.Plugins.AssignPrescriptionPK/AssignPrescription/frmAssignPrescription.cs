@@ -1978,26 +1978,28 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         }
                         if (medicineService != null && medicineService.Count > 0)
                         {
-                            frmOverReason frm = new frmOverReason(String.Join(",", medicineService.Select(o => o.WARNING_CONTENT)), "bổ sung", (o) =>
+                            frmOverReason frm = new frmOverReason(medicineService, "bổ sung", (o) =>
                               {
                                   if (mediMatyType.dicTreatmentOverResultTestReason == null)
                                       mediMatyType.dicTreatmentOverResultTestReason = new Dictionary<long, List<TreatmentOverReason>>();
                                   if (!mediMatyType.dicTreatmentOverResultTestReason.ContainsKey(InstructionTime))
-                                      mediMatyType.dicTreatmentOverResultTestReason[InstructionTime] = new List<TreatmentOverReason>() { new TreatmentOverReason() { overReason = o, treatmentId = this.treatmentId } };
-                                  mediMatyType.OVER_RESULT_TEST_REASON = o;
+                                      mediMatyType.dicTreatmentOverResultTestReason[InstructionTime] = new List<TreatmentOverReason>() { o };
+                                  mediMatyType.OVER_RESULT_TEST_REASON = o.overReason;
+                                  mediMatyType.OVER_REASON_ID = o.overReasonId;
                                   mediMatyType.IsEditOverResultTestReason = true;
                               }, (o) =>
                              {
                                  mediMatyType.IsNoPrescription = false;
                                  result = o;
-                             }, mediMatyType.OVER_RESULT_TEST_REASON, IsUpdateGrid);
+                             }, mediMatyType, IsUpdateGrid, false, treatmentId);
                             frm.ShowDialog();
                         }
                         else
                         {
                             mediMatyType.dicTreatmentOverResultTestReason = new Dictionary<long, List<TreatmentOverReason>>();
                             mediMatyType.OVER_RESULT_TEST_REASON = null;
-                            mediMatyType.IsEditOverResultTestReason = false;
+                            mediMatyType.OVER_REASON_ID = null;
+                           mediMatyType.IsEditOverResultTestReason = false;
                         }
                     }
                     #endregion
@@ -2013,7 +2015,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 this.medicineService = this.medicineService.Where(o => o.DATA_TYPE == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__EGFR).ToList();
 
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.medicineService.Where(o => o.TEST_INDEX_ID == ssTein.TEST_INDEX_ID).Where(o => o.DATA_TYPE != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__SERVICE)), this.medicineService.Where(o => o.TEST_INDEX_ID == ssTein.TEST_INDEX_ID).Where(o => o.DATA_TYPE != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__SERVICE)));
-                            var medicineServiceCheck = this.medicineService.Where(o => o.TEST_INDEX_ID == ssTein.TEST_INDEX_ID).Where(o => o.DATA_TYPE != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__SERVICE).Where(o => (o.VALUE_SERVICE_FROM ?? decimal.MinValue) <= GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(ssTein.VALUE), dhst) && GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(ssTein.VALUE), dhst) < (o.VALUE_SERVICE_TO ?? decimal.MaxValue) && (o.AMOUNT_INDAY_FROM ?? decimal.MinValue) < ((IsGrid ? mediMatyType.AMOUNT : GetAmount()) + AmountInDay) && ((IsGrid ? mediMatyType.AMOUNT : GetAmount()) + AmountInDay) <= (o.AMOUNT_INDAY_TO ?? decimal.MaxValue)).ToList();
+                            var medicineServiceCheck = this.medicineService.Where(o => o.TEST_INDEX_ID == ssTein.TEST_INDEX_ID).Where(o => o.DATA_TYPE != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__SERVICE).Where(o => (o.VALUE_SERVICE_FROM ?? decimal.MinValue) <= GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(ssTein.VALUE), dhst) && GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(ssTein.VALUE), dhst) < (o.VALUE_SERVICE_TO ?? decimal.MaxValue) && (o.AMOUNT_INDAY_FROM ?? 0) < ((IsGrid ? mediMatyType.AMOUNT : GetAmount()) + AmountInDay) && ((IsGrid ? mediMatyType.AMOUNT : GetAmount()) + AmountInDay) <= (o.AMOUNT_INDAY_TO ?? decimal.MaxValue)).ToList();
                             if (medicineServiceCheck != null && medicineServiceCheck.Count > 0)
                             {
                                 medicineService.AddRange(medicineServiceCheck);
@@ -2021,25 +2023,28 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         }
                         if (medicineService != null && medicineService.Count > 0)
                         {
-                            frmOverReason frm = new frmOverReason(String.Join(",", medicineService.Select(o => o.WARNING_CONTENT)), string.Format("kê thuốc {0}", mediMatyType.MEDICINE_TYPE_NAME), (o) =>
+                            var minOverDose = medicineService.OrderBy(o => o.AMOUNT_INDAY_FROM ?? 0).ThenByDescending(o=>o.ID);
+                            frmOverReason frm = new frmOverReason(medicineService, string.Format("kê thuốc {0}", mediMatyType.MEDICINE_TYPE_NAME), (o) =>
                             {
                                 if (mediMatyType.dicTreatmentOverKidneyReason == null)
                                     mediMatyType.dicTreatmentOverKidneyReason = new Dictionary<long, List<TreatmentOverReason>>();
                                 if (!mediMatyType.dicTreatmentOverKidneyReason.ContainsKey(InstructionTime))
-                                    mediMatyType.dicTreatmentOverKidneyReason[InstructionTime] = new List<TreatmentOverReason>() { new TreatmentOverReason() { overReason = o, treatmentId = this.treatmentId } };
-                                mediMatyType.OVER_KIDNEY_REASON = o;
+                                    mediMatyType.dicTreatmentOverKidneyReason[InstructionTime] = new List<TreatmentOverReason>() { o };
+                                mediMatyType.OVER_KIDNEY_REASON = o.overReason;
+                                mediMatyType.OVER_REASON_ID = o.overReasonId;
                                 mediMatyType.IsEditOverKidneyReason = true;
                             }, (o) =>
                             {
                                 mediMatyType.IsNoPrescription = false;
                                 result = o;
-                            }, mediMatyType.OVER_KIDNEY_REASON, IsUpdateGrid);
+                            }, mediMatyType, IsUpdateGrid, true, treatmentId, minOverDose.Select(o => GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(lstSereServTein.FirstOrDefault(p => p.TEST_INDEX_ID == o.TEST_INDEX_ID).VALUE), dhst)).Min(), minOverDose.FirstOrDefault(), AmountInDay);
                             frm.ShowDialog();
                         }
                         else
                         {
                             mediMatyType.dicTreatmentOverKidneyReason = new Dictionary<long, List<TreatmentOverReason>>();
                             mediMatyType.OVER_KIDNEY_REASON = null;
+                            mediMatyType.OVER_REASON_ID = null;
                             mediMatyType.IsEditOverKidneyReason = false;
                         }
                     }
@@ -2181,7 +2186,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                         List<HIS_MEDICINE_SERVICE> medicine = new List<HIS_MEDICINE_SERVICE>();
                                         foreach (var ssTein in lstSereServTein)
                                         {
-                                            var medicineCheck = mediSer.Where(o => ssTein.TEST_INDEX_ID == o.TEST_INDEX_ID).Where(o => (o.VALUE_SERVICE_FROM ?? decimal.MinValue) <= ConvertToDecimal(ssTein.VALUE) && ConvertToDecimal(ssTein.VALUE) < (o.VALUE_SERVICE_TO ?? decimal.MaxValue) && (o.AMOUNT_INDAY_FROM ?? decimal.MinValue) < (medi.AMOUNT + AmountInDay) && (medi.AMOUNT + AmountInDay) <= (o.AMOUNT_INDAY_TO ?? decimal.MaxValue)).ToList();
+                                            var medicineCheck = mediSer.Where(o => ssTein.TEST_INDEX_ID == o.TEST_INDEX_ID).Where(o => (o.VALUE_SERVICE_FROM ?? decimal.MinValue) <= ConvertToDecimal(ssTein.VALUE) && ConvertToDecimal(ssTein.VALUE) < (o.VALUE_SERVICE_TO ?? decimal.MaxValue) && (o.AMOUNT_INDAY_FROM ?? 0) < (medi.AMOUNT + AmountInDay) && (medi.AMOUNT + AmountInDay) <= (o.AMOUNT_INDAY_TO ?? decimal.MaxValue)).ToList();
                                             if (medicineCheck != null && medicineCheck.Count > 0)
                                                 medicine.AddRange(medicineCheck);
                                         }
@@ -2189,19 +2194,20 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                         {
                                             if (IsShowPopup)
                                             {
-                                                frmOverReason frm = new frmOverReason(String.Join(",", medicine.Select(o => o.WARNING_CONTENT)), string.Format("kê thuốc {0}", medi.MEDICINE_TYPE_NAME), (o) =>
+                                                var minOverDose = medicine.OrderBy(o => o.AMOUNT_INDAY_FROM ?? 0).ThenByDescending(o => o.ID);
+                                                frmOverReason frm = new frmOverReason(medicine, string.Format("kê thuốc {0}", medi.MEDICINE_TYPE_NAME), (o) =>
                                                 {
                                                     if (!medi.dicTreatmentOverResultTestReason.ContainsKey(itime))
-                                                        medi.dicTreatmentOverResultTestReason[itime] = new List<TreatmentOverReason>() { new TreatmentOverReason() { treatmentId = treatId, overReason = o } };
+                                                        medi.dicTreatmentOverResultTestReason[itime] = new List<TreatmentOverReason>() {o};
                                                     else
-                                                        medi.dicTreatmentOverResultTestReason[itime].Add(new TreatmentOverReason() { treatmentId = treatId, overReason = o });
+                                                        medi.dicTreatmentOverResultTestReason[itime].Add(o);
                                                 }, (o) =>
                                                 {
                                                     if (!o)
                                                         medi.IsNoPrescription = true;
                                                     else
                                                         medi.IsNoPrescription = false;
-                                                }, medi.OVER_RESULT_TEST_REASON, false);
+                                                }, medi, false, false, treatmentId, minOverDose.Select(o => GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(lstSereServTein.FirstOrDefault(p => p.TEST_INDEX_ID == o.TEST_INDEX_ID).VALUE), dhst)).Min(), minOverDose.FirstOrDefault(), AmountInDay);
                                                 frm.ShowDialog();
                                             }
                                             else
@@ -2212,6 +2218,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                         else
                                         {
                                             medi.OVER_RESULT_TEST_REASON = null;
+                                            medi.OVER_REASON_ID = null;
                                         }
                                     }
 
@@ -2276,7 +2283,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                             var medicineCheck = mediSer.Where(o => ssTein.TEST_INDEX_ID == o.TEST_INDEX_ID).ToList();
                                             if (dhst == null || dhst.ID == 0)
                                                 medicineCheck = medicineCheck.Where(o => o.DATA_TYPE == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__EGFR).ToList();
-                                            medicineCheck = medicineCheck.Where(o => (o.VALUE_SERVICE_FROM ?? decimal.MinValue) <= GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(ssTein.VALUE), dhst) && GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(ssTein.VALUE), dhst) < (o.VALUE_SERVICE_TO ?? decimal.MaxValue) && (o.AMOUNT_INDAY_FROM ?? decimal.MinValue) < (medi.AMOUNT + AmountInDay) && (medi.AMOUNT + AmountInDay) <= (o.AMOUNT_INDAY_TO ?? decimal.MaxValue)).ToList();
+                                            medicineCheck = medicineCheck.Where(o => (o.VALUE_SERVICE_FROM ?? decimal.MinValue) <= GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(ssTein.VALUE), dhst) && GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(ssTein.VALUE), dhst) < (o.VALUE_SERVICE_TO ?? decimal.MaxValue) && (o.AMOUNT_INDAY_FROM ?? 0) < (medi.AMOUNT + AmountInDay) && (medi.AMOUNT + AmountInDay) <= (o.AMOUNT_INDAY_TO ?? decimal.MaxValue)).ToList();
                                             if (medicineCheck != null && medicineCheck.Count > 0)
                                                 medicine.AddRange(medicineCheck);
                                         }
@@ -2285,19 +2292,20 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                         {
                                             if (IsShowPopup)
                                             {
-                                                frmOverReason frm = new frmOverReason(String.Join(",", medicine.Select(o => o.WARNING_CONTENT)), string.Format("kê thuốc {0}", medi.MEDICINE_TYPE_NAME), (o) =>
+                                                var minOverDose = medicine.OrderBy(o => o.AMOUNT_INDAY_FROM ?? 0).ThenByDescending(o => o.ID);
+                                                frmOverReason frm = new frmOverReason(medicine, string.Format("kê thuốc {0}", medi.MEDICINE_TYPE_NAME), (o) =>
                                                 {
                                                     if (!medi.dicTreatmentOverKidneyReason.ContainsKey(itime))
-                                                        medi.dicTreatmentOverKidneyReason[itime] = new List<TreatmentOverReason>() { new TreatmentOverReason() { treatmentId = treatId, overReason = o } };
+                                                        medi.dicTreatmentOverKidneyReason[itime] = new List<TreatmentOverReason>() { o };
                                                     else
-                                                        medi.dicTreatmentOverKidneyReason[itime].Add(new TreatmentOverReason() { treatmentId = treatId, overReason = o });
+                                                        medi.dicTreatmentOverKidneyReason[itime].Add(o);
                                                 }, (o) =>
                                                 {
                                                     if (!o)
                                                         medi.IsNoPrescription = true;
                                                     else
                                                         medi.IsNoPrescription = false;
-                                                }, medi.OVER_KIDNEY_REASON, false);
+                                                }, medi, false, true, treatmentId, minOverDose.Select(o => GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(lstSereServTein.FirstOrDefault(p => p.TEST_INDEX_ID == o.TEST_INDEX_ID).VALUE), dhst)).Min(), minOverDose.FirstOrDefault(), AmountInDay);
                                                 frm.ShowDialog();
                                             }
                                             else
@@ -2308,6 +2316,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                         else
                                         {
                                             medi.OVER_KIDNEY_REASON = null;
+                                            medi.OVER_REASON_ID = null;
                                         }
                                     }
                                 }
@@ -8270,7 +8279,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 {
                     string strIcdSubText = "";
 
-                  txtIcdText.Refresh();
+                    txtIcdText.Refresh();
                     if (txtIcdText.Text.LastIndexOf(";") > -1)
                     {
                         strIcdSubText = txtIcdText.Text.Substring(txtIcdText.Text.LastIndexOf(";")).Replace(";", "");

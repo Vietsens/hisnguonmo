@@ -34,6 +34,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest.ADO
         {
             Inventec.Common.Mapper.DataObjectMapper.Map<TestLisResultADO>(this, data);
         }
+        public int? STT { get; set; }
         public long IS_PARENT { get; set; }
         public long HAS_ONE_CHILD { get; set; }
         public string VALUE_RANGE { get; set; }
