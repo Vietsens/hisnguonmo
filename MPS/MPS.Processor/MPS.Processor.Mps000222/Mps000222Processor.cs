@@ -217,6 +217,9 @@ namespace MPS.Processor.Mps000222
                                                             exeSereServTein.RESULT_CODE_1 = sereServTein.RESULT_CODE;
                                                             exeSereServTein.INTRUCTION_TIME_1 = sese.TDL_INTRUCTION_TIME;
                                                             exeSereServTein.SERVICE_CODE_1 = sese.TDL_SERVICE_CODE;
+                                                            exeSereServTein.BACTERIUM_NAME = sereServTein.BACTERIUM_NAME;
+                                                            exeSereServTein.ANTIBIOTIC_NAME = sereServTein.ANTIBIOTIC_RESISTANCE_NAME;
+                                                            exeSereServTein.SRI_CODE = sereServTein.SRI_CODE;
                                                             V_HIS_TEST_INDEX_RANGE testIndexRange = new V_HIS_TEST_INDEX_RANGE();
                                                             testIndexRange = GetTestIndexRange(serviceReq.TDL_PATIENT_DOB, serviceReq.TDL_PATIENT_GENDER_ID, sereServTein.TEST_INDEX_ID, rdo.testIndexRange);
                                                             if (testIndexRange != null)
@@ -265,7 +268,9 @@ namespace MPS.Processor.Mps000222
                                                 tein.SERVICE_CODE_2 = exeSeseTein[i + count].SERVICE_CODE_2;
                                                 tein.TEST_INDEX_CODE_2 = exeSeseTein[i + count].TEST_INDEX_CODE_2;
                                             }
-
+                                            tein.BACTERIUM_NAME = exeSeseTein[i].BACTERIUM_NAME;
+                                            tein.ANTIBIOTIC_NAME = exeSeseTein[i].ANTIBIOTIC_RESISTANCE_NAME;
+                                            tein.SRI_CODE = exeSeseTein[i].SRI_CODE;
                                             exeSereServ.Add(tein);
                                         }
                                     }
