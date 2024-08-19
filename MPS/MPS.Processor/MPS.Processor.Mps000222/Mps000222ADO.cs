@@ -57,5 +57,10 @@ namespace MPS.Processor.Mps000222
 
         public decimal? MIN_VALUE { get; set; }
         public decimal? MAX_VALUE { get; set; }
+
+        public string BACTERIUM_NAME { get; set; }
+        public string ANTIBIOTIC_RESISTANCE_NAME { get; set; }
+        public string ANTIBIOTIC_NAME { get; set; }
+        public string SRI_CODE { get; set; }
     }
 }
