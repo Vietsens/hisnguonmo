@@ -7845,6 +7845,21 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (data.ICD_CODE != null) cboIcds.EditValue = currentIcds.FirstOrDefault(o => o.ICD_CODE.Equals(data.ICD_CODE)).ID;
                 txtIcdSubCode.Text = data.ICD_SUB_CODE;
                 if (data.ICD_CAUSE_CODE != null) cboIcdsCause.EditValue = currentIcds.FirstOrDefault(o => o.ICD_CODE.Equals(data.ICD_CAUSE_CODE)).ID;
+                if(data.DHST_ID != null)
+                {
+                    dtExecuteTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.HIS_DHST.EXECUTE_TIME ?? 0) ?? DateTime.Now;
+                    if (data.HIS_DHST.PULSE != null) spinPulse.EditValue = data.HIS_DHST.PULSE;
+                    if (data.HIS_DHST.BLOOD_PRESSURE_MAX != null) spinBloodPressureMax.EditValue = data.HIS_DHST.BLOOD_PRESSURE_MAX;
+                    if (data.HIS_DHST.BLOOD_PRESSURE_MIN != null) spinBloodPressureMin.EditValue = data.HIS_DHST.BLOOD_PRESSURE_MIN;
+                    if (data.HIS_DHST.WEIGHT != null) spinWeight.EditValue = data.HIS_DHST.WEIGHT;
+                    if (data.HIS_DHST.HEIGHT != null) spinHeight.EditValue = data.HIS_DHST.HEIGHT;
+                    if (data.HIS_DHST.SPO2 != null) spinSPO2.EditValue = data.HIS_DHST.SPO2;
+                    if (data.HIS_DHST.TEMPERATURE != null) spinTemperature.EditValue = data.HIS_DHST.TEMPERATURE;
+                    if (data.HIS_DHST.BREATH_RATE != null) spinBreathRate.EditValue = data.HIS_DHST.BREATH_RATE;
+                    if (data.HIS_DHST.CHEST != null) spinChest.EditValue = data.HIS_DHST.CHEST;
+                    if (data.HIS_DHST.BELLY != null) spinBelly.EditValue = data.HIS_DHST.BELLY;
+                    txtNote.Text = data.HIS_DHST.NOTE;
+                }
             }
             catch (Exception ex)
             {
