@@ -41,7 +41,7 @@
 	  $ script build
 	```  
   
-  > Tải các thư viện mở rộng về lưu trong folder LIB ở trên
+  > Tải các thư viện bản build sẵn với phiên bản tương thích về lưu trong folder LIB ở trên máy
 	```shell	
 		$zipUrl = "http://fsstest.onelink.vn/Upload/HIS/HisNguonMo/lib_extend.zip"
 		$zipPath = "G:\HISNGMOGITHUB\lib\lib_extend.zip"
