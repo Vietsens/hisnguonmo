@@ -36,6 +36,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
         public bool IsAddress { get; set; }
         public bool SuccessWithoutMessage { get; set; }
         public bool IsThongTinNguoiDungThayDoiSoVoiCong__Choose { get; set; }
+        public bool IsUsedNewCard { get; set; }
         public ChiTietKCBLDO ChiTietKCBLDO { get; set; }
     }
 }
