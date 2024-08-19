@@ -7790,5 +7790,67 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        HIS_SERVICE_REQ selectedService;
+        private void btnCopy_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                CommonParam parmam = new CommonParam();
+                var row = (TreatmentExamADO)gridViewTreatmentHistory.GetFocusedRow();
+                
+                if(row != null)
+                {
+                    HisServiceReqFilter filter = new HisServiceReqFilter();
+                    filter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH;
+                    filter.TREATMENT_ID = row.ID;
+                    var serviceReq = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("/api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, param);
+                    if (serviceReq != null && serviceReq.Count > 0)
+                    {
+                        selectedService = new HIS_SERVICE_REQ();
+                        if (serviceReq.Count > 1)
+                        {
+                            var sortServiceReq = serviceReq.OrderBy(s => s.EXAM_END_TYPE = 3).ThenBy(o => o.IS_MAIN_EXAM = 1).ThenByDescending(p => p.INTRUCTION_TIME);
+                            selectedService = sortServiceReq.First();
+                        }
+                        else
+                            selectedService = serviceReq.First();
+                    }
+                    else return;
+                    if(selectedService != null)
+                    {
+                        FillDataCopyToControl(selectedService);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void FillDataCopyToControl(HIS_SERVICE_REQ data)
+        {
+            try
+            {
+                txtHospitalizationReason.Text = data.HOSPITALIZATION_REASON;
+                txtPathologicalProcess.Text = data.PATHOLOGICAL_PROCESS;
+                txtPathologicalHistory.Text = data.PATHOLOGICAL_HISTORY;
+                txtPathologicalHistoryFamily.Text = data.PATHOLOGICAL_HISTORY_FAMILY;
+                txtKhamToanThan.Text = data.FULL_EXAM;
+                txtKhamBoPhan.Text = data.PART_EXAM;
+                txtSubclinical.Text = data.SUBCLINICAL;
+                txtTreatmentInstruction.Text = data.TREATMENT_INSTRUCTION;
+                txtProvisionalDianosis.Text = data.PROVISIONAL_DIAGNOSIS;
+                if(data.NEXT_TREATMENT_INSTRUCTION != null) cboNextTreatmentInstructions.EditValue = this.dataNextTreatmentInstructions.FirstOrDefault(o => o.NEXT_TREA_INTR_NAME.Equals(data.NEXT_TREATMENT_INSTRUCTION)).ID;
+                if (data.ICD_CODE != null) cboIcds.EditValue = currentIcds.FirstOrDefault(o => o.ICD_CODE.Equals(data.ICD_CODE)).ID;
+                txtIcdSubCode.Text = data.ICD_SUB_CODE;
+                if (data.ICD_CAUSE_CODE != null) cboIcdsCause.EditValue = currentIcds.FirstOrDefault(o => o.ICD_CODE.Equals(data.ICD_CAUSE_CODE)).ID;
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }
