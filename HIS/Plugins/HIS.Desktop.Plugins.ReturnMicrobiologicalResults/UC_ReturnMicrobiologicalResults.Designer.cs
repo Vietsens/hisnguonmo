@@ -366,6 +366,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.gridColumn40 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtTreatmentCode.Properties)).BeginInit();
@@ -1949,6 +1950,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn6,
             this.gridColumnBarCode,
             this.gridColumn8,
+            this.gridColumn40,
             this.gridColumn15,
             this.gridColumn9,
             this.gridColumn10,
@@ -2119,7 +2121,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn6.FieldName = "SERVICE_REQ_CODE";
             this.gridColumn6.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn6.Name = "gridColumn6";
-            this.gridColumn6.OptionsColumn.AllowEdit = false;
+            this.gridColumn6.OptionsColumn.ReadOnly = true;
             this.gridColumn6.Visible = true;
             this.gridColumn6.VisibleIndex = 9;
             this.gridColumn6.Width = 90;
@@ -2139,7 +2141,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn8.FieldName = "PATIENT_NAME";
             this.gridColumn8.FieldNameSortGroup = "FIRST_NAME";
             this.gridColumn8.Name = "gridColumn8";
-            this.gridColumn8.OptionsColumn.AllowEdit = false;
+            this.gridColumn8.OptionsColumn.ReadOnly = true;
             this.gridColumn8.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn8.Visible = true;
             this.gridColumn8.VisibleIndex = 11;
@@ -2152,7 +2154,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn15.Name = "gridColumn15";
             this.gridColumn15.OptionsColumn.AllowEdit = false;
             this.gridColumn15.Visible = true;
-            this.gridColumn15.VisibleIndex = 12;
+            this.gridColumn15.VisibleIndex = 13;
             this.gridColumn15.Width = 90;
             // 
             // gridColumn9
@@ -2162,7 +2164,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 13;
+            this.gridColumn9.VisibleIndex = 14;
             this.gridColumn9.Width = 120;
             // 
             // gridColumn10
@@ -2175,7 +2177,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn10.SortMode = DevExpress.XtraGrid.ColumnSortMode.DisplayText;
             this.gridColumn10.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 14;
+            this.gridColumn10.VisibleIndex = 15;
             this.gridColumn10.Width = 100;
             // 
             // gridColumn33
@@ -2187,7 +2189,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn33.OptionsColumn.AllowEdit = false;
             this.gridColumn33.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn33.Visible = true;
-            this.gridColumn33.VisibleIndex = 15;
+            this.gridColumn33.VisibleIndex = 16;
             this.gridColumn33.Width = 90;
             // 
             // gridColumn38
@@ -2199,7 +2201,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn38.OptionsColumn.AllowEdit = false;
             this.gridColumn38.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn38.Visible = true;
-            this.gridColumn38.VisibleIndex = 16;
+            this.gridColumn38.VisibleIndex = 17;
             this.gridColumn38.Width = 140;
             // 
             // gridColumn34
@@ -2211,7 +2213,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn34.OptionsColumn.AllowEdit = false;
             this.gridColumn34.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn34.Visible = true;
-            this.gridColumn34.VisibleIndex = 17;
+            this.gridColumn34.VisibleIndex = 18;
             this.gridColumn34.Width = 90;
             // 
             // gridColumn35
@@ -2223,7 +2225,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn35.OptionsColumn.AllowEdit = false;
             this.gridColumn35.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn35.Visible = true;
-            this.gridColumn35.VisibleIndex = 18;
+            this.gridColumn35.VisibleIndex = 19;
             this.gridColumn35.Width = 140;
             // 
             // gridColumn36
@@ -2233,7 +2235,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn36.Name = "gridColumn36";
             this.gridColumn36.OptionsColumn.AllowEdit = false;
             this.gridColumn36.Visible = true;
-            this.gridColumn36.VisibleIndex = 19;
+            this.gridColumn36.VisibleIndex = 20;
             this.gridColumn36.Width = 90;
             // 
             // gridColumn39
@@ -2243,7 +2245,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn39.Name = "gridColumn39";
             this.gridColumn39.OptionsColumn.AllowEdit = false;
             this.gridColumn39.Visible = true;
-            this.gridColumn39.VisibleIndex = 20;
+            this.gridColumn39.VisibleIndex = 21;
             this.gridColumn39.Width = 90;
             // 
             // gridColumn17
@@ -2259,7 +2261,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn17.OptionsColumn.AllowEdit = false;
             this.gridColumn17.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn17.Visible = true;
-            this.gridColumn17.VisibleIndex = 21;
+            this.gridColumn17.VisibleIndex = 22;
             this.gridColumn17.Width = 90;
             // 
             // gridColumnGenderName
@@ -2271,7 +2273,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumnGenderName.OptionsColumn.AllowEdit = false;
             this.gridColumnGenderName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnGenderName.Visible = true;
-            this.gridColumnGenderName.VisibleIndex = 22;
+            this.gridColumnGenderName.VisibleIndex = 23;
             // 
             // gridColumn11
             // 
@@ -2282,7 +2284,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 23;
+            this.gridColumn11.VisibleIndex = 24;
             this.gridColumn11.Width = 140;
             // 
             // gridColumn12
@@ -2292,7 +2294,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn12.Name = "gridColumn12";
             this.gridColumn12.OptionsColumn.AllowEdit = false;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 24;
+            this.gridColumn12.VisibleIndex = 25;
             this.gridColumn12.Width = 100;
             // 
             // gridColumn13
@@ -2304,7 +2306,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 25;
+            this.gridColumn13.VisibleIndex = 26;
             this.gridColumn13.Width = 140;
             // 
             // gridColumn14
@@ -2314,7 +2316,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn14.Name = "gridColumn14";
             this.gridColumn14.OptionsColumn.AllowEdit = false;
             this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 26;
+            this.gridColumn14.VisibleIndex = 27;
             this.gridColumn14.Width = 100;
             // 
             // DuyetE
@@ -2723,6 +2725,16 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             // 
             this.timer2.Interval = 1000;
             // 
+            // gridColumn40
+            // 
+            this.gridColumn40.Caption = "Mã điều trị";
+            this.gridColumn40.FieldName = "TREATMENT_CODE";
+            this.gridColumn40.Name = "gridColumn40";
+            this.gridColumn40.OptionsColumn.ReadOnly = true;
+            this.gridColumn40.Visible = true;
+            this.gridColumn40.VisibleIndex = 12;
+            this.gridColumn40.Width = 90;
+            // 
             // UC_ReturnMicrobiologicalResults
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3068,5 +3080,6 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repUnAppove;
         private DevExpress.XtraEditors.TextEdit txtTreatmentCode;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem23;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn40;
     }
 }
