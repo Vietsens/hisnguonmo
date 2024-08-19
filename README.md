@@ -65,7 +65,7 @@
 	++++++++ HIS  
 	++++++++ UC  
 	++++++++ MPS  
-	++ libshare
+	++ libshare  
 	++ lib  
 	
 ## Build
