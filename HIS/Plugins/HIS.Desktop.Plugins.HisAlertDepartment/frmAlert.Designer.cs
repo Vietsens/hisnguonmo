@@ -144,6 +144,7 @@
             this.txtSearchValue2.Size = new System.Drawing.Size(213, 20);
             this.txtSearchValue2.StyleController = this.layoutControl1;
             this.txtSearchValue2.TabIndex = 13;
+            this.txtSearchValue2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearchValue2_KeyDown);
             // 
             // btnFind2
             // 
@@ -153,6 +154,7 @@
             this.btnFind2.StyleController = this.layoutControl1;
             this.btnFind2.TabIndex = 12;
             this.btnFind2.Text = "Tìm kiếm (Ctrl F)";
+            this.btnFind2.Click += new System.EventHandler(this.btnFind2_Click);
             // 
             // btnFind1
             // 
@@ -162,6 +164,7 @@
             this.btnFind1.StyleController = this.layoutControl1;
             this.btnFind1.TabIndex = 11;
             this.btnFind1.Text = "Tìm kiếm (Ctrl D)";
+            this.btnFind1.Click += new System.EventHandler(this.btnFind1_Click);
             // 
             // txtSearchValue1
             // 
@@ -173,6 +176,7 @@
             this.txtSearchValue1.Size = new System.Drawing.Size(223, 20);
             this.txtSearchValue1.StyleController = this.layoutControl1;
             this.txtSearchValue1.TabIndex = 10;
+            this.txtSearchValue1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearchValue1_KeyDown);
             // 
             // btnSave
             // 
@@ -186,16 +190,16 @@
             // 
             // ucPaging2
             // 
-            this.ucPaging2.Location = new System.Drawing.Point(588, 502);
+            this.ucPaging2.Location = new System.Drawing.Point(588, 505);
             this.ucPaging2.Name = "ucPaging2";
-            this.ucPaging2.Size = new System.Drawing.Size(537, 28);
+            this.ucPaging2.Size = new System.Drawing.Size(537, 25);
             this.ucPaging2.TabIndex = 7;
             // 
             // ucPaging1
             // 
-            this.ucPaging1.Location = new System.Drawing.Point(2, 502);
+            this.ucPaging1.Location = new System.Drawing.Point(2, 505);
             this.ucPaging1.Name = "ucPaging1";
-            this.ucPaging1.Size = new System.Drawing.Size(582, 28);
+            this.ucPaging1.Size = new System.Drawing.Size(582, 25);
             this.ucPaging1.TabIndex = 6;
             // 
             // gridControlDepartmentRecive
@@ -209,7 +213,7 @@
             this.checkReciveAlert,
             this.checkReciveAlertSecurity,
             this.repositoryItemCheckEdit3});
-            this.gridControlDepartmentRecive.Size = new System.Drawing.Size(537, 470);
+            this.gridControlDepartmentRecive.Size = new System.Drawing.Size(537, 473);
             this.gridControlDepartmentRecive.TabIndex = 5;
             this.gridControlDepartmentRecive.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewDepartmentRecive});
@@ -246,6 +250,7 @@
             this.repositoryItemCheckEdit3.Caption = "";
             this.repositoryItemCheckEdit3.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.repositoryItemCheckEdit3.Name = "repositoryItemCheckEdit3";
+            this.repositoryItemCheckEdit3.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEdit3_CheckedChanged);
             // 
             // gridColumn8
             // 
@@ -288,7 +293,9 @@
             // 
             this.gridColumn11.Caption = "Báo động y khoa";
             this.gridColumn11.ColumnEdit = this.checkReciveAlert;
+            this.gridColumn11.FieldName = "CHECK_ALERT";
             this.gridColumn11.Name = "gridColumn11";
+            this.gridColumn11.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn11.Visible = true;
             this.gridColumn11.VisibleIndex = 4;
             this.gridColumn11.Width = 90;
@@ -303,7 +310,9 @@
             // 
             this.gridColumn12.Caption = "Báo động an ninh";
             this.gridColumn12.ColumnEdit = this.checkReciveAlertSecurity;
+            this.gridColumn12.FieldName = "CHECK_SECURITY";
             this.gridColumn12.Name = "gridColumn12";
+            this.gridColumn12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn12.Visible = true;
             this.gridColumn12.VisibleIndex = 5;
             this.gridColumn12.Width = 102;
@@ -332,7 +341,7 @@
             this.CHECK_MANY,
             this.checkAlertSecurity,
             this.repositoryItemCheckEdit2});
-            this.gridControlDepartmentAlert.Size = new System.Drawing.Size(582, 470);
+            this.gridControlDepartmentAlert.Size = new System.Drawing.Size(582, 473);
             this.gridControlDepartmentAlert.TabIndex = 4;
             this.gridControlDepartmentAlert.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewDepartmentAlert});
@@ -352,7 +361,6 @@
             this.gridViewDepartmentAlert.OptionsSelection.MultiSelect = true;
             this.gridViewDepartmentAlert.OptionsSelection.ShowCheckBoxSelectorInColumnHeader = DevExpress.Utils.DefaultBoolean.True;
             this.gridViewDepartmentAlert.OptionsView.ShowGroupPanel = false;
-            this.gridViewDepartmentAlert.CustomDrawColumnHeader += new DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventHandler(this.gridViewDepartmentAlert_CustomDrawColumnHeader);
             this.gridViewDepartmentAlert.CustomDrawCell += new DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventHandler(this.gridViewDepartmentAlert_CustomDrawCell);
             this.gridViewDepartmentAlert.CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridViewDepartmentAlert_CellValueChanged);
             this.gridViewDepartmentAlert.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewDepartmentAlert_CustomUnboundColumnData);
@@ -373,6 +381,7 @@
             this.repositoryItemCheckEdit2.Caption = "";
             this.repositoryItemCheckEdit2.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.repositoryItemCheckEdit2.Name = "repositoryItemCheckEdit2";
+            this.repositoryItemCheckEdit2.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEdit2_CheckedChanged);
             // 
             // gridColumn2
             // 
@@ -424,6 +433,7 @@
             this.gridColumn5.ColumnEdit = this.checkAlert;
             this.gridColumn5.FieldName = "CHECK_ALERT";
             this.gridColumn5.Name = "gridColumn5";
+            this.gridColumn5.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn5.Visible = true;
             this.gridColumn5.VisibleIndex = 4;
             this.gridColumn5.Width = 100;
@@ -440,7 +450,9 @@
             this.gridColumn6.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumn6.Caption = "Báo động an ninh";
             this.gridColumn6.ColumnEdit = this.checkAlertSecurity;
+            this.gridColumn6.FieldName = "CHECK_SECURITY";
             this.gridColumn6.Name = "gridColumn6";
+            this.gridColumn6.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn6.Visible = true;
             this.gridColumn6.VisibleIndex = 5;
             this.gridColumn6.Width = 109;
@@ -508,7 +520,7 @@
             this.layoutControlItem1.Control = this.gridControlDepartmentAlert;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(586, 474);
+            this.layoutControlItem1.Size = new System.Drawing.Size(586, 477);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -517,25 +529,25 @@
             this.layoutControlItem2.Control = this.gridControlDepartmentRecive;
             this.layoutControlItem2.Location = new System.Drawing.Point(586, 26);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(541, 474);
+            this.layoutControlItem2.Size = new System.Drawing.Size(541, 477);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.ucPaging1;
-            this.layoutControlItem3.Location = new System.Drawing.Point(0, 500);
+            this.layoutControlItem3.Location = new System.Drawing.Point(0, 503);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(586, 32);
+            this.layoutControlItem3.Size = new System.Drawing.Size(586, 29);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.ucPaging2;
-            this.layoutControlItem4.Location = new System.Drawing.Point(586, 500);
+            this.layoutControlItem4.Location = new System.Drawing.Point(586, 503);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(541, 32);
+            this.layoutControlItem4.Size = new System.Drawing.Size(541, 29);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
@@ -623,10 +635,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1127, 558);
             this.Controls.Add(this.layoutControl1);
+            this.KeyPreview = true;
             this.Name = "frmAlert";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmAlert";
             this.Load += new System.EventHandler(this.frmAlert_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmAlert_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtSearchValue2.Properties)).EndInit();
