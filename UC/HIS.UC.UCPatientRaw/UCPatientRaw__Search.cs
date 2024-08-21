@@ -216,7 +216,7 @@ namespace HIS.UC.UCPatientRaw
 									HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
 									if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
 										heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-									this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, true, heinAddressOfPatient, this.dlgGetIntructionTime(), isReadQrCode);
+									this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, heinAddressOfPatient, this.dlgGetIntructionTime(), isReadQrCode);
 								}
 								if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
 								{
@@ -227,9 +227,9 @@ namespace HIS.UC.UCPatientRaw
 										if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
 										{
                                             heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
-                                            dataResult.HeinCardData = heinCardDataForCheckGOV;
                                         }
-									}
+                                        dataResult.HeinCardData = heinCardDataForCheckGOV;
+                                    }
 								}
 
 								if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
@@ -323,7 +323,7 @@ namespace HIS.UC.UCPatientRaw
                                 dtIntructionTime = this.dlgGetIntructionTime();
 								if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
 									heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-								this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, true, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode);
+								this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode);
 							}
 
 							if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
@@ -335,9 +335,9 @@ namespace HIS.UC.UCPatientRaw
 									if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
                                     {
                                         heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
-                                        dataResult.HeinCardData = heinCardDataForCheckGOV;
                                     }
-								}
+                                    dataResult.HeinCardData = heinCardDataForCheckGOV;
+                                }
 							}
 						}
 						else
@@ -401,7 +401,7 @@ namespace HIS.UC.UCPatientRaw
                                         dtIntructionTime = this.dlgGetIntructionTime();
 											if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
 												heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-											this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, true, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode);
+											this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode);
 										}
 
 										if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
@@ -413,9 +413,9 @@ namespace HIS.UC.UCPatientRaw
 												if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
                                             {
                                                 heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
-                                                dataResult.HeinCardData = heinCardDataForCheckGOV;
                                             }
-											}
+                                            dataResult.HeinCardData = heinCardDataForCheckGOV;
+                                        }
 										}
 									}
 								}
@@ -587,7 +587,7 @@ namespace HIS.UC.UCPatientRaw
                                     dtIntructionTime = this.dlgGetIntructionTime();
 									if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
 										heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-									this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, true, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode);
+									this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode);
 								}
 
 								if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
@@ -600,9 +600,9 @@ namespace HIS.UC.UCPatientRaw
                                         {
                                             heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
 
-                                            dataResult.HeinCardData = heinCardDataForCheckGOV;
                                         }
-									}
+                                        dataResult.HeinCardData = heinCardDataForCheckGOV;
+                                    }
 								}
 							}
 						}
@@ -670,7 +670,7 @@ namespace HIS.UC.UCPatientRaw
                                 dtIntructionTime = this.dlgGetIntructionTime();
                                 if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
                                     heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-                                this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, true, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode);
+                                this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode);
                             }
 
                             if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
@@ -682,9 +682,8 @@ namespace HIS.UC.UCPatientRaw
                                     if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
                                     {
                                         heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
-
-                                        dataResult.HeinCardData = heinCardDataForCheckGOV;
                                     }
+                                    dataResult.HeinCardData = heinCardDataForCheckGOV;
                                 }
                             }
                         }
@@ -802,7 +801,7 @@ namespace HIS.UC.UCPatientRaw
 					HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
 					if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
 						heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-					this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, true, heinAddressOfPatient, this.dlgGetIntructionTime(), isReadQrCode);
+					this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, heinAddressOfPatient, this.dlgGetIntructionTime(), isReadQrCode);
 				}
 				if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
 				{
@@ -813,9 +812,9 @@ namespace HIS.UC.UCPatientRaw
 						if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
 						{
 							heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
-                            dataResult.HeinCardData = heinCardDataForCheckGOV;
                         }
-					}
+                        dataResult.HeinCardData = heinCardDataForCheckGOV;
+                    }
 				}
 
 				if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))

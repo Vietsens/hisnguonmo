@@ -220,7 +220,7 @@ namespace HIS.UC.UCPatientRaw
                         HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
                         if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
                             heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-                        this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, true, heinAddressOfPatient, dtIntructionTime, isReadQrCode);
+                        this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, heinAddressOfPatient, dtIntructionTime, isReadQrCode);
                     }
                     else if (!this.TD3 && patientTypeId == HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__BHYT && data is CccdCardData)
                     {
@@ -241,9 +241,9 @@ namespace HIS.UC.UCPatientRaw
                             if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
                             {
                                 heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
-
-                                dataResult.HeinCardData = heinCardDataForCheckGOV;
                             }
+
+                            dataResult.HeinCardData = heinCardDataForCheckGOV;
                         }
                         dataHeinCardFromQrCccd = this.ResultDataADO.HeinCardData;
                         if (this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw != null)
