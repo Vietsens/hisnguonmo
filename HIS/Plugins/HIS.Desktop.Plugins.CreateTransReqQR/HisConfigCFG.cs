@@ -40,12 +40,16 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR
 
 
         private const string CONFIG__ShowServiceByRoom = "HIS.Desktop.Plugins.CreateTransReqQR.ShowServiceByRoom";
+        private const string CONFIG_KEY__ShowServiceBhyt = "HIS.Desktop.Plugins.CreateTransReqQR.ShowServiceBhyt";
+
+        internal static bool ShowServiceBhyt;
         internal static string ShowServiceByRoomOption;
 
         internal static void LoadConfig()
         {
             try
             {
+                ShowServiceBhyt = GetValue(CONFIG_KEY__ShowServiceBhyt) == "1";
                 ShowServiceByRoomOption = GetValue(CONFIG__ShowServiceByRoom);
                 PatientTypeCode__BHYT = GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__BHYT);
                 PatientTypeId__BHYT = GetPatientTypeByCode(PatientTypeCode__BHYT).ID;

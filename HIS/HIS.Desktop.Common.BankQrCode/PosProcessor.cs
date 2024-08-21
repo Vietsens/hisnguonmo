@@ -17,11 +17,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace HIS.Desktop.Common.BankQrCode
 {
@@ -41,6 +44,8 @@ namespace HIS.Desktop.Common.BankQrCode
         public SendType typeSend = SendType.QR;
         private string MessageError = null;
         private DelegateSendMessage delegateSend;
+        private bool CheckDataReceived = true;
+        private bool IsDisposePort = false;
         public PosProcessor(string portName, DelegateSendMessage delegateSend)
         {
             this.delegateSend = delegateSend;
@@ -52,10 +57,31 @@ namespace HIS.Desktop.Common.BankQrCode
             this.DataReceived += PosProcessor_DataReceived;
         }
 
+        private async void CheckDeviceActive()
+        {
+            try
+            {
+                await Task.Delay(this.ReadTimeout);
+                await Task.Factory.StartNew(() =>
+                {
+                    if (!CheckDataReceived && delegateSend != null && !IsDisposePort)
+                    {
+                        delegateSend(CheckDataReceived, MessageError = "Không nhận được phản hồi từ thiết bị IPOS. Vui lòng khởi động và kết nối lại tới thiết bị.");
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
         private void PosProcessor_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             try
             {
+                CheckDataReceived = true;
                 Inventec.Common.Logging.LogSystem.Info("Start DataReceived");
                 SerialPort com = sender as SerialPort;
                 int a = com.BytesToRead;
@@ -79,7 +105,11 @@ namespace HIS.Desktop.Common.BankQrCode
             try
             {
                 Inventec.Common.Logging.LogSystem.Info("Start ConnectPort");
+                CheckDataReceived = false;
+                IsDisposePort = false;
+                CheckDeviceActive();
                 this.Open();
+                CheckDataReceived = true;
                 Inventec.Common.Logging.LogSystem.Info("Check ConnectPort");
                 if (this.IsOpen)
                 {
@@ -98,6 +128,11 @@ namespace HIS.Desktop.Common.BankQrCode
                     }
                 }
             }
+            catch (System.UnauthorizedAccessException ex)
+            {
+                Inventec.Common.Logging.LogSystem.Info("Thiết bị đã được kết nối lại");
+                return true;
+            }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
@@ -115,6 +150,7 @@ namespace HIS.Desktop.Common.BankQrCode
                 MessageError = null;
                 if (this.IsOpen)
                 {
+                    CheckDataReceived = false;
                     dataSend = dataSend ?? "";
                     switch (typeSend)
                     {
@@ -128,6 +164,7 @@ namespace HIS.Desktop.Common.BankQrCode
                             break;
                     }
                     this.Write(dataSend);
+                    this.CheckDeviceActive();
                 }
             }
             catch (Exception ex)
@@ -143,8 +180,10 @@ namespace HIS.Desktop.Common.BankQrCode
             {
                 if (this.IsOpen)
                 {
+                    this.IsDisposePort = true;
                     this.Send(null);
                     this.Close();
+                    this.Dispose();
                 }
             }
             catch (Exception ex)
@@ -153,5 +192,53 @@ namespace HIS.Desktop.Common.BankQrCode
             }
 
         }
+    }
+
+    public static class PosStatic
+    {
+        public static PosProcessor Pos { get; set; }
+        public static bool OpenPos(string portName, DelegateSendMessage delegateSend, ref string MessError)
+        {
+            Pos = new PosProcessor(portName, delegateSend);
+            return Pos.ConnectPort(ref MessError);
+        }
+        public static void SendData(string dataSend)
+        {
+            try
+            {
+                if (Pos != null && Pos.IsOpen)
+                {
+                    Pos.Send(dataSend);
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Info("IPOS không được kết nối");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        public static void DisposePort()
+        {
+            try
+            {
+                if (Pos != null && Pos.IsOpen)
+                {
+                    Pos.DisposePort();
+                    Pos = null;
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Info("IPOS không được kết nối");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        public static bool IsOpenPos() { return Pos != null && Pos.IsOpen; }
     }
 }
