@@ -51,6 +51,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
         {
             InitializeComponent();
             this.moduleData = moduleData;
+
         }
 
 
@@ -59,7 +60,9 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
         {
             try
             {
-                
+
+                string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
+                this.Icon = Icon.ExtractAssociatedIcon(iconPath);
                 listDepartmentAlert = new List<DepartmentDTO>();
                 listDepartmentRecive = new List<DepartmentDTO>();
                 listDepartmentSourceAlert = new List<DepartmentDTO>();
@@ -317,8 +320,8 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 if(rs != null)
                 {
                     listAlertDepartment = rs;
-                    if(TYPE == 2 )RefeshDataSelected(rs.Select(s=>s.RECEIVE_DEPARTMENT_ID ?? 0).ToList(),gridViewDepartmentRecive,rs);
-                    else RefeshDataSelected(rs.Select(s => s.DEPARTMENT_ID ?? 0).ToList(), gridViewDepartmentAlert,rs);
+                    if(TYPE == 2 )RefeshDataSelected(rs.Select(s=>s.RECEIVE_DEPARTMENT_ID).ToList(),gridViewDepartmentRecive,rs);
+                    else RefeshDataSelected(rs.Select(s => s.DEPARTMENT_ID).ToList(), gridViewDepartmentAlert,rs);
                 }
                 WaitingManager.Hide();
             }
@@ -341,9 +344,9 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                     {
                         // Đánh dấu IS_CHECK là true nếu ID có trong danh sách
                         control.SetRowCellValue(i, "SELECT_MANY", true);
-                        var de = listDepartment.FirstOrDefault(s => s.RECEIVE_DEPARTMENT_ID == row.ID);
-                        control.SetRowCellValue(i, "CHECK_ALERT", de.IS_MEDICAL == 1 ? true : false);
-                        control.SetRowCellValue(i, "CHECK_SECURITY", de.IS_SECURITY == 1 ? true : false);
+                        var de = listDepartment.FirstOrDefault(s => (TYPE == 2 && s.RECEIVE_DEPARTMENT_ID == row.ID)||(TYPE == 1 && s.DEPARTMENT_ID == row.ID));
+                        control.SetRowCellValue(i, "CHECK_ALERT", de!= null && de.IS_MEDICAL == 1 ? true : false);
+                        control.SetRowCellValue(i, "CHECK_SECURITY",de != null&& de.IS_SECURITY == 1 ? true : false);
 
                         
                         
@@ -374,9 +377,19 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
             {
                 if(cbotype.EditValue != null )
                 {
+                    LogSystem.Debug("_____________Loai:"+ Convert.ToInt64(cbotype.EditValue));
+                    LogSystem.Debug("_____________Loai: _______1 : chon nhieu khoa tao - 1 khoa nhan;______2; chon 1 khoa tao - nhieu khoa nhan ");
+
                     EnableControlSelect(Convert.ToInt64(cbotype.EditValue));
+                    dicIsMedicalAlert.Clear();
+                    dicIsSecurityAlert.Clear();
+                    dicIsMedicalRecive.Clear();
+                    dicIsSecurityRecive.Clear();
+
                     ClearDataSelected(gridViewDepartmentAlert,listDepartmentAlert, checkboxStates);
                     ClearDataSelected(gridViewDepartmentRecive,listDepartmentRecive, checkboxStatesRecive);
+                    TYPE = Convert.ToInt64(cbotype.EditValue);
+                    
                 }
             }
             catch (Exception ex)
@@ -511,7 +524,17 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
 
                     // Cập nhật danh sách các dòng đã chọn
                     UpdateSelectedRows(rowData, isChecked);
+                    // Nếu bỏ chọn SELECT_MANY, tự động bỏ chọn CHECK_ALERT và CHECK_SECURITY
+                    if (!isChecked)
+                    {
+                        dicIsMedicalAlert[rowKey] = false;
+                        dicIsSecurityAlert[rowKey] = false;
 
+                        // Cập nhật lại giá trị của cột CHECK_ALERT và CHECK_SECURITY trên lưới
+                        gridViewDepartmentAlert.SetRowCellValue(e.RowHandle, "CHECK_ALERT", false);
+                        gridViewDepartmentAlert.SetRowCellValue(e.RowHandle, "CHECK_SECURITY", false);
+                        gridControlDepartmentAlert.RefreshDataSource();
+                    }
 
                 }
                 
@@ -519,7 +542,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 {
                     bool isChecked = (bool)e.Value;
                     long rowKey = rowData.ID;
-
+                    
                     // Update the corresponding dictionary based on the column field name
                     if (e.Column.FieldName == "CHECK_ALERT")
                     {
@@ -771,7 +794,16 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
 
                     // Cập nhật danh sách các dòng đã chọn
                     UpdateSelectedRowsRecive(rowData, isChecked);
+                    if (!isChecked)
+                    {
+                        dicIsMedicalAlert[rowKey] = false;
+                        dicIsSecurityAlert[rowKey] = false;
 
+                        // Cập nhật lại giá trị của cột CHECK_ALERT và CHECK_SECURITY trên lưới
+                        gridViewDepartmentRecive.SetRowCellValue(e.RowHandle, "CHECK_ALERT", false);
+                        gridViewDepartmentRecive.SetRowCellValue(e.RowHandle, "CHECK_SECURITY", false);
+                        
+                    }
 
                 }
                 
@@ -1039,8 +1071,8 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                         }
                     }
                 }
-                
-                
+
+                LogSystem.Debug("_________Start save data");
                 ProcessSave(TYPE);
             }
             catch (Exception ex)
@@ -1071,24 +1103,27 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 List<HIS_ALERT_DEPARTMENT> rs = new BackendAdapter(param).Get<List<HIS_ALERT_DEPARTMENT>>("/api/HisAlertDepartment/Get", ApiConsumers.MosConsumer, filter, param);
                 if(rs != null && rs.Count > 0)
                 {
-                    
-                    if(type == 1)
+                    LogSystem.Debug("____________Loai:"+type);
+                    if (type == 1)
                     {
-                        if(rs.Count == listDepartmentAlert.Count)
+                        
+                        if (rs.Count == listDepartmentAlert.Count)
                         {
-                            //update
+                            LogSystem.Debug("Da co du lieu. __Update");
+                            //update//
                             List<HIS_ALERT_DEPARTMENT> listDTO = new List<HIS_ALERT_DEPARTMENT>();
                             foreach (var record in rs)
                             {
                                 var exits = listDepartmentAlert.FirstOrDefault(s => s.ID == record.DEPARTMENT_ID);
-                                record.IS_MEDICAL = dicIsMedicalAlert.ContainsKey(exits.ID) ? (short?)(dicIsMedicalAlert[exits.ID] ? 1 : 0) : null;
-                                record.IS_SECURITY = dicIsSecurityAlert.ContainsKey(exits.ID) ? (short?)(dicIsSecurityAlert[exits.ID] ? 1 : 0) : null;
+                                record.IS_MEDICAL = exits != null && dicIsMedicalAlert.ContainsKey(exits.ID) ? (short?)(dicIsMedicalAlert[exits.ID] ? 1 : 0) : null;
+                                record.IS_SECURITY = exits != null &&  dicIsSecurityAlert.ContainsKey(exits.ID) ? (short?)(dicIsSecurityAlert[exits.ID] ? 1 : 0) : null;
                                 listDTO.Add(record);
                             }
                             Save(listDTO, GlobalVariables.ActionEdit, ref success);
                         }
                         else
                         {
+                            LogSystem.Debug("Da co du lieu. ____Xoa di va them khoa moi duoc chon");
                             List<HIS_ALERT_DEPARTMENT> listDTO = new List<HIS_ALERT_DEPARTMENT>();
                             //clear list roi tao moi
                             bool res = false;
@@ -1112,19 +1147,21 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                     {
                         if (rs.Count == listDepartmentRecive.Count)
                         {
+                            LogSystem.Debug("Da co du lieu. __Update");
                             //update
                             List<HIS_ALERT_DEPARTMENT> listDTO = new List<HIS_ALERT_DEPARTMENT>();
                             foreach (var record in rs)
                             {
                                 var exits = listDepartmentRecive.FirstOrDefault(s => s.ID == record.DEPARTMENT_ID);
-                                record.IS_MEDICAL = dicIsMedicalRecive.ContainsKey(exits.ID) ? (short?)(dicIsMedicalRecive[exits.ID] ? 1 : 0) : null;
-                                record.IS_SECURITY = dicIsSecurityRecive.ContainsKey(exits.ID) ? (short?)(dicIsSecurityRecive[exits.ID] ? 1 : 0) : null;
+                                record.IS_MEDICAL = exits != null && dicIsMedicalRecive.ContainsKey(exits.ID) ? (short?)(dicIsMedicalRecive[exits.ID] ? 1 : 0) : null;
+                                record.IS_SECURITY = exits != null && dicIsSecurityRecive.ContainsKey(exits.ID) ? (short?)(dicIsSecurityRecive[exits.ID] ? 1 : 0) : null;
                                 listDTO.Add(record);
                             }
                             Save(listDTO, GlobalVariables.ActionEdit, ref success);
                         }
                         else
                         {
+                            LogSystem.Debug("Da co du lieu. ____Xoa di va them khoa moi duoc chon");
                             List<HIS_ALERT_DEPARTMENT> listDTO = new List<HIS_ALERT_DEPARTMENT>();
                             //clear list roi tao moi
                             bool res = false;
@@ -1149,6 +1186,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 }
                 else
                 {
+                    LogSystem.Debug("Chua co du lieu.______Them moi");
                     List<HIS_ALERT_DEPARTMENT> listDTO = new List<HIS_ALERT_DEPARTMENT>();
                     if (type == 1)
                     {
