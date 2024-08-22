@@ -621,13 +621,13 @@
     <value>CĐ phụ:</value>
   </data>
   <data name="ExamServiceReqExecuteControl.lciIcdText.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Chẩn đoán ban đầu</value>
+    <value>Chẩn đoán chính</value>
   </data>
   <data name="ExamServiceReqExecuteControl.lciIcdText.Text" xml:space="preserve">
     <value>CĐ chính:</value>
   </data>
   <data name="ExamServiceReqExecuteControl.lciIcdTextCause.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Chẩn đoán chính</value>
+    <value>Nguyên nhân ngoài</value>
   </data>
   <data name="ExamServiceReqExecuteControl.lciIcdTextCause.Text" xml:space="preserve">
     <value>Ng/nhân ngoài:</value>
@@ -651,7 +651,7 @@
     <value>MLCT:</value>
   </data>
   <data name="ExamServiceReqExecuteControl.lciNextTreatmentInstructionText.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Chẩn đoán chính</value>
+    <value>Hướng điều trị</value>
   </data>
   <data name="ExamServiceReqExecuteControl.lciNextTreatmentInstructionText.Text" xml:space="preserve">
     <value>Hướng điều trị:</value>

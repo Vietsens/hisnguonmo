@@ -7832,6 +7832,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
+                spinNgayThuCuaBenh.EditValue = data.SICK_DAY;
+                cboPatientCase.EditValue = data.PATIENT_CASE_ID;
                 txtHospitalizationReason.Text = data.HOSPITALIZATION_REASON;
                 txtPathologicalProcess.Text = data.PATHOLOGICAL_PROCESS;
                 txtPathologicalHistory.Text = data.PATHOLOGICAL_HISTORY;
