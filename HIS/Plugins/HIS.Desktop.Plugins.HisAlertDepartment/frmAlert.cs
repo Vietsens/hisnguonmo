@@ -27,6 +27,7 @@ using System.Resources;
 using Inventec.Desktop.Common.LanguageManager;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.HisAlertDepartment.Model;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 
 namespace HIS.Desktop.Plugins.HisAlertDepartment
 {
@@ -733,8 +734,8 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
             
             try
             {
-                RepositoryItemCheckEdit checkEdit = (RepositoryItemCheckEdit)gridViewDepartmentAlert.Columns[key].ColumnEdit;
-                if (checkEdit.ReadOnly == false) return false;
+                RepositoryItemCheckEdit checkEdit = (RepositoryItemCheckEdit)control.Columns[key].ColumnEdit;
+                if (checkEdit.ReadOnly == true) return false;
             }
             catch (Exception ex)
             {
@@ -1307,6 +1308,276 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
             {
 
                 LogSystem.Warn(ex);
+            }
+        }
+        bool isHeaderCheckBoxChecked = false;
+        bool isHeaderCheckBoxCheckedAlert = false;
+        bool isHeaderCheckBoxCheckedSecurity = false;
+        private void gridViewDepartmentAlert_CustomDrawColumnHeader(object sender, ColumnHeaderCustomDrawEventArgs e)
+        {
+            try
+            {
+                if (e.Column != null && e.Column.FieldName == "SELECT_MANY") // Thay YourColumnName bằng tên cột của bạn
+                {
+                    
+                    e.Info.InnerElements.Clear(); // Xóa các phần tử hiện tại trong tiêu đề
+                    e.Painter.DrawObject(e.Info); // Vẽ tiêu đề mà không có nội dung
+
+                    // Tạo một ô vuông để chứa checkbox
+                    Rectangle rect = e.Bounds;
+                    rect.Inflate(-1, -1);
+
+                    // Tạo và cấu hình CheckEditViewInfo
+                    CheckEditViewInfo checkInfo = new CheckEditViewInfo(new RepositoryItemCheckEdit());
+                    checkInfo.EditValue = isHeaderCheckBoxChecked;
+                    checkInfo.Bounds = rect;
+                    checkInfo.CalcViewInfo(e.Graphics);
+
+                    // Sử dụng CheckEditPainter để vẽ checkbox
+                    CheckEditPainter painter = new CheckEditPainter();
+                    ControlGraphicsInfoArgs args = new ControlGraphicsInfoArgs(checkInfo, e.Cache, rect);
+                    painter.Draw(args);
+                    
+                    e.Handled = true; // Ngăn việc vẽ tiêu đề mặc định
+                }
+                if(e.Column != null && e.Column.FieldName == "CHECK_ALERT")
+                {
+                    e.Info.InnerElements.Clear();
+                    e.Info.Caption = "";
+                    e.Painter.DrawObject(e.Info);
+                    // Tạo một ô vuông để chứa checkbox
+                    Rectangle checkBoxRect = e.Bounds;
+                    checkBoxRect.Width = 15; // Đặt chiều rộng của vùng để checkbox
+
+                    // Tạo và cấu hình CheckEditViewInfo cho checkbox
+                    CheckEditViewInfo checkInfo = new CheckEditViewInfo(new RepositoryItemCheckEdit());
+                    checkInfo.EditValue = isHeaderCheckBoxCheckedAlert;
+                    checkInfo.Bounds = checkBoxRect;
+                    checkInfo.CalcViewInfo(e.Graphics);
+
+                    // Sử dụng CheckEditPainter để vẽ checkbox
+                    CheckEditPainter painter = new CheckEditPainter();
+                    ControlGraphicsInfoArgs args = new ControlGraphicsInfoArgs(checkInfo, e.Cache, checkBoxRect);
+                    painter.Draw(args);
+
+                    // Điều chỉnh vùng vẽ của tiêu đề để vẽ nội dung còn lại
+                    Rectangle textRect = e.Bounds;
+                    textRect.X += checkBoxRect.Width; // Đẩy text sang phải sau checkbox
+
+                    e.Appearance.DrawString(e.Cache, "Báo động y khoa", textRect); // Vẽ nội dung tiêu đề cột
+                    e.Handled = true; // Ngăn việc vẽ tiêu đề mặc định
+                }
+                if (e.Column != null && e.Column.FieldName == "CHECK_SECURITY")
+                {
+                    e.Info.InnerElements.Clear();
+                    e.Info.Caption = "";
+                    e.Painter.DrawObject(e.Info);
+                    // Tạo một ô vuông để chứa checkbox
+                    Rectangle checkBoxRect = e.Bounds;
+                    checkBoxRect.Width = 15; // Đặt chiều rộng của vùng để checkbox
+
+                    // Tạo và cấu hình CheckEditViewInfo cho checkbox
+                    CheckEditViewInfo checkInfo = new CheckEditViewInfo(new RepositoryItemCheckEdit());
+                    checkInfo.EditValue = isHeaderCheckBoxCheckedSecurity;
+                    checkInfo.Bounds = checkBoxRect;
+                    checkInfo.CalcViewInfo(e.Graphics);
+
+                    // Sử dụng CheckEditPainter để vẽ checkbox
+                    CheckEditPainter painter = new CheckEditPainter();
+                    ControlGraphicsInfoArgs args = new ControlGraphicsInfoArgs(checkInfo, e.Cache, checkBoxRect);
+                    painter.Draw(args);
+
+                    // Điều chỉnh vùng vẽ của tiêu đề để vẽ nội dung còn lại
+                    Rectangle textRect = e.Bounds;
+                    textRect.X += checkBoxRect.Width; // Đẩy text sang phải sau checkbox
+
+                    e.Appearance.DrawString(e.Cache, "Báo động an ninh", textRect); // Vẽ nội dung tiêu đề cột
+                    
+                    e.Handled = true; // Ngăn việc vẽ tiêu đề mặc định
+                }
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewDepartmentAlert_MouseDown(object sender, MouseEventArgs e)
+        {
+            GridView view = sender as GridView;
+            GridHitInfo info = view.CalcHitInfo(e.Location);
+            if (info.InColumn && info.Column.FieldName == "SELECT_MANY") // Thay YourColumnName bằng tên cột của bạn
+            {
+                if (!CheckEnable(gridViewDepartmentAlert, "SELECT_MANY")) return;
+                isHeaderCheckBoxChecked = !isHeaderCheckBoxChecked;
+
+                for (int i = 0; i < view.RowCount; i++)
+                {
+                    view.SetRowCellValue(i, view.Columns["SELECT_MANY"], isHeaderCheckBoxChecked);
+                }
+
+                view.Invalidate(); // Yêu cầu GridView vẽ lại để cập nhật checkbox ở tiêu đề
+            }
+            if (info.InColumn && info.Column.FieldName == "CHECK_ALERT") // Thay YourColumnName bằng tên cột của bạn
+            {
+                //if (!CheckEnable(gridViewDepartmentAlert, "SELECT_MANY")) return;
+                isHeaderCheckBoxCheckedAlert = !isHeaderCheckBoxCheckedAlert;
+
+                for (int i = 0; i < view.RowCount; i++)
+                {
+                    view.SetRowCellValue(i, view.Columns["CHECK_ALERT"], isHeaderCheckBoxCheckedAlert);
+                }
+
+                view.Invalidate(); // Yêu cầu GridView vẽ lại để cập nhật checkbox ở tiêu đề
+            }
+            if (info.InColumn && info.Column.FieldName == "CHECK_SECURITY") // Thay YourColumnName bằng tên cột của bạn
+            {
+                //if (!CheckEnable(gridViewDepartmentAlert, "SELECT_MANY")) return;
+                isHeaderCheckBoxCheckedSecurity = !isHeaderCheckBoxCheckedSecurity;
+
+                for (int i = 0; i < view.RowCount; i++)
+                {
+                    view.SetRowCellValue(i, view.Columns["CHECK_SECURITY"], isHeaderCheckBoxCheckedSecurity);
+                }
+
+                view.Invalidate(); // Yêu cầu GridView vẽ lại để cập nhật checkbox ở tiêu đề
+            }
+        }
+        bool isHeaderCheckBoxCheckedRecive = false;
+        bool isHeaderCheckBoxCheckedAlertRecive = false;
+        bool isHeaderCheckBoxCheckedSecurityRecive = false;
+        private void gridViewDepartmentRecive_CustomDrawColumnHeader(object sender, ColumnHeaderCustomDrawEventArgs e)
+        {
+            try
+            {
+                if (e.Column != null && e.Column.FieldName == "SELECT_MANY") // Thay YourColumnName bằng tên cột của bạn
+                {
+
+                    e.Info.InnerElements.Clear(); // Xóa các phần tử hiện tại trong tiêu đề
+                    e.Painter.DrawObject(e.Info); // Vẽ tiêu đề mà không có nội dung
+
+                    // Tạo một ô vuông để chứa checkbox
+                    Rectangle rect = e.Bounds;
+                    rect.Inflate(-1, -1);
+
+                    // Tạo và cấu hình CheckEditViewInfo
+                    CheckEditViewInfo checkInfo = new CheckEditViewInfo(new RepositoryItemCheckEdit());
+                    checkInfo.EditValue = isHeaderCheckBoxCheckedRecive;
+                    checkInfo.Bounds = rect;
+                    checkInfo.CalcViewInfo(e.Graphics);
+
+                    // Sử dụng CheckEditPainter để vẽ checkbox
+                    CheckEditPainter painter = new CheckEditPainter();
+                    ControlGraphicsInfoArgs args = new ControlGraphicsInfoArgs(checkInfo, e.Cache, rect);
+                    painter.Draw(args);
+
+                    e.Handled = true; // Ngăn việc vẽ tiêu đề mặc định
+                }
+                if (e.Column != null && e.Column.FieldName == "CHECK_ALERT")
+                {
+                    e.Info.InnerElements.Clear();
+                    e.Info.Caption = "";
+                    e.Painter.DrawObject(e.Info);
+                    // Tạo một ô vuông để chứa checkbox
+                    Rectangle checkBoxRect = e.Bounds;
+                    checkBoxRect.Width = 15; // Đặt chiều rộng của vùng để checkbox
+
+                    // Tạo và cấu hình CheckEditViewInfo cho checkbox
+                    CheckEditViewInfo checkInfo = new CheckEditViewInfo(new RepositoryItemCheckEdit());
+                    checkInfo.EditValue = isHeaderCheckBoxCheckedAlertRecive;
+                    checkInfo.Bounds = checkBoxRect;
+                    checkInfo.CalcViewInfo(e.Graphics);
+
+                    // Sử dụng CheckEditPainter để vẽ checkbox
+                    CheckEditPainter painter = new CheckEditPainter();
+                    ControlGraphicsInfoArgs args = new ControlGraphicsInfoArgs(checkInfo, e.Cache, checkBoxRect);
+                    painter.Draw(args);
+
+                    // Điều chỉnh vùng vẽ của tiêu đề để vẽ nội dung còn lại
+                    Rectangle textRect = e.Bounds;
+                    textRect.X += checkBoxRect.Width; // Đẩy text sang phải sau checkbox
+
+                    e.Appearance.DrawString(e.Cache, "Báo động y khoa", textRect); // Vẽ nội dung tiêu đề cột
+                    e.Handled = true; // Ngăn việc vẽ tiêu đề mặc định
+                }
+                if (e.Column != null && e.Column.FieldName == "CHECK_SECURITY")
+                {
+                    //
+                    e.Info.InnerElements.Clear();
+                    e.Info.Caption = "";
+                    e.Painter.DrawObject(e.Info);
+                    // Tạo một ô chữ nhật để chứa checkbox
+                    Rectangle checkBoxRect = new Rectangle(e.Bounds.X + 5, e.Bounds.Y + 5, 15, 15); // Vị trí và kích thước checkbox
+
+                    // Tạo và cấu hình CheckEditViewInfo cho checkbox
+                    CheckEditViewInfo checkInfo = new CheckEditViewInfo(new RepositoryItemCheckEdit());
+                    checkInfo.EditValue = isHeaderCheckBoxCheckedSecurityRecive;
+                    checkInfo.Bounds = checkBoxRect;
+                    checkInfo.CalcViewInfo(e.Graphics);
+
+                    // Vẽ checkbox
+                    CheckEditPainter painter = new CheckEditPainter();
+                    ControlGraphicsInfoArgs args = new ControlGraphicsInfoArgs(checkInfo, e.Cache, checkBoxRect);
+                    painter.Draw(args);
+
+                    // Tạo vùng cho text
+                    Rectangle textRect = new Rectangle(checkBoxRect.Right + 5, e.Bounds.Y, e.Bounds.Width - checkBoxRect.Width - 10, e.Bounds.Height);
+
+                    // Vẽ nội dung tiêu đề (text) từ biến caption
+                    string caption = "Báo động an ninh";
+                    e.Appearance.DrawString(e.Cache, caption, textRect);
+
+                    // Ngăn việc vẽ tiêu đề mặc định thêm lần nữa
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewDepartmentRecive_MouseDown(object sender, MouseEventArgs e)
+        {
+            GridView view = sender as GridView;
+            GridHitInfo info = view.CalcHitInfo(e.Location);
+            if (info.InColumn && info.Column.FieldName == "SELECT_MANY") // Thay YourColumnName bằng tên cột của bạn
+            {
+                if (!CheckEnable(gridViewDepartmentRecive, "SELECT_MANY")) return;
+                isHeaderCheckBoxCheckedRecive = !isHeaderCheckBoxCheckedRecive;
+
+                for (int i = 0; i < view.RowCount; i++)
+                {
+                    view.SetRowCellValue(i, view.Columns["SELECT_MANY"], isHeaderCheckBoxCheckedRecive);
+                }
+
+                view.Invalidate(); // Yêu cầu GridView vẽ lại để cập nhật checkbox ở tiêu đề
+            }
+            if (info.InColumn && info.Column.FieldName == "CHECK_ALERT") // Thay YourColumnName bằng tên cột của bạn
+            {
+                //if (!CheckEnable(gridViewDepartmentAlert, "SELECT_MANY")) return;
+                isHeaderCheckBoxCheckedAlertRecive = !isHeaderCheckBoxCheckedAlertRecive;
+
+                for (int i = 0; i < view.RowCount; i++)
+                {
+                    view.SetRowCellValue(i, view.Columns["CHECK_ALERT"], isHeaderCheckBoxCheckedAlertRecive);
+                }
+
+                view.Invalidate(); // Yêu cầu GridView vẽ lại để cập nhật checkbox ở tiêu đề
+            }
+            if (info.InColumn && info.Column.FieldName == "CHECK_SECURITY") // Thay YourColumnName bằng tên cột của bạn
+            {
+                //if (!CheckEnable(gridViewDepartmentAlert, "SELECT_MANY")) return;
+                isHeaderCheckBoxCheckedSecurityRecive = !isHeaderCheckBoxCheckedSecurityRecive;
+
+                for (int i = 0; i < view.RowCount; i++)
+                {
+                    view.SetRowCellValue(i, view.Columns["CHECK_SECURITY"], isHeaderCheckBoxCheckedSecurityRecive);
+                }
+
+                view.Invalidate(); // Yêu cầu GridView vẽ lại để cập nhật checkbox ở tiêu đề
             }
         }
     }

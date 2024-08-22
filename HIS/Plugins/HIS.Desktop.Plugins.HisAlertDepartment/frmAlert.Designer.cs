@@ -141,6 +141,7 @@
             this.txtSearchValue2.Name = "txtSearchValue2";
             this.txtSearchValue2.Properties.NullText = "Nhập từ khóa tìm kiếm";
             this.txtSearchValue2.Properties.NullValuePrompt = "Nhập từ khóa tìm kiếm";
+            this.txtSearchValue2.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtSearchValue2.Size = new System.Drawing.Size(213, 20);
             this.txtSearchValue2.StyleController = this.layoutControl1;
             this.txtSearchValue2.TabIndex = 13;
@@ -173,6 +174,7 @@
             this.txtSearchValue1.Name = "txtSearchValue1";
             this.txtSearchValue1.Properties.NullText = "Nhập từ khóa tìm kiếm";
             this.txtSearchValue1.Properties.NullValuePrompt = "Nhập từ khóa tìm kiếm";
+            this.txtSearchValue1.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtSearchValue1.Size = new System.Drawing.Size(223, 20);
             this.txtSearchValue1.StyleController = this.layoutControl1;
             this.txtSearchValue1.TabIndex = 10;
@@ -230,9 +232,11 @@
             this.gridViewDepartmentRecive.GridControl = this.gridControlDepartmentRecive;
             this.gridViewDepartmentRecive.Name = "gridViewDepartmentRecive";
             this.gridViewDepartmentRecive.OptionsView.ShowGroupPanel = false;
+            this.gridViewDepartmentRecive.CustomDrawColumnHeader += new DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventHandler(this.gridViewDepartmentRecive_CustomDrawColumnHeader);
             this.gridViewDepartmentRecive.CustomDrawCell += new DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventHandler(this.gridViewDepartmentRecive_CustomDrawCell);
             this.gridViewDepartmentRecive.CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridViewDepartmentRecive_CellValueChanged);
             this.gridViewDepartmentRecive.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewDepartmentRecive_CustomUnboundColumnData);
+            this.gridViewDepartmentRecive.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridViewDepartmentRecive_MouseDown);
             // 
             // gridColumn7
             // 
@@ -291,7 +295,6 @@
             // 
             // gridColumn11
             // 
-            this.gridColumn11.Caption = "Báo động y khoa";
             this.gridColumn11.ColumnEdit = this.checkReciveAlert;
             this.gridColumn11.FieldName = "CHECK_ALERT";
             this.gridColumn11.Name = "gridColumn11";
@@ -308,7 +311,6 @@
             // 
             // gridColumn12
             // 
-            this.gridColumn12.Caption = "Báo động an ninh";
             this.gridColumn12.ColumnEdit = this.checkReciveAlertSecurity;
             this.gridColumn12.FieldName = "CHECK_SECURITY";
             this.gridColumn12.Name = "gridColumn12";
@@ -361,9 +363,11 @@
             this.gridViewDepartmentAlert.OptionsSelection.MultiSelect = true;
             this.gridViewDepartmentAlert.OptionsSelection.ShowCheckBoxSelectorInColumnHeader = DevExpress.Utils.DefaultBoolean.True;
             this.gridViewDepartmentAlert.OptionsView.ShowGroupPanel = false;
+            this.gridViewDepartmentAlert.CustomDrawColumnHeader += new DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventHandler(this.gridViewDepartmentAlert_CustomDrawColumnHeader);
             this.gridViewDepartmentAlert.CustomDrawCell += new DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventHandler(this.gridViewDepartmentAlert_CustomDrawCell);
             this.gridViewDepartmentAlert.CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridViewDepartmentAlert_CellValueChanged);
             this.gridViewDepartmentAlert.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewDepartmentAlert_CustomUnboundColumnData);
+            this.gridViewDepartmentAlert.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridViewDepartmentAlert_MouseDown);
             // 
             // gridColumn1
             // 
