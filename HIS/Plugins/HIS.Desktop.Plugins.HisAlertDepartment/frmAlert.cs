@@ -304,7 +304,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
             }
         }
 
-        private void LoadDataWithDepartment(DepartmentDTO rowData)
+        private void LoadDataWithDepartment(DepartmentDTO rowData,bool check)
         {
             try
             {
@@ -320,8 +320,8 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 if(rs != null)
                 {
                     listAlertDepartment = rs;
-                    if(TYPE == 2 )RefeshDataSelected(rs.Select(s=>s.RECEIVE_DEPARTMENT_ID).ToList(),gridViewDepartmentRecive,rs);
-                    else RefeshDataSelected(rs.Select(s => s.DEPARTMENT_ID).ToList(), gridViewDepartmentAlert,rs);
+                    if(TYPE == 2 )RefeshDataSelected(rs.Select(s=>s.RECEIVE_DEPARTMENT_ID).ToList(),gridViewDepartmentRecive,rs,check);
+                    else RefeshDataSelected(rs.Select(s => s.DEPARTMENT_ID).ToList(), gridViewDepartmentAlert,rs,check);
                 }
                 WaitingManager.Hide();
             }
@@ -332,7 +332,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
             }
         }
 
-        private void RefeshDataSelected(List<long> listID, GridView control,List<HIS_ALERT_DEPARTMENT> listDepartment)
+        private void RefeshDataSelected(List<long> listID, GridView control,List<HIS_ALERT_DEPARTMENT> listDepartment,bool check)
         {
             try
             {
@@ -343,13 +343,10 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                     if (row != null && listID.Contains(row.ID))
                     {
                         // Đánh dấu IS_CHECK là true nếu ID có trong danh sách
-                        control.SetRowCellValue(i, "SELECT_MANY", true);
+                        control.SetRowCellValue(i, "SELECT_MANY", check);
                         var de = listDepartment.FirstOrDefault(s => (TYPE == 2 && s.RECEIVE_DEPARTMENT_ID == row.ID)||(TYPE == 1 && s.DEPARTMENT_ID == row.ID));
                         control.SetRowCellValue(i, "CHECK_ALERT", de!= null && de.IS_MEDICAL == 1 ? true : false);
-                        control.SetRowCellValue(i, "CHECK_SECURITY",de != null&& de.IS_SECURITY == 1 ? true : false);
-
-                        
-                        
+                        control.SetRowCellValue(i, "CHECK_SECURITY",de != null&& de.IS_SECURITY == 1 ? true : false); 
                     }
                     else
                     {
@@ -386,8 +383,8 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                     dicIsMedicalRecive.Clear();
                     dicIsSecurityRecive.Clear();
 
-                    ClearDataSelected(gridViewDepartmentAlert,listDepartmentAlert, checkboxStates);
-                    ClearDataSelected(gridViewDepartmentRecive,listDepartmentRecive, checkboxStatesRecive);
+                    ClearDataSelected(gridViewDepartmentAlert,listDepartmentAlert, checkboxStates,dicIsMedicalAlert,dicIsSecurityAlert);
+                    ClearDataSelected(gridViewDepartmentRecive,listDepartmentRecive, checkboxStatesRecive,dicIsMedicalRecive,dicIsSecurityRecive);
                     TYPE = Convert.ToInt64(cbotype.EditValue);
                     
                 }
@@ -399,37 +396,42 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
             }
         }
 
-        private void ClearDataSelected(GridView control,List<DepartmentDTO> list,Dictionary<long,bool> dic)
+        private void ClearDataSelected(GridView control, List<DepartmentDTO> list, Dictionary<long, bool> dic, Dictionary<long, bool> dicMedical, Dictionary<long, bool> dicSecurity)
         {
             try
             {
-                // Duyệt qua các dòng đã chọn và xóa chúng khỏi GridView
-                foreach (var row in list)
+                // Lấy danh sách các row đã chọn
+                int[] selectedRowHandles = control.GetSelectedRows();
+
+                foreach (int rowHandle in selectedRowHandles)
                 {
-                    long rowKey = row.ID;
-
-                    // Xóa dòng khỏi GridView
-                    control.DeleteRow(control.GetRowHandle(list.IndexOf(row)));
-
-                    // Xóa trạng thái checkbox từ từ điển
-                    if (dic.ContainsKey(rowKey))
+                    if (rowHandle >= 0)
                     {
-                        dic.Remove(rowKey);
+                        var row = (DepartmentDTO)control.GetRow(rowHandle);
+                        long rowKey = row.ID;
+
+                        // Xóa dòng khỏi GridView
+                        control.DeleteRow(rowHandle);
+
+                        // Xóa trạng thái checkbox từ từ điển
+                        dic?.Remove(rowKey);
+                        dicMedical?.Remove(rowKey);
+                        dicSecurity?.Remove(rowKey);
+
+                        // Xóa dòng khỏi danh sách nếu cần
+                        list.Remove(row);
                     }
                 }
-
-                // Xóa tất cả các dòng đã chọn trong danh sách
-                list.Clear();
 
                 // Làm mới lại GridView
                 control.RefreshData();
             }
             catch (Exception ex)
             {
-
                 LogSystem.Warn(ex);
             }
         }
+
 
         private void EnableControlSelect(long value)
         {
@@ -542,7 +544,11 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 {
                     bool isChecked = (bool)e.Value;
                     long rowKey = rowData.ID;
-                    
+                    if(listDepartmentAlert.Count == 0)
+                    {
+                        dicIsMedicalAlert[rowKey] = false;
+                        dicIsSecurityAlert[rowKey] = false;
+                    }
                     // Update the corresponding dictionary based on the column field name
                     if (e.Column.FieldName == "CHECK_ALERT")
                     {
@@ -738,8 +744,12 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                     }
                 }
                 UpdateSelectedRows(rowData, check.Checked);
-                if (rowData != null) LoadDataWithDepartment(rowData);
+                if (rowData != null) LoadDataWithDepartment(rowData, check.Checked);
                 // Refresh lại dữ liệu trong grid để cập nhật thay đổi
+                if (listDepartmentAlert.Count == 0)
+                {
+                    ClearDataSelected(gridViewDepartmentRecive, listDepartmentRecive, checkboxStatesRecive,dicIsMedicalRecive,dicIsSecurityRecive);
+                }
                 gridViewDepartmentAlert.RefreshData();
 
             }
@@ -812,7 +822,11 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                     DepartmentDTO rowData = (DepartmentDTO)gridViewDepartmentRecive.GetRow(e.RowHandle);
                     bool isChecked = (bool)e.Value;
                     long rowKey = rowData.ID;
-
+                    if (listDepartmentRecive.Count == 0)
+                    {
+                        dicIsMedicalRecive[rowKey] = false;
+                        dicIsSecurityRecive[rowKey] = false;
+                    }
                     // Update the corresponding dictionary based on the column field name
                     if (e.Column.FieldName == "CHECK_ALERT")
                     {
@@ -1009,8 +1023,12 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                     }
                 }
                 UpdateSelectedRowsRecive(rowData, check.Checked);
-                if(rowData != null) LoadDataWithDepartment(rowData);
+                if(rowData != null) LoadDataWithDepartment(rowData,check.Checked);
                 // Refresh lại dữ liệu trong grid để cập nhật thay đổi
+                if(listDepartmentRecive.Count == 0)
+                {
+                    ClearDataSelected(gridViewDepartmentAlert, listDepartmentAlert, checkboxStates,dicIsMedicalAlert,dicIsSecurityAlert);
+                }
                 gridViewDepartmentRecive.RefreshData();
 
             }
@@ -1021,7 +1039,9 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
             }
         }
 
-        
+       
+
+
 
         #endregion
 
@@ -1039,13 +1059,15 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                     MessageBox.Show(this, "Khoa đang chọn không được giống khoa gửi yêu cầu", "Thông báo", MessageBoxButtons.OK);
                     return;
                 }
+                
                 if(TYPE == 2)
                 {
+                    if (listDepartmentAlert.Count ==0) return;
                     foreach (var alert in listDepartmentRecive)
                     {
                         // Check if the ID is present in either dicIsMedicalAlert or dicIsSecurityAlert
-                        bool isInMedicalAlert = dicIsMedicalRecive.ContainsKey(alert.ID);
-                        bool isInSecurityAlert = dicIsSecurityRecive.ContainsKey(alert.ID);
+                        bool isInMedicalAlert = dicIsMedicalRecive.ContainsKey(alert.ID) && dicIsMedicalRecive[alert.ID] == true;
+                        bool isInSecurityAlert = dicIsSecurityRecive.ContainsKey(alert.ID) && dicIsSecurityRecive[alert.ID] == true;
 
                         // If the ID is not found in both dictionaries, show a warning message
                         if (!isInMedicalAlert && !isInSecurityAlert)
@@ -1057,11 +1079,12 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 }
                 else
                 {
+                    if (listDepartmentRecive.Count == 0) return;
                     foreach (var alert in listDepartmentAlert)
                     {
                         // Check if the ID is present in either dicIsMedicalAlert or dicIsSecurityAlert
-                        bool isInMedicalAlert = dicIsMedicalAlert.ContainsKey(alert.ID);
-                        bool isInSecurityAlert = dicIsSecurityAlert.ContainsKey(alert.ID);
+                        bool isInMedicalAlert = dicIsMedicalAlert.ContainsKey(alert.ID) && dicIsMedicalAlert[alert.ID] == true;
+                        bool isInSecurityAlert = dicIsSecurityAlert.ContainsKey(alert.ID) && dicIsSecurityAlert[alert.ID] == true;
 
                         // If the ID is not found in both dictionaries, show a warning message
                         if (!isInMedicalAlert && !isInSecurityAlert)
