@@ -117,27 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="barManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>36</value>
-  </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="btnSetting.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABl0RVh0U29m
-        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAArdEVYdFRpdGxlAFNldHVwO0N1c3RvbWl6O0Rlc2ln
-        bjtTZXR0aW5nO1Byb3BlcnQ4H7UhAAAAvklEQVQ4T62TMQ7DIAxFc4woysqSJcpBeqZIHXuUnqAX6p45
-        C/0P4ciDhwg6PAnbny9jYMg5hzyenySOSoo0cC0kGsXk4lXkyurykxgt9psRvsUmZvESZ4U1OWpo0BYT
-        72qFO6At3RaDaoJ7JI7YbJ83oEUTfMUulgprclafLwMFTJuBcU4T7CYwyLk6WvYkClwTSYZlgiUwoBOr
-        m/b4i0HfEZygbYjOoP0aleh7SAr6nrIzaftMERLd+M55+AHESXAXw39ssQAAAABJRU5ErkJggg==
-</value>
+  <data name="frmAlert.btnFind1.Text" xml:space="preserve">
+    <value>Search (Ctrl D)</value>
   </data>
-  <metadata name="timerInitForm.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>141, 17</value>
-  </metadata>
-  <metadata name="timerReloadTransReq.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>268, 17</value>
-  </metadata>
+  <data name="frmAlert.btnFind2.Text" xml:space="preserve">
+    <value>Search (Ctrl F)</value>
+  </data>
+  <data name="frmAlert.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmAlert.gridColumn10.Caption" xml:space="preserve">
+    <value>Name of receiving department</value>
+  </data>
+  <data name="frmAlert.gridColumn11.Caption" xml:space="preserve">
+    <value>Medical alarm</value>
+  </data>
+  <data name="frmAlert.gridColumn12.Caption" xml:space="preserve">
+    <value>Security alarm</value>
+  </data>
+  <data name="frmAlert.gridColumn3.Caption" xml:space="preserve">
+    <value>Alarm code</value>
+  </data>
+  <data name="frmAlert.gridColumn4.Caption" xml:space="preserve">
+    <value>Name of alarm department</value>
+  </data>
+  <data name="frmAlert.gridColumn5.Caption" xml:space="preserve">
+    <value>Medical alarm</value>
+  </data>
+  <data name="frmAlert.gridColumn6.Caption" xml:space="preserve">
+    <value>Security alarm</value>
+  </data>
+  <data name="frmAlert.gridColumn9.Caption" xml:space="preserve">
+    <value>Receiving department code</value>
+  </data>
+  <data name="frmAlert.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmAlert.Text" xml:space="preserve">
+    <value>frmAlert</value>
+  </data>
+  <data name="frmAlert.txtSearchValue1.Properties.NullText" xml:space="preserve">
+    <value>Enter search keywords</value>
+  </data>
+  <data name="frmAlert.txtSearchValue1.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Enter search keywords</value>
+  </data>
+  <data name="frmAlert.txtSearchValue2.Properties.NullText" xml:space="preserve">
+    <value>Enter search keywords</value>
+  </data>
+  <data name="frmAlert.txtSearchValue2.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Enter search keywords</value>
+  </data>
 </root>

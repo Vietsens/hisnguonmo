@@ -202,7 +202,21 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkHistoryLDO), checkHistoryLDO) +
                             "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rsData), rsData));
 
-                        if (ischeckChange && !CheckChangeInfo(dataHein, ref rsData, isHasNewCard, heinAddressOfPatient, dtIntructionTime))
+                        //Kiểm tra sử dụng thẻ mới bên ngoài CheckChangeInfo
+                        if (isHasNewCard)
+                        {
+                            if (!String.IsNullOrEmpty(rsData.ResultHistoryLDO.gtTheTuMoi))
+                            {
+                                DateTime dtHanTheTuMoi = DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheTuMoi).Value;
+                                DateTime dtHanTheDenMoi = (DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheDenMoi) ?? DateTime.MinValue);
+                                if (dtHanTheTuMoi.Date <= dtIntructionTime.Date && (dtHanTheDenMoi == DateTime.MinValue || dtIntructionTime.Date <= dtHanTheDenMoi.Date))
+                                {
+                                    rsData.IsUsedNewCard = true;
+                                }
+                            }
+                        }
+
+                        if (ischeckChange && !CheckChangeInfo(dataHein, rsData, isHasNewCard, heinAddressOfPatient, dtIntructionTime))
                         {
                             return rsData;
                         }
@@ -665,7 +679,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
             }
         }
 
-        bool CheckChangeInfo(HeinCardData dataHein, ref ResultDataADO rsIns, bool isHasNewCard, string heinAddressOfPatient, DateTime dtIntructionTime)
+        bool CheckChangeInfo(HeinCardData dataHein, ResultDataADO rsIns, bool isHasNewCard, string heinAddressOfPatient, DateTime dtIntructionTime)
         {
             bool result = false;
             try
@@ -682,7 +696,6 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                         if (dtHanTheTuMoi.Date <= dtIntructionTime.Date && (dtHanTheDenMoi == DateTime.MinValue || dtIntructionTime.Date <= dtHanTheDenMoi.Date))
                         {
                             isUsedNewCard = true;
-                            rsIns.IsUsedNewCard = isUsedNewCard;
                         }
                     }
                 }
