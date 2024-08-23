@@ -1158,16 +1158,19 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                             foreach (var record in exitsRecive)
                             {
                                 record.DEPARTMENT_ID = listDepartmentAlert.First().ID;
-                                record.RECEIVE_DEPARTMENT_ID = record.ID;
-                                if (dicIsMedicalRecive.ContainsKey(record.RECEIVE_DEPARTMENT_ID) && dicIsMedicalRecive[record.RECEIVE_DEPARTMENT_ID] == true)
+                                foreach(var recive in listDepartmentRecive.Where(s=>s.ID == record.RECEIVE_DEPARTMENT_ID))
                                 {
-                                    record.IS_MEDICAL = 1;
+                                    record.RECEIVE_DEPARTMENT_ID = recive.ID;
+                                    if (dicIsMedicalRecive.ContainsKey(recive.ID) && dicIsMedicalRecive[recive.ID] == true)
+                                    {
+                                        record.IS_MEDICAL = 1;
+                                    }
+                                    if (dicIsSecurityRecive.ContainsKey(recive.ID) && dicIsSecurityRecive[recive.ID] == true)
+                                    {
+                                        record.IS_SECURITY = 1;
+                                    }
+                                    listDTO.Add(record);
                                 }
-                                if (dicIsSecurityRecive.ContainsKey(record.RECEIVE_DEPARTMENT_ID) && dicIsSecurityRecive[record.RECEIVE_DEPARTMENT_ID] == true)
-                                {
-                                    record.IS_SECURITY = 1;
-                                }
-                                listDTO.Add(record);
                             }
                             Save(listDTO, GlobalVariables.ActionEdit, ref success);
                         }
@@ -1212,15 +1215,19 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                             {
                                 record.RECEIVE_DEPARTMENT_ID = listDepartmentRecive.First().ID;
                                 record.RECEIVE_DEPARTMENT_ID = record.ID;
-                                if (dicIsMedicalAlert.ContainsKey(record.DEPARTMENT_ID) && dicIsMedicalAlert[record.DEPARTMENT_ID] == true)
+                                foreach(var alert in listDepartmentAlert.Where(s=>s.ID == record.DEPARTMENT_ID))
                                 {
-                                    record.IS_MEDICAL = 1;
+                                    if (dicIsMedicalAlert.ContainsKey(alert.ID) && dicIsMedicalAlert[alert.ID] == true)
+                                    {
+                                        record.IS_MEDICAL = 1;
+                                    }
+                                    if (dicIsSecurityAlert.ContainsKey(alert.ID) && dicIsSecurityAlert[alert.ID] == true)
+                                    {
+                                        record.IS_SECURITY = 1;
+                                    }
+                                    listDTO.Add(record);
                                 }
-                                if (dicIsSecurityAlert.ContainsKey(record.DEPARTMENT_ID) && dicIsSecurityAlert[record.DEPARTMENT_ID] == true)
-                                {
-                                    record.IS_SECURITY = 1;
-                                }
-                                listDTO.Add(record);
+                                
                             }
                             Save(listDTO, GlobalVariables.ActionEdit, ref success);
                         }
