@@ -471,6 +471,16 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
             checkEdit.ReadOnly = false; // Cho phép chỉnh sửa (enable)
             checkEdit.AllowFocused = true;
             checkEdit.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Standard;
+            //check security
+            RepositoryItemCheckEdit checkEditSe = (RepositoryItemCheckEdit)gridView.Columns["CHECK_SECURITY"].ColumnEdit;
+            checkEditSe.ReadOnly = false; // Không cho phép chỉnh sửa (disable)
+            checkEditSe.AllowFocused = true;
+            checkEditSe.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Standard;
+            //check medical
+            RepositoryItemCheckEdit checkEditAL = (RepositoryItemCheckEdit)gridView.Columns["CHECK_ALERT"].ColumnEdit;
+            checkEditAL.ReadOnly = false; // Không cho phép chỉnh sửa (disable)
+            checkEditAL.AllowFocused = true;
+            checkEditAL.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Standard;
         }
 
         private void DisableCheckbox(GridView gridView)
@@ -479,6 +489,16 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
             checkEdit.ReadOnly = true; // Không cho phép chỉnh sửa (disable)
             checkEdit.AllowFocused = false;
             checkEdit.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Style5;
+            //check security
+            RepositoryItemCheckEdit checkEditSe = (RepositoryItemCheckEdit)gridView.Columns["CHECK_SECURITY"].ColumnEdit;
+            checkEditSe.ReadOnly = true; // Không cho phép chỉnh sửa (disable)
+            checkEditSe.AllowFocused = false;
+            checkEditSe.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Style5;
+            //check medical
+            RepositoryItemCheckEdit checkEditAL = (RepositoryItemCheckEdit)gridView.Columns["CHECK_ALERT"].ColumnEdit;
+            checkEditAL.ReadOnly = true; // Không cho phép chỉnh sửa (disable)
+            checkEditAL.AllowFocused = false;
+            checkEditAL.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Style5;
         }
 
 
@@ -1056,6 +1076,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                                    .ToList();
                 if (commonIDs.Any())
                 {
+                    LogSystem.Debug("___DU lieu trung:" + LogUtil.TraceData("Trung", commonIDs));
                     MessageBox.Show(this, "Khoa đang chọn không được giống khoa gửi yêu cầu", "Thông báo", MessageBoxButtons.OK);
                     return;
                 }
@@ -1129,21 +1150,20 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                     LogSystem.Debug("____________Loai:"+type);
                     if (type == 2)
                     {
-                        var exitsRecive = listDepartmentRecive.Where(s => rs.Select(o => o.RECEIVE_DEPARTMENT_ID).Contains(s.ID));// lay ra cac khoa da duoc chon truoc do
+                        var exitsRecive = rs.Where(s => listDepartmentRecive.Select(o=>o.ID).Contains(s.RECEIVE_DEPARTMENT_ID));// lay ra cac khoa da duoc chon truoc do
                         if( exitsRecive.Any() )
                         {
                             List<HIS_ALERT_DEPARTMENT> listDTO = new List<HIS_ALERT_DEPARTMENT>();
                             //khoa nao duoc chon roi thi update
-                            foreach (var rc in exitsRecive)
+                            foreach (var record in exitsRecive)
                             {
-                                HIS_ALERT_DEPARTMENT record = new HIS_ALERT_DEPARTMENT();
                                 record.DEPARTMENT_ID = listDepartmentAlert.First().ID;
-                                record.RECEIVE_DEPARTMENT_ID = rc.ID;
-                                if (dicIsMedicalRecive.ContainsKey(rc.ID) && dicIsMedicalRecive[rc.ID] == true)
+                                record.RECEIVE_DEPARTMENT_ID = record.ID;
+                                if (dicIsMedicalRecive.ContainsKey(record.RECEIVE_DEPARTMENT_ID) && dicIsMedicalRecive[record.RECEIVE_DEPARTMENT_ID] == true)
                                 {
                                     record.IS_MEDICAL = 1;
                                 }
-                                if (dicIsSecurityRecive.ContainsKey(rc.ID) && dicIsSecurityRecive[rc.ID] == true)
+                                if (dicIsSecurityRecive.ContainsKey(record.RECEIVE_DEPARTMENT_ID) && dicIsSecurityRecive[record.RECEIVE_DEPARTMENT_ID] == true)
                                 {
                                     record.IS_SECURITY = 1;
                                 }
@@ -1155,7 +1175,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                         if(NotexitsRecive.Any() )
                         {
                             List<HIS_ALERT_DEPARTMENT> listDTO = new List<HIS_ALERT_DEPARTMENT>();
-                            //khoa nao duoc chon roi thi update
+                            //khoa nao duoc chon ma chua co thi them moi
                             foreach (var rc in NotexitsRecive)
                             {
                                 HIS_ALERT_DEPARTMENT record = new HIS_ALERT_DEPARTMENT();
@@ -1176,27 +1196,27 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                         var rsNotexit = rs.Where(s => !listDepartmentRecive.Select(o => o.ID).Contains(s.RECEIVE_DEPARTMENT_ID));
                         if(rsNotexit.Any())
                         {
+                            // khoa nao dc bo chon thi xoa di
                             Delete(rsNotexit.Select(s => s.ID).ToList(), ref success);
                         }
                     }
                     else
                     {
 
-                        var exitsRecive = listDepartmentAlert.Where(s => rs.Select(o => o.DEPARTMENT_ID).Contains(s.ID));// lay ra cac khoa da duoc chon truoc do
+                        var exitsRecive = rs.Where(s=> listDepartmentAlert.Select(o=>o.ID).Contains(s.DEPARTMENT_ID));// lay ra cac khoa da duoc chon truoc do
                         if (exitsRecive.Any())
                         {
                             List<HIS_ALERT_DEPARTMENT> listDTO = new List<HIS_ALERT_DEPARTMENT>();
                             //khoa nao duoc chon roi thi update
-                            foreach (var rc in exitsRecive)
+                            foreach (var record in exitsRecive)
                             {
-                                HIS_ALERT_DEPARTMENT record = new HIS_ALERT_DEPARTMENT();
                                 record.RECEIVE_DEPARTMENT_ID = listDepartmentRecive.First().ID;
-                                record.RECEIVE_DEPARTMENT_ID = rc.ID;
-                                if (dicIsMedicalAlert.ContainsKey(rc.ID) && dicIsMedicalAlert[rc.ID] == true)
+                                record.RECEIVE_DEPARTMENT_ID = record.ID;
+                                if (dicIsMedicalAlert.ContainsKey(record.DEPARTMENT_ID) && dicIsMedicalAlert[record.DEPARTMENT_ID] == true)
                                 {
                                     record.IS_MEDICAL = 1;
                                 }
-                                if (dicIsSecurityAlert.ContainsKey(rc.ID) && dicIsSecurityAlert[rc.ID] == true)
+                                if (dicIsSecurityAlert.ContainsKey(record.DEPARTMENT_ID) && dicIsSecurityAlert[record.DEPARTMENT_ID] == true)
                                 {
                                     record.IS_SECURITY = 1;
                                 }
@@ -1208,7 +1228,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                         if (NotexitsRecive.Any())
                         {
                             List<HIS_ALERT_DEPARTMENT> listDTO = new List<HIS_ALERT_DEPARTMENT>();
-                            //khoa nao duoc chon roi thi update
+                            //khoa nao duoc chon ma chua co thi update
                             foreach (var rc in NotexitsRecive)
                             {
                                 HIS_ALERT_DEPARTMENT record = new HIS_ALERT_DEPARTMENT();
@@ -1229,6 +1249,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                         var rsNotexit = rs.Where(s => !listDepartmentAlert.Select(o => o.ID).Contains(s.DEPARTMENT_ID));
                         if (rsNotexit.Any())
                         {
+                            // khoa nao dc bo chon thi xoa di
                             Delete(rsNotexit.Select(s => s.ID).ToList(), ref success);
                         }
 
@@ -1299,6 +1320,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 List<HIS_ALERT_DEPARTMENT> result = new List<HIS_ALERT_DEPARTMENT>();
                 if(action == GlobalVariables.ActionEdit)
                 {
+                    LogSystem.Debug("___DU lieu UPDATE:" + LogUtil.TraceData("___DATA", listDTO));
                     result = new BackendAdapter(param).Post<List<HIS_ALERT_DEPARTMENT>>("/api/HisAlertDepartment/UpdateList", ApiConsumers.MosConsumer, listDTO, param);
                     if(result != null)
                     {
@@ -1360,7 +1382,10 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 {
                     btnFind1.PerformClick();
                 }
-
+                if(e.Control && e.KeyCode == Keys.S)
+                {
+                    btnSave.PerformClick();
+                }
             }
             catch (Exception ex)
             {
@@ -1400,6 +1425,10 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 LogSystem.Warn(ex);
             }
         }
+
+
+
+        //Vẽ ô checkbox trên header cho các cột
         bool isHeaderCheckBoxChecked = false;
         bool isHeaderCheckBoxCheckedAlert = false;
         bool isHeaderCheckBoxCheckedSecurity = false;
