@@ -1157,20 +1157,18 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                             //khoa nao duoc chon roi thi update
                             foreach (var record in exitsRecive)
                             {
-                                record.DEPARTMENT_ID = listDepartmentAlert.First().ID;
-                                foreach(var recive in listDepartmentRecive.Where(s=>s.ID == record.RECEIVE_DEPARTMENT_ID))
+                                var recive = listDepartmentRecive.FirstOrDefault(s => s.ID == record.RECEIVE_DEPARTMENT_ID);
+                                if (dicIsMedicalRecive.ContainsKey(recive.ID) && dicIsMedicalRecive[recive.ID] == true)
                                 {
-                                    record.RECEIVE_DEPARTMENT_ID = recive.ID;
-                                    if (dicIsMedicalRecive.ContainsKey(recive.ID) && dicIsMedicalRecive[recive.ID] == true)
-                                    {
-                                        record.IS_MEDICAL = 1;
-                                    }
-                                    if (dicIsSecurityRecive.ContainsKey(recive.ID) && dicIsSecurityRecive[recive.ID] == true)
-                                    {
-                                        record.IS_SECURITY = 1;
-                                    }
-                                    listDTO.Add(record);
+                                    record.IS_MEDICAL = 1;
                                 }
+                                if (dicIsSecurityRecive.ContainsKey(recive.ID) && dicIsSecurityRecive[recive.ID] == true)
+                                {
+                                    record.IS_SECURITY = 1;
+                                }
+                                listDTO.Add(record);
+                                record.DEPARTMENT_ID = listDepartmentAlert.First().ID;
+                                
                             }
                             Save(listDTO, GlobalVariables.ActionEdit, ref success);
                         }
@@ -1213,20 +1211,17 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                             //khoa nao duoc chon roi thi update
                             foreach (var record in exitsRecive)
                             {
-                                record.RECEIVE_DEPARTMENT_ID = listDepartmentRecive.First().ID;
-                                record.RECEIVE_DEPARTMENT_ID = record.ID;
-                                foreach(var alert in listDepartmentAlert.Where(s=>s.ID == record.DEPARTMENT_ID))
+                                var alert = listDepartmentAlert.FirstOrDefault(s => s.ID == record.DEPARTMENT_ID);
+                                if (dicIsMedicalAlert.ContainsKey(alert.ID) && dicIsMedicalAlert[alert.ID] == true)
                                 {
-                                    if (dicIsMedicalAlert.ContainsKey(alert.ID) && dicIsMedicalAlert[alert.ID] == true)
-                                    {
-                                        record.IS_MEDICAL = 1;
-                                    }
-                                    if (dicIsSecurityAlert.ContainsKey(alert.ID) && dicIsSecurityAlert[alert.ID] == true)
-                                    {
-                                        record.IS_SECURITY = 1;
-                                    }
-                                    listDTO.Add(record);
+                                    record.IS_MEDICAL = 1;
                                 }
+                                if (dicIsSecurityAlert.ContainsKey(alert.ID) && dicIsSecurityAlert[alert.ID] == true)
+                                {
+                                    record.IS_SECURITY = 1;
+                                }
+                                listDTO.Add(record);
+                                //
                                 
                             }
                             Save(listDTO, GlobalVariables.ActionEdit, ref success);
