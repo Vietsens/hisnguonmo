@@ -1127,82 +1127,111 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 if(rs != null && rs.Count > 0)
                 {
                     LogSystem.Debug("____________Loai:"+type);
-                    if (type == 1)
+                    if (type == 2)
                     {
-                        
-                        if (rs.Count == listDepartmentAlert.Count)
+                        var exitsRecive = listDepartmentRecive.Where(s => rs.Select(o => o.RECEIVE_DEPARTMENT_ID).Contains(s.ID));// lay ra cac khoa da duoc chon truoc do
+                        if( exitsRecive.Any() )
                         {
-                            LogSystem.Debug("Da co du lieu. __Update");
-                            //update//
                             List<HIS_ALERT_DEPARTMENT> listDTO = new List<HIS_ALERT_DEPARTMENT>();
-                            foreach (var record in rs)
+                            //khoa nao duoc chon roi thi update
+                            foreach (var rc in exitsRecive)
                             {
-                                var exits = listDepartmentAlert.FirstOrDefault(s => s.ID == record.DEPARTMENT_ID);
-                                record.IS_MEDICAL = exits != null && dicIsMedicalAlert.ContainsKey(exits.ID) ? (short?)(dicIsMedicalAlert[exits.ID] ? 1 : 0) : null;
-                                record.IS_SECURITY = exits != null &&  dicIsSecurityAlert.ContainsKey(exits.ID) ? (short?)(dicIsSecurityAlert[exits.ID] ? 1 : 0) : null;
+                                HIS_ALERT_DEPARTMENT record = new HIS_ALERT_DEPARTMENT();
+                                record.DEPARTMENT_ID = listDepartmentAlert.First().ID;
+                                record.RECEIVE_DEPARTMENT_ID = rc.ID;
+                                if (dicIsMedicalRecive.ContainsKey(rc.ID) && dicIsMedicalRecive[rc.ID] == true)
+                                {
+                                    record.IS_MEDICAL = 1;
+                                }
+                                if (dicIsSecurityRecive.ContainsKey(rc.ID) && dicIsSecurityRecive[rc.ID] == true)
+                                {
+                                    record.IS_SECURITY = 1;
+                                }
                                 listDTO.Add(record);
                             }
                             Save(listDTO, GlobalVariables.ActionEdit, ref success);
                         }
-                        else
+                        var NotexitsRecive = listDepartmentRecive.Where(s => !rs.Select(o => o.RECEIVE_DEPARTMENT_ID).Contains(s.ID));// lay ra cac khoa chua duoc chon truoc do
+                        if(NotexitsRecive.Any() )
                         {
-                            LogSystem.Debug("Da co du lieu. ____Xoa di va them khoa moi duoc chon");
                             List<HIS_ALERT_DEPARTMENT> listDTO = new List<HIS_ALERT_DEPARTMENT>();
-                            //clear list roi tao moi
-                            bool res = false;
-                            Delete(rs.Select(s => s.ID).ToList(), ref res);
-                            if (res)
+                            //khoa nao duoc chon roi thi update
+                            foreach (var rc in NotexitsRecive)
                             {
-                                foreach (var alert in listDepartmentAlert)
+                                HIS_ALERT_DEPARTMENT record = new HIS_ALERT_DEPARTMENT();
+                                record.DEPARTMENT_ID = listDepartmentAlert.First().ID;
+                                record.RECEIVE_DEPARTMENT_ID = rc.ID;
+                                if (dicIsMedicalRecive.ContainsKey(rc.ID) && dicIsMedicalRecive[rc.ID] == true)
                                 {
-                                    HIS_ALERT_DEPARTMENT record = new HIS_ALERT_DEPARTMENT();
-                                    record.DEPARTMENT_ID = alert.ID;
-                                    record.IS_MEDICAL = dicIsMedicalAlert.ContainsKey(alert.ID) ? (short?)(dicIsMedicalAlert[alert.ID] ? 1 : 0) : null;
-                                    record.IS_SECURITY = dicIsSecurityAlert.ContainsKey(alert.ID) ? (short?)(dicIsSecurityAlert[alert.ID] ? 1 : 0) : null;
-                                    record.RECEIVE_DEPARTMENT_ID = listDepartmentRecive.Select(s => s.ID).FirstOrDefault();
-                                    listDTO.Add(record);
+                                    record.IS_MEDICAL = 1;
                                 }
-                                Save(listDTO, GlobalVariables.ActionAdd, ref success);
+                                if (dicIsSecurityRecive.ContainsKey(rc.ID) && dicIsSecurityRecive[rc.ID] == true)
+                                {
+                                    record.IS_SECURITY = 1;
+                                }
+                                listDTO.Add(record);
                             }
+                            Save(listDTO, GlobalVariables.ActionAdd, ref success);
+                        }
+                        var rsNotexit = rs.Where(s => !listDepartmentRecive.Select(o => o.ID).Contains(s.RECEIVE_DEPARTMENT_ID));
+                        if(rsNotexit.Any())
+                        {
+                            Delete(rsNotexit.Select(s => s.ID).ToList(), ref success);
                         }
                     }
                     else
                     {
-                        if (rs.Count == listDepartmentRecive.Count)
+
+                        var exitsRecive = listDepartmentAlert.Where(s => rs.Select(o => o.DEPARTMENT_ID).Contains(s.ID));// lay ra cac khoa da duoc chon truoc do
+                        if (exitsRecive.Any())
                         {
-                            LogSystem.Debug("Da co du lieu. __Update");
-                            //update
                             List<HIS_ALERT_DEPARTMENT> listDTO = new List<HIS_ALERT_DEPARTMENT>();
-                            foreach (var record in rs)
+                            //khoa nao duoc chon roi thi update
+                            foreach (var rc in exitsRecive)
                             {
-                                var exits = listDepartmentRecive.FirstOrDefault(s => s.ID == record.DEPARTMENT_ID);
-                                record.IS_MEDICAL = exits != null && dicIsMedicalRecive.ContainsKey(exits.ID) ? (short?)(dicIsMedicalRecive[exits.ID] ? 1 : 0) : null;
-                                record.IS_SECURITY = exits != null && dicIsSecurityRecive.ContainsKey(exits.ID) ? (short?)(dicIsSecurityRecive[exits.ID] ? 1 : 0) : null;
+                                HIS_ALERT_DEPARTMENT record = new HIS_ALERT_DEPARTMENT();
+                                record.RECEIVE_DEPARTMENT_ID = listDepartmentRecive.First().ID;
+                                record.RECEIVE_DEPARTMENT_ID = rc.ID;
+                                if (dicIsMedicalAlert.ContainsKey(rc.ID) && dicIsMedicalAlert[rc.ID] == true)
+                                {
+                                    record.IS_MEDICAL = 1;
+                                }
+                                if (dicIsSecurityAlert.ContainsKey(rc.ID) && dicIsSecurityAlert[rc.ID] == true)
+                                {
+                                    record.IS_SECURITY = 1;
+                                }
                                 listDTO.Add(record);
                             }
                             Save(listDTO, GlobalVariables.ActionEdit, ref success);
                         }
-                        else
+                        var NotexitsRecive = listDepartmentAlert.Where(s => !rs.Select(o => o.DEPARTMENT_ID).Contains(s.ID));// lay ra cac khoa chua duoc chon truoc do
+                        if (NotexitsRecive.Any())
                         {
-                            LogSystem.Debug("Da co du lieu. ____Xoa di va them khoa moi duoc chon");
                             List<HIS_ALERT_DEPARTMENT> listDTO = new List<HIS_ALERT_DEPARTMENT>();
-                            //clear list roi tao moi
-                            bool res = false;
-                            Delete(rs.Select(s => s.ID).ToList(), ref res);
-                            if (res)
+                            //khoa nao duoc chon roi thi update
+                            foreach (var rc in NotexitsRecive)
                             {
-                                foreach (var alert in listDepartmentRecive)
+                                HIS_ALERT_DEPARTMENT record = new HIS_ALERT_DEPARTMENT();
+                                record.RECEIVE_DEPARTMENT_ID = listDepartmentRecive.First().ID;
+                                record.RECEIVE_DEPARTMENT_ID = rc.ID;
+                                if (dicIsMedicalAlert.ContainsKey(rc.ID) && dicIsMedicalAlert[rc.ID] == true)
                                 {
-                                    HIS_ALERT_DEPARTMENT record = new HIS_ALERT_DEPARTMENT();
-                                    record.RECEIVE_DEPARTMENT_ID = alert.ID;
-                                    record.IS_MEDICAL = dicIsMedicalRecive.ContainsKey(alert.ID) ? (short?)(dicIsMedicalRecive[alert.ID] ? 1 : 0) : null;
-                                    record.IS_SECURITY = dicIsSecurityRecive.ContainsKey(alert.ID) ? (short?)(dicIsSecurityRecive[alert.ID] ? 1 : 0) : null;
-                                    record.DEPARTMENT_ID = listDepartmentAlert.Select(s => s.ID).FirstOrDefault();
-                                    listDTO.Add(record);
+                                    record.IS_MEDICAL = 1;
                                 }
-                                Save(listDTO, GlobalVariables.ActionAdd, ref success);
+                                if (dicIsSecurityAlert.ContainsKey(rc.ID) && dicIsSecurityAlert[rc.ID] == true)
+                                {
+                                    record.IS_SECURITY = 1;
+                                }
+                                listDTO.Add(record);
                             }
+                            Save(listDTO, GlobalVariables.ActionAdd, ref success);
                         }
+                        var rsNotexit = rs.Where(s => !listDepartmentAlert.Select(o => o.ID).Contains(s.DEPARTMENT_ID));
+                        if (rsNotexit.Any())
+                        {
+                            Delete(rsNotexit.Select(s => s.ID).ToList(), ref success);
+                        }
+
                     }
                     
 
