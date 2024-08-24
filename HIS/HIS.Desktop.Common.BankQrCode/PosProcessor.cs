@@ -46,6 +46,7 @@ namespace HIS.Desktop.Common.BankQrCode
         private DelegateSendMessage delegateSend;
         private bool CheckDataReceived = true;
         private bool IsDisposePort = false;
+        private bool IsFirstConnection = false;
         public PosProcessor(string portName, DelegateSendMessage delegateSend)
         {
             this.delegateSend = delegateSend;
@@ -53,7 +54,7 @@ namespace HIS.Desktop.Common.BankQrCode
             this.DtrEnable = true;
             this.RtsEnable = true;
             this.ReadTimeout = 3000;
-            this.WriteTimeout = 5000;
+            this.WriteTimeout = 3000;
             this.DataReceived += PosProcessor_DataReceived;
         }
 
@@ -61,7 +62,7 @@ namespace HIS.Desktop.Common.BankQrCode
         {
             try
             {
-                await Task.Delay(this.ReadTimeout);
+                await Task.Delay(5000);
                 await Task.Factory.StartNew(() =>
                 {
                     if (!CheckDataReceived && delegateSend != null && !IsDisposePort)
@@ -114,6 +115,7 @@ namespace HIS.Desktop.Common.BankQrCode
                 if (this.IsOpen)
                 {
                     Inventec.Common.Logging.LogSystem.Info("Check SendData");
+                    IsFirstConnection = true;
                     this.Send(null);
                     try
                     {
@@ -138,7 +140,9 @@ namespace HIS.Desktop.Common.BankQrCode
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             Inventec.Common.Logging.LogSystem.Info("ConnectPort Fail");
+            CheckDataReceived = true;
             messageError = string.Format("Kết nối tới thiết bị IPOS thất bại. Vui lòng kiểm tra lại kết nối cổng {0}", this.PortName);
+            IsFirstConnection = false;
             DisposePort();
             return false;
         }
@@ -150,7 +154,6 @@ namespace HIS.Desktop.Common.BankQrCode
                 MessageError = null;
                 if (this.IsOpen)
                 {
-                    CheckDataReceived = false;
                     dataSend = dataSend ?? "";
                     switch (typeSend)
                     {
@@ -164,7 +167,11 @@ namespace HIS.Desktop.Common.BankQrCode
                             break;
                     }
                     this.Write(dataSend);
-                    this.CheckDeviceActive();
+                    if (!IsFirstConnection)
+                    {
+                        CheckDataReceived = false;
+                        this.CheckDeviceActive();
+                    }
                 }
             }
             catch (Exception ex)
