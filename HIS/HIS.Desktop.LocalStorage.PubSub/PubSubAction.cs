@@ -38,6 +38,7 @@ using HIS.Desktop.ApiConsumer;
 using MOS.SDO;
 using System.IO;
 using MOS.EFMODEL.DataModels;
+using HIS.Desktop.Plugins.HisAlertByConfig.HisAlertByConfig;
 
 namespace HIS.Desktop.LocalStorage.PubSub
 {
@@ -240,6 +241,7 @@ namespace HIS.Desktop.LocalStorage.PubSub
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private static bool IsSpeechAlertTypeOther { get; set; }
         private static void ProcessNotifi()
         {
             try
@@ -248,15 +250,45 @@ namespace HIS.Desktop.LocalStorage.PubSub
                     return;
                 if (loginName.Equals(HisAlert.CREATOR))
                     return;
-                if (!("," + HisAlert.RECEIVE_DEPARTMENT_IDS + ",").Contains("," + departmentId + ",") && !WorkPlace.GetDepartmentIds().Exists(o=> ("," + HisAlert.RECEIVE_DEPARTMENT_IDS + ",").Contains("," + o + ",")))
+                if (!("," + HisAlert.RECEIVE_DEPARTMENT_IDS + ",").Contains("," + departmentId + ",") && !WorkPlace.GetDepartmentIds().Exists(o => ("," + HisAlert.RECEIVE_DEPARTMENT_IDS + ",").Contains("," + o + ",")))
                     return;
-                if (!string.IsNullOrEmpty(HisAlert.RECEIVER_LOGINNAME))
+                if (HisAlert.ALERT_TYPE == 2 || HisAlert.ALERT_TYPE == 3)
                 {
-                    DisposeNotifi(HisAlert.ID);
+                    TimeSpan difference = DateTime.Now - (Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(HisAlert.CREATE_TIME ?? 0) ?? DateTime.Now);
+                    if (difference.TotalMinutes > 0)
+                        return;
+                    if (frmShowNotifi.InvokeRequired)
+                    {
+                        IsSpeechAlertTypeOther = true;
+                        frmShowNotifi.Invoke(new MethodInvoker(delegate
+                        {
+                            //frmHisAlertMedicalSecurity frm = new frmHisAlertMedicalSecurity();
+                            frmHisAlertMedicalSecurity frm = frmHisAlertMedicalSecurity.Instance;
+                            frm.Alert = HisAlert;
+                            frm.GetSpeech = (IsStop) => IsSpeechAlertTypeOther = IsStop;
+                            frm.ShowDialog(frmShowNotifi);
+                        }));
+                    }
+                    else
+                    {
+                        IsSpeechAlertTypeOther = true;
+                        //frmHisAlertMedicalSecurity frm = new frmHisAlertMedicalSecurity();
+                        frmHisAlertMedicalSecurity frm = frmHisAlertMedicalSecurity.Instance;
+                        frm.Alert = HisAlert;
+                        frm.GetSpeech = (IsStop) => IsSpeechAlertTypeOther = IsStop;
+                        frm.ShowDialog(frmShowNotifi);
+                    }
                 }
-                else
+                else if (HisAlert.ALERT_TYPE != 2 && HisAlert.ALERT_TYPE != 3)
                 {
-                    ShowNotifi();
+                    if (!string.IsNullOrEmpty(HisAlert.RECEIVER_LOGINNAME))
+                    {
+                        DisposeNotifi(HisAlert.ID);
+                    }
+                    else
+                    {
+                        ShowNotifi();
+                    }
                 }
             }
             catch (Exception ex)
@@ -327,7 +359,7 @@ namespace HIS.Desktop.LocalStorage.PubSub
                         Inventec.Common.Logging.LogSystem.Debug("api/HisAlert/Reject thất bại " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => alertId), alertId));
                     }
                 }
-                if(resultData)
+                if (resultData)
                     DisposeNotifi(alertId);
             }
             catch (Exception ex)
@@ -353,7 +385,8 @@ namespace HIS.Desktop.LocalStorage.PubSub
             {
                 if (frmShowNotifi.InvokeRequired)
                 {
-                    frmShowNotifi.Invoke(new MethodInvoker(delegate {
+                    frmShowNotifi.Invoke(new MethodInvoker(delegate
+                    {
                         AlertInfo info = new AlertInfo(HisAlert.TITLE, HisAlert.CONTENT);
                         info.Tag = HisAlert.ID;
                         alertControl.Show(frmShowNotifi, info);
@@ -377,7 +410,8 @@ namespace HIS.Desktop.LocalStorage.PubSub
             {
                 if (frmShowNotifi.InvokeRequired)
                 {
-                    frmShowNotifi.Invoke(new MethodInvoker(delegate {
+                    frmShowNotifi.Invoke(new MethodInvoker(delegate
+                    {
                         var alertForm = alertControl.AlertFormList.FirstOrDefault(o => Int64.Parse(o.Tag.ToString()) == alertId);
                         if (alertForm == null)
                             return;
@@ -415,7 +449,7 @@ namespace HIS.Desktop.LocalStorage.PubSub
         {
             try
             {
-                if (IsSpeech || alertControl == null || alertControl.AlertFormList == null || alertControl.AlertFormList.Count == 0)
+                if (IsSpeech || HisAlert == null || ((HisAlert.ALERT_TYPE != 2 && HisAlert.ALERT_TYPE != 3) && (alertControl == null || alertControl.AlertFormList == null || alertControl.AlertFormList.Count == 0)) || ((HisAlert.ALERT_TYPE == 2 || HisAlert.ALERT_TYPE == 3) && !IsSpeechAlertTypeOther))
                     return;
                 Task taskCall = new Task(PlayAlert);
                 taskCall.Start();
@@ -436,7 +470,7 @@ namespace HIS.Desktop.LocalStorage.PubSub
                 {
                     foreach (string s in fileList)
                     {
-                        if (alertControl == null || alertControl.AlertFormList == null || alertControl.AlertFormList.Count == 0)
+                        if (HisAlert == null || ((HisAlert.ALERT_TYPE != 2 && HisAlert.ALERT_TYPE != 3) && (alertControl == null || alertControl.AlertFormList == null || alertControl.AlertFormList.Count == 0)) || ((HisAlert.ALERT_TYPE == 2 || HisAlert.ALERT_TYPE == 3) && !IsSpeechAlertTypeOther))
                             break;
                         else
                             IsSpeech = true;
