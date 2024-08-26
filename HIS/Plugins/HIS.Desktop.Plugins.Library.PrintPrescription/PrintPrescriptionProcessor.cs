@@ -591,10 +591,10 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         currentOutPresSDO.ExpMests = ExpMests;
                         if (ExpMests.Count > 0)
                         {
-                            var serviceReqId_ExpMest = currentOutPresSDO.ExpMests.Where(w => w.SERVICE_REQ_ID.HasValue).Select(o => o.SERVICE_REQ_ID.Value).ToList();
+                            var serviceReqCode_ExpMest = currentOutPresSDO.ExpMests.Where(w => !string.IsNullOrEmpty(w.TDL_SERVICE_REQ_CODE)).Select(o => o.TDL_SERVICE_REQ_CODE).ToList();
                             if (currentOutPresSDO.ServiceReqs != null && currentOutPresSDO.ServiceReqs.Count > 0)
                             {
-                                var serviceReqs = currentOutPresSDO.ServiceReqs.Where(o => !serviceReqId_ExpMest.Contains(o.ID)).ToList();
+                                var serviceReqs = currentOutPresSDO.ServiceReqs.Where(o => o.ID > 0 && !serviceReqCode_ExpMest.Contains(o.SERVICE_REQ_CODE)).ToList();
                                 var expMests = GetExpMestByServiceReq(serviceReqs);
                                 if (expMests != null)
                                 {
@@ -635,7 +635,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         {
                             foreach (var item in currentOutPresSDO.ServiceReqs)
                             {
-                                currentOutPresSDO.ExpMests.Add(new HIS_EXP_MEST { ID = -1, SERVICE_REQ_ID = item.ID });
+                                currentOutPresSDO.ExpMests.Add(new HIS_EXP_MEST { ID = -1, SERVICE_REQ_ID = item.ID, TDL_SERVICE_REQ_CODE = item.SERVICE_REQ_CODE });
                             }
                         }
                     }
