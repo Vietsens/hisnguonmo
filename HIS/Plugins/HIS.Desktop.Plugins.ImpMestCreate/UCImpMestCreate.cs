@@ -5668,6 +5668,16 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     //var bid = listBids.FirstOrDefault(o => o.ID == bidId);
                     if (currentBid != null)
                     {
+                        HisBidMedicineTypeViewFilter mediFilter = new HisBidMedicineTypeViewFilter();
+                        mediFilter.BID_ID = this.currentBid.ID;
+                        mediFilter.IS_ACTIVE = 1;
+                        var listBidMedicine = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_BID_MEDICINE_TYPE>>(HisRequestUriStore.HIS_BID_MEDICINE_TYPE_GETVIEW, ApiConsumers.MosConsumer, mediFilter, null);
+
+                        HisBidMaterialTypeViewFilter mateFilter = new HisBidMaterialTypeViewFilter();
+                        mateFilter.BID_ID = this.currentBid.ID;
+                        mateFilter.IS_ACTIVE = 1;
+                        var listBidMaterial = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_BID_MATERIAL_TYPE>>(HisRequestUriStore.HIS_BID_MATERIAL_TYPE_GETVIEW, ApiConsumers.MosConsumer, mateFilter, null);
+
                         this.currentSupplierForEdit = supplier;
                         //if(cboBi)
                         if (listBidMedicine != null && listBidMedicine.Count > 0)
@@ -5683,7 +5693,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             SetDataSourceGridControlMediMateMedicine();
                         }
 
-                        if (listBidMaterial != null && listBidMaterial.Count > 0)
+                        if (listBidMaterial != null && listBidMaterial.Count > 0) 
                         {
                             dicBidMaterial.Clear();
                             List<V_HIS_BID_MATERIAL_TYPE> lstBidMate = listBidMaterial.Where(o => o.BID_ID == currentBid.ID).ToList();
@@ -5693,7 +5703,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             {
                                 dicBidMaterial[Base.StaticMethod.GetTypeKey(item.MATERIAL_TYPE_ID ??0 , item.BID_GROUP_CODE)] = item;
                             }
-                            SetDataSourceGridControlMediMateMedicine();
+                            SetDataSourceGridControlMediMateMaterial();
                         }
                         return;  
 
