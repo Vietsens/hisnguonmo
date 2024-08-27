@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\..\..\lib\HIS\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="CARD.WCF.Service.TapCardService">
       <HintPath>..\..\..\..\lib\WCF\CARD.WCF\TapCardService\4.5\CARD.WCF.Service.TapCardService.dll</HintPath>
@@ -58,7 +58,10 @@
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraVerticalGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="His.Bhyt.InsuranceExpertise">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.InsuranceExpertise.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\His.Bhyt.InsuranceExpertise.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.ModuleExt">
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.ModuleExt.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.CheckHeinGOV">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.CheckHeinGOV\HIS.Desktop.Plugins.Library.CheckHeinGOV.dll</HintPath>
@@ -70,7 +73,13 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.RegisterConnectHrm">
-      <HintPath>..\..\..\..\lib\HIS\ReferencedAssemblies\HIS.Desktop.Plugins.Library.RegisterConnectHrm.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.RegisterConnectHrm.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Print">
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Print.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Utility">
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Icd">
       <HintPath>..\..\..\..\lib\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
@@ -139,7 +148,7 @@
       <HintPath>..\..\..\..\lib\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.CustomControls">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.CustomControls.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\Inventec.CustomControls.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.LanguageManager">
       <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
@@ -157,7 +166,7 @@
       <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.CustomControl">
-      <HintPath>..\..\..\..\lib\HIS\ReferencedAssemblies\Inventec.Desktop.CustomControl.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\Inventec.Desktop.CustomControl.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Plugins.Plugin">
       <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Plugins.Plugin\Inventec.Desktop.Plugins.Plugin.dll</HintPath>
@@ -230,7 +239,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="WcfCCCD">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\WcfCCCD.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\WcfCCCD.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -422,18 +431,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
       <Name>HIS.Desktop.LocalStorage.Location</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
-      <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>
-      <Name>HIS.Desktop.ModuleExt</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Print\HIS.Desktop.Print.csproj">
-      <Project>{aeeca321-fd65-407a-8d70-ba5362883b87}</Project>
-      <Name>HIS.Desktop.Print</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
-      <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
