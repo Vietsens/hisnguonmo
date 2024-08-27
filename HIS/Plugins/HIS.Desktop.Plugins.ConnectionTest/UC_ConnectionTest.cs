@@ -1117,6 +1117,10 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.APPROVAL_TIME ?? 0);
                         }
+                        else if (e.Column.FieldName == "APPOINTMENT_TIME_STR")
+                        {
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.APPOINTMENT_TIME ?? 0);
+                        }
                         else if (e.Column.FieldName == "DOB_STR")
                         {
                             if (data.DOB.HasValue)
@@ -1343,7 +1347,11 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         lisSampleFilter.ORDER_DIRECTION = "DESC";
                     }
                 }
-
+                if (chkAppointment.Checked)
+                {
+                    lisSampleFilter.ORDER_FIELD = "APPOINTMENT_TIME";
+                    lisSampleFilter.ORDER_DIRECTION = "ASC";
+                }
                 List<long> lstTestServiceReqSTT = new List<long>();
 
                 if (cboServiceResult.EditValue != null)
@@ -5065,9 +5073,15 @@ namespace HIS.Desktop.Plugins.ConnectionTest
 
                         if (HisConfigCFG.WARNING_TIME_RETURN_RESULT == "1"
                             && data.APPOINTMENT_TIME.HasValue && data.APPOINTMENT_TIME < Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now)
-                            && (data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM || data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ))
+                            && (data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM || data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ || data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN))
                         {
                             e.Appearance.ForeColor = Color.Red;
+                        }
+                        else if (HisConfigCFG.WARNING_TIME_RETURN_RESULT != "0"
+                            && data.APPOINTMENT_TIME.HasValue && data.APPOINTMENT_TIME - (Convert.ToInt64(HisConfigCFG.WARNING_TIME_RETURN_RESULT == "" ? "0" : HisConfigCFG.WARNING_TIME_RETURN_RESULT) * 100) < Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now)
+                            && (data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM || data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ || data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN))
+                        {
+                            e.Appearance.ForeColor = Color.Orange;
                         }
                         else
                         {
@@ -9286,6 +9300,18 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 this.controlStateWorker.SetData(this.currentControlStateRDO);
                 FillDataToGridControl();
                 WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkAppointment_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                FillDataToGridControl();
             }
             catch (Exception ex)
             {
