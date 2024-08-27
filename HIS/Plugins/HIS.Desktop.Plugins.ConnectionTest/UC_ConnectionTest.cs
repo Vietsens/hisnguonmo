@@ -5071,7 +5071,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             }
                         }
 
-                        if (HisConfigCFG.WARNING_TIME_RETURN_RESULT == "1"
+                        if (HisConfigCFG.WARNING_TIME_RETURN_RESULT != "0"
                             && data.APPOINTMENT_TIME.HasValue && data.APPOINTMENT_TIME < Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now)
                             && (data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM || data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ || data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN))
                         {
