@@ -738,12 +738,12 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                             if (currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__FINISHED)
                             {
                                 pbQr.EditValue = global::HIS.Desktop.Plugins.CreateTransReqQR.Properties.Resources.check;
+
+                                btnNew.Enabled = btnCreate.Enabled = false;
                                 if (lstLoaiPhieu.FirstOrDefault(o => o.ID == "Mps000102").Check)
                                     onClickTamUngDv(null, null);
-                                btnNew.Enabled = btnCreate.Enabled = false;
-                                if (inputTransReq.DelegtePrint != null)
-                                    inputTransReq.DelegtePrint();
-                                else if (lstLoaiPhieu.FirstOrDefault(o => o.ID == "Mps000276").Check)
+                                
+                                if (lstLoaiPhieu.FirstOrDefault(o => o.ID == "Mps000276").Check)
                                 {
                                     HisSereServFilter ssfilter = new HisSereServFilter();
                                     ssfilter.IDs = SereServIds;

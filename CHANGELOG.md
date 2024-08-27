@@ -1,3 +1,9 @@
+### Release 2.325.0
+* Bổ sung sao chép thông tin xử lý khám của đợt khám trước đó
+* Bổ sung thông tin tại các chức năng xét nghiệm cho phép sao chép dữ liệu từ danh sách
+* Bổ sung thông tin tại các biểu in tờ điều trị, kết quả cận lâm sàng
+* Sửa thông tin trong XML phục vụ XML 130 và QĐ 4750/QĐ-BYT 
+
 ### Release 2.324.0
 * Bổ sung thông tin cho api kết nối xét nghiệm
 * Sửa chức năng cảnh báo liều theo chức năng chạy thận
