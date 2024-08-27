@@ -78,6 +78,8 @@
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtSearchValue2.Properties)).BeginInit();
@@ -228,7 +230,8 @@
             this.gridColumn9,
             this.gridColumn10,
             this.gridColumn11,
-            this.gridColumn12});
+            this.gridColumn12,
+            this.gridColumn14});
             this.gridViewDepartmentRecive.GridControl = this.gridControlDepartmentRecive;
             this.gridViewDepartmentRecive.Name = "gridViewDepartmentRecive";
             this.gridViewDepartmentRecive.OptionsView.ShowGroupPanel = false;
@@ -356,7 +359,8 @@
             this.gridColumn3,
             this.gridColumn4,
             this.gridColumn5,
-            this.gridColumn6});
+            this.gridColumn6,
+            this.gridColumn13});
             this.gridViewDepartmentAlert.GridControl = this.gridControlDepartmentAlert;
             this.gridViewDepartmentAlert.Name = "gridViewDepartmentAlert";
             this.gridViewDepartmentAlert.OptionsSelection.CheckBoxSelectorColumnWidth = 30;
@@ -633,6 +637,18 @@
             this.emptySpaceItem3.Size = new System.Drawing.Size(213, 26);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
+            // gridColumn13
+            // 
+            this.gridColumn13.Caption = "gridColumn13";
+            this.gridColumn13.FieldName = "SORT_ORDER";
+            this.gridColumn13.Name = "gridColumn13";
+            // 
+            // gridColumn14
+            // 
+            this.gridColumn14.Caption = "gridColumn14";
+            this.gridColumn14.FieldName = "SORT_ORDER";
+            this.gridColumn14.Name = "gridColumn14";
+            // 
             // frmAlert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -735,5 +751,7 @@
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit2;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit3;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn14;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
     }
 }

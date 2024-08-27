@@ -17,4 +17,8 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment.Model
     {
         public bool SELECT_ONE { get; set; }
     }
+    class DepartmentDTOWithCheck : DepartmentDTO
+    {
+        public bool Check { get; set; } // Thuộc tính mới để lưu trạng thái check
+    }
 }
