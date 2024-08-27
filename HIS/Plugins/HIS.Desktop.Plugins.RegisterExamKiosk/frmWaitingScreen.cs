@@ -77,7 +77,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         #region Declare
         int indexImage;
         List<Image> listImage;
-
+        HIS_EMPLOYEE currentEmployee = null;
         bool isHandling = false;
 
         Inventec.Desktop.Common.Modules.Module currentModule;
@@ -118,7 +118,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             {
                 AppConfigs.LoadConfig();
                 checkConfig();
-
+                CheckEmploy();
                 //Lấy ảnh từ thư mục trong HIS.Desktop
                 getImageFromFile();
 
@@ -175,6 +175,27 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        public void CheckEmploy()
+        {
+            try
+            {
+                if (currentEmployee == null)
+                {
+                    CommonParam param = new CommonParam();
+                    MOS.Filter.HisEmployeeFilter hisEmployeeFilter = new HisEmployeeFilter();
+                    hisEmployeeFilter.LOGINNAME__EXACT = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    currentEmployee = new BackendAdapter(param).Get<List<HIS_EMPLOYEE>>("api/HisEmployee/Get", ApiConsumer.ApiConsumers.MosConsumer, hisEmployeeFilter, param).FirstOrDefault();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+
         private void TimerCheckVisible_Tick()
         {
 
@@ -1365,6 +1386,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         private async Task<ResultHistoryLDO> CheckHanSDTheBHYT(HeinCardData dataHein)
         {
             ResultHistoryLDO reult = null;
+            string name = "";
+            string cccd = "";
             try
             {
                 if (String.IsNullOrEmpty(dataHein.PatientName)
@@ -1378,6 +1401,24 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 Inventec.Common.Logging.LogSystem.Debug(String.Format("CCCD cán bộ:{0}", cccdCb));
                 Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên api:{0}", api));
 
+                if (string.IsNullOrEmpty(nameCb))
+                {
+                    name = currentEmployee.TDL_USERNAME;
+                }
+                else
+                {
+                    name = nameCb;
+                }
+
+                if (string.IsNullOrEmpty(cccdCb))
+                {
+                    cccd = currentEmployee.IDENTIFICATION_NUMBER;
+                }
+                else
+                {
+                    cccd = nameCb; 
+                }
+
                 CommonParam param = new CommonParam();
                 ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
                 apiInsuranceExpertise.ApiEgw = api;
@@ -1386,8 +1427,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 checkHistoryLDO.ngaySinh = dataHein.Dob;
                 checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(dataHein.PatientName);
                 checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? dataHein.PatientName : checkHistoryLDO.hoTen);
-                checkHistoryLDO.hoTenCb = nameCb;
-                checkHistoryLDO.cccdCb = cccdCb;
+                checkHistoryLDO.hoTenCb = name;
+                checkHistoryLDO.cccdCb = cccd;
                 Inventec.Common.Logging.LogSystem.Info("CheckHanSDTheBHYT => 1");
                 reult = await apiInsuranceExpertise.CheckHistory(BHXHLoginCFG.USERNAME, BHXHLoginCFG.PASSWORD, BHXHLoginCFG.ADDRESS, checkHistoryLDO, BHXHLoginCFG.ADDRESS_OPTION);
 
