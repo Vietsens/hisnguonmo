@@ -5664,19 +5664,39 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     if (currentImpMestType != null && (this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC || this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__DK))
                         txtNhaCC.Properties.Buttons[1].Visible = true;
                     var supplier = listSupplier.FirstOrDefault(o => o.ID == oldSupplierId);
+                    //long bidId = (long)cboGoiThau.EditValue;
+                    //var bid = listBids.FirstOrDefault(o => o.ID == bidId);
                     if (currentBid != null)
                     {
                         this.currentSupplierForEdit = supplier;
+                        //if(cboBi)
                         if (listBidMedicine != null && listBidMedicine.Count > 0)
                         {
-                            listBidMedicine = listBidMedicine.Where(o => o.SUPPLIER_ID == currentSupplierForEdit.ID).ToList();
+                            dicBidMedicine.Clear();
+                            List<V_HIS_BID_MEDICINE_TYPE> lstBidMedi = listBidMedicine.Where(o => o.BID_ID == currentBid.ID).ToList();
+                            lstBidMedi = lstBidMedi.Where(o => o.SUPPLIER_ID == currentSupplierForEdit.ID).ToList();
 
-                            foreach (var item in listBidMedicine)
+                            foreach (var item in lstBidMedi)
                             {
                                 dicBidMedicine[Base.StaticMethod.GetTypeKey(item.MEDICINE_TYPE_ID, item.BID_GROUP_CODE)] = item;
                             }
+                            SetDataSourceGridControlMediMateMedicine();
                         }
-                        return;
+
+                        if (listBidMaterial != null && listBidMaterial.Count > 0)
+                        {
+                            dicBidMaterial.Clear();
+                            List<V_HIS_BID_MATERIAL_TYPE> lstBidMate = listBidMaterial.Where(o => o.BID_ID == currentBid.ID).ToList();
+                            lstBidMate = lstBidMate.Where(o => o.SUPPLIER_ID == currentSupplierForEdit.ID).ToList();
+
+                            foreach (var item in lstBidMate)
+                            {
+                                dicBidMaterial[Base.StaticMethod.GetTypeKey(item.MATERIAL_TYPE_ID ??0 , item.BID_GROUP_CODE)] = item;
+                            }
+                            SetDataSourceGridControlMediMateMedicine();
+                        }
+                        return;  
+
                     }
                     Supplier_RowClick(supplier);
                     Contract_RowClick();
