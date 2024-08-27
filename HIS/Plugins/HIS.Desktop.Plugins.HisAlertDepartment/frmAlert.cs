@@ -766,7 +766,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
             try
             {
                 DepartmentDTO rowData = (DepartmentDTO)gridViewDepartmentAlert.GetFocusedRow();
-
+                listDepartmentRecive.Clear();
                 CheckEdit check = sender as CheckEdit;
                 rowData.SELECT_ONE = check.Checked;
                 foreach (var department in listDepartmentSourceAlert)
@@ -1045,7 +1045,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 //Cột chọn 1 dòng
                 // Xử ly check chọn
                 DepartmentDTO rowData = (DepartmentDTO)gridViewDepartmentRecive.GetFocusedRow();
-
+                listDepartmentAlert.Clear();
                 CheckEdit check = sender as CheckEdit;
                 rowData.SELECT_ONE = check.Checked;
                 foreach (var department in listDepartmentSourceRecive)
@@ -1096,7 +1096,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 
                 if(TYPE == 2)
                 {
-                    if (listDepartmentAlert.Count ==0) return;
+                    if (listDepartmentAlert.Count == 0 || listDepartmentRecive.Count == 0) return;
                     foreach (var alert in listDepartmentRecive)
                     {
                         // Check if the ID is present in either dicIsMedicalAlert or dicIsSecurityAlert
@@ -1113,7 +1113,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 }
                 else
                 {
-                    if (listDepartmentRecive.Count == 0) return;
+                    if (listDepartmentRecive.Count == 0 || listDepartmentAlert.Count == 0) return;
                     foreach (var alert in listDepartmentAlert)
                     {
                         // Check if the ID is present in either dicIsMedicalAlert or dicIsSecurityAlert
