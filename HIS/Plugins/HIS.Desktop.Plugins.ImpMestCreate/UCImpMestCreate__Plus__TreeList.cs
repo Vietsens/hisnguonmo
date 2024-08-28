@@ -2296,7 +2296,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     List<long> listSupplierIds = new List<long>();
                     if (listBidMedicine != null && listBidMedicine.Count > 0)
                     {
-                        if (currentSupplier != null)
+                        if (currentSupplier != null && currentSupplier.ID > 0)
                         {
                             listBidMedicine = listBidMedicine.Where(o => o.SUPPLIER_ID == currentSupplier.ID).ToList();
                         }
@@ -2738,7 +2738,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     var listBidMaterial = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_BID_MATERIAL_TYPE>>(HisRequestUriStore.HIS_BID_MATERIAL_TYPE_GETVIEW, ApiConsumers.MosConsumer, mateFilter, null);
                     if (listBidMaterial != null && listBidMaterial.Count > 0)
                     {
-                        if (currentSupplier != null)
+                        if (currentSupplier != null && currentSupplier.ID > 0)
                         {
                             listBidMaterial = listBidMaterial.Where(o => o.SUPPLIER_ID == currentSupplier.ID).ToList();
                         }
