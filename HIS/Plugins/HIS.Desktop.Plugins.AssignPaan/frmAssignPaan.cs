@@ -342,7 +342,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
                     this.SetDataSourceCboPaanServiceType();
                     this.InitComboTestSampleType();
                 }
-
+                CheckTimeSereServ();
                 WaitingManager.Hide();
             }
             catch (Exception ex)

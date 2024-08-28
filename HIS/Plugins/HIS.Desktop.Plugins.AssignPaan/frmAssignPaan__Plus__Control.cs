@@ -17,13 +17,18 @@
  */
 using ACS.EFMODEL.DataModels;
 using DevExpress.XtraEditors.Controls;
+using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignPaan.Config;
 using HIS.Desktop.Plugins.AssignPaan.Resources;
 using HIS.Desktop.Utility;
+using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
+using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -175,7 +180,8 @@ namespace HIS.Desktop.Plugins.AssignPaan
                     txtPaanServiceTypeCode.Focus();
                     txtPaanServiceTypeCode.SelectAll();
                 }
-
+                if (dtInstructionTime.EditValue != null) CheckTimeSereServ();
+                
                 //if (dtInstructionTime.EditValue != null && dtInstructionTime.DateTime != DateTime.MinValue)
                 //{
                 //    string instructionTimeTracking = (dtInstructionTime.DateTime.ToString("yyyyMMdd") + "000000");
@@ -185,6 +191,49 @@ namespace HIS.Desktop.Plugins.AssignPaan
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void CheckTimeSereServ()
+        {
+
+            try
+            {
+                if (cboUsername.EditValue == null) return;
+                var config = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION").FirstOrDefault();
+                CommonParam param = new CommonParam();
+                if (config != null)
+                {
+                    if (config.VALUE == "1" || config.VALUE == "2")
+                    {
+                        HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
+                        sdo.TreatmentId = this.treatmentId;
+                        var username = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && Convert.ToInt64(cboUsername.EditValue) == p.ID).FirstOrDefault().USERNAME;
+                        sdo.Loginnames = new List<string>() { username };
+                        long sereTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtInstructionTime.DateTime) ?? 0;
+                        sdo.SereTimes = new List<long> { sereTime };
+                        Inventec.Common.Logging.LogSystem.Debug("HisServiceReqCheckSereTimesSDO:" + LogUtil.TraceData("HisServiceReqCheckSereTimesSDO", sdo));
+                        bool rs = new BackendAdapter(param).Post<bool>("/api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, param);
+                        if (!rs)
+                        {
+                            if (config.VALUE == "1")
+                            {
+                                MessageManager.Show(this, param, rs);
+                                btnSave.Enabled = btnSavePrint.Enabled = false;
+                            }
+                            else
+                            {
+                                btnSave.Enabled = btnSavePrint.Enabled = MessageBox.Show(this, param.Messages + ". Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.Yes;
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -366,6 +415,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
                         txtLoginname.Text = user.LOGINNAME;
                     }
                 }
+                if (cboUsername.EditValue != null) CheckTimeSereServ();
             }
             catch (Exception ex)
             {
