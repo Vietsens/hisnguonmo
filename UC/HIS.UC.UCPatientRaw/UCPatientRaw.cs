@@ -142,6 +142,8 @@ namespace HIS.UC.UCPatientRaw
 			ChucVu
 		}
 
+		private V_HIS_EMPLOYEE VEmployee { get; set; }
+
 		#endregion
 
 
@@ -173,7 +175,11 @@ namespace HIS.UC.UCPatientRaw
 				Inventec.Common.Logging.LogSystem.Warn(ex);
 			}
 		}
+		public void SetEmployee(V_HIS_EMPLOYEE employee)
+		{
+			this.VEmployee = employee;
 
+        }
 		private void GetDataVisibleControlFromPatientClassify()
 		{
 			try

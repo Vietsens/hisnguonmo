@@ -38,6 +38,8 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
         const string GOV_API_RESULT_003 = "003";
         DelegateEnableButtonSave dlgEnableButtonSave;
         DelegateHeinEnableButtonSave dlgHeinEnableButtonSave;
+        private string hoTenCb = BHXHLoginCFG.OFFICERNAME;
+        private string cccdCb = BHXHLoginCFG.CCCDOFFICER;
         public HeinGOVManager
             (
             //Action<HeinCardData> _FillDataAfterCheckBHYT_HeinInfo,
@@ -120,6 +122,14 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
             }
         }
 
+        public async Task<ResultDataADO> Check(HeinCardData dataHein, Action focusNextControl, bool ischeckChange, string heinAddressOfPatient, DateTime dtIntructionTime, bool isReadQrCode, bool showMessage, string hotenCb, string cccdCb)
+        {
+            if (string.IsNullOrEmpty(this.hoTenCb))
+                this.hoTenCb = hotenCb;
+            if (string.IsNullOrEmpty(this.cccdCb))
+                this.cccdCb = cccdCb;
+            return await Check(dataHein, focusNextControl, ischeckChange, heinAddressOfPatient, dtIntructionTime, isReadQrCode, showMessage);
+        }
         public async Task<ResultDataADO> Check(HeinCardData dataHein, Action focusNextControl, bool ischeckChange, string heinAddressOfPatient, DateTime dtIntructionTime, bool isReadQrCode, bool showMessage)
         {
             ResultDataADO rsData = new ResultDataADO();
@@ -170,8 +180,8 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     checkHistoryLDO.ngaySinh = dataHein.Dob;
                     checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(dataHein.PatientName);
                     checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? dataHein.PatientName : checkHistoryLDO.hoTen);
-                    checkHistoryLDO.hoTenCb = BHXHLoginCFG.OFFICERNAME;
-                    checkHistoryLDO.cccdCb = BHXHLoginCFG.CCCDOFFICER;
+                    checkHistoryLDO.hoTenCb = hoTenCb;
+                    checkHistoryLDO.cccdCb = cccdCb;
                     Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 1");
                     if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
                         || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)
@@ -734,6 +744,15 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
             }
             return result;
         }
+        public async Task<ResultDataADO> CheckCccdQrCode(HeinCardData dataHein, Action focusNextControl, DateTime dtIntructionTime, string hotenCb, string cccdCb)
+        {
+
+            if (!string.IsNullOrEmpty(hotenCb))
+                this.hoTenCb = hotenCb;
+            if (!string.IsNullOrEmpty(cccdCb))
+                this.cccdCb = cccdCb;
+            return await CheckCccdQrCode(dataHein, focusNextControl, dtIntructionTime);
+        }
 
         public async Task<ResultDataADO> CheckCccdQrCode(HeinCardData dataHein, Action focusNextControl, DateTime dtIntructionTime)
         {
@@ -762,8 +781,8 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     checkHistoryLDO.ngaySinh = dataHein.Dob;
                     checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(dataHein.PatientName);
                     checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? dataHein.PatientName : checkHistoryLDO.hoTen);
-                    checkHistoryLDO.hoTenCb = BHXHLoginCFG.OFFICERNAME;
-                    checkHistoryLDO.cccdCb = BHXHLoginCFG.CCCDOFFICER;
+                    checkHistoryLDO.hoTenCb = hoTenCb;
+                    checkHistoryLDO.cccdCb = cccdCb;
                     Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 1");
                     if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
                         || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)

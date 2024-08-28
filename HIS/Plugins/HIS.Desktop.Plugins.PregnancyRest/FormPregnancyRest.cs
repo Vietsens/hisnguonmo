@@ -137,12 +137,24 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 {
                     connectInfors = connect_infor.Split('|').ToList();
                     api = connectInfors[0];
-                    
+                    nameCb = connectInfors[1];
                     string username = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                     var employee = GetEmployee(username);
-                    nameCb = string.IsNullOrEmpty(connectInfors[1]) ? employee.TDL_USERNAME : connectInfors[1];
-                    cccdCb = string.IsNullOrEmpty(connectInfors[1]) && string.IsNullOrEmpty(connectInfors[2]) ? employee.IDENTIFICATION_NUMBER : connectInfors[2];
-                    
+                    if (string.IsNullOrEmpty(nameCb))
+                    {
+                        if(employee != null)
+                        {
+                            nameCb = employee.TDL_USERNAME;
+                        }
+                    }
+                    cccdCb = connectInfors[2];
+                    if(string.IsNullOrEmpty(cccdCb))
+                    {
+                        if(employee!= null)
+                        {
+                            cccdCb = employee.IDENTIFICATION_NUMBER;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -156,8 +168,8 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             HIS_EMPLOYEE result = new HIS_EMPLOYEE();
             try
             {
-                var rs = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(s => s.TDL_USERNAME == username).FirstOrDefault();
-                if (rs != null)
+                var rs = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(s => s.TDL_USERNAME.Equals(username)).FirstOrDefault();
+                if(rs != null)
                 {
                     result = rs;
                 }
@@ -170,7 +182,6 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             }
             return result;
         }
-
         private void LoadDataToGrid()
         {
             try

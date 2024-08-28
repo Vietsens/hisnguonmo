@@ -216,7 +216,7 @@ namespace HIS.UC.UCPatientRaw
 									HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
 									if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
 										heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-									this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, heinAddressOfPatient, this.dlgGetIntructionTime(), isReadQrCode);
+									this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, heinAddressOfPatient, this.dlgGetIntructionTime(), isReadQrCode, true, VEmployee != null ? VEmployee.TDL_USERNAME : null, VEmployee != null ? VEmployee.IDENTIFICATION_NUMBER : null);
 								}
 								if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
 								{
@@ -323,7 +323,7 @@ namespace HIS.UC.UCPatientRaw
                                 dtIntructionTime = this.dlgGetIntructionTime();
 								if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
 									heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-								this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode);
+								this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode, true, VEmployee != null ? VEmployee.TDL_USERNAME : null, VEmployee != null ? VEmployee.IDENTIFICATION_NUMBER : null);
 							}
 
 							if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
@@ -401,7 +401,7 @@ namespace HIS.UC.UCPatientRaw
                                         dtIntructionTime = this.dlgGetIntructionTime();
 											if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
 												heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-											this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode);
+											this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode, true, VEmployee != null ? VEmployee.TDL_USERNAME : null, VEmployee != null ? VEmployee.IDENTIFICATION_NUMBER : null);
 										}
 
 										if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
@@ -587,7 +587,7 @@ namespace HIS.UC.UCPatientRaw
                                     dtIntructionTime = this.dlgGetIntructionTime();
 									if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
 										heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-									this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode);
+									this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode, true, VEmployee != null ? VEmployee.TDL_USERNAME : null, VEmployee != null ? VEmployee.IDENTIFICATION_NUMBER : null);
 								}
 
 								if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
@@ -670,7 +670,7 @@ namespace HIS.UC.UCPatientRaw
                                 dtIntructionTime = this.dlgGetIntructionTime();
                                 if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
                                     heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-                                this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode);
+                                this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode, true, VEmployee != null ? VEmployee.TDL_USERNAME : null, VEmployee != null ? VEmployee.IDENTIFICATION_NUMBER : null);
                             }
 
                             if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
@@ -801,7 +801,7 @@ namespace HIS.UC.UCPatientRaw
 					HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
 					if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
 						heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-					this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, heinAddressOfPatient, this.dlgGetIntructionTime(), isReadQrCode);
+					this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, heinAddressOfPatient, this.dlgGetIntructionTime(), isReadQrCode, true, VEmployee != null ? VEmployee.TDL_USERNAME : null, VEmployee != null ? VEmployee.IDENTIFICATION_NUMBER : null);
 				}
 				if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
 				{
