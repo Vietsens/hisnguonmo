@@ -39,15 +39,6 @@
     <Reference Include="ACS.SDO">
       <HintPath>..\..\..\Lib\ACS\ACS.SDO.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.Mapper">
-      <HintPath>..\..\..\LIB\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Desktop.Common.Modules">
-      <HintPath>..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
-    </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
@@ -141,6 +132,18 @@
     <Compile Include="TreatmentLogADO.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.csproj">
+      <Project>{4859008d-a40d-47bb-a185-019c8b140569}</Project>
+      <Name>Inventec.Common.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.csproj">
+      <Project>{7b793974-0c88-47d8-8686-cfa8f5f6e464}</Project>
+      <Name>Inventec.Common.Mapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.csproj">
+      <Project>{aa9d939b-6eea-4dc7-8d6c-56c3291ebfe3}</Project>
+      <Name>Inventec.Desktop.Common.Modules</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Common\HIS.Desktop.Common.csproj">
       <Project>{59fdcba7-0f9f-4257-b95a-e37a1ccfe107}</Project>
       <Name>HIS.Desktop.Common</Name>

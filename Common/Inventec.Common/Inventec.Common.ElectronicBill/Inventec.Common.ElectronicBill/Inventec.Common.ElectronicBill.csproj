@@ -1,0 +1,583 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7B82F5A9-E041-4CA1-8E84-44838D514E51}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Inventec.Common.ElectronicBill</RootNamespace>
+    <AssemblyName>Inventec.Common.ElectronicBill</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EO.Base, Version=18.2.74.0, Culture=neutral, PublicKeyToken=e92353a6bf73fffc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\RELEASE\Library packages\EO.WebBrowser.20.3.34\EO.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.Pdf, Version=18.2.74.0, Culture=neutral, PublicKeyToken=e92353a6bf73fffc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\RELEASE\Library packages\EO.WebBrowser.20.3.34\EO.Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\ElectronicBillInput.cs" />
+    <Compile Include="Base\ElectronicBillResult.cs" />
+    <Compile Include="CmdType.cs" />
+    <Compile Include="ElectronicBillManager.cs" />
+    <Compile Include="ElectronicBillProcessor.cs" />
+    <Compile Include="IRun.cs" />
+    <Compile Include="MappingError.cs" />
+    <Compile Include="MD\Customer.cs" />
+    <Compile Include="MD\Extras.cs" />
+    <Compile Include="MD\InvByCusFkey.cs" />
+    <Compile Include="MD\Invoice.cs" />
+    <Compile Include="MD\InvoiceDetail.cs" />
+    <Compile Include="MD\InvoiceDetail_BM.cs" />
+    <Compile Include="MD\Invoice_BM.cs" />
+    <Compile Include="MD\ListData.cs" />
+    <Compile Include="MD\ListInv.cs" />
+    <Compile Include="MD\Product.cs" />
+    <Compile Include="MD\ProductBm.cs" />
+    <Compile Include="ModelTT78\DLHDon.cs" />
+    <Compile Include="ModelTT78\HDon.cs" />
+    <Compile Include="ModelTT78\HHDVu.cs" />
+    <Compile Include="ModelTT78\LTSuat.cs" />
+    <Compile Include="ModelTT78\NBan.cs" />
+    <Compile Include="ModelTT78\NDHDon.cs" />
+    <Compile Include="ModelTT78\NMua.cs" />
+    <Compile Include="ModelTT78\TTChung.cs" />
+    <Compile Include="ModelTT78\TTin.cs" />
+    <Compile Include="ModelTT78\TToan.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResultCode.cs" />
+    <Compile Include="Service References\BusinessserviceVNPT\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\PorttalServiceVNPT\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\VNPTBachMai\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\VNPTNinhThuan\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\WSPublicVNPT\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\businessservice.wsdl" />
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.AdjustActionAssignedNoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.AdjustInvoiceActionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.AdjustInvoiceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.adjustInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.cancelInvNoPayResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.cancelInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.confirmPaymentDetailFkeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.confirmPaymentDetailResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.confirmPaymentFkeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.confirmPaymentFkeyVNPResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.confirmPaymentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.CreateNewUserbyAccResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.deliverInvFkeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.deliverInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.GetAllRolesbyAccResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.GetInvbyFkeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.getPublishInvsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.getSerialByPatternResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.poolingInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.ReplaceActionAssignedNoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.ReplaceInvoiceActionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.ReplaceInvoiceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.replaceInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.reportInvUsedResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.reportMonthResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.ResetTemResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.UnConfirmPaymentFkeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.UnConfirmPaymentFkeyVNPResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BusinessserviceVNPT\Inventec.Common.ElectronicBill.BusinessserviceVNPT.unConfirmPaymentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.ConfirmSigantureResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.convertForStoreFkeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.convertForStoreResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.convertForVerifyFkeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.convertForVerifyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.downloadInvFkeyNoPayResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.downloadInvFkeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.downloadInvNoPayResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.downloadInvPDFFkeyNoPayResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.downloadInvPDFFkeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.downloadInvPDFNoPayResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.downloadInvPDFResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.downloadInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.getcatalogViewFkeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.getCatalogViewResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.getCusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.getDigestResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.getInvViewFkeyByStaffResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.getInvViewFkeyNoPayResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.getInvViewFkeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.getInvViewNoPayResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.getInvViewResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.getStaffResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.listInvByCusFkeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.listInvByCusFkeyVNPResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.listInvByCusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.listInvFromNoToNoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\Inventec.Common.ElectronicBill.PorttalServiceVNPT.SearchInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PorttalServiceVNPT\PortalService.wsdl" />
+    <None Include="Service References\VNPTBachMai\Inventec.Common.ElectronicBill.VNPTBachMai.deleteInvFkeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTBachMai\Inventec.Common.ElectronicBill.VNPTBachMai.ImportAndPublishInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTBachMai\Inventec.Common.ElectronicBill.VNPTBachMai.ImportInvByPatternSerialResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTBachMai\Inventec.Common.ElectronicBill.VNPTBachMai.ImportInvPatternResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTBachMai\Inventec.Common.ElectronicBill.VNPTBachMai.ImportInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTBachMai\Inventec.Common.ElectronicBill.VNPTBachMai.publishInvFkeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTBachMai\Inventec.Common.ElectronicBill.VNPTBachMai.publishInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTBachMai\Inventec.Common.ElectronicBill.VNPTBachMai.setCusCertResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTBachMai\Inventec.Common.ElectronicBill.VNPTBachMai.UpdateCusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTBachMai\publishservice.wsdl" />
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.AdjustReplaceInvWithTokenResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.AppClientSyncInfoSystemResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.CancelInvoiceWithTokenResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.ConvertForVerifyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.deleteInvoiceByFkeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.deleteInvoiceByIDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.getCurrentNoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.GetDataInvHsmResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.getDateTimeServerResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.getHashInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.getHashInvWithTokenResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.GetInForPublishComResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.GetInvoiceByFkeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.GetInvoiceByFkeysResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.GetPublishInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.GetSingleInvoiceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.getStatusInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.ImportAndPublishAssignedNoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.ImportAndPublishInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.ImportAndPublishInvSignServiceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.importCertWithTokenResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.ImportFromXmlResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.ImportInvByPatternResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.ImportInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.PaymentForVerifyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.PublishInvByDateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.PublishInvFkeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.publishInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.publishInvWithTokenResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.resetPasswordResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.rolBackWithTokenResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.SendAgainEmailServResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.sendEmailAgainResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.sendEmailResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.setCusCertResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.SignInResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.syncCertResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.syncClientInvoiceCancelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.syncClientInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.syncDecisionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.syncInfomationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.syncInvCancelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.syncInvoiceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.syncInvoicev2Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.syncPublishResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.UpdateCusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\Inventec.Common.ElectronicBill.VNPTNinhThuan.updateInvoiceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VNPTNinhThuan\publishservice.wsdl" />
+    <None Include="Service References\WSPublicVNPT\Inventec.Common.ElectronicBill.WSPublicVNPT.deleteInvFkeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WSPublicVNPT\Inventec.Common.ElectronicBill.WSPublicVNPT.ImportAndPublishInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WSPublicVNPT\Inventec.Common.ElectronicBill.WSPublicVNPT.ImportInvByPatternSerialResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WSPublicVNPT\Inventec.Common.ElectronicBill.WSPublicVNPT.ImportInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WSPublicVNPT\Inventec.Common.ElectronicBill.WSPublicVNPT.publishInvFkeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WSPublicVNPT\Inventec.Common.ElectronicBill.WSPublicVNPT.publishInvResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WSPublicVNPT\Inventec.Common.ElectronicBill.WSPublicVNPT.setCusCertResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WSPublicVNPT\Inventec.Common.ElectronicBill.WSPublicVNPT.UpdateCusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WSPublicVNPT\PublishService.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\BusinessserviceVNPT\" />
+    <WCFMetadataStorage Include="Service References\PorttalServiceVNPT\" />
+    <WCFMetadataStorage Include="Service References\VNPTBachMai\" />
+    <WCFMetadataStorage Include="Service References\VNPTNinhThuan\" />
+    <WCFMetadataStorage Include="Service References\WSPublicVNPT\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WSPublicVNPT\PublishService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WSPublicVNPT\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WSPublicVNPT\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WSPublicVNPT\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\PorttalServiceVNPT\PortalService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\PorttalServiceVNPT\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\PorttalServiceVNPT\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\PorttalServiceVNPT\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\VNPTBachMai\publishservice.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\VNPTBachMai\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\VNPTBachMai\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\VNPTBachMai\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\VNPTNinhThuan\publishservice.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\VNPTNinhThuan\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\VNPTNinhThuan\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\VNPTNinhThuan\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BusinessserviceVNPT\businessservice.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BusinessserviceVNPT\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BusinessserviceVNPT\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BusinessserviceVNPT\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

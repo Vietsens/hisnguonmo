@@ -30,12 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.Xml">
-      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.Xml\Inventec.Common.Xml.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -53,6 +47,16 @@
     <Compile Include="CacheMonitorKeyStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XmlCacheMonitorConfig.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.csproj">
+      <Project>{4859008d-a40d-47bb-a185-019c8b140569}</Project>
+      <Name>Inventec.Common.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Xml\Inventec.Common.Xml.csproj">
+      <Project>{858d63a0-c773-4172-a5ef-a6c37e4c713a}</Project>
+      <Name>Inventec.Common.Xml</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

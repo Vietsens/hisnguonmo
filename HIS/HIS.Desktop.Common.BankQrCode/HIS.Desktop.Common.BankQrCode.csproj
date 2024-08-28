@@ -30,18 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Inventec.Common.BankQrCode">
-      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.BankQrCode\Inventec.Common.BankQrCode.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.QRCoder">
-      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.QRCoder\Inventec.Common.QRCoder.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.String">
-      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
-    </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\Lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
@@ -60,6 +48,24 @@
     </Compile>
     <Compile Include="QrCodeProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.BankQrCode\Inventec.Common.BankQrCode.csproj">
+      <Project>{e5ff2564-be1c-4380-8f8a-6ffb4d916cde}</Project>
+      <Name>Inventec.Common.BankQrCode</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.csproj">
+      <Project>{4859008d-a40d-47bb-a185-019c8b140569}</Project>
+      <Name>Inventec.Common.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.QRCoder\Inventec.Common.QRCoder\Inventec.Common.QRCoder.csproj">
+      <Project>{aece5df3-c379-46ca-bb7d-7bdbe59011fd}</Project>
+      <Name>Inventec.Common.QRCoder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.String\Inventec.Common.String.csproj">
+      <Project>{dce10a9c-b9df-4306-ac93-691275a5e456}</Project>
+      <Name>Inventec.Common.String</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

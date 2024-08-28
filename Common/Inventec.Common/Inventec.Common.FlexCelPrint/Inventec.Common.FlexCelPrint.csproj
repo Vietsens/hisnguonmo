@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A9E46128-5AF1-4BBD-B318-854517FC26AB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Inventec.Common.FlexCelPrint</RootNamespace>
+    <AssemblyName>Inventec.Common.FlexCelPrint</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.Cells">
+      <HintPath>..\..\..\..\LIB\Library packages\Aspose.Cells\Aspose.Cells.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Pdf">
+      <HintPath>..\..\..\..\LIB\Library packages\Aspose.Total for .NET July 2019\Aspose.Pdf.11.1.1\lib\net40-client\Aspose.Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.Data.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Docs.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.Docs.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Office.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.Office.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.Pdf.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v15.2.Drawing">
+      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.Pdf.v15.2.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.Printing.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Spreadsheet.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.Spreadsheet.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.Utils.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.XtraBars.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.XtraCharts.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.XtraEditors.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.XtraGrid.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.XtraLayout.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPdfViewer.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.XtraPdfViewer.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.XtraPrinting.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraSpreadsheet.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.XtraSpreadsheet.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeList.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.XtraTreeList.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="EMR.TDO">
+      <HintPath>..\..\..\..\LIB\EMR\EMR.TDO.dll</HintPath>
+    </Reference>
+    <Reference Include="FlexCel">
+      <HintPath>..\..\..\..\LIB\FlexCellReport\FlexCel.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.SignFile">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.SignFile\Inventec.Common.SignFile.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.SignLibrary">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Ado\PaperSizeAdo.cs" />
+    <Compile Include="Ado\PrintMergeAdo.cs" />
+    <Compile Include="Ado\SupportAdo.cs" />
+    <Compile Include="Ado\TemplateKeyAdo.cs" />
+    <Compile Include="DocumentPrint\Licenses\LicenceProcess.cs" />
+    <Compile Include="DocumentPrint\Licenses\Licenses.cs" />
+    <Compile Include="DocumentPrint\ThreadPrintPartial.cs" />
+    <Compile Include="DocumentPrint\ThreadPrintPartialForPDF.cs" />
+    <Compile Include="FormPrintReason\frmPrintReason.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPrintReason\frmPrintReason.Designer.cs">
+      <DependentUpon>frmPrintReason.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSetupPrintPreview__Plus_Load.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSetupPrintPreview__Plus_Print.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSetupPrintPreview__Plus_Setup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSetupPrintPreview__Plus_Export.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSetupPrintPreview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSetupPrintPreview.Designer.cs">
+      <DependentUpon>frmSetupPrintPreview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Loader\PaperSizeLoader.cs" />
+    <Compile Include="DocumentPrint\ThreadPrint.cs" />
+    <Compile Include="PrintMerge\frmSetupPrintPreviewMerge.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PrintMerge\frmSetupPrintPreviewMerge.Designer.cs">
+      <DependentUpon>frmSetupPrintPreviewMerge.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PrintMerge\frmSetupPrintPreviewMerge__Plus_Export.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PrintMerge\frmSetupPrintPreviewMerge__Plus_Load.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PrintMerge\frmSetupPrintPreviewMerge__Plus_Print.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PrintMerge\frmSetupPrintPreviewMerge__Plus_Setup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ResourceMessage.cs" />
+    <Compile Include="TemplateKey\PreviewTemplateKey.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TemplateKey\PreviewTemplateKey.Designer.cs">
+      <DependentUpon>PreviewTemplateKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Util.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FormPrintReason\frmPrintReason.resx">
+      <DependentUpon>frmPrintReason.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSetupPrintPreview.resx">
+      <DependentUpon>frmSetupPrintPreview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PrintMerge\frmSetupPrintPreviewMerge.resx">
+      <DependentUpon>frmSetupPrintPreviewMerge.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.en.resx" />
+    <EmbeddedResource Include="Resources\Lang.vi.resx" />
+    <EmbeddedResource Include="TemplateKey\PreviewTemplateKey.resx">
+      <DependentUpon>PreviewTemplateKey.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\page_white_acrobat.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.csproj">
+      <Project>{c44d9b7b-878d-427b-b18e-5de971d36395}</Project>
+      <Name>Inventec.Desktop.Common.LanguageManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Inventec.Common.Logging\Inventec.Common.Logging.csproj">
+      <Project>{4859008d-a40d-47bb-a185-019c8b140569}</Project>
+      <Name>Inventec.Common.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Inventec.Common.MSOfficePrint\Inventec.Common.MSOfficePrint.csproj">
+      <Project>{f44c8833-ef86-48f8-a28f-06877ff52b44}</Project>
+      <Name>Inventec.Common.MSOfficePrint</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Inventec.Common.Resource\Inventec.Common.Resource.csproj">
+      <Project>{b7281efe-d0d4-4c75-8f32-5e6d1d580ff6}</Project>
+      <Name>Inventec.Common.Resource</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -878,6 +878,10 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.APPROVAL_TIME ?? 0);
                         }
+                        else if (e.Column.FieldName == "APPOINTMENT_TIME_STR")
+                        {
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.APPOINTMENT_TIME ?? 0);
+                        }
                         else if (e.Column.FieldName == "DOB_STR")
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.DOB ?? 0);
@@ -1063,6 +1067,11 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                     }
                     lisSampleFilter.TREATMENT_CODE__EXACT = code;
                     txtTreatmentCode.Text = code;
+                }
+                if (chkSXHenTra.Checked)
+                {
+                    lisSampleFilter.ORDER_DIRECTION = "ASC";
+                    lisSampleFilter.ORDER_FIELD = "APPOINTMENT_TIME";
                 }
                 if (dtBarcodeTimefrom != null && dtBarcodeTimefrom.DateTime != DateTime.MinValue)
                     lisSampleFilter.BARCODE_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtBarcodeTimefrom.EditValue).ToString("yyyyMMdd") + "000000");
@@ -2975,6 +2984,12 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                         {
                             e.Appearance.ForeColor = Color.Red;
                         }
+                        else if (HisConfigCFG.WARNING_TIME_RETURN_RESULT == "1"
+                           && data.APPOINTMENT_TIME.HasValue && data.APPOINTMENT_TIME - (Convert.ToInt64(HisConfigCFG.WARNING_TIME_RETURN_RESULT == "" ? "0" : HisConfigCFG.WARNING_TIME_RETURN_RESULT) * 100) < Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now)
+                           && (data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM || data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ))
+                        {
+                            e.Appearance.ForeColor = Color.Orange;
+                        }
                         else
                         {
                             e.Appearance.ForeColor = Color.Black;
@@ -4547,6 +4562,21 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             if (e.KeyCode == Keys.Enter)
             {
                 FillDataToGridControl();
+            }
+        }
+
+        private void chkSXHenTra_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkSXHenTra.Checked)
+                {
+                    FillDataToGridControl();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

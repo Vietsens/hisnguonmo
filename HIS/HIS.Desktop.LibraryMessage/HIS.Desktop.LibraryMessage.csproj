@@ -30,14 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
-    </Reference>
     <Reference Include="Inventec.Core">
       <HintPath>..\..\..\Lib\Inventec.Core\Inventec.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Desktop.Common.LanguageManager">
-      <HintPath>..\..\..\Lib\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -83,6 +77,16 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>MessageViResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.csproj">
+      <Project>{4859008d-a40d-47bb-a185-019c8b140569}</Project>
+      <Name>Inventec.Common.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.csproj">
+      <Project>{c44d9b7b-878d-427b-b18e-5de971d36395}</Project>
+      <Name>Inventec.Desktop.Common.LanguageManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

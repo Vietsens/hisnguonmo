@@ -58,7 +58,7 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
         HIS_TREATMENT _HisTreatment { get; set; }
         ResultDataADO rsDataBHYT { get; set; }
         ResultHistoryLDO _ResultHistoryLDO { get; set; }
-
+        HIS_EMPLOYEE currentEmployee = null;
         HIS_PATIENT_TYPE_ALTER _PatientTypeAlter { get; set; }
 
         Dictionary<string, HIS_MEDI_ORG> dicMediOrg;
@@ -145,6 +145,7 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
                 WaitingManager.Show();
                 BHXHLoginCFG.LoadConfig();
                 checkConfig();
+                CheckEmploy();
                 this.dicMediOrg = BackendDataWorker.Get<HIS_MEDI_ORG>().ToDictionary(o => o.MEDI_ORG_CODE, o => o);
                 LoadHisTreatment();
                 LoadHisPatient();
@@ -252,10 +253,48 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
 
         }
 
+        public void CheckEmploy()
+        {
+            try
+            {
+                if (currentEmployee == null)
+                {
+                    CommonParam param = new CommonParam();
+                    MOS.Filter.HisEmployeeFilter hisEmployeeFilter = new HisEmployeeFilter();
+                    hisEmployeeFilter.LOGINNAME__EXACT = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    currentEmployee = new BackendAdapter(param).Get<List<HIS_EMPLOYEE>>("api/HisEmployee/Get", ApiConsumer.ApiConsumers.MosConsumer, hisEmployeeFilter, param).FirstOrDefault();
+                }
+            
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            
+        }
         private async void LoadPatientTypeAlter()
         {
             try
             {
+                string name = "";
+                string cccd = "";
+                if (string.IsNullOrEmpty(nameCb))
+                {
+                    name = currentEmployee.TDL_USERNAME;
+                }
+                else
+                {
+                    name = nameCb;
+                }
+                if (string.IsNullOrEmpty(cccdCb))
+                {
+                    cccd = currentEmployee.IDENTIFICATION_NUMBER;
+                }
+                else
+                {
+                    cccd = cccdCb;
+                }
+
                 if (this._TreatmentId != null && this._TreatmentId > 0)
                 {
                     gridControlBHYT.DataSource = null;
@@ -282,8 +321,7 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
                         foreach (var item in datas)
                         {
                             PatientTypeAlterADO ado = new PatientTypeAlterADO(item);
-
-                            await CheckTTFull(item, nameCb, cccdCb,api);
+                            await CheckTTFull(item, name, cccd,api);
 
                             if (rsDataBHYT != null)
                             {
@@ -303,7 +341,7 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
                     V_HIS_PATIENT_TYPE_ALTER patientTypeAlert = new V_HIS_PATIENT_TYPE_ALTER();
                     patientTypeAlert.HEIN_CARD_NUMBER = this.checkInfoBhytADO.TDL_HEIN_CARD_NUMBER;
                     PatientTypeAlterADO ado = new PatientTypeAlterADO(patientTypeAlert);
-                    await CheckTTFull(patientTypeAlert, nameCb, cccdCb,api);
+                    await CheckTTFull(patientTypeAlert, name, cccd,api);
                     if (rsDataBHYT != null)
                     {
                         ado.ResultDataADO = rsDataBHYT;

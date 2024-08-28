@@ -1,0 +1,269 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9D069BB0-3C03-4866-A639-ECB5D2E67D1C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Inventec.UC.EventLogControl</RootNamespace>
+    <AssemblyName>Inventec.UC.EventLogControl</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraNavBar.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="Elasticsearch.Net">
+      <HintPath>lib\Elasticsearch.Net.6.0.0\lib\net45\Elasticsearch.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\..\RELEASE\Inventec.Core\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Adapter">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Controls.EditorLoader">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.DateTime">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Mapper">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Repository">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Repository\Inventec.Common.Repository.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Resource">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.String">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.TypeConvert">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.WebApiClient">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core">
+      <HintPath>..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.LanguageManager">
+      <HintPath>..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.Message">
+      <HintPath>..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.Modules">
+      <HintPath>..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Core">
+      <HintPath>..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.ClientSystem">
+      <HintPath>..\..\..\RELEASE\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.Core">
+      <HintPath>..\..\..\RELEASE\Inventec.Token\Inventec.Token.Core\Inventec.Token.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Paging">
+      <HintPath>..\..\..\RELEASE\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
+    </Reference>
+    <Reference Include="Nest">
+      <HintPath>lib\NEST.6.0.0\lib\net45\Nest.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\SDA\SDA.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\SDA\SDA.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\ApiConsumerStore.cs" />
+    <Compile Include="Base\BusinessBase.cs" />
+    <Compile Include="Base\GetBase.cs" />
+    <Compile Include="Base\GlobalStore.cs" />
+    <Compile Include="Base\IFormCallBack.cs" />
+    <Compile Include="Base\LanguageWorker.cs" />
+    <Compile Include="Base\MessageUtil.cs" />
+    <Compile Include="Base\PagingGrid.cs" />
+    <Compile Include="Base\ResultManager.cs" />
+    <Compile Include="Base\TokenClientStore.cs" />
+    <Compile Include="Base\TokenManager.cs" />
+    <Compile Include="Base\TroubleCache.cs" />
+    <Compile Include="Data\DataGrid.cs" />
+    <Compile Include="Data\DataInit.cs" />
+    <Compile Include="Data\DataInit3.cs" />
+    <Compile Include="DelegateUC.cs" />
+    <Compile Include="Design\Template1\Template1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1.Designer.cs">
+      <DependentUpon>Template1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Load.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Paging.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Search.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Set.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template2\Template2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template2\Template2.Designer.cs">
+      <DependentUpon>Template2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\Template2\Template2Plus_Load.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template2\Template2Plus_Search.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template2\Template2Plus_Set.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template3\Template3.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template3\Template3.Designer.cs">
+      <DependentUpon>Template3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ElasticSearchGet.cs" />
+    <Compile Include="Init\IInit.cs" />
+    <Compile Include="Init\IInit3.cs" />
+    <Compile Include="Init\Init.cs" />
+    <Compile Include="Init\Init3.cs" />
+    <Compile Include="Init\InitFactory.cs" />
+    <Compile Include="Init\InitFactory3.cs" />
+    <Compile Include="KeyboardWorker.cs" />
+    <Compile Include="MainEventLog.cs" />
+    <Compile Include="MessageLang\FrontendMessage.cs" />
+    <Compile Include="MessageLang\Message.cs" />
+    <Compile Include="MessageLang\MessageEnResource.Designer.cs" />
+    <Compile Include="MessageLang\MessagePartialEnum.cs" />
+    <Compile Include="MessageLang\MessagePartialGetMessage.cs" />
+    <Compile Include="MessageLang\MessageViResource.Designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ResourceLanguageManager.cs" />
+    <Compile Include="Resources\ResourceMessage.cs" />
+    <Compile Include="Sda\EventLog\Get\SdaEventLogGet.cs" />
+    <Compile Include="Set\Delegate\SetDelegateHasException\ISetDelegateHasException.cs" />
+    <Compile Include="Set\Delegate\SetDelegateHasException\SetDelegateHasException.cs" />
+    <Compile Include="Set\Delegate\SetDelegateHasException\SetDelegateHasExceptionFactory.cs" />
+    <Compile Include="Set\MeShow\ISetMeShowUC.cs" />
+    <Compile Include="Set\MeShow\SetMeShowUC.cs" />
+    <Compile Include="Set\MeShow\SetMeShowUCFactory.cs" />
+    <Compile Include="Set\Shortcut\ShortcutButtonRefresh\IShortcutButtonRefresh.cs" />
+    <Compile Include="Set\Shortcut\ShortcutButtonRefresh\ShortcutButtonRefresh.cs" />
+    <Compile Include="Set\Shortcut\ShortcutButtonRefresh\ShortcutButtonRefreshFactory.cs" />
+    <Compile Include="Set\Shortcut\ShortcutButtonSearch\IShortcutButtonSearch.cs" />
+    <Compile Include="Set\Shortcut\ShortcutButtonSearch\ShortcutButtonSearch.cs" />
+    <Compile Include="Set\Shortcut\ShortcutButtonSearch\ShortcutButtonSearchFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Design\Template1\Template1.resx">
+      <DependentUpon>Template1.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\Template2\Template2.resx">
+      <DependentUpon>Template2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\Template3\Template3.resx">
+      <DependentUpon>Template3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageLang\MessageEnResource.resx" />
+    <EmbeddedResource Include="MessageLang\MessageViResource.resx" />
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\FE\YTE\DESKTOP\HIS\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
+      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
+      <Name>HIS.Desktop.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
