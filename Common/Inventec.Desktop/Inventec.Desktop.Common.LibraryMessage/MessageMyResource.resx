@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ChucNangDangPhatTrienVuiLongThuLaiSau" xml:space="preserve">
+    <value>လုပ်ဆောင်ချက်ကို လက်ရှိဗားရှင်းတွင် မပံ့ပိုးပါ၊ ကျေးဇူးပြု၍ နောက်မှ ထပ်ကြိုးစားပါ။</value>
+  </data>
+  <data name="DungLuongFileDinhKemQuaLon" xml:space="preserve">
+    <value>ပူးတွဲပါဖိုင်အရွယ်အစား ကြီးလွန်းသည်။</value>
+  </data>
+  <data name="HeThongTBBanQuyenKhongHopLe" xml:space="preserve">
+    <value>မူပိုင်ခွင့် မမှန်ကန်ပါ။</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanChuaLuuLaiDuLieu" xml:space="preserve">
+    <value>မပြီးဆုံးမီ ဒေတာကို သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonBoDuyetKhoaDuLieuKhong" xml:space="preserve">
+    <value>သော့ခတ်သော့ကို ပြန်လှန်ကြည့်လိုသည်မှာ သေချာပါသလား။</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonBoKhoaDuLieuKhong" xml:space="preserve">
+    <value>ဒေတာကို ပြန်ဖွင့်လိုသည်မှာ သေချာပါသလား။</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonDuyetKhoaDuLieuKhong" xml:space="preserve">
+    <value>သော့ကိုရှာဖွေလိုသည်မှာ သေချာပါသလား။</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonGuiLaiYeuCau" xml:space="preserve">
+    <value>တောင်းဆိုချက်ကို ပြန်လည်ပေးပို့လိုသည်မှာ သေချာပါသလား။</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong" xml:space="preserve">
+    <value>ဒေတာကို ဖျက်လိုသည်မှာ သေချာပါသလား။</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonKhoaDuLieuKhong" xml:space="preserve">
+    <value>ဒေတာကို လော့ခ်ချလိုသည်မှာ သေချာပါသလား။</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong" xml:space="preserve">
+    <value>ဒေတာကို ဖျက်လိုသည်မှာ သေချာပါသလား။</value>
+  </data>
+  <data name="HeThongTBDuLieuNhapVaoKhongHopLe" xml:space="preserve">
+    <value>ထည့်သွင်းဒေတာသည် လိုအပ်သောအကွက်များ ပျောက်ဆုံးနေပါသည်။</value>
+  </data>
+  <data name="HeThongTBDuLieuNhapVaoKhongHopLe1" xml:space="preserve">
+    <value>ထည့်သွင်းဒေတာသည် လိုအပ်သောအကွက်များ ပျောက်ဆုံးနေပါသည်။</value>
+  </data>
+  <data name="HeThongTBKetNoiDenMayChuKhongOnDinh" xml:space="preserve">
+    <value>ဆာဗာသို့ ချိတ်ဆက်မှုသည် မတည်ငြိမ်ပါ။</value>
+  </data>
+  <data name="HeThongTBKetNoiDenMayChuKhongTot" xml:space="preserve">
+    <value>ဆာဗာသို့ ချိတ်ဆက်မှု မကောင်းပါ။</value>
+  </data>
+  <data name="HeThongTBKetNoiDenMayChuNotStability" xml:space="preserve">
+    <value>ဆာဗာသို့ ချိတ်ဆက်မှုသည် မတည်ငြိမ်ပါ။</value>
+  </data>
+  <data name="HeThongTBKetNoiDenMayChuThatBai" xml:space="preserve">
+    <value>ဆာဗာသို့ ချိတ်ဆက်မှု မအောင်မြင်ပါ။</value>
+  </data>
+  <data name="HeThongTBKetNoiDenMayChuTot" xml:space="preserve">
+    <value>ဆာဗာချိတ်ဆက်မှုကောင်းသည်။</value>
+  </data>
+  <data name="HeThongTBKQXLYCCuaFrontendThanhCong" xml:space="preserve">
+    <value>အောင်မြင်စွာကိုင်တွယ်ပါ။</value>
+  </data>
+  <data name="HeThongTBKQXLYCCuaFrontendThatBai" xml:space="preserve">
+    <value>ကိုင်တွယ်မှု မအောင်မြင်</value>
+  </data>
+  <data name="HeThongTBNguoiDungDaHetPhienLamViecVuiLongDangNhapLai" xml:space="preserve">
+    <value>သင်သည် ဆော့ဖ်ဝဲလ်ကို အချိန်အတော်ကြာ ရပ်တန့်ထားသောကြောင့် သို့မဟုတ် ဆာဗာစနစ်သို့ ချိတ်ဆက်မှု ခေတ္တပြတ်တောက်သွားသောကြောင့် ဆက်ရှင်အား ပျက်ပြယ်သွားခြင်း ဖြစ်နိုင်ပါသည်။ ဆော့ဖ်ဝဲလ်သည် အလိုအလျောက် ထွက်ပါမည်။ ဆက်လက်အသုံးပြုရန် ကျေးဇူးပြု၍ ထပ်မံဝင်ရောက်ပါ။</value>
+  </data>
+  <data name="HeThongTBTruongDuLieuBatBuocPhaiNhap" xml:space="preserve">
+    <value>ဝင်ရန် လိုအပ်သော အကွက်</value>
+  </data>
+  <data name="HeThongTBTruongDuLieuBatBuocPhaiNhap1" xml:space="preserve">
+    <value>ဝင်ရန် လိုအပ်သော အကွက်</value>
+  </data>
+  <data name="HeThongTBXuatHienExceptionChuaKiemDuocSoat" xml:space="preserve">
+    <value>ကိုင်တွယ်မှု မအောင်မြင်။ အကူအညီအတွက် ကျေးဇူးပြု၍ သင့်စနစ်စီမံခန့်ခွဲသူကို ဆက်သွယ်ပါ။</value>
+  </data>
+  <data name="HeThongThongBaoKetQuaTraVeCuaBackendKhongHopLe" xml:space="preserve">
+    <value>လူနာမှတ်ပုံတင်ခြင်း အောင်မြင်သော်လည်း ပြန်ပေးထားသော အချက်အလက်သည် မမှန်ကန်ပါ။</value>
+  </data>
+  <data name="HeThongThongBaoMoTaChoUpdatingDialogForm" xml:space="preserve">
+    <value>စနစ်သည် အပ်ဒိတ်ဗားရှင်းအတွက် စစ်ဆေးနေသည်...</value>
+  </data>
+  <data name="HeThongThongBaoMoTaChoWaitDialogForm" xml:space="preserve">
+    <value>လုပ်ဆောင်နေသည်၊ ခဏစောင့်ပါ...</value>
+  </data>
+  <data name="HeThongThongBaoThoiGianDenBeHonThoiGianTu" xml:space="preserve">
+    <value>ဆိုက်ရောက်ချိန်က အချိန်ထက်နည်းတယ်။</value>
+  </data>
+  <data name="HeThongThongBaoTienDoHoanThanhTaiCauHinhHeThong" xml:space="preserve">
+    <value>{0}%...</value>
+  </data>
+  <data name="HeThongThongBaoTieuDeChoWaitDialogForm" xml:space="preserve">
+    <value>အကြောင်းကြားပါ။</value>
+  </data>
+  <data name="HeThongThongBaoTieuDeChoWaitDialogFormIsPleaseWaiting" xml:space="preserve">
+    <value>ကျေးဇူးပြုပြီးခဏစောင့်ပါ</value>
+  </data>
+  <data name="NguoiDungChuaNhapMatKhauDeDangNhap" xml:space="preserve">
+    <value>သင့်စကားဝှက်ကို သင်မထည့်ရသေးပါ။</value>
+  </data>
+  <data name="NguoiDungChuaNhapTaiKhoanDeDangNhap" xml:space="preserve">
+    <value>သင်သည် စာရင်းမသွင်းရသေးပါ။</value>
+  </data>
+  <data name="NguoiDungDoiMatKhauMatKhauXacNhanKhongChinhXac" xml:space="preserve">
+    <value>အတည်ပြုချက် စကားဝှက် မမှန်ပါ။</value>
+  </data>
+  <data name="NguoiDungNhapDuLieuKhongHopLe" xml:space="preserve">
+    <value>မမှန်ကန်သောဒေတာ</value>
+  </data>
+  <data name="NguoiDungNhapNamKhongHopLe" xml:space="preserve">
+    <value>မမှန်ကန်သောနှစ်၊ ကျေးဇူးပြု၍ ပြန်ထည့်ပါ။</value>
+  </data>
+  <data name="NguoiDungNhapNamSinhKhongHopLe" xml:space="preserve">
+    <value>မွေးသက္ကရာဇ် မမှန်ကန်ပါ၊ ကျေးဇူးပြု၍ ပြန်ထည့်ပါ။</value>
+  </data>
+  <data name="NguoiDungNhapNgayKhongHopLe" xml:space="preserve">
+    <value>ရက်စွဲမမှန်ပါ၊ ကျေးဇူးပြု၍ ပြန်ထည့်ပါ။</value>
+  </data>
+  <data name="NguoiDungNhapNgayPhaiNhoHonNgayHienTai" xml:space="preserve">
+    <value>အချိန်သည် လက်ရှိရက်စွဲထက် ပိုနေရပါမည်။</value>
+  </data>
+  <data name="NguoiDungNhapNgaySinhKhongHopLe" xml:space="preserve">
+    <value>မွေးသက္ကရာဇ် မမှန်ကန်ပါ၊ ကျေးဇူးပြု၍ ပြန်ထည့်ပါ။</value>
+  </data>
+  <data name="NguoiDungNhapNgaySinhLonHonHienTai" xml:space="preserve">
+    <value>အသက်ရက်စွဲသည် လက်ရှိရက်စွဲထက် နည်းနေရပါမည်။</value>
+  </data>
+  <data name="NguoiDungNhapNguoiDungChuaDuocCauHinhVaoPhongLamViec" xml:space="preserve">
+    <value>သင့်အကောင့်ကို မည်သည့်ရုံးတွင်မဆို ပြင်ဆင်သတ်မှတ်ထားခြင်းမရှိပါ၊ အကူအညီအတွက် သင့်စနစ်စီမံခန့်ခွဲသူကို ဆက်သွယ်ပါ။</value>
+  </data>
+  <data name="NguoiDungNhapNguoiDungDuocCauHinhVaoPhongKhongDuocGanQuyenVuiLongKiemTraLaiCauHinh" xml:space="preserve">
+    <value>အသုံးပြုသူသည် အခန်းတွင်းတွင် အလုပ်လုပ်ရန် စီစဉ်သတ်မှတ်ထားသော်လည်း ထိုအခန်းသို့ ဝင်ရောက်ရန် ခွင့်မပြုပါ၊ ကျေးဇူးပြု၍ အခြားအခန်းကို ရွေးပါ သို့မဟုတ် ဆော့ဖ်ဝဲဖွဲ့စည်းပုံကို ထပ်မံစစ်ဆေးပါ။</value>
+  </data>
+  <data name="NguoiDungNhapNguoiDungKhongDuocGanQuyenVaoPhong" xml:space="preserve">
+    <value>အသုံးပြုသူသည် ရုံးခန်းအတွင်းသို့ ဝင်ရောက်ရန် အခွင့်မရှိပါ၊ ပံ့ပိုးကူညီမှုအတွက် စနစ်စီမံခန့်ခွဲသူကို ဆက်သွယ်ပါ။</value>
+  </data>
+  <data name="NguoiDungNhapPhieuTuDeTaoPhieuThuChiKhongHopLe" xml:space="preserve">
+    <value>ဝင်ငွေနှင့် အသုံးစရိတ်စာအုပ်အစရှိ ဘောက်ချာအရေအတွက်သည် 1 နှင့် 1,000,000,000 VND အကြား တန်ဖိုးရှိသော ကိန်းပြည့်ဖြစ်ရပါမည်။</value>
+  </data>
+  <data name="NguoiDungNhapSoPhieuDeTaoPhieuThuChiKhongHopLe" xml:space="preserve">
+    <value>ဆန္ဒမဲအရေအတွက်သည် 0 နှင့် 1,000,000,000 ကြားတန်ဖိုးရှိသော ကိန်းပြည့်ဖြစ်ရပါမည်။</value>
+  </data>
+  <data name="NguoiDungNhapTaiKhoanHoacMatKhauKhongChinhXacDeDangNhap" xml:space="preserve">
+    <value>အကောင့် သို့မဟုတ် စကားဝှက် မမှန်ကန်ပါ။</value>
+  </data>
+  <data name="NguoiDungNhapThangKhongHopLe" xml:space="preserve">
+    <value>လမမှန်ကန်ပါ၊ ကျေးဇူးပြု၍ ပြန်ထည့်ပါ။</value>
+  </data>
+  <data name="NguoiDungNhapThangSinhKhongHopLe" xml:space="preserve">
+    <value>မွေးလ မမှန်ကန်ပါ၊ ကျေးဇူးပြု၍ ပြန်ထည့်ပါ။</value>
+  </data>
+  <data name="NguoiDungNhapThangSinhLonHonHienTai" xml:space="preserve">
+    <value>လ၏အသက်သည် လက်ရှိရက်စွဲထက် နည်းနေရမည်။</value>
+  </data>
+  <data name="NguoiDungNhapTuoiBenhNhanKhongHopLe" xml:space="preserve">
+    <value>အသက်မမှန်ကန်ပါ၊ ကျေးဇူးပြု၍ ပြန်ထည့်ပါ။</value>
+  </data>
+  <data name="PhanMemKhongKetNoiDuocToiMayChuHeThong" xml:space="preserve">
+    <value>ဆော့ဖ်ဝဲသည် စနစ်ဆာဗာသို့ ချိတ်ဆက်၍မရပါ။ ဖွဲ့စည်းမှုပုံစံနှင့် ချိတ်ဆက်မှုကို ထပ်မံစစ်ဆေးပါ။</value>
+  </data>
+  <data name="SuaChiDinhDichVu_KhongCoDoiSoLuong" xml:space="preserve">
+    <value>ပမာဏ မထည့်ဘူး။</value>
+  </data>
+  <data name="TaiKhoanKhongCoQuyenThucHienChucNang" xml:space="preserve">
+    <value>အကောင့်သည် လုပ်ဆောင်ချက်ကို လုပ်ဆောင်ရန် ခွင့်ပြုချက် မရှိပါ။</value>
+  </data>
+  <data name="ThieuTruongDuLieuBatBuoc" xml:space="preserve">
+    <value>လိုအပ်သောအကွက်များ ပျောက်ဆုံးနေပါသည်။</value>
+  </data>
+  <data name="ThongBaoDuLieuTrong" xml:space="preserve">
+    <value>ရလဒ်မရှိပါ။</value>
+  </data>
+  <data name="ThongBaoKetQuaTimKiemBenhNhanKhiQuetTheDuLieuTraVeNull" xml:space="preserve">
+    <value>npc reader မှ ကတ်ကို ပွတ်ဆွဲသောအခါ လူနာဒေတာ၊ တဂ်ကုဒ် {0}</value>
+  </data>
+  <data name="ThongBaoKetQuaTimKiemBenhNhanTraVeCoDuLieuBanCoMuonSuDungKetQua" xml:space="preserve">
+    <value>လူနာရှာဖွေမှုရလဒ်များကိုကြေငြာခြင်း။</value>
+  </data>
+  <data name="TieuDeCuaSoThongBaoLaCanhBao" xml:space="preserve">
+    <value>သတိပေးချက်</value>
+  </data>
+  <data name="TieuDeCuaSoThongBaoLaLoi" xml:space="preserve">
+    <value>အမှား</value>
+  </data>
+  <data name="TieuDeCuaSoThongBaoLaThongBao" xml:space="preserve">
+    <value>အကြောင်းကြားပါ။</value>
+  </data>
+  <data name="TieuDeThongTinHienThiPhanTrang" xml:space="preserve">
+    <value>စာမျက်နှာ</value>
+  </data>
+  <data name="TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>လိုအပ်သောအကွက်</value>
+  </data>
+  <data name="XoaYeuCauChiDinhDichVu_HoSoDieuTriDangDong" xml:space="preserve">
+    <value>ကုသမှုမှတ်တမ်း ပြီးသွားပါပြီ။</value>
+  </data>
+  <data name="XoaYeuCauChiDinhDichVu_KhongDungNguoiYeuCau" xml:space="preserve">
+    <value>သင်သည် ဤတောင်းဆိုချက်ကို ဖန်တီးသူမဟုတ်ပါ။</value>
+  </data>
+  <data name="XoaYeuCauChiDinhDichVu_KhongDungPhongYeuCau" xml:space="preserve">
+    <value>လက်ရှိအခန်းသည် သတ်မှတ်ထားသော အခန်းမဟုတ်ပါ။</value>
+  </data>
+  <data name="XuatTraThuoc_ChuaChonThuocVatTuDeTra" xml:space="preserve">
+    <value>ပေးဆောင်ရန် ဆေးဝါးနှင့် ထောက်ပံ့ရေးပစ္စည်းများကို မရွေးချယ်ခဲ့ပါ။</value>
+  </data>
+</root>

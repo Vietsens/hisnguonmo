@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ChucNangDangPhatTrienVuiLongThuLaiSau" xml:space="preserve">
+    <value>Function is not supported in the current version, please try again later</value>
+  </data>
+  <data name="DungLuongFileDinhKemQuaLon" xml:space="preserve">
+    <value>Attachments too large</value>
+  </data>
+  <data name="HeThongTBBanQuyenKhongHopLe" xml:space="preserve">
+    <value>Copyright invalid</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanChuaLuuLaiDuLieu" xml:space="preserve">
+    <value>Please save data before the end</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonBoDuyetKhoaDuLieuKhong" xml:space="preserve">
+    <value>Are you sure want to remove browse lock?</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonBoKhoaDuLieuKhong" xml:space="preserve">
+    <value>Are you sure you want to remove the lock data?</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonDuyetKhoaDuLieuKhong" xml:space="preserve">
+    <value>Are you sure you want to browse the lock?</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonGuiLaiYeuCau" xml:space="preserve">
+    <value>Are you sure you want to resubmit request</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong" xml:space="preserve">
+    <value>You sure you want to cancel the data?</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonKhoaDuLieuKhong" xml:space="preserve">
+    <value>Are you sure you want to lock the data?</value>
+  </data>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong" xml:space="preserve">
+    <value>You sure you want to delete the data?</value>
+  </data>
+  <data name="HeThongTBDuLieuNhapVaoKhongHopLe" xml:space="preserve">
+    <value>Missing data entered data fields required</value>
+  </data>
+  <data name="HeThongTBDuLieuNhapVaoKhongHopLe1" xml:space="preserve">
+    <value>Missing data entered data fields required</value>
+  </data>
+  <data name="HeThongTBKetNoiDenMayChuKhongOnDinh" xml:space="preserve">
+    <value>Connect to the server unstable</value>
+  </data>
+  <data name="HeThongTBKetNoiDenMayChuKhongTot" xml:space="preserve">
+    <value>Connect to the server is not good</value>
+  </data>
+  <data name="HeThongTBKetNoiDenMayChuNotStability" xml:space="preserve">
+    <value>Connect to the server unstable</value>
+  </data>
+  <data name="HeThongTBKetNoiDenMayChuThatBai" xml:space="preserve">
+    <value>Connect to server failure</value>
+  </data>
+  <data name="HeThongTBKetNoiDenMayChuTot" xml:space="preserve">
+    <value>Good connection to the server</value>
+  </data>
+  <data name="HeThongTBKQXLYCCuaFrontendThanhCong" xml:space="preserve">
+    <value>Handling Success</value>
+  </data>
+  <data name="HeThongTBKQXLYCCuaFrontendThatBai" xml:space="preserve">
+    <value>Handling failure</value>
+  </data>
+  <data name="HeThongTBNguoiDungDaHetPhienLamViecVuiLongDangNhapLai" xml:space="preserve">
+    <value>Session expired, probably because you have stopped using the software for a long time or connect to the host system is temporarily interrupted. The software will automatically log out. Please sign in again to continue using.</value>
+  </data>
+  <data name="HeThongTBTruongDuLieuBatBuocPhaiNhap" xml:space="preserve">
+    <value>Data fields required to enter</value>
+  </data>
+  <data name="HeThongTBTruongDuLieuBatBuocPhaiNhap1" xml:space="preserve">
+    <value>Data fields required to enter</value>
+  </data>
+  <data name="HeThongTBXuatHienExceptionChuaKiemDuocSoat" xml:space="preserve">
+    <value>Handling failure. Please contact your system administrator for assistance</value>
+  </data>
+  <data name="HeThongThongBaoKetQuaTraVeCuaBackendKhongHopLe" xml:space="preserve">
+    <value>Registration successful reception of patients, but the information returned is not valid.</value>
+  </data>
+  <data name="HeThongThongBaoMoTaChoUpdatingDialogForm" xml:space="preserve">
+    <value>The system is checking the updated version ...</value>
+  </data>
+  <data name="HeThongThongBaoMoTaChoWaitDialogForm" xml:space="preserve">
+    <value>Processing, please wait ...</value>
+  </data>
+  <data name="HeThongThongBaoThoiGianDenBeHonThoiGianTu" xml:space="preserve">
+    <value>Time to be less than the time from</value>
+  </data>
+  <data name="HeThongThongBaoTienDoHoanThanhTaiCauHinhHeThong" xml:space="preserve">
+    <value>{0}% ...</value>
+  </data>
+  <data name="HeThongThongBaoTieuDeChoWaitDialogForm" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="HeThongThongBaoTieuDeChoWaitDialogFormIsPleaseWaiting" xml:space="preserve">
+    <value>Please wait</value>
+  </data>
+  <data name="NguoiDungChuaNhapMatKhauDeDangNhap" xml:space="preserve">
+    <value>You did not enter a password</value>
+  </data>
+  <data name="NguoiDungChuaNhapTaiKhoanDeDangNhap" xml:space="preserve">
+    <value>You have not signed up yet</value>
+  </data>
+  <data name="NguoiDungDoiMatKhauMatKhauXacNhanKhongChinhXac" xml:space="preserve">
+    <value>Password confirmation is incorrect</value>
+  </data>
+  <data name="NguoiDungNhapDuLieuKhongHopLe" xml:space="preserve">
+    <value>Invalid data</value>
+  </data>
+  <data name="NguoiDungNhapNamKhongHopLe" xml:space="preserve">
+    <value>Year is invalid, please re-enter</value>
+  </data>
+  <data name="NguoiDungNhapNamSinhKhongHopLe" xml:space="preserve">
+    <value>Invalid birth year, please re-enter</value>
+  </data>
+  <data name="NguoiDungNhapNgayKhongHopLe" xml:space="preserve">
+    <value>Invalid date, please re-enter</value>
+  </data>
+  <data name="NguoiDungNhapNgayPhaiNhoHonNgayHienTai" xml:space="preserve">
+    <value>Time must be greater than current date</value>
+  </data>
+  <data name="NguoiDungNhapNgaySinhKhongHopLe" xml:space="preserve">
+    <value>Birthday is invalid, please re-enter</value>
+  </data>
+  <data name="NguoiDungNhapNgaySinhLonHonHienTai" xml:space="preserve">
+    <value>Days old must be smaller than the current date</value>
+  </data>
+  <data name="NguoiDungNhapNguoiDungChuaDuocCauHinhVaoPhongLamViec" xml:space="preserve">
+    <value>Your account has not been configured into the study, please contact your system administrator for assistance.</value>
+  </data>
+  <data name="NguoiDungNhapNguoiDungDuocCauHinhVaoPhongKhongDuocGanQuyenVuiLongKiemTraLaiCauHinh" xml:space="preserve">
+    <value>Users are configured to work in the room but not in the room that is granted, please select a different room or check the software configuration.</value>
+  </data>
+  <data name="NguoiDungNhapNguoiDungKhongDuocGanQuyenVaoPhong" xml:space="preserve">
+    <value>Users are not authorized to work in the room, please contact your system administrator for assistance</value>
+  </data>
+  <data name="NguoiDungNhapPhieuTuDeTaoPhieuThuChiKhongHopLe" xml:space="preserve">
+    <value>Votes began collecting detailed records must be an integer value in the range of 1 to 1,000,000,000</value>
+  </data>
+  <data name="NguoiDungNhapSoPhieuDeTaoPhieuThuChiKhongHopLe" xml:space="preserve">
+    <value>Votes must be an integer value between 0 to 1 billion</value>
+  </data>
+  <data name="NguoiDungNhapTaiKhoanHoacMatKhauKhongChinhXacDeDangNhap" xml:space="preserve">
+    <value>Account or password is incorrect</value>
+  </data>
+  <data name="NguoiDungNhapThangKhongHopLe" xml:space="preserve">
+    <value>May invalid, please re-enter</value>
+  </data>
+  <data name="NguoiDungNhapThangSinhKhongHopLe" xml:space="preserve">
+    <value>Birth month is invalid, please re-enter</value>
+  </data>
+  <data name="NguoiDungNhapThangSinhLonHonHienTai" xml:space="preserve">
+    <value>Months must be less than the current date</value>
+  </data>
+  <data name="NguoiDungNhapTuoiBenhNhanKhongHopLe" xml:space="preserve">
+    <value>Age is invalid, please re-enter</value>
+  </data>
+  <data name="PhanMemKhongKetNoiDuocToiMayChuHeThong" xml:space="preserve">
+    <value>Software can not connect to the server system. Please check the configuration and connectivity</value>
+  </data>
+  <data name="SuaChiDinhDichVu_KhongCoDoiSoLuong" xml:space="preserve">
+    <value>Unknown number</value>
+  </data>
+  <data name="TaiKhoanKhongCoQuyenThucHienChucNang" xml:space="preserve">
+    <value>Account no right to perform functions</value>
+  </data>
+  <data name="ThieuTruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Lack of data fields required</value>
+  </data>
+  <data name="ThongBaoDuLieuTrong" xml:space="preserve">
+    <value>No result</value>
+  </data>
+  <data name="ThongBaoKetQuaTimKiemBenhNhanKhiQuetTheDuLieuTraVeNull" xml:space="preserve">
+    <value>No data found when patients via card swipe reader npc, card code {0}</value>
+  </data>
+  <data name="ThongBaoKetQuaTimKiemBenhNhanTraVeCoDuLieuBanCoMuonSuDungKetQua" xml:space="preserve">
+    <value>Inform patients of search results</value>
+  </data>
+  <data name="TieuDeCuaSoThongBaoLaCanhBao" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="TieuDeCuaSoThongBaoLaLoi" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="TieuDeCuaSoThongBaoLaThongBao" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="TieuDeThongTinHienThiPhanTrang" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Required fields</value>
+  </data>
+  <data name="XoaYeuCauChiDinhDichVu_HoSoDieuTriDangDong" xml:space="preserve">
+    <value>Profile of treatment has ended</value>
+  </data>
+  <data name="XoaYeuCauChiDinhDichVu_KhongDungNguoiYeuCau" xml:space="preserve">
+    <value>You are not the person who created this request</value>
+  </data>
+  <data name="XoaYeuCauChiDinhDichVu_KhongDungPhongYeuCau" xml:space="preserve">
+    <value>Current room is not specified room service</value>
+  </data>
+  <data name="XuatTraThuoc_ChuaChonThuocVatTuDeTra" xml:space="preserve">
+    <value>Not choose medicine and supplies to pay</value>
+  </data>
+</root>

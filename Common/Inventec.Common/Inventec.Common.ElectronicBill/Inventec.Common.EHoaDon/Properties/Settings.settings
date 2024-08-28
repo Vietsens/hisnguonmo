@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Inventec.Common.EHoaDon.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Inventec_Common_EHoaDon_WSPublicEHoaDon_WSPublicEHoaDon" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://wsdemo.ehoadon.vn/WSPublicEHoaDon.asmx</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

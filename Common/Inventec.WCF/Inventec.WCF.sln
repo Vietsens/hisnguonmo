@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventec.WCF.DCO", "Inventec.WCF.DCO\Inventec.WCF.DCO.csproj", "{18215DB2-2600-45F8-B70A-007834B2579C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventec.WCF.JsonConvert", "Inventec.WCF.JsonConvert\Inventec.WCF.JsonConvert.csproj", "{8C2B2DFB-C913-4FE8-B608-1256AA663EE4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{18215DB2-2600-45F8-B70A-007834B2579C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18215DB2-2600-45F8-B70A-007834B2579C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18215DB2-2600-45F8-B70A-007834B2579C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18215DB2-2600-45F8-B70A-007834B2579C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C2B2DFB-C913-4FE8-B608-1256AA663EE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C2B2DFB-C913-4FE8-B608-1256AA663EE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C2B2DFB-C913-4FE8-B608-1256AA663EE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C2B2DFB-C913-4FE8-B608-1256AA663EE4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

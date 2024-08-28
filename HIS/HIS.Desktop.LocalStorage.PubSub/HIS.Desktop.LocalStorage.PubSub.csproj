@@ -166,7 +166,6 @@
     <EmbeddedResource Include="AlertTypeForm\frmHisAlertMedicalSecurity.resx">
       <DependentUpon>frmHisAlertMedicalSecurity.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

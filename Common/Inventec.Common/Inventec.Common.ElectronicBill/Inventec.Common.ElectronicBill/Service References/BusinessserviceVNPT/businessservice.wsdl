@@ -1,0 +1,1359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="replaceInv">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Account" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ACpass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlInvData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="convert" nillable="true" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="replaceInvResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="replaceInvResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReplaceInvoiceAction">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Account" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ACpass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlInvData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Attachfile" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="convert" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="pattern" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serial" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReplaceInvoiceActionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ReplaceInvoiceActionResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReplaceActionAssignedNo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Account" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ACpass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlInvData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Attachfile" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="convert" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="pattern" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serial" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReplaceActionAssignedNoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ReplaceActionAssignedNoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReplaceInvoice">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Account" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ACpass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlInvData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="AttachFile" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="convert" nillable="true" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReplaceInvoiceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ReplaceInvoiceResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="adjustInv">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Account" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ACpass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlInvData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="convert" nillable="true" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="adjustInvResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="adjustInvResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AdjustInvoiceAction">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Account" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ACpass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlInvData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="AttachFile" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="convert" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="pattern" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serial" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AdjustInvoiceActionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AdjustInvoiceActionResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AdjustActionAssignedNo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Account" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ACpass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlInvData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="AttachFile" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="convert" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="pattern" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serial" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AdjustActionAssignedNoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AdjustActionAssignedNoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AdjustInvoice">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Account" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ACpass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlInvData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="AttachFile" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="convert" nillable="true" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AdjustInvoiceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AdjustInvoiceResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cancelInv">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Account" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ACpass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cancelInvResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cancelInvResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cancelInvNoPay">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Account" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ACpass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cancelInvNoPayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cancelInvNoPayResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="poolingInv">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="passWord" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="invData" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="pattern" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="poolingInvResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="poolingInvResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInvbyFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInvbyFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInvbyFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="reportInvUsed">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="year" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="quarter" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="currentQuater" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="reportInvUsedResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="reportInvUsedResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="reportMonth">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="year" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="month" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="reportMonthResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="reportMonthResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="deliverInvFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="lstFkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="deliverInvFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="deliverInvFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="deliverInv">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="lstInvToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="deliverInvResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="deliverInvResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="confirmPayment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="lstInvToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="confirmPaymentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="confirmPaymentResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="confirmPaymentDetail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="lstInvToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="confirmPaymentDetailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="confirmPaymentDetailResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="unConfirmPayment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="lstInvToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="unConfirmPaymentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="unConfirmPaymentResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="confirmPaymentFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="lstFkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="confirmPaymentFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="confirmPaymentFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="confirmPaymentDetailFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="lstFkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="confirmPaymentDetailFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="confirmPaymentDetailFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="confirmPaymentFkeyVNP">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="lstFkey" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="isEmail" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="confirmPaymentFkeyVNPResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="confirmPaymentFkeyVNPResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UnConfirmPaymentFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="lstFkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UnConfirmPaymentFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UnConfirmPaymentFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UnConfirmPaymentFkeyVNP">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="lstFkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UnConfirmPaymentFkeyVNPResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UnConfirmPaymentFkeyVNPResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ResetTem">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ResetTemResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ResetTemResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllRolesbyAcc">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="usernameService" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="passwordService" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllRolesbyAccResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllRolesbyAccResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateNewUserbyAcc">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="usernameService" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="passwordService" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="usernew" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="passnew" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="retypepassnew" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="IsApproved" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="IsLockedOut" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="roles" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateNewUserbyAccResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CreateNewUserbyAccResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getSerialByPattern">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pattern" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getSerialByPatternResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getSerialByPatternResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getPublishInvs">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getPublishInvsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getPublishInvsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="replaceInvSoapIn">
+    <wsdl:part name="parameters" element="tns:replaceInv" />
+  </wsdl:message>
+  <wsdl:message name="replaceInvSoapOut">
+    <wsdl:part name="parameters" element="tns:replaceInvResponse" />
+  </wsdl:message>
+  <wsdl:message name="ReplaceInvoiceActionSoapIn">
+    <wsdl:part name="parameters" element="tns:ReplaceInvoiceAction" />
+  </wsdl:message>
+  <wsdl:message name="ReplaceInvoiceActionSoapOut">
+    <wsdl:part name="parameters" element="tns:ReplaceInvoiceActionResponse" />
+  </wsdl:message>
+  <wsdl:message name="ReplaceActionAssignedNoSoapIn">
+    <wsdl:part name="parameters" element="tns:ReplaceActionAssignedNo" />
+  </wsdl:message>
+  <wsdl:message name="ReplaceActionAssignedNoSoapOut">
+    <wsdl:part name="parameters" element="tns:ReplaceActionAssignedNoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ReplaceInvoiceSoapIn">
+    <wsdl:part name="parameters" element="tns:ReplaceInvoice" />
+  </wsdl:message>
+  <wsdl:message name="ReplaceInvoiceSoapOut">
+    <wsdl:part name="parameters" element="tns:ReplaceInvoiceResponse" />
+  </wsdl:message>
+  <wsdl:message name="adjustInvSoapIn">
+    <wsdl:part name="parameters" element="tns:adjustInv" />
+  </wsdl:message>
+  <wsdl:message name="adjustInvSoapOut">
+    <wsdl:part name="parameters" element="tns:adjustInvResponse" />
+  </wsdl:message>
+  <wsdl:message name="AdjustInvoiceActionSoapIn">
+    <wsdl:part name="parameters" element="tns:AdjustInvoiceAction" />
+  </wsdl:message>
+  <wsdl:message name="AdjustInvoiceActionSoapOut">
+    <wsdl:part name="parameters" element="tns:AdjustInvoiceActionResponse" />
+  </wsdl:message>
+  <wsdl:message name="AdjustActionAssignedNoSoapIn">
+    <wsdl:part name="parameters" element="tns:AdjustActionAssignedNo" />
+  </wsdl:message>
+  <wsdl:message name="AdjustActionAssignedNoSoapOut">
+    <wsdl:part name="parameters" element="tns:AdjustActionAssignedNoResponse" />
+  </wsdl:message>
+  <wsdl:message name="AdjustInvoiceSoapIn">
+    <wsdl:part name="parameters" element="tns:AdjustInvoice" />
+  </wsdl:message>
+  <wsdl:message name="AdjustInvoiceSoapOut">
+    <wsdl:part name="parameters" element="tns:AdjustInvoiceResponse" />
+  </wsdl:message>
+  <wsdl:message name="cancelInvSoapIn">
+    <wsdl:part name="parameters" element="tns:cancelInv" />
+  </wsdl:message>
+  <wsdl:message name="cancelInvSoapOut">
+    <wsdl:part name="parameters" element="tns:cancelInvResponse" />
+  </wsdl:message>
+  <wsdl:message name="cancelInvNoPaySoapIn">
+    <wsdl:part name="parameters" element="tns:cancelInvNoPay" />
+  </wsdl:message>
+  <wsdl:message name="cancelInvNoPaySoapOut">
+    <wsdl:part name="parameters" element="tns:cancelInvNoPayResponse" />
+  </wsdl:message>
+  <wsdl:message name="poolingInvSoapIn">
+    <wsdl:part name="parameters" element="tns:poolingInv" />
+  </wsdl:message>
+  <wsdl:message name="poolingInvSoapOut">
+    <wsdl:part name="parameters" element="tns:poolingInvResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInvbyFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:GetInvbyFkey" />
+  </wsdl:message>
+  <wsdl:message name="GetInvbyFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:GetInvbyFkeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="reportInvUsedSoapIn">
+    <wsdl:part name="parameters" element="tns:reportInvUsed" />
+  </wsdl:message>
+  <wsdl:message name="reportInvUsedSoapOut">
+    <wsdl:part name="parameters" element="tns:reportInvUsedResponse" />
+  </wsdl:message>
+  <wsdl:message name="reportMonthSoapIn">
+    <wsdl:part name="parameters" element="tns:reportMonth" />
+  </wsdl:message>
+  <wsdl:message name="reportMonthSoapOut">
+    <wsdl:part name="parameters" element="tns:reportMonthResponse" />
+  </wsdl:message>
+  <wsdl:message name="deliverInvFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:deliverInvFkey" />
+  </wsdl:message>
+  <wsdl:message name="deliverInvFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:deliverInvFkeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="deliverInvSoapIn">
+    <wsdl:part name="parameters" element="tns:deliverInv" />
+  </wsdl:message>
+  <wsdl:message name="deliverInvSoapOut">
+    <wsdl:part name="parameters" element="tns:deliverInvResponse" />
+  </wsdl:message>
+  <wsdl:message name="confirmPaymentSoapIn">
+    <wsdl:part name="parameters" element="tns:confirmPayment" />
+  </wsdl:message>
+  <wsdl:message name="confirmPaymentSoapOut">
+    <wsdl:part name="parameters" element="tns:confirmPaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="confirmPaymentDetailSoapIn">
+    <wsdl:part name="parameters" element="tns:confirmPaymentDetail" />
+  </wsdl:message>
+  <wsdl:message name="confirmPaymentDetailSoapOut">
+    <wsdl:part name="parameters" element="tns:confirmPaymentDetailResponse" />
+  </wsdl:message>
+  <wsdl:message name="unConfirmPaymentSoapIn">
+    <wsdl:part name="parameters" element="tns:unConfirmPayment" />
+  </wsdl:message>
+  <wsdl:message name="unConfirmPaymentSoapOut">
+    <wsdl:part name="parameters" element="tns:unConfirmPaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="confirmPaymentFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:confirmPaymentFkey" />
+  </wsdl:message>
+  <wsdl:message name="confirmPaymentFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:confirmPaymentFkeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="confirmPaymentDetailFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:confirmPaymentDetailFkey" />
+  </wsdl:message>
+  <wsdl:message name="confirmPaymentDetailFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:confirmPaymentDetailFkeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="confirmPaymentFkeyVNPSoapIn">
+    <wsdl:part name="parameters" element="tns:confirmPaymentFkeyVNP" />
+  </wsdl:message>
+  <wsdl:message name="confirmPaymentFkeyVNPSoapOut">
+    <wsdl:part name="parameters" element="tns:confirmPaymentFkeyVNPResponse" />
+  </wsdl:message>
+  <wsdl:message name="UnConfirmPaymentFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:UnConfirmPaymentFkey" />
+  </wsdl:message>
+  <wsdl:message name="UnConfirmPaymentFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:UnConfirmPaymentFkeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="UnConfirmPaymentFkeyVNPSoapIn">
+    <wsdl:part name="parameters" element="tns:UnConfirmPaymentFkeyVNP" />
+  </wsdl:message>
+  <wsdl:message name="UnConfirmPaymentFkeyVNPSoapOut">
+    <wsdl:part name="parameters" element="tns:UnConfirmPaymentFkeyVNPResponse" />
+  </wsdl:message>
+  <wsdl:message name="ResetTemSoapIn">
+    <wsdl:part name="parameters" element="tns:ResetTem" />
+  </wsdl:message>
+  <wsdl:message name="ResetTemSoapOut">
+    <wsdl:part name="parameters" element="tns:ResetTemResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllRolesbyAccSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllRolesbyAcc" />
+  </wsdl:message>
+  <wsdl:message name="GetAllRolesbyAccSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllRolesbyAccResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateNewUserbyAccSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateNewUserbyAcc" />
+  </wsdl:message>
+  <wsdl:message name="CreateNewUserbyAccSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateNewUserbyAccResponse" />
+  </wsdl:message>
+  <wsdl:message name="getSerialByPatternSoapIn">
+    <wsdl:part name="parameters" element="tns:getSerialByPattern" />
+  </wsdl:message>
+  <wsdl:message name="getSerialByPatternSoapOut">
+    <wsdl:part name="parameters" element="tns:getSerialByPatternResponse" />
+  </wsdl:message>
+  <wsdl:message name="getPublishInvsSoapIn">
+    <wsdl:part name="parameters" element="tns:getPublishInvs" />
+  </wsdl:message>
+  <wsdl:message name="getPublishInvsSoapOut">
+    <wsdl:part name="parameters" element="tns:getPublishInvsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="BusinessServiceSoap">
+    <wsdl:operation name="replaceInv">
+      <wsdl:input message="tns:replaceInvSoapIn" />
+      <wsdl:output message="tns:replaceInvSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ReplaceInvoiceAction">
+      <wsdl:input message="tns:ReplaceInvoiceActionSoapIn" />
+      <wsdl:output message="tns:ReplaceInvoiceActionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ReplaceActionAssignedNo">
+      <wsdl:input message="tns:ReplaceActionAssignedNoSoapIn" />
+      <wsdl:output message="tns:ReplaceActionAssignedNoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ReplaceInvoice">
+      <wsdl:input message="tns:ReplaceInvoiceSoapIn" />
+      <wsdl:output message="tns:ReplaceInvoiceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="adjustInv">
+      <wsdl:input message="tns:adjustInvSoapIn" />
+      <wsdl:output message="tns:adjustInvSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AdjustInvoiceAction">
+      <wsdl:input message="tns:AdjustInvoiceActionSoapIn" />
+      <wsdl:output message="tns:AdjustInvoiceActionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AdjustActionAssignedNo">
+      <wsdl:input message="tns:AdjustActionAssignedNoSoapIn" />
+      <wsdl:output message="tns:AdjustActionAssignedNoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AdjustInvoice">
+      <wsdl:input message="tns:AdjustInvoiceSoapIn" />
+      <wsdl:output message="tns:AdjustInvoiceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="cancelInv">
+      <wsdl:input message="tns:cancelInvSoapIn" />
+      <wsdl:output message="tns:cancelInvSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="cancelInvNoPay">
+      <wsdl:input message="tns:cancelInvNoPaySoapIn" />
+      <wsdl:output message="tns:cancelInvNoPaySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="poolingInv">
+      <wsdl:input message="tns:poolingInvSoapIn" />
+      <wsdl:output message="tns:poolingInvSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInvbyFkey">
+      <wsdl:input message="tns:GetInvbyFkeySoapIn" />
+      <wsdl:output message="tns:GetInvbyFkeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="reportInvUsed">
+      <wsdl:input message="tns:reportInvUsedSoapIn" />
+      <wsdl:output message="tns:reportInvUsedSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="reportMonth">
+      <wsdl:input message="tns:reportMonthSoapIn" />
+      <wsdl:output message="tns:reportMonthSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="deliverInvFkey">
+      <wsdl:input message="tns:deliverInvFkeySoapIn" />
+      <wsdl:output message="tns:deliverInvFkeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="deliverInv">
+      <wsdl:input message="tns:deliverInvSoapIn" />
+      <wsdl:output message="tns:deliverInvSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="confirmPayment">
+      <wsdl:input message="tns:confirmPaymentSoapIn" />
+      <wsdl:output message="tns:confirmPaymentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="confirmPaymentDetail">
+      <wsdl:input message="tns:confirmPaymentDetailSoapIn" />
+      <wsdl:output message="tns:confirmPaymentDetailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="unConfirmPayment">
+      <wsdl:input message="tns:unConfirmPaymentSoapIn" />
+      <wsdl:output message="tns:unConfirmPaymentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="confirmPaymentFkey">
+      <wsdl:input message="tns:confirmPaymentFkeySoapIn" />
+      <wsdl:output message="tns:confirmPaymentFkeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="confirmPaymentDetailFkey">
+      <wsdl:input message="tns:confirmPaymentDetailFkeySoapIn" />
+      <wsdl:output message="tns:confirmPaymentDetailFkeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="confirmPaymentFkeyVNP">
+      <wsdl:input message="tns:confirmPaymentFkeyVNPSoapIn" />
+      <wsdl:output message="tns:confirmPaymentFkeyVNPSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UnConfirmPaymentFkey">
+      <wsdl:input message="tns:UnConfirmPaymentFkeySoapIn" />
+      <wsdl:output message="tns:UnConfirmPaymentFkeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UnConfirmPaymentFkeyVNP">
+      <wsdl:input message="tns:UnConfirmPaymentFkeyVNPSoapIn" />
+      <wsdl:output message="tns:UnConfirmPaymentFkeyVNPSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ResetTem">
+      <wsdl:input message="tns:ResetTemSoapIn" />
+      <wsdl:output message="tns:ResetTemSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllRolesbyAcc">
+      <wsdl:input message="tns:GetAllRolesbyAccSoapIn" />
+      <wsdl:output message="tns:GetAllRolesbyAccSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateNewUserbyAcc">
+      <wsdl:input message="tns:CreateNewUserbyAccSoapIn" />
+      <wsdl:output message="tns:CreateNewUserbyAccSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getSerialByPattern">
+      <wsdl:input message="tns:getSerialByPatternSoapIn" />
+      <wsdl:output message="tns:getSerialByPatternSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getPublishInvs">
+      <wsdl:input message="tns:getPublishInvsSoapIn" />
+      <wsdl:output message="tns:getPublishInvsSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BusinessServiceSoap" type="tns:BusinessServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="replaceInv">
+      <soap:operation soapAction="http://tempuri.org/replaceInv" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReplaceInvoiceAction">
+      <soap:operation soapAction="http://tempuri.org/ReplaceInvoiceAction" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReplaceActionAssignedNo">
+      <soap:operation soapAction="http://tempuri.org/ReplaceActionAssignedNo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReplaceInvoice">
+      <soap:operation soapAction="http://tempuri.org/ReplaceInvoice" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="adjustInv">
+      <soap:operation soapAction="http://tempuri.org/adjustInv" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AdjustInvoiceAction">
+      <soap:operation soapAction="http://tempuri.org/AdjustInvoiceAction" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AdjustActionAssignedNo">
+      <soap:operation soapAction="http://tempuri.org/AdjustActionAssignedNo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AdjustInvoice">
+      <soap:operation soapAction="http://tempuri.org/AdjustInvoice" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelInv">
+      <soap:operation soapAction="http://tempuri.org/cancelInv" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelInvNoPay">
+      <soap:operation soapAction="http://tempuri.org/cancelInvNoPay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="poolingInv">
+      <soap:operation soapAction="http://tempuri.org/poolingInv" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvbyFkey">
+      <soap:operation soapAction="http://tempuri.org/GetInvbyFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="reportInvUsed">
+      <soap:operation soapAction="http://tempuri.org/reportInvUsed" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="reportMonth">
+      <soap:operation soapAction="http://tempuri.org/reportMonth" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deliverInvFkey">
+      <soap:operation soapAction="http://tempuri.org/deliverInvFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deliverInv">
+      <soap:operation soapAction="http://tempuri.org/deliverInv" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="confirmPayment">
+      <soap:operation soapAction="http://tempuri.org/confirmPayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="confirmPaymentDetail">
+      <soap:operation soapAction="http://tempuri.org/confirmPaymentDetail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="unConfirmPayment">
+      <soap:operation soapAction="http://tempuri.org/unConfirmPayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="confirmPaymentFkey">
+      <soap:operation soapAction="http://tempuri.org/confirmPaymentFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="confirmPaymentDetailFkey">
+      <soap:operation soapAction="http://tempuri.org/confirmPaymentDetailFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="confirmPaymentFkeyVNP">
+      <soap:operation soapAction="http://tempuri.org/confirmPaymentFkeyVNP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnConfirmPaymentFkey">
+      <soap:operation soapAction="http://tempuri.org/UnConfirmPaymentFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnConfirmPaymentFkeyVNP">
+      <soap:operation soapAction="http://tempuri.org/UnConfirmPaymentFkeyVNP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResetTem">
+      <soap:operation soapAction="http://tempuri.org/ResetTem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllRolesbyAcc">
+      <soap:operation soapAction="http://tempuri.org/GetAllRolesbyAcc" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateNewUserbyAcc">
+      <soap:operation soapAction="http://tempuri.org/CreateNewUserbyAcc" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSerialByPattern">
+      <soap:operation soapAction="http://tempuri.org/getSerialByPattern" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPublishInvs">
+      <soap:operation soapAction="http://tempuri.org/getPublishInvs" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BusinessServiceSoap12" type="tns:BusinessServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="replaceInv">
+      <soap12:operation soapAction="http://tempuri.org/replaceInv" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReplaceInvoiceAction">
+      <soap12:operation soapAction="http://tempuri.org/ReplaceInvoiceAction" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReplaceActionAssignedNo">
+      <soap12:operation soapAction="http://tempuri.org/ReplaceActionAssignedNo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReplaceInvoice">
+      <soap12:operation soapAction="http://tempuri.org/ReplaceInvoice" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="adjustInv">
+      <soap12:operation soapAction="http://tempuri.org/adjustInv" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AdjustInvoiceAction">
+      <soap12:operation soapAction="http://tempuri.org/AdjustInvoiceAction" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AdjustActionAssignedNo">
+      <soap12:operation soapAction="http://tempuri.org/AdjustActionAssignedNo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AdjustInvoice">
+      <soap12:operation soapAction="http://tempuri.org/AdjustInvoice" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelInv">
+      <soap12:operation soapAction="http://tempuri.org/cancelInv" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelInvNoPay">
+      <soap12:operation soapAction="http://tempuri.org/cancelInvNoPay" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="poolingInv">
+      <soap12:operation soapAction="http://tempuri.org/poolingInv" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvbyFkey">
+      <soap12:operation soapAction="http://tempuri.org/GetInvbyFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="reportInvUsed">
+      <soap12:operation soapAction="http://tempuri.org/reportInvUsed" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="reportMonth">
+      <soap12:operation soapAction="http://tempuri.org/reportMonth" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deliverInvFkey">
+      <soap12:operation soapAction="http://tempuri.org/deliverInvFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deliverInv">
+      <soap12:operation soapAction="http://tempuri.org/deliverInv" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="confirmPayment">
+      <soap12:operation soapAction="http://tempuri.org/confirmPayment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="confirmPaymentDetail">
+      <soap12:operation soapAction="http://tempuri.org/confirmPaymentDetail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="unConfirmPayment">
+      <soap12:operation soapAction="http://tempuri.org/unConfirmPayment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="confirmPaymentFkey">
+      <soap12:operation soapAction="http://tempuri.org/confirmPaymentFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="confirmPaymentDetailFkey">
+      <soap12:operation soapAction="http://tempuri.org/confirmPaymentDetailFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="confirmPaymentFkeyVNP">
+      <soap12:operation soapAction="http://tempuri.org/confirmPaymentFkeyVNP" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnConfirmPaymentFkey">
+      <soap12:operation soapAction="http://tempuri.org/UnConfirmPaymentFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnConfirmPaymentFkeyVNP">
+      <soap12:operation soapAction="http://tempuri.org/UnConfirmPaymentFkeyVNP" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResetTem">
+      <soap12:operation soapAction="http://tempuri.org/ResetTem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllRolesbyAcc">
+      <soap12:operation soapAction="http://tempuri.org/GetAllRolesbyAcc" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateNewUserbyAcc">
+      <soap12:operation soapAction="http://tempuri.org/CreateNewUserbyAcc" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSerialByPattern">
+      <soap12:operation soapAction="http://tempuri.org/getSerialByPattern" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPublishInvs">
+      <soap12:operation soapAction="http://tempuri.org/getPublishInvs" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="BusinessService">
+    <wsdl:port name="BusinessServiceSoap" binding="tns:BusinessServiceSoap">
+      <soap:address location="https://bvtntadmindemo.vnpt-invoice.com.vn/businessservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="BusinessServiceSoap12" binding="tns:BusinessServiceSoap12">
+      <soap12:address location="https://bvtntadmindemo.vnpt-invoice.com.vn/businessservice.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

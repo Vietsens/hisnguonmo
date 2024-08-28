@@ -1,0 +1,2392 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="listInvByCus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cusCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="toDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listInvByCusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listInvByCusResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchInv">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cusCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pattern" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serial" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="toDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="invNumber" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="invStatus" nillable="true" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="page" nillable="true" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="cussignStatus" nillable="true" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="payment" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchInvResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SearchInvResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getCatalogView">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="invToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getCatalogViewResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getCatalogViewResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getInvView">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="invToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getInvViewResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getInvViewResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getInvViewNoPay">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="invToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getInvViewNoPayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getInvViewNoPayResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="convertForStore">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="invToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="convertForStoreResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="convertForStoreResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="convertForVerify">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="invToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="convertForVerifyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="convertForVerifyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInv">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="invToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadInvResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvError">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="invToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvErrorResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadInvErrorResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvNoPay">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="invToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvNoPayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadInvNoPayResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvNoPayError">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="invToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvNoPayErrorResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadInvNoPayErrorResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvPDF">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvPDFResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadInvPDFResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvPDFNoPay">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvPDFNoPayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadInvPDFNoPayResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvZipToken">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="invToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="checkPayment" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvZipTokenResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadInvZipTokenResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listInvByCusFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="key" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="toDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listInvByCusFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listInvByCusFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listInvByCusFkeyVNP">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="key" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="toDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listInvByCusFkeyVNPResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listInvByCusFkeyVNPResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getcatalogViewFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getcatalogViewFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getcatalogViewFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvPDFFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvPDFFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadInvPDFFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvPDFFkeyNoPay">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvPDFFkeyNoPayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadInvPDFFkeyNoPayResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadNewInvPDFFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadNewInvPDFFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadNewInvPDFFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getInvViewFkeyByStaff">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getInvViewFkeyByStaffResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getInvViewFkeyByStaffResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getInvViewFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getInvViewFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getInvViewFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getInvViewFkeyNoPay">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getInvViewFkeyNoPayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getInvViewFkeyNoPayResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getNewInvViewFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getNewInvViewFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getNewInvViewFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="convertForStoreFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="convertForStoreFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="convertForStoreFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="convertForVerifyFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="convertForVerifyFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="convertForVerifyFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadInvFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvFkeyNoPay">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvFkeyNoPayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadInvFkeyNoPayResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvErrorFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvErrorFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadInvErrorFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvErrorPDF">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvErrorPDFResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadInvErrorPDFResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvPDFNoPayError">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvPDFNoPayErrorResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadInvPDFNoPayErrorResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvPDFFkeyError">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvPDFFkeyErrorResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadInvPDFFkeyErrorResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvPDFFkeyNoPayError">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvPDFFkeyNoPayErrorResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadInvPDFFkeyNoPayErrorResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInvErrorViewFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInvErrorViewFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInvErrorViewFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvZipFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="checkPayment" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadInvZipFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadInvZipFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getDigest">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cusCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="invToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getDigestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getDigestResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConfirmSiganture">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="signValue" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="invToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConfirmSigantureResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConfirmSigantureResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getCus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cusCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getCusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getCusResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getStaff">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="accountName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getStaffResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getStaffResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listInvFromNoToNo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="invFromNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="invToNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="invPattern" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="invSerial" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listInvFromNoToNoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listInvFromNoToNoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getInvViewFkeyNoPayPattern">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pattern" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getInvViewFkeyNoPayPatternResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getInvViewFkeyNoPayPatternResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="convertForStoreFkeyPattern">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pattern" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="convertForStoreFkeyPatternResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="convertForStoreFkeyPatternResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="convertForVerifyFkeyPattern">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pattern" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="convertForVerifyFkeyPatternResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="convertForVerifyFkeyPatternResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="loginportal">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Account" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ACpass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="comid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="loginportalResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="loginportalResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="forgetpass">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Account" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="comid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="forgetpassResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="forgetpassResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="changepassword">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Account" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="oldpassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="newpassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="comid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="changepasswordResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="changepasswordResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listCompany">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="comid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="comtaxcode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listCompanyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listCompanyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listPatternByCom">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="comid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listPatternByComResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listPatternByComResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="convertForVerifyBase64HtmlByFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="convertForVerifyBase64HtmlByFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="convertForVerifyBase64HtmlByFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="convertForStoreBase64HtmlByFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="convertForStoreBase64HtmlByFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="convertForStoreBase64HtmlByFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInvViewByDate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pattern" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serial" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="toDate" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInvViewByDateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInvViewByDateResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadCTTToken">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="type" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadCTTTokenResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadCTTTokenResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadCTTFkey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fkey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="type" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="downloadCTTFkeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="downloadCTTFkeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="listInvByCusSoapIn">
+    <wsdl:part name="parameters" element="tns:listInvByCus" />
+  </wsdl:message>
+  <wsdl:message name="listInvByCusSoapOut">
+    <wsdl:part name="parameters" element="tns:listInvByCusResponse" />
+  </wsdl:message>
+  <wsdl:message name="SearchInvSoapIn">
+    <wsdl:part name="parameters" element="tns:SearchInv" />
+  </wsdl:message>
+  <wsdl:message name="SearchInvSoapOut">
+    <wsdl:part name="parameters" element="tns:SearchInvResponse" />
+  </wsdl:message>
+  <wsdl:message name="getCatalogViewSoapIn">
+    <wsdl:part name="parameters" element="tns:getCatalogView" />
+  </wsdl:message>
+  <wsdl:message name="getCatalogViewSoapOut">
+    <wsdl:part name="parameters" element="tns:getCatalogViewResponse" />
+  </wsdl:message>
+  <wsdl:message name="getInvViewSoapIn">
+    <wsdl:part name="parameters" element="tns:getInvView" />
+  </wsdl:message>
+  <wsdl:message name="getInvViewSoapOut">
+    <wsdl:part name="parameters" element="tns:getInvViewResponse" />
+  </wsdl:message>
+  <wsdl:message name="getInvViewNoPaySoapIn">
+    <wsdl:part name="parameters" element="tns:getInvViewNoPay" />
+  </wsdl:message>
+  <wsdl:message name="getInvViewNoPaySoapOut">
+    <wsdl:part name="parameters" element="tns:getInvViewNoPayResponse" />
+  </wsdl:message>
+  <wsdl:message name="convertForStoreSoapIn">
+    <wsdl:part name="parameters" element="tns:convertForStore" />
+  </wsdl:message>
+  <wsdl:message name="convertForStoreSoapOut">
+    <wsdl:part name="parameters" element="tns:convertForStoreResponse" />
+  </wsdl:message>
+  <wsdl:message name="convertForVerifySoapIn">
+    <wsdl:part name="parameters" element="tns:convertForVerify" />
+  </wsdl:message>
+  <wsdl:message name="convertForVerifySoapOut">
+    <wsdl:part name="parameters" element="tns:convertForVerifyResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvSoapIn">
+    <wsdl:part name="parameters" element="tns:downloadInv" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvSoapOut">
+    <wsdl:part name="parameters" element="tns:downloadInvResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvErrorSoapIn">
+    <wsdl:part name="parameters" element="tns:downloadInvError" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvErrorSoapOut">
+    <wsdl:part name="parameters" element="tns:downloadInvErrorResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvNoPaySoapIn">
+    <wsdl:part name="parameters" element="tns:downloadInvNoPay" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvNoPaySoapOut">
+    <wsdl:part name="parameters" element="tns:downloadInvNoPayResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvNoPayErrorSoapIn">
+    <wsdl:part name="parameters" element="tns:downloadInvNoPayError" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvNoPayErrorSoapOut">
+    <wsdl:part name="parameters" element="tns:downloadInvNoPayErrorResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvPDFSoapIn">
+    <wsdl:part name="parameters" element="tns:downloadInvPDF" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvPDFSoapOut">
+    <wsdl:part name="parameters" element="tns:downloadInvPDFResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvPDFNoPaySoapIn">
+    <wsdl:part name="parameters" element="tns:downloadInvPDFNoPay" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvPDFNoPaySoapOut">
+    <wsdl:part name="parameters" element="tns:downloadInvPDFNoPayResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvZipTokenSoapIn">
+    <wsdl:part name="parameters" element="tns:downloadInvZipToken" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvZipTokenSoapOut">
+    <wsdl:part name="parameters" element="tns:downloadInvZipTokenResponse" />
+  </wsdl:message>
+  <wsdl:message name="listInvByCusFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:listInvByCusFkey" />
+  </wsdl:message>
+  <wsdl:message name="listInvByCusFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:listInvByCusFkeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="listInvByCusFkeyVNPSoapIn">
+    <wsdl:part name="parameters" element="tns:listInvByCusFkeyVNP" />
+  </wsdl:message>
+  <wsdl:message name="listInvByCusFkeyVNPSoapOut">
+    <wsdl:part name="parameters" element="tns:listInvByCusFkeyVNPResponse" />
+  </wsdl:message>
+  <wsdl:message name="getcatalogViewFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:getcatalogViewFkey" />
+  </wsdl:message>
+  <wsdl:message name="getcatalogViewFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:getcatalogViewFkeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvPDFFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:downloadInvPDFFkey" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvPDFFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:downloadInvPDFFkeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvPDFFkeyNoPaySoapIn">
+    <wsdl:part name="parameters" element="tns:downloadInvPDFFkeyNoPay" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvPDFFkeyNoPaySoapOut">
+    <wsdl:part name="parameters" element="tns:downloadInvPDFFkeyNoPayResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadNewInvPDFFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:downloadNewInvPDFFkey" />
+  </wsdl:message>
+  <wsdl:message name="downloadNewInvPDFFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:downloadNewInvPDFFkeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="getInvViewFkeyByStaffSoapIn">
+    <wsdl:part name="parameters" element="tns:getInvViewFkeyByStaff" />
+  </wsdl:message>
+  <wsdl:message name="getInvViewFkeyByStaffSoapOut">
+    <wsdl:part name="parameters" element="tns:getInvViewFkeyByStaffResponse" />
+  </wsdl:message>
+  <wsdl:message name="getInvViewFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:getInvViewFkey" />
+  </wsdl:message>
+  <wsdl:message name="getInvViewFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:getInvViewFkeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="getInvViewFkeyNoPaySoapIn">
+    <wsdl:part name="parameters" element="tns:getInvViewFkeyNoPay" />
+  </wsdl:message>
+  <wsdl:message name="getInvViewFkeyNoPaySoapOut">
+    <wsdl:part name="parameters" element="tns:getInvViewFkeyNoPayResponse" />
+  </wsdl:message>
+  <wsdl:message name="getNewInvViewFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:getNewInvViewFkey" />
+  </wsdl:message>
+  <wsdl:message name="getNewInvViewFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:getNewInvViewFkeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="convertForStoreFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:convertForStoreFkey" />
+  </wsdl:message>
+  <wsdl:message name="convertForStoreFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:convertForStoreFkeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="convertForVerifyFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:convertForVerifyFkey" />
+  </wsdl:message>
+  <wsdl:message name="convertForVerifyFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:convertForVerifyFkeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:downloadInvFkey" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:downloadInvFkeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvFkeyNoPaySoapIn">
+    <wsdl:part name="parameters" element="tns:downloadInvFkeyNoPay" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvFkeyNoPaySoapOut">
+    <wsdl:part name="parameters" element="tns:downloadInvFkeyNoPayResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvErrorFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:downloadInvErrorFkey" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvErrorFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:downloadInvErrorFkeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvErrorPDFSoapIn">
+    <wsdl:part name="parameters" element="tns:downloadInvErrorPDF" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvErrorPDFSoapOut">
+    <wsdl:part name="parameters" element="tns:downloadInvErrorPDFResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvPDFNoPayErrorSoapIn">
+    <wsdl:part name="parameters" element="tns:downloadInvPDFNoPayError" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvPDFNoPayErrorSoapOut">
+    <wsdl:part name="parameters" element="tns:downloadInvPDFNoPayErrorResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvPDFFkeyErrorSoapIn">
+    <wsdl:part name="parameters" element="tns:downloadInvPDFFkeyError" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvPDFFkeyErrorSoapOut">
+    <wsdl:part name="parameters" element="tns:downloadInvPDFFkeyErrorResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvPDFFkeyNoPayErrorSoapIn">
+    <wsdl:part name="parameters" element="tns:downloadInvPDFFkeyNoPayError" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvPDFFkeyNoPayErrorSoapOut">
+    <wsdl:part name="parameters" element="tns:downloadInvPDFFkeyNoPayErrorResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInvErrorViewFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:GetInvErrorViewFkey" />
+  </wsdl:message>
+  <wsdl:message name="GetInvErrorViewFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:GetInvErrorViewFkeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvZipFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:downloadInvZipFkey" />
+  </wsdl:message>
+  <wsdl:message name="downloadInvZipFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:downloadInvZipFkeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="getDigestSoapIn">
+    <wsdl:part name="parameters" element="tns:getDigest" />
+  </wsdl:message>
+  <wsdl:message name="getDigestSoapOut">
+    <wsdl:part name="parameters" element="tns:getDigestResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConfirmSigantureSoapIn">
+    <wsdl:part name="parameters" element="tns:ConfirmSiganture" />
+  </wsdl:message>
+  <wsdl:message name="ConfirmSigantureSoapOut">
+    <wsdl:part name="parameters" element="tns:ConfirmSigantureResponse" />
+  </wsdl:message>
+  <wsdl:message name="getCusSoapIn">
+    <wsdl:part name="parameters" element="tns:getCus" />
+  </wsdl:message>
+  <wsdl:message name="getCusSoapOut">
+    <wsdl:part name="parameters" element="tns:getCusResponse" />
+  </wsdl:message>
+  <wsdl:message name="getStaffSoapIn">
+    <wsdl:part name="parameters" element="tns:getStaff" />
+  </wsdl:message>
+  <wsdl:message name="getStaffSoapOut">
+    <wsdl:part name="parameters" element="tns:getStaffResponse" />
+  </wsdl:message>
+  <wsdl:message name="listInvFromNoToNoSoapIn">
+    <wsdl:part name="parameters" element="tns:listInvFromNoToNo" />
+  </wsdl:message>
+  <wsdl:message name="listInvFromNoToNoSoapOut">
+    <wsdl:part name="parameters" element="tns:listInvFromNoToNoResponse" />
+  </wsdl:message>
+  <wsdl:message name="getInvViewFkeyNoPayPatternSoapIn">
+    <wsdl:part name="parameters" element="tns:getInvViewFkeyNoPayPattern" />
+  </wsdl:message>
+  <wsdl:message name="getInvViewFkeyNoPayPatternSoapOut">
+    <wsdl:part name="parameters" element="tns:getInvViewFkeyNoPayPatternResponse" />
+  </wsdl:message>
+  <wsdl:message name="convertForStoreFkeyPatternSoapIn">
+    <wsdl:part name="parameters" element="tns:convertForStoreFkeyPattern" />
+  </wsdl:message>
+  <wsdl:message name="convertForStoreFkeyPatternSoapOut">
+    <wsdl:part name="parameters" element="tns:convertForStoreFkeyPatternResponse" />
+  </wsdl:message>
+  <wsdl:message name="convertForVerifyFkeyPatternSoapIn">
+    <wsdl:part name="parameters" element="tns:convertForVerifyFkeyPattern" />
+  </wsdl:message>
+  <wsdl:message name="convertForVerifyFkeyPatternSoapOut">
+    <wsdl:part name="parameters" element="tns:convertForVerifyFkeyPatternResponse" />
+  </wsdl:message>
+  <wsdl:message name="loginportalSoapIn">
+    <wsdl:part name="parameters" element="tns:loginportal" />
+  </wsdl:message>
+  <wsdl:message name="loginportalSoapOut">
+    <wsdl:part name="parameters" element="tns:loginportalResponse" />
+  </wsdl:message>
+  <wsdl:message name="forgetpassSoapIn">
+    <wsdl:part name="parameters" element="tns:forgetpass" />
+  </wsdl:message>
+  <wsdl:message name="forgetpassSoapOut">
+    <wsdl:part name="parameters" element="tns:forgetpassResponse" />
+  </wsdl:message>
+  <wsdl:message name="changepasswordSoapIn">
+    <wsdl:part name="parameters" element="tns:changepassword" />
+  </wsdl:message>
+  <wsdl:message name="changepasswordSoapOut">
+    <wsdl:part name="parameters" element="tns:changepasswordResponse" />
+  </wsdl:message>
+  <wsdl:message name="listCompanySoapIn">
+    <wsdl:part name="parameters" element="tns:listCompany" />
+  </wsdl:message>
+  <wsdl:message name="listCompanySoapOut">
+    <wsdl:part name="parameters" element="tns:listCompanyResponse" />
+  </wsdl:message>
+  <wsdl:message name="listPatternByComSoapIn">
+    <wsdl:part name="parameters" element="tns:listPatternByCom" />
+  </wsdl:message>
+  <wsdl:message name="listPatternByComSoapOut">
+    <wsdl:part name="parameters" element="tns:listPatternByComResponse" />
+  </wsdl:message>
+  <wsdl:message name="convertForVerifyBase64HtmlByFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:convertForVerifyBase64HtmlByFkey" />
+  </wsdl:message>
+  <wsdl:message name="convertForVerifyBase64HtmlByFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:convertForVerifyBase64HtmlByFkeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="convertForStoreBase64HtmlByFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:convertForStoreBase64HtmlByFkey" />
+  </wsdl:message>
+  <wsdl:message name="convertForStoreBase64HtmlByFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:convertForStoreBase64HtmlByFkeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInvViewByDateSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInvViewByDate" />
+  </wsdl:message>
+  <wsdl:message name="GetInvViewByDateSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInvViewByDateResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadCTTTokenSoapIn">
+    <wsdl:part name="parameters" element="tns:downloadCTTToken" />
+  </wsdl:message>
+  <wsdl:message name="downloadCTTTokenSoapOut">
+    <wsdl:part name="parameters" element="tns:downloadCTTTokenResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadCTTFkeySoapIn">
+    <wsdl:part name="parameters" element="tns:downloadCTTFkey" />
+  </wsdl:message>
+  <wsdl:message name="downloadCTTFkeySoapOut">
+    <wsdl:part name="parameters" element="tns:downloadCTTFkeyResponse" />
+  </wsdl:message>
+  <wsdl:portType name="PortalServiceSoap">
+    <wsdl:operation name="listInvByCus">
+      <wsdl:input message="tns:listInvByCusSoapIn" />
+      <wsdl:output message="tns:listInvByCusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchInv">
+      <wsdl:input message="tns:SearchInvSoapIn" />
+      <wsdl:output message="tns:SearchInvSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getCatalogView">
+      <wsdl:input message="tns:getCatalogViewSoapIn" />
+      <wsdl:output message="tns:getCatalogViewSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getInvView">
+      <wsdl:input message="tns:getInvViewSoapIn" />
+      <wsdl:output message="tns:getInvViewSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getInvViewNoPay">
+      <wsdl:input message="tns:getInvViewNoPaySoapIn" />
+      <wsdl:output message="tns:getInvViewNoPaySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="convertForStore">
+      <wsdl:input message="tns:convertForStoreSoapIn" />
+      <wsdl:output message="tns:convertForStoreSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="convertForVerify">
+      <wsdl:input message="tns:convertForVerifySoapIn" />
+      <wsdl:output message="tns:convertForVerifySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadInv">
+      <wsdl:input message="tns:downloadInvSoapIn" />
+      <wsdl:output message="tns:downloadInvSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvError">
+      <wsdl:input message="tns:downloadInvErrorSoapIn" />
+      <wsdl:output message="tns:downloadInvErrorSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvNoPay">
+      <wsdl:input message="tns:downloadInvNoPaySoapIn" />
+      <wsdl:output message="tns:downloadInvNoPaySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvNoPayError">
+      <wsdl:input message="tns:downloadInvNoPayErrorSoapIn" />
+      <wsdl:output message="tns:downloadInvNoPayErrorSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDF">
+      <wsdl:input message="tns:downloadInvPDFSoapIn" />
+      <wsdl:output message="tns:downloadInvPDFSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDFNoPay">
+      <wsdl:input message="tns:downloadInvPDFNoPaySoapIn" />
+      <wsdl:output message="tns:downloadInvPDFNoPaySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvZipToken">
+      <wsdl:input message="tns:downloadInvZipTokenSoapIn" />
+      <wsdl:output message="tns:downloadInvZipTokenSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="listInvByCusFkey">
+      <wsdl:input message="tns:listInvByCusFkeySoapIn" />
+      <wsdl:output message="tns:listInvByCusFkeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="listInvByCusFkeyVNP">
+      <wsdl:input message="tns:listInvByCusFkeyVNPSoapIn" />
+      <wsdl:output message="tns:listInvByCusFkeyVNPSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getcatalogViewFkey">
+      <wsdl:input message="tns:getcatalogViewFkeySoapIn" />
+      <wsdl:output message="tns:getcatalogViewFkeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDFFkey">
+      <wsdl:input message="tns:downloadInvPDFFkeySoapIn" />
+      <wsdl:output message="tns:downloadInvPDFFkeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDFFkeyNoPay">
+      <wsdl:input message="tns:downloadInvPDFFkeyNoPaySoapIn" />
+      <wsdl:output message="tns:downloadInvPDFFkeyNoPaySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadNewInvPDFFkey">
+      <wsdl:input message="tns:downloadNewInvPDFFkeySoapIn" />
+      <wsdl:output message="tns:downloadNewInvPDFFkeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getInvViewFkeyByStaff">
+      <wsdl:input message="tns:getInvViewFkeyByStaffSoapIn" />
+      <wsdl:output message="tns:getInvViewFkeyByStaffSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getInvViewFkey">
+      <wsdl:input message="tns:getInvViewFkeySoapIn" />
+      <wsdl:output message="tns:getInvViewFkeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getInvViewFkeyNoPay">
+      <wsdl:input message="tns:getInvViewFkeyNoPaySoapIn" />
+      <wsdl:output message="tns:getInvViewFkeyNoPaySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getNewInvViewFkey">
+      <wsdl:input message="tns:getNewInvViewFkeySoapIn" />
+      <wsdl:output message="tns:getNewInvViewFkeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="convertForStoreFkey">
+      <wsdl:input message="tns:convertForStoreFkeySoapIn" />
+      <wsdl:output message="tns:convertForStoreFkeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="convertForVerifyFkey">
+      <wsdl:input message="tns:convertForVerifyFkeySoapIn" />
+      <wsdl:output message="tns:convertForVerifyFkeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvFkey">
+      <wsdl:input message="tns:downloadInvFkeySoapIn" />
+      <wsdl:output message="tns:downloadInvFkeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvFkeyNoPay">
+      <wsdl:input message="tns:downloadInvFkeyNoPaySoapIn" />
+      <wsdl:output message="tns:downloadInvFkeyNoPaySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvErrorFkey">
+      <wsdl:input message="tns:downloadInvErrorFkeySoapIn" />
+      <wsdl:output message="tns:downloadInvErrorFkeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvErrorPDF">
+      <wsdl:input message="tns:downloadInvErrorPDFSoapIn" />
+      <wsdl:output message="tns:downloadInvErrorPDFSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDFNoPayError">
+      <wsdl:input message="tns:downloadInvPDFNoPayErrorSoapIn" />
+      <wsdl:output message="tns:downloadInvPDFNoPayErrorSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDFFkeyError">
+      <wsdl:input message="tns:downloadInvPDFFkeyErrorSoapIn" />
+      <wsdl:output message="tns:downloadInvPDFFkeyErrorSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDFFkeyNoPayError">
+      <wsdl:input message="tns:downloadInvPDFFkeyNoPayErrorSoapIn" />
+      <wsdl:output message="tns:downloadInvPDFFkeyNoPayErrorSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInvErrorViewFkey">
+      <wsdl:input message="tns:GetInvErrorViewFkeySoapIn" />
+      <wsdl:output message="tns:GetInvErrorViewFkeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvZipFkey">
+      <wsdl:input message="tns:downloadInvZipFkeySoapIn" />
+      <wsdl:output message="tns:downloadInvZipFkeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getDigest">
+      <wsdl:input message="tns:getDigestSoapIn" />
+      <wsdl:output message="tns:getDigestSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmSiganture">
+      <wsdl:input message="tns:ConfirmSigantureSoapIn" />
+      <wsdl:output message="tns:ConfirmSigantureSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getCus">
+      <wsdl:input message="tns:getCusSoapIn" />
+      <wsdl:output message="tns:getCusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getStaff">
+      <wsdl:input message="tns:getStaffSoapIn" />
+      <wsdl:output message="tns:getStaffSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="listInvFromNoToNo">
+      <wsdl:input message="tns:listInvFromNoToNoSoapIn" />
+      <wsdl:output message="tns:listInvFromNoToNoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getInvViewFkeyNoPayPattern">
+      <wsdl:input message="tns:getInvViewFkeyNoPayPatternSoapIn" />
+      <wsdl:output message="tns:getInvViewFkeyNoPayPatternSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="convertForStoreFkeyPattern">
+      <wsdl:input message="tns:convertForStoreFkeyPatternSoapIn" />
+      <wsdl:output message="tns:convertForStoreFkeyPatternSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="convertForVerifyFkeyPattern">
+      <wsdl:input message="tns:convertForVerifyFkeyPatternSoapIn" />
+      <wsdl:output message="tns:convertForVerifyFkeyPatternSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="loginportal">
+      <wsdl:input message="tns:loginportalSoapIn" />
+      <wsdl:output message="tns:loginportalSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="forgetpass">
+      <wsdl:input message="tns:forgetpassSoapIn" />
+      <wsdl:output message="tns:forgetpassSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="changepassword">
+      <wsdl:input message="tns:changepasswordSoapIn" />
+      <wsdl:output message="tns:changepasswordSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="listCompany">
+      <wsdl:input message="tns:listCompanySoapIn" />
+      <wsdl:output message="tns:listCompanySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="listPatternByCom">
+      <wsdl:input message="tns:listPatternByComSoapIn" />
+      <wsdl:output message="tns:listPatternByComSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="convertForVerifyBase64HtmlByFkey">
+      <wsdl:input message="tns:convertForVerifyBase64HtmlByFkeySoapIn" />
+      <wsdl:output message="tns:convertForVerifyBase64HtmlByFkeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="convertForStoreBase64HtmlByFkey">
+      <wsdl:input message="tns:convertForStoreBase64HtmlByFkeySoapIn" />
+      <wsdl:output message="tns:convertForStoreBase64HtmlByFkeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInvViewByDate">
+      <wsdl:input message="tns:GetInvViewByDateSoapIn" />
+      <wsdl:output message="tns:GetInvViewByDateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadCTTToken">
+      <wsdl:input message="tns:downloadCTTTokenSoapIn" />
+      <wsdl:output message="tns:downloadCTTTokenSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadCTTFkey">
+      <wsdl:input message="tns:downloadCTTFkeySoapIn" />
+      <wsdl:output message="tns:downloadCTTFkeySoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PortalServiceSoap" type="tns:PortalServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="listInvByCus">
+      <soap:operation soapAction="http://tempuri.org/listInvByCus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchInv">
+      <soap:operation soapAction="http://tempuri.org/SearchInv" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCatalogView">
+      <soap:operation soapAction="http://tempuri.org/getCatalogView" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInvView">
+      <soap:operation soapAction="http://tempuri.org/getInvView" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInvViewNoPay">
+      <soap:operation soapAction="http://tempuri.org/getInvViewNoPay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="convertForStore">
+      <soap:operation soapAction="http://tempuri.org/convertForStore" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="convertForVerify">
+      <soap:operation soapAction="http://tempuri.org/convertForVerify" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInv">
+      <soap:operation soapAction="http://tempuri.org/downloadInv" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvError">
+      <soap:operation soapAction="http://tempuri.org/downloadInvError" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvNoPay">
+      <soap:operation soapAction="http://tempuri.org/downloadInvNoPay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvNoPayError">
+      <soap:operation soapAction="http://tempuri.org/downloadInvNoPayError" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDF">
+      <soap:operation soapAction="http://tempuri.org/downloadInvPDF" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDFNoPay">
+      <soap:operation soapAction="http://tempuri.org/downloadInvPDFNoPay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvZipToken">
+      <soap:operation soapAction="http://tempuri.org/downloadInvZipToken" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listInvByCusFkey">
+      <soap:operation soapAction="http://tempuri.org/listInvByCusFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listInvByCusFkeyVNP">
+      <soap:operation soapAction="http://tempuri.org/listInvByCusFkeyVNP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getcatalogViewFkey">
+      <soap:operation soapAction="http://tempuri.org/getcatalogViewFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDFFkey">
+      <soap:operation soapAction="http://tempuri.org/downloadInvPDFFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDFFkeyNoPay">
+      <soap:operation soapAction="http://tempuri.org/downloadInvPDFFkeyNoPay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadNewInvPDFFkey">
+      <soap:operation soapAction="http://tempuri.org/downloadNewInvPDFFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInvViewFkeyByStaff">
+      <soap:operation soapAction="http://tempuri.org/getInvViewFkeyByStaff" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInvViewFkey">
+      <soap:operation soapAction="http://tempuri.org/getInvViewFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInvViewFkeyNoPay">
+      <soap:operation soapAction="http://tempuri.org/getInvViewFkeyNoPay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getNewInvViewFkey">
+      <soap:operation soapAction="http://tempuri.org/getNewInvViewFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="convertForStoreFkey">
+      <soap:operation soapAction="http://tempuri.org/convertForStoreFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="convertForVerifyFkey">
+      <soap:operation soapAction="http://tempuri.org/convertForVerifyFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvFkey">
+      <soap:operation soapAction="http://tempuri.org/downloadInvFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvFkeyNoPay">
+      <soap:operation soapAction="http://tempuri.org/downloadInvFkeyNoPay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvErrorFkey">
+      <soap:operation soapAction="http://tempuri.org/downloadInvErrorFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvErrorPDF">
+      <soap:operation soapAction="http://tempuri.org/downloadInvErrorPDF" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDFNoPayError">
+      <soap:operation soapAction="http://tempuri.org/downloadInvPDFNoPayError" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDFFkeyError">
+      <soap:operation soapAction="http://tempuri.org/downloadInvPDFFkeyError" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDFFkeyNoPayError">
+      <soap:operation soapAction="http://tempuri.org/downloadInvPDFFkeyNoPayError" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvErrorViewFkey">
+      <soap:operation soapAction="http://tempuri.org/GetInvErrorViewFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvZipFkey">
+      <soap:operation soapAction="http://tempuri.org/downloadInvZipFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDigest">
+      <soap:operation soapAction="http://tempuri.org/getDigest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmSiganture">
+      <soap:operation soapAction="http://tempuri.org/ConfirmSiganture" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCus">
+      <soap:operation soapAction="http://tempuri.org/getCus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getStaff">
+      <soap:operation soapAction="http://tempuri.org/getStaff" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listInvFromNoToNo">
+      <soap:operation soapAction="http://tempuri.org/listInvFromNoToNo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInvViewFkeyNoPayPattern">
+      <soap:operation soapAction="http://tempuri.org/getInvViewFkeyNoPayPattern" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="convertForStoreFkeyPattern">
+      <soap:operation soapAction="http://tempuri.org/convertForStoreFkeyPattern" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="convertForVerifyFkeyPattern">
+      <soap:operation soapAction="http://tempuri.org/convertForVerifyFkeyPattern" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="loginportal">
+      <soap:operation soapAction="http://tempuri.org/loginportal" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="forgetpass">
+      <soap:operation soapAction="http://tempuri.org/forgetpass" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="changepassword">
+      <soap:operation soapAction="http://tempuri.org/changepassword" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listCompany">
+      <soap:operation soapAction="http://tempuri.org/listCompany" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listPatternByCom">
+      <soap:operation soapAction="http://tempuri.org/listPatternByCom" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="convertForVerifyBase64HtmlByFkey">
+      <soap:operation soapAction="http://tempuri.org/convertForVerifyBase64HtmlByFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="convertForStoreBase64HtmlByFkey">
+      <soap:operation soapAction="http://tempuri.org/convertForStoreBase64HtmlByFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvViewByDate">
+      <soap:operation soapAction="http://tempuri.org/GetInvViewByDate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadCTTToken">
+      <soap:operation soapAction="http://tempuri.org/downloadCTTToken" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadCTTFkey">
+      <soap:operation soapAction="http://tempuri.org/downloadCTTFkey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="PortalServiceSoap12" type="tns:PortalServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="listInvByCus">
+      <soap12:operation soapAction="http://tempuri.org/listInvByCus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchInv">
+      <soap12:operation soapAction="http://tempuri.org/SearchInv" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCatalogView">
+      <soap12:operation soapAction="http://tempuri.org/getCatalogView" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInvView">
+      <soap12:operation soapAction="http://tempuri.org/getInvView" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInvViewNoPay">
+      <soap12:operation soapAction="http://tempuri.org/getInvViewNoPay" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="convertForStore">
+      <soap12:operation soapAction="http://tempuri.org/convertForStore" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="convertForVerify">
+      <soap12:operation soapAction="http://tempuri.org/convertForVerify" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInv">
+      <soap12:operation soapAction="http://tempuri.org/downloadInv" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvError">
+      <soap12:operation soapAction="http://tempuri.org/downloadInvError" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvNoPay">
+      <soap12:operation soapAction="http://tempuri.org/downloadInvNoPay" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvNoPayError">
+      <soap12:operation soapAction="http://tempuri.org/downloadInvNoPayError" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDF">
+      <soap12:operation soapAction="http://tempuri.org/downloadInvPDF" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDFNoPay">
+      <soap12:operation soapAction="http://tempuri.org/downloadInvPDFNoPay" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvZipToken">
+      <soap12:operation soapAction="http://tempuri.org/downloadInvZipToken" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listInvByCusFkey">
+      <soap12:operation soapAction="http://tempuri.org/listInvByCusFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listInvByCusFkeyVNP">
+      <soap12:operation soapAction="http://tempuri.org/listInvByCusFkeyVNP" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getcatalogViewFkey">
+      <soap12:operation soapAction="http://tempuri.org/getcatalogViewFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDFFkey">
+      <soap12:operation soapAction="http://tempuri.org/downloadInvPDFFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDFFkeyNoPay">
+      <soap12:operation soapAction="http://tempuri.org/downloadInvPDFFkeyNoPay" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadNewInvPDFFkey">
+      <soap12:operation soapAction="http://tempuri.org/downloadNewInvPDFFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInvViewFkeyByStaff">
+      <soap12:operation soapAction="http://tempuri.org/getInvViewFkeyByStaff" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInvViewFkey">
+      <soap12:operation soapAction="http://tempuri.org/getInvViewFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInvViewFkeyNoPay">
+      <soap12:operation soapAction="http://tempuri.org/getInvViewFkeyNoPay" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getNewInvViewFkey">
+      <soap12:operation soapAction="http://tempuri.org/getNewInvViewFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="convertForStoreFkey">
+      <soap12:operation soapAction="http://tempuri.org/convertForStoreFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="convertForVerifyFkey">
+      <soap12:operation soapAction="http://tempuri.org/convertForVerifyFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvFkey">
+      <soap12:operation soapAction="http://tempuri.org/downloadInvFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvFkeyNoPay">
+      <soap12:operation soapAction="http://tempuri.org/downloadInvFkeyNoPay" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvErrorFkey">
+      <soap12:operation soapAction="http://tempuri.org/downloadInvErrorFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvErrorPDF">
+      <soap12:operation soapAction="http://tempuri.org/downloadInvErrorPDF" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDFNoPayError">
+      <soap12:operation soapAction="http://tempuri.org/downloadInvPDFNoPayError" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDFFkeyError">
+      <soap12:operation soapAction="http://tempuri.org/downloadInvPDFFkeyError" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvPDFFkeyNoPayError">
+      <soap12:operation soapAction="http://tempuri.org/downloadInvPDFFkeyNoPayError" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvErrorViewFkey">
+      <soap12:operation soapAction="http://tempuri.org/GetInvErrorViewFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadInvZipFkey">
+      <soap12:operation soapAction="http://tempuri.org/downloadInvZipFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDigest">
+      <soap12:operation soapAction="http://tempuri.org/getDigest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmSiganture">
+      <soap12:operation soapAction="http://tempuri.org/ConfirmSiganture" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCus">
+      <soap12:operation soapAction="http://tempuri.org/getCus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getStaff">
+      <soap12:operation soapAction="http://tempuri.org/getStaff" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listInvFromNoToNo">
+      <soap12:operation soapAction="http://tempuri.org/listInvFromNoToNo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInvViewFkeyNoPayPattern">
+      <soap12:operation soapAction="http://tempuri.org/getInvViewFkeyNoPayPattern" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="convertForStoreFkeyPattern">
+      <soap12:operation soapAction="http://tempuri.org/convertForStoreFkeyPattern" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="convertForVerifyFkeyPattern">
+      <soap12:operation soapAction="http://tempuri.org/convertForVerifyFkeyPattern" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="loginportal">
+      <soap12:operation soapAction="http://tempuri.org/loginportal" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="forgetpass">
+      <soap12:operation soapAction="http://tempuri.org/forgetpass" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="changepassword">
+      <soap12:operation soapAction="http://tempuri.org/changepassword" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listCompany">
+      <soap12:operation soapAction="http://tempuri.org/listCompany" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listPatternByCom">
+      <soap12:operation soapAction="http://tempuri.org/listPatternByCom" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="convertForVerifyBase64HtmlByFkey">
+      <soap12:operation soapAction="http://tempuri.org/convertForVerifyBase64HtmlByFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="convertForStoreBase64HtmlByFkey">
+      <soap12:operation soapAction="http://tempuri.org/convertForStoreBase64HtmlByFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvViewByDate">
+      <soap12:operation soapAction="http://tempuri.org/GetInvViewByDate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadCTTToken">
+      <soap12:operation soapAction="http://tempuri.org/downloadCTTToken" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadCTTFkey">
+      <soap12:operation soapAction="http://tempuri.org/downloadCTTFkey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PortalService">
+    <wsdl:port name="PortalServiceSoap" binding="tns:PortalServiceSoap">
+      <soap:address location="https://bvphoiphutho-tt78admindemo.vnpt-invoice.com.vn/PortalService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="PortalServiceSoap12" binding="tns:PortalServiceSoap12">
+      <soap12:address location="https://bvphoiphutho-tt78admindemo.vnpt-invoice.com.vn/PortalService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
