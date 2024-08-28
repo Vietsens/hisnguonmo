@@ -3034,13 +3034,54 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                 {
                     CheckTimeInDepartment(this.intructionTimeSelecteds);
                 }
+                if (dtInstructionTime.EditValue != null) CheckTimeSereSev();
+                
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void CheckTimeSereSev()
+        {
+            try
+            {
+                var config = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION").FirstOrDefault();
+                CommonParam param = new CommonParam();
+                if (config != null)
+                {
+                    if (config.VALUE == "1" || config.VALUE == "2")
+                    {
+                        HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
+                        sdo.TreatmentId = HisServiceReq.TREATMENT_ID;
+                        var username = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                        sdo.Loginnames = new List<string>() { username };
+                        long sereTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtInstructionTime.DateTime) ?? 0;
+                        sdo.SereTimes = new List<long> { sereTime };
+                        Inventec.Common.Logging.LogSystem.Debug("HisServiceReqCheckSereTimesSDO:" + LogUtil.TraceData("HisServiceReqCheckSereTimesSDO", sdo));
+                        bool rs = new BackendAdapter(param).Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, param);
+                        if (!rs)
+                        {
+                            if (config.VALUE == "1")
+                            {
+                                MessageManager.Show(this, param, rs);
+                                btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                            }
+                            else
+                            {
+                                btnSave.Enabled = btnSaveAndPrint.Enabled = MessageBox.Show(this, param.Messages + ". Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.Yes;
 
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void ChangeIntructionTimeEditor(DateTime intructTime)
         {
             try

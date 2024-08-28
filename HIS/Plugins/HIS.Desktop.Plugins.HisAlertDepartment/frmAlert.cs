@@ -336,17 +336,24 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
         {
             try
             {
+                var newList = new List<DepartmentDTOWithCheck>();
                 for (int i = 0; i < control.RowCount; i++)
                 {
-                    var row = control.GetRow(i) as DepartmentDTO; // Thay DepartmentDTO bằng kiểu dữ liệu của bạn
+                    var row = control.GetRow(i) as DepartmentDTO; 
+                    // thêm dữ liệu vào 1 danh sách mới để sắp xếp cái được chọn lên đầu tiên
 
+                    var newRow = new DepartmentDTOWithCheck();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<DepartmentDTO>(newRow, row);
+                    newRow.Check = listID.Contains(row.ID) ? check : false;
+                    newList.Add(newRow);
+                    //
                     if (row != null && listID.Contains(row.ID))
                     {
                         // Đánh dấu IS_CHECK là true nếu ID có trong danh sách
                         control.SetRowCellValue(i, "SELECT_MANY", check);
                         var de = listDepartment.FirstOrDefault(s => (TYPE == 2 && s.RECEIVE_DEPARTMENT_ID == row.ID)||(TYPE == 1 && s.DEPARTMENT_ID == row.ID));
                         control.SetRowCellValue(i, "CHECK_ALERT", de!= null && de.IS_MEDICAL == 1 ? true : false);
-                        control.SetRowCellValue(i, "CHECK_SECURITY",de != null&& de.IS_SECURITY == 1 ? true : false); 
+                        control.SetRowCellValue(i, "CHECK_SECURITY",de != null&& de.IS_SECURITY == 1 ? true : false);
                     }
                     else
                     {
@@ -354,9 +361,15 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                         control.SetRowCellValue(i, "SELECT_MANY", false);
                         control.SetRowCellValue(i, "CHECK_ALERT", false);
                         control.SetRowCellValue(i, "CHECK_SECURITY",false);
+                        control.SetRowCellValue(i, "SORT_ORDER", 0);
                     }
-                }
+                   
 
+                }
+                var orderedList = newList.OrderByDescending(x => x.Check).ToList();
+
+                // Set DataSource cho GridView
+                control.GridControl.DataSource = orderedList;
                 // Load lại grid để áp dụng thay đổi
                 control.RefreshData();
             }
@@ -753,7 +766,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
             try
             {
                 DepartmentDTO rowData = (DepartmentDTO)gridViewDepartmentAlert.GetFocusedRow();
-
+                listDepartmentRecive.Clear();
                 CheckEdit check = sender as CheckEdit;
                 rowData.SELECT_ONE = check.Checked;
                 foreach (var department in listDepartmentSourceAlert)
@@ -1032,7 +1045,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 //Cột chọn 1 dòng
                 // Xử ly check chọn
                 DepartmentDTO rowData = (DepartmentDTO)gridViewDepartmentRecive.GetFocusedRow();
-
+                listDepartmentAlert.Clear();
                 CheckEdit check = sender as CheckEdit;
                 rowData.SELECT_ONE = check.Checked;
                 foreach (var department in listDepartmentSourceRecive)
@@ -1083,7 +1096,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 
                 if(TYPE == 2)
                 {
-                    if (listDepartmentAlert.Count ==0) return;
+                    if (listDepartmentAlert.Count == 0 || listDepartmentRecive.Count == 0) return;
                     foreach (var alert in listDepartmentRecive)
                     {
                         // Check if the ID is present in either dicIsMedicalAlert or dicIsSecurityAlert
@@ -1100,7 +1113,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 }
                 else
                 {
-                    if (listDepartmentRecive.Count == 0) return;
+                    if (listDepartmentRecive.Count == 0 || listDepartmentAlert.Count == 0) return;
                     foreach (var alert in listDepartmentAlert)
                     {
                         // Check if the ID is present in either dicIsMedicalAlert or dicIsSecurityAlert

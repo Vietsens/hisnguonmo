@@ -55,16 +55,13 @@
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="His.Bhyt.InsuranceExpertise">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\His.Bhyt.InsuranceExpertise.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.InsuranceExpertise\His.Bhyt.InsuranceExpertise.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.CheckHeinGOV">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.CheckHeinGOV\HIS.Desktop.Plugins.Library.CheckHeinGOV.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt\HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.RegisterConfig">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.RegisterConfig.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.KskContract">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.KskContract\HIS.UC.KskContract.dll</HintPath>
@@ -135,13 +132,11 @@
     <Reference Include="Inventec.Desktop.CustomControl">
       <HintPath>..\..\..\..\lib\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Token.ClientSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\Inventec.Token.ClientSystem.dll</HintPath>
+    <Reference Include="Inventec.Token.ClientSystem">
+      <HintPath>..\..\..\..\lib\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.UC.Login, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\Inventec.UC.Login.dll</HintPath>
+    <Reference Include="Inventec.UC.Login">
+      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -195,7 +190,6 @@
       <DependentUpon>FormPregnancyRest.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -234,6 +228,10 @@
     <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
       <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
       <Name>HIS.Desktop.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.RegisterConfig\HIS.Desktop.Plugins.Library.RegisterConfig.csproj">
+      <Project>{9247dd49-482c-4227-88df-616a8aaf3f38}</Project>
+      <Name>HIS.Desktop.Plugins.Library.RegisterConfig</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

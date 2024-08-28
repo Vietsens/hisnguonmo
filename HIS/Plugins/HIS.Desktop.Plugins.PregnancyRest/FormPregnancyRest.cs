@@ -137,8 +137,12 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 {
                     connectInfors = connect_infor.Split('|').ToList();
                     api = connectInfors[0];
-                    nameCb = connectInfors[1];
-                    cccdCb = connectInfors[2];
+                    
+                    string username = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    var employee = GetEmployee(username);
+                    nameCb = string.IsNullOrEmpty(connectInfors[1]) ? employee.TDL_USERNAME : connectInfors[1];
+                    cccdCb = string.IsNullOrEmpty(connectInfors[1]) && string.IsNullOrEmpty(connectInfors[2]) ? employee.IDENTIFICATION_NUMBER : connectInfors[2];
+                    
                 }
             }
             catch (Exception ex)
@@ -146,6 +150,25 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+        private HIS_EMPLOYEE GetEmployee(string username)
+        {
+            HIS_EMPLOYEE result = new HIS_EMPLOYEE();
+            try
+            {
+                var rs = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(s => s.TDL_USERNAME == username).FirstOrDefault();
+                if (rs != null)
+                {
+                    result = rs;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+            return result;
         }
 
         private void LoadDataToGrid()

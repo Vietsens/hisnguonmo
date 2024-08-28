@@ -62,7 +62,7 @@
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="His.Bhyt.InsuranceExpertise">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\His.Bhyt.InsuranceExpertise.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.InsuranceExpertise\His.Bhyt.InsuranceExpertise.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.SurgeryAppointment">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.SurgeryAppointment\HIS.UC.SurgeryAppointment.dll</HintPath>
@@ -133,6 +133,14 @@
     <Reference Include="Inventec.Desktop.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.ClientSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Login, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
@@ -208,7 +216,6 @@
     <Compile Include="Validation\ValidBhxhCode.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
     <EmbeddedResource Include="SickLeave\frmSickLeave.resx">
