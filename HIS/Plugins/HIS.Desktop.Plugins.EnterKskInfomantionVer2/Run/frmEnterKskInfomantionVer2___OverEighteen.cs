@@ -32,6 +32,8 @@ using Inventec.Core;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Plugins.EnterKskInfomantionVer2.ADO;
 using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraGrid.Views.Base;
+using System.Collections;
 namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 {
     public partial class frmEnterKskInfomantionVer2
@@ -76,6 +78,34 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 SetDataCboRank(cboHealthExamRank2);
                 SetDataCboRank(cboExamDernatologyRank2);
                 FillDataOverEighteen();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SetDefaultGridOverE()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisDiseaseTypeFilter Disfilter = new HisDiseaseTypeFilter();
+                Disfilter.IS_ACTIVE = 1;
+                var dataVacine = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_DISEASE_TYPE>>("api/HisDiseaseType/Get", ApiConsumers.MosConsumer, Disfilter, param);
+                if (dataVacine != null && dataVacine.Count > 0)
+                {
+                    List<ADO.DiseaseTypeADO> lstAdo = new List<ADO.DiseaseTypeADO>();
+                    foreach (var item in dataVacine)
+                    {
+                        ADO.DiseaseTypeADO ado = new ADO.DiseaseTypeADO();
+                        ado.ID = item.ID;
+                        ado.DISEASE_TYPE_NAME = item.DISEASE_TYPE_NAME;
+                        lstAdo.Add(ado);
+                    }
+                    gridControl3.DataSource = new List<ADO.DiseaseTypeADO>();
+                    gridControl3.DataSource = lstAdo;
+                }
             }
             catch (Exception ex)
             {
@@ -155,6 +185,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtResultDiim2.Text = currentKskOverEight.RESULT_DIIM;
                         cboHealthExamRank2.EditValue = currentKskOverEight.HEALTH_EXAM_RANK_ID;
                         txtDiseases2.Text = currentKskOverEight.DISEASES;
+                        txtHealthExamRankDescription2.Text = currentKskOverEight.HEALTH_EXAM_RANK_DESCRIPTION;
                         if (currentKskOverEight.DHST_ID != null && currentKskOverEight.DHST_ID > 0)
                         {
                             HisDhstFilter dhstFilter = new HisDhstFilter();
@@ -171,6 +202,47 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                                 //txtVirBmi.Text = currentDhst.VIR_BMI!=null ? currentDhst.VIR_BMI.ToString() : "";
                                 FillNoteBMI(spnHeight2, spnWeight2, txtVirBmi2);
                             }
+                        }
+
+                        HisPeriodDriverDityFilter dityFilter = new HisPeriodDriverDityFilter();
+                        dityFilter.KSK_OVER_EIGHTEEN_ID = currentKskOverEight.ID;
+                        lstDataDriverDityOverE = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_PERIOD_DRIVER_DITY>>("api/HisPeriodDriverDity/Get", ApiConsumers.MosConsumer, dityFilter, param);
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lstDataDriverDityOverE), lstDataDriverDityOverE));
+                        if (lstDataDriverDityOverE != null && lstDataDriverDityOverE.Count > 0)
+                        {
+                            HisDiseaseTypeFilter Disfilter = new HisDiseaseTypeFilter();
+                            Disfilter.IS_ACTIVE = 1;
+                            Disfilter.IDs = lstDataDriverDityOverE.Select(o => o.DISEASE_TYPE_ID).ToList();
+                            var dataVacine = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_DISEASE_TYPE>>("api/HisDiseaseType/Get", ApiConsumers.MosConsumer, Disfilter, param);
+                            if (dataVacine != null && dataVacine.Count > 0)
+                            {
+                                dataVacine = dataVacine.OrderBy(o => o.DISEASE_TYPE_CODE).ToList();
+                                List<ADO.DiseaseTypeADO> lstAdo = new List<ADO.DiseaseTypeADO>();
+                                foreach (var item in dataVacine)
+                                {
+                                    ADO.DiseaseTypeADO ado = new ADO.DiseaseTypeADO();
+                                    ado.ID = item.ID;
+                                    ado.DISEASE_TYPE_NAME = item.DISEASE_TYPE_NAME;
+                                    var check = lstDataDriverDityOverE.Where(o => o.DISEASE_TYPE_ID == item.ID).FirstOrDefault();
+                                    ado.PERIOD_DRIVER_DITY_ID = check.ID;
+                                    var stt = check.IS_YES_NO;
+                                    if (stt == "1")
+                                    {
+                                        ado.IS_YES = true;
+                                    }
+                                    else if (stt == "0")
+                                    {
+                                        ado.IS_NO = true;
+                                    }
+                                    lstAdo.Add(ado);
+                                }
+                                gridControl3.DataSource = new List<ADO.DiseaseTypeADO>();
+                                gridControl3.DataSource = lstAdo;
+                            }
+                        }
+                        else
+                        {
+                            SetDefaultGridOverE();
                         }
                     }
                     else
@@ -200,6 +272,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtExamStomatologyLower2.Text = currentServiceReq.PART_EXAM_LOWER_JAW;
                         txtExamDernatology2.Text = currentServiceReq.PART_EXAM_DERMATOLOGY;
                         txtExamSurgery2.Text = currentServiceReq.SUBCLINICAL;
+                        txtHealthExamRankDescription2.Text = null;
                         if (currentServiceReq.DHST_ID != null && currentServiceReq.DHST_ID > 0)
                         {
                             HisDhstFilter dhstFilter = new HisDhstFilter();
@@ -217,6 +290,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                                 FillNoteBMI(spnHeight2, spnWeight2, txtVirBmi2);
                             }
                         }
+                        SetDefaultGridOverE();
                     }
                 }
             }
@@ -315,7 +389,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.RESULT_DIIM = txtResultDiim2.Text;
                 obj.HEALTH_EXAM_RANK_ID = cboHealthExamRank2.EditValue != null ? Int64.Parse(cboHealthExamRank2.EditValue.ToString()) : 0;
                 obj.DISEASES = txtDiseases2.Text;
-
+                obj.HEALTH_EXAM_RANK_DESCRIPTION = txtHealthExamRankDescription2.Text.Trim();
 
             }
             catch (Exception ex)
@@ -350,7 +424,48 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
             return obj;
         }
+        private List<HIS_PERIOD_DRIVER_DITY> GetDriverDityOverE()
+        {
+            List<HIS_PERIOD_DRIVER_DITY> obj = new List<HIS_PERIOD_DRIVER_DITY>();
+            try
+            {
+                var Alls = gridControl3.DataSource as List<ADO.DiseaseTypeADO>;
 
+                if (Alls != null && Alls.Count > 0)
+                {
+                    if (currentKskOverEight != null && lstDataDriverDityOverE != null && lstDataDriverDityOverE.Count > 0)
+                    {
+                        foreach (var item in Alls)
+                        {
+                            HIS_PERIOD_DRIVER_DITY i = new HIS_PERIOD_DRIVER_DITY();
+                            i.ID = item.PERIOD_DRIVER_DITY_ID;
+                            i.DISEASE_TYPE_ID = item.ID;
+                            i.IS_YES_NO = null;
+                            if (item.IS_YES) i.IS_YES_NO = "1";
+                            if (item.IS_NO) i.IS_YES_NO = "0";
+                            obj.Add(i);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var item in Alls)
+                        {
+                            HIS_PERIOD_DRIVER_DITY i = new HIS_PERIOD_DRIVER_DITY();
+                            i.DISEASE_TYPE_ID = item.ID;
+                            i.IS_YES_NO = null;
+                            if (item.IS_YES) i.IS_YES_NO = "1";
+                            if (item.IS_NO) i.IS_YES_NO = "0";
+                            obj.Add(i);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return obj;
+        }
         #region ---PREVIEWKEYDOWN---
         private void txtPathologicalHistoryFamily_PreviewKeyDown(object sender, System.Windows.Forms.PreviewKeyDownEventArgs e)
         {
@@ -1304,8 +1419,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
                 {
-                    txtDiseases2.Focus();
-                    txtDiseases2.SelectAll();
+                    txtHealthExamRankDescription2.Focus();
+                    txtHealthExamRankDescription2.SelectAll();
                 }
             }
             catch (System.Exception ex)
@@ -1330,6 +1445,25 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         }
 
 
+        private void gridView4_CustomUnboundColumnData(object sender, CustomColumnDataEventArgs e)
+        {
+            try
+            {
+                if (e.IsGetData)
+                {
+                    DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                    var data = (ADO.DiseaseTypeADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    if (e.Column.FieldName == "STT")
+                    {
+                        e.Value = e.ListSourceRowIndex + 1;
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
         #endregion
     }

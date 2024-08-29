@@ -161,13 +161,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     var dt = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_DHST>>("api/HisDhst/Get", ApiConsumers.MosConsumer, filter, param);
                     if (dt != null && dt.Count > 0) currentDhst = dt.FirstOrDefault();
                 }
+                HisDiseaseTypeFilter Disfilter = new HisDiseaseTypeFilter();
+                Disfilter.IS_ACTIVE = 1;
+                var dataVacine = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_DISEASE_TYPE>>("api/HisDiseaseType/Get", ApiConsumers.MosConsumer, Disfilter, param);
                 WaitingManager.Hide();
                 MPS.Processor.Mps000452.PDO.Mps000452PDO rdo = new MPS.Processor.Mps000452.PDO.Mps000452PDO(
                     currentKskOverEight,
                     currentServiceReq,
                     currentDhst,
-                    HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList()
-
+                    HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(),
+                    dataVacine,
+                    GetDriverDityOverE()
                     );
 
                 PrintData(printTypeCode, fileName, rdo, ref result);
