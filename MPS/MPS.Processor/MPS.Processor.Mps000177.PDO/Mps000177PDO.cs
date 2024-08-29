@@ -49,5 +49,34 @@ namespace MPS.Processor.Mps000177.PDO
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        public Mps000177PDO(List<PatientADO> currentPatient,
+    List<Mps000177DAY> Mps000177DAY,
+    List<Mps000177MediMate> Mps000177MediMate,
+    string departmentName,
+    Dictionary<long, V_HIS_TREATMENT_BED_ROOM> bedRoomName,
+    List<V_HIS_EXP_MEST_MEDICINE> emMedicine,
+    List<V_HIS_EXP_MEST_MATERIAL> emMaterial,
+    List<V_HIS_EXP_MEST_BLOOD> emBlood,
+    long DaySize
+    )
+        {
+            try
+            {
+                this.VExpMestMedicine = emMedicine;
+                this.VExpMestMaterial = emMaterial;
+                this.VExpMestBlood = emBlood;
+                this.DaySize = DaySize;
+                this.currentPatient = currentPatient;
+                this.Mps000177DAY = Mps000177DAY;
+                this.Mps000177MediMate = Mps000177MediMate;
+                this.departmentName = departmentName;
+                this.bedRoomName = bedRoomName;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }
