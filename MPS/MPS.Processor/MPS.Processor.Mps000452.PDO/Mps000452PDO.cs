@@ -31,6 +31,9 @@ namespace MPS.Processor.Mps000452.PDO
         public V_HIS_SERVICE_REQ HisServiceReq { get; set; }
         public HIS_DHST HisDhst { get; set; }
         public List<HIS_HEALTH_EXAM_RANK> examRank { get; set; }
+        public List<HIS_DISEASE_TYPE> DiseaseType { get; set; }
+        public List<HIS_PERIOD_DRIVER_DITY> PeriodDriverDity { get; set; }
+
         public Mps000452PDO(
             HIS_KSK_OVER_EIGHTEEN HisKskOverEighteen,
            V_HIS_SERVICE_REQ HisServiceReq,
@@ -44,6 +47,29 @@ namespace MPS.Processor.Mps000452.PDO
                 this.HisServiceReq = HisServiceReq;
                 this.HisDhst = HisDhst;
                 this.examRank = examRank;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        public Mps000452PDO(
+           HIS_KSK_OVER_EIGHTEEN HisKskOverEighteen,
+          V_HIS_SERVICE_REQ HisServiceReq,
+          HIS_DHST HisDhst
+           , List<HIS_HEALTH_EXAM_RANK> examRank,
+          List<HIS_DISEASE_TYPE> DiseaseType,
+          List<HIS_PERIOD_DRIVER_DITY> PeriodDriverDity
+           )
+        {
+            try
+            {
+                this.HisKskOverEighteen = HisKskOverEighteen;
+                this.HisServiceReq = HisServiceReq;
+                this.HisDhst = HisDhst;
+                this.examRank = examRank;
+                this.DiseaseType = DiseaseType;
+                this.PeriodDriverDity = PeriodDriverDity;
             }
             catch (Exception ex)
             {
