@@ -10,7 +10,7 @@
 - [HIS](https://github.com/Vietsens/hisnguonmo/tree/Develop/HIS) source code HIS main project và các tính năng nghiệp vụ(plugin).  
 - [MPS](https://github.com/Vietsens/hisnguonmo/tree/Develop/MPS) source code các tính năng in ấn.  
 - [UC](https://github.com/Vietsens/hisnguonmo/tree/Develop/UC) source code các thành phần giao diện dùng chung, được nhúng trong các plugin.  
-- [Lib](https://github.com/Vietsens/lib) Cá thư viện mở sử dụng trong dự án.  
+- [Common](https://github.com/Vietsens/hisnguonmo/tree/Develop/Common) source code các thư viện common.  
 
 
 ## Yêu cầu môi trường
@@ -35,13 +35,8 @@
 	  $ script build
   ```  	
 	
-  > Tạo sẵn folder LIB để lưu bộ thư viện tải về và chạy các lệnh sau để clone các thư viện mở phiên bản tương thích về máy. Hoặc có thể vào trực tiếp các trang cung cấp thư viện nguồn mở nhưng lưu ý tính tương thich của phiên bản sử dụng với mã nguồn
-	```shell	
-	git clone https://github.com/Vietsens/lib.git
-	  $ script build
-	```  
   
-  > Tải các thư viện mở rộng về lưu trong folder LIB ở trên
+  > Tải các thư viện bản build sẵn với phiên bản tương thích về lưu trong folder LIB ở trên máy
 	```shell	
 		$zipUrl = "http://fsstest.onelink.vn/Upload/HIS/HisNguonMo/lib_extend.zip"
 		$zipPath = "G:\HISNGMOGITHUB\lib\lib_extend.zip"
@@ -65,6 +60,7 @@
 	++++++++ HIS  
 	++++++++ UC  
 	++++++++ MPS  
+	++++++++ Common  
 	++ lib  
 	
 ## Build
