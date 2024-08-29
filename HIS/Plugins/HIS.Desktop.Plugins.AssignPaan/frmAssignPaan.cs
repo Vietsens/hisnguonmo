@@ -326,6 +326,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
                 this.InitDataByTreatmentId();
                 if (this.treatment != null && this.currentPatientTypeAlter != null)
                 {
+                    this.ResetControlValue();
                     this.ValidControl();
                     this.InitComboPatientType();
                     this.InitComboPaanServiceType(null);
@@ -336,7 +337,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
                     this.SetDataSourceCboPatientType();
                     this.SetDataSourceCboExecuteRoom();
                     this.LoadDefaultUser();
-                    this.ResetControlValue();
+                    
                     this.InitDefaultPatientType();
                     this.SetDataSourceCboPaanServiceType();
                     this.InitComboTestSampleType();
@@ -650,8 +651,8 @@ namespace HIS.Desktop.Plugins.AssignPaan
                 cboPaanLiquid.EditValue = null;
                 txtDescription.Text = "";
                 btnPrint.Enabled = false;
-                btnSave.Enabled = true;
-                btnSavePrint.Enabled = true;
+                //btnSave.Enabled = true;
+                //btnSavePrint.Enabled = true;
             }
             catch (Exception ex)
             {

@@ -347,7 +347,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
                     if (!string.IsNullOrEmpty(txtLoginname.Text))
                     {
                         var key = txtLoginname.Text.ToLower();
-                        var listData = BackendDataWorker.Get<ACS_USER>().Where(o => o.LOGINNAME.ToLower().Contains(key)).ToList();
+                        var listData = BackendDataWorker.Get<ACS_USER>().Where(o => o.LOGINNAME.ToLower()== key).ToList();
                         if (listData != null && listData.Count == 1)
                         {
                             valid = true;
