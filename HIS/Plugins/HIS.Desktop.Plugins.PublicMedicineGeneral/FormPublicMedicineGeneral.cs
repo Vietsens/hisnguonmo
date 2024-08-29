@@ -1266,9 +1266,23 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                     if (_ExpMestMediAndMateADOs != null)
                     {
                         var listThuoc = _ExpMestMediAndMateADOs.Where(s => s.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT).ToList();
-                        Mapper.CreateMap<ExpMestMediAndMateADO, V_HIS_EXP_MEST_MATERIAL>();
-                        listExpMestMaterial = Mapper.Map<List<ExpMestMediAndMateADO>, List<V_HIS_EXP_MEST_MATERIAL>>(listThuoc);
-                        //Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_MATERIAL>(listExpMestMaterial, _ExpMestMediAndMateADOs.Where(s => s.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT));
+                        foreach(var expMaterial in listThuoc)
+                        {
+                            V_HIS_EXP_MEST_MATERIAL expMate = new V_HIS_EXP_MEST_MATERIAL();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_MATERIAL>(expMate, expMaterial);
+                            expMate.MATERIAL_TYPE_NAME = expMaterial.MEDICINE_TYPE_NAME;
+                            expMate.MATERIAL_TYPE_CODE = expMaterial.MEDICINE_TYPE_CODE;
+                            expMate.TDL_MATERIAL_TYPE_ID = expMaterial.MEDICINE_TYPE_ID;
+                            expMate.MATERIAL_ID = expMaterial.MEDICINE_ID;
+                            expMate.TDL_INTRUCTION_DATE = expMaterial.INTRUCTION_DATE;
+                            expMate.TDL_INTRUCTION_TIME = expMaterial.INTRUCTION_TIME;
+                            expMate.TDL_TREATMENT_ID = expMaterial.TREATMENT_ID;
+                            
+                            listExpMestMaterial.Add(expMate);
+                        }
+                        //Mapper.CreateMap<ExpMestMediAndMateADO, V_HIS_EXP_MEST_MATERIAL>();
+                        //listExpMestMaterial = Mapper.Map<List<ExpMestMediAndMateADO>, List<V_HIS_EXP_MEST_MATERIAL>>(listThuoc);
+                        ////Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_MATERIAL>(listExpMestMaterial, _ExpMestMediAndMateADOs.Where(s => s.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT));
                     }
                 }
                 if (chkBlood.Checked)
@@ -1276,8 +1290,20 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                     if (_ExpMestMediAndMateADOs != null)
                     {
                         var listThuoc = _ExpMestMediAndMateADOs.Where(s => s.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU).ToList();
-                        Mapper.CreateMap<ExpMestMediAndMateADO, V_HIS_EXP_MEST_BLOOD>();
-                        listExpMestBlood = Mapper.Map<List<ExpMestMediAndMateADO>, List<V_HIS_EXP_MEST_BLOOD>>(listThuoc);
+                        foreach (var expMaterial in listThuoc)
+                        {
+                            V_HIS_EXP_MEST_BLOOD expMate = new V_HIS_EXP_MEST_BLOOD();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_BLOOD>(expMate, expMaterial);
+                            expMate.BLOOD_TYPE_NAME = expMaterial.MEDICINE_TYPE_NAME;
+                            expMate.BLOOD_TYPE_CODE = expMaterial.MEDICINE_TYPE_CODE;
+                            expMate.TDL_BLOOD_TYPE_ID = expMaterial.MEDICINE_TYPE_ID;
+                            expMate.BLOOD_ID = expMaterial.MEDICINE_ID??0;
+                            expMate.TDL_INTRUCTION_DATE = expMaterial.INTRUCTION_DATE;
+                            expMate.TDL_INTRUCTION_TIME = expMaterial.INTRUCTION_TIME;
+                            expMate.TDL_TREATMENT_ID = expMaterial.TREATMENT_ID;
+                            listExpMestBlood.Add(expMate);
+                        }
+
                         //Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_BLOOD>(listExpMestBlood, _ExpMestMediAndMateADOs.Where(s => s.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU));
                     }
                 }
