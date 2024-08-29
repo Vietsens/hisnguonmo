@@ -13,6 +13,33 @@
 - [Common](https://github.com/Vietsens/hisnguonmo/tree/Develop/Common) source code các thư viện common.  
 
 
+## Thư viện
+
+### Nguồn đóng
+- [DevExpress 15.2.9](https://www.devexpress.com/ "DevExpress 15.2.9")	
+- [FlexCell 5.7.6.0](https://www.tmssoftware.com/site/flexcelnet.asp "FlexCell 5.7.6.0"): Xử lý in ấn, báo cáo
+- [TELERIK](https://www.telerik.com/ "Telerik UI for WinForms 2019.3.1022")	
+- [Aspose 11.1](https://www.nuget.org/packages/Aspose.Words/11.1.0 "Aspose 11.1"): Xử lý văn bản điện tử dạng word
+- [EO.Pdf](https://www.nuget.org/packages/EO.Pdf/20.3.34 "EO.Pdf"): Chuyển đổi nội dung từ các site tích hợp sang PDF
+- [EO.WebBrowser](https://www.nuget.org/packages/EO.WebBrowser/20.3.34 "EO.WebBrowser"): Hiển thị nội dung từ các site tích hợp
+- [BarTender 10.1.0](https://sonamin.com/blogs/download-phan-mem-driver/tai-bartender "EO.WebBrowser"): Xử lý in barcode
+- [STPadLibNet](https://en.signotec.com/portal/seiten/signopad-api-device-api--900000170-10002.html "STPadLibNet"): Kết nối bảng ký
+
+### Nguồn mở cộng đồng
+- log4net: Apache License https://www.apache.org/licenses/
+- DirectX.Capture:	https://www.codeproject.com/Articles/4740/Capture-Sample-with-DirectX-and-NET
+- AForge: LGPL v3,GPL v3 https://www.aforgenet.com/framework/license/
+- itextsharp: https://www.gnu.org/licenses/agpl-3.0.html
+- Newtonsoft.Json: https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md
+- EntityFramework: https://vi.wikipedia.org/wiki/Entity_Framework
+- Osinfo: https://learn.microsoft.com/en-us/powershell/dsc/reference/microsoft/osinfo/cli/osinfo?view=dsc-3.0&tabs=windows
+- NAudio: https://github.com/naudio/NAudio?tab=MIT-1-ov-file
+- BouncyCastle: https://www.bouncycastle.org/about/license/#License
+- MessagePack: MIT License https://github.com/MessagePack-CSharp/MessagePack-CSharp?tab=License-1-ov-file
+- Microsoft.IdentityModel.JsonWebTokens, System.IdentityModel.Tokens.Jwt: MIT license https://www.nuget.org/packages/Microsoft.IdentityModel.JsonWebTokens/
+
+
+
 ## Yêu cầu môi trường
 	Máy tính cần cài đặt sẵn các phần mềm sau:
 
