@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UC_ReturnMicrobiologicalResults));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -164,12 +163,13 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject115 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject116 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.txtTreatmentCode = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.chkSXHenTra = new DevExpress.XtraEditors.CheckEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.txtTreatmentCode = new DevExpress.XtraEditors.TextEdit();
             this.lblNewestBarcode = new DevExpress.XtraEditors.LabelControl();
             this.dtBarcodeTimeTo = new DevExpress.XtraEditors.DateEdit();
             this.txtSERVICE_REQ_CODE__EXACT = new DevExpress.XtraEditors.TextEdit();
@@ -307,6 +307,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnBarCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn40 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -314,6 +315,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn38 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn34 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn35 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn41 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn36 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn39 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -358,18 +360,21 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.lciNewestBarcode = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
-            this.imageListIcon = new System.Windows.Forms.ImageList(this.components);
-            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController(this.components);
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.imageListIcon = new System.Windows.Forms.ImageList();
+            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController();
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
+            this.imageList1 = new System.Windows.Forms.ImageList();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.timer1 = new System.Windows.Forms.Timer();
+            this.timer2 = new System.Windows.Forms.Timer();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtTreatmentCode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSXHenTra.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtTreatmentCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtBarcodeTimeTo.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtBarcodeTimeTo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSERVICE_REQ_CODE__EXACT.Properties)).BeginInit();
@@ -487,12 +492,15 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             ((System.ComponentModel.ISupportInitialize)(this.lciNewestBarcode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.chkSXHenTra);
             this.layoutControl1.Controls.Add(this.txtTreatmentCode);
             this.layoutControl1.Controls.Add(this.lblNewestBarcode);
             this.layoutControl1.Controls.Add(this.dtBarcodeTimeTo);
@@ -513,18 +521,17 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // txtTreatmentCode
+            // chkSXHenTra
             // 
-            this.txtTreatmentCode.Location = new System.Drawing.Point(2, 26);
-            this.txtTreatmentCode.MenuManager = this.barManager1;
-            this.txtTreatmentCode.Name = "txtTreatmentCode";
-            this.txtTreatmentCode.Properties.NullValuePrompt = "Mã điều trị";
-            this.txtTreatmentCode.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtTreatmentCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtTreatmentCode.Size = new System.Drawing.Size(77, 20);
-            this.txtTreatmentCode.StyleController = this.layoutControl1;
-            this.txtTreatmentCode.TabIndex = 21;
-            this.txtTreatmentCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtTreatmentCode_PreviewKeyDown);
+            this.chkSXHenTra.Location = new System.Drawing.Point(17, 52);
+            this.chkSXHenTra.MenuManager = this.barManager1;
+            this.chkSXHenTra.Name = "chkSXHenTra";
+            this.chkSXHenTra.Properties.Caption = "Sx theo hẹn trả";
+            this.chkSXHenTra.Size = new System.Drawing.Size(563, 19);
+            this.chkSXHenTra.StyleController = this.layoutControl1;
+            this.chkSXHenTra.TabIndex = 22;
+            this.chkSXHenTra.ToolTip = "Sắp xếp dữ liệu theo hẹn trả từ nhỏ đến lớn ";
+            this.chkSXHenTra.CheckedChanged += new System.EventHandler(this.chkSXHenTra_CheckedChanged);
             // 
             // barManager1
             // 
@@ -562,6 +569,19 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(1366, 0);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 536);
+            // 
+            // txtTreatmentCode
+            // 
+            this.txtTreatmentCode.Location = new System.Drawing.Point(2, 26);
+            this.txtTreatmentCode.MenuManager = this.barManager1;
+            this.txtTreatmentCode.Name = "txtTreatmentCode";
+            this.txtTreatmentCode.Properties.NullValuePrompt = "Mã điều trị";
+            this.txtTreatmentCode.Properties.NullValuePromptShowForEmptyValue = true;
+            this.txtTreatmentCode.Properties.ShowNullValuePromptWhenFocused = true;
+            this.txtTreatmentCode.Size = new System.Drawing.Size(77, 20);
+            this.txtTreatmentCode.StyleController = this.layoutControl1;
+            this.txtTreatmentCode.TabIndex = 21;
+            this.txtTreatmentCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtTreatmentCode_PreviewKeyDown);
             // 
             // lblNewestBarcode
             // 
@@ -1890,14 +1910,14 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             // 
             // ucPaging1
             // 
-            this.ucPaging1.Location = new System.Drawing.Point(2, 510);
+            this.ucPaging1.Location = new System.Drawing.Point(2, 487);
             this.ucPaging1.Name = "ucPaging1";
-            this.ucPaging1.Size = new System.Drawing.Size(578, 24);
+            this.ucPaging1.Size = new System.Drawing.Size(578, 47);
             this.ucPaging1.TabIndex = 7;
             // 
             // gridControlSample
             // 
-            this.gridControlSample.Location = new System.Drawing.Point(2, 52);
+            this.gridControlSample.Location = new System.Drawing.Point(2, 75);
             this.gridControlSample.MainView = this.gridViewSample;
             this.gridControlSample.Name = "gridControlSample";
             this.gridControlSample.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
@@ -1927,7 +1947,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.repositoryHuyDuyetKetQuaE,
             this.repositoryHuyDuyetKetQuaD,
             this.repUnAppove});
-            this.gridControlSample.Size = new System.Drawing.Size(578, 454);
+            this.gridControlSample.Size = new System.Drawing.Size(578, 408);
             this.gridControlSample.TabIndex = 4;
             this.gridControlSample.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewSample});
@@ -1949,6 +1969,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn6,
             this.gridColumnBarCode,
             this.gridColumn8,
+            this.gridColumn40,
             this.gridColumn15,
             this.gridColumn9,
             this.gridColumn10,
@@ -1956,6 +1977,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn38,
             this.gridColumn34,
             this.gridColumn35,
+            this.gridColumn41,
             this.gridColumn36,
             this.gridColumn39,
             this.gridColumn17,
@@ -1966,6 +1988,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn14});
             this.gridViewSample.GridControl = this.gridControlSample;
             this.gridViewSample.Name = "gridViewSample";
+            this.gridViewSample.OptionsBehavior.EditorShowMode = DevExpress.Utils.EditorShowMode.MouseDownFocused;
             this.gridViewSample.OptionsView.ColumnAutoWidth = false;
             this.gridViewSample.OptionsView.ShowGroupPanel = false;
             this.gridViewSample.OptionsView.ShowIndicator = false;
@@ -2119,7 +2142,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn6.FieldName = "SERVICE_REQ_CODE";
             this.gridColumn6.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn6.Name = "gridColumn6";
-            this.gridColumn6.OptionsColumn.AllowEdit = false;
+            this.gridColumn6.OptionsColumn.ReadOnly = true;
             this.gridColumn6.Visible = true;
             this.gridColumn6.VisibleIndex = 9;
             this.gridColumn6.Width = 90;
@@ -2139,11 +2162,21 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn8.FieldName = "PATIENT_NAME";
             this.gridColumn8.FieldNameSortGroup = "FIRST_NAME";
             this.gridColumn8.Name = "gridColumn8";
-            this.gridColumn8.OptionsColumn.AllowEdit = false;
+            this.gridColumn8.OptionsColumn.ReadOnly = true;
             this.gridColumn8.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn8.Visible = true;
             this.gridColumn8.VisibleIndex = 11;
             this.gridColumn8.Width = 150;
+            // 
+            // gridColumn40
+            // 
+            this.gridColumn40.Caption = "Mã điều trị";
+            this.gridColumn40.FieldName = "TREATMENT_CODE";
+            this.gridColumn40.Name = "gridColumn40";
+            this.gridColumn40.OptionsColumn.ReadOnly = true;
+            this.gridColumn40.Visible = true;
+            this.gridColumn40.VisibleIndex = 12;
+            this.gridColumn40.Width = 90;
             // 
             // gridColumn15
             // 
@@ -2152,7 +2185,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn15.Name = "gridColumn15";
             this.gridColumn15.OptionsColumn.AllowEdit = false;
             this.gridColumn15.Visible = true;
-            this.gridColumn15.VisibleIndex = 12;
+            this.gridColumn15.VisibleIndex = 13;
             this.gridColumn15.Width = 90;
             // 
             // gridColumn9
@@ -2162,7 +2195,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 13;
+            this.gridColumn9.VisibleIndex = 14;
             this.gridColumn9.Width = 120;
             // 
             // gridColumn10
@@ -2175,7 +2208,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn10.SortMode = DevExpress.XtraGrid.ColumnSortMode.DisplayText;
             this.gridColumn10.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 14;
+            this.gridColumn10.VisibleIndex = 15;
             this.gridColumn10.Width = 100;
             // 
             // gridColumn33
@@ -2187,7 +2220,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn33.OptionsColumn.AllowEdit = false;
             this.gridColumn33.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn33.Visible = true;
-            this.gridColumn33.VisibleIndex = 15;
+            this.gridColumn33.VisibleIndex = 16;
             this.gridColumn33.Width = 90;
             // 
             // gridColumn38
@@ -2199,7 +2232,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn38.OptionsColumn.AllowEdit = false;
             this.gridColumn38.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn38.Visible = true;
-            this.gridColumn38.VisibleIndex = 16;
+            this.gridColumn38.VisibleIndex = 17;
             this.gridColumn38.Width = 140;
             // 
             // gridColumn34
@@ -2211,7 +2244,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn34.OptionsColumn.AllowEdit = false;
             this.gridColumn34.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn34.Visible = true;
-            this.gridColumn34.VisibleIndex = 17;
+            this.gridColumn34.VisibleIndex = 18;
             this.gridColumn34.Width = 90;
             // 
             // gridColumn35
@@ -2223,8 +2256,20 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn35.OptionsColumn.AllowEdit = false;
             this.gridColumn35.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn35.Visible = true;
-            this.gridColumn35.VisibleIndex = 18;
+            this.gridColumn35.VisibleIndex = 19;
             this.gridColumn35.Width = 140;
+            // 
+            // gridColumn41
+            // 
+            this.gridColumn41.Caption = "Hẹn trả";
+            this.gridColumn41.FieldName = "APPOINTMENT_TIME_STR";
+            this.gridColumn41.FieldNameSortGroup = "APPOINTMENT_TIME ";
+            this.gridColumn41.Name = "gridColumn41";
+            this.gridColumn41.OptionsColumn.AllowEdit = false;
+            this.gridColumn41.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn41.Visible = true;
+            this.gridColumn41.VisibleIndex = 20;
+            this.gridColumn41.Width = 140;
             // 
             // gridColumn36
             // 
@@ -2233,7 +2278,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn36.Name = "gridColumn36";
             this.gridColumn36.OptionsColumn.AllowEdit = false;
             this.gridColumn36.Visible = true;
-            this.gridColumn36.VisibleIndex = 19;
+            this.gridColumn36.VisibleIndex = 21;
             this.gridColumn36.Width = 90;
             // 
             // gridColumn39
@@ -2243,7 +2288,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn39.Name = "gridColumn39";
             this.gridColumn39.OptionsColumn.AllowEdit = false;
             this.gridColumn39.Visible = true;
-            this.gridColumn39.VisibleIndex = 20;
+            this.gridColumn39.VisibleIndex = 22;
             this.gridColumn39.Width = 90;
             // 
             // gridColumn17
@@ -2259,7 +2304,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn17.OptionsColumn.AllowEdit = false;
             this.gridColumn17.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn17.Visible = true;
-            this.gridColumn17.VisibleIndex = 21;
+            this.gridColumn17.VisibleIndex = 23;
             this.gridColumn17.Width = 90;
             // 
             // gridColumnGenderName
@@ -2271,7 +2316,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumnGenderName.OptionsColumn.AllowEdit = false;
             this.gridColumnGenderName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnGenderName.Visible = true;
-            this.gridColumnGenderName.VisibleIndex = 22;
+            this.gridColumnGenderName.VisibleIndex = 24;
             // 
             // gridColumn11
             // 
@@ -2282,7 +2327,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 23;
+            this.gridColumn11.VisibleIndex = 25;
             this.gridColumn11.Width = 140;
             // 
             // gridColumn12
@@ -2292,7 +2337,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn12.Name = "gridColumn12";
             this.gridColumn12.OptionsColumn.AllowEdit = false;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 24;
+            this.gridColumn12.VisibleIndex = 26;
             this.gridColumn12.Width = 100;
             // 
             // gridColumn13
@@ -2304,7 +2349,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 25;
+            this.gridColumn13.VisibleIndex = 27;
             this.gridColumn13.Width = 140;
             // 
             // gridColumn14
@@ -2314,7 +2359,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.gridColumn14.Name = "gridColumn14";
             this.gridColumn14.OptionsColumn.AllowEdit = false;
             this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 26;
+            this.gridColumn14.VisibleIndex = 28;
             this.gridColumn14.Width = 100;
             // 
             // DuyetE
@@ -2536,7 +2581,9 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.layoutControlItem8,
             this.lciNewestBarcode,
             this.layoutControlItem9,
-            this.layoutControlItem5});
+            this.layoutControlItem5,
+            this.layoutControlItem24,
+            this.emptySpaceItem1});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -2546,18 +2593,18 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.gridControlSample;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 50);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 73);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(582, 458);
+            this.layoutControlItem1.Size = new System.Drawing.Size(582, 412);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.ucPaging1;
-            this.layoutControlItem4.Location = new System.Drawing.Point(0, 508);
+            this.layoutControlItem4.Location = new System.Drawing.Point(0, 485);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(582, 28);
+            this.layoutControlItem4.Size = new System.Drawing.Size(582, 51);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
@@ -2663,6 +2710,23 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
+            // layoutControlItem24
+            // 
+            this.layoutControlItem24.Control = this.chkSXHenTra;
+            this.layoutControlItem24.Location = new System.Drawing.Point(15, 50);
+            this.layoutControlItem24.Name = "layoutControlItem24";
+            this.layoutControlItem24.Size = new System.Drawing.Size(567, 23);
+            this.layoutControlItem24.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem24.TextVisible = false;
+            // 
+            // emptySpaceItem1
+            // 
+            this.emptySpaceItem1.AllowHotTrack = false;
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 50);
+            this.emptySpaceItem1.Name = "emptySpaceItem1";
+            this.emptySpaceItem1.Size = new System.Drawing.Size(15, 23);
+            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
+            // 
             // imageCollection1
             // 
             this.imageCollection1.ImageStream = ((DevExpress.Utils.ImageCollectionStreamer)(resources.GetObject("imageCollection1.ImageStream")));
@@ -2737,8 +2801,9 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.Load += new System.EventHandler(this.UC_ReturnMicrobiologicalResults_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.txtTreatmentCode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSXHenTra.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtTreatmentCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtBarcodeTimeTo.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtBarcodeTimeTo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSERVICE_REQ_CODE__EXACT.Properties)).EndInit();
@@ -2856,6 +2921,8 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             ((System.ComponentModel.ISupportInitialize)(this.lciNewestBarcode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             this.ResumeLayout(false);
@@ -3068,5 +3135,10 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repUnAppove;
         private DevExpress.XtraEditors.TextEdit txtTreatmentCode;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem23;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn40;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn41;
+        private DevExpress.XtraEditors.CheckEdit chkSXHenTra;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem24;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
     }
 }

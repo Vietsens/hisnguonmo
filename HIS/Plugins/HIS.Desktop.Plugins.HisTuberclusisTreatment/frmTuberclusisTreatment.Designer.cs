@@ -47,6 +47,7 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
         {
             this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.btnDel = new DevExpress.XtraEditors.SimpleButton();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
@@ -115,6 +116,7 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem60 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -193,6 +195,7 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem60)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).BeginInit();
@@ -204,6 +207,7 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.btnDel);
             this.layoutControl1.Controls.Add(this.btnSave);
             this.layoutControl1.Controls.Add(this.groupBox2);
             this.layoutControl1.Controls.Add(this.groupBox1);
@@ -215,11 +219,21 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
+            // btnDel
+            // 
+            this.btnDel.Location = new System.Drawing.Point(794, 212);
+            this.btnDel.Name = "btnDel";
+            this.btnDel.Size = new System.Drawing.Size(171, 22);
+            this.btnDel.StyleController = this.layoutControl1;
+            this.btnDel.TabIndex = 62;
+            this.btnDel.Text = "Xóa";
+            this.btnDel.Click += new System.EventHandler(this.btnDel_Click);
+            // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(939, 212);
+            this.btnSave.Location = new System.Drawing.Point(969, 212);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(228, 22);
+            this.btnSave.Size = new System.Drawing.Size(198, 22);
             this.btnSave.StyleController = this.layoutControl1;
             this.btnSave.TabIndex = 61;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -1053,7 +1067,8 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             this.layoutControlItem2,
             this.layoutControlItem3,
             this.layoutControlItem60,
-            this.emptySpaceItem1});
+            this.emptySpaceItem1,
+            this.layoutControlItem6});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1083,9 +1098,9 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             // layoutControlItem60
             // 
             this.layoutControlItem60.Control = this.btnSave;
-            this.layoutControlItem60.Location = new System.Drawing.Point(937, 210);
+            this.layoutControlItem60.Location = new System.Drawing.Point(967, 210);
             this.layoutControlItem60.Name = "layoutControlItem60";
-            this.layoutControlItem60.Size = new System.Drawing.Size(232, 26);
+            this.layoutControlItem60.Size = new System.Drawing.Size(202, 26);
             this.layoutControlItem60.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem60.TextVisible = false;
             // 
@@ -1094,8 +1109,17 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 210);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(937, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(792, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutControlItem6
+            // 
+            this.layoutControlItem6.Control = this.btnDel;
+            this.layoutControlItem6.Location = new System.Drawing.Point(792, 210);
+            this.layoutControlItem6.Name = "layoutControlItem6";
+            this.layoutControlItem6.Size = new System.Drawing.Size(175, 26);
+            this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem6.TextVisible = false;
             // 
             // emptySpaceItem2
             // 
@@ -1301,6 +1325,7 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem60)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).EndInit();
@@ -1401,5 +1426,7 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
         private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
         private DevExpress.XtraEditors.GridLookUpEdit cboTuberculosisTreatmentType;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView3;
+        private DevExpress.XtraEditors.SimpleButton btnDel;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
     }
 }

@@ -33,9 +33,6 @@
   <ItemGroup>
     <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="Inventec.Common.QrCodeBHYT ">
-      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.QrCodeBHYT\Inventec.Common.QrCodeBHYT .dll</HintPath>
-    </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Lib\MOS\MOS.EFMODEL.dll</HintPath>
@@ -63,6 +60,12 @@
     <Compile Include="IRegisterAppConfig.cs" />
     <Compile Include="IRegisterHisConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.QrCodeBHYT\Inventec.Common.QrCodeBHYT.csproj">
+      <Project>{8451c96e-d8bd-4a5a-a663-c1e540e8496c}</Project>
+      <Name>Inventec.Common.QrCodeBHYT</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

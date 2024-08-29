@@ -76,6 +76,12 @@
     <Reference Include="HIS.Desktop.Library.CacheClient">
       <HintPath>..\HIS.Desktop.Library.CacheClient\bin\Debug\HIS.Desktop.Library.CacheClient.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.ModuleExt">
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.ModuleExt.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Utility">
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
+    </Reference>
     <Reference Include="His.EventLog">
       <HintPath>..\..\..\..\LIB\HIS\His.EventLog\His.EventLog.dll</HintPath>
     </Reference>
@@ -412,14 +418,6 @@
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
       <Name>HIS.Desktop.LocalStorage.Location</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
-      <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>
-      <Name>HIS.Desktop.ModuleExt</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
-      <Name>HIS.Desktop.Utilities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.csproj">
       <Project>{0aedfd21-7195-4fdb-a3ef-035640df48f3}</Project>
       <Name>HIS.Desktop.Plugins.Library.EmrGenerate</Name>
@@ -434,7 +432,7 @@ echo Copying files from $(ProjectDir)bin\$(Configuration) to $(SolutionDir)\$(So
 if not exist "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" mkdir "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies"
 
 xcopy "$(ProjectDir)bin\$(Configuration)\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" /i /d /y
-xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\Debug\plugins" /Y /I
+xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\Debug\Plugins\Module" /Y /I
 xcopy "$(ProjectDir)bin\$(Configuration)\vi\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\vi" /Y /I
 xcopy "$(ProjectDir)bin\$(Configuration)\en\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\en" /Y /I
 

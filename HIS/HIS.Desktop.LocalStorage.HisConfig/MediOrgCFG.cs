@@ -25,7 +25,6 @@ using SDA.Filter;
 using System.Collections.Generic;
 using HIS.Desktop.LocalStorage.LocalData;
 using MOS.EFMODEL.DataModels;
-using Inventec.Common.LocalStorage.SdaConfig;
 using Inventec.Common.Adapter;
 using HIS.Desktop.ApiConsumer;
 

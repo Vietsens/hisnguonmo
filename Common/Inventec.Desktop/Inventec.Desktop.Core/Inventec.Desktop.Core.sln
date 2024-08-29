@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventec.Desktop.Core", "Inventec.Desktop.Core.csproj", "{9E99C16E-0F81-40E2-8078-CBA7A820CA97}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9E99C16E-0F81-40E2-8078-CBA7A820CA97}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{9E99C16E-0F81-40E2-8078-CBA7A820CA97}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{9E99C16E-0F81-40E2-8078-CBA7A820CA97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E99C16E-0F81-40E2-8078-CBA7A820CA97}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

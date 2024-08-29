@@ -1150,6 +1150,42 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 Inventec.Common.Logging.LogSystem.Error(ex);
                             }
                         }
+                        else if (e.Column.FieldName == "CANCEL_TIME_str")
+                        {
+                            try
+                            {
+                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.CANCEL_TIME ?? 0);
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                        }
+                        else if (e.Column.FieldName == "CANCEL_LOGINNAME_str")
+                        {
+                            try
+                            {
+                                e.Value = !string.IsNullOrEmpty(data.CANCEL_LOGINNAME) ? string.Format("{0} - {1}", data.CANCEL_LOGINNAME, data.CANCEL_USERNAME) : "";
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                        }
+                        else if (e.Column.FieldName == "CANCEL_REASON_str")
+                        {
+                            try
+                            {
+                                if (string.IsNullOrEmpty(data.CANCEL_REASON) || string.IsNullOrEmpty(data.CANCEL_REASON_NAME))
+                                    e.Value = data.CANCEL_REASON ?? data.CANCEL_REASON_NAME;
+                                else
+                                    e.Value = string.Format("{0}; {1}", data.CANCEL_REASON_NAME, data.CANCEL_REASON);
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                        }
                     }
                 }
             }

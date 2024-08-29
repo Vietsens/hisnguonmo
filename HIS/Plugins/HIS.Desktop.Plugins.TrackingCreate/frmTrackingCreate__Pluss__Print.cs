@@ -82,7 +82,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         {
             bool result = false;
             try
-            { 
+            {
                 switch (printTypeCode)
                 {
                     case PrintTypeCodeStore.PRINT_TYPE_CODE__BIEUMAU__PHIEU_YEU_CAU_IN_TO_DIEU_TRI__MPS000062:
@@ -138,7 +138,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
         List<V_HIS_TRACKING> _TrackingPrintsProcesss;
 
-        private void                                        Mps000062(string printTypeCode, string fileName, ref bool result, bool resultPrintAndSign = false)
+        private void Mps000062(string printTypeCode, string fileName, ref bool result, bool resultPrintAndSign = false)
         {
             try
             {
@@ -332,6 +332,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 }
 
                 //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => inputADO.MergeCode), inputADO.MergeCode));
+                var PatientTypeAlter = new BackendAdapter(new CommonParam()).Get<HIS_PATIENT_TYPE_ALTER>("api/HisPatientTypeAlter/GetLastByTreatmentId", ApiConsumers.MosConsumer, treatmentId, null);
+
 
                 MPS.Processor.Mps000062.PDO.Mps000062PDO mps000062RDO = new MPS.Processor.Mps000062.PDO.Mps000062PDO(
                 _Treatment,
@@ -360,7 +362,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 this._ImpMestMaterial_TL,
                 HisExpMestBltyReq2,
                 BackendDataWorker.Get<V_HIS_SERVICE>().Where(o => this._SereServs.Select(p => p.SERVICE_ID).Contains(o.ID)).ToList(),
-                this._ImpMestBlood_TL
+                this._ImpMestBlood_TL,
+                PatientTypeAlter
                 );
                 WaitingManager.Hide();
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
@@ -631,10 +634,10 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         MOS.Filter.HisImpMestMedicineViewFilter impMestMedicineViewFilter = new MOS.Filter.HisImpMestMedicineViewFilter();
                         impMestMedicineViewFilter.IMP_MEST_IDs = _MobaImpMestsIds;
                         var impMestMed = new BackendAdapter(paramCommon).Get<List<V_HIS_IMP_MEST_MEDICINE>>("api/HisImpMestMedicine/GetView", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, impMestMedicineViewFilter, paramCommon);
-                        if(impMestMed != null && impMestMed.Count > 0)
+                        if (impMestMed != null && impMestMed.Count > 0)
                         {
                             this._ImpMestMedicines_TL.AddRange(impMestMed);
-                        }    
+                        }
 
                         long configQY7 = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_IS_MATERIAL));
                         if (configQY7 == 1)
@@ -651,7 +654,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         MOS.Filter.HisImpMestBloodViewFilter impMestBloodViewFilter = new MOS.Filter.HisImpMestBloodViewFilter();
                         impMestBloodViewFilter.IMP_MEST_IDs = _MobaImpMestsIds.ToList();
                         this._ImpMestBlood_TL = new BackendAdapter(paramCommon).Get<List<V_HIS_IMP_MEST_BLOOD>>("api/HisImpMestBlood/GetView", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, impMestBloodViewFilter, paramCommon);
-                       
+
                         start += 100;
                         count -= 100;
                     }
@@ -847,7 +850,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
                 int startExpMest = 0;
                 int countServiceReqId_ExpMest = _serviceReqIds.Count;
-                List<HIS_EXP_MEST>  expMestDatas = new List<HIS_EXP_MEST>();
+                List<HIS_EXP_MEST> expMestDatas = new List<HIS_EXP_MEST>();
                 while (countServiceReqId_ExpMest > 0)
                 {
                     int limit = (countServiceReqId_ExpMest <= 100) ? countServiceReqId_ExpMest : 100;

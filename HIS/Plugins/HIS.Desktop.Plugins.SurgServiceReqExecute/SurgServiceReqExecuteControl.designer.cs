@@ -46,22 +46,22 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SurgServiceReqExecuteControl));
-            DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
-            DevExpress.Utils.ContextButton contextButton1 = new DevExpress.Utils.ContextButton();
-            DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement1 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
-            DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement2 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SuperToolTip superToolTip2 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem2 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip5 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem5 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.ContextButton contextButton1 = new DevExpress.Utils.ContextButton();
+            DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement1 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
+            DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement2 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SuperToolTip superToolTip6 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem6 = new DevExpress.Utils.ToolTipItem();
             this.tileViewColumn2 = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.repositoryItemPictureEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
             this.tileViewColumnName = new DevExpress.XtraGrid.Columns.TileViewColumn();
@@ -788,7 +788,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             this.repositoryItemButtonCoppy.AutoHeight = false;
             this.repositoryItemButtonCoppy.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonCoppy.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Sao chép nội dung xử lý dịch vụ", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonCoppy.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Sao chép nội dung xử lý dịch vụ", null, null, true)});
             this.repositoryItemButtonCoppy.Name = "repositoryItemButtonCoppy";
             this.repositoryItemButtonCoppy.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonCoppy.Click += new System.EventHandler(this.repositoryItemButtonCoppy_Click);
@@ -1525,9 +1525,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.btnCreateImageLuuDo.Name = "btnCreateImageLuuDo";
             this.btnCreateImageLuuDo.Size = new System.Drawing.Size(24, 22);
             this.btnCreateImageLuuDo.StyleController = this.layoutControlRight;
-            toolTipItem1.Text = "Bổ sung ảnh lược đồ phẫu thuật thủ thuật";
-            superToolTip1.Items.Add(toolTipItem1);
-            this.btnCreateImageLuuDo.SuperTip = superToolTip1;
+            toolTipItem5.Text = "Bổ sung ảnh lược đồ phẫu thuật thủ thuật";
+            superToolTip5.Items.Add(toolTipItem5);
+            this.btnCreateImageLuuDo.SuperTip = superToolTip5;
             this.btnCreateImageLuuDo.TabIndex = 107;
             this.btnCreateImageLuuDo.Text = "simpleButton1";
             this.btnCreateImageLuuDo.Click += new System.EventHandler(this.btnCreateImageLuuDo_Click);
@@ -2312,7 +2312,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.cboLoaiPT.Properties.AutoComplete = false;
             this.cboLoaiPT.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
             this.cboLoaiPT.Properties.NullText = "";
             this.cboLoaiPT.Properties.View = this.gridView2;
             this.cboLoaiPT.Size = new System.Drawing.Size(74, 20);
@@ -2376,9 +2376,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.btnSaveEkipTemp.Name = "btnSaveEkipTemp";
             this.btnSaveEkipTemp.Size = new System.Drawing.Size(27, 22);
             this.btnSaveEkipTemp.StyleController = this.layoutControlRight;
-            toolTipItem2.Text = "Lưu kíp mẫu";
-            superToolTip2.Items.Add(toolTipItem2);
-            this.btnSaveEkipTemp.SuperTip = superToolTip2;
+            toolTipItem6.Text = "Lưu kíp mẫu";
+            superToolTip6.Items.Add(toolTipItem6);
+            this.btnSaveEkipTemp.SuperTip = superToolTip6;
             this.btnSaveEkipTemp.TabIndex = 63;
             this.btnSaveEkipTemp.Text = "Lưu kíp mẫu";
             this.btnSaveEkipTemp.Click += new System.EventHandler(this.btnSaveEkipTemp_Click);
@@ -2562,6 +2562,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             this.txtConclude.Location = new System.Drawing.Point(102, 333);
             this.txtConclude.Name = "txtConclude";
+            this.txtConclude.Properties.Appearance.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.txtConclude.Properties.Appearance.Options.UseForeColor = true;
             this.txtConclude.Properties.MaxLength = 1000;
             this.txtConclude.Size = new System.Drawing.Size(277, 61);
             this.txtConclude.StyleController = this.layoutControlRight;

@@ -43,6 +43,7 @@ using HIS.Desktop.Plugins.SurgServiceReqExecute.Config;
 using ACS.Filter;
 using System.IO;
 using Newtonsoft.Json;
+using System.Drawing;
 
 namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 {
@@ -924,6 +925,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     {
                         this.txtMANNER.Text = this.sereServ.TDL_SERVICE_NAME;
                     }
+                }
+                if (this.sereServ.TDL_HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__CDHA)//neu loai la cdha thi bat buoc nhap ket luan - IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__CDHA
+                {
+                    this.lciKetLuan.AppearanceItemCaption.ForeColor = Color.Maroon;
                 }
             }
             catch (Exception ex)
@@ -2315,6 +2320,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     if (PriorityIsRequired == 1 || (PriorityIsRequired == 2 && this.serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__PT))
                         ValidationGridLookUpWithTextEdit(cboLoaiPT, txtLoaiPT);
                 }
+                var KLColor = this.lciKetLuan.AppearanceItemCaption.ForeColor;
                 var ColorPL = lciPhanLoai.AppearanceItemCaption.ForeColor;
                 if (txtPtttGroupCode.ReadOnly)
                 {

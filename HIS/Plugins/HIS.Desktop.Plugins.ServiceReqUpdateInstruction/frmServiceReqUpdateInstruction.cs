@@ -34,12 +34,14 @@ using HIS.UC.SecondaryIcd;
 using HIS.UC.SecondaryIcd.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.LocalStorage.Location;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -1558,6 +1560,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                             txtRequestUser.Text = commune.LOGINNAME;
                             this.icdProcessor.FocusControl(this.ucIcd);
                         }
+                        CheckTimeSereServ();
                     }
                 }
             }
@@ -1932,5 +1935,58 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             }
         }
 
+        private void dtTime_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dtTime.EditValue != null && cboRequestUser.EditValue != null) CheckTimeSereServ();
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void CheckTimeSereServ()
+        {
+
+            try
+            {
+                var config = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION").FirstOrDefault();
+                CommonParam param = new CommonParam();
+                if (config != null)
+                {
+                    if (config.VALUE == "1" || config.VALUE == "2")
+                    {
+                        HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
+                        sdo.TreatmentId = currentTreatment.ID;
+                        var username = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && cboRequestUser.EditValue.ToString() == p.USERNAME).FirstOrDefault().USERNAME;
+                        sdo.Loginnames = new List<string>() { username };
+                        long sereTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTime.DateTime) ?? 0;
+                        sdo.SereTimes = new List<long> { sereTime };
+                        Inventec.Common.Logging.LogSystem.Debug("HisServiceReqCheckSereTimesSDO:" + LogUtil.TraceData("HisServiceReqCheckSereTimesSDO", sdo));
+                        bool rs = new BackendAdapter(param).Post<bool>("/api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, param);
+                        if (!rs)
+                        {
+                            if (config.VALUE == "1")
+                            {
+                                MessageManager.Show(this, param, rs);
+                                btnSave.Enabled = false;
+                            }
+                            else
+                            {
+                                btnSave.Enabled = MessageBox.Show(this, param.Messages + ". Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.Yes;
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }

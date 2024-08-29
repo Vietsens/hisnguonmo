@@ -39,15 +39,6 @@
     <Reference Include="DevExpress.XtraEditors.v15.2">
       <HintPath>..\..\..\Lib\DEVEXPRESS\DevExpress.XtraEditors.v15.2.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.RegistryUtil">
-      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.RegistryUtil\Inventec.Common.RegistryUtil.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.TypeConvert">
-      <HintPath>..\..\..\Lib\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -63,6 +54,20 @@
     <Compile Include="ApplicationFontWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistryConstant.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.csproj">
+      <Project>{4859008d-a40d-47bb-a185-019c8b140569}</Project>
+      <Name>Inventec.Common.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.RegistryUtil\Inventec.Common.RegistryUtil.csproj">
+      <Project>{3500af17-41b1-47f8-9efb-986f34f8df0f}</Project>
+      <Name>Inventec.Common.RegistryUtil</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.csproj">
+      <Project>{36fae455-24a7-45af-b360-aa6dc4d771f8}</Project>
+      <Name>Inventec.Common.TypeConvert</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -38,6 +38,8 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
         const string GOV_API_RESULT_003 = "003";
         DelegateEnableButtonSave dlgEnableButtonSave;
         DelegateHeinEnableButtonSave dlgHeinEnableButtonSave;
+        private string hoTenCb = BHXHLoginCFG.OFFICERNAME;
+        private string cccdCb = BHXHLoginCFG.CCCDOFFICER;
         public HeinGOVManager
             (
             //Action<HeinCardData> _FillDataAfterCheckBHYT_HeinInfo,
@@ -120,6 +122,14 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
             }
         }
 
+        public async Task<ResultDataADO> Check(HeinCardData dataHein, Action focusNextControl, bool ischeckChange, string heinAddressOfPatient, DateTime dtIntructionTime, bool isReadQrCode, bool showMessage, string hotenCb, string cccdCb)
+        {
+            if (string.IsNullOrEmpty(this.hoTenCb))
+                this.hoTenCb = hotenCb;
+            if (string.IsNullOrEmpty(this.cccdCb))
+                this.cccdCb = cccdCb;
+            return await Check(dataHein, focusNextControl, ischeckChange, heinAddressOfPatient, dtIntructionTime, isReadQrCode, showMessage);
+        }
         public async Task<ResultDataADO> Check(HeinCardData dataHein, Action focusNextControl, bool ischeckChange, string heinAddressOfPatient, DateTime dtIntructionTime, bool isReadQrCode, bool showMessage)
         {
             ResultDataADO rsData = new ResultDataADO();
@@ -170,8 +180,8 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     checkHistoryLDO.ngaySinh = dataHein.Dob;
                     checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(dataHein.PatientName);
                     checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? dataHein.PatientName : checkHistoryLDO.hoTen);
-                    checkHistoryLDO.hoTenCb = BHXHLoginCFG.OFFICERNAME;
-                    checkHistoryLDO.cccdCb = BHXHLoginCFG.CCCDOFFICER;
+                    checkHistoryLDO.hoTenCb = hoTenCb;
+                    checkHistoryLDO.cccdCb = cccdCb;
                     Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 1");
                     if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
                         || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)
@@ -202,7 +212,21 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkHistoryLDO), checkHistoryLDO) +
                             "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rsData), rsData));
 
-                        if (ischeckChange && !CheckChangeInfo(dataHein, rsData.ResultHistoryLDO, isHasNewCard, heinAddressOfPatient, dtIntructionTime))
+                        //Kiểm tra sử dụng thẻ mới bên ngoài CheckChangeInfo
+                        if (isHasNewCard)
+                        {
+                            if (!String.IsNullOrEmpty(rsData.ResultHistoryLDO.gtTheTuMoi))
+                            {
+                                DateTime dtHanTheTuMoi = DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheTuMoi).Value;
+                                DateTime dtHanTheDenMoi = (DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheDenMoi) ?? DateTime.MinValue);
+                                if (dtHanTheTuMoi.Date <= dtIntructionTime.Date && (dtHanTheDenMoi == DateTime.MinValue || dtIntructionTime.Date <= dtHanTheDenMoi.Date))
+                                {
+                                    rsData.IsUsedNewCard = true;
+                                }
+                            }
+                        }
+
+                        if (ischeckChange && !CheckChangeInfo(dataHein, rsData, isHasNewCard, heinAddressOfPatient, dtIntructionTime))
                         {
                             return rsData;
                         }
@@ -308,7 +332,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                                     rsData.ResultHistoryLDO.maDKBDMoi = rsData.ResultHistoryLDO.maDKBD;
                                 }
                             }
-                    #endregion
+                            #endregion
                             DialogResult drReslt = DialogResult.OK;
                             if (HisConfigCFG.IsRequiredToUpdateNewBhytCardInCaseOfExpiry && !rsData.ResultHistoryLDO.maKetQua.Equals(GOV_API_RESULT_004))
                             {
@@ -463,7 +487,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                         Inventec.Desktop.Common.Message.MessageManager.Show(param, null);
                         Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 4");
                     }
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("successWithoutMessage", successWithoutMessage) + "____" + Inventec.Common.Logging.LogUtil.TraceData("isShowErrorMessage", isShowErrorMessage) + "____" + Inventec.Common.Logging.LogUtil.TraceData("rsInsFinal", rsData.ResultHistoryLDO));
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("successWithoutMessage", successWithoutMessage) + "____" + Inventec.Common.Logging.LogUtil.TraceData("isShowErrorMessage", isShowErrorMessage) + "____" + Inventec.Common.Logging.LogUtil.TraceData("rsInsFinal", rsData));
                     if (focusNextControl != null) focusNextControl();
                     if (dlgEnableButtonSave != null)
                         dlgEnableButtonSave(true);
@@ -665,20 +689,20 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
             }
         }
 
-        bool CheckChangeInfo(HeinCardData dataHein, ResultHistoryLDO rsIns, bool isHasNewCard, string heinAddressOfPatient, DateTime dtIntructionTime)
+        bool CheckChangeInfo(HeinCardData dataHein, ResultDataADO rsIns, bool isHasNewCard, string heinAddressOfPatient, DateTime dtIntructionTime)
         {
             bool result = false;
             try
             {
-                string gt = HIS.Desktop.Plugins.Library.RegisterConfig.GenderConvert.TextToNumber(rsIns.gioiTinh);
+                string gt = HIS.Desktop.Plugins.Library.RegisterConfig.GenderConvert.TextToNumber(rsIns.ResultHistoryLDO.gioiTinh);
                 bool isUsedNewCard = false;
 
                 if (isHasNewCard)
                 {
-                    if (!String.IsNullOrEmpty(rsIns.gtTheTuMoi))
+                    if (!String.IsNullOrEmpty(rsIns.ResultHistoryLDO.gtTheTuMoi))
                     {
-                        DateTime dtHanTheTuMoi = DateTimeHelper.ConvertDateStringToSystemDate(rsIns.gtTheTuMoi).Value;
-                        DateTime dtHanTheDenMoi = (DateTimeHelper.ConvertDateStringToSystemDate(rsIns.gtTheDenMoi) ?? DateTime.MinValue);
+                        DateTime dtHanTheTuMoi = DateTimeHelper.ConvertDateStringToSystemDate(rsIns.ResultHistoryLDO.gtTheTuMoi).Value;
+                        DateTime dtHanTheDenMoi = (DateTimeHelper.ConvertDateStringToSystemDate(rsIns.ResultHistoryLDO.gtTheDenMoi) ?? DateTime.MinValue);
                         if (dtHanTheTuMoi.Date <= dtIntructionTime.Date && (dtHanTheDenMoi == DateTime.MinValue || dtIntructionTime.Date <= dtHanTheDenMoi.Date))
                         {
                             isUsedNewCard = true;
@@ -694,31 +718,40 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     }
                     else
                     {
-                        result = result || (dataHein.Address != rsIns.diaChi);
+                        result = result || (dataHein.Address != rsIns.ResultHistoryLDO.diaChi);
                     }
                 }
-                result = result || (isUsedNewCard ? (HeinCardHelper.TrimHeinCardNumber(dataHein.HeinCardNumber) != rsIns.maTheMoi) : (HeinCardHelper.TrimHeinCardNumber(dataHein.HeinCardNumber) != rsIns.maThe));
+                result = result || (isUsedNewCard ? (HeinCardHelper.TrimHeinCardNumber(dataHein.HeinCardNumber) != rsIns.ResultHistoryLDO.maTheMoi) : (HeinCardHelper.TrimHeinCardNumber(dataHein.HeinCardNumber) != rsIns.ResultHistoryLDO.maThe));
 
-                if (!string.IsNullOrEmpty(rsIns.ngaySinh) && rsIns.ngaySinh.Length == 4)
+                if (!string.IsNullOrEmpty(rsIns.ResultHistoryLDO.ngaySinh) && rsIns.ResultHistoryLDO.ngaySinh.Length == 4)
                 {
-                    result = result || (dataHein.Dob.Length == 4 ? dataHein.Dob.Substring(0, 4) != rsIns.ngaySinh : dataHein.Dob.Substring(6, 4) != rsIns.ngaySinh);
+                    result = result || (dataHein.Dob.Length == 4 ? dataHein.Dob.Substring(0, 4) != rsIns.ResultHistoryLDO.ngaySinh : dataHein.Dob.Substring(6, 4) != rsIns.ResultHistoryLDO.ngaySinh);
                 }
                 else
                 {
-                    result = result || dataHein.Dob != rsIns.ngaySinh;
+                    result = result || dataHein.Dob != rsIns.ResultHistoryLDO.ngaySinh;
                 }
                 result = result || !dataHein.Gender.Equals(gt);
-                result = result || (isUsedNewCard ? (dataHein.FromDate != rsIns.gtTheTuMoi) : (dataHein.FromDate != rsIns.gtTheTu));
+                result = result || (isUsedNewCard ? (dataHein.FromDate != rsIns.ResultHistoryLDO.gtTheTuMoi) : (dataHein.FromDate != rsIns.ResultHistoryLDO.gtTheTu));
                 //result = result || (!String.IsNullOrEmpty(dataHein.ToDate) && (isUsedNewCard ? (dataHein.ToDate != rsIns.gtTheDenMoi) : (dataHein.ToDate != rsIns.gtTheDen)));
-                result = result || (isUsedNewCard ? (dataHein.ToDate != rsIns.gtTheDenMoi) : (dataHein.ToDate != rsIns.gtTheDen));
-                result = result || (!String.IsNullOrEmpty(dataHein.MediOrgCode) && (isUsedNewCard ? (dataHein.MediOrgCode != rsIns.maDKBDMoi) : (dataHein.MediOrgCode != rsIns.maDKBD)));
-                result = result || dataHein.PatientName.ToUpper() != rsIns.hoTen.ToUpper();
+                result = result || (isUsedNewCard ? (dataHein.ToDate != rsIns.ResultHistoryLDO.gtTheDenMoi) : (dataHein.ToDate != rsIns.ResultHistoryLDO.gtTheDen));
+                result = result || (!String.IsNullOrEmpty(dataHein.MediOrgCode) && (isUsedNewCard ? (dataHein.MediOrgCode != rsIns.ResultHistoryLDO.maDKBDMoi) : (dataHein.MediOrgCode != rsIns.ResultHistoryLDO.maDKBD)));
+                result = result || dataHein.PatientName.ToUpper() != rsIns.ResultHistoryLDO.hoTen.ToUpper();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+        public async Task<ResultDataADO> CheckCccdQrCode(HeinCardData dataHein, Action focusNextControl, DateTime dtIntructionTime, string hotenCb, string cccdCb)
+        {
+
+            if (!string.IsNullOrEmpty(hotenCb))
+                this.hoTenCb = hotenCb;
+            if (!string.IsNullOrEmpty(cccdCb))
+                this.cccdCb = cccdCb;
+            return await CheckCccdQrCode(dataHein, focusNextControl, dtIntructionTime);
         }
 
         public async Task<ResultDataADO> CheckCccdQrCode(HeinCardData dataHein, Action focusNextControl, DateTime dtIntructionTime)
@@ -748,8 +781,8 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     checkHistoryLDO.ngaySinh = dataHein.Dob;
                     checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(dataHein.PatientName);
                     checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? dataHein.PatientName : checkHistoryLDO.hoTen);
-                    checkHistoryLDO.hoTenCb = BHXHLoginCFG.OFFICERNAME;
-                    checkHistoryLDO.cccdCb = BHXHLoginCFG.CCCDOFFICER;
+                    checkHistoryLDO.hoTenCb = hoTenCb;
+                    checkHistoryLDO.cccdCb = cccdCb;
                     Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 1");
                     if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
                         || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)
@@ -792,6 +825,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                                 if (dtHanTheTuMoi.Date <= dtIntructionTime.Date && (dtHanTheDenMoi == DateTime.MinValue || dtIntructionTime.Date <= dtHanTheDenMoi.Date))
                                 {
                                     isShowQuestionUpdateFormData = true;
+                                    rsData.IsUsedNewCard = isShowQuestionUpdateFormData;
                                 }
                             }
 
@@ -844,7 +878,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                                     rsData.ResultHistoryLDO.maDKBDMoi = rsData.ResultHistoryLDO.maDKBD;
                                 }
                             }
-                    #endregion
+                            #endregion
                             DialogResult drReslt;
                             if (isUpdateData)
                             {

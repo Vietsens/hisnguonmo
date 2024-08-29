@@ -100,8 +100,9 @@
     <Reference Include="MPS">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000177.PDO">
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000177.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000177.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000177.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000486.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000486.PDO.dll</HintPath>

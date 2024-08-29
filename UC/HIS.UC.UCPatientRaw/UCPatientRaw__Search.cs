@@ -216,20 +216,20 @@ namespace HIS.UC.UCPatientRaw
 									HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
 									if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
 										heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-									this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, heinAddressOfPatient, this.dlgGetIntructionTime(), isReadQrCode);
+									this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, heinAddressOfPatient, this.dlgGetIntructionTime(), isReadQrCode, true, VEmployee != null ? VEmployee.TDL_USERNAME : null, VEmployee != null ? VEmployee.IDENTIFICATION_NUMBER : null);
 								}
 								if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
 								{
-									heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maThe ?? this.ResultDataADO.ResultHistoryLDO.maTheMoi ?? this.ResultDataADO.HeinCardData.HeinCardNumber;
+									heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.IsUsedNewCard ? this.ResultDataADO.ResultHistoryLDO.maTheMoi : this.ResultDataADO.ResultHistoryLDO.maThe;
                                     //Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
                                     if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
 									{
 										if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
 										{
                                             heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
-                                            dataResult.HeinCardData = heinCardDataForCheckGOV;
                                         }
-									}
+                                        dataResult.HeinCardData = heinCardDataForCheckGOV;
+                                    }
 								}
 
 								if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
@@ -319,25 +319,25 @@ namespace HIS.UC.UCPatientRaw
 							if (!this.TD3 && patientTypeId == HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__BHYT)
 							{
 								HIS.Desktop.Plugins.Library.CheckHeinGOV.HeinGOVManager heinGOVManager = new HIS.Desktop.Plugins.Library.CheckHeinGOV.HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
-								DateTime dtIntructionTime = new DateTime();
-								dtIntructionTime = this.dlgGetIntructionTime();
+                                DateTime dtIntructionTime = DateTime.Now;
+                                dtIntructionTime = this.dlgGetIntructionTime();
 								if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
 									heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-								this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode);
+								this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode, true, VEmployee != null ? VEmployee.TDL_USERNAME : null, VEmployee != null ? VEmployee.IDENTIFICATION_NUMBER : null);
 							}
 
 							if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
 							{
-                                heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maThe ?? this.ResultDataADO.ResultHistoryLDO.maTheMoi ?? this.ResultDataADO.HeinCardData.HeinCardNumber;
+                                heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.IsUsedNewCard ? this.ResultDataADO.ResultHistoryLDO.maTheMoi : this.ResultDataADO.ResultHistoryLDO.maThe;
                                 //Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
                                 if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
 								{
 									if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
                                     {
                                         heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
-                                        dataResult.HeinCardData = heinCardDataForCheckGOV;
                                     }
-								}
+                                    dataResult.HeinCardData = heinCardDataForCheckGOV;
+                                }
 							}
 						}
 						else
@@ -397,25 +397,25 @@ namespace HIS.UC.UCPatientRaw
 										if (!this.TD3 && patientTypeId == HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__BHYT)
 										{
 											HIS.Desktop.Plugins.Library.CheckHeinGOV.HeinGOVManager heinGOVManager = new HIS.Desktop.Plugins.Library.CheckHeinGOV.HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
-											DateTime dtIntructionTime = new DateTime();
-											dtIntructionTime = this.dlgGetIntructionTime();
+                                        DateTime dtIntructionTime = DateTime.Now;
+                                        dtIntructionTime = this.dlgGetIntructionTime();
 											if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
 												heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-											this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode);
+											this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode, true, VEmployee != null ? VEmployee.TDL_USERNAME : null, VEmployee != null ? VEmployee.IDENTIFICATION_NUMBER : null);
 										}
 
 										if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
 										{
-											heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maThe ?? this.ResultDataADO.ResultHistoryLDO.maTheMoi ?? this.ResultDataADO.HeinCardData.HeinCardNumber;
+											heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.IsUsedNewCard ? this.ResultDataADO.ResultHistoryLDO.maTheMoi : this.ResultDataADO.ResultHistoryLDO.maThe;
                                         //Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
                                         if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
 											{
 												if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
                                             {
                                                 heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
-                                                dataResult.HeinCardData = heinCardDataForCheckGOV;
                                             }
-											}
+                                            dataResult.HeinCardData = heinCardDataForCheckGOV;
+                                        }
 										}
 									}
 								}
@@ -583,11 +583,11 @@ namespace HIS.UC.UCPatientRaw
 								if (!this.TD3 && patientTypeId == HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__BHYT)
 								{
 									HIS.Desktop.Plugins.Library.CheckHeinGOV.HeinGOVManager heinGOVManager = new HIS.Desktop.Plugins.Library.CheckHeinGOV.HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
-									DateTime dtIntructionTime = new DateTime();
-									dtIntructionTime = this.dlgGetIntructionTime();
+                                    DateTime dtIntructionTime = DateTime.Now;
+                                    dtIntructionTime = this.dlgGetIntructionTime();
 									if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
 										heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-									this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode);
+									this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode, true, VEmployee != null ? VEmployee.TDL_USERNAME : null, VEmployee != null ? VEmployee.IDENTIFICATION_NUMBER : null);
 								}
 
 								if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
@@ -600,9 +600,9 @@ namespace HIS.UC.UCPatientRaw
                                         {
                                             heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
 
-                                            dataResult.HeinCardData = heinCardDataForCheckGOV;
                                         }
-									}
+                                        dataResult.HeinCardData = heinCardDataForCheckGOV;
+                                    }
 								}
 							}
 						}
@@ -666,11 +666,11 @@ namespace HIS.UC.UCPatientRaw
                             if (!this.TD3 && patientTypeId == HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__BHYT)
                             {
                                 HIS.Desktop.Plugins.Library.CheckHeinGOV.HeinGOVManager heinGOVManager = new HIS.Desktop.Plugins.Library.CheckHeinGOV.HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
-                                DateTime dtIntructionTime = new DateTime();
+                                DateTime dtIntructionTime = DateTime.Now;
                                 dtIntructionTime = this.dlgGetIntructionTime();
                                 if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
                                     heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-                                this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode);
+                                this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode, true, VEmployee != null ? VEmployee.TDL_USERNAME : null, VEmployee != null ? VEmployee.IDENTIFICATION_NUMBER : null);
                             }
 
                             if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
@@ -682,9 +682,8 @@ namespace HIS.UC.UCPatientRaw
                                     if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
                                     {
                                         heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
-
-                                        dataResult.HeinCardData = heinCardDataForCheckGOV;
                                     }
+                                    dataResult.HeinCardData = heinCardDataForCheckGOV;
                                 }
                             }
                         }
@@ -802,20 +801,20 @@ namespace HIS.UC.UCPatientRaw
 					HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
 					if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
 						heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-					this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, heinAddressOfPatient, this.dlgGetIntructionTime(), isReadQrCode);
+					this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, heinAddressOfPatient, this.dlgGetIntructionTime(), isReadQrCode, true, VEmployee != null ? VEmployee.TDL_USERNAME : null, VEmployee != null ? VEmployee.IDENTIFICATION_NUMBER : null);
 				}
 				if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
 				{
-					heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maThe ?? this.ResultDataADO.ResultHistoryLDO.maTheMoi ?? this.ResultDataADO.HeinCardData.HeinCardNumber;
+					heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.IsUsedNewCard ? this.ResultDataADO.ResultHistoryLDO.maTheMoi : this.ResultDataADO.ResultHistoryLDO.maThe;
                     //Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
                     if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
 					{
 						if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
 						{
 							heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
-                            dataResult.HeinCardData = heinCardDataForCheckGOV;
                         }
-					}
+                        dataResult.HeinCardData = heinCardDataForCheckGOV;
+                    }
 				}
 
 				if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))

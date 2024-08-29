@@ -103,6 +103,10 @@
     <Reference Include="HIS.Desktop.Plugins.Library.DrugInterventionInfo">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.DrugInterventionInfo\HIS.Desktop.Plugins.Library.DrugInterventionInfo.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.FormMedicalRecord">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.FormMedicalRecord\HIS.Desktop.Plugins.Library.FormMedicalRecord.dll</HintPath>
     </Reference>
@@ -780,10 +784,6 @@
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.csproj">
-      <Project>{0aedfd21-7195-4fdb-a3ef-035640df48f3}</Project>
-      <Name>HIS.Desktop.Plugins.Library.EmrGenerate</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Advise\frmAdvise.resx">
@@ -902,6 +902,8 @@
   <ItemGroup>
     <Content Include="Resources\arrow-down.png" />
     <Content Include="Resources\arrow-up.png" />
+    <None Include="Resources\block.png" />
+    <None Include="Resources\warning.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

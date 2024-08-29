@@ -108,7 +108,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 }
 
 
-                this.ucPatientRaw1.ResultDataADO = await heinGOVManager.Check(heinCard, focusNextControl, false, (this.currentPatientSDO != null && this.currentPatientSDO.ID > 0 ? this.currentPatientSDO.HeinAddress : ""), this.GetIntructionTime(), this.isReadQrCode);
+                this.ucPatientRaw1.ResultDataADO = await heinGOVManager.Check(heinCard, focusNextControl, false, (this.currentPatientSDO != null && this.currentPatientSDO.ID > 0 ? this.currentPatientSDO.HeinAddress : ""), this.GetIntructionTime(), this.isReadQrCode,true, VEmployee != null ? VEmployee.TDL_USERNAME : null, VEmployee != null ? VEmployee.IDENTIFICATION_NUMBER : null);
                 if (this.ucHeinInfo1 != null)
                 {
                     this.ucHeinInfo1.ResultDataADO = this.ucPatientRaw1.ResultDataADO;
@@ -144,11 +144,14 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         {
             try
             {
-                
+                Inventec.Common.Logging.LogSystem.Debug("CheckTTProcessResultData" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => "1"), "1"));
 
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.ucPatientRaw1.ResultDataADO), this.ucPatientRaw1.ResultDataADO));
                 if (this.ucPatientRaw1.ResultDataADO != null && this.ucPatientRaw1.ResultDataADO.ResultHistoryLDO != null)
                 {
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.ucPatientRaw1.ResultDataADO), this.ucPatientRaw1.ResultDataADO));
                     this.ucPatientRaw1.ResultDataADO.HeinCardData.FineYearMonthDate = this.ucPatientRaw1.ResultDataADO.ResultHistoryLDO.ngayDu5Nam;
+                    Inventec.Common.Logging.LogSystem.Debug("CheckTTProcessResultData" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => "2"), "2"));
                     //Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
                     if (this.ucPatientRaw1.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
                     {
@@ -176,14 +179,14 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
 
                     }
-
+                    Inventec.Common.Logging.LogSystem.Debug("CheckTTProcessResultData" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => "3"), "3"));
                     if (this.ucPatientRaw1.ResultDataADO.IsToDate)
                     {
                         if (IsPatientTypeUsingHeinInfo())
                             this.ucHeinInfo1.FillDataByHeinCardData(this.ucPatientRaw1.ResultDataADO.HeinCardData);
                         Inventec.Common.Logging.LogSystem.Debug("Ket thuc gan du lieu cho benh nhan khi doc the va khong co han den");
                     }
-
+                    Inventec.Common.Logging.LogSystem.Debug("CheckTTProcessResultData" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => "4"), "4"));
                     if (this.ucPatientRaw1.ResultDataADO.IsAddress || this.ucPatientRaw1.ResultDataADO.IsThongTinNguoiDungThayDoiSoVoiCong__Choose)
                     {
                         if (AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 1)
@@ -204,7 +207,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                             this.ucAddressCombo1.SetValue(dataAddressPatient);
                         }
                     }
-
+                    Inventec.Common.Logging.LogSystem.Debug("CheckTTProcessResultData" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => "5"), "5"));
                     if (this.ucPatientRaw1.ResultDataADO.IsThongTinNguoiDungThayDoiSoVoiCong__Choose)
                     {
                         UCPatientRawADO data = new UCPatientRawADO();
@@ -231,7 +234,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
 
                     }
-
+                    Inventec.Common.Logging.LogSystem.Debug("CheckTTProcessResultData" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => "6"), "6"));
                     if (HisConfigCFG.IsCheckExamHistory
                         && this.ucPatientRaw1.ResultDataADO.ResultHistoryLDO != null)
                     {

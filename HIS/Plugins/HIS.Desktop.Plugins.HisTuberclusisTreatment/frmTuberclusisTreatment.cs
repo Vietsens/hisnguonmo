@@ -92,6 +92,7 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
                 GetTuberclusisTreatment();
                 FillDataToControlsForm();
                 FillDataToControl();
+                btnDel.Enabled = currentTuberclusisTreatment != null;
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -312,6 +313,7 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
                 if (success)
                 {
                     BackendDataWorker.Reset<HIS_TUBERCULOSIS_TREAT>();
+                    btnDel.Enabled = true;
                 }
 
                 WaitingManager.Hide();
@@ -468,6 +470,38 @@ namespace HIS.Desktop.Plugins.HisTuberclusisTreatment
         private void barButtonItemSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             btnSave_Click(null, null);
+        }
+
+        private void btnDel_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                bool rs = false;
+                
+                CommonParam param = new CommonParam();
+                if (this.btnDel.Enabled == false) return;
+                if (MessageBox.Show(this, "Xóa thông tin điều trị bệnh lao?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    var ID = currentTuberclusisTreatment.ID;
+                    rs = new BackendAdapter(param).Post<bool>("api/HisTuberculosisTreat/Delete", ApiConsumers.MosConsumer, ID, param);
+                    
+                    MessageManager.Show(this,param,rs);
+                    if (rs)
+                    {
+                        foreach (Control control in this.layoutControl3.Controls)
+                        {
+                            control.Text = "";
+                        }
+                        btnDel.Enabled = false;
+                        currentTuberclusisTreatment = null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }

@@ -18,9 +18,7 @@
 using HIS.Desktop.ApiConsumer;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
-using Inventec.Common.XmlConfig;
 using Inventec.Core;
-using Inventec.Desktop.Common.LanguageManager;
 using SDA.Filter;
 using System;
 using System.Collections.Generic;

@@ -55,6 +55,7 @@ using System.IO;
 using System.Drawing;
 using DevExpress.XtraTab;
 using HIS.Desktop.ModuleExt;
+using DevExpress.XtraEditors.DXErrorProvider;
 
 namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 {
@@ -122,7 +123,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         Dictionary<long, long> dicSereServCopy = new Dictionary<long, long>();
         List<V_HIS_SERVICE> lstService;
         List<HIS_EMOTIONLESS_METHOD> dataEmotionlessMethod { get; set; }
-
+        DXErrorProvider dxErrorProviver = new DXErrorProvider();
         #endregion
 
         #region Contructor
@@ -210,7 +211,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 isNotLoadWhileChangeControlStateInFirst = false;
 
                 btnFinish.Enabled = !(HisConfigKeys.allowFinishWhenAccountIsDoctor == "1" && BackendDataWorker.Get<HIS_EMPLOYEE>().Where(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()).FirstOrDefault().IS_DOCTOR != 1);
-
+                
                 Inventec.Common.Logging.LogSystem.Debug("SurgServiceReqExecuteControl_Load. 6");
             }
             catch (Exception ex)
@@ -682,6 +683,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         /// </summary>
         /// <param name="notShowMess"></param>
         /// <returns></returns>
+        
         private bool btnSaveClick(bool notShowMess)
         {
             bool success = false;
@@ -703,11 +705,25 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 this.positionHandle = -1;
                 ValidateControl();
                 InValid();
+                
                 valid = valid && dxValidationProvider1.Validate();
                 valid = valid && ((this.isAllowEditInfo && this.isStartTimeMustBeGreaterThanInstructionTime) ? this.ValidStartDatePTTT(ref hisSurgResultSDO) : true);
                 //valid = valid && dxValidationProvider1.Validate();
                 valid = valid && (this.sereServ != null);
                 valid = valid && ValidateHisService_MaxTotalProcessTime(notShowMess);
+                if (this.lciKetLuan.AppearanceItemCaption.ForeColor == Color.Maroon)
+                {
+                    if (string.IsNullOrEmpty(txtConclude.Text))
+                    {
+                        this.dxErrorProviver.SetError(txtConclude, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc),ErrorType.Warning);
+                        valid = false;
+                    }
+                    else
+                    {
+                        valid = true;
+                        this.dxErrorProviver.SetError(txtConclude, "", ErrorType.None);
+                    }
+                }
 
                 //
                 var rs = TypeRequiredEmotionlessMethodOption(this.sereServ);

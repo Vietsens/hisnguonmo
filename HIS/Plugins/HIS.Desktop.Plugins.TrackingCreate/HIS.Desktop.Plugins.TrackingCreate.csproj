@@ -37,7 +37,7 @@
       <HintPath>..\..\..\..\LIB\ACS\ACS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\..\..\LIB\HIS\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -57,14 +57,20 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\HIS.Desktop.LocalStorage.Location\bin\Release\HIS.Desktop.LocalStorage.Location.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.ModuleExt">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.FormMedicalRecord">
-      <HintPath>..\HIS.Desktop.Plugins.Library.FormMedicalRecord\bin\Debug\HIS.Desktop.Plugins.Library.FormMedicalRecord.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.FormMedicalRecord\HIS.Desktop.Plugins.Library.FormMedicalRecord.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Print">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.DHST, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -189,9 +195,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000062.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\REPORT\MPSv2\MPS.Processor\MPS.Processor.Mps000062.PDO\bin\Debug\MPS.Processor.Mps000062.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000062.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000062.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -399,18 +404,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
       <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
       <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
-      <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>
-      <Name>HIS.Desktop.ModuleExt</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Print\HIS.Desktop.Print.csproj">
-      <Project>{aeeca321-fd65-407a-8d70-ba5362883b87}</Project>
-      <Name>HIS.Desktop.Print</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2AAD22DB-2166-4BE8-AE52-335B21DC03FC}</Project>
-      <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>

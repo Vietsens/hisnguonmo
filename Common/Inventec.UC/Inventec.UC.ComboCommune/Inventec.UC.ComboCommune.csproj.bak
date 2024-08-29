@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B7811830-0118-46E8-8FF5-0FA49536D45A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Inventec.UC.ComboCommune</RootNamespace>
+    <AssemblyName>Inventec.UC.ComboCommune</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v14.2, Version=14.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Printing.v14.2.Core, Version=14.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Sparkline.v14.2.Core, Version=14.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Utils.v14.2, Version=14.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraEditors.v14.2, Version=14.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>E:\IMSys\RELEASE\Inventec.Core\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.EFMODEL">
+      <HintPath>E:\IMSys\RELEASE\SDA\SDA.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\DataInitCommune.cs" />
+    <Compile Include="DelegateCombo.cs" />
+    <Compile Include="Design\Template1\Template1Plus_Get.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1.Designer.cs">
+      <DependentUpon>Template1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Load.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Set.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Get\GetEditValueComboCommune\GetEditValueComboCommune.cs" />
+    <Compile Include="Get\GetEditValueComboCommune\GetEditValueComboCommuneFactory.cs" />
+    <Compile Include="Get\GetEditValueComboCommune\IGetEditValueComboCommune.cs" />
+    <Compile Include="Get\GetValueCommuneCode\GetValueCommuneCode.cs" />
+    <Compile Include="Get\GetValueCommuneCode\GetValueCommuneCodeFactory.cs" />
+    <Compile Include="Get\GetValueCommuneCode\IGetValueCommuneCode.cs" />
+    <Compile Include="Get\GetValueCommuneName\GetValueCommuneName.cs" />
+    <Compile Include="Get\GetValueCommuneName\GetValueCommuneNameFactory.cs" />
+    <Compile Include="Get\GetValueCommuneName\IGetValueCommuneName.cs" />
+    <Compile Include="Init\IInit.cs" />
+    <Compile Include="Init\Init.cs" />
+    <Compile Include="Init\InitFactory.cs" />
+    <Compile Include="MainComboCommune.cs" />
+    <Compile Include="Process\PopupProcess.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Set\Value\ResetValueControl\IResetValueControl.cs" />
+    <Compile Include="Set\Value\ResetValueControl\ResetValueControl.cs" />
+    <Compile Include="Set\Value\ResetValueControl\ResetValueControlFactory.cs" />
+    <Compile Include="Set\Delegate\SetDelegateGetValueComboProvince\ISetDelegateGetValueComboProvince.cs" />
+    <Compile Include="Set\Delegate\SetDelegateGetValueComboProvince\SetDelegateGetValueComboProvince.cs" />
+    <Compile Include="Set\Delegate\SetDelegateGetValueComboProvince\SetDelegateGetValueComboProvinceFactory.cs" />
+    <Compile Include="Set\Delegate\SetDelegateSetFocusControl\ISetDelegateSetFocusControl.cs" />
+    <Compile Include="Set\Delegate\SetDelegateSetFocusControl\SetDelegateSetFocusControl.cs" />
+    <Compile Include="Set\Delegate\SetDelegateSetFocusControl\SetDelegateSetFocusControlFactory.cs" />
+    <Compile Include="Set\Delegate\SetDelegateSetValueComboTHX\ISetDelegateSetValueComboTHX.cs" />
+    <Compile Include="Set\Delegate\SetDelegateSetValueComboTHX\SetDelegateSetValueComboTHX.cs" />
+    <Compile Include="Set\Delegate\SetDelegateSetValueComboTHX\SetDelegateSetValueComboTHXFactory.cs" />
+    <Compile Include="Set\Delegate\SetDelegateGetValueComboDistrict\ISetDelegateGetValueComboDistrict.cs" />
+    <Compile Include="Set\Delegate\SetDelegateGetValueComboDistrict\SetDelegateGetValueComboDistrict.cs" />
+    <Compile Include="Set\Delegate\SetDelegateGetValueComboDistrict\SetDelegateGetValueComboDistrictFactory.cs" />
+    <Compile Include="Set\SetFocusComboCommune\ISetFocusComboCommune.cs" />
+    <Compile Include="Set\SetFocusComboCommune\SetFocusComboCommune.cs" />
+    <Compile Include="Set\SetFocusComboCommune\SetFocusComboCommuneFactory.cs" />
+    <Compile Include="Set\Value\SetTextLabelLanguage\ISetTextLabelLanguage.cs" />
+    <Compile Include="Set\Value\SetTextLabelLanguage\SetTextLabelLanguage.cs" />
+    <Compile Include="Set\Value\SetTextLabelLanguage\SetTextLabelLanguageFactory.cs" />
+    <Compile Include="Set\SetLoadComboCommune\ISetLoadComboCommune.cs" />
+    <Compile Include="Set\SetLoadComboCommune\SetLoadComboCommune.cs" />
+    <Compile Include="Set\SetLoadComboCommune\SetLoadComboCommuneFactory.cs" />
+    <Compile Include="Set\Value\SetValueComboCommune\ISetValueComboCommune.cs" />
+    <Compile Include="Set\Value\SetValueComboCommune\SetValueComboCommune.cs" />
+    <Compile Include="Set\Value\SetValueComboCommune\SetValueComboCommuneFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Design\Template1\Template1.resx">
+      <DependentUpon>Template1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

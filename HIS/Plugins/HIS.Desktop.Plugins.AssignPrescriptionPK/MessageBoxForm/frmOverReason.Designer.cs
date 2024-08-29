@@ -45,7 +45,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.cboReason = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.pbImage = new System.Windows.Forms.PictureBox();
             this.btnNo = new DevExpress.XtraEditors.SimpleButton();
             this.btnYes = new DevExpress.XtraEditors.SimpleButton();
             this.memReason = new DevExpress.XtraEditors.MemoEdit();
@@ -56,9 +60,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cboReason.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memReason.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
@@ -66,11 +75,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.cboReason);
+            this.layoutControl1.Controls.Add(this.pbImage);
             this.layoutControl1.Controls.Add(this.btnNo);
             this.layoutControl1.Controls.Add(this.btnYes);
             this.layoutControl1.Controls.Add(this.memReason);
@@ -79,13 +92,43 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(389, 141);
+            this.layoutControl1.Size = new System.Drawing.Size(389, 192);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
+            // cboReason
+            // 
+            this.cboReason.Location = new System.Drawing.Point(77, 86);
+            this.cboReason.Name = "cboReason";
+            this.cboReason.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboReason.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboReason.Properties.NullText = "";
+            this.cboReason.Properties.View = this.gridLookUpEdit1View;
+            this.cboReason.Size = new System.Drawing.Size(310, 20);
+            this.cboReason.StyleController = this.layoutControl1;
+            this.cboReason.TabIndex = 9;
+            // 
+            // gridLookUpEdit1View
+            // 
+            this.gridLookUpEdit1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridLookUpEdit1View.Name = "gridLookUpEdit1View";
+            this.gridLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridLookUpEdit1View.OptionsView.ShowGroupPanel = false;
+            // 
+            // pbImage
+            // 
+            this.pbImage.Location = new System.Drawing.Point(2, 2);
+            this.pbImage.Name = "pbImage";
+            this.pbImage.Padding = new System.Windows.Forms.Padding(2);
+            this.pbImage.Size = new System.Drawing.Size(76, 80);
+            this.pbImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbImage.TabIndex = 8;
+            this.pbImage.TabStop = false;
+            // 
             // btnNo
             // 
-            this.btnNo.Location = new System.Drawing.Point(290, 117);
+            this.btnNo.Location = new System.Drawing.Point(290, 168);
             this.btnNo.Name = "btnNo";
             this.btnNo.Size = new System.Drawing.Size(97, 22);
             this.btnNo.StyleController = this.layoutControl1;
@@ -95,7 +138,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
             // 
             // btnYes
             // 
-            this.btnYes.Location = new System.Drawing.Point(202, 117);
+            this.btnYes.Location = new System.Drawing.Point(202, 168);
             this.btnYes.Name = "btnYes";
             this.btnYes.Size = new System.Drawing.Size(84, 22);
             this.btnYes.StyleController = this.layoutControl1;
@@ -105,21 +148,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
             // 
             // memReason
             // 
-            this.memReason.Location = new System.Drawing.Point(67, 52);
+            this.memReason.Location = new System.Drawing.Point(77, 110);
             this.memReason.Name = "memReason";
-            this.memReason.Size = new System.Drawing.Size(320, 61);
+            this.memReason.Size = new System.Drawing.Size(310, 54);
             this.memReason.StyleController = this.layoutControl1;
             this.memReason.TabIndex = 5;
             // 
             // lblTitle
             // 
             this.lblTitle.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblTitle.Location = new System.Drawing.Point(18, 2);
+            this.lblTitle.Location = new System.Drawing.Point(82, 2);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(369, 46);
+            this.lblTitle.Size = new System.Drawing.Size(305, 80);
             this.lblTitle.StyleController = this.layoutControl1;
             this.lblTitle.TabIndex = 4;
-            this.lblTitle.Text = "{0}\r\nBạn có muốn {1} không?\r\nTrong trường hợp chọn \"Có\", vui lòng nhập lý do.\r\n";
             // 
             // layoutControlGroup1
             // 
@@ -130,10 +172,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
             this.layoutControlItem2,
             this.layoutControlItem3,
             this.layoutControlItem4,
-            this.emptySpaceItem1});
+            this.emptySpaceItem1,
+            this.layoutControlItem5,
+            this.layoutControlItem6});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
-            this.layoutControlGroup1.Size = new System.Drawing.Size(389, 141);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(389, 192);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -142,12 +186,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
             this.layoutControlItem1.AppearanceItemCaption.TextOptions.Trimming = DevExpress.Utils.Trimming.Character;
             this.layoutControlItem1.AppearanceItemCaption.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.layoutControlItem1.Control = this.lblTitle;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlItem1.MaxSize = new System.Drawing.Size(0, 50);
+            this.layoutControlItem1.Location = new System.Drawing.Point(80, 0);
             this.layoutControlItem1.MinSize = new System.Drawing.Size(69, 24);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Padding = new DevExpress.XtraLayout.Utils.Padding(18, 2, 2, 2);
-            this.layoutControlItem1.Size = new System.Drawing.Size(389, 50);
+            this.layoutControlItem1.Size = new System.Drawing.Size(309, 84);
             this.layoutControlItem1.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem1.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -156,23 +198,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
             // 
             // layoutControlItem2
             // 
-            this.layoutControlItem2.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
-            this.layoutControlItem2.AppearanceItemCaption.Options.UseForeColor = true;
             this.layoutControlItem2.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem2.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem2.Control = this.memReason;
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 50);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 108);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(389, 65);
-            this.layoutControlItem2.Text = "Lý do kê:";
+            this.layoutControlItem2.Size = new System.Drawing.Size(389, 58);
+            this.layoutControlItem2.Text = "Lý do khác:";
             this.layoutControlItem2.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem2.TextSize = new System.Drawing.Size(60, 20);
+            this.layoutControlItem2.TextSize = new System.Drawing.Size(70, 20);
             this.layoutControlItem2.TextToControlDistance = 5;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnYes;
-            this.layoutControlItem3.Location = new System.Drawing.Point(200, 115);
+            this.layoutControlItem3.Location = new System.Drawing.Point(200, 166);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Size = new System.Drawing.Size(88, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
@@ -181,7 +221,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btnNo;
-            this.layoutControlItem4.Location = new System.Drawing.Point(288, 115);
+            this.layoutControlItem4.Location = new System.Drawing.Point(288, 166);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Size = new System.Drawing.Size(101, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
@@ -190,10 +230,34 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 115);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 166);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(200, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutControlItem5
+            // 
+            this.layoutControlItem5.Control = this.pbImage;
+            this.layoutControlItem5.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem5.MinSize = new System.Drawing.Size(50, 24);
+            this.layoutControlItem5.Name = "layoutControlItem5";
+            this.layoutControlItem5.Size = new System.Drawing.Size(80, 84);
+            this.layoutControlItem5.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem5.TextVisible = false;
+            // 
+            // layoutControlItem6
+            // 
+            this.layoutControlItem6.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem6.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem6.Control = this.cboReason;
+            this.layoutControlItem6.Location = new System.Drawing.Point(0, 84);
+            this.layoutControlItem6.Name = "layoutControlItem6";
+            this.layoutControlItem6.Size = new System.Drawing.Size(389, 24);
+            this.layoutControlItem6.Text = "Lý do kê:";
+            this.layoutControlItem6.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem6.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem6.TextToControlDistance = 5;
             // 
             // dxValidationProvider1
             // 
@@ -203,17 +267,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(389, 141);
+            this.ClientSize = new System.Drawing.Size(389, 192);
             this.ControlBox = false;
             this.Controls.Add(this.layoutControl1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmOverReason";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Thông báo";
+            this.Text = "Cảnh báo vượt liều";
             this.Load += new System.EventHandler(this.frmOverResultTestReason_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cboReason.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.memReason.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
@@ -221,6 +288,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             this.ResumeLayout(false);
 
@@ -240,5 +309,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
+        private System.Windows.Forms.PictureBox pbImage;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
+        private DevExpress.XtraEditors.GridLookUpEdit cboReason;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
     }
 }

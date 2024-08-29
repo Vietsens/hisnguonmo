@@ -730,6 +730,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Popup
             this.layoutControlItem10.Control = this.txtValueServiceFrom;
             this.layoutControlItem10.Location = new System.Drawing.Point(0, 96);
             this.layoutControlItem10.Name = "layoutControlItem10";
+            this.layoutControlItem10.OptionsToolTip.ToolTip = "Chỉ số chức năng thận lớn hơn hoặc bằng giá trị khai báo";
             this.layoutControlItem10.Size = new System.Drawing.Size(326, 24);
             this.layoutControlItem10.Text = "Chỉ số chức năng thận từ:";
             this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -743,6 +744,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Popup
             this.layoutControlItem11.Control = this.txtValueServiceTo;
             this.layoutControlItem11.Location = new System.Drawing.Point(326, 96);
             this.layoutControlItem11.Name = "layoutControlItem11";
+            this.layoutControlItem11.OptionsToolTip.ToolTip = "Chỉ số chức năng thận nhỏ hơn giá trị được cấu hình";
             this.layoutControlItem11.Size = new System.Drawing.Size(242, 24);
             this.layoutControlItem11.Text = "Đến:";
             this.layoutControlItem11.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -756,6 +758,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Popup
             this.layoutControlItem12.Control = this.txtAmountIndayFrom;
             this.layoutControlItem12.Location = new System.Drawing.Point(0, 120);
             this.layoutControlItem12.Name = "layoutControlItem12";
+            this.layoutControlItem12.OptionsToolTip.ToolTip = "Tổng số lượng thuốc đã kê trong ngày lớn hơn giá trị khai báo";
             this.layoutControlItem12.Size = new System.Drawing.Size(326, 24);
             this.layoutControlItem12.Text = "Số lượng thuốc kê trong ngày:";
             this.layoutControlItem12.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -769,6 +772,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Popup
             this.layoutControlItem13.Control = this.txtAmountIndayTo;
             this.layoutControlItem13.Location = new System.Drawing.Point(326, 120);
             this.layoutControlItem13.Name = "layoutControlItem13";
+            this.layoutControlItem13.OptionsToolTip.ToolTip = "Tổng số lượng thuốc đã kê trong ngày nhỏ hơn hoặc bằng giá trị khai báo";
             this.layoutControlItem13.Size = new System.Drawing.Size(242, 24);
             this.layoutControlItem13.Text = "Đến:";
             this.layoutControlItem13.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;

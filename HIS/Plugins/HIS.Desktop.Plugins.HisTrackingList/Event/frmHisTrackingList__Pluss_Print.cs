@@ -263,6 +263,9 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
 
                 //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ExpMestBltyReq2), ExpMestBltyReq2));
 
+                var PatientTypeAlter = new BackendAdapter(new CommonParam()).Get<HIS_PATIENT_TYPE_ALTER>("api/HisPatientTypeAlter/GetLastByTreatmentId", ApiConsumers.MosConsumer, treatmentId, null);
+
+
                 MPS.Processor.Mps000062.PDO.Mps000062PDO mps000062RDO = new MPS.Processor.Mps000062.PDO.Mps000062PDO(
                 _Treatment,
                 treatmentBedRooms,
@@ -290,7 +293,8 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                 this._ImpMestMaterial_TL,
                 this.ExpMestBltyReq2,
                 BackendDataWorker.Get<V_HIS_SERVICE>().Where(o => _SereServs.Select(p => p.SERVICE_ID).Contains(o.ID)).ToList(),
-                this._ImpMestBlood_TL
+                this._ImpMestBlood_TL,
+                PatientTypeAlter
                 );
                 Inventec.Common.Logging.LogSystem.Debug("KT ------------Truyen data MPS======-------------");
                 WaitingManager.Hide();

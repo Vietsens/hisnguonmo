@@ -43,7 +43,6 @@ using System.Globalization;
 using Inventec.Desktop.Common.LanguageManager;
 using DevExpress.XtraEditors;
 using HIS.UC.Icd;
-using HIS.UC.Icd.ADO;
 using HIS.UC.SecondaryIcd;
 using HIS.UC.SecondaryIcd.ADO;
 using HIS.Desktop.LocalStorage.HisConfig;
@@ -73,10 +72,11 @@ using ACS.EFMODEL.DataModels;
 using HIS.Desktop.Plugins.Library.CheckHeinGOV;
 using Inventec.Common.QrCodeBHYT;
 using Inventec.Common.Logging;
-using IcdADO = HIS.Desktop.Plugins.TreatmentFinish.ADO.IcdADO;
 using HIS.UC.Death.ADO;
 using System.Resources;
 using Inventec.UC.Login.Base;
+using HIS.UC.Icd.ADO;
+using IcdADO = HIS.Desktop.Plugins.TreatmentFinish.ADO.IcdADO;
 
 namespace HIS.Desktop.Plugins.TreatmentFinish
 {
@@ -1120,7 +1120,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             {
                 if (data != null)
                 {
-                    IcdInputADO icd = new IcdInputADO();
+                    UC.Icd.ADO.IcdInputADO icd = new IcdInputADO();
                     icd.ICD_CODE = data.ICD_CODE;
                     icd.ICD_NAME = data.ICD_NAME;
                     if (ucIcd != null)

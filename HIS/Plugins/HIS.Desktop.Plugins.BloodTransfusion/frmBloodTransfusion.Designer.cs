@@ -1807,7 +1807,7 @@ namespace HIS.Desktop.Plugins.BloodTransfusion
             this.gridViewExpMestBlood.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridViewExpMestBlood_RowCellStyle);
             this.gridViewExpMestBlood.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewExpMestBlood_CustomRowCellEdit);
             this.gridViewExpMestBlood.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewExpMestBlood_CustomUnboundColumnData);
-            this.gridViewExpMestBlood.Click += new System.EventHandler(this.gridViewExpMestBlood_Click);
+            this.gridViewExpMestBlood.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.GridViewExpMestBlood_RowCellClick);
             // 
             // gridColumn1
             // 
@@ -2201,6 +2201,7 @@ namespace HIS.Desktop.Plugins.BloodTransfusion
             this.PerformLayout();
 
         }
+
 
         #endregion
 

@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3C4DEB65-7FD2-40B0-A1B3-CFA3D651F234}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Inventec.UC.ScheduleReport</RootNamespace>
+    <AssemblyName>Inventec.UC.ScheduleReport</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="IMSys.DbConfig.SAR_RS">
+      <HintPath>..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.SAR_RS\IMSys.DbConfig.SAR_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.TypeConvert">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.WebApiClient">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core">
+      <HintPath>..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.ClientSystem">
+      <HintPath>..\..\..\RELEASE\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.Core">
+      <HintPath>..\..\..\RELEASE\Inventec.Token\Inventec.Token.Core\Inventec.Token.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MRS.SDO">
+      <HintPath>..\..\..\RELEASE\MRS\MRS.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\Inventec.Fss.Client\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.EFMODEL">
+      <HintPath>..\..\..\RELEASE\SAR\SAR.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\ApiConsumerStore.cs" />
+    <Compile Include="Base\BusinessBase.cs" />
+    <Compile Include="Base\GetBase.cs" />
+    <Compile Include="Base\IFormCallBack.cs" />
+    <Compile Include="Base\LanguageWorker.cs" />
+    <Compile Include="Base\MessageUtil.cs" />
+    <Compile Include="Base\PagingGrid.cs" />
+    <Compile Include="Base\ResultManager.cs" />
+    <Compile Include="Base\TokenClientStore.cs" />
+    <Compile Include="Base\TokenManager.cs" />
+    <Compile Include="Base\TroubleCache.cs" />
+    <Compile Include="Data\DataInit.cs" />
+    <Compile Include="DelegateUC.cs" />
+    <Compile Include="Design\Template1\Template1Plus_Load.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Set.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Validation\EndDate__Validation.cs" />
+    <Compile Include="Design\Template1\Validation\ExecuteDate__Validation.cs" />
+    <Compile Include="Design\Template1\Template1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1.Designer.cs">
+      <DependentUpon>Template1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Button.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Init\IInit.cs" />
+    <Compile Include="Init\Init.cs" />
+    <Compile Include="Init\InitFactory.cs" />
+    <Compile Include="MainScheduleReport.cs" />
+    <Compile Include="MessageLang\FrontendMessage.cs" />
+    <Compile Include="MessageLang\Message.cs" />
+    <Compile Include="MessageLang\MessageEnResource.Designer.cs" />
+    <Compile Include="MessageLang\MessagePartialEnum.cs" />
+    <Compile Include="MessageLang\MessagePartialGetMessage.cs" />
+    <Compile Include="MessageLang\MessageViResource.Designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Sar\Calendar\SarReportCalendarCreate.cs" />
+    <Compile Include="Set\Delegate\HasException\ISetDelegateHasException.cs" />
+    <Compile Include="Set\Delegate\HasException\SetDelegateHasException.cs" />
+    <Compile Include="Set\Delegate\HasException\SetDelegateHasExceptionFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Get\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Design\Template1\Template1.resx">
+      <DependentUpon>Template1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageLang\MessageEnResource.resx" />
+    <EmbeddedResource Include="MessageLang\MessageViResource.resx" />
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

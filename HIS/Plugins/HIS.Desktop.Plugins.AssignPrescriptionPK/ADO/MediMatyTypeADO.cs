@@ -1741,6 +1741,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
         public Dictionary<long,List<TreatmentOverReason>> dicTreatmentOverResultTestReason { get; set; }
         public bool IsEditOverResultTestReason { get; set; }
         public string OVER_KIDNEY_REASON { get; set; }
+        public long? OVER_REASON_ID { get; set; }
         public Dictionary<long, List<TreatmentOverReason>> dicTreatmentOverKidneyReason { get; set; }
         public bool IsEditOverKidneyReason { get; set; }
         public bool IsNoPrescription { get; set; }

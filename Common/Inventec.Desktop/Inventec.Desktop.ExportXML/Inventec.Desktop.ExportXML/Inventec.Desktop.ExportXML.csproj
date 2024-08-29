@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{18DEEC40-BB32-4597-9605-91B4B5084D15}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Inventec.Desktop.ExportXML</RootNamespace>
+    <AssemblyName>Inventec.Desktop.ExportXML</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Inventec.Common.DateTime">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL">
+      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.Filter">
+      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.LibraryHein.Bhyt">
+      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QD917\ADO\HoSoBenhNhan_ADO\HS_DANHSACHHOSO_ADO.cs" />
+    <Compile Include="QD917\ADO\HoSoBenhNhan_ADO\HS_FILEHOSO_ADO.cs" />
+    <Compile Include="QD917\ADO\HoSoBenhNhan_ADO\HS_GIAMDINHHS_ADO.cs" />
+    <Compile Include="QD917\ADO\HoSoBenhNhan_ADO\HS_HOSO_ADO.cs" />
+    <Compile Include="QD917\ADO\HoSoBenhNhan_ADO\HS_THONGTINDONVI_ADO.cs" />
+    <Compile Include="QD917\ADO\HoSoBenhNhan_ADO\HS_THONGTINHOSO_ADO.cs" />
+    <Compile Include="QD917\ADO\XML1_ADO\XML1_ADO.cs" />
+    <Compile Include="QD917\ADO\XML2_ADO\XML2_CHI_TIET_THUOC_ADO.cs" />
+    <Compile Include="QD917\ADO\XML2_ADO\XML2_DSACH_CHI_TIET_THUOC_ADO.cs" />
+    <Compile Include="QD917\ADO\XML3_ADO\XML3_CHI_TIET_DVKT_ADO.cs" />
+    <Compile Include="QD917\ADO\XML3_ADO\XML3_DSACH_CHI_TIET_DVKT_ADO.cs" />
+    <Compile Include="QD917\ADO\XML4_ADO\XML4_CHI_TIET_CLS_ADO.cs" />
+    <Compile Include="QD917\ADO\XML4_ADO\XML4_DSACH_CHI_TIET_CLS_ADO.cs" />
+    <Compile Include="QD917\ADO\XML5_ADO\XML5_CHI_TIET_DIEN_BIEN_BENH_ADO.cs" />
+    <Compile Include="QD917\ADO\XML5_ADO\XML5_DSACH_CHI_TIET_DIEN_BIEN_BENH_ADO.cs" />
+    <Compile Include="QD917\Common\Common.cs" />
+    <Compile Include="QD917\Common\GlobalStore.cs" />
+    <Compile Include="QD917\Common\CommonQD917.cs" />
+    <Compile Include="QD917\Common\Common_ADO.cs" />
+    <Compile Include="QD917\Common\Config.cs" />
+    <Compile Include="QD917\CreateXml.cs" />
+    <Compile Include="QD917\ProcessData\HoSoBenhNhan_Process.cs" />
+    <Compile Include="QD917\ProcessData\XML1_Process.cs" />
+    <Compile Include="QD917\ProcessData\XML2_Process.cs" />
+    <Compile Include="QD917\ProcessData\XML3_Process.cs" />
+    <Compile Include="QD917\ProcessData\XML4_Process.cs" />
+    <Compile Include="QD917\ProcessData\XML5_Process.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

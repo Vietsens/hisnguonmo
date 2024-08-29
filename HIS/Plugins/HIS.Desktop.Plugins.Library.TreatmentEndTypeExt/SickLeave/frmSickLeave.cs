@@ -948,7 +948,25 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
             if (!dxValidationProvider1.Validate(txtBhxhCode) || Patient == null) return;
             CheckBhxh();
         }
+        private HIS_EMPLOYEE GetEmployee(string username)
+        {
+            HIS_EMPLOYEE result = new HIS_EMPLOYEE();
+            try
+            {
+                var rs = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(s => s.TDL_USERNAME == username).FirstOrDefault();
+                if (rs != null)
+                {
+                    result = rs;
+                }
+            }
+            catch (Exception ex)
+            {
 
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+            return result;
+        }
         private async Task CheckBhxh()
         {
             ResultHistoryLDO rsData = null;
@@ -963,8 +981,10 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                 checkHistoryLDO.ngaySinh = Patient.IS_HAS_NOT_DAY_DOB == 1 ? Patient.DOB.ToString().Substring(0, 4) : ((Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Patient.DOB) ?? DateTime.MinValue).ToString("dd/MM/yyyy"));
                 checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(Patient.VIR_PATIENT_NAME.ToLower());
                 checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? Patient.VIR_PATIENT_NAME.ToLower() : checkHistoryLDO.hoTen);
-                checkHistoryLDO.hoTenCb = BHXHLoginCFG.OFFICERNAME;
-                checkHistoryLDO.cccdCb = BHXHLoginCFG.CCCDOFFICER;
+                string username = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                var employee = GetEmployee(username);
+                checkHistoryLDO.hoTenCb = string.IsNullOrEmpty(BHXHLoginCFG.OFFICERNAME) ? employee.TDL_USERNAME : BHXHLoginCFG.OFFICERNAME;
+                checkHistoryLDO.cccdCb = string.IsNullOrEmpty(BHXHLoginCFG.OFFICERNAME) && string.IsNullOrEmpty(BHXHLoginCFG.CCCDOFFICER) ? employee.IDENTIFICATION_NUMBER : BHXHLoginCFG.CCCDOFFICER;
                 Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 1");
                 if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
                     || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)

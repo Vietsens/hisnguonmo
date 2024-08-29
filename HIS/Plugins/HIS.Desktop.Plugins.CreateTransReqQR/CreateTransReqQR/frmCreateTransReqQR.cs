@@ -20,6 +20,8 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
 using HIS.Desktop.ADO;
@@ -30,6 +32,7 @@ using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.CreateTransReqQR.ADO;
 using HIS.UC.SereServTree;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
@@ -99,7 +102,9 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             {
                 HisConfigCFG.LoadConfig();
                 btnCreate.Enabled = false;
+                loadCauHinhIn();
                 this.InitSereServTree();
+                LoadTreatment();
                 RegisterTimer(GetModuleLink(), "timerInitForm", timerInitForm.Interval, timerInitForm_Tick);
                 StartTimer(GetModuleLink(), "timerInitForm");
             }
@@ -114,7 +119,6 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             try
             {
                 StopTimer(GetModuleLink(), "timerInitForm");
-                LoadTreatment();
                 LoadSereServByTreatment();
                 LoadCom();
             }
@@ -163,7 +167,15 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                             IsConnectOld = true;
                             btnConnect_Click(null, null);
                         }
+                        foreach (var phieu in lstLoaiPhieu)
+                        {
+                            if (item.KEY == phieu.ID)
+                            {
+                                phieu.Check = item.VALUE == "1";
+                            }
+                        }
                     }
+                    gridView1.GridControl.RefreshDataSource();
                 }
             }
             catch (Exception ex)
@@ -180,6 +192,14 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 MOS.Filter.HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
                 filter.ID = this.inputTransReq.TreatmentId;
                 hisTreatmentView = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT>>("/api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, null).FirstOrDefault();
+                if (hisTreatmentView != null)
+                {
+                    lblPatientName.Text = hisTreatmentView.TDL_PATIENT_NAME;
+                    lblPatientCode.Text = hisTreatmentView.TDL_PATIENT_CODE;
+                    lblGenderName.Text = hisTreatmentView.TDL_PATIENT_GENDER_NAME;
+                    lblAddress.Text = hisTreatmentView.TDL_PATIENT_ADDRESS;
+                    lblDob.Text = hisTreatmentView.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1 ? hisTreatmentView.TDL_PATIENT_DOB.ToString().Substring(0, 4) : Inventec.Common.DateTime.Convert.TimeNumberToDateString(hisTreatmentView.TDL_PATIENT_DOB);
+                }
             }
             catch (Exception ex)
             {
@@ -348,7 +368,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 var apiData = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_5>>("/api/HisSereServ/GetView5", ApiConsumers.MosConsumer, sereServFilter, null);
                 if (apiData != null && apiData.Count > 0)
                 {
-                    rs = apiData.Where(o => o.PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT && (o.VIR_TOTAL_PATIENT_PRICE ?? 0) > 0).ToList();
+                    rs = apiData.Where(o => (o.PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT || (HisConfigCFG.ShowServiceBhyt && o.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT)) && (o.VIR_TOTAL_PATIENT_PRICE ?? 0) > 0).ToList();
                     if (rs != null && rs.Count > 0 && HisConfigCFG.ShowServiceByRoomOption == "1")
                         rs = rs.Where(o => o.TDL_EXECUTE_ROOM_ID == currentModule.RoomId || o.TDL_REQUEST_ROOM_ID == currentModule.RoomId).ToList();
                 }
@@ -712,24 +732,25 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         lblStt.Text = currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__FINISHED ? "Thành công" : currentTransReq.TRANS_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST ? "Thất bại" : "Đang chờ";
                         if (currentTransReq.TRANS_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)
                         {
-                            if (pos != null && pos.IsOpen)
-                                pos.Send(null);
+                            if (PosStatic.IsOpenPos())
+                                PosStatic.SendData(null);
                             timerReloadTransReq.Stop();
                             if (currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__FINISHED)
                             {
                                 pbQr.EditValue = global::HIS.Desktop.Plugins.CreateTransReqQR.Properties.Resources.check;
-                                onClickTamUngDv(null, null);
+
                                 btnNew.Enabled = btnCreate.Enabled = false;
-                                if (inputTransReq.DelegtePrint != null)
-                                    inputTransReq.DelegtePrint();
-                                else
+                                if (lstLoaiPhieu.FirstOrDefault(o => o.ID == "Mps000102").Check)
+                                    onClickTamUngDv(null, null);
+                                
+                                if (lstLoaiPhieu.FirstOrDefault(o => o.ID == "Mps000276").Check)
                                 {
                                     HisSereServFilter ssfilter = new HisSereServFilter();
                                     ssfilter.IDs = SereServIds;
                                     var sereServs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>("/api/HisSereServ/Get", ApiConsumers.MosConsumer, ssfilter, null);
 
                                     HisServiceReqViewFilter filter = new HisServiceReqViewFilter();
-                                    filter.IDs = sereServs.Select(o=>o.SERVICE_REQ_ID ?? 0).Distinct().ToList();
+                                    filter.IDs = sereServs.Select(o => o.SERVICE_REQ_ID ?? 0).Distinct().ToList();
                                     var serviceReq = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>>("/api/HisServiceReq/GetView", ApiConsumers.MosConsumer, filter, null);
                                     if (serviceReq != null && serviceReq.Count > 0)
                                     {
@@ -806,8 +827,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         pbQr.Image = null;
                         IsCheckNode = true;
                         btnCreate.Enabled = true;
-                        if (pos != null && pos.IsOpen)
-                            pos.Send(null);
+                        if (PosStatic.IsOpenPos())
+                            PosStatic.SendData(null);
                     }
 
                 }
@@ -830,12 +851,12 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 {
                     pbQr.Image = Image.FromStream(ms);
                 }
-                if (pos != null && pos.IsOpen)
+                if (PosStatic.IsOpenPos())
                 {
                     if (QrCodeProcessor.DicContentBank.ContainsKey(currentTransReq.TRANS_REQ_CODE))
-                        pos.Send(QrCodeProcessor.DicContentBank[currentTransReq.TRANS_REQ_CODE]);
+                        PosStatic.SendData(QrCodeProcessor.DicContentBank[currentTransReq.TRANS_REQ_CODE]);
                     else
-                        pos.Send(null);
+                        PosStatic.SendData(null);
                 }
             }
             catch (Exception ex)
@@ -1213,9 +1234,9 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         return;
                     }
                 }
-                if (pos != null && pos.IsOpen)
+                if (PosStatic.IsOpenPos())
                 {
-                    pos.DisposePort();
+                    PosStatic.SendData(null);
                 }
             }
             catch (Exception ex)
@@ -1243,7 +1264,6 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 btnCreate_Click(null, null);
         }
 
-        PosProcessor pos = null;
         private void cboCom_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
 
@@ -1252,8 +1272,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
                     cboCom.EditValue = null;
-                    if (pos != null)
-                        pos.DisposePort();
+                    if (PosStatic.IsOpenPos())
+                        PosStatic.DisposePort();
                 }
             }
             catch (Exception ex)
@@ -1264,6 +1284,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
         }
         bool IsConnectOld = false;
         bool IsConnectCom = false;
+        private List<LoaiPhieuInADO> lstLoaiPhieu;
+
         private void btnConnect_Click(object sender, EventArgs e)
         {
 
@@ -1273,36 +1295,47 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 {
                     btnConnect.Text = "Kết nối";
                     cboCom.Enabled = true;
-                    if (pos != null)
+                    if (PosStatic.IsOpenPos())
                     {
-                        pos.DisposePort();
+                        PosStatic.DisposePort();
                     }
                 }
                 else if (cboCom.EditValue != null)
                 {
                     IsConnectCom = true;
-                    pos = new PosProcessor(cboCom.EditValue.ToString(), GetRecivedMessageDevice);
                     string messError = null;
-                    if (pos.ConnectPort(ref messError))
+                    if (!PosStatic.IsOpenPos())
+                    {
+                        if (PosStatic.OpenPos(cboCom.EditValue.ToString(), GetRecivedMessageDevice, ref messError))
+                        {
+                            cboCom.Enabled = false;
+                            btnConnect.Text = "Ngắt kết nối";
+
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => QrCodeProcessor.DicContentBank), QrCodeProcessor.DicContentBank));
+
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentTransReq), currentTransReq));
+                            if (currentTransReq != null && QrCodeProcessor.DicContentBank.ContainsKey(currentTransReq.TRANS_REQ_CODE))
+                                PosStatic.SendData(QrCodeProcessor.DicContentBank[currentTransReq.TRANS_REQ_CODE]);
+                            else
+                                PosStatic.SendData(null);
+                        }
+                        else if (!string.IsNullOrEmpty(messError))
+                        {
+                            PosStatic.Pos = null;
+                            XtraMessageBox.Show(messError);
+                        }
+                    }
+                    else if (PosStatic.IsOpenPos())
                     {
                         cboCom.Enabled = false;
                         btnConnect.Text = "Ngắt kết nối";
-
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => QrCodeProcessor.DicContentBank), QrCodeProcessor.DicContentBank));
-
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentTransReq), currentTransReq));
-                        if (currentTransReq != null && QrCodeProcessor.DicContentBank.ContainsKey(currentTransReq.TRANS_REQ_CODE))
-                            pos.Send(QrCodeProcessor.DicContentBank[currentTransReq.TRANS_REQ_CODE]);
-                        else
-                            pos.Send(null);
-                    }
-                    else
-                    {
-                        XtraMessageBox.Show(messError);
+                        Inventec.Common.Logging.LogSystem.Info("Mở lại kết nối tới thiết bị IPOS");
                     }
                 }
-                else if (pos != null)
-                    pos.DisposePort();
+                else if (PosStatic.IsOpenPos())
+                {
+                    PosStatic.DisposePort();
+                }
 
             }
             catch (Exception ex)
@@ -1355,6 +1388,108 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     }
                     IsConnectCom = false;
                 }
+                else
+                {
+                    if (!IsSuccess && !string.IsNullOrEmpty(Message))
+                    {
+                        XtraMessageBox.Show(Message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+        private void loadCauHinhIn()
+        {
+            try
+            {
+                lstLoaiPhieu = new List<LoaiPhieuInADO>()
+                {
+                    new LoaiPhieuInADO("Mps000102", "Phiếu thu phí dịch vụ",true),
+                    new LoaiPhieuInADO("Mps000276", "Hướng dẫn bệnh nhân",true),
+                };
+
+                gridView1.BeginUpdate();
+                gridView1.GridControl.DataSource = lstLoaiPhieu;
+                gridView1.EndUpdate();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridView1_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+        {
+            try
+            {
+                WaitingManager.Show();
+                foreach (var item in lstLoaiPhieu)
+                {
+                    HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == item.ID && o.MODULE_LINK == ModuleLink).FirstOrDefault() : null;
+                    if (csAddOrUpdate != null)
+                    {
+                        csAddOrUpdate.VALUE = (item.Check ? "1" : "");
+                    }
+                    else
+                    {
+                        csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                        csAddOrUpdate.KEY = item.ID;
+                        csAddOrUpdate.VALUE = (item.Check ? "1" : "");
+                        csAddOrUpdate.MODULE_LINK = ModuleLink;
+                        if (this.currentControlStateRDO == null)
+                            this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                        this.currentControlStateRDO.Add(csAddOrUpdate);
+                    }
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void repositoryItemCheckEdit1_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CheckEdit edit = sender as CheckEdit;
+                if (edit != null)
+                {
+                    gridView1.SetRowCellValue(gridView1.FocusedRowHandle, gridColumn2, edit.Checked);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void btnSetting_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                popupControlContainer1.ShowPopup(new Point(LocationX + 300, LocationY + 160));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        int LocationX = 0;
+        int LocationY = 0;
+        private void frmCreateTransReqQR_LocationChanged(object sender, EventArgs e)
+        {
+
+            try
+            {
+                LocationX = btnSetting.Bounds.X;
+                LocationY = btnSetting.Bounds.Y;
             }
             catch (Exception ex)
             {

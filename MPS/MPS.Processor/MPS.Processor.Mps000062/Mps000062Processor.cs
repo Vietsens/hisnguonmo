@@ -5876,7 +5876,8 @@ namespace MPS.Processor.Mps000062
                     SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.BED_ROOM_CODE, bedRoomCodeStr));
                     SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.BED_ROOM_NAME, bedRoomNameStr));
                 }
-
+                if(rdo.PatientTypeAlter != null)
+                    SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.HEIN_CARD_ADDRESS, rdo.PatientTypeAlter.ADDRESS));
                 SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.PHONE, ""));
                 AddObjectKeyIntoListkey<Mps000062SingleKey>(rdo._WorkPlaceSDO, false);
                 AddObjectKeyIntoListkey<HIS_TREATMENT>(rdo._Treatment);

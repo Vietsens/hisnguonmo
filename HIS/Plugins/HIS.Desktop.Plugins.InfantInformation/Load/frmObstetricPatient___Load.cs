@@ -95,6 +95,26 @@ namespace HIS.Desktop.Plugins.InfantInformation
             }
         }
 
+        private void LoadComboDirectorUser()
+        {
+            
+            try
+            {
+                var data = BackendDataWorker.Get<HIS_BRANCH>();
+                data = data.Where(o => o.IS_ACTIVE == 1 && o.BRANCH_NAME == hisBranch.BRANCH_NAME ).ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("DIRECTOR_LOGINNAME", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("DIRECTOR_USERNAME", "", 100, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("DIRECTOR_USERNAME", "DIRECTOR_LOGINNAME", columnInfos, false, 200);
+                ControlEditorLoader.Load(cboDirectorUsername, data, controlEditorADO);
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void LoadComboBornResult()
         {
             try
@@ -375,6 +395,25 @@ namespace HIS.Desktop.Plugins.InfantInformation
                         //cboUserGCS.EditValue = data.ISSUER_LOGINNAME;
                         txtUserGCS.Text = data.ISSUER_LOGINNAME;
                         cboUserGCS.EditValue = data.ISSUER_LOGINNAME;
+                    }
+                    if (!String.IsNullOrEmpty(data.DIRECTOR_LOGINNAME))
+                    {
+                        txtDirectorLoginname.Text = data.DIRECTOR_LOGINNAME;
+                    }
+                    else
+                    {
+                        txtDirectorLoginname.Text = "";
+                    }
+                    if (!String.IsNullOrEmpty(data.DIRECTOR_USERNAME))
+                    {
+                        //cboUserGCS.EditValue = data.ISSUER_LOGINNAME;
+                        txtDirectorLoginname.Text = data.DIRECTOR_LOGINNAME;
+                        cboDirectorUsername.EditValue = data.DIRECTOR_USERNAME;
+                    }
+                    else
+                    {
+                        txtDirectorLoginname.Text = "";
+                        cboDirectorUsername.EditValue = null;
                     }
                     if (data.ISSUED_DATE != null)
                         dteIssue.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.ISSUED_DATE ?? 0) ?? DateTime.Now;

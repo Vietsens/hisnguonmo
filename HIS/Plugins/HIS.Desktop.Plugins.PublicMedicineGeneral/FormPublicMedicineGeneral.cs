@@ -260,6 +260,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                 dtToTime.DateTime = DateTime.Now;
                 txtExpMestCode.Text = "";
                 txtPatientCode.Text = "";
+                chkMedicine.Checked = chkBlood.Checked = chkMedical.Checked = true;
             }
             catch (Exception ex)
             {
@@ -1134,7 +1135,8 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
             }
             return result;
         }
-
+        
+            
         private void PrintMps486(string printTypeCode, string fileName, ref bool result)
         {
             try
@@ -1234,19 +1236,64 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        
         private void PrintMps177(string printTypeCode, string fileName, ref bool result)
         {
             try
             {
                 WaitingManager.Show();
                 AddDataToDatetime();
+                List<V_HIS_EXP_MEST_MEDICINE> listExpMestMedicine = new List<V_HIS_EXP_MEST_MEDICINE>();
+                List<V_HIS_EXP_MEST_MATERIAL> listExpMestMaterial = new List<V_HIS_EXP_MEST_MATERIAL>();
+                List<V_HIS_EXP_MEST_BLOOD> listExpMestBlood = new List<V_HIS_EXP_MEST_BLOOD>();
+                CommonParam param = new CommonParam();
+                var treatmentIds = GetSelectedRows().Select(o => o.TREATMENT_ID).ToList();
+
+                if (chkMedicine.Checked)
+                {
+                    HisExpMestMedicineViewFilter meFilter = new HisExpMestMedicineViewFilter();
+                    meFilter.TDL_TREATMENT_IDs = treatmentIds;
+                    var rs = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MEDICINE>>("/api/HisExpMestMedicine/GetView", ApiConsumers.MosConsumer, meFilter, param);
+                    if (rs != null)
+                    {
+                        listExpMestMedicine.AddRange(rs);
+                    }
+                }
+                if (chkMedical.Checked)
+                {
+                    HisExpMestMaterialViewFilter maFilter = new HisExpMestMaterialViewFilter();
+                    maFilter.TDL_TREATMENT_IDs = treatmentIds;
+                    var rs = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MATERIAL>>("/api/HisExpMestMaterial/GetView", ApiConsumers.MosConsumer, maFilter, param);
+                    if (rs != null)
+                    {
+                        listExpMestMaterial.AddRange(rs);
+                    }
+                }
+                if (chkBlood.Checked)
+                {
+                    HisExpMestFilter mestFilter = new HisExpMestFilter();
+                    mestFilter.TDL_TREATMENT_IDs = treatmentIds;
+                    var listmest = new BackendAdapter(param).Get<List<HIS_EXP_MEST>>("/api/HisExpMest/Get", ApiConsumer.ApiConsumers.MosConsumer, mestFilter, param);
+
+                    HisExpMestBloodViewFilter blFilter = new HisExpMestBloodViewFilter();
+                    blFilter.EXP_MEST_IDs = listmest.Select(s => s.ID).ToList();
+                    var rs = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_BLOOD>>("/api/HisExpMestBlood/GetView", ApiConsumers.MosConsumer, blFilter, param);
+                    if (rs != null)
+                    {
+                        listExpMestBlood.AddRange(rs);
+                    }
+                }
+                var config_day_size = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "HIS.PHIEU_CONG_KHAI_THUOC.DAY_SIZE").FirstOrDefault();
                 Mps000177PDO pdo = new Mps000177PDO(
                     lstPatient,
                     Mps000177DAY,
                     Mps000177MediMate,
                     departmentName,
-                    bedRoomName
+                    bedRoomName,
+                    listExpMestMedicine,
+                    listExpMestMaterial,
+                    listExpMestBlood,
+                    Convert.ToInt64(config_day_size.VALUE)
                     );
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
 

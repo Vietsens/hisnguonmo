@@ -1246,7 +1246,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
                 ValidateMaxLengthTextEdit(txtResultsRHMinus, 500);
 
                 ValidationSingleControl(lkTestServiceTypeId);
-                ValidationSingleControl(cboTestIndexUnit);
+                //ValidationSingleControl(cboTestIndexUnit);
                 ValidationSingleControl1(spNumOrder);
                 ValidationMaterialTypeAndNormalAmount();
             }
@@ -1265,11 +1265,11 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.dxValidationProviderEditorInfo.SetValidationRule(textEdit, validate);
         }
 
-        private void ValidMaxlengthText(ButtonEdit txtMLCT, long maxlength)
+        private void ValidMaxlengthText(ButtonEdit txtMLCT, int maxlength)
         {
-            ValidMaxlengthText validate = new ValidMaxlengthText();
-            validate.txtMLCT = txtMLCT;
-            validate.maxlength = maxlength;
+            ControlMaxLengthValidationRule validate = new ControlMaxLengthValidationRule();
+            validate.editor = txtMLCT;
+            validate.maxLength = maxlength;
             validate.ErrorType = ErrorType.Warning;
             this.dxValidationProviderEditorInfo.SetValidationRule(txtMLCT, validate);
         }
@@ -2276,6 +2276,23 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboTestIndexUnit_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if(e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboTestIndexUnit.EditValue = null;
+                    cboTestIndexUnit.Text = "";
+                }
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }

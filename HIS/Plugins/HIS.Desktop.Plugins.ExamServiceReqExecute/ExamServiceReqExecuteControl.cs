@@ -7790,5 +7790,194 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        HIS_SERVICE_REQ selectedService;
+        private void btnCopy_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                CommonParam parmam = new CommonParam();
+                var row = (TreatmentExamADO)gridViewTreatmentHistory.GetFocusedRow();
+                
+                if(row != null)
+                {
+                    HisServiceReqFilter filter = new HisServiceReqFilter();
+                    filter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH;
+                    filter.TREATMENT_ID = row.ID;
+                    var serviceReq = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("/api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, param);
+                    if (serviceReq != null && serviceReq.Count > 0)
+                    {
+                        selectedService = new HIS_SERVICE_REQ();
+                        if (serviceReq.Count > 1)
+                        {
+                            var sortServiceReq = serviceReq.OrderBy(s => s.EXAM_END_TYPE = 3).ThenBy(o => o.IS_MAIN_EXAM = 1).ThenByDescending(p => p.INTRUCTION_TIME);
+                            selectedService = sortServiceReq.First();
+                        }
+                        else
+                            selectedService = serviceReq.First();
+                    }
+                    else return;
+                    if(selectedService != null)
+                    {
+                        FillDataCopyToControl(selectedService);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void FillDataCopyToControl(HIS_SERVICE_REQ data)
+        {
+            try
+            {
+                spinNgayThuCuaBenh.EditValue = data.SICK_DAY;
+                cboPatientCase.EditValue = data.PATIENT_CASE_ID;
+                txtHospitalizationReason.Text = data.HOSPITALIZATION_REASON;
+                txtPathologicalProcess.Text = data.PATHOLOGICAL_PROCESS;
+                txtPathologicalHistory.Text = data.PATHOLOGICAL_HISTORY;
+                txtPathologicalHistoryFamily.Text = data.PATHOLOGICAL_HISTORY_FAMILY;
+                txtKhamToanThan.Text = data.FULL_EXAM;
+                //kham bo phan
+                #region KHAM BO PHAN
+                txtKhamBoPhan.Text = data.PART_EXAM;
+                txtTuanHoan.Text = data.PART_EXAM_CIRCULATION;
+                txtHoHap.Text = data.PART_EXAM_RESPIRATORY;
+                txtTieuHoa.Text = data.PART_EXAM_DIGESTION;
+                txtThanTietNieu.Text = data.PART_EXAM_KIDNEY_UROLOGY;
+                txtThanKinh.Text = data.PART_EXAM_NEUROLOGICAL;
+                txtCoXuongKhop.Text = data.PART_EXAM_MUSCLE_BONE;
+                //tai mui hong
+                #region TAI MUI HONG
+                txtTai.Text = data.PART_EXAM_EAR;
+                txtPART_EXAM_EAR_RIGHT_NORMAL.Text = data.PART_EXAM_EAR_RIGHT_NORMAL;
+                txtPART_EXAM_EAR_LEFT_NORMAL.Text = data.PART_EXAM_EAR_LEFT_NORMAL;
+                txtPART_EXAM_EAR_RIGHT_WHISPER.Text = data.PART_EXAM_EAR_RIGHT_WHISPER;
+                txtPART_EXAM_EAR_LEFT_WHISPER.Text = data.PART_EXAM_EAR_LEFT_WHISPER;
+                txtMui.Text = data.PART_EXAM_NOSE;
+                txtHong.Text = data.PART_EXAM_THROAT;
+                #endregion
+                ///rang ham mat
+                #region RHM
+                txtPART_EXAM_UPPER_JAW.Text = data.PART_EXAM_UPPER_JAW;
+                txtPART_EXAM_LOWER_JAW.Text = data.PART_EXAM_LOWER_JAW;
+                txtRHM.Text = data.PART_EXAM_STOMATOLOGY;
+                #endregion
+                ///mat
+                #region MAT
+                txtMat.Text = data.PART_EXAM_EYE;
+                ////sac giac
+                chkPART_EXAM_EYE_BLIND_COLOR__BT.Checked = data.PART_EXAM_EYE_BLIND_COLOR == 1;
+                chkPART_EXAM_EYE_BLIND_COLOR__MMTB.Checked = data.PART_EXAM_EYE_BLIND_COLOR == 2;
+                chkPART_EXAM_EYE_BLIND_COLOR__MMD.Checked = data.PART_EXAM_EYE_BLIND_COLOR == 3;
+                chkPART_EXAM_EYE_BLIND_COLOR__MMXLC.Checked = data.PART_EXAM_EYE_BLIND_COLOR == 4;
+                chkPART_EXAM_EYE_BLIND_COLOR__MMV.Checked = data.PART_EXAM_EYE_BLIND_COLOR == 5;
+                ////mat sang toi
+                chkPartExamEyeStPlus.Checked = data.PART_EXAM_EYE_ST_MINUS == 1;
+                chkPartExamEyeStMinus.Checked = data.PART_EXAM_EYE_ST_MINUS == 1;
+                ////
+                cboPartExamEyeTension.EditValue = data.PART_EXAM_EYE_TENSION;
+                txtNhanApPhai.Text = data.PART_EXAM_EYE_TENSION_RIGHT;
+                txtNhanApTrai.Text = data.PART_EXAM_EYE_TENSION_LEFT;
+                txtThiLucKhongKinhPhai.Text = data.PART_EXAM_EYESIGHT_GLASS_RIGHT;
+                txtThiLucKhongKinhTrai.Text = data.PART_EXAM_EYESIGHT_GLASS_LEFT;
+                txtKinhLoPhai.Text = data.PART_EXAM_HOLE_GLASS_RIGHT;
+                txtKinhLoTrai.Text = data.PART_EXAM_HOLE_GLASS_LEFT;
+                ////
+                chkPART_EXAM_HORIZONTAL_SIGHT__BT.Checked = data.PART_EXAM_HORIZONTAL_SIGHT == 1 ;
+                chkPART_EXAM_HORIZONTAL_SIGHT__HC.Checked = data.PART_EXAM_HORIZONTAL_SIGHT == 2 ;
+                chkPART_EXAM_VERTICAL_SIGHT__BT.Checked = data.PART_EXAM_VERTICAL_SIGHT == 1;
+                chkPART_EXAM_VERTICAL_SIGHT__HC.Checked = data.PART_EXAM_VERTICAL_SIGHT == 1;
+
+                ////kinh cu mp
+                txtPartEyeGlassOldSphRight.Text = data.PART_EYE_GLASS_OLD_SPH_RIGHT;
+                txtPartEyeGlassOldCylRight.Text = data.PART_EYE_GLASS_OLD_CYL_RIGHT;
+                txtPartEyeGlassOldAxeRight.Text = data.PART_EYE_GLASS_OLD_AXE_RIGHT;
+                txtPartEyesightGlassOldRight.Text = data.PART_EYESIGHT_GLASS_OLD_RIGHT;
+                txtPartEyeGlassOldKcdtRight.Text = data.PART_EYE_GLASS_OLD_KCDT_RIGHT;
+                txtPartEyeGlassOldAddRight.Text = data.PART_EYE_GLASS_OLD_ADD_RIGHT;
+                ////kinh cu mt
+                txtPartEyeGlassOldSphLeft.Text = data.PART_EYE_GLASS_OLD_SPH_LEFT;
+                txtPartEyeGlassOldCylLeft.Text = data.PART_EYE_GLASS_OLD_CYL_LEFT;
+                txtPartEyeGlassOldAxeLeft.Text = data.PART_EYE_GLASS_OLD_AXE_LEFT;
+                txtPartEyesightGlassOldLeft.Text = data.PART_EYESIGHT_GLASS_OLD_LEFT;
+                txtPartEyeGlassOldKcdtLeft.Text = data.PART_EYE_GLASS_OLD_KCDT_LEFT;
+                txtPartEyeGlassOldAddLeft.Text = data.PART_EYE_GLASS_OLD_ADD_LEFT;
+                ////kinh moi mp
+                txtPartEyeGlassSphRight.Text = data.PART_EYE_GLASS_SPH_LEFT;
+                txtPartEyeGlassCylRight.Text = data.PART_EYE_GLASS_CYL_LEFT;
+                txtPartEyeGlassAxeRight.Text = data.PART_EYE_GLASS_AXE_LEFT;
+                txtPartExamEyeSightGlassRight.Text = data.PART_EXAM_EYESIGHT_GLASS_RIGHT;
+                txtPartEyeGlassKcdtRight.Text = data.PART_EYE_GLASS_KCDT_LEFT;
+                txtPartEyeGlassAddRight.Text = data.PART_EYE_GLASS_ADD_LEFT;
+                ////kinh moi mt
+                txtPartEyeGlassSphLeft.Text = data.PART_EYE_GLASS_SPH_LEFT;
+                txtPartEyeGlassCylLeft.Text = data.PART_EYE_GLASS_CYL_LEFT;
+                txtPartEyeGlassAxeLeft.Text = data.PART_EYE_GLASS_AXE_LEFT;
+                txtPartExamEyeSightGlassLeft.Text = data.PART_EXAM_EYESIGHT_GLASS_LEFT;
+                txtPartEyeGlassKcdtLeft.Text = data.PART_EYE_GLASS_KCDT_LEFT;
+                txtPartEyeGlassAddLeft.Text = data.PART_EYE_GLASS_ADD_LEFT;
+                ////end
+                #endregion
+                ///noi tiet
+                txtNoiTiet.Text = data.PART_EXAM;
+                txtPartExamMental.Text = data.PART_EXAM_MENTAL;
+                txtPartExamNutrition.Text = data.PART_EXAM_NUTRITION;
+                txtPartExamMotion.Text = data.PART_EXAM_MOTION;
+                txtPartExanObstetric.Text = data.PART_EXAM_OBSTETRIC;
+                txtDaLieu.Text = data.PART_EXAM_DERMATOLOGY;
+                #endregion
+                //
+                txtSubclinical.Text = data.SUBCLINICAL;
+                txtTreatmentInstruction.Text = data.TREATMENT_INSTRUCTION;
+                txtProvisionalDianosis.Text = data.PROVISIONAL_DIAGNOSIS;
+                txtResultNote.Text = data.NOTE;
+                cboKskCode.EditValue = data.HEALTH_EXAM_RANK_ID;
+                txtNextTreatmentInstructionCode.Text = data.NEXT_TREAT_INTR_CODE;
+                if (data.NEXT_TREATMENT_INSTRUCTION != null) cboNextTreatmentInstructions.EditValue = this.dataNextTreatmentInstructions.FirstOrDefault(o => o.NEXT_TREA_INTR_NAME.Equals(data.NEXT_TREATMENT_INSTRUCTION)).ID;
+                if (data.ICD_CODE != null)
+                {
+                    txtIcdCode.Text = data.ICD_CODE;
+                    cboIcds.EditValue = currentIcds.FirstOrDefault(o => o.ICD_CODE.Equals(data.ICD_CODE)).ID;
+                }
+                txtIcdSubCode.Text = data.ICD_SUB_CODE;
+                List<string> listICD_CODE = data.ICD_SUB_CODE.Split(';').ToList();
+                if(listICD_CODE != null) txtIcdText.Text = string.Join(";",currentIcds.Where(o => listICD_CODE.Contains(o.ICD_CODE)).Select(p=>p.ICD_NAME));
+                if (data.ICD_CAUSE_CODE != null)
+                {
+                    cboIcdsCause.EditValue = currentIcds.FirstOrDefault(o => o.ICD_CODE.Equals(data.ICD_CAUSE_CODE)).ID;
+                    txtIcdCodeCause.Text = data.ICD_CAUSE_CODE;
+                }
+                if(data.DHST_ID != null)
+                {
+                    HisDhstFilter filter = new HisDhstFilter();
+                    filter.TREATMENT_ID = data.TREATMENT_ID;
+                    var listDhst = new BackendAdapter(new CommonParam()).Get<List<HIS_DHST>>("/api/HisDhst/Get", ApiConsumers.MosConsumer, filter, new CommonParam());
+                    if(listDhst != null)
+                    {
+                        var dhst = listDhst.First();
+                        dtExecuteTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(dhst.EXECUTE_TIME ?? 0) ?? DateTime.Now;
+                        if (dhst.PULSE != null) spinPulse.EditValue = dhst.PULSE;
+                        if (dhst.BLOOD_PRESSURE_MAX != null) spinBloodPressureMax.EditValue = dhst.BLOOD_PRESSURE_MAX;
+                        if (dhst.BLOOD_PRESSURE_MIN != null) spinBloodPressureMin.EditValue = dhst.BLOOD_PRESSURE_MIN;
+                        if (dhst.WEIGHT != null) spinWeight.EditValue = dhst.WEIGHT;
+                        if (dhst.HEIGHT != null) spinHeight.EditValue = dhst.HEIGHT;
+                        if (dhst.SPO2 != null) spinSPO2.EditValue = dhst.SPO2;
+                        if (dhst.TEMPERATURE != null) spinTemperature.EditValue = dhst.TEMPERATURE;
+                        if (dhst.BREATH_RATE != null) spinBreathRate.EditValue = dhst.BREATH_RATE;
+                        if (dhst.CHEST != null) spinChest.EditValue = dhst.CHEST;
+                        if (dhst.BELLY != null) spinBelly.EditValue = dhst.BELLY;
+                        txtNote.Text = dhst.NOTE;
+                    }
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }
