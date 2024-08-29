@@ -256,6 +256,10 @@ namespace HIS.UC.Hospitalize.Run
                 ValidateMaxLength validName = new ValidateMaxLength();
                 validName.maxLength = 1000;
                 validName.textEdit = btnHospitalReasonName;
+                if (HisConfig.IsInHospitalizationReasonRequired)
+                {
+                    validName.IsRequired = true;
+                }
                 dxValidationProvider1.SetValidationRule(btnHospitalReasonName, validName);
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
@@ -263,7 +267,7 @@ namespace HIS.UC.Hospitalize.Run
                 columnInfos.Add(new ColumnInfo("HOSPITALIZE_REASON_NAME", "", 250, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("HOSPITALIZE_REASON_NAME", "ID", columnInfos, false, 250);
                 ControlEditorLoader.Load(cboHospitalReasonName, data, controlEditorADO);
-
+                if(data != null)
                 gridControl1.DataSource = data;
             }
             catch (Exception ex)

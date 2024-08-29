@@ -51,6 +51,9 @@
     <Reference Include="HIS.Common.Treatment">
       <HintPath>..\..\..\..\lib\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Utility">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
+    </Reference>
     <Reference Include="His.EventLog, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\His.EventLog\His.EventLog.dll</HintPath>
@@ -179,6 +182,7 @@
     <Compile Include="TreatmentIcdEdit\ITreatmentIcdEdit.cs" />
     <Compile Include="TreatmentIcdEdit\TreatmentIcdEditBehavior.cs" />
     <Compile Include="TreatmentIcdEdit\TreatmentIcdEditFactory.cs" />
+    <Compile Include="Validation\GridLookupReasonEditValidationRule.cs" />
     <Compile Include="Validation\TextEditMaxLengthValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -188,7 +192,6 @@
     <EmbeddedResource Include="FormTreatmentIcdEdit.resx">
       <DependentUpon>FormTreatmentIcdEdit.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -234,10 +237,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
       <Name>HIS.Desktop.LocalStorage.Location</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
-      <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
