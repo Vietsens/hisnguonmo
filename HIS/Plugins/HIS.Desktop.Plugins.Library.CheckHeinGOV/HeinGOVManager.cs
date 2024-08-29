@@ -29,6 +29,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using HIS.Desktop.DelegateRegister;
+using MOS.EFMODEL.DataModels;
 namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
 {
     public class HeinGOVManager
@@ -170,8 +171,13 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     checkHistoryLDO.ngaySinh = dataHein.Dob;
                     checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(dataHein.PatientName);
                     checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? dataHein.PatientName : checkHistoryLDO.hoTen);
-                    checkHistoryLDO.hoTenCb = BHXHLoginCFG.OFFICERNAME;
-                    checkHistoryLDO.cccdCb = BHXHLoginCFG.CCCDOFFICER;
+                    var employee = BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
+                    if (string.IsNullOrEmpty(this.hoTenCb))
+                        this.hoTenCb = employee.TDL_USERNAME;
+                    if (string.IsNullOrEmpty(this.cccdCb))
+                        this.cccdCb = employee.IDENTIFICATION_NUMBER;
+                    checkHistoryLDO.hoTenCb = hoTenCb;
+                    checkHistoryLDO.cccdCb = cccdCb;
                     Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 1");
                     if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
                         || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)
@@ -762,8 +768,13 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     checkHistoryLDO.ngaySinh = dataHein.Dob;
                     checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(dataHein.PatientName);
                     checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? dataHein.PatientName : checkHistoryLDO.hoTen);
-                    checkHistoryLDO.hoTenCb = BHXHLoginCFG.OFFICERNAME;
-                    checkHistoryLDO.cccdCb = BHXHLoginCFG.CCCDOFFICER;
+                    var employee = BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
+                    if (string.IsNullOrEmpty(this.hoTenCb))
+                        this.hoTenCb = employee.TDL_USERNAME;
+                    if (string.IsNullOrEmpty(this.cccdCb))
+                        this.cccdCb = employee.IDENTIFICATION_NUMBER;
+                    checkHistoryLDO.hoTenCb = hoTenCb;
+                    checkHistoryLDO.cccdCb = cccdCb;
                     Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 1");
                     if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
                         || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)

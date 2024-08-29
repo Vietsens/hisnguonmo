@@ -114,6 +114,24 @@
     <Reference Include="MPS">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000315.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000315.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000452.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000452.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000453.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000453.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000454.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000454.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000455.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000455.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000464.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000464.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
     </Reference>
@@ -187,30 +205,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS.Processor\MPS.Processor.Mps000315.PDO\MPS.Processor.Mps000315.PDO.csproj">
-      <Project>{0376bc73-a013-48ca-b241-5deb46237ec6}</Project>
-      <Name>MPS.Processor.Mps000315.PDO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS.Processor\MPS.Processor.Mps000452.PDO\MPS.Processor.Mps000452.PDO.csproj">
-      <Project>{51ba5ef6-869e-4abb-857e-3ebc4d801879}</Project>
-      <Name>MPS.Processor.Mps000452.PDO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS.Processor\MPS.Processor.Mps000453.PDO\MPS.Processor.Mps000453.PDO.csproj">
-      <Project>{427ecde2-70da-43a2-8ad5-d3eb8a168311}</Project>
-      <Name>MPS.Processor.Mps000453.PDO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS.Processor\MPS.Processor.Mps000454.PDO\MPS.Processor.Mps000454.PDO.csproj">
-      <Project>{7b3b11e8-bd35-47b8-9466-e888f4d41e3d}</Project>
-      <Name>MPS.Processor.Mps000454.PDO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS.Processor\MPS.Processor.Mps000455.PDO\MPS.Processor.Mps000455.PDO.csproj">
-      <Project>{e142af3a-315e-45e4-a87f-c7a5d7d960fb}</Project>
-      <Name>MPS.Processor.Mps000455.PDO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS.Processor\MPS.Processor.Mps000464.PDO\MPS.Processor.Mps000464.PDO.csproj">
-      <Project>{07b16816-4629-4693-94cb-d4663b3531ca}</Project>
-      <Name>MPS.Processor.Mps000464.PDO</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>
@@ -265,7 +259,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
     <EmbeddedResource Include="Run\frmEnterKskInfomantionVer2.resx">

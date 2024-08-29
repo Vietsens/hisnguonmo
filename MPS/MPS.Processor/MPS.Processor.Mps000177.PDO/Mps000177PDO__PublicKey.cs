@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using Inventec.Common.DateTime;
 using MOS.EFMODEL.DataModels;
 using MPS.ProcessorBase.Core;
 using System;
@@ -32,6 +33,10 @@ namespace MPS.Processor.Mps000177.PDO
         public string departmentName { get; set; }
         public List<Mps000177DAY> Mps000177DAY { get; set; }
         public List<Mps000177MediMate> Mps000177MediMate { get; set; }
+        public List<V_HIS_EXP_MEST_MEDICINE> VExpMestMedicine { get; set; }
+        public List<V_HIS_EXP_MEST_MATERIAL> VExpMestMaterial { get; set; }
+        public List<V_HIS_EXP_MEST_BLOOD> VExpMestBlood { get; set; }
+        public long DaySize { get; set; }
     }
 
     public class Mps000177DAY
@@ -93,7 +98,24 @@ namespace MPS.Processor.Mps000177.PDO
         public long treatment_id { get; set; }
         public int type { get; set; }
     }
-
+    public class EMMedicine : V_HIS_EXP_MEST_MEDICINE
+    {
+        public long treatment_id { get; set; }
+        public long Page { get; set; }
+        public Dictionary<long,decimal?> DicAmount { get; set; }
+    }
+    public class EMMaterial : V_HIS_EXP_MEST_MATERIAL
+    {
+        public long treatment_id { get; set; }
+        public long Page { get; set; }
+        public Dictionary<long, decimal?> DicAmount { get; set; }
+    }
+    public class EMBlood : V_HIS_EXP_MEST_BLOOD
+    {
+        public long treatment_id { get; set; }
+        public long Page { get; set; }
+        public Dictionary<long, decimal?> DicAmount { get; set; }
+    }
     public class PatientADO : MOS.EFMODEL.DataModels.V_HIS_PATIENT
     {
         public long? CLINICAL_IN_TIME { get; set; }
@@ -146,6 +168,10 @@ namespace MPS.Processor.Mps000177.PDO
 
         public string ROOM_NAME { get; set; }
         public string BED_NAME { get; set; }
+        public long Page { get; set; }
+        public Dictionary<long,long> DicMediDay { get; set; }
+        public Dictionary<long, long> DicMateDay { get; set; }
+        public Dictionary<long, long> DicBloodDay { get; set; }
 
         public string AGE { get; set; }
         public string DOB_STR { get; set; }

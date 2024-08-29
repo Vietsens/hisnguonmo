@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FlexCel">
+      <HintPath>..\..\..\..\LIB\FlexCellReport\FlexCel.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.DateTime">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
@@ -42,14 +45,21 @@
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.Mapper">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.Repository">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Repository\Inventec.Common.Repository.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
       <HintPath>..\..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000177.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000177.PDO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -72,10 +82,6 @@
     <ProjectReference Include="..\..\MPS\MPS.csproj">
       <Project>{b7c687ba-a486-414e-8bcb-a6b294ca4310}</Project>
       <Name>MPS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MPS.Processor.Mps000177.PDO\MPS.Processor.Mps000177.PDO.csproj">
-      <Project>{6808605e-a90a-4a0e-b4a0-b3723c3b09f6}</Project>
-      <Name>MPS.Processor.Mps000177.PDO</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

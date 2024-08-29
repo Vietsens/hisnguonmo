@@ -1271,15 +1271,37 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 ValidTextControlMaxlength(this.txtReasonVV, 200, false);
                 ValidTextControlMaxlength(this.txtReasonNTCode, 10, false);
                 ValidTextControlMaxlength(this.cboReasonNT, 1000, false);
+                layoutControlItem39.AppearanceItemCaption.ForeColor = Color.Black;
                 if (dtClinicalInTime.EditValue != null)
                 {
                     ValidationRequired(txtReasonVV);
+                    ValidationReason();
+                    layoutControlItem39.AppearanceItemCaption.ForeColor = Color.Maroon;
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+        private void ValidationReason()
+        {
+
+            try
+            {
+                GridLookupReasonEditValidationRule rule = new GridLookupReasonEditValidationRule();
+                rule.cbo = cboReasonNT;
+                rule.txt = txtReasonNTCode;
+                rule.MaxLengthCode = 10;
+                rule.MaxLengthName = 1000;
+                rule.IsRequired = true;
+                dxValidationProviderTime.SetValidationRule(txtReasonNTCode, rule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         private void ValidationRequired(BaseEdit control)
@@ -1590,7 +1612,6 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 {
                     data.HospitalizationReason = txtReasonVV.Text;
                 }
-
                 if (cboReasonNT.EditValue != null)
                 {
                     var checkReasonNT = this.HisHospitalizeReason.FirstOrDefault(o => o.HOSPITALIZE_REASON_CODE.ToUpper() == cboReasonNT.EditValue.ToString().ToUpper());
@@ -1599,7 +1620,6 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         data.HospitalizeReasonName = checkReasonNT.HOSPITALIZE_REASON_NAME;
                     }
                 }
-
                 if (chkTuberculosis.Checked == true)
                 {
                     data.IsTuberculosis = 1;
@@ -2854,10 +2874,12 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 if (!string.IsNullOrEmpty(dtClinicalInTime.Text))
                 {
                     lblReasonVV.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    layoutControlItem39.AppearanceItemCaption.ForeColor = Color.Maroon;
                 }
                 else
                 {
                     lblReasonVV.AppearanceItemCaption.ForeColor = Color.Black;
+                    layoutControlItem39.AppearanceItemCaption.ForeColor = Color.Black;
                 }
             }
             catch (Exception ex)

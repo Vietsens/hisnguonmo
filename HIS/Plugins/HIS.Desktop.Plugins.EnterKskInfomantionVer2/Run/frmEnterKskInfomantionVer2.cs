@@ -72,6 +72,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private HIS_KSK_DRIVER_CAR currentKskDriverCar { get; set; }
         private HIS_KSK_OTHER currentKskOther { get; set; }
         List<MOS.EFMODEL.DataModels.HIS_PERIOD_DRIVER_DITY> lstDataDriverDity { get; set; }
+        List<MOS.EFMODEL.DataModels.HIS_PERIOD_DRIVER_DITY> lstDataDriverDityOverE { get; set; }
         List<MOS.EFMODEL.DataModels.HIS_KSK_UNEI_VATY> lstDataUneiVaty { get; set; }
         #endregion
 
@@ -186,10 +187,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 FillDataPageGenaral();
+
                 FillDataPageOverEighteen();
+
                 FillDataPageUnderEighteen();
+
                 FillDataPageDriverCar();
+
                 FillDataPagePeriodDriver();
+
                 FillDataPageKSKOther();
             }
             catch (System.Exception ex)
@@ -298,6 +304,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     sdo.KskOverEighteen.HisKskOverEighteen = GetValueOverEighteen();
                     sdo.KskOverEighteen.HisDhst = new HIS_DHST();
                     sdo.KskOverEighteen.HisDhst = GetDhstOverighteen();
+                    sdo.KskOverEighteen.HisPeriodDriverDitys = new System.Collections.Generic.List<HIS_PERIOD_DRIVER_DITY>();
+                    sdo.KskOverEighteen.HisPeriodDriverDitys = GetDriverDityOverE();
                 }
                 else if (xtraTabControl1.SelectedTabPageIndex == 2)
                 {
@@ -506,9 +514,24 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         }
 
 
+        private void cboHealthExamRank2_EditValueChanged(object sender, EventArgs e)
+        {
 
+            try
+            {
+                var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+                if (cboHealthExamRank2.EditValue != null)
+                {
+                    txtHealthExamRankDescription2.Text = data.FirstOrDefault(o => o.ID == Int64.Parse(cboHealthExamRank2.EditValue.ToString())).DESCRIPTION;
+                }
+                else
+                    txtHealthExamRankDescription2.Text = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
 
-
-
+        }
     }
 }
