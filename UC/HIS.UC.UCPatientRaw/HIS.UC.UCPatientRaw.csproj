@@ -57,9 +57,6 @@
     <Reference Include="HIS.Desktop.Controls.Session">
       <HintPath>..\..\..\lib\HIS\ReferencedAssemblies\HIS.Desktop.Controls.Session.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.DelegateRegister">
-      <HintPath>..\..\..\lib\HIS\ReferencedAssemblies\HIS.Desktop.DelegateRegister.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.BackendData">
       <HintPath>..\..\..\lib\HIS\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
     </Reference>
@@ -311,7 +308,12 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\HIS\HIS.Desktop.DelegateRegister\HIS.Desktop.DelegateRegister.csproj">
+      <Project>{e85ee8f3-8e6b-46cd-adbd-b292f67ccffb}</Project>
+      <Name>HIS.Desktop.DelegateRegister</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

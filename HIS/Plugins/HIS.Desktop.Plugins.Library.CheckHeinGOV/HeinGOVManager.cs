@@ -29,6 +29,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using HIS.Desktop.DelegateRegister;
+using MOS.EFMODEL.DataModels;
 namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
 {
     public class HeinGOVManager
@@ -122,14 +123,6 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
             }
         }
 
-        public async Task<ResultDataADO> Check(HeinCardData dataHein, Action focusNextControl, bool ischeckChange, string heinAddressOfPatient, DateTime dtIntructionTime, bool isReadQrCode, bool showMessage, string hotenCb, string cccdCb)
-        {
-            if (string.IsNullOrEmpty(this.hoTenCb))
-                this.hoTenCb = hotenCb;
-            if (string.IsNullOrEmpty(this.cccdCb))
-                this.cccdCb = cccdCb;
-            return await Check(dataHein, focusNextControl, ischeckChange, heinAddressOfPatient, dtIntructionTime, isReadQrCode, showMessage);
-        }
         public async Task<ResultDataADO> Check(HeinCardData dataHein, Action focusNextControl, bool ischeckChange, string heinAddressOfPatient, DateTime dtIntructionTime, bool isReadQrCode, bool showMessage)
         {
             ResultDataADO rsData = new ResultDataADO();
@@ -180,6 +173,11 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     checkHistoryLDO.ngaySinh = dataHein.Dob;
                     checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(dataHein.PatientName);
                     checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? dataHein.PatientName : checkHistoryLDO.hoTen);
+                    var employee = BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
+                    if (string.IsNullOrEmpty(this.hoTenCb))
+                        this.hoTenCb = employee.TDL_USERNAME;
+                    if (string.IsNullOrEmpty(this.cccdCb))
+                        this.cccdCb = employee.IDENTIFICATION_NUMBER;
                     checkHistoryLDO.hoTenCb = hoTenCb;
                     checkHistoryLDO.cccdCb = cccdCb;
                     Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 1");
@@ -744,15 +742,6 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
             }
             return result;
         }
-        public async Task<ResultDataADO> CheckCccdQrCode(HeinCardData dataHein, Action focusNextControl, DateTime dtIntructionTime, string hotenCb, string cccdCb)
-        {
-
-            if (!string.IsNullOrEmpty(hotenCb))
-                this.hoTenCb = hotenCb;
-            if (!string.IsNullOrEmpty(cccdCb))
-                this.cccdCb = cccdCb;
-            return await CheckCccdQrCode(dataHein, focusNextControl, dtIntructionTime);
-        }
 
         public async Task<ResultDataADO> CheckCccdQrCode(HeinCardData dataHein, Action focusNextControl, DateTime dtIntructionTime)
         {
@@ -781,6 +770,11 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     checkHistoryLDO.ngaySinh = dataHein.Dob;
                     checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(dataHein.PatientName);
                     checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? dataHein.PatientName : checkHistoryLDO.hoTen);
+                    var employee = BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
+                    if (string.IsNullOrEmpty(this.hoTenCb))
+                        this.hoTenCb = employee.TDL_USERNAME;
+                    if (string.IsNullOrEmpty(this.cccdCb))
+                        this.cccdCb = employee.IDENTIFICATION_NUMBER;
                     checkHistoryLDO.hoTenCb = hoTenCb;
                     checkHistoryLDO.cccdCb = cccdCb;
                     Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 1");

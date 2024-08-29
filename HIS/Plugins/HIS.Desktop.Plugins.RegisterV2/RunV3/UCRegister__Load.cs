@@ -311,7 +311,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                             DateTime time = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(ado.IntructionTime).Value;
                             if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
                                 heinGOVManager.SetDelegateHeinEnableButtonSave(HeinEnableSave);
-                            this.ResultDataADO = await heinGOVManager.Check(this._HeinCardData, null, false, heinAddressOfPatient, time, this.isReadQrCode, true, VEmployee != null ? VEmployee.TDL_USERNAME : null, VEmployee != null ? VEmployee.IDENTIFICATION_NUMBER : null);
+                            this.ResultDataADO = await heinGOVManager.Check(this._HeinCardData, null, false, heinAddressOfPatient, time, this.isReadQrCode);
                         }
                     }
 

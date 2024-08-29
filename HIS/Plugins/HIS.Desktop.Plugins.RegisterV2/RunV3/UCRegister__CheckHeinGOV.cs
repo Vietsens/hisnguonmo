@@ -108,7 +108,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 }
 
 
-                this.ucPatientRaw1.ResultDataADO = await heinGOVManager.Check(heinCard, focusNextControl, false, (this.currentPatientSDO != null && this.currentPatientSDO.ID > 0 ? this.currentPatientSDO.HeinAddress : ""), this.GetIntructionTime(), this.isReadQrCode,true, VEmployee != null ? VEmployee.TDL_USERNAME : null, VEmployee != null ? VEmployee.IDENTIFICATION_NUMBER : null);
+                this.ucPatientRaw1.ResultDataADO = await heinGOVManager.Check(heinCard, focusNextControl, false, (this.currentPatientSDO != null && this.currentPatientSDO.ID > 0 ? this.currentPatientSDO.HeinAddress : ""), this.GetIntructionTime(), this.isReadQrCode);
                 if (this.ucHeinInfo1 != null)
                 {
                     this.ucHeinInfo1.ResultDataADO = this.ucPatientRaw1.ResultDataADO;

@@ -220,7 +220,7 @@ namespace HIS.UC.UCPatientRaw
                         HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
                         if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
                             heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
-                        this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, heinAddressOfPatient, dtIntructionTime, isReadQrCode, true, VEmployee != null ? VEmployee.TDL_USERNAME : null, VEmployee != null ? VEmployee.IDENTIFICATION_NUMBER : null);
+                        this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, heinAddressOfPatient, dtIntructionTime, isReadQrCode);
                     }
                     else if (!this.TD3 && patientTypeId == HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__BHYT && data is CccdCardData)
                     {

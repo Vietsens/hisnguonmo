@@ -400,7 +400,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 			}
 		}
 
-		private void SetDelegateEnableButtonSave()
+        private void SetDelegateEnableButtonSave()
 		{
 			try
 			{
