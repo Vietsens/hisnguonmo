@@ -153,6 +153,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.Common.BankQrCode\HIS.Desktop.Common.BankQrCode.csproj">
+      <Project>{3a7b0bd1-d065-40f2-afbe-046de06b80f2}</Project>
+      <Name>HIS.Desktop.Common.BankQrCode</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\MPS.ProcessorBase\MPS.ProcessorBase.csproj">
       <Project>{075d8b91-153f-4e19-a00a-77547e6f2bd0}</Project>
       <Name>MPS.ProcessorBase</Name>

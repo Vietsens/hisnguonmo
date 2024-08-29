@@ -29,6 +29,7 @@ using MPS.Processor.Mps000261.PDO;
 using FlexCel.Report;
 using MPS.ProcessorBase;
 using MPS.Processor.Mps000261.ADO;
+using HIS.Desktop.Common.BankQrCode;
 
 namespace MPS.Processor.Mps000261
 {
@@ -84,6 +85,7 @@ namespace MPS.Processor.Mps000261
                 HeinServiceTypeProcess();
                 ProcessSingleKey();
                 SetBarcodeKey();
+                SetQrCode();
                 if (sereServADOs == null || sereServADOs.Count == 0)
                     return false;
 
@@ -112,7 +114,27 @@ namespace MPS.Processor.Mps000261
 
             return result;
         }
-
+        private void SetQrCode()
+        {
+            try
+            {
+                if (rdo.trans != null && rdo.listConfig != null && rdo.listConfig.Count > 0)
+                {
+                    var data = QrCodeProcessor.CreateQrImage(rdo.trans, rdo.listConfig);
+                    if (data != null && data.Count > 0)
+                    {
+                        foreach (var item in data)
+                        {
+                            SetSingleKey(new KeyValue(item.Key, item.Value));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         class ReplaceValueFunction : FlexCel.Report.TFlexCelUserFunction
         {
             public override object Evaluate(object[] parameters)

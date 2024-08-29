@@ -40,6 +40,8 @@ namespace MPS.Processor.Mps000261.PDO
         public List<HIS_MEDICINE_TYPE> medicineTypes { get; set; }
         public List<HIS_MEDICINE_LINE> MedicineLines { get; set; }
         public List<HIS_SERVICE_REQ> ServiceReqs { get; set; }
+        public List<HIS_CONFIG> listConfig { get; set; }
+        public HIS_TRANS_REQ trans{ get; set; }
 
         public Mps000261PDO(
             List<V_HIS_DEPARTMENT_TRAN> _departmentTrans,
@@ -116,6 +118,96 @@ namespace MPS.Processor.Mps000261.PDO
                 this.Transactions = _transactions;
                 this.TransactionTypeCFG = _transactionTypeCFG;
                 this.MaterialTypes = _materialTypes;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        //
+        public Mps000261PDO(
+            List<V_HIS_DEPARTMENT_TRAN> _departmentTrans,
+            List<V_HIS_TREATMENT_FEE> _treatmentFees,
+            HeinServiceTypeCFG _heinServiceTypeCfg,
+            PatientTypeCFG _patientTypeCFG,
+            TransactionTypeCFG _transactionTypeCFG,
+            List<HIS_SERE_SERV> _sereServ,
+            List<HIS_TRANSACTION> _transactions,
+            V_HIS_TREATMENT _treatment,
+            List<HIS_HEIN_SERVICE_TYPE> _heinServiceTypes,
+            List<V_HIS_ROOM> _rooms,
+            List<V_HIS_SERVICE> _services,
+            List<HIS_MEDICINE_TYPE> _medicineTypes,
+            List<HIS_MATERIAL_TYPE> _materialTypes,
+            List<HIS_MEDICINE_LINE> _medicineLines,
+            List<HIS_SERVICE_REQ> _serviceReqs,
+            SingleKeyValue _singleKeyValue,
+            List<HIS_CONFIG> listConfig,
+            HIS_TRANS_REQ trans
+            )
+        {
+            try
+            {
+                this.SereServs = _sereServ;
+                this.Treatment = _treatment;
+                this.DepartmentTrans = _departmentTrans;
+                this.TreatmentFees = _treatmentFees;
+                this.HeinServiceTypeCFG = _heinServiceTypeCfg;
+                this.SingleKeyValue = _singleKeyValue;
+                this.HeinServiceTypes = _heinServiceTypes;
+                this.Services = _services;
+                this.Rooms = _rooms;
+                this.PatientTypeCFG = _patientTypeCFG;
+                this.Transactions = _transactions;
+                this.TransactionTypeCFG = _transactionTypeCFG;
+                this.MaterialTypes = _materialTypes;
+                this.MedicineLines = _medicineLines;
+                this.medicineTypes = _medicineTypes;
+                this.ServiceReqs = _serviceReqs;
+                this.listConfig = listConfig;
+                this.trans = trans;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        public Mps000261PDO(
+            List<V_HIS_DEPARTMENT_TRAN> _departmentTrans,
+            List<V_HIS_TREATMENT_FEE> _treatmentFees,
+            HeinServiceTypeCFG _heinServiceTypeCfg,
+            PatientTypeCFG _patientTypeCFG,
+            TransactionTypeCFG _transactionTypeCFG,
+            List<HIS_SERE_SERV> _sereServ,
+            List<HIS_TRANSACTION> _transactions,
+            V_HIS_TREATMENT _treatment,
+            List<HIS_HEIN_SERVICE_TYPE> _heinServiceTypes,
+            List<V_HIS_ROOM> _rooms,
+            List<V_HIS_SERVICE> _services,
+            List<HIS_MATERIAL_TYPE> _materialTypes,
+            SingleKeyValue _singleKeyValue,
+            List<HIS_CONFIG> listConfig,
+            HIS_TRANS_REQ trans
+            )
+        {
+            try
+            {
+                this.SereServs = _sereServ;
+                this.Treatment = _treatment;
+                this.DepartmentTrans = _departmentTrans;
+                this.TreatmentFees = _treatmentFees;
+                this.HeinServiceTypeCFG = _heinServiceTypeCfg;
+                this.SingleKeyValue = _singleKeyValue;
+                this.HeinServiceTypes = _heinServiceTypes;
+                this.Services = _services;
+                this.Rooms = _rooms;
+                this.PatientTypeCFG = _patientTypeCFG;
+                this.Transactions = _transactions;
+                this.TransactionTypeCFG = _transactionTypeCFG;
+                this.MaterialTypes = _materialTypes;
+                this.listConfig = listConfig;
+                this.trans = trans;
             }
             catch (Exception ex)
             {

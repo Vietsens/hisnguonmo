@@ -30,6 +30,7 @@ using FlexCel.Report;
 using MPS.ProcessorBase;
 using MPS.Processor.Mps000260.ADO;
 using Inventec.Common.Logging;
+using HIS.Desktop.Common.BankQrCode;
 
 namespace MPS.Processor.Mps000260
 {
@@ -84,6 +85,7 @@ namespace MPS.Processor.Mps000260
                 DataInputProcess();
                 HeinServiceTypeProcess();
                 ProcessSingleKey();
+                SetQrCode();
                 SetBarcodeKey();
                 if (sereServADOs == null || sereServADOs.Count == 0)
                     return false;
@@ -109,6 +111,28 @@ namespace MPS.Processor.Mps000260
             }
 
             return result;
+        }
+
+        private void SetQrCode()
+        {
+            try
+            {
+                if (rdo.transReq != null && rdo.listConfig != null && rdo.listConfig.Count > 0)
+                {
+                    var data = QrCodeProcessor.CreateQrImage(rdo.transReq, rdo.listConfig);
+                    if (data != null && data.Count > 0)
+                    {
+                        foreach (var item in data)
+                        {
+                            SetSingleKey(new KeyValue(item.Key, item.Value));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         class ReplaceValueFunction : FlexCel.Report.TFlexCelUserFunction
