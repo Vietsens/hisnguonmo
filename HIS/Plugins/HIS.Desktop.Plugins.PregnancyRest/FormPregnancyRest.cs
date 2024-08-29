@@ -151,6 +151,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 {
                     nameCb = employee.TDL_USERNAME;
                     cccdCb = employee.IDENTIFICATION_NUMBER;
+                    
                 }
             }
             catch (Exception ex)
@@ -164,8 +165,8 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             HIS_EMPLOYEE result = new HIS_EMPLOYEE();
             try
             {
-                var rs = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(s => s.TDL_USERNAME == username).FirstOrDefault();
-                if (rs != null)
+                var rs = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(s => s.TDL_USERNAME.Equals(username)).FirstOrDefault();
+                if(rs != null)
                 {
                     result = rs;
                 }
@@ -178,7 +179,6 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             }
             return result;
         }
-
         private void LoadDataToGrid()
         {
             try
