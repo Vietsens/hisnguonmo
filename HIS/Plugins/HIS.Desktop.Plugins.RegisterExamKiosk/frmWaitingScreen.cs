@@ -283,12 +283,19 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             {
                 HisConfigCHECKHEINCARD.LoadConfig();
                 string connect_infor = HisConfigCHECKHEINCARD.CHECK_HEIN_CARD_BHXH__API;
+                CheckEmploy();
+                var employee = currentEmployee;
                 if (!string.IsNullOrEmpty(connect_infor))
                 {
+                    
                     connectInfors = connect_infor.Split('|').ToList();
-                    api = connectInfors[0];
-                    nameCb = connectInfors[1];
-                    cccdCb = connectInfors[2];
+                    api = connectInfors.Count > 0 ? connectInfors[0] : string.Empty;
+
+                    nameCb = connectInfors.Count > 1 && !string.IsNullOrEmpty(connectInfors[1]) ? connectInfors[1] : employee.TDL_USERNAME;
+                    cccdCb = connectInfors.Count > 2 && !string.IsNullOrEmpty(connectInfors[2]) ? connectInfors[2] : employee.IDENTIFICATION_NUMBER;
+
+                    LogSystem.Debug("BHXHLoginCFG.OFFICERNAME: " + connectInfors[1]);
+                    LogSystem.Debug("BHXHLoginCFG.CCCDOFFICER: " + connectInfors[2]);
                 }
             }
             catch (Exception ex)
