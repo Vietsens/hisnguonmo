@@ -312,7 +312,6 @@ namespace HIS.Desktop.Plugins.AssignPaan
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void frmAssignPaan_Load(object sender, EventArgs e)
         {
             try
@@ -342,7 +341,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
                     this.SetDataSourceCboPaanServiceType();
                     this.InitComboTestSampleType();
                 }
-                CheckTimeSereServ();
+                
                 WaitingManager.Hide();
             }
             catch (Exception ex)

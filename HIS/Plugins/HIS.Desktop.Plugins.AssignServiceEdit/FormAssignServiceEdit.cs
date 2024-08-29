@@ -134,6 +134,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
         {
             try
             {
+                dtInstructionTime.EditValueChanged -= dtInstructionTime_EditValueChanged;
                 currentWorkingRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == currentModule.RoomId);
                 this.currentDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>().FirstOrDefault(o => o.ID == currentWorkingRoom.DEPARTMENT_ID);
                 isNotLoadWhileChangeInstructionTimeInFirst = true;
@@ -166,6 +167,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                 this.listDatasFix = GridControlService.DataSource as List<ADO.HisSereServADO>;
 
                 isNotLoadWhileChangeInstructionTimeInFirst = false;
+                dtInstructionTime.EditValueChanged += dtInstructionTime_EditValueChanged;
             }
             catch (Exception ex)
             {
@@ -3069,7 +3071,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                             }
                             else
                             {
-                                btnSave.Enabled = btnSaveAndPrint.Enabled = MessageBox.Show(this, param.Messages + ". Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.Yes;
+                                btnSave.Enabled = btnSaveAndPrint.Enabled = MessageBox.Show(this, param.GetMessage() + "Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.Yes;
 
                             }
                         }
@@ -3293,6 +3295,11 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void GridControlService_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
