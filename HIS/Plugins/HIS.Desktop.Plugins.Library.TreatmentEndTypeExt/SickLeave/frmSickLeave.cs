@@ -46,6 +46,7 @@ using His.Bhyt.InsuranceExpertise.LDO;
 using His.Bhyt.InsuranceExpertise;
 using Inventec.Desktop.Common.Message;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
 {
@@ -983,8 +984,11 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                 checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? Patient.VIR_PATIENT_NAME.ToLower() : checkHistoryLDO.hoTen);
                 string username = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 var employee = GetEmployee(username);
+                LogSystem.Debug("employee: " + LogUtil.TraceData("employee", employee));
+                LogSystem.Debug("BHXHLoginCFG.OFFICERNAME: " + BHXHLoginCFG.OFFICERNAME);
+                LogSystem.Debug("BHXHLoginCFG.CCCDOFFICER: " + BHXHLoginCFG.CCCDOFFICER);
                 checkHistoryLDO.hoTenCb = string.IsNullOrEmpty(BHXHLoginCFG.OFFICERNAME) ? employee.TDL_USERNAME : BHXHLoginCFG.OFFICERNAME;
-                checkHistoryLDO.cccdCb = string.IsNullOrEmpty(BHXHLoginCFG.OFFICERNAME) && string.IsNullOrEmpty(BHXHLoginCFG.CCCDOFFICER) ? employee.IDENTIFICATION_NUMBER : BHXHLoginCFG.CCCDOFFICER;
+                checkHistoryLDO.cccdCb = string.IsNullOrEmpty(BHXHLoginCFG.CCCDOFFICER) ? employee.IDENTIFICATION_NUMBER : BHXHLoginCFG.CCCDOFFICER;
                 Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 1");
                 if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
                     || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)

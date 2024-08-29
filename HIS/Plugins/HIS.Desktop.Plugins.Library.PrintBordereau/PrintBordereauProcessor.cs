@@ -498,12 +498,12 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                         loadMps = new Mps000251Behavior(this.roomId, SereServs, DepartmentTrans, TreatmentFees, Treatment, Rooms, Services, HeinServiceTypes, TotalDayTreatment, StatusTreatmentOut, DepartmentName, UserNameReturnResult, pt10 != null ? pt10.PRINT_TYPE_NAME : "", this.SereServBills);
                         break;
                     case PrintTypeCodeWorker.PRINT_TYPE_CODE___TONG_HOP_NGOAI_TRU__HAO_PHI:
-                        loadMps = new Mps000260Behavior(this.roomId, this.PatientTypeAlter, SereServs, DepartmentTrans, TreatmentFees, Treatment, Rooms, Services, HeinServiceTypes, SereServDeposits, SeseDepoRepays, TotalDayTreatment, StatusTreatmentOut, DepartmentName, UserNameReturnResult, "");
+                        loadMps = new Mps000260Behavior(this.roomId, this.PatientTypeAlter, SereServs, DepartmentTrans, TreatmentFees, Treatment, Rooms, Services, HeinServiceTypes, SereServDeposits, SeseDepoRepays, TotalDayTreatment, StatusTreatmentOut, DepartmentName, UserNameReturnResult, "", transReq, lstConfig);
                         break;
                     case PrintTypeCodeWorker.PRINT_TYPE_CODE___TONG_HOP_NOI_TRU__HAO_PHI:
                         printCode = PrintTypeCodeWorker.PRINT_TYPE_CODE___TONG_HOP_NGOAI_TRU__HAO_PHI;
                         SAR_PRINT_TYPE pt11 = BackendDataWorker.Get<SAR_PRINT_TYPE>().FirstOrDefault(o => o.PRINT_TYPE_CODE == PrintTypeCodeWorker.PRINT_TYPE_CODE___TONG_HOP_NOI_TRU__HAO_PHI);
-                        loadMps = new Mps000260Behavior(this.roomId, this.PatientTypeAlter, SereServs, DepartmentTrans, TreatmentFees, Treatment, Rooms, Services, HeinServiceTypes, SereServDeposits, SeseDepoRepays, TotalDayTreatment, StatusTreatmentOut, DepartmentName, UserNameReturnResult, pt11 != null ? pt11.PRINT_TYPE_NAME : "");
+                        loadMps = new Mps000260Behavior(this.roomId, this.PatientTypeAlter, SereServs, DepartmentTrans, TreatmentFees, Treatment, Rooms, Services, HeinServiceTypes, SereServDeposits, SeseDepoRepays, TotalDayTreatment, StatusTreatmentOut, DepartmentName, UserNameReturnResult, pt11 != null ? pt11.PRINT_TYPE_NAME : "", transReq, lstConfig);
                         break;
                     case PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_VIEN_PHI_100__CHUA_THANH_TOAN:
                         loadMps = new Mps000265Behavior(this.roomId, SereServs, DepartmentTrans, TreatmentFees, Treatment, Rooms, Services, HeinServiceTypes, TotalDayTreatment, StatusTreatmentOut, DepartmentName, UserNameReturnResult, "", this.SereServBills);
@@ -572,7 +572,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                         break;
                     case PrintTypeCodeWorker.PRINT_TYPE_CODE___TONG_HOP_6556__THEO_KHOA:
                         LoadTransactionView();
-                        loadMps = new MpsBehavior.Mps000321.Mps000321Behavior(this.roomId, this.PatientTypeAlter, SereServs, DepartmentTrans, TreatmentFees, Treatment, this.Patient, Rooms, Services, HeinServiceTypes, TotalDayTreatment, StatusTreatmentOut, DepartmentName, RoomName, UserNameReturnResult, this.Transactions, this.PayOption);
+                        loadMps = new MpsBehavior.Mps000321.Mps000321Behavior(this.roomId, this.PatientTypeAlter, SereServs, DepartmentTrans, TreatmentFees, Treatment, this.Patient, Rooms, Services, HeinServiceTypes, TotalDayTreatment, StatusTreatmentOut, DepartmentName, RoomName, UserNameReturnResult, this.Transactions, this.PayOption,transReq,lstConfig);
                         break;
                     case PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_BHYT__6556_QĐ_BYT_STENT_2:
                         loadMps = new MpsBehavior.Mps000348.Mps000348Behavior(this.roomId, this.PatientTypeAlter, SereServs, DepartmentTrans, TreatmentFees, Treatment, this.Patient, Rooms, Services, HeinServiceTypes, TotalDayTreatment, StatusTreatmentOut, DepartmentName, RoomName, UserNameReturnResult);

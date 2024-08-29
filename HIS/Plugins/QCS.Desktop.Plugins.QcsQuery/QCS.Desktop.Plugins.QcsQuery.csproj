@@ -202,10 +202,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\SHAREUTIL\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.csproj">
-      <Project>{a9e46128-5af1-4bbd-b318-854517fc26ab}</Project>
-      <Name>Inventec.Common.FlexCelPrint</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\..\..\SHAREUTIL\Inventec.Common\Inventec.Common.Print\Inventec.Common.Print.csproj">
       <Project>{9ded67a4-7fc4-451a-b30e-12333a464b9f}</Project>
       <Name>Inventec.Common.Print</Name>

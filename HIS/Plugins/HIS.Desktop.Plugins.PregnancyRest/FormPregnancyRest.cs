@@ -133,16 +133,24 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             {
                 HisConfigCHECKHEINCARD.LoadConfig();
                 string connect_infor = HisConfigCHECKHEINCARD.CHECK_HEIN_CARD_BHXH__API;
+                string username = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                var employee = GetEmployee(username);
+                LogSystem.Debug("employee: " + LogUtil.TraceData("employee", employee));
                 if (!string.IsNullOrEmpty(connect_infor))
                 {
                     connectInfors = connect_infor.Split('|').ToList();
                     api = connectInfors[0];
+
+                    nameCb = connectInfors[1] == null ? employee.TDL_USERNAME : connectInfors[1];
+                    cccdCb = connectInfors[2] == null ? employee.IDENTIFICATION_NUMBER : connectInfors[2];
                     
-                    string username = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                    var employee = GetEmployee(username);
-                    nameCb = string.IsNullOrEmpty(connectInfors[1]) ? employee.TDL_USERNAME : connectInfors[1];
-                    cccdCb = string.IsNullOrEmpty(connectInfors[1]) && string.IsNullOrEmpty(connectInfors[2]) ? employee.IDENTIFICATION_NUMBER : connectInfors[2];
-                    
+                    LogSystem.Debug("BHXHLoginCFG.OFFICERNAME: " + connectInfors[1]);
+                    LogSystem.Debug("BHXHLoginCFG.CCCDOFFICER: " + connectInfors[2]);
+                }
+                else
+                {
+                    nameCb = employee.TDL_USERNAME;
+                    cccdCb = employee.IDENTIFICATION_NUMBER;
                 }
             }
             catch (Exception ex)
