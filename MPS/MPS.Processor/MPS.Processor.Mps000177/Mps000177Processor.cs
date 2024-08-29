@@ -200,7 +200,7 @@ namespace MPS.Processor.Mps000177
                     var groupByTreatment = rdo.VExpMestBlood.GroupBy(o => new { o.TDL_TREATMENT_ID, o.TDL_BLOOD_TYPE_ID });
                     foreach (var item in groupByTreatment)
                     {
-                        var bloods = item.ToList().OrderBy(o => o.CREATE_TIME).ToList();
+                        var bloods = item.ToList().OrderBy(o => o.TDL_INTRUCTION_TIME).ToList();
                         var lstByTreatment = lstAdo.Where(o => o.treatment_id == item.Key.TDL_TREATMENT_ID).ToList();
                         if (lstByTreatment == null || lstByTreatment.Count == 0)
                         {
@@ -246,9 +246,6 @@ namespace MPS.Processor.Mps000177
                                 else
                                 {
                                     ado.DicBloodDay.Add(ado.DicBloodDay.Keys.Count + 1, me.TDL_INTRUCTION_DATE ?? 0);
-                                    var Patient = lstAdo.LastOrDefault(o => o.treatment_id == ado.treatment_id && o.DicMateDay.Keys.Count < rdo.DaySize);
-                                    Patient.DicBloodDay = ado.DicBloodDay;
-                                    lstByTreatment = lstAdo.Where(o => o.treatment_id == item.Key.TDL_TREATMENT_ID).ToList();
                                 }
                             }
                             var emt = emBloods.FirstOrDefault(o => o.treatment_id == me.TDL_TREATMENT_ID && o.TDL_BLOOD_TYPE_ID == me.TDL_BLOOD_TYPE_ID && o.Page == ado.Page);
@@ -260,7 +257,7 @@ namespace MPS.Processor.Mps000177
                                 }
                                 else
                                 {
-                                    emt.DicAmount.Add(me.TDL_INTRUCTION_DATE ?? 0, 1);
+                                    emt.DicAmount.Add(me.TDL_INTRUCTION_DATE ?? 0, 1); 
                                 }
                             }
                             else
