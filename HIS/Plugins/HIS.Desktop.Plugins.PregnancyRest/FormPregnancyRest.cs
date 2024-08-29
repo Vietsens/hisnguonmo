@@ -138,12 +138,11 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 LogSystem.Debug("employee: " + LogUtil.TraceData("employee", employee));
                 if (!string.IsNullOrEmpty(connect_infor))
                 {
-                    connectInfors = connect_infor.Split('|').ToList();
-                    api = connectInfors[0];
+                    api = connectInfors.Count > 0 ? connectInfors[0] : string.Empty;
 
-                    nameCb = connectInfors[1] == null ? employee.TDL_USERNAME : connectInfors[1];
-                    cccdCb = connectInfors[2] == null ? employee.IDENTIFICATION_NUMBER : connectInfors[2];
-                    
+                    nameCb = connectInfors.Count > 1 && !string.IsNullOrEmpty(connectInfors[1]) ? connectInfors[1] : employee.TDL_USERNAME;
+                    cccdCb = connectInfors.Count > 2 && !string.IsNullOrEmpty(connectInfors[2]) ? connectInfors[2] : employee.IDENTIFICATION_NUMBER;
+
                     LogSystem.Debug("BHXHLoginCFG.OFFICERNAME: " + connectInfors[1]);
                     LogSystem.Debug("BHXHLoginCFG.CCCDOFFICER: " + connectInfors[2]);
                 }
@@ -165,7 +164,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             HIS_EMPLOYEE result = new HIS_EMPLOYEE();
             try
             {
-                var rs = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(s => s.TDL_USERNAME.Equals(username)).FirstOrDefault();
+                var rs = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(s => s.LOGINNAME == username).FirstOrDefault();
                 if(rs != null)
                 {
                     result = rs;

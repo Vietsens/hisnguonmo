@@ -954,7 +954,7 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
             HIS_EMPLOYEE result = new HIS_EMPLOYEE();
             try
             {
-                var rs = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(s => s.TDL_USERNAME == username).FirstOrDefault();
+                var rs = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(s => s.LOGINNAME == username).FirstOrDefault();
                 if (rs != null)
                 {
                     result = rs;
