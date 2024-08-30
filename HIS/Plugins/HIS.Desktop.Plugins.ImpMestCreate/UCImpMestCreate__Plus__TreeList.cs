@@ -2080,7 +2080,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             {
                                 continue;
                             }
-
+                            //var strGroupKey = Base.StaticMethod.GetTypeKey(11389, item.Value.BID_GROUP_CODE);
+                            //var medicineType = listMedicineTypeTemp.Where(o => o.ID == item.Value.MEDICINE_TYPE_ID).FirstOrDefault();
                             var medicineType = listMedicineTypeTemp.FirstOrDefault(o => Base.StaticMethod.GetTypeKey(o.ID, item.Value.BID_GROUP_CODE) == item.Key);
                             if (medicineType == null)
                                 continue;
