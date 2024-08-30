@@ -1070,6 +1070,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem102 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem105 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem8 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.txtExamOend2 = new DevExpress.XtraEditors.TextEdit();
+            this.layoutControlItem107 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.cboExamOend2 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.layoutControlItem108 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
@@ -1974,6 +1979,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem102)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem105)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtExamOend2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem107)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamOend2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem108)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView5)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -4566,6 +4576,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // layoutControl5
             // 
+            this.layoutControl5.Controls.Add(this.cboExamOend2);
+            this.layoutControl5.Controls.Add(this.txtExamOend2);
             this.layoutControl5.Controls.Add(this.txtHealthExamRankDescription2);
             this.layoutControl5.Controls.Add(this.txtMaternityHistory);
             this.layoutControl5.Controls.Add(this.txtMedicineUsing);
@@ -4836,6 +4848,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.repositoryItemCheckEdit6.AutoHeight = false;
             this.repositoryItemCheckEdit6.Name = "repositoryItemCheckEdit6";
             this.repositoryItemCheckEdit6.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.repositoryItemCheckEdit6.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEdit6_CheckedChanged);
             // 
             // gridColumn13
             // 
@@ -4855,6 +4868,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.repositoryItemCheckEdit7.AutoHeight = false;
             this.repositoryItemCheckEdit7.Name = "repositoryItemCheckEdit7";
             this.repositoryItemCheckEdit7.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.repositoryItemCheckEdit7.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEdit7_CheckedChanged);
             // 
             // txtPathologicalHistoryFamily
             // 
@@ -5880,7 +5894,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem185,
             this.layoutControlItem186,
             this.layoutControlItem429,
-            this.layoutControlItem106});
+            this.layoutControlItem106,
+            this.layoutControlItem107,
+            this.layoutControlItem108});
             this.layoutControlGroup6.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup6.Name = "Root";
             this.layoutControlGroup6.Size = new System.Drawing.Size(1277, 548);
@@ -6212,9 +6228,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // emptySpaceItem9
             // 
             this.emptySpaceItem9.AllowHotTrack = false;
-            this.emptySpaceItem9.Location = new System.Drawing.Point(596, 147);
+            this.emptySpaceItem9.Location = new System.Drawing.Point(950, 147);
             this.emptySpaceItem9.Name = "emptySpaceItem9";
-            this.emptySpaceItem9.Size = new System.Drawing.Size(597, 24);
+            this.emptySpaceItem9.Size = new System.Drawing.Size(243, 24);
             this.emptySpaceItem9.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem10
@@ -13736,6 +13752,58 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.emptySpaceItem8.Size = new System.Drawing.Size(1110, 26);
             this.emptySpaceItem8.TextSize = new System.Drawing.Size(0, 0);
             // 
+            // txtExamOend2
+            // 
+            this.txtExamOend2.Location = new System.Drawing.Point(713, 149);
+            this.txtExamOend2.MenuManager = this.barManager1;
+            this.txtExamOend2.Name = "txtExamOend2";
+            this.txtExamOend2.Size = new System.Drawing.Size(146, 20);
+            this.txtExamOend2.StyleController = this.layoutControl5;
+            this.txtExamOend2.TabIndex = 98;
+            // 
+            // layoutControlItem107
+            // 
+            this.layoutControlItem107.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem107.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem107.Control = this.txtExamOend2;
+            this.layoutControlItem107.Location = new System.Drawing.Point(596, 147);
+            this.layoutControlItem107.Name = "layoutControlItem107";
+            this.layoutControlItem107.Size = new System.Drawing.Size(265, 24);
+            this.layoutControlItem107.Text = "h. Nội tiết:";
+            this.layoutControlItem107.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem107.TextSize = new System.Drawing.Size(110, 20);
+            this.layoutControlItem107.TextToControlDistance = 5;
+            // 
+            // cboExamOend2
+            // 
+            this.cboExamOend2.Location = new System.Drawing.Point(863, 149);
+            this.cboExamOend2.MenuManager = this.barManager1;
+            this.cboExamOend2.Name = "cboExamOend2";
+            this.cboExamOend2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboExamOend2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboExamOend2.Properties.NullText = "";
+            this.cboExamOend2.Properties.View = this.gridView5;
+            this.cboExamOend2.Size = new System.Drawing.Size(85, 20);
+            this.cboExamOend2.StyleController = this.layoutControl5;
+            this.cboExamOend2.TabIndex = 99;
+            // 
+            // layoutControlItem108
+            // 
+            this.layoutControlItem108.Control = this.cboExamOend2;
+            this.layoutControlItem108.Location = new System.Drawing.Point(861, 147);
+            this.layoutControlItem108.Name = "layoutControlItem108";
+            this.layoutControlItem108.Size = new System.Drawing.Size(89, 24);
+            this.layoutControlItem108.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem108.TextVisible = false;
+            // 
+            // gridView5
+            // 
+            this.gridView5.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView5.Name = "gridView5";
+            this.gridView5.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView5.OptionsView.ShowGroupPanel = false;
+            // 
             // frmEnterKskInfomantionVer2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -14659,6 +14727,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem102)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem105)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtExamOend2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem107)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamOend2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem108)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView5)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -15690,5 +15763,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit7;
         private DevExpress.XtraEditors.TextEdit txtHealthExamRankDescription2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem106;
+        private DevExpress.XtraEditors.TextEdit txtExamOend2;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem107;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExamOend2;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView5;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem108;
     }
 }

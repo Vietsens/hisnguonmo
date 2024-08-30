@@ -513,25 +513,5 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
         }
 
-
-        private void cboHealthExamRank2_EditValueChanged(object sender, EventArgs e)
-        {
-
-            try
-            {
-                var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
-                if (cboHealthExamRank2.EditValue != null)
-                {
-                    txtHealthExamRankDescription2.Text = data.FirstOrDefault(o => o.ID == Int64.Parse(cboHealthExamRank2.EditValue.ToString())).DESCRIPTION;
-                }
-                else
-                    txtHealthExamRankDescription2.Text = null;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-
-        }
     }
 }

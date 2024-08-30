@@ -77,6 +77,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 SetDataCboRank(cboExamStomatologyRank2);
                 SetDataCboRank(cboHealthExamRank2);
                 SetDataCboRank(cboExamDernatologyRank2);
+                SetDataCboRank(cboExamOend2);
                 FillDataOverEighteen();
             }
             catch (Exception ex)
@@ -186,6 +187,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         cboHealthExamRank2.EditValue = currentKskOverEight.HEALTH_EXAM_RANK_ID;
                         txtDiseases2.Text = currentKskOverEight.DISEASES;
                         txtHealthExamRankDescription2.Text = currentKskOverEight.HEALTH_EXAM_RANK_DESCRIPTION;
+                        txtExamOend2.Text = currentKskOverEight.EXAM_OEND;
+                        cboExamOend2.EditValue = currentKskOverEight.EXAM_OEND_RANK;
                         if (currentKskOverEight.DHST_ID != null && currentKskOverEight.DHST_ID > 0)
                         {
                             HisDhstFilter dhstFilter = new HisDhstFilter();
@@ -273,6 +276,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtExamDernatology2.Text = currentServiceReq.PART_EXAM_DERMATOLOGY;
                         txtExamSurgery2.Text = currentServiceReq.SUBCLINICAL;
                         txtHealthExamRankDescription2.Text = null;
+                        txtExamOend2.Text = null;
+                        cboExamOend2.EditValue = null;
                         if (currentServiceReq.DHST_ID != null && currentServiceReq.DHST_ID > 0)
                         {
                             HisDhstFilter dhstFilter = new HisDhstFilter();
@@ -390,7 +395,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.HEALTH_EXAM_RANK_ID = cboHealthExamRank2.EditValue != null ? Int64.Parse(cboHealthExamRank2.EditValue.ToString()) : 0;
                 obj.DISEASES = txtDiseases2.Text;
                 obj.HEALTH_EXAM_RANK_DESCRIPTION = txtHealthExamRankDescription2.Text.Trim();
-
+                obj.EXAM_OEND = txtExamOend2.Text.Trim();
+                obj.EXAM_OEND_RANK = cboExamOend2.EditValue != null ? Int64.Parse(cboExamOend2.EditValue.ToString()) : 0;
             }
             catch (Exception ex)
             {
@@ -465,6 +471,125 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return obj;
+        }
+
+
+        private void cboHealthExamRank2_EditValueChanged(object sender, EventArgs e)
+        {
+
+            try
+            {
+                var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+                if (cboHealthExamRank2.EditValue != null)
+                {
+                    txtHealthExamRankDescription2.Text = data.FirstOrDefault(o => o.ID == Int64.Parse(cboHealthExamRank2.EditValue.ToString())).DESCRIPTION;
+                }
+                else
+                    txtHealthExamRankDescription2.Text = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void repositoryItemCheckEdit6_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var focusRow = (ADO.DiseaseTypeADO)gridView4.GetFocusedRow();
+                if (!focusRow.IS_YES)
+                {
+                    focusRow.IS_YES = true;
+                    if (focusRow.IS_NO)
+                    {
+                        focusRow.IS_NO = false;
+                    }
+                }
+                else
+                {
+                    focusRow.IS_YES = false;
+                }
+                ReloadGrid4(focusRow);
+
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void repositoryItemCheckEdit7_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var focusRow = (ADO.DiseaseTypeADO)gridView4.GetFocusedRow();
+                if (!focusRow.IS_NO)
+                {
+                    focusRow.IS_NO = true;
+                    if (focusRow.IS_YES)
+                    {
+                        focusRow.IS_YES = false;
+                    }
+                }
+                else
+                {
+                    focusRow.IS_NO = false;
+                }
+                ReloadGrid4(focusRow);
+
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ReloadGrid4(DiseaseTypeADO focusRow)
+        {
+            try
+            {
+                var Alls = gridControl3.DataSource as List<ADO.DiseaseTypeADO>;
+                int count = 0;
+                foreach (var item in Alls)
+                {
+                    if (item.ID == focusRow.ID)
+                    {
+                        item.IS_YES = focusRow.IS_YES;
+                        item.IS_NO = focusRow.IS_NO;
+                        break;
+                    }
+                    count++;
+                }
+                gridControl3.DataSource = new List<ADO.DiseaseTypeADO>();
+                gridControl3.DataSource = Alls;
+                gridView4.FocusedRowHandle = count;
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridView4_CustomUnboundColumnData(object sender, CustomColumnDataEventArgs e)
+        {
+            try
+            {
+                if (e.IsGetData)
+                {
+                    DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                    var data = (ADO.DiseaseTypeADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    if (e.Column.FieldName == "STT")
+                    {
+                        e.Value = e.ListSourceRowIndex + 1;
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
         #region ---PREVIEWKEYDOWN---
         private void txtPathologicalHistoryFamily_PreviewKeyDown(object sender, System.Windows.Forms.PreviewKeyDownEventArgs e)
@@ -1445,25 +1570,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         }
 
 
-        private void gridView4_CustomUnboundColumnData(object sender, CustomColumnDataEventArgs e)
-        {
-            try
-            {
-                if (e.IsGetData)
-                {
-                    DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
-                    var data = (ADO.DiseaseTypeADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
-                    if (e.Column.FieldName == "STT")
-                    {
-                        e.Value = e.ListSourceRowIndex + 1;
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
 
         #endregion
     }
