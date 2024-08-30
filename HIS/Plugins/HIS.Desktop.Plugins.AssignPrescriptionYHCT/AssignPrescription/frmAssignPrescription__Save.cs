@@ -202,8 +202,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 if (this.actionType == GlobalVariables.ActionView)
                     return;
 
-                this.btnSave.Enabled = isLock;
-                this.btnSaveAndPrint.Enabled = isLock;
+                this.btnSave.Enabled = isCheckAssignServiceSimultaneityOption ? false : isLock;
+                this.btnSaveAndPrint.Enabled = isCheckAssignServiceSimultaneityOption ? false : isLock;
             }
             catch (Exception ex)
             {
@@ -648,6 +648,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 
                     this.actionType = GlobalVariables.ActionView;
                     this.actionBosung = GlobalVariables.ActionAdd;
+                    this.isCheckAssignServiceSimultaneityOption = false;
                     this.SetEnableButtonControl(this.actionType);
                     //Mở khóa các button lưu && lưu in khi đã xử lý xong
                     this.ChangeLockButtonWhileProcess(false);

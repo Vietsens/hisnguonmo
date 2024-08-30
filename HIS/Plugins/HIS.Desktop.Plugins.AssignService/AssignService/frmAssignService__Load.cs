@@ -3314,6 +3314,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     {
                         cboUser.EditValue = AppointmentServices[0].CREATOR;
                         txtLoginName.Text = AppointmentServices[0].CREATOR;
+                        CheckAssignServiceSimultaneityOption();
                         var serviceIds = AppointmentServices.Select(o => o.SERVICE_ID).Distinct().ToArray();
                         allDatas = allDatas.Where(o => serviceIds.Contains(o.ID));
                         var resultData = allDatas.ToList();

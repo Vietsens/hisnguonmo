@@ -333,6 +333,45 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         #endregion
 
         #region Private method
+        bool isCheckAssignServiceSimultaneityOption = false;
+        bool isCallingApi = false;
+        private void CheckAssignServiceSimultaneityOption()
+        {
+            try
+            {
+                isCheckAssignServiceSimultaneityOption = false;
+                if ((HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "1" && HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "2") || cboUser.EditValue == null || intructionTimeSelecteds == null || intructionTimeSelecteds.Count == 0)
+                    return;
+                CommonParam param = new CommonParam();
+                HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
+                sdo.TreatmentId = treatmentId;
+                sdo.Loginnames = new List<string> { cboUser.EditValue.ToString() };
+                sdo.SereTimes = intructionTimeSelecteds;
+                var CheckSereTimes = new BackendAdapter(param).Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
+                if (!CheckSereTimes)
+                {
+                    if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1")
+                    {
+                        isCheckAssignServiceSimultaneityOption = true;
+                        btnSave.Enabled = btnSaveAndPrint.Enabled = btnEdit.Enabled = false;
+                        MessageManager.Show(this, param, CheckSereTimes);
+                    }
+                    else if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
+                    { 
+                        if (XtraMessageBox.Show(param.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                        {
+                            isCheckAssignServiceSimultaneityOption = true;
+                            btnSave.Enabled = btnSaveAndPrint.Enabled = btnEdit.Enabled = false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
         private void InitCheckIcdManager()
         {
             try
@@ -913,10 +952,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 LoadDataSereServToGetPatientType();
                 LogSystem.Debug("frmAssignService_Load => End...");
                 VisibleGridPatient();
-                ModuleList();
+                ModuleList(); 
                 IsFirstloadForm = false;
                 CheckEnableBtnQR();
-
+                CheckAssignServiceSimultaneityOption();
             }
             catch (Exception ex)
             {
@@ -1309,6 +1348,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 var allDatas = this.ServiceIsleafADOs != null && this.ServiceIsleafADOs.Count > 0 ? this.ServiceIsleafADOs.AsQueryable() : null;
                 this.gridControlServiceProcess.DataSource = allDatas.ToList();
                 this.toggleSwitchDataChecked.EditValue = false;
+                isCheckAssignServiceSimultaneityOption = false;
                 this.SetEnableButtonControl(this.actionType);
                 Inventec.Common.Logging.LogSystem.Debug("ResetDefaultGridData. 3");
             }
@@ -3253,7 +3293,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (this.actionType == GlobalVariables.ActionAdd)
                 {
                     List<SereServADO> serviceCheckeds__Send = this.ServiceIsleafADOs.FindAll(o => o.IsChecked);
-                    this.btnSave.Enabled = this.btnSaveAndPrint.Enabled = this.btnCreateServiceGroup.Enabled = (serviceCheckeds__Send != null && serviceCheckeds__Send.Count > 0);
+                    this.btnSave.Enabled = this.btnSaveAndPrint.Enabled = this.btnCreateServiceGroup.Enabled = isCheckAssignServiceSimultaneityOption ? false : (serviceCheckeds__Send != null && serviceCheckeds__Send.Count > 0);
                     this.pnlPrintAssignService.Enabled = this.btnShowDetail.Enabled = this.btnCreateBill.Enabled = this.btnDepositService.Enabled = this.btnPrintPhieuHuongDanBN.Enabled = this.BtnPrint.Enabled = this.btnEdit.Enabled = false;
 
                 }
@@ -3359,6 +3399,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         {
                             this.cboUser.EditValue = searchResult[0].LOGINNAME;
                             this.txtLoginName.Text = searchResult[0].LOGINNAME;
+                            CheckAssignServiceSimultaneityOption();
                             this.FocusWhileSelectedUser();
                         }
                         else
@@ -3400,9 +3441,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         if (data != null)
                         {
                             this.txtLoginName.Text = data.LOGINNAME;
+
+                            CheckAssignServiceSimultaneityOption();
                         }
                     }
-
                     this.FocusWhileSelectedUser();
                 }
             }
@@ -3425,6 +3467,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         {
                             this.FocusWhileSelectedUser();
                             this.txtLoginName.Text = data.LOGINNAME;
+                            CheckAssignServiceSimultaneityOption();
                         }
                     }
                 }
@@ -5418,8 +5461,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (this.actionType == GlobalVariables.ActionEdit)
                     return;
 
-                this.btnSave.Enabled = isLock;
-                this.btnSaveAndPrint.Enabled = isLock;
+                this.btnSave.Enabled = isCheckAssignServiceSimultaneityOption ? false : isLock;
+                this.btnSaveAndPrint.Enabled = isCheckAssignServiceSimultaneityOption ? false : isLock;
                 this.btnCreateServiceGroup.Enabled = isLock;
             }
             catch (Exception ex)
@@ -5486,6 +5529,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             try
             {
                 WaitingManager.Show();
+                this.isCheckAssignServiceSimultaneityOption = false;
                 this.SetDefaultData();
                 this.LoadIcdDefault();
                 this.DisablecheckEmergencyPriorityByConfig();
@@ -5546,7 +5590,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 {
                     this.gridControlServiceProcess.DataSource = this.ServiceIsleafADOs;
                     this.gridControlServiceProcess.RefreshDataSource();
-                }
+                } 
 
                 this.gridViewServiceProcess.ClearColumnsFilter();
                 this.EnableCboTracking();
@@ -5554,7 +5598,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.LoadTotalSereServByHeinWithTreatment(this.treatmentId);
                 this.RefeshSereServInTreatmentData();
                 this.SetEnableButtonControl(this.actionType);
-
+                this.CheckAssignServiceSimultaneityOption();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -8875,6 +8919,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         assignMulti = true;
                     }
                 }
+                CheckAssignServiceSimultaneityOption();
             }
             catch (Exception ex)
             {

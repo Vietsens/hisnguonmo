@@ -269,6 +269,58 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         #endregion
 
         #region Private method
+        bool isCheckAssignServiceSimultaneityOption = false;
+        private void CheckAssignServiceSimultaneityOption()
+        {
+
+            try
+            {
+                if (this.actionType == GlobalVariables.ActionAdd)
+                {
+                    List<MediMatyTypeADO> serviceCheckeds__Send = this.mediMatyTypeADOs;
+                    this.btnSave.Enabled = btnSaveAndPrint.Enabled = (serviceCheckeds__Send != null && serviceCheckeds__Send.Count > 0);
+                }
+                else if (this.actionType == GlobalVariables.ActionEdit)
+                {
+                    this.btnSave.Enabled = btnSaveAndPrint.Enabled = true;
+                }
+                else
+                {
+                    this.btnSave.Enabled = this.btnAdd.Enabled = btnSaveAndPrint.Enabled = false;
+                }
+                isCheckAssignServiceSimultaneityOption = false;
+                if ((HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "1" && HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "2") || cboUser.EditValue == null || intructionTimeSelecteds == null || intructionTimeSelecteds.Count == 0)
+                    return;
+                CommonParam param = new CommonParam();
+                HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
+                sdo.TreatmentId = treatmentId;
+                sdo.Loginnames = new List<string> { cboUser.EditValue.ToString() };
+                sdo.SereTimes = intructionTimeSelecteds;
+                var CheckSereTimes = new BackendAdapter(param).Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
+                if (!CheckSereTimes)
+                {
+                    if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1")
+                    {
+                        isCheckAssignServiceSimultaneityOption = true;
+                        btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                        MessageManager.Show(this, param, CheckSereTimes);
+                    }
+                    else if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
+                    {
+                        if (XtraMessageBox.Show(param.GetMessage(), "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                        {
+                            isCheckAssignServiceSimultaneityOption = true;
+                            btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
         private void SetCaptionByLanguageKey()
         {
             try
@@ -448,6 +500,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 Task.Run(() => this.LoadAllergenic(currentTreatmentWithPatientType.PATIENT_ID));
                 LogSystem.Debug("Loaded end");
                 this.AddBarManager(this.barManager1);
+                 
                 this.isNotLoadWhileChangeInstructionTimeInFirst = false;
                 
                 WaitingManager.Hide();
@@ -576,7 +629,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 WaitingManager.Show();
                 if (this.actionType == GlobalVariables.ActionAdd)
                     this.ReleaseAllMediByUser();
-
+                this.isCheckAssignServiceSimultaneityOption = false;
                 this.SetDefaultData();
                 this.SetDefaultUC();
                 this.ReSetDataInputAfterAdd__MedicinePage();
@@ -601,7 +654,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 {
                     this.InitComboNhaThuoc();
                 }
-
+                CheckAssignServiceSimultaneityOption();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -1155,6 +1208,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 {
                     this.InitDataMetyMatyTypeInStockD();
                 }
+                CheckAssignServiceSimultaneityOption();
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.intructionTimeSelecteds), this.intructionTimeSelecteds));
             }
             catch (Exception ex)
@@ -1235,6 +1289,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         {
                             this.cboUser.EditValue = searchResult[0].LOGINNAME;
                             this.txtLoginName.Text = searchResult[0].LOGINNAME;
+                            CheckAssignServiceSimultaneityOption();
                             this.RebuildMediMatyWithInControlContainer(this.GetDataMediMatyInStock());
                             this.ResetFocusMediMaty(true);
                         }
@@ -1264,6 +1319,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         if (data != null)
                         {
                             this.txtLoginName.Text = data.LOGINNAME;
+
+                            CheckAssignServiceSimultaneityOption();
                         }
                     }
 
@@ -1288,6 +1345,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         if (data != null)
                         {
                             this.txtLoginName.Text = data.LOGINNAME;
+
+                            CheckAssignServiceSimultaneityOption();
                             this.ResetFocusMediMaty(true);
                         }
                     }

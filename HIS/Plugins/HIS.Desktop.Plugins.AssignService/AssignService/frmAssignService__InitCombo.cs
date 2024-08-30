@@ -100,6 +100,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 var oneUser = (datas != null ? datas.Where(o => o.LOGINNAME.ToUpper().Equals(loginName.ToUpper())).FirstOrDefault() : null);
 
+
                 if (this.previusTreatmentId > 0 && this.currentHisTreatment != null)
                 {
                     this.cboUser.EditValue = this.currentHisTreatment.PREVIOUS_END_LOGINNAME;

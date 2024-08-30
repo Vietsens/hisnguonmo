@@ -156,6 +156,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     ProcessGetDataDepartment();
                     CheckTimeInDepartment(this.intructionTimeSelecteds);
                 }
+
+                CheckAssignServiceSimultaneityOption();
                 //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.intructionTimeSelecteds), this.intructionTimeSelecteds));
             }
             catch (Exception ex)

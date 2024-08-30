@@ -427,6 +427,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     this.ChangeIntructionTime(intructTime);
                     this.GetListEMMedicineAcinInteractive();
                 }
+                this.CheckAssignServiceSimultaneityOption();
             }
             catch (Exception ex)
             {

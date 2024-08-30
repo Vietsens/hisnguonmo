@@ -197,6 +197,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         }
                         this.RefeshServiceDatasourceAfterSave(serviceCheckeds__Send);
                     }
+                    this.isCheckAssignServiceSimultaneityOption = false;
                     this.ChangeLockButtonWhileProcess(true);
                 }
             }

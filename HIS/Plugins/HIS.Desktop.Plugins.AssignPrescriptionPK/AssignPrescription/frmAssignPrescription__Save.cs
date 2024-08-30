@@ -314,8 +314,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 if (this.actionType == GlobalVariables.ActionView)
                     return;
 
-                this.btnSave.Enabled = isLock;
-                this.btnSaveAndPrint.Enabled = isLock;
+                this.btnSave.Enabled = isCheckAssignServiceSimultaneityOption ? false : isLock;
+                this.btnSaveAndPrint.Enabled = isCheckAssignServiceSimultaneityOption ? false : isLock;
             }
             catch (Exception ex)
             {
@@ -796,6 +796,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     this.actionBosung = GlobalVariables.ActionAdd;
 
                     //Mở khóa các button lưu && lưu in khi đã xử lý xong
+                    isCheckAssignServiceSimultaneityOption = false;
                     if (lstserviceReqResult != null && lstserviceReqResult.Count == 1)
                     {
                         this.actionType = GlobalVariables.ActionEdit;

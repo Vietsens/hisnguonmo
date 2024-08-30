@@ -1640,7 +1640,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 if (this.actionType == GlobalVariables.ActionAdd)
                 {
                     List<MediMatyTypeADO> serviceCheckeds__Send = this.mediMatyTypeADOs;
-                    this.btnSave.Enabled = btnSaveAndPrint.Enabled = (serviceCheckeds__Send != null && serviceCheckeds__Send.Count > 0);
+                    this.btnSave.Enabled = btnSaveAndPrint.Enabled = isCheckAssignServiceSimultaneityOption ? false : (serviceCheckeds__Send != null && serviceCheckeds__Send.Count > 0);
                     this.lciPrintAssignPrescription.Enabled = false;
                     this.btnAdd.Enabled = true;//this.btnNew.Enabled =
                     if (this.treatmentFinishProcessor != null && this.ucTreatmentFinish != null)
@@ -1650,7 +1650,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 else if (this.actionType == GlobalVariables.ActionEdit)
                 {
                     List<MediMatyTypeADO> serviceCheckeds__Send = this.mediMatyTypeADOs;
-                    this.btnSave.Enabled = btnSaveAndPrint.Enabled = true;
+                    this.btnSave.Enabled = btnSaveAndPrint.Enabled = isCheckAssignServiceSimultaneityOption ? false : true;
                     this.lciPrintAssignPrescription.Enabled = true;
                     this.btnAdd.Enabled = true;
                     this.btnNew.Enabled = (oldServiceReq != null ? false : true);

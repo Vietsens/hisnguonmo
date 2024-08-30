@@ -317,6 +317,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         List<HIS_ANCILLARY_SERV_PATY> ListAncillaryServPaty = new List<HIS_ANCILLARY_SERV_PATY>();
         List<HIS_EXP_MEST> ListExpMestResult { get; set; }
         private System.Windows.Forms.Timer timerReloadTreatmentFinishTime { get; set; }
+        bool isCheckAssignServiceSimultaneityOption = false;
         #endregion
 
         #region Construct
@@ -852,6 +853,57 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         #endregion
 
         #region Private method
+        private void CheckAssignServiceSimultaneityOption()
+        {
+
+            try
+            {
+                if (this.actionType == GlobalVariables.ActionAdd)
+                {
+                    List<MediMatyTypeADO> serviceCheckeds__Send = this.mediMatyTypeADOs;
+                    this.btnSave.Enabled = btnSaveAndPrint.Enabled = (serviceCheckeds__Send != null && serviceCheckeds__Send.Count > 0);
+                }
+                else if (this.actionType == GlobalVariables.ActionEdit)
+                {
+                    this.btnSave.Enabled = btnSaveAndPrint.Enabled = true;
+                }
+                else
+                {
+                    this.btnSave.Enabled = this.btnAdd.Enabled = btnSaveAndPrint.Enabled = false;
+                }
+                isCheckAssignServiceSimultaneityOption = false;
+                if ((HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "1" && HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "2") || cboUser.EditValue == null || intructionTimeSelecteds == null || intructionTimeSelecteds.Count == 0)
+                    return; 
+                CommonParam param = new CommonParam();
+                HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
+                sdo.TreatmentId = treatmentId;
+                sdo.Loginnames = new List<string> { cboUser.EditValue.ToString() };
+                sdo.SereTimes = intructionTimeSelecteds;
+                var CheckSereTimes = new BackendAdapter(param).Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
+                if (!CheckSereTimes)
+                {
+                    if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1")
+                    {
+                        isCheckAssignServiceSimultaneityOption = true;
+                        btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                        MessageManager.Show(this, param, CheckSereTimes);
+                    }
+                    else if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
+                    {
+                        if (XtraMessageBox.Show(param.GetMessage(), "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                        {
+                            isCheckAssignServiceSimultaneityOption = true;
+                            btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
 
         private void SetDataText()
         {
@@ -961,6 +1013,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 ModuleList();
                 VisibleColumnPreAmount();
                 InitDataServiceReqAllInDay();
+                CheckAssignServiceSimultaneityOption();
                 LogSystem.Debug("frmAssignPrescription_Load. 9");
             }
             catch (Exception ex)
@@ -1659,6 +1712,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
                 WaitingManager.Show();
                 ThreadLoadDonThuocCu();
+                this.isCheckAssignServiceSimultaneityOption = false;
                 if (this.actionType == GlobalVariables.ActionAdd)
                     this.ReleaseAllMediByUser();
                 this.oldServiceReq = null;
@@ -1695,6 +1749,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.lstOutPatientPres = new List<OutPatientPresADO>();
                 InitDataServiceReqAllInDay();
                 this.EnableButtonConfig();
+                this.CheckAssignServiceSimultaneityOption();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -1999,7 +2054,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             mediMatyType.dicTreatmentOverResultTestReason = new Dictionary<long, List<TreatmentOverReason>>();
                             mediMatyType.OVER_RESULT_TEST_REASON = null;
                             mediMatyType.OVER_REASON_ID = null;
-                           mediMatyType.IsEditOverResultTestReason = false;
+                            mediMatyType.IsEditOverResultTestReason = false;
                         }
                     }
                     #endregion
@@ -2023,7 +2078,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         }
                         if (medicineService != null && medicineService.Count > 0)
                         {
-                            var minOverDose = medicineService.OrderBy(o => o.AMOUNT_INDAY_FROM ?? 0).ThenByDescending(o=>o.ID);
+                            var minOverDose = medicineService.OrderBy(o => o.AMOUNT_INDAY_FROM ?? 0).ThenByDescending(o => o.ID);
                             frmOverReason frm = new frmOverReason(medicineService, string.Format("kê thuốc {0}", mediMatyType.MEDICINE_TYPE_NAME), (o) =>
                             {
                                 if (mediMatyType.dicTreatmentOverKidneyReason == null)
@@ -2198,7 +2253,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                                 frmOverReason frm = new frmOverReason(medicine, string.Format("kê thuốc {0}", medi.MEDICINE_TYPE_NAME), (o) =>
                                                 {
                                                     if (!medi.dicTreatmentOverResultTestReason.ContainsKey(itime))
-                                                        medi.dicTreatmentOverResultTestReason[itime] = new List<TreatmentOverReason>() {o};
+                                                        medi.dicTreatmentOverResultTestReason[itime] = new List<TreatmentOverReason>() { o };
                                                     else
                                                         medi.dicTreatmentOverResultTestReason[itime].Add(o);
                                                 }, (o) =>
@@ -3403,6 +3458,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                             this.cboUser.EditValue = searchResult[0].LOGINNAME;
                             this.txtLoginName.Text = searchResult[0].LOGINNAME;
 
+                            CheckAssignServiceSimultaneityOption();
                             this.ResetFocusMediMaty(true);
                         }
                         else
@@ -3450,6 +3506,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         if (data != null)
                         {
                             this.txtLoginName.Text = data.LOGINNAME;
+                            CheckAssignServiceSimultaneityOption();
                         }
                     }
 
@@ -3474,6 +3531,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         if (data != null)
                         {
                             this.txtLoginName.Text = data.LOGINNAME;
+
+                            CheckAssignServiceSimultaneityOption();
                             this.ResetFocusMediMaty(true);
                         }
                     }
@@ -7390,7 +7449,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             {
                 if (this.actionType == GlobalVariables.ActionView)
                 {
-                    btnSave.Enabled = btnSaveAndPrint.Enabled = true;
+                    btnSave.Enabled = btnSaveAndPrint.Enabled = isCheckAssignServiceSimultaneityOption ? false : true;
                 }
             }
             catch (Exception ex)

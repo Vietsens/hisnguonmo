@@ -226,7 +226,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         WaitingManager.Hide();
                         LogSystem.Debug("LoadPrescriptionForEdit => 8");
                     }
-                }
+                    else
+                        CheckAssignServiceSimultaneityOption();
+                }else
+                    CheckAssignServiceSimultaneityOption();
             }
             catch (Exception ex)
             {

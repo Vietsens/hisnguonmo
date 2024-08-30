@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
 {
@@ -89,7 +90,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         private const string CONFIG_KEY__PRESCRIPTION_ATC_CODE_OVERLAP_WARNING_OPTION = "HIS.DESKTOP.PRESCRIPTION.ATC_CODE_OVERLAP.WARNING_OPTION";
         private const string KEY__RequiredTreatmentMethodOption = "HIS.Desktop.Plugins.TreatmentFinish.RequiredTreatmentMethodOption";
         private const string KEY__InstructionTimeServiceMustBeGreaterThanStartTimeExam = "HIS.Desktop.Plugins.InstructionTimeServiceMustBeGreaterThanStartTimeExam";
-
+        private const string KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION";
+        internal static string ASSIGN_SERVICE_SIMULTANEITY_OPTION;
         internal static string InstructionTimeServiceMustBeGreaterThanStartTimeExam;
         internal static string RequiredTreatmentMethodOption;
         internal static string AtcCodeOverlarWarningOption;
@@ -222,10 +224,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
             return result ?? new MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE();
         }
 
+        bool isCheckAssignServiceSimultaneityOption = false;
         internal static void LoadConfig()
         {
             try
             {
+                ASSIGN_SERVICE_SIMULTANEITY_OPTION = GetValue(KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION);
                 InstructionTimeServiceMustBeGreaterThanStartTimeExam = GetValue(KEY__InstructionTimeServiceMustBeGreaterThanStartTimeExam);
                 RequiredTreatmentMethodOption = GetValue(KEY__RequiredTreatmentMethodOption);
                 AtcCodeOverlarWarningOption = GetValue(CONFIG_KEY__PRESCRIPTION_ATC_CODE_OVERLAP_WARNING_OPTION);
