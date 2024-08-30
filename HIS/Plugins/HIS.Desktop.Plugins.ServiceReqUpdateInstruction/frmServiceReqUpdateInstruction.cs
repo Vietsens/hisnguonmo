@@ -1989,6 +1989,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
 
                             }
                         }
+                        else btnSave.Enabled = true;
                     }
                 }
             }
