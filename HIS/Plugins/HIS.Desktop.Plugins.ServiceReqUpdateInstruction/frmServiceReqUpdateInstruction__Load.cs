@@ -41,7 +41,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     panelControlUcIcd.Enabled = true;
                     panelControlSubIcd.Enabled = true;
                     panelControlCauseIcd.Enabled = true;
-                    btnSave.Enabled = true;
+                    //btnSave.Enabled = true;
                 }
 
                 if (currentServiceReq.EXECUTE_DEPARTMENT_ID == currentDepartmentId)
@@ -50,14 +50,14 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     lciEndTime.Enabled = true;
                     lciUserName.Enabled = true;
                     lciCboNguoiThucHien.Enabled = true;
-                    btnSave.Enabled = true;
+                    //btnSave.Enabled = true;
                 }
 
                 if (HisConfigs.Get<string>("HIS.Desktop.Plugins.AssignConfig.ShowRequestUser") == "1")
                 {
                     cboRequestUser.Enabled = true;
                     txtRequestUser.Enabled = true;
-                    btnSave.Enabled = true;
+                    //btnSave.Enabled = true;
                 }
                 else
                 {
@@ -77,7 +77,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     panelControlSubIcd.Enabled = true;
                     panelControlUcIcd.Enabled = true;
                     panelControlCauseIcd.Enabled = true;
-                    btnSave.Enabled = true;
+                    //btnSave.Enabled = true;
                 }
 
                 if (currentServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
@@ -89,7 +89,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 {
                     lciStartTime.Enabled = true;
                     lciEndTime.Enabled = false;
-                    btnSave.Enabled = true;
+                    //btnSave.Enabled = true;
                 }
                 if (currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK
                     || currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM
