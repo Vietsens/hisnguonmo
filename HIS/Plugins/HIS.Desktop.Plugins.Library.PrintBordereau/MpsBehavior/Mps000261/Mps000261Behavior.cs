@@ -89,7 +89,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000261
                 List<HIS_MATERIAL_TYPE> materialTypes = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
                 
                 MPS.Processor.Mps000261.PDO.Mps000261PDO rdo = null;
-                Inventec.Common.Logging.LogSystem.Debug("Goi den bieu in Mps000261: config:" + this.lstConfig.Count + " trans_req_id: " + this.transReq.ID);
+                Inventec.Common.Logging.LogSystem.Debug("Goi den bieu in Mps000261: config:" + this.lstConfig.Count + " trans_req_id: " + this.transReq);
                 long isShowMedicineLine = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKey.IS_SHOW_MEDICINE_LINE));
                 if (isShowMedicineLine == 1)
                 {
