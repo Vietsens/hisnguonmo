@@ -2860,7 +2860,7 @@ namespace HIS.Desktop.Plugins.InfusionCreate
 
 
 
-                        txtPackageNumber.EditValue = row.PACKAGE_NUMBER;
+                        txtPackageNumber.Text = row.PACKAGE_NUMBER;
                         HIS.UC.ServiceUnit.ADO.ServiceUnitInputADO inputService = new HIS.UC.ServiceUnit.ADO.ServiceUnitInputADO();
                         if (row.SERVICE_UNIT_ID != null && row.SERVICE_UNIT_ID > 0)
                         {
