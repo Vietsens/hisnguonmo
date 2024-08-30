@@ -180,7 +180,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
                     txtPaanServiceTypeCode.Focus();
                     txtPaanServiceTypeCode.SelectAll();
                 }
-                if (dtInstructionTime.EditValue != null) CheckTimeSereServ();
+                if (dtInstructionTime.EditValue != null ) CheckTimeSereServ();
                 
                 //if (dtInstructionTime.EditValue != null && dtInstructionTime.DateTime != DateTime.MinValue)
                 //{
@@ -194,7 +194,6 @@ namespace HIS.Desktop.Plugins.AssignPaan
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void CheckTimeSereServ()
         {
 
@@ -209,7 +208,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
                     {
                         HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
                         sdo.TreatmentId = this.treatmentId;
-                        var username = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && Convert.ToInt64(cboUsername.EditValue) == p.ID).FirstOrDefault().USERNAME;
+                        var username = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && Convert.ToInt64(cboUsername.EditValue) == p.ID).FirstOrDefault().LOGINNAME;
                         sdo.Loginnames = new List<string>() { username };
                         long sereTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtInstructionTime.DateTime) ?? 0;
                         sdo.SereTimes = new List<long> { sereTime };
@@ -224,7 +223,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
                             }
                             else
                             {
-                                btnSave.Enabled = btnSavePrint.Enabled = MessageBox.Show(this, param.Messages + ". Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.Yes;
+                                btnSave.Enabled = btnSavePrint.Enabled = MessageBox.Show(this, param.GetMessage() + "Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.Yes;
 
                             }
                         }
@@ -345,10 +344,10 @@ namespace HIS.Desktop.Plugins.AssignPaan
                 if (e.KeyCode == Keys.Enter)
                 {
                     bool valid = false;
-                    if (String.IsNullOrEmpty(txtLoginname.Text))
+                    if (!string.IsNullOrEmpty(txtLoginname.Text))
                     {
                         var key = txtLoginname.Text.ToLower();
-                        var listData = BackendDataWorker.Get<ACS_USER>().Where(o => o.LOGINNAME.ToLower().Contains(key)).ToList();
+                        var listData = BackendDataWorker.Get<ACS_USER>().Where(o => o.LOGINNAME.ToLower()== key).ToList();
                         if (listData != null && listData.Count == 1)
                         {
                             valid = true;
@@ -415,7 +414,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
                         txtLoginname.Text = user.LOGINNAME;
                     }
                 }
-                if (cboUsername.EditValue != null) CheckTimeSereServ();
+                if (cboUsername.EditValue != null ) CheckTimeSereServ();
             }
             catch (Exception ex)
             {

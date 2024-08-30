@@ -202,7 +202,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\SHAREUTIL\Inventec.Common\Inventec.Common.Print\Inventec.Common.Print.csproj">
+    <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.Print\Inventec.Common.Print.csproj">
       <Project>{9ded67a4-7fc4-451a-b30e-12333a464b9f}</Project>
       <Name>Inventec.Common.Print</Name>
     </ProjectReference>

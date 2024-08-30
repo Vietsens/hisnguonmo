@@ -124,6 +124,8 @@ namespace HIS.Desktop.Plugins.AssignPaan
                 if (!btnRefersh.Enabled)
                     return;
                 this.ResetControlValue();
+                btnSave.Enabled = true;
+                btnSavePrint.Enabled = true;
             }
             catch (Exception ex)
             {

@@ -1538,6 +1538,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 if (e.KeyCode == Keys.Enter)
                 {
                     LoadPayFormComboRequest(txtRequestUser.Text);
+                    CheckTimeSereServ();
                 }
             }
             catch (Exception ex)
@@ -1560,9 +1561,10 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                             txtRequestUser.Text = commune.LOGINNAME;
                             this.icdProcessor.FocusControl(this.ucIcd);
                         }
-                        CheckTimeSereServ();
+                        
                     }
                 }
+                CheckTimeSereServ();
             }
             catch (Exception ex)
             {
@@ -1939,7 +1941,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
         {
             try
             {
-                if (dtTime.EditValue != null && cboRequestUser.EditValue != null) CheckTimeSereServ();
+                 CheckTimeSereServ();
             }
             catch (Exception ex)
             {
@@ -1952,6 +1954,9 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
 
             try
             {
+               
+                if (dtTime.EditValue == null && cboRequestUser.EditValue == null || cboRequestUser.EditValue == null) return;
+                Inventec.Common.Logging.LogSystem.Debug("Check Sere Serv Time____Start");
                 var config = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION").FirstOrDefault();
                 CommonParam param = new CommonParam();
                 if (config != null)
@@ -1960,7 +1965,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     {
                         HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
                         sdo.TreatmentId = currentTreatment.ID;
-                        var username = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && cboRequestUser.EditValue.ToString() == p.USERNAME).FirstOrDefault().USERNAME;
+                        var username = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && cboRequestUser.EditValue.ToString() == p.LOGINNAME).FirstOrDefault()?.LOGINNAME;
                         sdo.Loginnames = new List<string>() { username };
                         long sereTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTime.DateTime) ?? 0;
                         sdo.SereTimes = new List<long> { sereTime };
@@ -1975,7 +1980,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                             }
                             else
                             {
-                                btnSave.Enabled = MessageBox.Show(this, param.Messages + ". Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.Yes;
+                                btnSave.Enabled = MessageBox.Show(this, param.GetMessage() + "Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.Yes;
 
                             }
                         }

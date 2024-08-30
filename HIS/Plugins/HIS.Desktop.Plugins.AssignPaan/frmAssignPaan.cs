@@ -312,7 +312,6 @@ namespace HIS.Desktop.Plugins.AssignPaan
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void frmAssignPaan_Load(object sender, EventArgs e)
         {
             try
@@ -327,6 +326,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
                 this.InitDataByTreatmentId();
                 if (this.treatment != null && this.currentPatientTypeAlter != null)
                 {
+                    this.ResetControlValue();
                     this.ValidControl();
                     this.InitComboPatientType();
                     this.InitComboPaanServiceType(null);
@@ -337,12 +337,12 @@ namespace HIS.Desktop.Plugins.AssignPaan
                     this.SetDataSourceCboPatientType();
                     this.SetDataSourceCboExecuteRoom();
                     this.LoadDefaultUser();
-                    this.ResetControlValue();
+                    
                     this.InitDefaultPatientType();
                     this.SetDataSourceCboPaanServiceType();
                     this.InitComboTestSampleType();
                 }
-                CheckTimeSereServ();
+                
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -651,8 +651,8 @@ namespace HIS.Desktop.Plugins.AssignPaan
                 cboPaanLiquid.EditValue = null;
                 txtDescription.Text = "";
                 btnPrint.Enabled = false;
-                btnSave.Enabled = true;
-                btnSavePrint.Enabled = true;
+                //btnSave.Enabled = true;
+                //btnSavePrint.Enabled = true;
             }
             catch (Exception ex)
             {
