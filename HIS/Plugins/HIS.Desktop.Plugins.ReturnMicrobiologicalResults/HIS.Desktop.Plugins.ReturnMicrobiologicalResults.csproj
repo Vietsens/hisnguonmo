@@ -43,9 +43,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\ACS\ACS.SDO.dll</HintPath>
     </Reference>
-    <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+    <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="Bartender.PrintClient">
       <HintPath>..\..\..\..\LIB\WCF\BartenderClient\Bartender.PrintClient.dll</HintPath>
