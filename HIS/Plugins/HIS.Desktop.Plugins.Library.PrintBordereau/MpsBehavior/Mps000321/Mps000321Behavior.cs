@@ -127,7 +127,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000321
                     .Get<List<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeAlter/Get", ApiConsumers.MosConsumer, patientTypeAlterFilter, param);
                 List<HIS_SERVICE_UNIT> servuceUnit = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_UNIT>();
                 List<HIS_OTHER_PAY_SOURCE> otherPaySource = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_OTHER_PAY_SOURCE>();
-                Inventec.Common.Logging.LogSystem.Debug("Goi den bieu in Mps000321: config:" + this.lstConfig.Count + " trans_req_id: " + this.transReq.ID);
+                Inventec.Common.Logging.LogSystem.Debug("Goi den bieu in Mps000321: config:" + this.lstConfig.Count + " trans_req_id: " + this.transReq);
                 MPS.Processor.Mps000321.PDO.Mps000321PDO rdo = new MPS.Processor.Mps000321.PDO.Mps000321PDO(this.CurrentPatientTypeAlter, patientTypeAlters, DepartmentTrans, TreatmentFees, patientTypeCFG, this.SereServs, sereServExts, Treatment, this.Patient, HeinServiceTypes, Rooms, Services, treatmentTypes, branch, materialTypes, departments, singleValue, hisConfigValue, servuceUnit, patientType, mediOrg, otherPaySource, this.Transactions,this.lstConfig,this.transReq);
 
                 #region Run Print

@@ -1359,59 +1359,56 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                         }
                     }
 
-                    if (department != null)
-                    {
-                        txtMedicinetype.Text = department.MEDICINE_TYPE_CODE;
-                        txtMedicine.Text = department.MEDICINE_TYPE_NAME;
+                        if (department != null)
+                        {
+                            txtMedicinetype.Text = department.MEDICINE_TYPE_CODE;
+                            txtMedicine.Text = department.MEDICINE_TYPE_NAME;
                             if (department.PACKAGE_NUMBER != null)
-                            txtPackageNumber.Text = department.PACKAGE_NUMBER;
-                        else
-                        {
+                                txtPackageNumber.Text = department.PACKAGE_NUMBER;
+                            else
+                                txtPackageNumber.EditValue = null;
+                            spinAmount.EditValue = department.AMOUNT;
+                            var medi = BackendDataWorker.Get<HIS_MEDICINE_TYPE>().FirstOrDefault(s => s.MEDICINE_TYPE_CODE == department.MEDICINE_TYPE_CODE);
+                            if (medi != null) spinEditVolumn.EditValue = medi.VOLUME;
+                            ServiceUnitInputADO serviceUnit = new ServiceUnitInputADO();
+                            if (department.SERVICE_UNIT_ID != null && department.SERVICE_UNIT_ID > 0)
+                            {
+                                serviceUnit.SERVICE_UNIT_ID = department.SERVICE_UNIT_ID;
+                                serviceUnit.SERVICE_UNIT_NAME = department.SERVICE_UNIT_NAME;
+                            }
+                            else
+                                serviceUnit.SERVICE_UNIT_NAME = department.SERVICE_UNIT_NAME;
+                            serviceUnitProcessor.Reload(ucServiceUnit, serviceUnit);
+                            spinSpeed.EditValue = department.SPEED;
+                            cboReqUsername.EditValue = department.LOGGINNAME;
+                            dtNgayChidinh.EditValue = (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)department.INSTRUCTION_TIME);
+                            if (department.EXPIRED_DATE != null && department.EXPIRED_DATE > 0)
+                                dtExpiredDate.DateTime = (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)department.EXPIRED_DATE);
+                            else
+                                dtExpiredDate.EditValue = null;
 
-                        }
-                            txtPackageNumber.EditValue = null;
-                        spinAmount.EditValue = department.AMOUNT;
-                        var medi = BackendDataWorker.Get<HIS_MEDICINE_TYPE>().FirstOrDefault(s => s.MEDICINE_TYPE_CODE == department.MEDICINE_TYPE_CODE);
-                        if (medi != null) spinEditVolumn.EditValue = medi.VOLUME;
-                        ServiceUnitInputADO serviceUnit = new ServiceUnitInputADO();
-                        if (department.SERVICE_UNIT_ID != null && department.SERVICE_UNIT_ID > 0)
-                        {
-                            serviceUnit.SERVICE_UNIT_ID = department.SERVICE_UNIT_ID;
-                            serviceUnit.SERVICE_UNIT_NAME = department.SERVICE_UNIT_NAME;
-                        }
-                        else
-                            serviceUnit.SERVICE_UNIT_NAME = department.SERVICE_UNIT_NAME;
-                        serviceUnitProcessor.Reload(ucServiceUnit, serviceUnit);
-                        spinSpeed.EditValue = department.SPEED;
-                        cboReqUsername.EditValue = department.LOGGINNAME;
-                        dtNgayChidinh.EditValue = (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)department.INSTRUCTION_TIME);
-                        if (department.EXPIRED_DATE != null && department.EXPIRED_DATE > 0)
-                            dtExpiredDate.DateTime = (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)department.EXPIRED_DATE);
-                        else
-                            dtExpiredDate.EditValue = null;
+                            if (department.ngoaikho == false)
+                            {
+                                txtMedicine.Enabled = false;
+                                txtPackageNumber.Enabled = false;
+                                dtExpiredDate.Enabled = false;
 
-                        if (department.ngoaikho == false)
-                        {
-                            txtMedicine.Enabled = false;
-                            txtPackageNumber.Enabled = false;
-                            dtExpiredDate.Enabled = false;
-
+                            }
+                            else
+                            {
+                                txtMedicine.Enabled = true;
+                                txtPackageNumber.Enabled = true;
+                                dtExpiredDate.Enabled = true;
+                            }
+                            //
+                            lstAdo = lstAdoTemp;
+                            if (lstAdo != null && lstAdo.Count > 0)
+                            {
+                                lstAdo = lstAdo.Where(o => o.MEDICINE_TYPE_CODE != department.MEDICINE_TYPE_CODE).ToList();
+                            }
+                            InitCombo(lstAdo);
                         }
-                        else
-                        {
-                            txtMedicine.Enabled = true;
-                            txtPackageNumber.Enabled = true;
-                            dtExpiredDate.Enabled = true;
-                        }
-                        //
-                        lstAdo = lstAdoTemp;
-                        if (lstAdo != null && lstAdo.Count > 0)
-                        {
-                            lstAdo = lstAdo.Where(o => o.MEDICINE_TYPE_CODE != department.MEDICINE_TYPE_CODE).ToList();
-                        }
-                        InitCombo(lstAdo);
-                    }
-                    SendKeys.Send("{TAB}");
+                        SendKeys.Send("{TAB}");
                 }
 
                 else
@@ -2859,8 +2856,9 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                         }
 
 
-
-                        txtPackageNumber.EditValue = row.PACKAGE_NUMBER;
+                        //175827 sửa chức năng tạo thông tin truyền dịch
+                        txtPackageNumber.Text = row.PACKAGE_NUMBER;
+                        //
                         HIS.UC.ServiceUnit.ADO.ServiceUnitInputADO inputService = new HIS.UC.ServiceUnit.ADO.ServiceUnitInputADO();
                         if (row.SERVICE_UNIT_ID != null && row.SERVICE_UNIT_ID > 0)
                         {

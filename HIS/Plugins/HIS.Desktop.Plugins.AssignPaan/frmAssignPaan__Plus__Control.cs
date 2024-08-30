@@ -227,6 +227,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
 
                             }
                         }
+                        else btnSave.Enabled = btnSavePrint.Enabled = true;
                     }
                 }
             }

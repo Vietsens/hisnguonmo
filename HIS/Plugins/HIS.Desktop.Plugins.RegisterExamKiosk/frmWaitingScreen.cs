@@ -283,12 +283,19 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             {
                 HisConfigCHECKHEINCARD.LoadConfig();
                 string connect_infor = HisConfigCHECKHEINCARD.CHECK_HEIN_CARD_BHXH__API;
+                CheckEmploy();
+                var employee = currentEmployee;
                 if (!string.IsNullOrEmpty(connect_infor))
                 {
+                    
                     connectInfors = connect_infor.Split('|').ToList();
-                    api = connectInfors[0];
-                    nameCb = connectInfors[1];
-                    cccdCb = connectInfors[2];
+                    api = connectInfors.Count > 0 ? connectInfors[0] : string.Empty;
+
+                    nameCb = connectInfors.Count > 1 && !string.IsNullOrEmpty(connectInfors[1]) ? connectInfors[1] : employee.TDL_USERNAME;
+                    cccdCb = connectInfors.Count > 2 && !string.IsNullOrEmpty(connectInfors[2]) ? connectInfors[2] : employee.IDENTIFICATION_NUMBER;
+
+                    LogSystem.Debug("BHXHLoginCFG.OFFICERNAME: " + connectInfors[1]);
+                    LogSystem.Debug("BHXHLoginCFG.CCCDOFFICER: " + connectInfors[2]);
                 }
             }
             catch (Exception ex)
@@ -1397,27 +1404,11 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                     Inventec.Common.Logging.LogSystem.Info("Khong goi cong BHXH check thong tin the do du lieu truyen vao chua du du lieu bat buoc___" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataHein), dataHein));
                     return reult;
                 }
-                Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên cán bộ:{0}", nameCb));
+                Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên cán bộ:{0}", nameCb));   
                 Inventec.Common.Logging.LogSystem.Debug(String.Format("CCCD cán bộ:{0}", cccdCb));
                 Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên api:{0}", api));
 
-                if (string.IsNullOrEmpty(nameCb))
-                {
-                    name = currentEmployee.TDL_USERNAME;
-                }
-                else
-                {
-                    name = nameCb;
-                }
-
-                if (string.IsNullOrEmpty(cccdCb))
-                {
-                    cccd = currentEmployee.IDENTIFICATION_NUMBER;
-                }
-                else
-                {
-                    cccd = nameCb; 
-                }
+                
 
                 CommonParam param = new CommonParam();
                 ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
@@ -1427,8 +1418,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 checkHistoryLDO.ngaySinh = dataHein.Dob;
                 checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(dataHein.PatientName);
                 checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? dataHein.PatientName : checkHistoryLDO.hoTen);
-                checkHistoryLDO.hoTenCb = name;
-                checkHistoryLDO.cccdCb = cccd;
+                checkHistoryLDO.hoTenCb = nameCb;
+                checkHistoryLDO.cccdCb = cccdCb;
                 Inventec.Common.Logging.LogSystem.Info("CheckHanSDTheBHYT => 1");
                 reult = await apiInsuranceExpertise.CheckHistory(BHXHLoginCFG.USERNAME, BHXHLoginCFG.PASSWORD, BHXHLoginCFG.ADDRESS, checkHistoryLDO, BHXHLoginCFG.ADDRESS_OPTION);
 
