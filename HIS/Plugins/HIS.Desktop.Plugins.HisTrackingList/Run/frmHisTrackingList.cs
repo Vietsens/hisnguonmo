@@ -330,6 +330,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                                 HIS_EXP_MEST_MEDICINE ado = new HIS_EXP_MEST_MEDICINE();
                                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EXP_MEST_MEDICINE>(ado, item[0]);
                                 ado.AMOUNT = item.Sum(p => p.AMOUNT);
+                                ado.TH_AMOUNT = item.Sum(p => p.TH_AMOUNT);
                                 if (!dicExpMestMedicines.ContainsKey(ado.EXP_MEST_ID ?? 0))
                                 {
                                     dicExpMestMedicines[ado.EXP_MEST_ID ?? 0] = new List<HIS_EXP_MEST_MEDICINE>();
@@ -353,6 +354,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                                 HIS_EXP_MEST_MATERIAL ado = new HIS_EXP_MEST_MATERIAL();
                                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EXP_MEST_MATERIAL>(ado, item[0]);
                                 ado.AMOUNT = item.Sum(p => p.AMOUNT);
+                                ado.TH_AMOUNT = item.Sum(p => p.TH_AMOUNT);
                                 if (!dicExpMestMaterials.ContainsKey(ado.EXP_MEST_ID ?? 0))
                                 {
                                     dicExpMestMaterials[ado.EXP_MEST_ID ?? 0] = new List<HIS_EXP_MEST_MATERIAL>();
