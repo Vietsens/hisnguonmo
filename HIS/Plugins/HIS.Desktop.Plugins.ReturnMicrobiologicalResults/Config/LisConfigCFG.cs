@@ -43,6 +43,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults.Config
         private const string CONFIG_KEY__ALLOW_TO_EDIT_APPROVE_RESULT_TIME = "LIS.LIS_SAMPLE.ALLOW_TO_EDIT_APPROVE_RESULT_TIME";
         private const string CONFIG_KEY__ALLOW_TO_EDIT_APPROVE_TIME = "LIS.LIS_SAMPLE.ALLOW_TO_EDIT_APPROVE_TIME";
         private const string CONFIG_KEY__WARNING_APPROVE_TIME = "LIS.LIS_SAMPLE.WARNING_APPROVE_TIME";
+        private const string CONFIG_KEY__SAMPLE_TIME_OR_APPROVAL_TIME = "LIS.CONNECTIONTEST.SAMPLE_TIME_OR_APPROVAL_TIME";
 
         //internal static string MUST_APPROVE_SAMPLE;
         internal static string IS_AUTO_CREATE_BARCODE;
@@ -56,12 +57,14 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults.Config
         internal static bool ALLOW_TO_EDIT_APPROVE_RESULT_TIME;        
         internal static bool ALLOW_TO_EDIT_APPROVE_TIME; 
         internal static long WARNING_APPROVE_TIME;
+        internal static string SAMPLE_TIME_OR_APPROVAL_TIME;
 
         internal static void LoadConfig()
         {
             try
             {
                 //MUST_APPROVE_SAMPLE = GetValue(CONFIG_KEY__MUST_APPROVE_SAMPLE);
+                SAMPLE_TIME_OR_APPROVAL_TIME = GetValue(CONFIG_KEY__ALLOW_TO_EDIT_APPROVE_TIME);
                 IS_AUTO_CREATE_BARCODE = GetValue(CONFIG_KEY__CONNECTION_TEST__IS_AUTO_CREATE_BARCODE);
                 IS_ALLOW_SAVE_WHEN_NOT_FULL_RESULT = GetValue(CONFIG_KEY__CONNECTION_TEST__ISALOWSAVEWHENNOTFULLVALUES);
                 PRINT_BARCODE_BY_BARTENDER = GetValue(CONFIG_KEY__PRINT_BARCODE_BY_BARTENDER);
@@ -73,6 +76,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults.Config
                 ALLOW_TO_EDIT_APPROVE_RESULT_TIME = GetValue(CONFIG_KEY__ALLOW_TO_EDIT_APPROVE_RESULT_TIME) == "1" ? true : false;
                 ALLOW_TO_EDIT_APPROVE_TIME = GetValue(CONFIG_KEY__ALLOW_TO_EDIT_APPROVE_TIME) == "1" ? true : false;
                 WARNING_APPROVE_TIME = Convert.ToInt64(GetValue(CONFIG_KEY__WARNING_APPROVE_TIME) ?? "0");
+                
             }
             catch (Exception ex)
             {
