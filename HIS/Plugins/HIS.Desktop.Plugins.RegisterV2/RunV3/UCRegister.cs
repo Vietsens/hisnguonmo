@@ -107,7 +107,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 		bool IsEmergency = false;
 		List<V_HIS_SERVICE> lstService;
 		bool IsActionSavePrint = false;
-		V_HIS_EMPLOYEE VEmployee { get; set; }
 		#endregion
 
 		#region Construct - Load

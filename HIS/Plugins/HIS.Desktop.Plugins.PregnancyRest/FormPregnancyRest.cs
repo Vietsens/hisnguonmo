@@ -133,28 +133,24 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             {
                 HisConfigCHECKHEINCARD.LoadConfig();
                 string connect_infor = HisConfigCHECKHEINCARD.CHECK_HEIN_CARD_BHXH__API;
+                string username = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                var employee = GetEmployee(username);
+                LogSystem.Debug("employee: " + LogUtil.TraceData("employee", employee));
                 if (!string.IsNullOrEmpty(connect_infor))
                 {
-                    connectInfors = connect_infor.Split('|').ToList();
-                    api = connectInfors[0];
-                    nameCb = connectInfors[1];
-                    string username = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                    var employee = GetEmployee(username);
-                    if (string.IsNullOrEmpty(nameCb))
-                    {
-                        if(employee != null)
-                        {
-                            nameCb = employee.TDL_USERNAME;
-                        }
-                    }
-                    cccdCb = connectInfors[2];
-                    if(string.IsNullOrEmpty(cccdCb))
-                    {
-                        if(employee!= null)
-                        {
-                            cccdCb = employee.IDENTIFICATION_NUMBER;
-                        }
-                    }
+                    api = connectInfors.Count > 0 ? connectInfors[0] : string.Empty;
+
+                    nameCb = connectInfors.Count > 1 && !string.IsNullOrEmpty(connectInfors[1]) ? connectInfors[1] : employee.TDL_USERNAME;
+                    cccdCb = connectInfors.Count > 2 && !string.IsNullOrEmpty(connectInfors[2]) ? connectInfors[2] : employee.IDENTIFICATION_NUMBER;
+
+                    LogSystem.Debug("BHXHLoginCFG.OFFICERNAME: " + connectInfors[1]);
+                    LogSystem.Debug("BHXHLoginCFG.CCCDOFFICER: " + connectInfors[2]);
+                }
+                else
+                {
+                    nameCb = employee.TDL_USERNAME;
+                    cccdCb = employee.IDENTIFICATION_NUMBER;
+                    
                 }
             }
             catch (Exception ex)
@@ -168,7 +164,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             HIS_EMPLOYEE result = new HIS_EMPLOYEE();
             try
             {
-                var rs = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(s => s.TDL_USERNAME.Equals(username)).FirstOrDefault();
+                var rs = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(s => s.LOGINNAME == username).FirstOrDefault();
                 if(rs != null)
                 {
                     result = rs;

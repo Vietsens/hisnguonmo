@@ -526,11 +526,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Inventec.Aup.Client\Inventec.Aup.Client\Inventec.Aup.Client.csproj">
-      <Project>{07de1fae-01ba-4cfc-9d05-d25303656d0f}</Project>
+      <Project>{4d6778f4-e0cc-486f-b66a-0d9f5964a122}</Project>
       <Name>Inventec.Aup.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Common\Inventec.Aup.Client\Inventec.Aup.Utility\Inventec.Aup.Utility.csproj">
-      <Project>{68decce6-8629-4f57-9d4e-58e4dc42bdc8}</Project>
+      <Project>{d6f9e3dd-7029-499f-a759-2e28d80687ea}</Project>
       <Name>Inventec.Aup.Utility</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.csproj">

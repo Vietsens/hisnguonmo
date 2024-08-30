@@ -44,7 +44,10 @@ namespace MPS.Processor.Mps000260.PDO
         public List<HIS_SERVICE_REQ> ServiceReqs { get; set; }
         public List<HIS_TRANSACTION> Bills { get; set; }
         public TransactionTypeCFG transactionTypeCFG { get; set; }
+        public List<HIS_CONFIG> listConfig { get; set; }
+        public HIS_TRANS_REQ transReq { get; set; }
 
+       
         public Mps000260PDO(
             V_HIS_PATIENT_TYPE_ALTER _currentPatyAlter,
             List<HIS_PATIENT_TYPE_ALTER> _patyAlters,
@@ -92,7 +95,57 @@ namespace MPS.Processor.Mps000260.PDO
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        public Mps000260PDO(
+            V_HIS_PATIENT_TYPE_ALTER _currentPatyAlter,
+            List<HIS_PATIENT_TYPE_ALTER> _patyAlters,
+            List<V_HIS_DEPARTMENT_TRAN> _departmentTrans,
+            List<V_HIS_TREATMENT_FEE> _treatmentFees,
+            List<HIS_TRANSACTION> _bills,
+            HeinServiceTypeCFG _heinServiceTypeCfg,
+            PatientTypeCFG _patientTypeCfg,
+            List<HIS_SERE_SERV> _sereServ,
+            List<HIS_SERE_SERV_EXT> _sereServExts,
+            V_HIS_TREATMENT _treatment,
+            List<HIS_HEIN_SERVICE_TYPE> _heinServiceTypes,
+            List<V_HIS_ROOM> _rooms,
+            List<V_HIS_SERVICE> _services,
+            List<HIS_TREATMENT_TYPE> _treatmentType,
+            HIS_BRANCH _branch,
+            List<HIS_MATERIAL_TYPE> _materialTypes,
+            TransactionTypeCFG _transactionTypeCFG,
+            SingleKeyValue _singleKeyValue,
+            List<HIS_CONFIG> listConfig,
+            HIS_TRANS_REQ trans
+            )
+        {
+            try
+            {
+                this.PatyAlters = _patyAlters;
+                this.SereServs = _sereServ;
+                this.Treatment = _treatment;
+                this.DepartmentTrans = _departmentTrans;
+                this.TreatmentFees = _treatmentFees;
+                this.HeinServiceTypeCFG = _heinServiceTypeCfg;
+                this.SingleKeyValue = _singleKeyValue;
+                this.HeinServiceTypes = _heinServiceTypes;
+                this.Services = _services;
+                this.Rooms = _rooms;
+                this.PatientTypeCFG = _patientTypeCfg;
+                this.Branch = _branch;
+                this.TreatmentType = _treatmentType;
+                this.CurrentPatyAlter = _currentPatyAlter;
+                this.SereServExts = _sereServExts;
+                this.materialTypes = _materialTypes;
+                this.Bills = _bills;
+                this.transactionTypeCFG = _transactionTypeCFG;
+                this.listConfig = listConfig;
+                this.transReq = trans;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         /// <summary>
         /// Contructor này có _medicineLine, mục đích hiển thị gom nhóm của thuốc: Tân dược, chế phẩm
         /// </summary>
@@ -143,6 +196,64 @@ namespace MPS.Processor.Mps000260.PDO
                 this.ServiceReqs = _serviceReqs;
                 this.Bills = _bills;
                 this.transactionTypeCFG = _transactionTypeCFG;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        //contructor mới có thêm cấu hình in QR
+        public Mps000260PDO(
+           V_HIS_PATIENT_TYPE_ALTER _currentPatyAlter,
+           List<HIS_PATIENT_TYPE_ALTER> _patyAlters,
+           List<V_HIS_DEPARTMENT_TRAN> _departmentTrans,
+           List<V_HIS_TREATMENT_FEE> _treatmentFees,
+           List<HIS_TRANSACTION> _bills,
+           HeinServiceTypeCFG _heinServiceTypeCfg,
+           PatientTypeCFG _patientTypeCfg,
+           List<HIS_SERE_SERV> _sereServ,
+           List<HIS_SERE_SERV_EXT> _sereServExts,
+           V_HIS_TREATMENT _treatment,
+           List<HIS_HEIN_SERVICE_TYPE> _heinServiceTypes,
+           List<V_HIS_ROOM> _rooms,
+           List<V_HIS_SERVICE> _services,
+           List<HIS_TREATMENT_TYPE> _treatmentType,
+           HIS_BRANCH _branch,
+           List<HIS_MEDICINE_TYPE> _medicineTypes,
+           List<HIS_MATERIAL_TYPE> _materialTypes,
+           List<HIS_MEDICINE_LINE> _medicineLine,
+           List<HIS_SERVICE_REQ> _serviceReqs,
+           TransactionTypeCFG _transactionTypeCFG,
+           SingleKeyValue _singleKeyValue,
+           List<HIS_CONFIG> listConf,
+           HIS_TRANS_REQ trans
+           )
+        {
+            try
+            {
+                this.PatyAlters = _patyAlters;
+                this.SereServs = _sereServ;
+                this.Treatment = _treatment;
+                this.DepartmentTrans = _departmentTrans;
+                this.TreatmentFees = _treatmentFees;
+                this.HeinServiceTypeCFG = _heinServiceTypeCfg;
+                this.SingleKeyValue = _singleKeyValue;
+                this.HeinServiceTypes = _heinServiceTypes;
+                this.Services = _services;
+                this.Rooms = _rooms;
+                this.PatientTypeCFG = _patientTypeCfg;
+                this.Branch = _branch;
+                this.TreatmentType = _treatmentType;
+                this.CurrentPatyAlter = _currentPatyAlter;
+                this.SereServExts = _sereServExts;
+                this.materialTypes = _materialTypes;
+                this.medicineTypes = _medicineTypes;
+                this.MedicineLines = _medicineLine;
+                this.ServiceReqs = _serviceReqs;
+                this.Bills = _bills;
+                this.transactionTypeCFG = _transactionTypeCFG;
+                this.listConfig = listConf;
+                this.transReq = trans;
             }
             catch (Exception ex)
             {

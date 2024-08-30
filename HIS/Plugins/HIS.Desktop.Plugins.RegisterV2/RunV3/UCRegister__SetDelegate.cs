@@ -30,8 +30,6 @@ using Inventec.Common.QrCodeBHYT;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
 using HIS.UC.UCImageInfo.ADO;
 using MOS.SDO;
-using HIS.Desktop.LocalStorage.BackendData;
-using MOS.EFMODEL.DataModels;
 
 namespace HIS.Desktop.Plugins.RegisterV2.Run2
 {
@@ -57,7 +55,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 				this.ucPatientRaw1.SetDelegateShowOrtherPaySource(this.ucOtherServiceReqInfo1.ShowOrtherPay);
 				this.ucPatientRaw1.SetDelegateSendTypeFind(ChangeFindTypeInPatientRaw);
 				this.ucPatientRaw1.SetDelegateCheckboxExamOnline(this.ucOtherServiceReqInfo1.CheckExamOnline);
-				this.ucPatientRaw1.SetEmployee(VEmployee = BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()));
                 this.ucOtherServiceReqInfo1.SetDelegateHeinRightRouteType(this.SetRightRouteEmergencyWhenRegisterOutTime);
 				this.ucOtherServiceReqInfo1.SetDelegatePriorityNumberChanged(this.SetServuceRoomAddButtonWhenRegisterHasPriorityNumber);
 				this.ucOtherServiceReqInfo1.FillDataOweTypeDefault();
@@ -418,8 +415,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 		{
 			try
 			{
-
-				Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => "EnableSave " + isEnable), "EnableSave " + isEnable));
 				IsRunDelegateEnableSave = true;
 				this.IsEnablePatientKey = isEnable;
 				btnSave.Enabled = IsEnablePatientKey;
@@ -433,9 +428,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 		private void HeinEnableSave(bool isEnable)
 		{
 			try
-            {
-                Inventec.Common.Logging.LogSystem.Debug(IsRunDelegateEnableSave + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => "HeinEnableSave " + isEnable), "HeinEnableSave " + isEnable));
-                if (!IsRunDelegateEnableSave)
+			{
+				if (!IsRunDelegateEnableSave)
 				{
 					IsEnablePatientKey = true;
 				}

@@ -47,6 +47,18 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
         {
             this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.chkBlood = new DevExpress.XtraEditors.CheckEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.bar1 = new DevExpress.XtraBars.Bar();
+            this.barButtonItemCreate = new DevExpress.XtraBars.BarButtonItem();
+            this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
+            this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.chkMedical = new DevExpress.XtraEditors.CheckEdit();
+            this.chkMedicine = new DevExpress.XtraEditors.CheckEdit();
             this.btnPrint = new DevExpress.XtraEditors.SimpleButton();
             this.gridControlTreatmentBedRoom = new DevExpress.XtraGrid.GridControl();
             this.gridViewTreatmentBedRoom = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -56,11 +68,6 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
-            this.bar1 = new DevExpress.XtraBars.Bar();
-            this.barButtonItemCreate = new DevExpress.XtraBars.BarButtonItem();
-            this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
-            this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             this.chkServiceReq = new DevExpress.XtraEditors.CheckEdit();
             this.btnFind = new DevExpress.XtraEditors.SimpleButton();
             this.chkDate = new DevExpress.XtraEditors.CheckEdit();
@@ -81,24 +88,20 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.chkMedicine = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.chkMedical = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.chkBlood = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkBlood.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkMedical.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkMedicine.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTreatmentBedRoom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTreatmentBedRoom)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkServiceReq.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkDate.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtExpMestCode.Properties)).BeginInit();
@@ -120,15 +123,12 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkMedicine.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkMedical.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkBlood.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -152,6 +152,116 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
             this.layoutControl1.Size = new System.Drawing.Size(861, 459);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // chkBlood
+            // 
+            this.chkBlood.Location = new System.Drawing.Point(396, 26);
+            this.chkBlood.MenuManager = this.barManager1;
+            this.chkBlood.Name = "chkBlood";
+            this.chkBlood.Properties.Caption = "";
+            this.chkBlood.Size = new System.Drawing.Size(69, 19);
+            this.chkBlood.StyleController = this.layoutControl1;
+            this.chkBlood.TabIndex = 18;
+            // 
+            // barManager1
+            // 
+            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
+            this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
+            this.barManager1.Form = this;
+            this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
+            this.barButtonItemCreate,
+            this.barButtonItem1,
+            this.barButtonItem2});
+            this.barManager1.MaxItemId = 3;
+            // 
+            // bar1
+            // 
+            this.bar1.BarName = "Tools";
+            this.bar1.DockCol = 0;
+            this.bar1.DockRow = 0;
+            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
+            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItemCreate),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem1),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem2)});
+            this.bar1.Text = "Tools";
+            this.bar1.Visible = false;
+            // 
+            // barButtonItemCreate
+            // 
+            this.barButtonItemCreate.Caption = "Ctrl T";
+            this.barButtonItemCreate.Id = 0;
+            this.barButtonItemCreate.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T));
+            this.barButtonItemCreate.Name = "barButtonItemCreate";
+            this.barButtonItemCreate.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItemCreate_ItemClick);
+            // 
+            // barButtonItem1
+            // 
+            this.barButtonItem1.Caption = "Tìm";
+            this.barButtonItem1.Id = 1;
+            this.barButtonItem1.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F));
+            this.barButtonItem1.Name = "barButtonItem1";
+            this.barButtonItem1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem1_ItemClick);
+            // 
+            // barButtonItem2
+            // 
+            this.barButtonItem2.Caption = "In";
+            this.barButtonItem2.Id = 2;
+            this.barButtonItem2.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P));
+            this.barButtonItem2.Name = "barButtonItem2";
+            this.barButtonItem2.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem2_ItemClick);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(861, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 488);
+            this.barDockControlBottom.Size = new System.Drawing.Size(861, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 459);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(861, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 459);
+            // 
+            // chkMedical
+            // 
+            this.chkMedical.Location = new System.Drawing.Point(259, 26);
+            this.chkMedical.MenuManager = this.barManager1;
+            this.chkMedical.Name = "chkMedical";
+            this.chkMedical.Properties.Caption = "";
+            this.chkMedical.Size = new System.Drawing.Size(100, 19);
+            this.chkMedical.StyleController = this.layoutControl1;
+            this.chkMedical.TabIndex = 17;
+            // 
+            // chkMedicine
+            // 
+            this.chkMedicine.Location = new System.Drawing.Point(123, 26);
+            this.chkMedicine.MenuManager = this.barManager1;
+            this.chkMedicine.Name = "chkMedicine";
+            this.chkMedicine.Properties.Caption = "";
+            this.chkMedicine.Size = new System.Drawing.Size(99, 19);
+            this.chkMedicine.StyleController = this.layoutControl1;
+            this.chkMedicine.TabIndex = 16;
             // 
             // btnPrint
             // 
@@ -264,54 +374,6 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
             this.gridColumn6.Visible = true;
             this.gridColumn6.VisibleIndex = 6;
             this.gridColumn6.Width = 246;
-            // 
-            // barManager1
-            // 
-            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
-            this.bar1});
-            this.barManager1.Form = this;
-            this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
-            this.barButtonItemCreate,
-            this.barButtonItem1,
-            this.barButtonItem2});
-            this.barManager1.MaxItemId = 3;
-            // 
-            // bar1
-            // 
-            this.bar1.BarName = "Tools";
-            this.bar1.DockCol = 0;
-            this.bar1.DockRow = 0;
-            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
-            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItemCreate),
-            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem1),
-            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem2)});
-            this.bar1.Text = "Tools";
-            this.bar1.Visible = false;
-            // 
-            // barButtonItemCreate
-            // 
-            this.barButtonItemCreate.Caption = "Ctrl T";
-            this.barButtonItemCreate.Id = 0;
-            this.barButtonItemCreate.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T));
-            this.barButtonItemCreate.Name = "barButtonItemCreate";
-            this.barButtonItemCreate.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItemCreate_ItemClick);
-            // 
-            // barButtonItem1
-            // 
-            this.barButtonItem1.Caption = "Tìm";
-            this.barButtonItem1.Id = 1;
-            this.barButtonItem1.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F));
-            this.barButtonItem1.Name = "barButtonItem1";
-            this.barButtonItem1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem1_ItemClick);
-            // 
-            // barButtonItem2
-            // 
-            this.barButtonItem2.Caption = "In";
-            this.barButtonItem2.Id = 2;
-            this.barButtonItem2.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P));
-            this.barButtonItem2.Name = "barButtonItem2";
-            this.barButtonItem2.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem2_ItemClick);
             // 
             // chkServiceReq
             // 
@@ -560,48 +622,6 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
             this.emptySpaceItem1.Size = new System.Drawing.Size(742, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(861, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 488);
-            this.barDockControlBottom.Size = new System.Drawing.Size(861, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 459);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(861, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 459);
-            // 
-            // dxValidationProvider1
-            // 
-            this.dxValidationProvider1.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
-            // 
-            // chkMedicine
-            // 
-            this.chkMedicine.Location = new System.Drawing.Point(123, 26);
-            this.chkMedicine.MenuManager = this.barManager1;
-            this.chkMedicine.Name = "chkMedicine";
-            this.chkMedicine.Properties.Caption = "";
-            this.chkMedicine.Size = new System.Drawing.Size(99, 19);
-            this.chkMedicine.StyleController = this.layoutControl1;
-            this.chkMedicine.TabIndex = 16;
-            // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -613,16 +633,6 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
             this.layoutControlItem5.Text = "Thuốc";
             this.layoutControlItem5.TextSize = new System.Drawing.Size(30, 13);
             // 
-            // chkMedical
-            // 
-            this.chkMedical.Location = new System.Drawing.Point(259, 26);
-            this.chkMedical.MenuManager = this.barManager1;
-            this.chkMedical.Name = "chkMedical";
-            this.chkMedical.Properties.Caption = "";
-            this.chkMedical.Size = new System.Drawing.Size(100, 19);
-            this.chkMedical.StyleController = this.layoutControl1;
-            this.chkMedical.TabIndex = 17;
-            // 
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.chkMedical;
@@ -631,16 +641,6 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
             this.layoutControlItem7.Size = new System.Drawing.Size(137, 23);
             this.layoutControlItem7.Text = "Vật tư";
             this.layoutControlItem7.TextSize = new System.Drawing.Size(30, 13);
-            // 
-            // chkBlood
-            // 
-            this.chkBlood.Location = new System.Drawing.Point(396, 26);
-            this.chkBlood.MenuManager = this.barManager1;
-            this.chkBlood.Name = "chkBlood";
-            this.chkBlood.Properties.Caption = "";
-            this.chkBlood.Size = new System.Drawing.Size(69, 19);
-            this.chkBlood.StyleController = this.layoutControl1;
-            this.chkBlood.TabIndex = 18;
             // 
             // layoutControlItem10
             // 
@@ -667,6 +667,10 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
             this.emptySpaceItem5.Size = new System.Drawing.Size(394, 23);
             this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
             // 
+            // dxValidationProvider1
+            // 
+            this.dxValidationProvider1.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
+            // 
             // FormPublicMedicineGeneral
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -688,9 +692,12 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkBlood.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkMedical.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkMedicine.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTreatmentBedRoom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTreatmentBedRoom)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkServiceReq.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkDate.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtExpMestCode.Properties)).EndInit();
@@ -712,15 +719,12 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkMedicine.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkMedical.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkBlood.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -38,7 +38,7 @@
       <HintPath>..\..\..\Lib\ACS\ACS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper">
-      <HintPath>..\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\lib\MRS\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -133,7 +133,7 @@
       <HintPath>..\..\..\Lib\MOS\MOS.ServicePaty.dll</HintPath>
     </Reference>
     <Reference Include="MRS.Filter">
-      <HintPath>..\..\..\Lib\MRS\MRS.Filter.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.UC\Inventec.UC.CreateReport\MRS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MRS.SDO">
       <HintPath>..\..\..\Lib\MRS\MRS.SDO.dll</HintPath>

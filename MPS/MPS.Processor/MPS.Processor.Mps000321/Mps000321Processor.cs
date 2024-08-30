@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.Common.BankQrCode;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MPS.Processor.Mps000321.ADO;
@@ -139,6 +140,7 @@ namespace MPS.Processor.Mps000321
                 GroupDisplayProcess();
                 ProcessSingleKey();
                 ProcessTransaction();
+                SetQrCode();
                 SetBarcodeKey();
                 SetImageKey();
                 if (sereServADOs == null || sereServADOs.Count == 0)
@@ -192,7 +194,27 @@ namespace MPS.Processor.Mps000321
 
             return result;
         }
-
+        private void SetQrCode()
+        {
+            try
+            {
+                if (rdo.tranReq != null && rdo.listConfigPaymentQrCode != null && rdo.listConfigPaymentQrCode.Count > 0)
+                {
+                    var data = QrCodeProcessor.CreateQrImage(rdo.tranReq, rdo.listConfigPaymentQrCode);
+                    if (data != null && data.Count > 0)
+                    {
+                        foreach (var item in data)
+                        {
+                            SetSingleKey(new KeyValue(item.Key, item.Value));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void ProcessOtherSource(List<SereServADO> sereServADOs)
         {
             try

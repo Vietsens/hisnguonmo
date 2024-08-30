@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.Plugins.Library.PrintBordereau.Base;
 using HIS.Desktop.Plugins.Library.PrintBordereau.Config;
@@ -38,7 +39,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000321
             List<V_HIS_DEPARTMENT_TRAN> _departmentTrans, List<V_HIS_TREATMENT_FEE> _treamentFees, V_HIS_TREATMENT _treatment,
             V_HIS_PATIENT _patient, List<V_HIS_ROOM> _rooms, List<V_HIS_SERVICE> _services, List<HIS_HEIN_SERVICE_TYPE> _heinServiceTypes,
             long _totalDayTreatment, string _statusTreatmentOut, string _departmentName, string _roomName, string _userNameReturnResult,
-            List<V_HIS_TRANSACTION> _listTransaction, PrintOption.PayType? _payOption)
+            List<V_HIS_TRANSACTION> _listTransaction, PrintOption.PayType? _payOption, HIS_TRANS_REQ _transReq, List<HIS_CONFIG> _lstConfig)
             : base(roomId, _treatment)
         {
             this.SereServs = _sereServs;
@@ -57,6 +58,8 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000321
             this.Patient = _patient;
             this.Transactions = _listTransaction;
             this.PayOption = _payOption;
+            this.transReq = _transReq;
+            this.lstConfig = _lstConfig;
         }
 
         bool ILoad.Load(string printTypeCode, string fileName, Inventec.Common.FlexCelPrint.DelegateReturnEventPrint returnEventPrint)
@@ -109,7 +112,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000321
                         sereServExts.AddRange(ext);
                     }
                 }
-
+                
                 List<HIS_MATERIAL_TYPE> materialTypes = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
                 List<HIS_DEPARTMENT> departments = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_DEPARTMENT>();
 
@@ -124,8 +127,8 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000321
                     .Get<List<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeAlter/Get", ApiConsumers.MosConsumer, patientTypeAlterFilter, param);
                 List<HIS_SERVICE_UNIT> servuceUnit = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_UNIT>();
                 List<HIS_OTHER_PAY_SOURCE> otherPaySource = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_OTHER_PAY_SOURCE>();
-
-                MPS.Processor.Mps000321.PDO.Mps000321PDO rdo = new MPS.Processor.Mps000321.PDO.Mps000321PDO(this.CurrentPatientTypeAlter, patientTypeAlters, DepartmentTrans, TreatmentFees, patientTypeCFG, this.SereServs, sereServExts, Treatment, this.Patient, HeinServiceTypes, Rooms, Services, treatmentTypes, branch, materialTypes, departments, singleValue, hisConfigValue, servuceUnit, patientType, mediOrg, otherPaySource, this.Transactions);
+                Inventec.Common.Logging.LogSystem.Debug("Goi den bieu in Mps000321: config:" + this.lstConfig.Count + " trans_req_id: " + this.transReq.ID);
+                MPS.Processor.Mps000321.PDO.Mps000321PDO rdo = new MPS.Processor.Mps000321.PDO.Mps000321PDO(this.CurrentPatientTypeAlter, patientTypeAlters, DepartmentTrans, TreatmentFees, patientTypeCFG, this.SereServs, sereServExts, Treatment, this.Patient, HeinServiceTypes, Rooms, Services, treatmentTypes, branch, materialTypes, departments, singleValue, hisConfigValue, servuceUnit, patientType, mediOrg, otherPaySource, this.Transactions,this.lstConfig,this.transReq);
 
                 #region Run Print
 

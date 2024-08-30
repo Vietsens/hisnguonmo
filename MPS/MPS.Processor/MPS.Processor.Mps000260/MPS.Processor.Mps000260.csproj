@@ -141,7 +141,7 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.TDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
-      <HintPath>..\..\..\..\..\Product\HIS\His.Desktop\1.48\ReferencedAssemblies\MPS.ProcessorBase.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
     </Reference>
     <Reference Include="SAR.EFMODEL">
       <HintPath>..\..\..\..\LIB\SAR\SAR.EFMODEL.dll</HintPath>
@@ -166,6 +166,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.Common.BankQrCode\HIS.Desktop.Common.BankQrCode.csproj">
+      <Project>{3a7b0bd1-d065-40f2-afbe-046de06b80f2}</Project>
+      <Name>HIS.Desktop.Common.BankQrCode</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MPS.Processor.Mps000260.PDO\MPS.Processor.Mps000260.PDO.csproj">
       <Project>{d7c9a5f0-4596-4732-a352-883589a2032e}</Project>
       <Name>MPS.Processor.Mps000260.PDO</Name>
@@ -173,8 +177,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy "$(TargetDir)$(TargetFileName)" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" /i /d /y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

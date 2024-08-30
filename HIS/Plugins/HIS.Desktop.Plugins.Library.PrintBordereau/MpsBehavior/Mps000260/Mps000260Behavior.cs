@@ -16,10 +16,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.Plugins.Library.PrintBordereau.Base;
 using HIS.Desktop.Plugins.Library.PrintBordereau.Config;
 using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
@@ -38,7 +40,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000260
     public class Mps000260Behavior : MpsDataBase, ILoad
     {
         private string documentName;
-        public Mps000260Behavior(long? roomId, V_HIS_PATIENT_TYPE_ALTER currentPatientTypeAlter, List<HIS_SERE_SERV> _sereServs, List<V_HIS_DEPARTMENT_TRAN> _departmentTrans, List<V_HIS_TREATMENT_FEE> _treamentFees, V_HIS_TREATMENT _treatment, List<V_HIS_ROOM> _rooms, List<V_HIS_SERVICE> _services, List<HIS_HEIN_SERVICE_TYPE> _heinServiceTypes, List<HIS_SERE_SERV_DEPOSIT> _sereServDeposits, List<HIS_SESE_DEPO_REPAY> _sereDepoRepays, long _totalDayTreatment, string _statusTreatmentOut, string _departmentName, string _userNameReturnResult, string documentname)
+        public Mps000260Behavior(long? roomId, V_HIS_PATIENT_TYPE_ALTER currentPatientTypeAlter, List<HIS_SERE_SERV> _sereServs, List<V_HIS_DEPARTMENT_TRAN> _departmentTrans, List<V_HIS_TREATMENT_FEE> _treamentFees, V_HIS_TREATMENT _treatment, List<V_HIS_ROOM> _rooms, List<V_HIS_SERVICE> _services, List<HIS_HEIN_SERVICE_TYPE> _heinServiceTypes, List<HIS_SERE_SERV_DEPOSIT> _sereServDeposits, List<HIS_SESE_DEPO_REPAY> _sereDepoRepays, long _totalDayTreatment, string _statusTreatmentOut, string _departmentName, string _userNameReturnResult, string documentname,HIS_TRANS_REQ _transReq, List<HIS_CONFIG> _lstConfig)
             : base(roomId, _treatment)
         {
             this.SereServs = _sereServs;
@@ -56,6 +58,8 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000260
             this.SereServDeposits = _sereServDeposits;
             this.SeseDepoRepays = _sereDepoRepays;
             this.documentName = documentname;
+            this.transReq = _transReq;
+            this.lstConfig = _lstConfig;
         }
 
         bool ILoad.Load(string printTypeCode, string fileName, Inventec.Common.FlexCelPrint.DelegateReturnEventPrint returnEventPrint)
@@ -117,8 +121,9 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000260
 
 
                 long isShowMedicineLine = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKey.IS_SHOW_MEDICINE_LINE));
-
+                
                 MPS.Processor.Mps000260.PDO.Mps000260PDO rdo = null;
+                Inventec.Common.Logging.LogSystem.Debug("Goi den bieu in Mps000260: config:" + this.lstConfig.Count + " trans_req_id: "+this.transReq.ID);
                 if (isShowMedicineLine == 1)
                 {
                     List<HIS_MEDICINE_TYPE> medicineTypes = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDICINE_TYPE>();
@@ -130,12 +135,12 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000260
                     List<HIS_SERVICE_REQ> serviceReqs = new BackendAdapter(param)
                     .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
 
-                    rdo = new MPS.Processor.Mps000260.PDO.Mps000260PDO(this.CurrentPatientTypeAlter, patyBhyts, DepartmentTrans, TreatmentFees, bills, heinServiceType, patientTypeCFG, this.SereServs, sereServExts, Treatment, HeinServiceTypes, Rooms, Services, treatmentTypes, branch, medicineTypes, materialTypes, medicineLines, serviceReqs, transactionTypeCFG, singleValue);
+                    rdo = new MPS.Processor.Mps000260.PDO.Mps000260PDO(this.CurrentPatientTypeAlter, patyBhyts, DepartmentTrans, TreatmentFees, bills, heinServiceType, patientTypeCFG, this.SereServs, sereServExts, Treatment, HeinServiceTypes, Rooms, Services, treatmentTypes, branch, medicineTypes, materialTypes, medicineLines, serviceReqs, transactionTypeCFG, singleValue,lstConfig,transReq);
                 }
                 else
                 {
 
-                    rdo = new MPS.Processor.Mps000260.PDO.Mps000260PDO(this.CurrentPatientTypeAlter, patyBhyts, DepartmentTrans, TreatmentFees, bills, heinServiceType, patientTypeCFG, this.SereServs, sereServExts, Treatment, HeinServiceTypes, Rooms, Services, treatmentTypes, branch, materialTypes, transactionTypeCFG, singleValue);
+                    rdo = new MPS.Processor.Mps000260.PDO.Mps000260PDO(this.CurrentPatientTypeAlter, patyBhyts, DepartmentTrans, TreatmentFees, bills, heinServiceType, patientTypeCFG, this.SereServs, sereServExts, Treatment, HeinServiceTypes, Rooms, Services, treatmentTypes, branch, materialTypes, transactionTypeCFG, singleValue, lstConfig, transReq);
                 }
 
                 PrintCustomShow<Mps000260PDO> printShow = new PrintCustomShow<Mps000260PDO>(printTypeCode, fileName, rdo, returnEventPrint, this.isPreview);

@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.Plugins.Library.PrintBordereau.Base;
 using HIS.Desktop.Plugins.Library.PrintBordereau.Config;
@@ -38,7 +39,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000261
     public class Mps000261Behavior : MpsDataBase, ILoad
     {
 
-        public Mps000261Behavior(long? roomId, List<HIS_SERE_SERV> _sereServs, List<V_HIS_DEPARTMENT_TRAN> _departmentTrans, List<V_HIS_TREATMENT_FEE> _treamentFees, V_HIS_TREATMENT _treatment, List<V_HIS_ROOM> _rooms, List<V_HIS_SERVICE> _services, List<HIS_HEIN_SERVICE_TYPE> _heinServiceTypes, long _totalDayTreatment, string _statusTreatmentOut, string _departmentName, string _userNameReturnResult)
+        public Mps000261Behavior(long? roomId, List<HIS_SERE_SERV> _sereServs, List<V_HIS_DEPARTMENT_TRAN> _departmentTrans, List<V_HIS_TREATMENT_FEE> _treamentFees, V_HIS_TREATMENT _treatment, List<V_HIS_ROOM> _rooms, List<V_HIS_SERVICE> _services, List<HIS_HEIN_SERVICE_TYPE> _heinServiceTypes, long _totalDayTreatment, string _statusTreatmentOut, string _departmentName, string _userNameReturnResult, HIS_TRANS_REQ _transReq, List<HIS_CONFIG> _lstConfig)
             : base(roomId, _treatment)
         {
             this.SereServs = _sereServs;
@@ -52,6 +53,8 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000261
             this.StatusTreatmentOut = _statusTreatmentOut;
             this.DepartmentName = _departmentName;
             this.UserNameReturnResult = _userNameReturnResult;
+            this.transReq = _transReq;
+            this.lstConfig = _lstConfig;
         }
 
         bool ILoad.Load(string printTypeCode, string fileName, Inventec.Common.FlexCelPrint.DelegateReturnEventPrint returnEventPrint)
@@ -84,8 +87,9 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000261
                 singleValue.userNameReturnResult = UserNameReturnResult;
 
                 List<HIS_MATERIAL_TYPE> materialTypes = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
-
+                
                 MPS.Processor.Mps000261.PDO.Mps000261PDO rdo = null;
+                Inventec.Common.Logging.LogSystem.Debug("Goi den bieu in Mps000261: config:" + this.lstConfig.Count + " trans_req_id: " + this.transReq.ID);
                 long isShowMedicineLine = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKey.IS_SHOW_MEDICINE_LINE));
                 if (isShowMedicineLine == 1)
                 {
@@ -98,11 +102,11 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000261
                     List<HIS_SERVICE_REQ> serviceReqs = new BackendAdapter(param)
                     .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
 
-                    rdo = new MPS.Processor.Mps000261.PDO.Mps000261PDO(DepartmentTrans, TreatmentFees, heinServiceType, patientTypeCFG, transactionTypeCFG, SereServs, transactions, Treatment, HeinServiceTypes, Rooms, Services, medicineTypes, materialTypes, medicineLines, serviceReqs, singleValue);
+                    rdo = new MPS.Processor.Mps000261.PDO.Mps000261PDO(DepartmentTrans, TreatmentFees, heinServiceType, patientTypeCFG, transactionTypeCFG, SereServs, transactions, Treatment, HeinServiceTypes, Rooms, Services, medicineTypes, materialTypes, medicineLines, serviceReqs, singleValue,this.lstConfig,this.transReq);
                 }
                 else
                 {
-                    rdo = new MPS.Processor.Mps000261.PDO.Mps000261PDO(DepartmentTrans, TreatmentFees, heinServiceType, patientTypeCFG, transactionTypeCFG, SereServs, transactions, Treatment, HeinServiceTypes, Rooms, Services, materialTypes, singleValue);
+                    rdo = new MPS.Processor.Mps000261.PDO.Mps000261PDO(DepartmentTrans, TreatmentFees, heinServiceType, patientTypeCFG, transactionTypeCFG, SereServs, transactions, Treatment, HeinServiceTypes, Rooms, Services, materialTypes, singleValue, this.lstConfig, this.transReq);
                 }
 
                 PrintCustomShow<Mps000261PDO> printShow = new PrintCustomShow<Mps000261PDO>(printTypeCode, fileName, rdo, returnEventPrint, this.isPreview);

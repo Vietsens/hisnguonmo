@@ -115,6 +115,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.Common.BankQrCode\HIS.Desktop.Common.BankQrCode.csproj">
+      <Project>{3a7b0bd1-d065-40f2-afbe-046de06b80f2}</Project>
+      <Name>HIS.Desktop.Common.BankQrCode</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MPS.Processor.Mps000321.PDO\MPS.Processor.Mps000321.PDO.csproj">
       <Project>{0f9e7394-3f4d-46ac-9b43-95427f31b296}</Project>
       <Name>MPS.Processor.Mps000321.PDO</Name>

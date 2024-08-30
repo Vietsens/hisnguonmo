@@ -286,10 +286,6 @@
     <Compile Include="Sda\SdaEventLogCreate.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\SHAREUTIL\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.csproj">
-      <Project>{a9e46128-5af1-4bbd-b318-854517fc26ab}</Project>
-      <Name>Inventec.Common.FlexCelPrint</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>

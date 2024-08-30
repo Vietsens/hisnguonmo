@@ -613,8 +613,9 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
 
                         start += Base.GlobaStore.MAX_REQUEST_LENGTH_PARAM;
                         count -= Base.GlobaStore.MAX_REQUEST_LENGTH_PARAM;
-                        PrintProcess();
+                        
                     }
+                    PrintProcess();
 
                     if (_ExpMests.Count == 0)
                     {
@@ -1247,43 +1248,67 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                 List<V_HIS_EXP_MEST_MATERIAL> listExpMestMaterial = new List<V_HIS_EXP_MEST_MATERIAL>();
                 List<V_HIS_EXP_MEST_BLOOD> listExpMestBlood = new List<V_HIS_EXP_MEST_BLOOD>();
                 CommonParam param = new CommonParam();
-                var treatmentIds = GetSelectedRows().Select(o => o.TREATMENT_ID).ToList();
+                var treatmentIds = bedRoomName.Select(s=>s.Value).Select(o=>o.TREATMENT_ID).ToList();
 
                 if (chkMedicine.Checked)
                 {
-                    HisExpMestMedicineViewFilter meFilter = new HisExpMestMedicineViewFilter();
-                    meFilter.TDL_TREATMENT_IDs = treatmentIds;
-                    var rs = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MEDICINE>>("/api/HisExpMestMedicine/GetView", ApiConsumers.MosConsumer, meFilter, param);
-                    if (rs != null)
+                    if(_ExpMestMediAndMateADOs != null)
                     {
-                        listExpMestMedicine.AddRange(rs);
+                        var listThuoc = _ExpMestMediAndMateADOs.Where(s => s.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC).ToList();
+                        Mapper.CreateMap<ExpMestMediAndMateADO,V_HIS_EXP_MEST_MEDICINE >();
+                        listExpMestMedicine = Mapper.Map<List<ExpMestMediAndMateADO>, List<V_HIS_EXP_MEST_MEDICINE>>(listThuoc);
+
+                        //Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_MEDICINE>(listExpMestMedicine, _ExpMestMediAndMateADOs.Where(s=>s.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC));
                     }
                 }
                 if (chkMedical.Checked)
                 {
-                    HisExpMestMaterialViewFilter maFilter = new HisExpMestMaterialViewFilter();
-                    maFilter.TDL_TREATMENT_IDs = treatmentIds;
-                    var rs = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MATERIAL>>("/api/HisExpMestMaterial/GetView", ApiConsumers.MosConsumer, maFilter, param);
-                    if (rs != null)
+                    if (_ExpMestMediAndMateADOs != null)
                     {
-                        listExpMestMaterial.AddRange(rs);
+                        var listThuoc = _ExpMestMediAndMateADOs.Where(s => s.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT).ToList();
+                        foreach(var expMaterial in listThuoc)
+                        {
+                            V_HIS_EXP_MEST_MATERIAL expMate = new V_HIS_EXP_MEST_MATERIAL();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_MATERIAL>(expMate, expMaterial);
+                            expMate.MATERIAL_TYPE_NAME = expMaterial.MEDICINE_TYPE_NAME;
+                            expMate.MATERIAL_TYPE_CODE = expMaterial.MEDICINE_TYPE_CODE;
+                            expMate.TDL_MATERIAL_TYPE_ID = expMaterial.MEDICINE_TYPE_ID;
+                            expMate.MATERIAL_ID = expMaterial.MEDICINE_ID;
+                            expMate.TDL_INTRUCTION_DATE = expMaterial.INTRUCTION_DATE;
+                            expMate.TDL_INTRUCTION_TIME = expMaterial.INTRUCTION_TIME;
+                            expMate.TDL_TREATMENT_ID = expMaterial.TREATMENT_ID;
+                            
+                            listExpMestMaterial.Add(expMate);
+                        }
+                        //Mapper.CreateMap<ExpMestMediAndMateADO, V_HIS_EXP_MEST_MATERIAL>();
+                        //listExpMestMaterial = Mapper.Map<List<ExpMestMediAndMateADO>, List<V_HIS_EXP_MEST_MATERIAL>>(listThuoc);
+                        ////Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_MATERIAL>(listExpMestMaterial, _ExpMestMediAndMateADOs.Where(s => s.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT));
                     }
                 }
                 if (chkBlood.Checked)
                 {
-                    HisExpMestFilter mestFilter = new HisExpMestFilter();
-                    mestFilter.TDL_TREATMENT_IDs = treatmentIds;
-                    var listmest = new BackendAdapter(param).Get<List<HIS_EXP_MEST>>("/api/HisExpMest/Get", ApiConsumer.ApiConsumers.MosConsumer, mestFilter, param);
-
-                    HisExpMestBloodViewFilter blFilter = new HisExpMestBloodViewFilter();
-                    blFilter.EXP_MEST_IDs = listmest.Select(s => s.ID).ToList();
-                    var rs = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_BLOOD>>("/api/HisExpMestBlood/GetView", ApiConsumers.MosConsumer, blFilter, param);
-                    if (rs != null)
+                    if (_ExpMestMediAndMateADOs != null)
                     {
-                        listExpMestBlood.AddRange(rs);
+                        var listThuoc = _ExpMestMediAndMateADOs.Where(s => s.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU).ToList();
+                        foreach (var expMaterial in listThuoc)
+                        {
+                            V_HIS_EXP_MEST_BLOOD expMate = new V_HIS_EXP_MEST_BLOOD();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_BLOOD>(expMate, expMaterial);
+                            expMate.BLOOD_TYPE_NAME = expMaterial.MEDICINE_TYPE_NAME;
+                            expMate.BLOOD_TYPE_CODE = expMaterial.MEDICINE_TYPE_CODE;
+                            expMate.TDL_BLOOD_TYPE_ID = expMaterial.MEDICINE_TYPE_ID;
+                            expMate.BLOOD_ID = expMaterial.MEDICINE_ID??0;
+                            expMate.TDL_INTRUCTION_DATE = expMaterial.INTRUCTION_DATE;
+                            expMate.TDL_INTRUCTION_TIME = expMaterial.INTRUCTION_TIME;
+                            expMate.TDL_TREATMENT_ID = expMaterial.TREATMENT_ID;
+                            listExpMestBlood.Add(expMate);
+                        }
+
+                        //Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_BLOOD>(listExpMestBlood, _ExpMestMediAndMateADOs.Where(s => s.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU));
                     }
                 }
-                var config_day_size = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "HIS.PHIEU_CONG_KHAI_THUOC.DAY_SIZE").FirstOrDefault();
+                long config_day_size = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>("HIS.PHIEU_CONG_KHAI_THUOC.DAY_SIZE"); //BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "HIS.PHIEU_CONG_KHAI_THUOC.DAY_SIZE").FirstOrDefault();
+                
                 Mps000177PDO pdo = new Mps000177PDO(
                     lstPatient,
                     Mps000177DAY,
@@ -1293,7 +1318,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                     listExpMestMedicine,
                     listExpMestMaterial,
                     listExpMestBlood,
-                    Convert.ToInt64(config_day_size.VALUE)
+                    config_day_size
                     );
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
 
