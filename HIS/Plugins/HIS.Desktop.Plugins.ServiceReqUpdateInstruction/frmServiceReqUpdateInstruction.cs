@@ -86,10 +86,11 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             SetCaptionByLanguageKey();
             listIcd = BackendDataWorker.Get<HIS_ICD>().OrderBy(o => o.ICD_CODE).ToList();
         }
-
+        private bool isLoading = true;
         private void frmServiceReqUpdateInstruction_Load(object sender, EventArgs e)
         {
             WaitingManager.Show();
+            dtTime.EditValueChanged -= dtTime_EditValueChanged;
             InitUcCauseIcd();
             GetData();
             GetTreatment();
@@ -105,6 +106,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             InitEnabledControl();
             services = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_SERVICE>();
             WaitingManager.Hide();
+            dtTime.EditValueChanged += dtTime_EditValueChanged;
+            isLoading = false;
         }
 
         private void VisibleLayout()
@@ -1941,7 +1944,9 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
         {
             try
             {
-                 CheckTimeSereServ();
+                if (isLoading)
+                    return;
+                CheckTimeSereServ();
             }
             catch (Exception ex)
             {
