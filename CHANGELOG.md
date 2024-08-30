@@ -1,3 +1,8 @@
+### Release 2.326.0
+* Bổ sung cảnh báo trả kết quả xét nghiệm
+* Bổ sung QR thanh toán lên các bảng kê theo khoa
+* Bổ sung cảnh báo chỉ định trong thời gian xử lý dịch vụ
+
 ### Release 2.325.0
 * Bổ sung sao chép thông tin xử lý khám của đợt khám trước đó
 * Bổ sung thông tin tại các chức năng xét nghiệm cho phép sao chép dữ liệu từ danh sách
