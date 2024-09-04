@@ -59,7 +59,6 @@
   > Tạo sẵn folder HISNGUONMO để lưu source code tải về và chạy lệnh bên dưới để clone về máy
   ```shell	
 	git clone https://github.com/Vietsens/hisnguonmo.git
-	  $ script build
   ```  	
 	
   
@@ -77,7 +76,6 @@
 		
 		# Xóa file zip sau khi giải nén
 		Remove-Item -Path $zipPath
-	  $ script build
 	```    
   
   
@@ -95,17 +93,14 @@
   > với win 32 bit
 	```shell
 	cd C:\Windows\Microsoft.NET\Framework\v4.0.30319 với win 32 bit
-	  $ script build
 	``` 
   > với win 64 bit
 	```shell
 	cd C:\Windows\Microsoft.NET\Framework64\v4.0.30319 với win 64 bit
-  	  $ script build
 	```    
   > chạy lệnh build project main
   ```shell
 	MSBuild.exe E:\HisNguonMo\hisnguonmo\HIS\HIS.Desktop\HIS.Desktop.csproj /p:Configuration=Release /p:Platform=AnyCPU /p:TargetFrameworkSDKToolsDirectory="C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools"
-  	  $ script build
   ```  	
 	Lưu ý: cần sửa lại tham số cấu hình trong lệnh build cho khớp với môi trường thực tế của máy tính
 	Trong đó
@@ -129,18 +124,15 @@
 		
 		# Xóa file zip sau khi giải nén
 		Remove-Item -Path $zipPath
-   	  $ script build
 	```   
 	cần sửa lại zipPath và extractPath cho đúng với đường dẫn cần lưu
 	có thể chạy từng dòng lệnh một hoặc muốn chạy tất cả các lệnh 1 lần thì lưu script này ra file DownloadAndExtractExtend.ps1, và sau đó chạy file này trong PowerShell:
     ```shell
 		.\DownloadAndExtractExtend.ps1
-		$ script build
 	```  
 	Nếu bạn chưa bao giờ chạy script PowerShell trước đây, bạn có thể cần thay đổi chính sách thực thi để cho phép chạy script:
 	 ```shell
 		Set-ExecutionPolicy RemoteSigned
-		$ script build
 	```  
 
 ## Thông tin phát hành
