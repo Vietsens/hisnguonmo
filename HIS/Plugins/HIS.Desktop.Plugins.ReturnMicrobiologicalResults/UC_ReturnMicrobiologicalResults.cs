@@ -18,7 +18,7 @@
 using ACS.EFMODEL.DataModels;
 using ACS.SDO;
 using DevExpress.Data;
-using DevExpress.Utils;
+using DevExpress.Utils; 
 using DevExpress.Utils.Menu;
 using DevExpress.XtraBars;
 using DevExpress.XtraEditors;
@@ -857,6 +857,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                             {
                                 e.Value = imageListIcon.Images[10];
                             }
+      
                         }
                         else if (e.Column.FieldName == "PATIENT_NAME")
                         {
@@ -1068,11 +1069,6 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                     lisSampleFilter.TREATMENT_CODE__EXACT = code;
                     txtTreatmentCode.Text = code;
                 }
-                if (chkSXHenTra.Checked)
-                {
-                    lisSampleFilter.ORDER_DIRECTION = "ASC";
-                    lisSampleFilter.ORDER_FIELD = "APPOINTMENT_TIME";
-                }
                 if (dtBarcodeTimefrom != null && dtBarcodeTimefrom.DateTime != DateTime.MinValue)
                     lisSampleFilter.BARCODE_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtBarcodeTimefrom.EditValue).ToString("yyyyMMdd") + "000000");
                 if (dtBarcodeTimeTo != null && dtBarcodeTimeTo.DateTime != DateTime.MinValue)
@@ -1080,6 +1076,11 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 lisSampleFilter.ORDER_FIELD = "BARCODE_TIME";
                 lisSampleFilter.ORDER_DIRECTION = "DESC";
 
+                if (chkSXHenTra.Checked)
+                {
+                    lisSampleFilter.ORDER_FIELD = "APPOINTMENT_TIME";
+                    lisSampleFilter.ORDER_DIRECTION = "ASC";
+                }
                 List<long> lstTestServiceReqSTT = new List<long>();
 
                 //Tất cả 0
@@ -1147,7 +1148,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 apiResult = new ApiResultObject<List<V_LIS_SAMPLE_2>>();
 
                 apiResult = new BackendAdapter(paramCommon).GetRO<List<V_LIS_SAMPLE_2>>("api/LisSample/GetView2", ApiConsumer.ApiConsumers.LisConsumer, lisSampleFilter, paramCommon);
-                gridControlSample.DataSource = null;
+                gridControlSample.DataSource = null; 
 
                 if (apiResult != null)
                 {
@@ -2977,16 +2978,23 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                                 e.Appearance.BackColor = Color.LightGray;
                             }
                         }
-
-                        if (HisConfigCFG.WARNING_TIME_RETURN_RESULT == "1"
+                        
+                        if (HisConfigCFG.WARNING_TIME_RETURN_RESULT == "1" && data.APPOINTMENT_TIME != null
                             && data.APPOINTMENT_TIME.HasValue && data.APPOINTMENT_TIME < Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now)
                             && (data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM || data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ))
                         {
                             e.Appearance.ForeColor = Color.Red;
                         }
-                        else if (HisConfigCFG.WARNING_TIME_RETURN_RESULT == "1"
-                           && data.APPOINTMENT_TIME.HasValue && data.APPOINTMENT_TIME - (Convert.ToInt64(HisConfigCFG.WARNING_TIME_RETURN_RESULT == "" ? "0" : HisConfigCFG.WARNING_TIME_RETURN_RESULT) * 100) < Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now)
-                           && (data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM || data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ))
+
+                        if (LisConfigCFG.SAMPLE_TIME_OR_APPROVAL_TIME == "1" && HisConfigCFG.WARNING_TIME_CONNECT_RESULT != "0" && data.APPOINTMENT_TIME != null
+                                && data.APPOINTMENT_TIME.HasValue && data.APPOINTMENT_TIME < Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now)
+                                && (data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN || data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM || data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ))
+                        {
+                            e.Appearance.ForeColor = Color.Red;
+                        }
+                        else if (LisConfigCFG.SAMPLE_TIME_OR_APPROVAL_TIME == "1" && HisConfigCFG.WARNING_TIME_CONNECT_RESULT != "0" && data.APPOINTMENT_TIME != null
+                           && data.APPOINTMENT_TIME.HasValue && data.APPOINTMENT_TIME - (Convert.ToInt64(HisConfigCFG.WARNING_TIME_CONNECT_RESULT == "" ? "0" : HisConfigCFG.WARNING_TIME_CONNECT_RESULT) * 100) < Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now)
+                           && (data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN || data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM || data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ))
                         {
                             e.Appearance.ForeColor = Color.Orange;
                         }
@@ -2994,6 +3002,22 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                         {
                             e.Appearance.ForeColor = Color.Black;
                         }
+                        //if (HisConfigCFG.WARNING_TIME_CONNECT_RESULT == "1" && data.APPOINTMENT_TIME != null
+                        //     && data.APPOINTMENT_TIME.HasValue && data.APPOINTMENT_TIME < Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now)
+                        //     && (data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM || data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ))
+                        //{
+                        //    e.Appearance.ForeColor = Color.Red;
+                        //}
+                        //else if (HisConfigCFG.WARNING_TIME_CONNECT_RESULT == "1" && data.APPOINTMENT_TIME != null
+                        //   && data.APPOINTMENT_TIME.HasValue && data.APPOINTMENT_TIME - (Convert.ToInt64(HisConfigCFG.WARNING_TIME_CONNECT_RESULT == "" ? "0" : HisConfigCFG.WARNING_TIME_CONNECT_RESULT) * 100) < Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now)
+                        //   && (data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM || data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ))
+                        //{
+                        //    e.Appearance.ForeColor = Color.Orange;
+                        //}
+                        //else
+                        //{
+                        //    e.Appearance.ForeColor = Color.Black;
+                        //}
                     }
                 }
 

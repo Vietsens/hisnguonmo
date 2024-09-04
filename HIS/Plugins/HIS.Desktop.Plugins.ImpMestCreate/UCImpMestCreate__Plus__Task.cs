@@ -238,7 +238,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 			try
 			{
                 var activeBidMedicineTypeIds = BackendDataWorker.Get<HIS_BID_MEDICINE_TYPE>()
-												.Where(bid => bid.IS_ACTIVE == 0)
+												.Where(bid => bid.IS_ACTIVE == 1)
 												.Select(bid => bid.MEDICINE_TYPE_ID)
 												.Distinct()
 												.ToList();
@@ -246,7 +246,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 					  o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
 					  && o.IS_LEAF == 1
 					  && o.IS_STOP_IMP == null
-					  && !activeBidMedicineTypeIds.Contains(o.ID)).ToList();
+					  && activeBidMedicineTypeIds.Contains(o.ID)).ToList();
 				
 
             }
@@ -260,7 +260,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 			try
 			{
                 var activeBidMaterialTypeIds = BackendDataWorker.Get<HIS_BID_MATERIAL_TYPE>()
-                                                .Where(bid => bid.IS_ACTIVE == 0)
+                                                .Where(bid => bid.IS_ACTIVE == 1)
                                                 .Select(bid => bid.MATERIAL_TYPE_ID)
 												.Distinct()
                                                 .ToList();
@@ -268,7 +268,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 						o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
 						&& o.IS_LEAF == 1
 						&& o.IS_STOP_IMP == null
-						&& !activeBidMaterialTypeIds.Contains(o.ID)).ToList();
+						&& activeBidMaterialTypeIds.Contains(o.ID)).ToList();
                 
 
             }
