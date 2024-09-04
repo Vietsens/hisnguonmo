@@ -1059,5 +1059,89 @@ namespace HIS.Desktop.Plugins.HisIcdCm.HisIcdCm
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void gridviewFormList_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
+        {
+            try
+            {
+                DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (e.RowHandle >= 0)
+                {
+
+                    HIS_ICD_CM data = (HIS_ICD_CM)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                    if (e.Column.FieldName == "IS_LOCK")
+                    {
+                        e.RepositoryItem = (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? btnUnLock : btnLock);
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnLock_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            CommonParam param = new CommonParam();
+            HIS_ICD_CM success = new HIS_ICD_CM();
+            //bool notHandler = false;
+            try
+            {
+                HIS_ICD_CM data = (HIS_ICD_CM)gridviewFormList.GetFocusedRow();
+                if (MessageBox.Show(LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonBoKhoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    //HIS_ICD_CM data1 = new HIS_ICD_CM();
+                    //data1.ID = data.ID;
+                    WaitingManager.Show();
+                    success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_ICD_CM>(HisRequestUriStore.MOSHIS_ICD_CHANGELOCK, ApiConsumers.MosConsumer, data.ID, param);
+                    WaitingManager.Hide();
+                    if (success != null)
+                    {
+                        FillDataToGridControl();
+                        btnEdit.Enabled = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnUnLock_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            CommonParam param = new CommonParam();
+            HIS_ICD_CM success = new HIS_ICD_CM();
+            //bool notHandler = false;
+            try
+            {
+
+                HIS_ICD_CM data = (HIS_ICD_CM)gridviewFormList.GetFocusedRow();
+                if (MessageBox.Show(LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonKhoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    //HIS_ICD_CM data1 = new HIS_ICD_CM();
+                    //data1.ID = data.ID;
+                    WaitingManager.Show();
+                    success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_ICD_CM>(HisRequestUriStore.MOSHIS_ICD_CHANGELOCK, ApiConsumers.MosConsumer, data.ID, param);
+                    WaitingManager.Hide();
+                    if (success != null)
+                    {
+                        FillDataToGridControl();
+                        btnEdit.Enabled = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+     
     }
 }

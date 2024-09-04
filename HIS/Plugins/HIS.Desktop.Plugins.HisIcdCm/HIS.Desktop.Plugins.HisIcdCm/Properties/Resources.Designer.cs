@@ -59,5 +59,25 @@ namespace HIS.Desktop.Plugins.HisIcdCm.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap hmenu_lock {
+            get {
+                object obj = ResourceManager.GetObject("hmenu-lock", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap hmenu_unlock {
+            get {
+                object obj = ResourceManager.GetObject("hmenu-unlock", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
