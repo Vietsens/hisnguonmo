@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.HisIcd
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmHisIcd));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -123,13 +124,17 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcEditorInfo = new DevExpress.XtraLayout.LayoutControl();
             this.chkIsCovid = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnEdit = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnAdd = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnReset = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnFocusDefault = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.chkIsSubcode = new DevExpress.XtraEditors.CheckEdit();
             this.cboGender = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit2View = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -187,13 +192,9 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController();
+            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
             this.layoutControl4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl7)).BeginInit();
@@ -436,8 +437,6 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.gridColumnEdit.Name = "gridColumnEdit";
             this.gridColumnEdit.OptionsColumn.ShowCaption = false;
             this.gridColumnEdit.ToolTip = "Xóa";
-            this.gridColumnEdit.Visible = true;
-            this.gridColumnEdit.VisibleIndex = 2;
             this.gridColumnEdit.Width = 20;
             // 
             // btnGEdit
@@ -458,7 +457,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.grdColIcdCode.OptionsColumn.AllowEdit = false;
             this.grdColIcdCode.ToolTip = "Mã";
             this.grdColIcdCode.Visible = true;
-            this.grdColIcdCode.VisibleIndex = 3;
+            this.grdColIcdCode.VisibleIndex = 2;
             // 
             // grdColIcdName
             // 
@@ -469,7 +468,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.grdColIcdName.OptionsColumn.AllowEdit = false;
             this.grdColIcdName.ToolTip = "Tên";
             this.grdColIcdName.Visible = true;
-            this.grdColIcdName.VisibleIndex = 4;
+            this.grdColIcdName.VisibleIndex = 3;
             this.grdColIcdName.Width = 120;
             // 
             // grdColIcdNameEn
@@ -480,7 +479,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.grdColIcdNameEn.OptionsColumn.AllowEdit = false;
             this.grdColIcdNameEn.ToolTip = "Tên tiếng anh";
             this.grdColIcdNameEn.Visible = true;
-            this.grdColIcdNameEn.VisibleIndex = 5;
+            this.grdColIcdNameEn.VisibleIndex = 4;
             this.grdColIcdNameEn.Width = 120;
             // 
             // grdColIcdNameCommon
@@ -491,7 +490,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.grdColIcdNameCommon.OptionsColumn.AllowEdit = false;
             this.grdColIcdNameCommon.ToolTip = "Tên thường gọi";
             this.grdColIcdNameCommon.Visible = true;
-            this.grdColIcdNameCommon.VisibleIndex = 6;
+            this.grdColIcdNameCommon.VisibleIndex = 5;
             this.grdColIcdNameCommon.Width = 120;
             // 
             // gridColumn6
@@ -503,7 +502,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 7;
+            this.gridColumn6.VisibleIndex = 6;
             this.gridColumn6.Width = 80;
             // 
             // check
@@ -521,7 +520,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 8;
+            this.gridColumn7.VisibleIndex = 7;
             this.gridColumn7.Width = 90;
             // 
             // gridColumn8
@@ -533,7 +532,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 9;
+            this.gridColumn8.VisibleIndex = 8;
             this.gridColumn8.Width = 80;
             // 
             // gridColumn3
@@ -545,7 +544,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.gridColumn3.ToolTip = "Y học cổ truyền";
             this.gridColumn3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 10;
+            this.gridColumn3.VisibleIndex = 9;
             this.gridColumn3.Width = 80;
             // 
             // grdColIsCause
@@ -558,7 +557,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.grdColIsCause.ToolTip = "Là nguyên nhân gây bệnh";
             this.grdColIsCause.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColIsCause.Visible = true;
-            this.grdColIsCause.VisibleIndex = 11;
+            this.grdColIsCause.VisibleIndex = 10;
             this.grdColIsCause.Width = 88;
             // 
             // grdColIsRequireCause
@@ -571,7 +570,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.grdColIsRequireCause.ToolTip = "Bắt buộc nhập nguyên nhân ngoài";
             this.grdColIsRequireCause.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColIsRequireCause.Visible = true;
-            this.grdColIsRequireCause.VisibleIndex = 12;
+            this.grdColIsRequireCause.VisibleIndex = 11;
             this.grdColIsRequireCause.Width = 88;
             // 
             // grdColIsHeinNds
@@ -584,7 +583,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.grdColIsHeinNds.ToolTip = "Ngoài định suất";
             this.grdColIsHeinNds.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColIsHeinNds.Visible = true;
-            this.grdColIsHeinNds.VisibleIndex = 14;
+            this.grdColIsHeinNds.VisibleIndex = 13;
             this.grdColIsHeinNds.Width = 88;
             // 
             // grdColIcdGroupId
@@ -595,7 +594,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.grdColIcdGroupId.OptionsColumn.AllowEdit = false;
             this.grdColIcdGroupId.ToolTip = "Nhóm";
             this.grdColIcdGroupId.Visible = true;
-            this.grdColIcdGroupId.VisibleIndex = 13;
+            this.grdColIcdGroupId.VisibleIndex = 12;
             // 
             // gridColumn2
             // 
@@ -606,7 +605,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.gridColumn2.ToolTip = "Trạng thái";
             this.gridColumn2.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 15;
+            this.gridColumn2.VisibleIndex = 14;
             // 
             // grdColCreateTime
             // 
@@ -617,7 +616,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.grdColCreateTime.ToolTip = "Thời gian tạo";
             this.grdColCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColCreateTime.Visible = true;
-            this.grdColCreateTime.VisibleIndex = 16;
+            this.grdColCreateTime.VisibleIndex = 15;
             this.grdColCreateTime.Width = 120;
             // 
             // grdColCreator
@@ -628,7 +627,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.grdColCreator.OptionsColumn.AllowEdit = false;
             this.grdColCreator.ToolTip = "Người tạo";
             this.grdColCreator.Visible = true;
-            this.grdColCreator.VisibleIndex = 17;
+            this.grdColCreator.VisibleIndex = 16;
             // 
             // grdColModifyTime
             // 
@@ -639,7 +638,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.grdColModifyTime.ToolTip = "Thời gian sửa";
             this.grdColModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColModifyTime.Visible = true;
-            this.grdColModifyTime.VisibleIndex = 18;
+            this.grdColModifyTime.VisibleIndex = 17;
             this.grdColModifyTime.Width = 120;
             // 
             // grdColModifier
@@ -650,7 +649,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.grdColModifier.OptionsColumn.AllowEdit = false;
             this.grdColModifier.ToolTip = "Người sửa";
             this.grdColModifier.Visible = true;
-            this.grdColModifier.VisibleIndex = 19;
+            this.grdColModifier.VisibleIndex = 18;
             // 
             // gridColumn4
             // 
@@ -660,7 +659,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 20;
+            this.gridColumn4.VisibleIndex = 19;
             // 
             // gridColumn5
             // 
@@ -672,7 +671,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.gridColumn5.ToolTip = "Không sử dụng cho đối tượng BHYT";
             this.gridColumn5.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 21;
+            this.gridColumn5.VisibleIndex = 20;
             this.gridColumn5.Width = 90;
             // 
             // Lock
@@ -832,6 +831,10 @@ namespace HIS.Desktop.Plugins.HisIcd
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnSearch,
@@ -895,6 +898,34 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.bbtnFocusDefault.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F2);
             this.bbtnFocusDefault.Name = "bbtnFocusDefault";
             this.bbtnFocusDefault.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnFocusDefault_ItemClick);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1236, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 539);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1236, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 510);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1236, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 510);
             // 
             // chkIsSubcode
             // 
@@ -1613,34 +1644,6 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.layoutControlItem5.Size = new System.Drawing.Size(853, 510);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1236, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 539);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1236, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 510);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1236, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 510);
             // 
             // dxValidationProviderEditorInfo
             // 
