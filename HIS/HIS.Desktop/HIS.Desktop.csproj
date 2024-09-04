@@ -159,6 +159,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Lib\EMR\EMR.Filter.dll</HintPath>
     </Reference>
+    <Reference Include="EMR.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\histest\x64\ReferencedAssemblies\EMR.SDO.dll</HintPath>
+    </Reference>
     <Reference Include="FRD">
       <HintPath>..\..\..\Lib\FRD\FRD.dll</HintPath>
     </Reference>

@@ -82,6 +82,10 @@
     <Reference Include="DevExpress.XtraTreeList.v15.2">
       <HintPath>..\..\..\Lib\DEVEXPRESS\DevExpress.XtraTreeList.v15.2.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.HisTutorial, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.HisTutorial.dll</HintPath>
+    </Reference>
     <Reference Include="His.EventLog">
       <HintPath>..\..\..\Lib\HIS\His.EventLog\His.EventLog.dll</HintPath>
     </Reference>
