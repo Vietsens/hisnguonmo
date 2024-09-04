@@ -742,6 +742,32 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     }
                 }
 
+                if (Config.HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2" &&
+                      currentHisService.ALLOW_SIMULTANEITY != 1 && SereServExt.BEGIN_TIME != null && SereServExt.END_TIME != null)
+                {
+                    if (HIS.Desktop.Plugins.SurgServiceReqExecute.Config.HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
+                    {
+                        CommonParam param = new CommonParam();
+                        HisSereServCheckExecuteTimesSDO inputSDO = new HisSereServCheckExecuteTimesSDO();
+                        var lstLogin = serviceReq.EXECUTE_LOGINNAME.ToList();
+                        inputSDO.ExecuteTime = new ExecuteTime
+                        {
+                            BeginTime = SereServExt.BEGIN_TIME ?? 0,
+                            EndTime = SereServExt.END_TIME ?? 0
+                        };
+                        inputSDO.TreatmentId = serviceReq.TREATMENT_ID;
+                        inputSDO.Loginnames = lstLogin.Select(c => c.ToString()).ToList();
+                        string message = "";
+                        bool suscess = new BackendAdapter(param).Get<bool>("api/HisSereServ/CheckExecuteTimes", ApiConsumers.SarConsumer, inputSDO, param);
+                        if (suscess == false)
+                        {
+                            message = string.Format("{0}. Bạn có muốn tiếp tục?", param);
+                            if (MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                            { return false; }
+                        } 
+                    }
+                }
+
                 if (chkSaveGroup.Checked)
                 {
                     // cập nhật "Cách thức" và “Phân loại” vào ram

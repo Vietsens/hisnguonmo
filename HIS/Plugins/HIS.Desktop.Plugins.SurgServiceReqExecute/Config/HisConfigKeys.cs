@@ -35,6 +35,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.Config
         internal const string ALLOW_FINISH_WHEN_ACCOUNT_IS_DOCTOR = "MOS.HIS_SERVICE_REQ.ALLOW_FINISH_WHEN_ACCOUNT_IS_DOCTOR";
         internal const string HIS_CONFIG_KEY__CHECK_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.CHECK_SIMULTANEITY_OPTION";
 
+        internal const string HIS_CONFIG_KEY__ASSIGN_SERVICE_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION";
+
         internal static string CheckPermisson
         {
             get
@@ -75,6 +77,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.Config
                 return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HIS_CONFIG_KEY__CHECK_SIMULTANEITY_OPTION);
             }
         }
-      
+
+        internal static string ASSIGN_SERVICE_SIMULTANEITY_OPTION
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HIS_CONFIG_KEY__ASSIGN_SERVICE_SIMULTANEITY_OPTION);
+            }
+        }
     }
 }
