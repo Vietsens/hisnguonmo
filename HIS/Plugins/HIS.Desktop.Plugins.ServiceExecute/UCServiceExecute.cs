@@ -3898,6 +3898,64 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     }
                 }
 
+                if (HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption)
+                {
+                    CommonParam param = new CommonParam();
+                    HisSereServCheckExecuteTimesSDO inputSDO = new HisSereServCheckExecuteTimesSDO();
+                    var lstLogin = currentServiceReq.EXECUTE_LOGINNAME.ToList();
+                    inputSDO.ExecuteTime = new ExecuteTime
+                    {
+                        BeginTime = sereServExt.BEGIN_TIME??0,
+                        EndTime = sereServExt.END_TIME??0
+                    };
+                    inputSDO.TreatmentId = currentServiceReq.TREATMENT_ID;
+                    inputSDO.Loginnames = lstLogin.Select(c => c.ToString()).ToList();
+
+                    string message = "";
+                    bool suscess = new BackendAdapter(param).Get<bool>("api/HisSereServ/CheckExecuteTimes", ApiConsumers.SarConsumer, inputSDO, param);
+                     if (suscess == true)
+                        {
+
+                        }
+                        else
+                        {
+                          message = string.Format("{0}. Bạn có muốn tiếp tục?",param);
+                          if (MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                               return;
+                        }
+
+                }
+
+                 if (HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption)
+                {
+                    CommonParam param = new CommonParam();
+                 
+                    HisSurgServiceReqUpdateListSDO  InputSDO= new HisSurgServiceReqUpdateListSDO ();  
+                    List<SurgUpdateSDO> surgUpdateSDOs = new List<SurgUpdateSDO>();
+                    SurgUpdateSDO surgUpdate = new SurgUpdateSDO();
+                     surgUpdate.SereServId = sereServ.ID;
+                     AutoMapper.Mapper.CreateMap<V_HIS_EKIP_USER, HIS_EKIP_USER>();
+                     surgUpdate.EkipUsers = AutoMapper.Mapper.Map<List<HIS_EKIP_USER>>(dicEkipUser[sereServ.ID]);
+                     surgUpdate.SereServExt = sereServExt;
+                     surgUpdate.SereServPttt = dicSereServPttt[sereServ.ID];
+                     surgUpdateSDOs.Add(surgUpdate);
+
+                    InputSDO.SurgUpdateSDOs = surgUpdateSDOs;
+                    InputSDO.IsFinished = sereServExt.END_TIME != null ? true : false;
+                    string message = "";
+                    bool suscess = new BackendAdapter(param).Get<bool>("api/HisSereServ/CheckSurgSimultaneily", ApiConsumers.SarConsumer, InputSDO, param);
+                     if (suscess == true)
+                        {
+
+                        }
+                        else
+                        {
+                          message = string.Format("{0}. Bạn có muốn tiếp tục?",param);
+                          if (MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                               return;
+                        }
+                }
+
                 if (CheckAllInOne.Checked)
                 {
                     InsertRow(this.sereServ);//cập nhật lại dữ liệu
