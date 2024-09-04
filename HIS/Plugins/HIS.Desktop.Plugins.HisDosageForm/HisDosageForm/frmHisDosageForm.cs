@@ -547,6 +547,7 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             try
             {
                 currentDTO.DOSAGE_FORM_NAME = txtName.Text.Trim();
+                if(spinNumOrder.EditValue != null)currentDTO.NUM_ORDER = Convert.ToInt64(spinNumOrder.EditValue);
             }
             catch (Exception ex)
             {

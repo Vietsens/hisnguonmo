@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.HisDosageForm
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmHisDosageForm));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -68,17 +69,13 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
             this.btnEdit = new DevExpress.XtraEditors.SimpleButton();
             this.txtName = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnEdit = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnAdd = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnReset = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.bar2 = new DevExpress.XtraBars.Bar();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.txtCode = new DevExpress.XtraEditors.TextEdit();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciCode = new DevExpress.XtraLayout.LayoutControlItem();
@@ -113,9 +110,16 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcEditorInfoItem = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dnNavigation = new DevExpress.XtraEditors.DataNavigator();
-            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.spinNumOrder = new DevExpress.XtraEditors.SpinEdit();
+            this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).BeginInit();
@@ -146,6 +150,8 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfoItem)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinNumOrder.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl2
@@ -165,6 +171,7 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             // 
             // lcEditorInfo
             // 
+            this.lcEditorInfo.Controls.Add(this.spinNumOrder);
             this.lcEditorInfo.Controls.Add(this.btnReset);
             this.lcEditorInfo.Controls.Add(this.btnAdd);
             this.lcEditorInfo.Controls.Add(this.btnEdit);
@@ -179,7 +186,7 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(232, 50);
+            this.btnReset.Location = new System.Drawing.Point(232, 74);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(112, 22);
             this.btnReset.StyleController = this.lcEditorInfo;
@@ -189,7 +196,7 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(122, 50);
+            this.btnAdd.Location = new System.Drawing.Point(122, 74);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(106, 22);
             this.btnAdd.StyleController = this.lcEditorInfo;
@@ -199,7 +206,7 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(12, 50);
+            this.btnEdit.Location = new System.Drawing.Point(12, 74);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(106, 22);
             this.btnEdit.StyleController = this.lcEditorInfo;
@@ -222,10 +229,6 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1,
             this.bar2});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnEdit,
@@ -292,34 +295,6 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             this.bar2.Text = "Main menu";
             this.bar2.Visible = false;
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1184, 49);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 511);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1184, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 49);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 462);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1184, 49);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 462);
-            // 
             // txtCode
             // 
             this.txtCode.Enabled = false;
@@ -341,7 +316,8 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             this.layoutControlItem8,
             this.layoutControlItem9,
             this.layoutControlItem10,
-            this.emptySpaceItem2});
+            this.emptySpaceItem2,
+            this.layoutControlItem5});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(10, 0, 0, 0);
@@ -381,7 +357,7 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.btnEdit;
-            this.layoutControlItem8.Location = new System.Drawing.Point(0, 48);
+            this.layoutControlItem8.Location = new System.Drawing.Point(0, 72);
             this.layoutControlItem8.MaxSize = new System.Drawing.Size(110, 26);
             this.layoutControlItem8.MinSize = new System.Drawing.Size(110, 26);
             this.layoutControlItem8.Name = "layoutControlItem8";
@@ -393,7 +369,7 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnAdd;
-            this.layoutControlItem9.Location = new System.Drawing.Point(110, 48);
+            this.layoutControlItem9.Location = new System.Drawing.Point(110, 72);
             this.layoutControlItem9.MaxSize = new System.Drawing.Size(110, 26);
             this.layoutControlItem9.MinSize = new System.Drawing.Size(110, 26);
             this.layoutControlItem9.Name = "layoutControlItem9";
@@ -405,7 +381,7 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.btnReset;
-            this.layoutControlItem10.Location = new System.Drawing.Point(220, 48);
+            this.layoutControlItem10.Location = new System.Drawing.Point(220, 72);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Size = new System.Drawing.Size(116, 26);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
@@ -414,9 +390,9 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 74);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 98);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(336, 364);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(336, 340);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // ucPaging
@@ -471,6 +447,7 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             this.gridColumn3,
             this.gridColumnCode,
             this.gridColumnName,
+            this.gridColumn1,
             this.gridColumnStatus,
             this.gridColumnCreatTime,
             this.gridColumnCreator,
@@ -548,7 +525,7 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             this.gridColumnStatus.OptionsFilter.AllowFilter = false;
             this.gridColumnStatus.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnStatus.Visible = true;
-            this.gridColumnStatus.VisibleIndex = 5;
+            this.gridColumnStatus.VisibleIndex = 6;
             this.gridColumnStatus.Width = 120;
             // 
             // gridColumnCreatTime
@@ -559,7 +536,7 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             this.gridColumnCreatTime.OptionsColumn.AllowEdit = false;
             this.gridColumnCreatTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnCreatTime.Visible = true;
-            this.gridColumnCreatTime.VisibleIndex = 6;
+            this.gridColumnCreatTime.VisibleIndex = 7;
             this.gridColumnCreatTime.Width = 120;
             // 
             // gridColumnCreator
@@ -569,7 +546,7 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             this.gridColumnCreator.Name = "gridColumnCreator";
             this.gridColumnCreator.OptionsColumn.AllowEdit = false;
             this.gridColumnCreator.Visible = true;
-            this.gridColumnCreator.VisibleIndex = 7;
+            this.gridColumnCreator.VisibleIndex = 8;
             this.gridColumnCreator.Width = 120;
             // 
             // gridColumnEditTime
@@ -580,7 +557,7 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             this.gridColumnEditTime.OptionsColumn.AllowEdit = false;
             this.gridColumnEditTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnEditTime.Visible = true;
-            this.gridColumnEditTime.VisibleIndex = 8;
+            this.gridColumnEditTime.VisibleIndex = 9;
             this.gridColumnEditTime.Width = 120;
             // 
             // gridColumnEditor
@@ -590,7 +567,7 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             this.gridColumnEditor.Name = "gridColumnEditor";
             this.gridColumnEditor.OptionsColumn.AllowEdit = false;
             this.gridColumnEditor.Visible = true;
-            this.gridColumnEditor.VisibleIndex = 9;
+            this.gridColumnEditor.VisibleIndex = 10;
             this.gridColumnEditor.Width = 120;
             // 
             // btnGLock
@@ -703,6 +680,34 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             this.lcEditorInfoItem.TextSize = new System.Drawing.Size(0, 0);
             this.lcEditorInfoItem.TextVisible = false;
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 49);
+            this.barDockControlTop.Size = new System.Drawing.Size(1184, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 511);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1184, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 49);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 462);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1184, 49);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 462);
+            // 
             // dnNavigation
             // 
             this.dnNavigation.Location = new System.Drawing.Point(887, 24);
@@ -715,6 +720,44 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             // dxErrorProvider
             // 
             this.dxErrorProvider.ContainerControl = this;
+            // 
+            // spinNumOrder
+            // 
+            this.spinNumOrder.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.spinNumOrder.Location = new System.Drawing.Point(117, 50);
+            this.spinNumOrder.MenuManager = this.barManager1;
+            this.spinNumOrder.Name = "spinNumOrder";
+            this.spinNumOrder.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spinNumOrder.Size = new System.Drawing.Size(227, 20);
+            this.spinNumOrder.StyleController = this.lcEditorInfo;
+            this.spinNumOrder.TabIndex = 9;
+            // 
+            // layoutControlItem5
+            // 
+            this.layoutControlItem5.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem5.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem5.Control = this.spinNumOrder;
+            this.layoutControlItem5.Location = new System.Drawing.Point(0, 48);
+            this.layoutControlItem5.Name = "layoutControlItem5";
+            this.layoutControlItem5.Size = new System.Drawing.Size(336, 24);
+            this.layoutControlItem5.Text = "Số thứ tự:";
+            this.layoutControlItem5.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem5.TextSize = new System.Drawing.Size(100, 20);
+            this.layoutControlItem5.TextToControlDistance = 5;
+            // 
+            // gridColumn1
+            // 
+            this.gridColumn1.Caption = "Số thứ tự";
+            this.gridColumn1.FieldName = "NUM_ORDER";
+            this.gridColumn1.Name = "gridColumn1";
+            this.gridColumn1.Visible = true;
+            this.gridColumn1.VisibleIndex = 5;
+            this.gridColumn1.Width = 70;
             // 
             // frmHisDosageForm
             // 
@@ -767,6 +810,8 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfoItem)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinNumOrder.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -828,5 +873,8 @@ namespace HIS.Desktop.Plugins.HisDosageForm
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditorInfo;
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnGUnLock;
+        private DevExpress.XtraEditors.SpinEdit spinNumOrder;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
     }
 }
