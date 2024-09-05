@@ -65,8 +65,8 @@
   > Tải các thư viện bản build sẵn với phiên bản tương thích về lưu trong folder LIB ở trên máy
 	```shell	
 		$zipUrl = "http://fsstest.onelink.vn/Upload/HIS/HisNguonMo/lib_extend.zip"
-		$zipPath = "G:\HISNGMOGITHUB\lib\lib_extend.zip"
-		$extractPath = "G:\HISNGMOGITHUB\lib"
+		$zipPath = "E:\HisNguonMo\hisnguonmo\lib\lib_extend.zip"
+		$extractPath = "E:\HisNguonMo\hisnguonmo\lib"
 
 		# Tải file zip
 		Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath
