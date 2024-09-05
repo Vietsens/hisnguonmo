@@ -215,7 +215,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                                     {
                                         product1.ProdUnit = detail.Unit;
                                         product1.ProdQuantity = 1;
-                                        product1.ProdPrice = item.Sum(o => o.TDL_AMOUNT);
+                                        product1.ProdPrice = product1.Amount;
                                     }
                                     product1.Stt = detail.Stt ?? 0;
                                     result.Add(product1);
