@@ -214,10 +214,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                                     if (!String.IsNullOrWhiteSpace(detail.Unit))
                                     {
                                         product1.ProdUnit = detail.Unit;
+                                        product1.ProdQuantity = 1;
+                                        product1.ProdPrice = item.Sum(o => o.TDL_AMOUNT);
                                     }
                                     product1.Stt = detail.Stt ?? 0;
                                     result.Add(product1);
                                 }
+                                Inventec.Common.Logging.LogSystem.Debug("_______RESULT:"+ Inventec.Common.Logging.LogUtil.TraceData("result",result));
                             }
                             else if (detail.IsBHYT == 1)
                             {
