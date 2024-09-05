@@ -59,6 +59,9 @@ using HIS.Desktop.Plugins.EnterKskInfomantionVer2.Resources;
 using HIS.Desktop.Plugins.EnterKskInfomantionVer2.ADO;
 using MOS.SDO;
 using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Utility;
+using HIS.Desktop.ADO;
 namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 {
     public partial class frmEnterKskInfomantionVer2 : HIS.Desktop.Utility.FormBase
@@ -74,6 +77,43 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         List<MOS.EFMODEL.DataModels.HIS_PERIOD_DRIVER_DITY> lstDataDriverDity { get; set; }
         List<MOS.EFMODEL.DataModels.HIS_PERIOD_DRIVER_DITY> lstDataDriverDityOverE { get; set; }
         List<MOS.EFMODEL.DataModels.HIS_KSK_UNEI_VATY> lstDataUneiVaty { get; set; }
+        private bool ReturnObject = false;
+        public enum ENameSItem
+        {
+            KET_LUAN_1,
+            KHAC_XNM_2,
+            KHAC_XNNT_2,
+            CDHA_2,
+            KET_QUA_3,
+            KET_QUA_4,
+            KET_QUA_5
+        }
+        public ENameSItem? NameSItem { get;set; }
+
+        public enum ENameOtherItem
+        {
+            SL_HC_2,
+            SL_BC_2,
+            SL_TC_2,
+            DMA_2,
+            URE_2,
+            CRE_2,
+            ASA_2,
+            ALA_2,
+            DUO_2,
+            PRO_2,
+            MOR_HER_4,
+            AMP_4,
+            MET_4,
+            MAR_4,
+            NDC_4,
+            MOR_HER_5,
+            AMP_5,
+            MET_5,
+            MAR_5,
+            NDC_5
+        }
+        public ENameOtherItem? NameOtherItem { get; set; }
         #endregion
 
         Inventec.Desktop.Common.Modules.Module currentModule;
@@ -508,6 +548,144 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 }
             }
             catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void GetSpecInformation(bool ReturnObject = true)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ContentSubclinical").FirstOrDefault();
+                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ContentSubclinical");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(this.currentServiceReq.TREATMENT_ID);
+                    listArgs.Add(ReturnObject);
+                    listArgs.Add((HIS.Desktop.Common.DelegateSelectData)DelegateSelectDataContentSubclinical);
+                    var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                    ((Form)extenceInstance).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void DelegateSelectDataContentSubclinical(object data)
+        {
+            try
+            {
+                if (data != null && data is String)
+                {
+                    switch (NameSItem)
+                    {
+                        case ENameSItem.KET_LUAN_1:
+                            txtResultSubclinical.Text = data.ToString();
+                            break;
+                        case ENameSItem.KHAC_XNM_2:
+                            txtTestBloodOther2.Text = data.ToString();
+                            break;
+                        case ENameSItem.KHAC_XNNT_2:
+                            txtTestUrineOther2.Text = data.ToString();
+                            break;
+                        case ENameSItem.CDHA_2:
+                            txtResultDiim2.Text = data.ToString();
+                            break;
+                        case ENameSItem.KET_QUA_3:
+                            txtResultSubclinical3.Text = data.ToString();
+                            break;
+                        case ENameSItem.KET_QUA_4:
+                            txtResultSubclinical4.Text = data.ToString();
+                            break;
+                        case ENameSItem.KET_QUA_5:
+                            txtResultSubclinical5.Text = data.ToString();
+                            break;
+                        default:
+                            break;
+                    }
+                    NameSItem = null;
+                    ReturnObject = true;
+                }
+                else if(data != null && data is List<ContentSubclinicalADO>)
+                {
+                    var item = (data as List<ContentSubclinicalADO>).LastOrDefault();
+                    if (item != null)
+                    {
+                        switch (NameOtherItem)
+                        {
+                            case ENameOtherItem.SL_HC_2:
+                                txtTestBloodHc2.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.SL_BC_2:
+                                txtTestBloodBc2.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.SL_TC_2:
+                                txtTestBloodTc2.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.DMA_2:
+                                txtTestBloodGluco2.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.URE_2:
+                                txtTestBloodUre2.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.CRE_2:
+                                txtTestBloodCreatinin2.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.ASA_2:
+                                txtTestBloodAsat2.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.ALA_2:
+                                txtTestBloodAlat2.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.DUO_2:
+                                txtTestUrineGluco2.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.PRO_2:
+                                txtTestUrineProtein2.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.MOR_HER_4:
+                                txtMorphineHeroin4.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.AMP_4:
+                                txtTestAmphetamin4.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.MET_4:
+                                txtTestMethamphetamin4.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.MAR_4:
+                                txtTestMarijuna4.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.NDC_4:
+                                txtTestConcentration4.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.MOR_HER_5:
+                                txtMorphineHeroin5.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.AMP_5:
+                                txtAmphetamin5.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.MET_5:
+                                txtTestMethamphetamin5.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.MAR_5:
+                                txtTestMarijuna5.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.NDC_5:
+                                txtTestConcentration5.Text = item.VALUE;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    NameOtherItem = null;
+                }
+            }
+            catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
