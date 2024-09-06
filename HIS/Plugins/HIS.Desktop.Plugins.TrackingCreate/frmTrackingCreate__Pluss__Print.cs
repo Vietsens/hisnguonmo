@@ -314,6 +314,14 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 singleKey.UsedDayCountingOutStockOption = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_OUT_STOCK_OPTION));
                 #endregion
 
+                #region Dòng thuốc
+                List<HIS_MEDICINE_LINE> listMedicineLine = new List<HIS_MEDICINE_LINE>();
+                listMedicineLine = BackendDataWorker.Get<HIS_MEDICINE_LINE>();
+                #endregion
+                #region Dạng bào chế
+                List<HIS_DOSAGE_FORM> listDosage = new List<HIS_DOSAGE_FORM>();
+                listDosage = BackendDataWorker.Get<HIS_DOSAGE_FORM>();
+                #endregion
                 #region Mps000062
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((_Treatment != null ? _Treatment.TREATMENT_CODE : ""), printTypeCode, this.currentModule != null ? this.currentModule.RoomId : 0);
 
@@ -363,7 +371,9 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 HisExpMestBltyReq2,
                 BackendDataWorker.Get<V_HIS_SERVICE>().Where(o => this._SereServs.Select(p => p.SERVICE_ID).Contains(o.ID)).ToList(),
                 this._ImpMestBlood_TL,
-                PatientTypeAlter
+                PatientTypeAlter,
+                listMedicineLine,
+                listDosage
                 );
                 WaitingManager.Hide();
                 MPS.ProcessorBase.Core.PrintData PrintData = null;

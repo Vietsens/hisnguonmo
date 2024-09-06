@@ -327,6 +327,7 @@ namespace HIS.Desktop.Plugins.HisDosageForm
                 {
                     txtCode.Text = data.DOSAGE_FORM_CODE;
                     txtName.Text = data.DOSAGE_FORM_NAME;
+                    spinNumOrder.EditValue = data.NUM_ORDER;
 
                 }
             }
@@ -477,16 +478,7 @@ namespace HIS.Desktop.Plugins.HisDosageForm
                 if (!dxValidationProviderEditorInfo.Validate())
                     return;
                 List<HIS_DOSAGE_FORM> dosages = BackendDataWorker.Get<HIS_DOSAGE_FORM>().ToList();
-                if(dosages != null && dosages.Count > 0)
-                {
-                    var lstDosages = dosages.Where(o => o.DOSAGE_FORM_NAME == txtName.Text).ToList();
-                    if (lstDosages != null && lstDosages.Count > 0)
-                    {
-                        string ma = string.Join(",", lstDosages.Select(o => o.DOSAGE_FORM_CODE).ToList());
-                        MessageManager.Show(String.Format(ResourceMessage.DaTonTaiTenDaDuocGanVoiMa, txtName.Text, ma));
-                        return;
-                    }
-                }
+                
                 
                 MOS.EFMODEL.DataModels.HIS_DOSAGE_FORM updateDTO = new MOS.EFMODEL.DataModels.HIS_DOSAGE_FORM();
 
@@ -498,6 +490,16 @@ namespace HIS.Desktop.Plugins.HisDosageForm
                 WaitingManager.Show();
                 if (ActionType == GlobalVariables.ActionAdd)
                 {
+                    if (dosages != null && dosages.Count > 0)
+                    {
+                        var lstDosages = dosages.Where(o => o.DOSAGE_FORM_NAME == txtName.Text).ToList();
+                        if (lstDosages != null && lstDosages.Count > 0)
+                        {
+                            string ma = string.Join(",", lstDosages.Select(o => o.DOSAGE_FORM_CODE).ToList());
+                            MessageManager.Show(String.Format(ResourceMessage.DaTonTaiTenDaDuocGanVoiMa, txtName.Text, ma));
+                            return;
+                        }
+                    }
                     var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_DOSAGE_FORM>("api/HisDosageForm/Create", ApiConsumers.MosConsumer, updateDTO, param);
                     if (resultData != null)
                     {
@@ -547,6 +549,7 @@ namespace HIS.Desktop.Plugins.HisDosageForm
             try
             {
                 currentDTO.DOSAGE_FORM_NAME = txtName.Text.Trim();
+                if(spinNumOrder.EditValue != null)currentDTO.NUM_ORDER = Convert.ToInt64(spinNumOrder.EditValue);
             }
             catch (Exception ex)
             {

@@ -229,6 +229,14 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
 
                 #endregion
 
+                #region Dòng thuốc
+                List<HIS_MEDICINE_LINE> listMedicineLine = new List<HIS_MEDICINE_LINE>();
+                listMedicineLine = BackendDataWorker.Get<HIS_MEDICINE_LINE>();
+                #endregion
+                #region Dạng bào chế
+                List<HIS_DOSAGE_FORM> listDosage = new List<HIS_DOSAGE_FORM>();
+                listDosage = BackendDataWorker.Get<HIS_DOSAGE_FORM>();
+                #endregion
                 #region Mps000062
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((_Treatment != null ? _Treatment.TREATMENT_CODE : ""), printTypeCode, this.currentModule != null ? this.currentModule.RoomId : 0);
 
@@ -294,7 +302,9 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                 this.ExpMestBltyReq2,
                 BackendDataWorker.Get<V_HIS_SERVICE>().Where(o => _SereServs.Select(p => p.SERVICE_ID).Contains(o.ID)).ToList(),
                 this._ImpMestBlood_TL,
-                PatientTypeAlter
+                PatientTypeAlter,
+                listMedicineLine,
+                listDosage
                 );
                 Inventec.Common.Logging.LogSystem.Debug("KT ------------Truyen data MPS======-------------");
                 WaitingManager.Hide();
