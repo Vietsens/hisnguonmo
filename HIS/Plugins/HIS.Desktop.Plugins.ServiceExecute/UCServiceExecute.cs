@@ -3901,7 +3901,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 if (HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption)
                 {
                     HisSereServCheckExecuteTimesSDO inputSDO = new HisSereServCheckExecuteTimesSDO();
-                    var lstLogin = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();//currentServiceReq.EXECUTE_LOGINNAME;
+                    var login = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();//currentServiceReq.EXECUTE_LOGINNAME;
                     long beginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime)??0;
                     long endTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) ?? 0;
                     inputSDO.ExecuteTime = new ExecuteTime
@@ -3910,9 +3910,39 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         EndTime = endTime
                     };
                     inputSDO.TreatmentId = currentServiceReq.TREATMENT_ID;
-                    List<string> dsLogin = new List<string> { lstLogin };
-                    inputSDO.Loginnames = dsLogin;
-
+                    List<string> dsLogin = new List<string> { login };
+                    List<MOS.EFMODEL.DataModels.HIS_EKIP_USER> ekipUsers = new List<MOS.EFMODEL.DataModels.HIS_EKIP_USER>();
+                    var dataGrid = gridViewEkip.DataSource as List<HisEkipUserADO>;
+                    if (dataGrid != null && dataGrid.Count() > 0)
+                        foreach (var item in dataGrid)
+                        {
+                            MOS.EFMODEL.DataModels.HIS_EKIP_USER ekipUser = new HIS_EKIP_USER();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EKIP_USER>(ekipUser, item);
+                            if (ekipUser != null && ekipUser.EXECUTE_ROLE_ID != 0)
+                                ekipUsers.Add(ekipUser);
+                        }
+                    List<string> lstLogin = ekipUsers.Select(o => o.LOGINNAME).Distinct().ToList();
+                    List<string> lstLoginValid = new List<string>();
+                    foreach (string acc in lstLogin)
+                    {
+                        if (acc != null)
+                        {
+                            lstLoginValid.Add(acc);
+                        }
+                        else
+                        {
+                            lstLoginValid.Add(login);
+                        }
+                    }
+                    inputSDO.Loginnames = lstLoginValid;
+                    //if (lstLogin != null && lstLogin.Count() > 0)
+                    //{
+                    //    inputSDO.Loginnames = lstLogin;
+                    //}
+                    //else
+                    //{
+                    //    inputSDO.Loginnames = dsLogin;
+                    //}
                     string message = "";
                     CommonParam paramCheckEx = new CommonParam();
                     bool suscess = new BackendAdapter(paramCheckEx).Post<bool>("api/HisSereServ/CheckExecuteTimes", ApiConsumers.MosConsumer, inputSDO, paramCheckEx);
@@ -3951,7 +3981,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     InputSDO.IsFinished = ServiceReqConstruct.FINISH_TIME != null ? true : false;
                     string message = "";
                     CommonParam paramCheckSurg = new CommonParam();
-                    bool suscess = new BackendAdapter(paramCheckSurg).Post<bool>("api/HisSereServ/CheckSurgSimultaneily", ApiConsumers.MosConsumer, InputSDO, paramCheckSurg);
+                    bool suscess = new BackendAdapter(paramCheckSurg).Post<bool>("api/HisServiceReq/CheckSurgSimultaneily", ApiConsumers.MosConsumer, InputSDO, paramCheckSurg);
                      if (suscess == true)
                         {
 
@@ -3962,7 +3992,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                           if (MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                                return;
                         }
-                }
+                } 
 
                 if (CheckAllInOne.Checked)
                 {
