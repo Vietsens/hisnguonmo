@@ -53,6 +53,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute.Config
         internal const string CONFIG_KEY__PATIENT_TYPE_CODE__BHYT = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT";
         internal const string CONFIG_KEY__PATIENT_TYPE_OPTION = "HIS.DESKTOP.HIS_MACHINE.MAX_SERVICE_PER_DAY.PATIENT_TYPE_OPTION";
         internal const string CONFIG_KEY__SERVICE_REQ_TYPE_CODE = "MOS.HIS_SERVICE_REQ.AUTO_ADD_EXCUTE_ROLE.SERVICE_REQ_TYPE_CODE";
+
+        internal const string CONFIG_KEY__ASSIGN_SERVICE_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION";
+        internal const string CONFIG_KEY__CHECK_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.CHECK_SIMULTANEITY_OPTION";
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
             MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE result = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
@@ -209,6 +212,22 @@ namespace HIS.Desktop.Plugins.ServiceExecute.Config
             get
             {
                 return HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<string>(AUTO_SELECT_IMAGE_CAPTURE_CFG) == "1";
+            }
+        }
+
+        internal static bool IsCheckSimulTaneityOption
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__CHECK_SIMULTANEITY_OPTION) == "2";
+            }
+        }
+
+        internal static bool IsAssignServiceSimulTaneityOption
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__ASSIGN_SERVICE_SIMULTANEITY_OPTION) == "2";
             }
         }
     }
