@@ -29,5 +29,6 @@ namespace HIS.Desktop.Plugins.HisIcdCm
         internal const string MOSHIS_ICD_CM_DELETE = "api/HisIcdCm/Delete";
         internal const string MOSHIS_ICD_CM_UPDATE = "api/HisIcdCm/Update";
         internal const string MOSHIS_ICD_CM_GET = "api/HisIcdCm/Get";
+        internal const string MOSHIS_ICD_CHANGELOCK = "api/HisIcdCm/ChangeLock";
     }
 }
