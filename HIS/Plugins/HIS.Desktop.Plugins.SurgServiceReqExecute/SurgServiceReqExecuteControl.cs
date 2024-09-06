@@ -742,6 +742,35 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     }
                 }
 
+                if (Config.HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2" &&
+                      currentHisService.ALLOW_SIMULTANEITY != 1 && SereServExt.BEGIN_TIME != null && SereServExt.END_TIME != null)
+                {
+                    if (HIS.Desktop.Plugins.SurgServiceReqExecute.Config.HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
+                    {
+                        HisSereServCheckExecuteTimesSDO inputSDO = new HisSereServCheckExecuteTimesSDO();
+                        var lstLogin = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();//serviceReq.EXECUTE_LOGINNAME;
+                        long beginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtStart.DateTime) ?? 0;
+                        long endTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtFinish.DateTime) ?? 0;
+                        inputSDO.ExecuteTime = new ExecuteTime
+                        {
+                            BeginTime = beginTime,
+                            EndTime = endTime
+                        };
+                        inputSDO.TreatmentId = serviceReq.TREATMENT_ID;
+                        List<string> dsLogin = new List<string> { lstLogin };
+                        inputSDO.Loginnames = dsLogin;
+                        string message = "";
+                        CommonParam paramCheckEx = new CommonParam();
+                        bool suscess = new BackendAdapter(paramCheckEx).Post<bool>("api/HisSereServ/CheckExecuteTimes", ApiConsumers.MosConsumer, inputSDO, paramCheckEx);
+                        if (suscess == false)
+                        {
+                            message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckEx.GetMessage());
+                            if (MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                            { return false; } 
+                        } 
+                    }
+                }
+
                 if (chkSaveGroup.Checked)
                 {
                     // cập nhật "Cách thức" và “Phân loại” vào ram
