@@ -3075,6 +3075,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
 
                             }
                         }
+                        else btnSave.Enabled = btnSaveAndPrint.Enabled = true;
                     }
                 }
             }

@@ -3898,6 +3898,72 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     }
                 }
 
+                if (HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption)
+                {
+                    HisSereServCheckExecuteTimesSDO inputSDO = new HisSereServCheckExecuteTimesSDO();
+                    var lstLogin = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();//currentServiceReq.EXECUTE_LOGINNAME;
+                    long beginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime)??0;
+                    long endTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) ?? 0;
+                    inputSDO.ExecuteTime = new ExecuteTime
+                    {
+                        BeginTime = beginTime,
+                        EndTime = endTime
+                    };
+                    inputSDO.TreatmentId = currentServiceReq.TREATMENT_ID;
+                    List<string> dsLogin = new List<string> { lstLogin };
+                    inputSDO.Loginnames = dsLogin;
+
+                    string message = "";
+                    CommonParam paramCheckEx = new CommonParam();
+                    bool suscess = new BackendAdapter(paramCheckEx).Post<bool>("api/HisSereServ/CheckExecuteTimes", ApiConsumers.MosConsumer, inputSDO, paramCheckEx);
+                     if (suscess == true)
+                        {
+
+                        }
+                        else
+                        {
+                            message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckEx.GetMessage());
+                          if (MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                               return;
+                        }
+
+                }
+
+                 if (HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption)
+                {
+                    HisSurgServiceReqUpdateListSDO  InputSDO= new HisSurgServiceReqUpdateListSDO ();  
+                    List<SurgUpdateSDO> surgUpdateSDOs = new List<SurgUpdateSDO>();
+                    SurgUpdateSDO surgUpdate = new SurgUpdateSDO();
+                     surgUpdate.SereServId = sereServ.ID;
+                     AutoMapper.Mapper.CreateMap<V_HIS_EKIP_USER, HIS_EKIP_USER>();
+                     if (dicEkipUser.ContainsKey(sereServ.ID))
+                     {
+                         surgUpdate.EkipUsers = AutoMapper.Mapper.Map<List<HIS_EKIP_USER>>(dicEkipUser[sereServ.ID]);
+                     }
+                     surgUpdate.SereServExt = sereServExt;
+                     if (dicSereServPttt.ContainsKey(sereServ.ID))
+                     {
+                         surgUpdate.SereServPttt = dicSereServPttt[sereServ.ID];
+                     }
+                     surgUpdateSDOs.Add(surgUpdate);
+
+                    InputSDO.SurgUpdateSDOs = surgUpdateSDOs;
+                    InputSDO.IsFinished = ServiceReqConstruct.FINISH_TIME != null ? true : false;
+                    string message = "";
+                    CommonParam paramCheckSurg = new CommonParam();
+                    bool suscess = new BackendAdapter(paramCheckSurg).Post<bool>("api/HisSereServ/CheckSurgSimultaneily", ApiConsumers.MosConsumer, InputSDO, paramCheckSurg);
+                     if (suscess == true)
+                        {
+
+                        }
+                        else
+                        {
+                            message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckSurg.GetMessage());
+                          if (MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                               return;
+                        }
+                }
+
                 if (CheckAllInOne.Checked)
                 {
                     InsertRow(this.sereServ);//cập nhật lại dữ liệu

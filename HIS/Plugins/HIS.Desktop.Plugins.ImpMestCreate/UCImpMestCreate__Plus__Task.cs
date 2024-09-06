@@ -238,16 +238,21 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 			try
 			{
                 var activeBidMedicineTypeIds = BackendDataWorker.Get<HIS_BID_MEDICINE_TYPE>()
-												.Where(bid => bid.IS_ACTIVE == 0)
+												.Where(bid => bid.IS_ACTIVE == 1)
 												.Select(bid => bid.MEDICINE_TYPE_ID)
 												.Distinct()
 												.ToList();
+                var activeBidMedicineTypeIds1 = BackendDataWorker.Get<HIS_BID_MEDICINE_TYPE>()
+                                               .Where(bid => bid.IS_ACTIVE != 1)
+                                               .Select(bid => bid.MEDICINE_TYPE_ID)
+                                               .Distinct()
+                                               .ToList();
+               
                 listMedicineTypeTemp = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().Where(o =>
 					  o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
 					  && o.IS_LEAF == 1
 					  && o.IS_STOP_IMP == null
-					  && !activeBidMedicineTypeIds.Contains(o.ID)).ToList();
-				
+                      && (activeBidMedicineTypeIds.Contains(o.ID) || !activeBidMedicineTypeIds1.Contains(o.ID))).ToList();
 
             }
 			catch (Exception ex)
@@ -260,15 +265,20 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 			try
 			{
                 var activeBidMaterialTypeIds = BackendDataWorker.Get<HIS_BID_MATERIAL_TYPE>()
-                                                .Where(bid => bid.IS_ACTIVE == 0)
+                                                .Where(bid => bid.IS_ACTIVE == 1)
                                                 .Select(bid => bid.MATERIAL_TYPE_ID)
 												.Distinct()
+                                                .ToList();
+                var activeBidMaterialTypeIds1 = BackendDataWorker.Get<HIS_BID_MATERIAL_TYPE>()
+                                                .Where(bid => bid.IS_ACTIVE != 1)
+                                                .Select(bid => bid.MATERIAL_TYPE_ID)
+                                                .Distinct()
                                                 .ToList();
                 listMaterialTypeTemp = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().Where(o =>
 						o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
 						&& o.IS_LEAF == 1
 						&& o.IS_STOP_IMP == null
-						&& !activeBidMaterialTypeIds.Contains(o.ID)).ToList();
+                        && (activeBidMaterialTypeIds.Contains(o.ID) || !activeBidMaterialTypeIds1.Contains(o.ID))).ToList();
                 
 
             }

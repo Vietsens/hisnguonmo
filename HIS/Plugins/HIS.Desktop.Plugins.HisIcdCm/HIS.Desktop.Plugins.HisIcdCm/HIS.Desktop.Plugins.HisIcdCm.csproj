@@ -229,7 +229,12 @@
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\hmenu-lock.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hmenu-unlock.gif" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>echo PREBUILDSTEP for $(ProjectName)

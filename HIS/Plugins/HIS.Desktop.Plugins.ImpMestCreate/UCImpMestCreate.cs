@@ -874,6 +874,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     CommonParam param = new CommonParam();
                     Inventec.Common.Logging.LogSystem.Error("this.currentSupplier.ID_____" + this.currentSupplier.ID);
                     List<V_HIS_BID_1> bid = new List<V_HIS_BID_1>();
+                   
                     if (currentSupplier.ID > 0)
                     {
                         bid = listBids.Where(o => o.SUPPLIER_IDS != null && ("," + o.SUPPLIER_IDS + ",").Contains("," + currentSupplier.ID + ",")).ToList();
@@ -884,6 +885,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         bid = listBids;
                         this.currentSupplier = null;
                     }
+                   
                     if (IsShowingApprovalBid)
                     {
                         bid = bid.Where(o => o.IS_ACTIVE == 1 && o.APPROVAL_TIME != null).ToList();
@@ -893,8 +895,17 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                     medicineProcessor.ReloadBid(this.ucMedicineTypeTree, bid);
                     materialProcessor.ReloadBid(this.ucMaterialTypeTree, bid);
-                    materialProcessor.SetEditValueBid(this.ucMedicineTypeTree, null);
-                    medicineProcessor.SetEditValueBid(this.ucMedicineTypeTree, null);
+                    if (currentBid.ID > 0)
+                    {
+                        materialProcessor.SetEditValueBid(this.ucMedicineTypeTree, currentBid.ID);
+                        medicineProcessor.SetEditValueBid(this.ucMedicineTypeTree, currentBid.ID);
+                    }
+                    else
+                    {
+                        materialProcessor.SetEditValueBid(this.ucMedicineTypeTree, null);
+                        medicineProcessor.SetEditValueBid(this.ucMedicineTypeTree, null);
+                    }
+                 
                 }
                 else
                 {
@@ -5439,13 +5450,16 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 IsChangeTabPage = true;
                 IsLoadGridMedicine = true;
                 IsLoadGridMaterial = true;
-                if ((this.currentSupplierForEdit != null || (this.currentImpMestType != null && (this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__DK || this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC))) && !checkOutBid.Checked)
+                // if ((this.currentSupplierForEdit != null && currentSupplierForEdit.ID != null || (this.currentImpMestType != null && (this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__DK || this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC))) && !checkOutBid.Checked)
+                if ((this.currentSupplierForEdit != null && currentSupplierForEdit.ID != null || (this.currentImpMestType != null && (this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__DK || this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC))) && !checkOutBid.Checked)
                 {
                     medicineProcessor.EnableBid(this.ucMedicineTypeTree, true);
                     materialProcessor.EnableBid(this.ucMaterialTypeTree, true);
                     this.currentSupplier = this.currentSupplierForEdit;
                     if (currentSupplier != null)
+                    {
                         _HisBidBySuppliers = listBids.Where(o => o.SUPPLIER_IDS != null && ("," + o.SUPPLIER_IDS + ",").Contains("," + currentSupplier.ID + ",")).ToList();
+                    }
                 }
                 else
                 {
@@ -5460,6 +5474,10 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 {
                     if (xtraTabControlMain.SelectedTabPage == xtraTabPageMedicine)
                     {
+                        if (_HisBidBySuppliers.Count == 0)
+                        {
+                            _HisBidBySuppliers = listBids;
+                        }
                         medicineProcessor.ReloadBid(this.ucMedicineTypeTree, this._HisBidBySuppliers);
                         if (currentBid != null)
                             medicineProcessor.SetEditValueBid(this.ucMedicineTypeTree, currentBid.ID);
@@ -5478,6 +5496,10 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     }
                     else if (xtraTabControlMain.SelectedTabPage == xtraTabPageMaterial)
                     {
+                        if (_HisBidBySuppliers.Count == 0)
+                        {
+                            _HisBidBySuppliers = listBids;
+                        }
                         materialProcessor.ReloadBid(this.ucMaterialTypeTree, this._HisBidBySuppliers);
                         if (currentBid != null)
                             materialProcessor.SetEditValueBid(this.ucMaterialTypeTree, currentBid.ID);
@@ -5528,9 +5550,39 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                 SetFocuTreeMediMate();
                 if (xtraTabControlMain.SelectedTabPage == xtraTabPageMedicine && IsLoadGridMedicine)
+                {
+                    if (listBidMedicine != null && listBidMedicine.Count > 0)
+                    {
+                        dicBidMedicine.Clear();
+                        List<V_HIS_BID_MEDICINE_TYPE> lstBidMedi = listBidMedicine.Where(o => o.BID_ID == currentBid.ID).ToList();
+                        if (txtNhaCC.EditValue != null)
+                        {
+                            lstBidMedi = lstBidMedi.Where(o => o.SUPPLIER_ID == currentSupplier.ID).ToList();
+                        }
+                        foreach (var item in lstBidMedi)
+                        {
+                            dicBidMedicine[Base.StaticMethod.GetTypeKey(item.MEDICINE_TYPE_ID, item.BID_GROUP_CODE)] = item;
+                        }
+                    }
                     SetDataSourceGridControlMediMateMedicine();
+                }
                 else if (xtraTabControlMain.SelectedTabPage == xtraTabPageMaterial && IsLoadGridMaterial)
+                {
+                    if (listBidMaterial != null && listBidMaterial.Count > 0)
+                    {
+                        dicBidMaterial.Clear();
+                        List<V_HIS_BID_MATERIAL_TYPE> lstBidMate = listBidMaterial.Where(o => o.BID_ID == currentBid.ID).ToList();
+                        if (txtNhaCC.EditValue != null)
+                        {
+                            lstBidMate = lstBidMate.Where(o => o.SUPPLIER_ID == currentSupplier.ID).ToList();
+                        }
+                        foreach (var item in lstBidMate)
+                        {
+                            dicBidMaterial[Base.StaticMethod.GetTypeKey(item.MATERIAL_TYPE_ID ?? 0, item.BID_GROUP_CODE)] = item;
+                        }
+                    }
                     SetDataSourceGridControlMediMateMaterial();
+                }
                 IsChangeTabPage = false;
                 if (xtraTabControlMain.SelectedTabPage == xtraTabPageMedicine)
                 {
@@ -5671,12 +5723,12 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         HisBidMedicineTypeViewFilter mediFilter = new HisBidMedicineTypeViewFilter();
                         mediFilter.BID_ID = this.currentBid.ID;
                         mediFilter.IS_ACTIVE = 1;
-                        var listBidMedicine = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_BID_MEDICINE_TYPE>>(HisRequestUriStore.HIS_BID_MEDICINE_TYPE_GETVIEW, ApiConsumers.MosConsumer, mediFilter, null);
+                         listBidMedicine = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_BID_MEDICINE_TYPE>>(HisRequestUriStore.HIS_BID_MEDICINE_TYPE_GETVIEW, ApiConsumers.MosConsumer, mediFilter, null);
 
                         HisBidMaterialTypeViewFilter mateFilter = new HisBidMaterialTypeViewFilter();
                         mateFilter.BID_ID = this.currentBid.ID;
                         mateFilter.IS_ACTIVE = 1;
-                        var listBidMaterial = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_BID_MATERIAL_TYPE>>(HisRequestUriStore.HIS_BID_MATERIAL_TYPE_GETVIEW, ApiConsumers.MosConsumer, mateFilter, null);
+                         listBidMaterial = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_BID_MATERIAL_TYPE>>(HisRequestUriStore.HIS_BID_MATERIAL_TYPE_GETVIEW, ApiConsumers.MosConsumer, mateFilter, null);
 
                         this.currentSupplierForEdit = supplier;
                         //if(cboBi)

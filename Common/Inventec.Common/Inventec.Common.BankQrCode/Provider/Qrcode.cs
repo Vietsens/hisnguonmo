@@ -8,9 +8,9 @@ namespace Inventec.Common.BankQrCode.Provider
 {
     class Qrcode
     {
-        private string v_00;
+        private string v_00 = "01";
         private string v_01;
-        private string v_26_00;
+        private string v_26_00;//A000000775 GUID của VNPAY
         private string v_26_01;
         private string v_38_00;// = “A000000727” Định danh toàn cầu duy nhất GUID
         // Định danh người thụ hưởng (mã bin ngân hàng, số tài khoản/số thẻ)
@@ -102,11 +102,11 @@ namespace Inventec.Common.BankQrCode.Provider
 
         public Qrcode(CreatQrData data)
         {
-            this.v_00 = "01";
+            this.v_00 = !string.IsNullOrWhiteSpace(data.payLoad) ? data.payLoad : this.v_00;
             this.v_01 = data.methodCode;
             this.v_26_00 = data.merchantGuid;
             this.v_26_01 = data.merchantId;
-            this.v_38_00 = data.guid;
+            this.v_38_00 = !string.IsNullOrWhiteSpace(data.guid) ? data.guid : this.v_38_00;
             this.v_38_01_00 = data.acquierOrBnb;
             this.v_38_01_01 = data.merchantOrConsumer;
             this.v_38_02 = data.qrType;
@@ -120,7 +120,7 @@ namespace Inventec.Common.BankQrCode.Provider
             this.v_62_01 = data.billNumber;
             this.v_62_03 = data.storeLable;
             this.v_62_07 = data.terminalLable;
-            this.v_62_08 = "";
+            this.v_62_08 = data.purpose;
             this.v_62_09 = "ME";
         }
 
@@ -162,6 +162,7 @@ namespace Inventec.Common.BankQrCode.Provider
 
         private string f_26()
         {
+            if (string.IsNullOrWhiteSpace(this.v_26_00) && string.IsNullOrWhiteSpace(this.v_26_00)) return "";
             var v_00 = this.calc_val("00", this.v_26_00);
             var v_01 = this.calc_val("01", this.v_26_01);
             return this.calc_val("26", v_00 + v_01);
@@ -169,6 +170,7 @@ namespace Inventec.Common.BankQrCode.Provider
 
         private string f_38()
         {
+            if (string.IsNullOrWhiteSpace(this.v_38_02) && string.IsNullOrWhiteSpace(this.v_38_01_00) && string.IsNullOrWhiteSpace(this.v_38_01_01)) return "";
             var v_00 = this.calc_val("00", this.v_38_00);
             var v_01 = this.f_38_01();
             var v_02 = this.calc_val("02", this.v_38_02);
@@ -186,18 +188,39 @@ namespace Inventec.Common.BankQrCode.Provider
 
         private string f_53() { return this.calc_val("53", this.v_53); }
 
-        private string f_54() { return this.calc_val("54", this.v_54); }
+        private string f_54()
+        {
+            if (string.IsNullOrWhiteSpace(this.v_54)) return "";
+            return this.calc_val("54", this.v_54);
+        }
 
         private string f_58() { return this.calc_val("58", this.v_58); }
 
-        private string f_59() { return this.calc_val("59", this.v_59); }
+        private string f_59()
+        {
+            if (string.IsNullOrWhiteSpace(this.v_59)) return "";
+            return this.calc_val("59", this.v_59);
+        }
 
-        private string f_60() { return this.calc_val("60", this.v_60); }
+        private string f_60()
+        {
+            if (string.IsNullOrWhiteSpace(this.v_60)) return "";
+            return this.calc_val("60", this.v_60);
+        }
 
-        private string f_61() { return this.calc_val("61", this.v_61); }
+        private string f_61()
+        {
+            if (string.IsNullOrWhiteSpace(this.v_61)) return "";
+            return this.calc_val("61", this.v_61);
+        }
 
         private string f_62()
         {
+            if (string.IsNullOrWhiteSpace(this.v_62_01)
+                && string.IsNullOrWhiteSpace(this.v_62_03)
+                && string.IsNullOrWhiteSpace(this.v_62_07)
+                && string.IsNullOrWhiteSpace(this.v_62_08)
+                && string.IsNullOrWhiteSpace(this.v_62_09)) return "";
             var v_01 = this.calc_val("01", this.v_62_01);
             var v_03 = this.calc_val("03", this.v_62_03);
             var v_07 = this.calc_val("07", this.v_62_07);
@@ -224,6 +247,14 @@ namespace Inventec.Common.BankQrCode.Provider
             string v = this.f_00() + this.f_01() + this.f_26() + this.f_38() + this.f_52() +
                 this.f_53() + this.f_54() + this.f_58() + this.f_59() +
                 this.f_60() + this.f_61();
+            return v + this.f_63(v);
+        }
+
+        public string createTotal()
+        {
+            string v = this.f_00() + this.f_01() + this.f_26() + this.f_38() + this.f_52() +
+                this.f_53() + this.f_54() + this.f_58() + this.f_59() +
+                this.f_60() + this.f_61() + this.f_62();
             return v + this.f_63(v);
         }
     }
