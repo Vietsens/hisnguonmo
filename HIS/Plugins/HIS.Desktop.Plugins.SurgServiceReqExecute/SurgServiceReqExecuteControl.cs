@@ -748,7 +748,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     if (HIS.Desktop.Plugins.SurgServiceReqExecute.Config.HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
                     {
                         HisSereServCheckExecuteTimesSDO inputSDO = new HisSereServCheckExecuteTimesSDO();
-                        var lstLogin = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();//serviceReq.EXECUTE_LOGINNAME;
+                        var Login = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();//serviceReq.EXECUTE_LOGINNAME;
                         long beginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtStart.DateTime) ?? 0;
                         long endTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtFinish.DateTime) ?? 0;
                         inputSDO.ExecuteTime = new ExecuteTime
@@ -757,15 +757,47 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             EndTime = endTime
                         };
                         inputSDO.TreatmentId = serviceReq.TREATMENT_ID;
-                        List<string> dsLogin = new List<string> { lstLogin };
-                        inputSDO.Loginnames = dsLogin;
+                        List<string> dsLogin = new List<string> { Login };
+                        List<MOS.EFMODEL.DataModels.HIS_EKIP_USER> ekipUsers = new List<MOS.EFMODEL.DataModels.HIS_EKIP_USER>();
+                        var dataGrid = ucEkip.GetDataSource();
+                        if (dataGrid != null && dataGrid.Count() > 0)
+                            foreach (var item in dataGrid)
+                            {
+                                MOS.EFMODEL.DataModels.HIS_EKIP_USER ekipUser = new HIS_EKIP_USER();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EKIP_USER>(ekipUser, item);
+                                if (ekipUser != null && ekipUser.EXECUTE_ROLE_ID != 0)
+                                    ekipUsers.Add(ekipUser);
+                            }
+                        List<string> lstLogin = ekipUsers.Select(o => o.LOGINNAME).Distinct().ToList();
+                        //List<string> lstLogin = AcsUserADOList.Select(o => o.LOGINNAME).Distinct().ToList();
+                        List<string> lstLoginValid = new List<string>();
+                        foreach (string acc in lstLogin)
+                        {
+                            if (acc != null)
+                            {
+                                lstLoginValid.Add(acc);
+                            }
+                            else
+                            {
+                                lstLoginValid.Add(Login);
+                            }
+                        }
+                        inputSDO.Loginnames = lstLoginValid;
+                        //if (lstLogin != null && lstLogin.Count() > 0)
+                        //{
+                        //    inputSDO.Loginnames = lstLogin;
+                        //}
+                        //else
+                        //{
+                        //    inputSDO.Loginnames = dsLogin;
+                        //}
                         string message = "";
                         CommonParam paramCheckEx = new CommonParam();
                         bool suscess = new BackendAdapter(paramCheckEx).Post<bool>("api/HisSereServ/CheckExecuteTimes", ApiConsumers.MosConsumer, inputSDO, paramCheckEx);
                         if (suscess == false)
                         {
                             message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckEx.GetMessage());
-                            if (MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                            if (MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) 
                             { return false; } 
                         } 
                     }

@@ -1,3 +1,7 @@
+### Release 2.327.0
+* Sắp xếp thuốc trên tờ điều trị theo quy định mới
+* Không cho phép xóa chẩn đoán
+
 ### Release 2.326.0
 * Bổ sung cảnh báo trả kết quả xét nghiệm
 * Bổ sung QR thanh toán lên các bảng kê theo khoa
