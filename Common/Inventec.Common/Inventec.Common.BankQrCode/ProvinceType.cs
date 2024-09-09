@@ -10,6 +10,7 @@ namespace Inventec.Common.BankQrCode
     {
         BIDV,
         VIETINBANK,
-        PVCB 
+        PVCB,
+        LPBANK
     }
 }

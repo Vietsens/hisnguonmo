@@ -491,8 +491,17 @@ namespace MPS.Processor.Mps000062.PDO
         public string PATIENT_TYPE_NAME { get; set; }
 
         public string ORDER_SHEET { get; set; }
+        public long? MEDICINE_TYPE_ID { get; set; }
         public long NUMBER_DAYS_TREATMENT { get; set; }
-      
+        public long? NUM_ORDER_MEDICINE_LINE { get; set; }
+        public long? NUM_ORDER_MEDICINE_USE_FORM { get; set; }
+        public long? NUM_ORDER_MEDICINE_GROUP { get; set; }
+        public long? NUM_ORDER_DOSAGE_FORM { get; set; }
+        public string MEDICINE_LINE_NAME { get; set; }
+        public string MEDICINE_USE_FORM_NAME { get; set; }
+        public string MEDICINE_GROUP_NAME { get; set; }
+        public string DOSAGE_FORM_NAME { get; set; }
+
         public List<ExpMestMetyReqADO> ExpMestMetyReqADOs { get; set; }// thuốc thường
         public List<ExpMestMetyReqADO> MedicinesInfusion { get; set; } //thuốc pha truyền
         public List<ExpMestMetyReqADO> MedicinesDuTru { get; set; } //thuốc dự trù
@@ -623,6 +632,12 @@ namespace MPS.Processor.Mps000062.PDO
         public string CONVERT_UNIT_NAME { get; set; }
         public decimal? CONVERT_AMOUNT { get; set; }
 
+        public long? NUM_ORDER_MEDICINE_LINE { get; set; }
+        public long? NUM_ORDER_MEDICINE_USE_FORM { get; set; }
+        public long? NUM_ORDER_MEDICINE_GROUP { get; set; }
+        public long? NUM_ORDER_DOSAGE_FORM { get; set; }
+        public string MEDICINE_GROUP_NAME { get; set; }
+        public string DOSAGE_FORM_NAME { get; set; }
         public ExpMestMetyReqADO() { }
         public ExpMestMetyReqADO(HIS_EXP_MEST_MEDICINE data)
         {
@@ -683,7 +698,13 @@ namespace MPS.Processor.Mps000062.PDO
         public long? NUMBER_BY_TYPE_IN_OUT { get; set; } // Đánh số theo loại thuốc đối với thuốc trong kho và ngoài kho
         public long? USE_TIME { get; set; }
         public long? USED_FOR_TRACKING_ID { get; set; }
-
+        public long? NUM_ORDER_MEDICINE_LINE { get; set; }
+        public long? NUM_ORDER_MEDICINE_USE_FORM { get; set; }
+        public long? NUM_ORDER_MEDICINE_GROUP { get; set; }
+        public long? NUM_ORDER_DOSAGE_FORM { get; set; }
+        public string MEDICINE_LINE_NAME { get; set; }
+        public string MEDICINE_GROUP_NAME { get; set; }
+        public string DOSAGE_FORM_NAME { get; set; }
         public ServiceReqMetyADO() { }
         public ServiceReqMetyADO(HIS_SERVICE_REQ_METY data, long trackingId, List<HIS_SERVICE_REQ> ServiceReqs)
         {
@@ -851,7 +872,13 @@ namespace MPS.Processor.Mps000062.PDO
 
         public long? USE_TIME_OLD { get; set; }
         public long? INTRUCTION_TIME_OLD { get; set; }
-
+        public long? NUM_ORDER_MEDICINE_LINE { get; set; }
+        public long? NUM_ORDER_MEDICINE_USE_FORM { get; set; }
+        public long? NUM_ORDER_MEDICINE_GROUP { get; set; }
+        public long? NUM_ORDER_DOSAGE_FORM { get; set; }
+        public string MEDICINE_LINE_NAME { get; set; }
+        public string MEDICINE_GROUP_NAME { get; set; }
+        public string DOSAGE_FORM_NAME { get; set; }
         public ImpMestMedicineADO() { }
 
         public ImpMestMedicineADO(V_HIS_IMP_MEST_MEDICINE data, HIS_SERVICE_REQ ServiceReq)
@@ -994,7 +1021,14 @@ namespace MPS.Processor.Mps000062.PDO
         public string ACTIVE_INGR_BHYT_CODE { get; set; }
         public string ACTIVE_INGR_BHYT_NAME { get; set; }
         public long? MEDICINE_GROUP_ID { get; set; }
-
+        public long? NUM_ORDER_MEDICINE_LINE { get; set; }
+        public long? NUM_ORDER_MEDICINE_USE_FORM { get; set; }
+        public long? NUM_ORDER_MEDICINE_GROUP { get; set; }
+        public long? NUM_ORDER_DOSAGE_FORM { get; set; }
+        public string MEDICINE_USE_FORM_NAME { get; set; }
+        public string MEDICINE_LINE_NAME { get; set; }
+        public string MEDICINE_GROUP_NAME { get; set; }
+        public string DOSAGE_FORM_NAME { get; set; }
         public ExpMestMedicineADO() { }
         public ExpMestMedicineADO(HIS_EXP_MEST_MEDICINE data, List<V_HIS_MEDICINE_TYPE> MedicineTypes)
         {

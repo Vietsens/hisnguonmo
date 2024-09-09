@@ -961,6 +961,10 @@ namespace MPS.Processor.Mps000062
                             var medicineTypeName = rdo._MedicineTypes.FirstOrDefault(p => p.ID == group.TDL_MEDICINE_TYPE_ID);
                             if (medicineTypeName != null)
                             {
+                                group.MEDICINE_USE_FORM_ID = medicineTypeName.MEDICINE_USE_FORM_ID;
+                                group.DOSAGE_FORM_NAME = medicineTypeName.DOSAGE_FORM;
+                                group.MEDICINE_GROUP_ID = medicineTypeName.MEDICINE_GROUP_ID;
+
                                 group.MEDICINE_TYPE_NAME = medicineTypeName.MEDICINE_TYPE_NAME;
                                 group.MEDICINE_TYPE_CODE = medicineTypeName.MEDICINE_TYPE_CODE;
                                 //if (rdo._WorkPlaceSDO != null && rdo._WorkPlaceSDO.IsShowMedicineLine)
@@ -1189,6 +1193,7 @@ namespace MPS.Processor.Mps000062
 
                             keyTamThan.Y_LENH += " - " + group.MEDICINE_TYPE_NAME + " x" + amount_str + " " + group.SERVICE_UNIT_NAME + ", " + group.MEDICINE_USE_FORM_NAME + "\r\n" + "     " + group.TUTORIAL + "\r\n";
                         }
+                        _ExpMestMetyReqADOs = ProcessSortListExpMestMetyReq(_ExpMestMetyReqADOs);
                     }
 
                     if (rdo._WorkPlaceSDO != null && rdo._WorkPlaceSDO.IsShowMedicineLine)
@@ -1215,6 +1220,7 @@ namespace MPS.Processor.Mps000062
 
 
                             _ExpMestMetyReqADOsV2.Add(adoV2);
+                            _ExpMestMetyReqADOsV2 = ProcessSortListExpMestMetyReq(_ExpMestMetyReqADOsV2);
                         }
 
 
@@ -2708,6 +2714,10 @@ namespace MPS.Processor.Mps000062
                             this._ExpMestMetyReqADOCommons.AddRange(itemIn.OrderBy(p => p.NUM_ORDER_BY_USE_FORM).ThenBy(m => m.TDL_SERVICE_REQ_ID).ThenBy(o => o.NUM_ORDER).ThenBy(p => p.NUMBER_H_N).ThenBy(n => n.USING_COUNT_NUMBER).ToList());
 
                         }
+                        else if (rdo._WorkPlaceSDO.IsOrderByType == 4)
+                        {
+                            this._ExpMestMetyReqADOCommons.AddRange(ProcessSortListExpMestMetyReq(itemIn));
+                        }
                     }
 
                     //Thuốc pha truyền
@@ -2765,6 +2775,17 @@ namespace MPS.Processor.Mps000062
                                 var childMixed = itemIn.Where(o => o.EXP_MEST_ID == itemIsMixed.EXP_MEST_ID && o.IS_MIXED_MAIN != 1 && o.MIXED_INFUSION == itemIsMixed.MIXED_INFUSION).OrderBy(p => p.NUM_ORDER_BY_USE_FORM).ThenBy(m => m.TDL_SERVICE_REQ_ID).ThenBy(o => o.NUM_ORDER).ThenBy(p => p.NUMBER_H_N).ThenBy(n => n.USING_COUNT_NUMBER).ToList();
 
                                 this._ExpMestMetyReqADOCommonsMix.AddRange(childMixed);
+                            }
+                        }
+                        else if (rdo._WorkPlaceSDO.IsOrderByType == 4)
+                        {
+                            foreach (var itemIsMixed in itemIn)
+                            {
+                                this._ExpMestMetyReqADOCommonsMix.AddRange(ProcessSortListExpMestMetyReq(new List<ExpMestMetyReqADO>() { itemIsMixed }));
+
+                                var childMixed = itemIn.Where(o => o.EXP_MEST_ID == itemIsMixed.EXP_MEST_ID && o.IS_MIXED_MAIN != 1 && o.MIXED_INFUSION == itemIsMixed.MIXED_INFUSION).ToList();
+
+                                this._ExpMestMetyReqADOCommonsMix.AddRange(ProcessSortListExpMestMetyReq(childMixed));
                             }
                         }
                     }
@@ -2946,6 +2967,10 @@ namespace MPS.Processor.Mps000062
                         {
                             this._ExpMestMetyReqADOCommons.AddRange(itemIn.OrderBy(p => p.NUM_ORDER_BY_USE_FORM).ThenBy(m => m.TDL_SERVICE_REQ_ID).ThenBy(o => o.NUM_ORDER).ThenBy(n => n.NUMBER_H_N).ThenBy(t => t.USING_COUNT_NUMBER).ToList());
                         }
+                        else if (rdo._WorkPlaceSDO.IsOrderByType == 4)
+                        {
+                            this._ExpMestMetyReqADOCommons.AddRange(ProcessSortListExpMestMetyReq(itemIn));
+                        }
                     }
 
                     //thuốc pha truyền
@@ -3002,6 +3027,17 @@ namespace MPS.Processor.Mps000062
                                 var childMixed = itemIn.Where(o => o.EXP_MEST_ID == itemIsMixed.EXP_MEST_ID && o.IS_MIXED_MAIN != 1 && o.MIXED_INFUSION == itemIsMixed.MIXED_INFUSION).OrderBy(p => p.NUM_ORDER_BY_USE_FORM).ThenBy(m => m.TDL_SERVICE_REQ_ID).ThenBy(o => o.NUM_ORDER).ThenBy(n => n.NUMBER_H_N).ThenBy(t => t.USING_COUNT_NUMBER).ToList();
 
                                 this._ExpMestMetyReqADOCommonsMix.AddRange(childMixed);
+                            }
+                        }
+                        else if (rdo._WorkPlaceSDO.IsOrderByType == 4)
+                        {
+                            foreach (var itemIsMixed in itemIn)
+                            {
+                                this._ExpMestMetyReqADOCommonsMix.AddRange(ProcessSortListExpMestMetyReq(new List<ExpMestMetyReqADO>() { itemIsMixed }));
+
+                                var childMixed = itemIn.Where(o => o.EXP_MEST_ID == itemIsMixed.EXP_MEST_ID && o.IS_MIXED_MAIN != 1 && o.MIXED_INFUSION == itemIsMixed.MIXED_INFUSION).ToList();
+
+                                this._ExpMestMetyReqADOCommonsMix.AddRange(ProcessSortListExpMestMetyReq(childMixed));
                             }
                         }
                     }
@@ -3287,7 +3323,6 @@ namespace MPS.Processor.Mps000062
 
                 this._ExpMestMatyReqADOs = this._ExpMestMatyReqADOs.Where(o => (o.USE_TIME <= o.INTRUCTION_TIME || o.USE_TIME == null) && o.USED_FOR_TRACKING_ID == null).OrderBy(o => o.INTRUCTION_TIME).ToList();
 
-
                 long IntructionTimeVT = 0;
                 foreach (var item in this._ExpMestMatyReqADOs)
                 {
@@ -3323,6 +3358,7 @@ namespace MPS.Processor.Mps000062
 
                 this._ServiceReqMetyADOs = this._ServiceReqMetyADOs.OrderBy(o => o.INTRUCTION_TIME_STR).ToList();
                 long MetyADOTime = 0;
+                _ServiceReqMetyADOs = ProcessSortListServiceReqMety(_ServiceReqMetyADOs);
                 foreach (var item in _ServiceReqMetyADOs)
                 {
                     if (MetyADOTime == item.INTRUCTION_TIME_STR)
@@ -3577,6 +3613,10 @@ namespace MPS.Processor.Mps000062
 
                                 this._ExpMestMetyReqADOCommonsDuTru.AddRange(itemIn.OrderBy(p => p.NUM_ORDER_BY_USE_FORM).ThenBy(m => m.TDL_SERVICE_REQ_ID).ThenBy(o => o.NUM_ORDER).ThenBy(n => n.NUMBER_H_N).ThenBy(t => t.USING_COUNT_NUMBER).ToList());
                             }
+                            else if (rdo._WorkPlaceSDO.IsOrderByType == 4)
+                            {
+                                this._ExpMestMetyReqADOCommonsDuTru.AddRange(ProcessSortListExpMestMetyReq(itemIn));
+                            }
                         }
                     }
                     #endregion
@@ -3639,6 +3679,16 @@ namespace MPS.Processor.Mps000062
                                     this._MediInfusionDutru.AddRange(childMixed);
                                 }
                             }
+                            else if (rdo._WorkPlaceSDO.IsOrderByType == 4)
+                            {
+                                foreach (var itemIsMixed in itemIn)
+                                {
+                                    this._MediInfusionDutru.AddRange(ProcessSortListExpMestMetyReq(new List<ExpMestMetyReqADO>() { itemIsMixed }));
+                                    var childMixed = itemIn.Where(o => o.EXP_MEST_ID == itemIsMixed.EXP_MEST_ID && o.IS_MIXED_MAIN != 1 && o.MIXED_INFUSION == itemIsMixed.MIXED_INFUSION).ToList();
+
+                                    this._MediInfusionDutru.AddRange(ProcessSortListExpMestMetyReq(childMixed));
+                                }
+                            }
                         }
                     }
                     _MediInfusionDutru = _MediInfusionDutru.Distinct().ToList();
@@ -3676,6 +3726,10 @@ namespace MPS.Processor.Mps000062
                             {
 
                                 this._ExpMestMetyReqADOCommonsTHDT.AddRange(itemIn.OrderBy(p => p.NUM_ORDER_BY_USE_FORM).ThenBy(m => m.TDL_SERVICE_REQ_ID).ThenBy(o => o.NUM_ORDER).ThenBy(n => n.NUMBER_H_N).ThenBy(t => t.USING_COUNT_NUMBER).ToList());
+                            }
+                            else if (rdo._WorkPlaceSDO.IsOrderByType == 4)
+                            {
+                                this._ExpMestMetyReqADOCommonsTHDT.AddRange(ProcessSortListExpMestMetyReq(itemIn));
                             }
                         }
                     }
@@ -3739,6 +3793,16 @@ namespace MPS.Processor.Mps000062
                                     this._MediInfusionTHDT.AddRange(childMixed);
                                 }
                             }
+                            else if (rdo._WorkPlaceSDO.IsOrderByType == 4)
+                            {
+                                foreach (var itemIsMixed in itemIn)
+                                {
+                                    this._MediInfusionTHDT.AddRange(ProcessSortListExpMestMetyReq(new List<ExpMestMetyReqADO>() { itemIsMixed }));
+                                    var childMixed = itemIn.Where(o => o.EXP_MEST_ID == itemIsMixed.EXP_MEST_ID && o.IS_MIXED_MAIN != 1 && o.MIXED_INFUSION == itemIsMixed.MIXED_INFUSION).ToList();
+
+                                    this._MediInfusionTHDT.AddRange(ProcessSortListExpMestMetyReq(childMixed));
+                                }
+                            }
                         }
                     }
                     _MediInfusionTHDT = _MediInfusionTHDT.Distinct().ToList();
@@ -3778,12 +3842,12 @@ namespace MPS.Processor.Mps000062
                 Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("thuốc pha truyền THDT: ", _MediInfusionTHDT));
 
 
-                objectTag.AddObjectData(store, "Medicines", _ExpMestMetyReqADOCommons ?? new List<ExpMestMetyReqADO>());
-                objectTag.AddObjectData(store, "MedicinesInfusion", _ExpMestMetyReqADOCommonsMix ?? new List<ExpMestMetyReqADO>());
-                objectTag.AddObjectData(store, "MedicinesDuTru", _ExpMestMetyReqADOCommonsDuTru ?? new List<ExpMestMetyReqADO>());
-                objectTag.AddObjectData(store, "MedicinesTHDT", _ExpMestMetyReqADOCommonsTHDT ?? new List<ExpMestMetyReqADO>());
-                objectTag.AddObjectData(store, "MediInfusionDutru", _MediInfusionDutru ?? new List<ExpMestMetyReqADO>());
-                objectTag.AddObjectData(store, "MediInfusionTHDT", _MediInfusionTHDT ?? new List<ExpMestMetyReqADO>());
+                objectTag.AddObjectData(store, "Medicines", ProcessSortListExpMestMetyReq(_ExpMestMetyReqADOCommons) ?? new List<ExpMestMetyReqADO>());
+                objectTag.AddObjectData(store, "MedicinesInfusion", ProcessSortListExpMestMetyReq(_ExpMestMetyReqADOCommonsMix) ?? new List<ExpMestMetyReqADO>());
+                objectTag.AddObjectData(store, "MedicinesDuTru", ProcessSortListExpMestMetyReq(_ExpMestMetyReqADOCommonsDuTru) ?? new List<ExpMestMetyReqADO>());
+                objectTag.AddObjectData(store, "MedicinesTHDT", ProcessSortListExpMestMetyReq(_ExpMestMetyReqADOCommonsTHDT) ?? new List<ExpMestMetyReqADO>());
+                objectTag.AddObjectData(store, "MediInfusionDutru", ProcessSortListExpMestMetyReq(_MediInfusionDutru) ?? new List<ExpMestMetyReqADO>());
+                objectTag.AddObjectData(store, "MediInfusionTHDT", ProcessSortListExpMestMetyReq(_MediInfusionTHDT) ?? new List<ExpMestMetyReqADO>());
 
                 objectTag.AddObjectData(store, "ServiceReq", lstServiceReqs ?? new List<HIS_SERVICE_REQ>());
                 objectTag.AddObjectData(store, "ServiceReqDuTru", _ServiceReqDuTrus ?? new List<HIS_SERVICE_REQ>());
@@ -3795,8 +3859,8 @@ namespace MPS.Processor.Mps000062
                 objectTag.AddObjectData(store, "Materials", this._ExpMestMatyReqADOs);
                 objectTag.AddObjectData(store, "MaterialsDuTru", this._ExpMestMatyReqADOsDuTru);
                 objectTag.AddObjectData(store, "MaterialsTHDT", this._ExpMestMatyReqADOsTHDT);
-
-                objectTag.AddObjectData(store, "ServiceReqMety", this._ServiceReqMetyADOs);
+                //V+ 175853 
+                objectTag.AddObjectData(store, "ServiceReqMety", ProcessSortListServiceReqMety(this._ServiceReqMetyADOs));
                 objectTag.AddObjectData(store, "ServiceReqMaty", this._ServiceReqMatyADOs);
                 objectTag.AddObjectData(store, "ServiceCLS", this._ServiceCLSs);
                 objectTag.AddObjectData(store, "ServiceCLSOrder", this._ServiceCLSOrders);
@@ -3882,6 +3946,249 @@ namespace MPS.Processor.Mps000062
             }
             return success;
         }
+        private List<ExpMestMedicineADO> ProcessSortListExpMestMedicine(List<ExpMestMedicineADO> expMestMedicine)
+        {
+            List<ExpMestMedicineADO> data = new List<ExpMestMedicineADO>();
+            if (expMestMedicine == null)
+                return data;
+            try
+            {
+                if (rdo._WorkPlaceSDO.IsOrderByType == 4 && expMestMedicine != null && expMestMedicine.Count > 0)
+                {
+                    var medicinegroups = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDICINE_GROUP>();
+                    foreach (var current in expMestMedicine)
+                    {
+                        ExpMestMedicineADO ado = new ExpMestMedicineADO();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestMedicineADO>(ado, current);
+                        var mediType = rdo._MedicineTypes.FirstOrDefault(o => o.ID == current.TDL_MEDICINE_TYPE_ID);
+                        if (rdo.MedicineLine != null && rdo.MedicineLine.Count > 0)
+                        {
+                            var mediLine = rdo.MedicineLine.FirstOrDefault(o => o.ID == mediType.MEDICINE_LINE_ID);
+                            if (mediLine != null)
+                            {
+                                current.NUM_ORDER_MEDICINE_LINE = mediLine.NUM_ORDER ?? 0;
+                                current.MEDICINE_LINE_NAME = mediLine.MEDICINE_LINE_NAME;
+                            }
+                            var mediUf = rdo._MedicineUseForms.FirstOrDefault(o => o.ID == mediType.MEDICINE_USE_FORM_ID);
+                            if (mediUf != null)
+                            {
+                                current.NUM_ORDER_MEDICINE_USE_FORM = mediUf.NUM_ORDER ?? 0;
+                                current.MEDICINE_USE_FORM_NAME = mediUf.MEDICINE_USE_FORM_NAME;
+                            }
+                            var mediG = medicinegroups.FirstOrDefault(o => o.ID == mediType.MEDICINE_GROUP_ID);
+                            if (mediG != null)
+                            {
+                                current.NUM_ORDER_MEDICINE_GROUP = mediG.NUM_ORDER ?? 0;
+                                current.MEDICINE_GROUP_NAME = mediG.MEDICINE_GROUP_NAME;
+                            }
+                            var dosaForm = rdo.DosageForm.FirstOrDefault(o => o.DOSAGE_FORM_NAME == mediType.DOSAGE_FORM);
+                            if (dosaForm != null)
+                            {
+                                current.NUM_ORDER_DOSAGE_FORM = dosaForm.NUM_ORDER ?? 0;
+                                current.DOSAGE_FORM_NAME = dosaForm.DOSAGE_FORM_NAME;
+                            }
+                        }
+                        data.Add(ado);
+                    }
+                    data = data.OrderByDescending(o => o.NUM_ORDER_MEDICINE_LINE ?? -1).ThenByDescending(o => o.NUM_ORDER_MEDICINE_USE_FORM ?? -1).ThenByDescending(o => o.NUM_ORDER_MEDICINE_GROUP ?? -1).ThenByDescending(o => o.NUM_ORDER_DOSAGE_FORM ?? -1).ThenBy(o => o.NUM_ORDER).ToList();
+                }
+                else
+                    data = expMestMedicine;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return data;
+        }
+
+        private List<ImpMestMedicineADO> ProcessSortListImpMestMedicine(List<ImpMestMedicineADO> impMestMedicine)
+        {
+            List<ImpMestMedicineADO> data = new List<ImpMestMedicineADO>();
+            if (impMestMedicine == null)
+                return data;
+            try
+            {
+                if (rdo._WorkPlaceSDO.IsOrderByType == 4 && impMestMedicine != null && impMestMedicine.Count > 0)
+                {
+                    var medicinegroups = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDICINE_GROUP>();
+                    foreach (var current in impMestMedicine)
+                    {
+                        ImpMestMedicineADO ado = new ImpMestMedicineADO();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<ImpMestMedicineADO>(ado, current);
+                        var mediType = rdo._MedicineTypes.FirstOrDefault(o => o.ID == current.MEDICINE_TYPE_ID);
+                        if (rdo.MedicineLine != null && rdo.MedicineLine.Count > 0)
+                        {
+                            var mediLine = rdo.MedicineLine.FirstOrDefault(o => o.ID == mediType.MEDICINE_LINE_ID);
+                            if (mediLine != null)
+                            {
+                                current.NUM_ORDER_MEDICINE_LINE = mediLine.NUM_ORDER ?? 0;
+                                current.MEDICINE_LINE_NAME = mediLine.MEDICINE_LINE_NAME;
+                            }
+                            var mediUf = rdo._MedicineUseForms.FirstOrDefault(o => o.ID == mediType.MEDICINE_USE_FORM_ID);
+                            if (mediUf != null)
+                            {
+                                current.NUM_ORDER_MEDICINE_USE_FORM = mediUf.NUM_ORDER ?? 0;
+                                current.MEDICINE_USE_FORM_NAME = mediUf.MEDICINE_USE_FORM_NAME;
+                            }
+                            var mediG = medicinegroups.FirstOrDefault(o => o.ID == mediType.MEDICINE_GROUP_ID);
+                            if (mediG != null)
+                            {
+                                current.NUM_ORDER_MEDICINE_GROUP = mediG.NUM_ORDER ?? 0;
+                                current.MEDICINE_GROUP_NAME = mediG.MEDICINE_GROUP_NAME;
+                            }
+                            var dosaForm = rdo.DosageForm.FirstOrDefault(o => o.DOSAGE_FORM_NAME == mediType.DOSAGE_FORM);
+                            if (dosaForm != null)
+                            {
+                                current.NUM_ORDER_DOSAGE_FORM = dosaForm.NUM_ORDER ?? 0;
+                                current.DOSAGE_FORM_NAME = dosaForm.DOSAGE_FORM_NAME;
+                            }
+                        }
+                        data.Add(ado);
+                    }
+                    data = data.OrderByDescending(o => o.NUM_ORDER_MEDICINE_LINE ?? -1).ThenByDescending(o => o.NUM_ORDER_MEDICINE_USE_FORM ?? -1).ThenByDescending(o => o.NUM_ORDER_MEDICINE_GROUP ?? -1).ThenByDescending(o => o.NUM_ORDER_DOSAGE_FORM ?? -1).ThenBy(o => o.NUM_ORDER).ToList();
+                }
+                else
+                    data = impMestMedicine;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return data;
+        }
+
+        private List<ServiceReqMetyADO> ProcessSortListServiceReqMety(List<ServiceReqMetyADO> serviceReqMeties)
+        {
+            List<ServiceReqMetyADO> data = new List<ServiceReqMetyADO>();
+            if (serviceReqMeties == null)
+                return data;
+            try
+            {
+                if (rdo._WorkPlaceSDO.IsOrderByType == 4 && serviceReqMeties != null && serviceReqMeties.Count > 0)
+                {
+                    var medicinegroups = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDICINE_GROUP>();
+                    foreach (var current in serviceReqMeties)
+                    {
+                        ServiceReqMetyADO ado = new ServiceReqMetyADO();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<ServiceReqMetyADO>(ado, current);
+                        var mediType = rdo._MedicineTypes.FirstOrDefault(o => o.ID == ado.MEDICINE_TYPE_ID);
+                        if (rdo.MedicineLine != null && rdo.MedicineLine.Count > 0)
+                        {
+                            var mediLine = rdo.MedicineLine.FirstOrDefault(o => o.ID == mediType.MEDICINE_LINE_ID);
+                            if (mediLine != null)
+                            {
+                                ado.NUM_ORDER_MEDICINE_LINE = mediLine.NUM_ORDER ?? 0;
+                                ado.MEDICINE_LINE_NAME = mediLine.MEDICINE_LINE_NAME;
+                            }
+                        }
+                        if (rdo._MedicineUseForms != null && rdo._MedicineUseForms.Count > 0)
+                        {
+                            var mediUf = rdo._MedicineUseForms.FirstOrDefault(o => o.ID == mediType.MEDICINE_USE_FORM_ID);
+                            if (mediUf != null)
+                            {
+                                ado.NUM_ORDER_MEDICINE_USE_FORM = mediUf.NUM_ORDER ?? 0;
+                                ado.MEDICINE_USE_FORM_NAME = mediUf.MEDICINE_USE_FORM_NAME;
+                            }
+                        }
+                        if (medicinegroups != null && medicinegroups.Count > 0)
+                        {
+                            var mediG = medicinegroups.FirstOrDefault(o => o.ID == mediType.MEDICINE_GROUP_ID);
+                            if (mediG != null)
+                            {
+                                ado.NUM_ORDER_MEDICINE_GROUP = mediG.NUM_ORDER ?? 0;
+                                ado.MEDICINE_GROUP_NAME = mediG.MEDICINE_GROUP_NAME;
+                            }
+                        }
+
+                        if (rdo.DosageForm != null && rdo.DosageForm.Count > 0)
+                        {
+                            var dosaForm = rdo.DosageForm.FirstOrDefault(o => o.DOSAGE_FORM_NAME == mediType.DOSAGE_FORM);
+                            if (dosaForm != null)
+                            {
+                                ado.NUM_ORDER_DOSAGE_FORM = dosaForm.NUM_ORDER ?? 0;
+                                ado.DOSAGE_FORM_NAME = dosaForm.DOSAGE_FORM_NAME;
+                            }
+                        }
+                        data.Add(ado);
+                    }
+                    data = data.OrderByDescending(o => o.NUM_ORDER_MEDICINE_LINE ?? -1).ThenByDescending(o => o.NUM_ORDER_MEDICINE_USE_FORM ?? -1).ThenByDescending(o => o.NUMBER_BY_GROUP ?? -1).ThenByDescending(o => o.NUM_ORDER_DOSAGE_FORM ?? -1).ThenBy(o => o.NUM_ORDER).ToList();
+                }
+                else
+                    data = serviceReqMeties;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return data;
+        }
+
+        private List<ExpMestMetyReqADO> ProcessSortListExpMestMetyReq(List<ExpMestMetyReqADO> lstExpMest)
+        {
+            List<ExpMestMetyReqADO> data = new List<ExpMestMetyReqADO>();
+            if (lstExpMest == null)
+                return data;
+            try
+            {
+                if (rdo._WorkPlaceSDO.IsOrderByType == 4 && lstExpMest != null && lstExpMest.Count > 0)
+                {
+                    var medicinegroups = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDICINE_GROUP>();
+                    foreach (var current in lstExpMest)
+                    {
+                        ExpMestMetyReqADO ado = new ExpMestMetyReqADO();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestMetyReqADO>(ado, current);
+                        var mediType = rdo._MedicineTypes.FirstOrDefault(o => o.ID == ado.TDL_MEDICINE_TYPE_ID);
+                        if (rdo.MedicineLine != null && rdo.MedicineLine.Count > 0)
+                        {
+                            var mediLine = rdo.MedicineLine.FirstOrDefault(o => o.ID == mediType.MEDICINE_LINE_ID);
+                            if (mediLine != null)
+                            {
+                                ado.NUM_ORDER_MEDICINE_LINE = mediLine.NUM_ORDER ?? 0;
+                                ado.MEDICINE_LINE_NAME = mediLine.MEDICINE_LINE_NAME;
+                            }
+                        }
+                        if (rdo._MedicineUseForms != null && rdo._MedicineUseForms.Count > 0)
+                        {
+                            var mediUf = rdo._MedicineUseForms.FirstOrDefault(o => o.ID == mediType.MEDICINE_USE_FORM_ID);
+                            if (mediUf != null)
+                            {
+                                ado.NUM_ORDER_MEDICINE_USE_FORM = mediUf.NUM_ORDER ?? 0;
+                                ado.MEDICINE_USE_FORM_NAME = mediUf.MEDICINE_USE_FORM_NAME;
+                            }
+                        }
+                        if (medicinegroups != null && medicinegroups.Count > 0)
+                        {
+                            var mediG = medicinegroups.FirstOrDefault(o => o.ID == mediType.MEDICINE_GROUP_ID);
+                            if (mediG != null)
+                            {
+                                ado.NUM_ORDER_MEDICINE_GROUP = mediG.NUM_ORDER ?? 0;
+                                ado.MEDICINE_GROUP_NAME = mediG.MEDICINE_GROUP_NAME;
+                            }
+                        }
+
+                        if (rdo.DosageForm != null && rdo.DosageForm.Count > 0)
+                        {
+                            var dosaForm = rdo.DosageForm.FirstOrDefault(o => o.DOSAGE_FORM_NAME == mediType.DOSAGE_FORM);
+                            if (dosaForm != null)
+                            {
+                                ado.NUM_ORDER_DOSAGE_FORM = dosaForm.NUM_ORDER ?? 0;
+                                ado.DOSAGE_FORM_NAME = dosaForm.DOSAGE_FORM_NAME;
+                            }
+                        }
+                        data.Add(ado);
+                    }
+                    data = data.OrderByDescending(o => o.NUM_ORDER_MEDICINE_LINE ?? -1).ThenByDescending(o => o.NUM_ORDER_MEDICINE_USE_FORM ?? -1).ThenByDescending(o => o.NUM_ORDER_MEDICINE_GROUP ?? -1).ThenByDescending(o => o.NUM_ORDER_DOSAGE_FORM ?? -1).ThenBy(o => o.NUM_ORDER).ToList();
+                }
+                else
+                    data = lstExpMest;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return data;
+        }
 
         private bool ProcessDataXtraReport()
         {
@@ -3942,6 +4249,7 @@ namespace MPS.Processor.Mps000062
 
                     //ServiceReqMety
                     var listServiceReqMetyADOs = this._ServiceReqMetyADOs != null && this._ServiceReqMetyADOs.Count > 0 ? this._ServiceReqMetyADOs.Where(o => o.TRACKING_ID == item.ID && o.USE_TIME == null).ToList() : null;
+
                     if (listServiceReqMetyADOs != null && listServiceReqMetyADOs.Count > 0)
                     {
                         foreach (var item1 in listServiceReqMetyADOs)
@@ -3960,6 +4268,7 @@ namespace MPS.Processor.Mps000062
                                 INTRUCTION_TIME_STR = item1.INTRUCTION_TIME_STR,
                                 NUMBER_H_N = rdo._WorkPlaceSDO.UsedDayCountingOutStockOption == 1 ? item1.NUMBER_BY_GROUP : null,
                                 NUMBER_BY_TYPE = rdo._WorkPlaceSDO.UsedDayCountingOutStockOption == 1 ? item1.NUMBER_BY_TYPE_IN_OUT : null,
+                                TDL_MEDICINE_TYPE_ID = item1.MEDICINE_TYPE_ID
                             });
 
                             medicine_Merges.Insert(medicine_Merges.Count, new ExpMestMetyReqADO()
@@ -3976,8 +4285,11 @@ namespace MPS.Processor.Mps000062
                                 INTRUCTION_TIME_STR = item1.INTRUCTION_TIME_STR,
                                 NUMBER_H_N = rdo._WorkPlaceSDO.UsedDayCountingOutStockOption == 1 ? item1.NUMBER_BY_GROUP : null,
                                 NUMBER_BY_TYPE = rdo._WorkPlaceSDO.UsedDayCountingOutStockOption == 1 ? item1.NUMBER_BY_TYPE_IN_OUT : null,
+                                TDL_MEDICINE_TYPE_ID = item1.MEDICINE_TYPE_ID
                             });
                         }
+                        medicines = ProcessSortListExpMestMetyReq(medicines);
+                        medicine_Merges = ProcessSortListExpMestMetyReq(medicine_Merges);
                     }
 
                     if (medicine_Merges != null && medicine_Merges.Count > 0)
@@ -4277,7 +4589,7 @@ namespace MPS.Processor.Mps000062
                                     item.MEDICINES___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                 }
                             }
-
+                            item.MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID;
                             dem++;
                         }
                     }
@@ -4290,9 +4602,9 @@ namespace MPS.Processor.Mps000062
                         medicineInfusions = new List<ExpMestMetyReqADO>();
                     }
 
-
                     if (medicineInfusions != null && medicineInfusions.Count > 0)
                     {
+                        medicineInfusions = ProcessSortListExpMestMetyReq(medicineInfusions);
                         var medicineInfusionsGroup = medicineInfusions.Where(p => p.TRACKING_ID == item.ID).GroupBy(o => new { o.EXP_MEST_ID, o.MIXED_INFUSION });
 
                         item.MEDICINES_INFUSION___DATA = "";
@@ -4331,6 +4643,8 @@ namespace MPS.Processor.Mps000062
                                 s4 = strAmount + " " + MediIns.SERVICE_UNIT_NAME;
 
                                 item.MEDICINES_INFUSION_DATA_WITH_BOLD_NAME += String.Format("<table><tr><td style =\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0}</td><td style =\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{1}</td></tr></table>", s3, s4);
+
+                                item.MEDICINE_TYPE_ID = MediIns.TDL_MEDICINE_TYPE_ID;
                             }
 
                             var MixedMain1 = InfusionsGroup.FirstOrDefault(o => o.IS_MIXED_MAIN == 1) ?? null;
@@ -4361,7 +4675,7 @@ namespace MPS.Processor.Mps000062
                             if (medicineDuTru_Merges != null && medicineDuTru_Merges.Count > 0)
                             {
                                 int dem = 0;
-
+                                medicineDuTru_Merges = ProcessSortListExpMestMetyReq(medicineDuTru_Merges);
                                 foreach (var medi in medicineDuTru_Merges)
                                 {
                                     string s1 = "";
@@ -4426,6 +4740,7 @@ namespace MPS.Processor.Mps000062
                                         item.MEDICINES_MERGE_DUTRU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                     }
 
+                                    item.MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID;
                                     dem++;
                                 }
                             }
@@ -4443,6 +4758,7 @@ namespace MPS.Processor.Mps000062
                             {
                                 int dem = 0;
 
+                                medicineDuTrus = ProcessSortListExpMestMetyReq(medicineDuTrus);
                                 foreach (var medi in medicineDuTrus)
                                 {
                                     string s1 = "", S1_NoConcentra = "";
@@ -4512,6 +4828,7 @@ namespace MPS.Processor.Mps000062
                                         //}
                                     }
 
+                                    item.MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID;
                                     dem++;
                                 }
                             }
@@ -4534,7 +4851,9 @@ namespace MPS.Processor.Mps000062
                                 {
                                     string s1 = "", s2 = "";
                                     InfusionsGroup.OrderBy(o => o.IS_MIXED_MAIN ?? 99999).ToList();
-                                    foreach (var MediIns in InfusionsGroup)
+
+                                    var InfusionsList = ProcessSortListExpMestMetyReq(InfusionsGroup.ToList());
+                                    foreach (var MediIns in InfusionsList)
                                     {
                                         if (checkdem == 0 && ReqDT.USE_TIME != null)
                                         {
@@ -4557,9 +4876,11 @@ namespace MPS.Processor.Mps000062
                                         item.MEDICINES_INFUSION_DuTru___DATA += String.Format("<table><tr><td style =\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0}</td></span><td style =\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{1}</td></tr></table>", s1, s2);
 
                                         item.MEDICINES_INFUSION_DuTru___DATA += MediIns.TUTORIAL;
+                                        item.MEDICINE_TYPE_ID = MediIns.TDL_MEDICINE_TYPE_ID;
                                         checkdem++;
                                     }
                                     item.MEDICINES_INFUSION_DuTru___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+
                                 }
                             }
                             #endregion
@@ -4576,6 +4897,7 @@ namespace MPS.Processor.Mps000062
                             {
                                 int dem = 0;
 
+                                OutStockDuTrus = ProcessSortListServiceReqMety(OutStockDuTrus);
                                 foreach (var medi in OutStockDuTrus)
                                 {
                                     string s1 = "";
@@ -4604,6 +4926,8 @@ namespace MPS.Processor.Mps000062
                                     item.MEDICINES_OutStock_DuTru__DATA += String.Format("<table><tr><td style =\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0}</td></span><td style =\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{1}</td></tr></table>", s1, s2);
                                     item.MEDICINES_OutStock_DuTru__DATA += medi.TUTORIAL;
                                     item.MEDICINES_OutStock_DuTru__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+
+                                    item.MEDICINE_TYPE_ID = medi.MEDICINE_TYPE_ID;
                                     dem++;
                                 }
                             }
@@ -4635,6 +4959,7 @@ namespace MPS.Processor.Mps000062
                             {
                                 int dem = 0;
 
+                                medicineTHDTs = ProcessSortListExpMestMetyReq(medicineTHDTs);
                                 foreach (var medi in medicineTHDTs)
                                 {
                                     string s1 = "", S1_NoConcentra = "";
@@ -4704,6 +5029,7 @@ namespace MPS.Processor.Mps000062
                                         //}
                                     }
 
+                                    item.MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID;
                                     dem++;
                                 }
 
@@ -4727,7 +5053,9 @@ namespace MPS.Processor.Mps000062
                                 {
                                     string s1 = "", s2 = "";
                                     InfusionsGroup.OrderBy(o => o.IS_MIXED_MAIN ?? 99999).ToList();
-                                    foreach (var MediIns in InfusionsGroup)
+
+                                    var InfusionsList = ProcessSortListExpMestMetyReq(InfusionsGroup.ToList());
+                                    foreach (var MediIns in InfusionsList)
                                     {
                                         if (checkdem == 0 && ReqTHDT.USE_TIME != null)
                                         {
@@ -4750,9 +5078,11 @@ namespace MPS.Processor.Mps000062
                                         item.MEDICINES_INFUSION_THDT___DATA += String.Format("<table><tr><td style =\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0}</td></span><td style =\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{1}</td></tr></table>", s1, s2);
 
                                         item.MEDICINES_INFUSION_THDT___DATA += MediIns.TUTORIAL;
+                                        item.MEDICINE_TYPE_ID = MediIns.TDL_MEDICINE_TYPE_ID;
                                         checkdem++;
                                     }
                                     item.MEDICINES_INFUSION_THDT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+
                                 }
                             }
                             #endregion
@@ -4768,7 +5098,7 @@ namespace MPS.Processor.Mps000062
                             if (OutStockTHDTs != null && OutStockTHDTs.Count > 0)
                             {
                                 int dem = 0;
-
+                                OutStockTHDTs = ProcessSortListServiceReqMety(OutStockTHDTs);
                                 foreach (var medi in OutStockTHDTs)
                                 {
                                     string s1 = "";
@@ -4799,6 +5129,7 @@ namespace MPS.Processor.Mps000062
                                     item.MEDICINES_OutStock_THDT__DATA += medi.TUTORIAL;
                                     item.MEDICINES_OutStock_THDT__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
 
+                                    item.MEDICINE_TYPE_ID = medi.MEDICINE_TYPE_ID;
                                     dem++;
                                 }
 
@@ -4822,6 +5153,7 @@ namespace MPS.Processor.Mps000062
                             long? IntructionTime = 0;
                             long? UseTime = null;
                             var impMestMedicine_S = impMestMedicine.OrderBy(p => p.USE_TIME_OLD ?? 99999999999999).ThenBy(o => o.INTRUCTION_TIME_OLD ?? 99999999999999).ToList();
+                            impMestMedicine_S = ProcessSortListImpMestMedicine(impMestMedicine_S);
                             foreach (var IMedi in impMestMedicine_S)
                             {
                                 string s1 = "", s2 = "";
@@ -4841,6 +5173,8 @@ namespace MPS.Processor.Mps000062
                                 s1 += " " + IMedi.CONCENTRA;
                                 s2 = Inventec.Common.Number.Convert.NumberToStringRoundMax4(IMedi.AMOUNT) + " " + IMedi.SERVICE_UNIT_NAME;
                                 item.MOBA_IMP_MEST_MEDICINE__DATA += String.Format("<table><tr><td width=\"650\" text-align=\"left\" align=\"left\">{0}</td></span><td text-align=\"right\" align=\"right\" width=\"150\">{1}</td></tr></table>", s1, s2);
+
+                                item.MEDICINE_TYPE_ID = IMedi.MEDICINE_TYPE_ID;
                             }
                         }
                     }
@@ -4951,16 +5285,21 @@ namespace MPS.Processor.Mps000062
                             if (itemExpMest == null)
                                 continue;
 
-                            List<HIS_EXP_MEST_MEDICINE> _expMestMedicines = new List<HIS_EXP_MEST_MEDICINE>();
+                            List<ExpMestMedicineADO> _expMestMedicines = new List<ExpMestMedicineADO>();
                             if (rdo._DicExpMestMedicines.ContainsKey(itemExpMest.ID))
                             {
-                                _expMestMedicines = rdo._DicExpMestMedicines[itemExpMest.ID].ToList();
+                                foreach (var iem in rdo._DicExpMestMedicines[itemExpMest.ID].ToList())
+                                {
+                                    ExpMestMedicineADO Ado = new ExpMestMedicineADO(iem, rdo._MedicineTypes);
+                                    _expMestMedicines.Add(Ado);
+                                }
                                 Inventec.Common.Logging.LogSystem.Warn("dữ liệu _expMestMedicines 1: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => _expMestMedicines), _expMestMedicines));
                             }
+
                             if (_expMestMedicines != null && _expMestMedicines.Count > 0)
                             {
                                 _expMestMedicines = _expMestMedicines.Where(o => o.USE_TIME_TO >= item.TRACKING_TIME).OrderBy(p => p.NUM_ORDER).ToList();
-
+                                _expMestMedicines = ProcessSortListExpMestMedicine(_expMestMedicines);
                                 Inventec.Common.Logging.LogSystem.Warn("dữ liệu _expMestMedicines 2: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => _expMestMedicines), _expMestMedicines));
 
                                 foreach (var emmedi in _expMestMedicines)
@@ -4979,6 +5318,7 @@ namespace MPS.Processor.Mps000062
 
                                     }
                                     Inventec.Common.Logging.LogSystem.Warn("dữ liệu PRE_MEDICINE: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.PRE_MEDICINE), item.PRE_MEDICINE));
+                                    item.MEDICINE_TYPE_ID = emmedi.TDL_MEDICINE_TYPE_ID;
                                 }
                             }
                         }
@@ -5003,6 +5343,7 @@ namespace MPS.Processor.Mps000062
                                 if (DongYExp_Mest != null && DongYExp_Mest.Count > 0)
                                 {
                                     int dem1 = 0;
+                                    DongYExp_Mest = ProcessSortListExpMestMetyReq(DongYExp_Mest);
                                     foreach (var DY in DongYExp_Mest)
                                     {
                                         string s1 = "";
@@ -5037,7 +5378,7 @@ namespace MPS.Processor.Mps000062
                                                 item.MEDICINES_DONG___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                             }
                                         }
-
+                                        item.MEDICINE_TYPE_ID = DY.TDL_MEDICINE_TYPE_ID;
                                         dem1++;
                                     }
                                 }
@@ -5543,7 +5884,6 @@ namespace MPS.Processor.Mps000062
                         item.NEXT_TRACKING_DATE_STR = GetPriviousTrackingDate(itemIndex + 1);
                     itemIndex++;
                 }
-
                 success = xtraReportStore.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 success = success && singleTag.ProcessData(xtraReportStore, singleValueDictionary);
                 success = success && objectTag.AddObjectData<Mps000062ExtADO>(xtraReportStore, mps000062ADOExt.Mps000062ADOs);
@@ -5743,7 +6083,6 @@ namespace MPS.Processor.Mps000062
                     item.ImpMestBlood = this._ImpMestBloodADOs.Where(o => o.TRACKING_ID == item.ID).ToList();
                     item.Ration = this._SereServRationADO.Where(o => o.TRACKING_ID == item.ID).ToList();
                 }
-
                 success = templaterExportStore.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 success = success && barCodeTag.ProcessData(templaterExportStore, dicImage);
                 success = success && singleTag.ProcessData(templaterExportStore, singleValueDictionary);
@@ -5876,7 +6215,7 @@ namespace MPS.Processor.Mps000062
                     SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.BED_ROOM_CODE, bedRoomCodeStr));
                     SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.BED_ROOM_NAME, bedRoomNameStr));
                 }
-                if(rdo.PatientTypeAlter != null)
+                if (rdo.PatientTypeAlter != null)
                     SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.HEIN_CARD_ADDRESS, rdo.PatientTypeAlter.ADDRESS));
                 SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.PHONE, ""));
                 AddObjectKeyIntoListkey<Mps000062SingleKey>(rdo._WorkPlaceSDO, false);
@@ -6006,6 +6345,10 @@ namespace MPS.Processor.Mps000062
                     else if (rdo._WorkPlaceSDO.IsOrderByType == 3)
                     {
                         Result.AddRange(itemIn.OrderBy(p => p.NUM_ORDER_BY_USE_FORM).ThenBy(m => m.TDL_SERVICE_REQ_ID).ThenBy(o => o.NUM_ORDER).ThenBy(p => p.NUMBER_H_N).ThenBy(n => n.USING_COUNT_NUMBER).ToList());
+                    }
+                    else if (rdo._WorkPlaceSDO.IsOrderByType == 4)
+                    {
+                        Result.AddRange(ProcessSortListExpMestMetyReq(itemIn));
                     }
                 }
             }
