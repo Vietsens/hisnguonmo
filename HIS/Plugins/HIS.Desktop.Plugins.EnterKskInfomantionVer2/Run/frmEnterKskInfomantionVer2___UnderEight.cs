@@ -560,6 +560,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
             return obj;
         }
+        private void txtResultSubclinical3_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameSItem = ENameSItem.KET_QUA_3;
+            GetSpecInformation(ReturnObject = false);
+        }
 
         #region ---PREVIEWKEYDOWN----
 

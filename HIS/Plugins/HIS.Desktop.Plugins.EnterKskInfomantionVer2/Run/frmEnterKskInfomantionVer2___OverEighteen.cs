@@ -591,6 +591,86 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void txtTestBloodOther2_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameSItem = ENameSItem.KHAC_XNM_2;
+            GetSpecInformation(ReturnObject = false);
+        }
+
+        private void txtTestUrineOther2_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameSItem = ENameSItem.KHAC_XNNT_2;
+            GetSpecInformation(ReturnObject = false);
+        }
+
+        private void txtResultDiim2_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameSItem = ENameSItem.CDHA_2;
+            GetSpecInformation(ReturnObject = false);
+        }
+        private void txtTestBloodHc2_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.SL_HC_2;
+            GetSpecInformation();
+        }
+
+        private void txtTestBloodBc2_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.SL_BC_2;
+            GetSpecInformation();
+        }
+
+        private void txtTestBloodTc2_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.SL_TC_2;
+            GetSpecInformation();
+        }
+
+        private void txtTestBloodGluco2_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.DMA_2;
+            GetSpecInformation();
+        }
+
+        private void txtTestBloodUre2_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.URE_2;
+            GetSpecInformation();
+        }
+
+        private void txtTestBloodCreatinin2_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.CRE_2;
+            GetSpecInformation();
+        }
+
+        private void txtTestBloodAsat2_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.ASA_2;
+            GetSpecInformation();
+        }
+
+        private void txtTestBloodAlat2_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.ALA_2;
+            GetSpecInformation();
+
+        }
+
+        private void txtTestUrineGluco2_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.DUO_2;
+            GetSpecInformation();
+        }
+
+        private void txtTestUrineProtein2_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.PRO_2;
+            GetSpecInformation();
+        }
+
+
         #region ---PREVIEWKEYDOWN---
         private void txtPathologicalHistoryFamily_PreviewKeyDown(object sender, System.Windows.Forms.PreviewKeyDownEventArgs e)
         {

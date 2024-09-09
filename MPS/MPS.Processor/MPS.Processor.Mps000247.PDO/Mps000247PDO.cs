@@ -88,8 +88,6 @@ namespace MPS.Processor.Mps000247.PDO
 
     public class ExpMestMedicineADO : V_HIS_EXP_MEST_MEDICINE
     {
-        public long TDL_PATIENT_ID { get; set; }
-        public long TDL_INTRUCTION_DATE { get; set; }
 
         public ExpMestMedicineADO() { }
 
@@ -115,7 +113,6 @@ namespace MPS.Processor.Mps000247.PDO
     public class ExpMestMaterialADO : V_HIS_EXP_MEST_MATERIAL
     {
         public long TDL_PATIENT_ID { get; set; }
-        public long TDL_INTRUCTION_DATE { get; set; }
 
         public ExpMestMaterialADO() { }
 
@@ -149,7 +146,7 @@ namespace MPS.Processor.Mps000247.PDO
         public ExpMestADO(HIS_EXP_MEST data) 
         {
             try
-            {
+            { 
                 if (data != null)
                 {
                     Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestADO>(this, data);

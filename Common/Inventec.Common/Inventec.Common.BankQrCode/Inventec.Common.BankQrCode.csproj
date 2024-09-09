@@ -58,6 +58,8 @@
     <Compile Include="Provider\BIDV\Model\BidvInfoData.cs" />
     <Compile Include="Provider\CreatQrData.cs" />
     <Compile Include="Provider\BIDV\Model\ResponseData.cs" />
+    <Compile Include="Provider\LPBANK\LPBankProcessor.cs" />
+    <Compile Include="Provider\LPBANK\Model\LpInfoData.cs" />
     <Compile Include="Provider\Qrcode.cs" />
     <Compile Include="Provider\BIDV\UriStore.cs" />
     <Compile Include="Provider\PVCB\PvcomBankProcessor.cs" />
