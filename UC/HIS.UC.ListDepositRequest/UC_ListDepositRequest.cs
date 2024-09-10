@@ -41,6 +41,9 @@ using MOS.Filter;
 using DevExpress.XtraGrid.Views.Grid;
 using System.Resources;
 using Inventec.Desktop.Common.LanguageManager;
+using HIS.Desktop.LocalStorage.BackendData;
+using DevExpress.XtraBars;
+using HIS.Desktop.ADO;
 
 namespace HIS.UC.ListDepositRequest
 {
@@ -53,6 +56,7 @@ namespace HIS.UC.ListDepositRequest
         Grid_KeyUp gridView_KeyUp = null;
         EventHandle btnDelete_Click = null;
         EventHandle btnPrint_Click = null;
+        EventHandle btnQR_Click = null;
         Grid_CustomRowCellEdit gridView_CustomRowCellEdit = null;
         Grid_RowCellStyle gridView_RowCellStyle = null;
         private int _rowCount = 0;
@@ -74,6 +78,7 @@ namespace HIS.UC.ListDepositRequest
                 this.gridView_KeyUp = ado.ListDepositReqGrid_KeyUp;
                 this.btnDelete_Click = ado._btnDelete_Click;
                 this.btnPrint_Click = ado._btnPrint_Click;
+                this.btnQR_Click = ado._btnQR_Click;
                 this.gridView_CustomRowCellEdit = ado.ListDepositReqGrid_CustomRowCellEdit;
                 this.gridView_RowCellStyle = ado.ListDepositReqGrid_RowCellStyle;
                 this.gridViewDepositRequest.GridControl.MenuManager = ado.barManager;
@@ -89,8 +94,9 @@ namespace HIS.UC.ListDepositRequest
                 {
                     this.visible = ado.visibleColumn.Value;
                 }
-                
-                
+
+
+
             }
             catch (Exception ex)
             {
@@ -509,7 +515,7 @@ namespace HIS.UC.ListDepositRequest
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        List<HIS_CONFIG> listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(s.VALUE)).ToList();
         private void gridViewDepositRequest_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
         {
             try
@@ -532,13 +538,20 @@ namespace HIS.UC.ListDepositRequest
                     }
                     if (e.Column.FieldName == "PRINT")
                     {
-                        if (loginName.Equals(creator))
-                        {
+                        
                         e.RepositoryItem = btnPrintE;
+                        
+                    }
+                    if (e.Column.FieldName == "QR")
+                    {
+                        
+                        if(this.listConfig.Count > 0)
+                        {
+                            e.RepositoryItem = btnQR_E;
                         }
                         else
                         {
-                            e.RepositoryItem = btnPrintD;
+                            e.RepositoryItem = btnQR_D;
                         }
                     }
 
@@ -571,6 +584,22 @@ namespace HIS.UC.ListDepositRequest
             }
         }
 
+        private void btnQR_E_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                var data = (V_HIS_DEPOSIT_REQ)gridViewDepositRequest.GetFocusedRow();
 
+                if (data != null)
+                {
+                    this.btnQR_Click(data);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }

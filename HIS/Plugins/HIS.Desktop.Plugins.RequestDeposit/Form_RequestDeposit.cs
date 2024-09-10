@@ -47,6 +47,9 @@ using System.Resources;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using DevExpress.XtraBars;
+using HIS.Desktop.LocalStorage.BackendData;
+using Inventec.Common.Logging;
+using HIS.Desktop.ADO;
 
 namespace HIS.Desktop.Plugins.RequestDeposit
 {
@@ -485,6 +488,84 @@ namespace HIS.Desktop.Plugins.RequestDeposit
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private HIS_CONFIG selectedConfig = new HIS_CONFIG();
+        
+        List<HIS_CONFIG> listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(s.VALUE)).ToList();
+
+        void Grid_QRClick(V_HIS_DEPOSIT_REQ data)
+        {
+            try
+            {
+                if (this.listConfig.Count > 1)
+                {
+
+                    popupMenu1.ClearLinks();
+                    
+                    foreach (var item in listConfig)
+                    {
+                        string key = "";
+                        string value = item.KEY;
+                        int index = value.IndexOf("Info");
+                        if (index > 0)
+                        {
+                            var shotkey = value.Substring(0, index);
+                            string[] parts = shotkey.Split('.');
+                            if (parts.Length > 0)
+                            {
+                                key = parts[parts.Length - 1]; // Lay phan cuoi cung
+                            }
+                        }
+                        else
+                        {
+                            key = item.KEY;
+                        }
+
+
+                        BarButtonItem btnOption = new BarButtonItem(null, key);
+                        btnOption.ItemClick += (s, args) =>
+                        {
+
+                            selectedConfig = item;
+                            List<object> listArgs = new List<object>();
+                            TransReqQRADO adoqr = new TransReqQRADO();
+                            adoqr.TreatmentId = treatmentID;
+                            adoqr.ConfigValue = selectedConfig;
+                            adoqr.TransReqId = CreateReqType.Deposit;
+                            adoqr.DepositReq = data;
+
+
+                            listArgs.Add(adoqr);
+                            LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
+
+                            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+                        };
+                        popupMenu1.AddItem(btnOption);
+                    }
+                    popupMenu1.Manager = barManager1;
+                    popupMenu1.ShowPopup(Control.MousePosition);
+                }
+                else
+                {
+                    selectedConfig = listConfig[0];
+                    List<object> listArgs = new List<object>();
+                    TransReqQRADO adoqr = new TransReqQRADO();
+                    adoqr.TreatmentId = treatmentID;
+                    adoqr.ConfigValue = selectedConfig;
+                    adoqr.TransReqId = CreateReqType.Deposit;
+                    adoqr.DepositReq = data;
+                    listArgs.Add(adoqr);
+                    LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void LoadMenuPrint(DevExpress.XtraBars.BarManager barManager, V_HIS_DEPOSIT_REQ data)
         {
             try
@@ -579,6 +660,7 @@ namespace HIS.Desktop.Plugins.RequestDeposit
                 ado.ListDepositReqGrid_CustomRowCellEdit = gridView_CustomRowCellEdit;
                 ado._btnDelete_Click = Grid_DeleteClick;
                 ado._btnPrint_Click = Grid_PrintClick;
+                ado._btnQR_Click = Grid_QRClick;
                 ado.ListDepositReqGrid_RowCellStyle = gridView_RowCellStyle;
                 ado.barManager = barManagerPrint;
                 ado.visibleColumn = true;

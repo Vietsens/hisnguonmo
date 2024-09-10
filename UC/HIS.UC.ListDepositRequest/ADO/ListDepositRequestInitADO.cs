@@ -39,6 +39,7 @@ namespace HIS.UC.ListDepositRequest.ADO
         public Grid_KeyUp ListDepositReqGrid_KeyUp { get; set; }
         public EventHandle _btnDelete_Click { get; set; }
         public EventHandle _btnPrint_Click { get; set; }
+        public EventHandle _btnQR_Click { get; set; }
         public Grid_CustomRowCellEdit ListDepositReqGrid_CustomRowCellEdit { get; set; }
         public Grid_RowCellStyle ListDepositReqGrid_RowCellStyle { get; set; }
         public BarManager barManager { get; set; }
