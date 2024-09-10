@@ -76,6 +76,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.csproj">
+      <Project>{4859008d-a40d-47bb-a185-019c8b140569}</Project>
+      <Name>Inventec.Common.Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Inventec.Desktop.Common.Core\Inventec.Desktop.Common.Core.csproj">
       <Project>{9e945587-4faa-4c90-823c-289983aa29f0}</Project>
       <Name>Inventec.Desktop.Common.Core</Name>
