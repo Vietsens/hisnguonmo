@@ -1,0 +1,925 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7FDD85E7-7110-40DE-9CF1-83B05A0E116F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Inventec.UC.ListReports</RootNamespace>
+    <AssemblyName>Inventec.UC.ListReports</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ACS.EFMODEL">
+      <HintPath>..\..\..\RELEASE\ACS\ACS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="ACS.Filter">
+      <HintPath>..\..\..\RELEASE\ACS\ACS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.BonusSkins.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.BonusSkins.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Charts.Designer.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Charts.Designer.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Charts.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Charts.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.CodeConverter.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.CodeConverter.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.CodeParser.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.CodeParser.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Dashboard.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Dashboard.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Dashboard.v15.2.Web">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Dashboard.v15.2.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Dashboard.v15.2.Web.Mvc">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Dashboard.v15.2.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Dashboard.v15.2.Web.Mvc5">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Dashboard.v15.2.Web.Mvc5.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Dashboard.v15.2.Win">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Dashboard.v15.2.Win.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Data.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DataAccess.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.DataAccess.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DataAccess.v15.2.UI">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.DataAccess.v15.2.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DemoData.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.DemoData.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DemoData.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.DemoData.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DemoReports.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.DemoReports.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DevAV.v15.2.Data">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.DevAV.v15.2.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DevAV.v15.2.Reports">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.DevAV.v15.2.Reports.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Diagram.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Diagram.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Docs.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Docs.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.EasyTest.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.EasyTest.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.AuditTrail.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.AuditTrail.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Chart.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Chart.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Chart.Web.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Chart.Web.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Chart.Win.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Chart.Win.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.CloneObject.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.CloneObject.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.ConditionalAppearance.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.ConditionalAppearance.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Demos.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Demos.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Demos.Win.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Demos.Win.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.EasyTest.WebAdapter.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.EasyTest.WebAdapter.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.EasyTest.WinAdapter.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.EasyTest.WinAdapter.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.EF.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.EF.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.FileAttachment.Web.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.FileAttachment.Web.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.FileAttachment.Win.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.FileAttachment.Win.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.HtmlPropertyEditor.Web.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.HtmlPropertyEditor.Web.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.HtmlPropertyEditor.Win.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.HtmlPropertyEditor.Win.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Images.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Images.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Kpi.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Kpi.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Maps.Web.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Maps.Web.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Notifications.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Notifications.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Notifications.Web.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Notifications.Web.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Notifications.Win.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Notifications.Win.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Objects.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Objects.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.PivotChart.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.PivotChart.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.PivotChart.Web.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.PivotChart.Web.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.PivotChart.Win.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.PivotChart.Win.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.PivotGrid.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.PivotGrid.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.PivotGrid.Web.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.PivotGrid.Web.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.PivotGrid.Win.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.PivotGrid.Win.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Reports.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Reports.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Reports.Web.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Reports.Web.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Reports.Win.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Reports.Win.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.ReportsV2.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.ReportsV2.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.ReportsV2.Web.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.ReportsV2.Web.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.ReportsV2.Win.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.ReportsV2.Win.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Scheduler.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Scheduler.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Scheduler.Web.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Scheduler.Web.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Scheduler.Win.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Scheduler.Win.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.ScriptRecorder.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.ScriptRecorder.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.ScriptRecorder.Web.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.ScriptRecorder.Web.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.ScriptRecorder.Win.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.ScriptRecorder.Win.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Security.EF.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Security.EF.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Security.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Security.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Security.Xpo.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.Security.Xpo.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.StateMachine.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.ExpressApp.StateMachine.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Pdf.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v15.2.Drawing">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Pdf.v15.2.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Persistent.Base.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Persistent.Base.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Persistent.BaseImpl.EF.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Persistent.BaseImpl.EF.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Persistent.BaseImpl.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Persistent.BaseImpl.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.PivotGrid.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.PivotGrid.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Printing.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.SharePoint.2013.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.SharePoint.2013.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Snap.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Snap.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Snap.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Snap.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Snap.v15.2.Extensions">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Snap.v15.2.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Sparkline.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Sparkline.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.SpellChecker.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.SpellChecker.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Spreadsheet.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Spreadsheet.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Utils.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v15.2.UI">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Utils.v15.2.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxGauges.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Web.ASPxGauges.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxHtmlEditor.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Web.ASPxHtmlEditor.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxPivotGrid.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Web.ASPxPivotGrid.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxRichEdit.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Web.ASPxRichEdit.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxScheduler.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Web.ASPxScheduler.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxSpellChecker.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Web.ASPxSpellChecker.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxSpreadsheet.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Web.ASPxSpreadsheet.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxThemes.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Web.ASPxThemes.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxTreeList.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Web.ASPxTreeList.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.Mvc.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Web.Mvc.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.Mvc5.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Web.Mvc5.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Web.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Workflow.Activities.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Workflow.Activities.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Workflow.Activities.v15.2.Design">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Workflow.Activities.v15.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Carousel.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Carousel.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Charts.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Charts.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Controls.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Controls.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Core.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Core.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Core.v15.2.Extensions">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Core.v15.2.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.DataAccess.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.DataAccess.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.DemoBase.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.DemoBase.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Diagram.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Diagram.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Docking.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Docking.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.DocumentViewer.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.DocumentViewer.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Gauges.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Gauges.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Grid.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Grid.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v15.2.Extensions">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Grid.v15.2.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Layout.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Layout.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.LayoutControl.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.LayoutControl.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Map.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Map.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.NavBar.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.NavBar.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.PdfViewer.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.PdfViewer.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.PivotGrid.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.PivotGrid.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Printing.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Printing.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.PropertyGrid.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.PropertyGrid.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.ReportDesigner.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.ReportDesigner.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Ribbon.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Ribbon.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.RichEdit.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.RichEdit.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Scheduler.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Scheduler.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.SpellChecker.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.SpellChecker.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Spreadsheet.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Spreadsheet.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.DXStyle.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.DXStyle.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.HybridApp.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.HybridApp.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.LightGray.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.LightGray.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.MetropolisDark.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.MetropolisDark.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.MetropolisLight.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.MetropolisLight.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2007Black.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.Office2007Black.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2007Blue.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.Office2007Blue.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2007Silver.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.Office2007Silver.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2010Black.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.Office2010Black.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2010Blue.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.Office2010Blue.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2010Silver.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.Office2010Silver.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2013.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.Office2013.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2013DarkGray.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.Office2013DarkGray.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2013LightGray.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.Office2013LightGray.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2016Black.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.Office2016Black.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2016Colorful.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.Office2016Colorful.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2016White.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.Office2016White.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Seven.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.Seven.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.TouchlineDark.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.TouchlineDark.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.VS2010.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.Themes.VS2010.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.TreeMap.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpf.TreeMap.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpo.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpo.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpo.v15.2.Extensions">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.Xpo.v15.2.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraBars.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraCharts.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v15.2.Extensions">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraCharts.v15.2.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v15.2.UI">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraCharts.v15.2.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v15.2.Web">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraCharts.v15.2.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v15.2.Wizard">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraCharts.v15.2.Wizard.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraDiagram.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraDiagram.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraEditors.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGauges.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraGauges.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGauges.v15.2.Presets">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraGauges.v15.2.Presets.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGauges.v15.2.Win">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraGauges.v15.2.Win.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraGrid.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraLayout.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraMap.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraMap.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraNavBar.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraNavBar.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPdfViewer.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraPdfViewer.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPivotGrid.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraPivotGrid.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraPrinting.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraReports.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v15.2.Extensions">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraReports.v15.2.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v15.2.Service">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraReports.v15.2.Service.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v15.2.Web">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraReports.v15.2.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v15.2.Web.Azure">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraReports.v15.2.Web.Azure.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraRichEdit.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraRichEdit.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraRichEdit.v15.2.Extensions">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraRichEdit.v15.2.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraScheduler.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v15.2.Core">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraScheduler.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v15.2.Extensions">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraScheduler.v15.2.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v15.2.Reporting">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraScheduler.v15.2.Reporting.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v15.2.Reporting.Extensions">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraScheduler.v15.2.Reporting.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraSpellChecker.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraSpellChecker.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraSpreadsheet.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraSpreadsheet.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeList.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraTreeList.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraVerticalGrid.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraVerticalGrid.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraWizard.v15.2">
+      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraWizard.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.HIS_RS">
+      <HintPath>..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.SAR_RS">
+      <HintPath>..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.SAR_RS\IMSys.DbConfig.SAR_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Adapter">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Controls.EditorLoader">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.DateTime">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.FlexCelPrint">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Mapper">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.PaperSize, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.PaperSize\Inventec.Common.PaperSize.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Print">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Print\Inventec.Common.Print.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Resource">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.TypeConvert">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.WebApiClient">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core">
+      <HintPath>..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.Message">
+      <HintPath>..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Fss.Client">
+      <HintPath>..\..\..\RELEASE\Inventec.Fss.Client\Inventec.Fss.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.ClientSystem">
+      <HintPath>..\..\..\RELEASE\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.Core">
+      <HintPath>..\..\..\RELEASE\Inventec.Token\Inventec.Token.Core\Inventec.Token.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Paging">
+      <HintPath>..\..\..\RELEASE\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL">
+      <HintPath>..\..\..\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\Inventec.UC\Inventec.UC.ListReports\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.EFMODEL">
+      <HintPath>..\..\..\RELEASE\SAR\SAR.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.Filter">
+      <HintPath>..\..\..\RELEASE\SAR\SAR.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.SDO">
+      <HintPath>..\..\..\RELEASE\SAR\SAR.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.EFMODEL">
+      <HintPath>..\..\..\RELEASE\SDA\SDA.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.Filter">
+      <HintPath>..\..\..\RELEASE\SDA\SDA.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.SDO">
+      <HintPath>..\..\..\RELEASE\SDA\SDA.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Acs\AcsUserGet.cs" />
+    <Compile Include="Base\ApiConsumerStore.cs" />
+    <Compile Include="Base\BusinessBase.cs" />
+    <Compile Include="Base\GetBase.cs" />
+    <Compile Include="Base\IFormCallBack.cs" />
+    <Compile Include="Base\LanguageManager.cs" />
+    <Compile Include="Base\LanguageWorker.cs" />
+    <Compile Include="Base\MessageBoxManager.cs" />
+    <Compile Include="Base\MessageUtil.cs" />
+    <Compile Include="Base\NewLocalizerDX.cs" />
+    <Compile Include="Base\PagingGrid.cs" />
+    <Compile Include="Base\RegistryConstant.cs" />
+    <Compile Include="Base\ResouceManager.cs" />
+    <Compile Include="Base\ResultManager.cs" />
+    <Compile Include="Base\TokenClientStore.cs" />
+    <Compile Include="Base\TokenManager.cs" />
+    <Compile Include="Base\TroubleCache.cs" />
+    <Compile Include="Config\GlobalStore.cs" />
+    <Compile Include="Config\SarReportSttCFG.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\InitData.cs" />
+    <Compile Include="DelegateUC.cs" />
+    <Compile Include="Design\Template1\Template1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1.Designer.cs">
+      <DependentUpon>Template1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Button.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Get.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Load.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Paging.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Search.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Set.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template2\Template2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template2\Template2.Designer.cs">
+      <DependentUpon>Template2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\Template2\Template2Plus_Button.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template2\Template2Plus_Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template2\Template2Plus_Load.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template2\Template2Plus_Paging.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template2\Template2Plus_Search.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template2\Template2Plus_Set.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template3\SearchADO.cs" />
+    <Compile Include="Design\Template3\Template3.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template3\Template3.Designer.cs">
+      <DependentUpon>Template3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\Template3\Template3Plus_Button.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template3\Template3Plus_Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template3\Template3Plus_Load.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template3\Template3Plus_Paging.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template3\Template3Plus_Search.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template3\Template3Plus_Set.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Form\DataInit.cs" />
+    <Compile Include="Form\frmShare.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\frmShare.Designer.cs">
+      <DependentUpon>frmShare.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\frmUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\frmUpdate.Designer.cs">
+      <DependentUpon>frmUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\SearchData.cs" />
+    <Compile Include="Init\IInit.cs" />
+    <Compile Include="Init\Init.cs" />
+    <Compile Include="Init\InitFactory.cs" />
+    <Compile Include="MainListReports.cs" />
+    <Compile Include="MessageLang\FrontendMessage.cs" />
+    <Compile Include="MessageLang\Message.cs" />
+    <Compile Include="MessageLang\MessageEnResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessageEnResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="MessageLang\MessagePartialEnum.cs" />
+    <Compile Include="MessageLang\MessagePartialGetMessage.cs" />
+    <Compile Include="MessageLang\MessageViResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessageViResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Lang.vi.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Lang.vi.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ResourceLanguageManager.cs" />
+    <Compile Include="Sar\SarReportStt\SarReportSttGet.cs" />
+    <Compile Include="Sar\SarReport\Delete\ISarReportDelete.cs" />
+    <Compile Include="Sar\SarReport\Delete\SarReportDelete.cs" />
+    <Compile Include="Sar\SarReport\Delete\SarReportDeleteBehaviorDefault.cs" />
+    <Compile Include="Sar\SarReport\Delete\SarReportDeleteFactory.cs" />
+    <Compile Include="Sar\SarReport\Get\SarReportGet.cs" />
+    <Compile Include="Sar\SarReport\Lock\ISarReportLock.cs" />
+    <Compile Include="Sar\SarReport\Lock\SarReportLock.cs" />
+    <Compile Include="Sar\SarReport\Lock\SarReportLockBehaviorDefault.cs" />
+    <Compile Include="Sar\SarReport\Lock\SarReportLockFactory.cs" />
+    <Compile Include="Sar\SarReport\Public\ISarReportPublic.cs" />
+    <Compile Include="Sar\SarReport\Public\SarReportPublic.cs" />
+    <Compile Include="Sar\SarReport\Public\SarReportPublicBehaviorDefault.cs" />
+    <Compile Include="Sar\SarReport\Public\SarReportPublicFactory.cs" />
+    <Compile Include="Sar\SarReport\Send\ISarReportSend.cs" />
+    <Compile Include="Sar\SarReport\Send\SarReportSend.cs" />
+    <Compile Include="Sar\SarReport\Send\SarReportSendBehaviorDefault.cs" />
+    <Compile Include="Sar\SarReport\Send\SarReportSendFactory.cs" />
+    <Compile Include="Sar\SarReport\Update\ISarReportUpdate.cs" />
+    <Compile Include="Sar\SarReport\Update\SarReportUpdate.cs" />
+    <Compile Include="Sar\SarReport\Update\SarReportUpdateBehaviorDefault.cs" />
+    <Compile Include="Sar\SarReport\Update\SarReportUpdateFactory.cs" />
+    <Compile Include="Set\Delegate\ISetDelegateHasException.cs" />
+    <Compile Include="Set\Delegate\SetDelegateHasException.cs" />
+    <Compile Include="Set\Delegate\SetDelegateHasExceptionFactory.cs" />
+    <Compile Include="Set\MeShow\ISetUCMeShow.cs" />
+    <Compile Include="Set\MeShow\SetUCMeShow.cs" />
+    <Compile Include="Set\MeShow\SetUCMeShowFactory.cs" />
+    <Compile Include="Set\ShortcutButton\Refresh\ISetShortcutButtonRefresh.cs" />
+    <Compile Include="Set\ShortcutButton\Refresh\SetShortcutButtonRefresh.cs" />
+    <Compile Include="Set\ShortcutButton\Refresh\SetShortcutButtonRefreshFactory.cs" />
+    <Compile Include="Set\ShortcutButton\Search\ISetShortcutButtonSearch.cs" />
+    <Compile Include="Set\ShortcutButton\Search\SetShortcutButtonSearch.cs" />
+    <Compile Include="Set\ShortcutButton\Search\SetShortcutButtonSearchFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Get\" />
+    <Folder Include="Sar\SarPaperSize\Get\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Design\Template1\Template1.resx">
+      <DependentUpon>Template1.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\Template2\Template2.resx">
+      <DependentUpon>Template2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\Template3\Template3.resx">
+      <DependentUpon>Template3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\frmShare.resx">
+      <DependentUpon>frmShare.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\frmUpdate.resx">
+      <DependentUpon>frmUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageLang\MessageEnResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MessageEnResource.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageLang\MessageViResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MessageViResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.en.resx" />
+    <EmbeddedResource Include="Resources\Lang.vi.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Lang.vi.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Language\Language.Inventec.UC.ListReport.xlsx" />
+    <None Include="Resources\cancel_16x16.png" />
+    <None Include="Resources\cancel_16x161.png" />
+    <None Include="Resources\download_16x16.png" />
+    <None Include="Resources\edit_16x16.png" />
+    <None Include="Resources\mail_16x16.png" />
+    <None Include="Resources\mail_16x161.png" />
+    <None Include="Resources\print_16x16.png" />
+    <None Include="Resources\publish_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dau tích-02.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

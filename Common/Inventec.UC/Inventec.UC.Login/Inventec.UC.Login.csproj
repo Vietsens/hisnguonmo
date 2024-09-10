@@ -1,0 +1,360 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{574ED653-FDA4-4566-B0FF-A8449070578F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Inventec.UC.Login</RootNamespace>
+    <AssemblyName>Inventec.UC.Login</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Charts.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v15.2.Wizard, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v15.2.UI, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraNavBar.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.PivotGrid.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.CodeParser.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v15.2.UI, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v15.2.Extensions, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Inventec.Common.Controls.EditorLoader">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Controls.PopupLoader">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Controls.PopupLoader\Inventec.Common.Controls.PopupLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Repository">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Repository\Inventec.Common.Repository.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.WebApiClient">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core">
+      <HintPath>..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.ClientSystem">
+      <HintPath>..\..\..\RELEASE\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.Core">
+      <HintPath>..\..\..\RELEASE\Inventec.Token\Inventec.Token.Core\Inventec.Token.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.EFMODEL">
+      <HintPath>..\..\..\RELEASE\SDA\SDA.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.Filter">
+      <HintPath>..\..\..\RELEASE\SDA\SDA.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.SDO">
+      <HintPath>..\..\..\RELEASE\SDA\SDA.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\SVN\IMSys\RELEASE\Inventec.Token\Inventec.Token.ClientSystem\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="THE.EFMODEL">
+      <HintPath>..\..\..\RELEASE\THE\THE.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="THE.Filter">
+      <HintPath>..\..\..\RELEASE\THE\THE.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="THE.SDO">
+      <HintPath>..\..\..\RELEASE\THE\THE.SDO.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\ApiConsumerStore.cs" />
+    <Compile Include="Base\AppConfig.cs" />
+    <Compile Include="Base\BusinessBase.cs" />
+    <Compile Include="Base\ClientTokenManagerStore.cs" />
+    <Compile Include="Base\EventLogUtil.cs" />
+    <Compile Include="Base\EventLogWorker.cs" />
+    <Compile Include="Base\LanguageWorker.cs" />
+    <Compile Include="Base\MessageUtil.cs" />
+    <Compile Include="Base\RegistryConstant.cs" />
+    <Compile Include="Base\ResultManager.cs" />
+    <Compile Include="Base\TokenManager.cs" />
+    <Compile Include="Base\TroubleCache.cs" />
+    <Compile Include="DelegateUC.cs" />
+    <Compile Include="Design\Template2\Template2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template2\Template2.Designer.cs">
+      <DependentUpon>Template2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\Template2\Template2Plus_ButtonsEvent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template2\Template2Plus_ControlEvent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template2\Template2Plus_Get.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template2\Template2Plus_Set.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1.Designer.cs">
+      <DependentUpon>Template1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_ButtonsEvent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_ControlEvent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Get.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template1\Template1Plus_Set.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template3\Template3.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template3\Template3.Designer.cs">
+      <DependentUpon>Template3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\Template3\Template3Plus_ButtonsEvent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template3\Template3Plus_ControlEvent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template3\Template3Plus_Get.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\Template3\Template3Plus_Set.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EventLog\EventLog.cs" />
+    <Compile Include="EventLog\EventLogPartialEnum.cs" />
+    <Compile Include="EventLog\EventLogPartialGetMessage.cs" />
+    <Compile Include="EventLog\FrontendEventLog.cs" />
+    <Compile Include="EventLog\MessageEnResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessageEnResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="EventLog\MessageViResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessageViResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Get\GetAccountLogin\GetAccountLogin.cs" />
+    <Compile Include="Get\GetAccountLogin\GetAccountLoginFactory.cs" />
+    <Compile Include="Get\GetAccountLogin\IGetAccountLogin.cs" />
+    <Compile Include="Init\IInitUC.cs" />
+    <Compile Include="Init\InitUC.cs" />
+    <Compile Include="Init\InitUCFactory.cs" />
+    <Compile Include="Label\TextLabelMyResource.Designer.cs">
+      <DependentUpon>TextLabelMyResource.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Label\FrontendTextLabel.cs" />
+    <Compile Include="Label\ManagerLanguage.cs" />
+    <Compile Include="Label\ManagerLanguagePartialEnum.cs" />
+    <Compile Include="Label\ManagerLanguagePartialGetLabel.cs" />
+    <Compile Include="Label\TextLabelEnResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TextLabelEnResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Label\TextLabelViResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TextLabelViResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="MainLogin.cs" />
+    <Compile Include="Message\MessageMyResource.Designer.cs">
+      <DependentUpon>MessageMyResource.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Message\Message.cs" />
+    <Compile Include="Message\FrontendMessage.cs" />
+    <Compile Include="Message\MessageEnResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessageEnResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Message\MessagePartialEnum.cs" />
+    <Compile Include="Message\MessagePartialGetMessage.cs" />
+    <Compile Include="Message\MessageViResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessageViResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Mos\MosBranchGet.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Sda\SdaLanguageGet.cs" />
+    <Compile Include="Sda\SdaEventLogCreate.cs" />
+    <Compile Include="Set\SetBranch\ISetBranch.cs" />
+    <Compile Include="Set\SetBranch\SetBranch.cs" />
+    <Compile Include="Set\SetBranch\BranchFactory.cs" />
+    <Compile Include="Set\Delegate\SetDelegateButtonConfig\ISetDelegateButtonConfig.cs" />
+    <Compile Include="Set\Delegate\SetDelegateButtonConfig\SetDelegateButtonConfig.cs" />
+    <Compile Include="Set\Delegate\SetDelegateButtonConfig\SetDelegateButtonConfigFactory.cs" />
+    <Compile Include="Set\Delegate\SetDelegateLoginInfor\ISetDelegateLoginInfor.cs" />
+    <Compile Include="Set\Delegate\SetDelegateLoginInfor\SetDelegateLoginInfor.cs" />
+    <Compile Include="Set\Delegate\SetDelegateLoginInfor\SetDelegateLoginInforFactory.cs" />
+    <Compile Include="Set\SetEnableButton\ISetEnableButton.cs" />
+    <Compile Include="Set\SetEnableButton\SetEnableButton.cs" />
+    <Compile Include="Set\SetEnableButton\SetEnableButtonFactory.cs" />
+    <Compile Include="Set\SetLanguageForUC\ISetLanguageForUC.cs" />
+    <Compile Include="Set\SetLanguageForUC\SetLanguageForUC.cs" />
+    <Compile Include="Set\SetLanguageForUC\SetLanguageForUCFactory.cs" />
+    <Compile Include="Set\SetLoadFocus\ISetLoadOnFocus.cs" />
+    <Compile Include="Set\SetLoadFocus\SetLoadOnFocus.cs" />
+    <Compile Include="Set\SetLoadFocus\SetLoadOnFocusFactory.cs" />
+    <Compile Include="UCD\InitUCD.cs" />
+    <Compile Include="UCD\LabelString.cs" />
+    <Compile Include="UCD\LoginSuccessUCD.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Design\Template2\Template2.resx">
+      <DependentUpon>Template2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\Template1\Template1.resx">
+      <DependentUpon>Template1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\Template3\Template3.resx">
+      <DependentUpon>Template3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EventLog\MessageEnResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MessageEnResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EventLog\MessageViResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MessageViResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Label\TextLabelMyResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TextLabelMyResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Label\TextLabelEnResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TextLabelEnResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Label\TextLabelViResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TextLabelViResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Message\MessageMyResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MessageMyResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Message\MessageEnResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MessageEnResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Message\MessageViResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MessageViResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

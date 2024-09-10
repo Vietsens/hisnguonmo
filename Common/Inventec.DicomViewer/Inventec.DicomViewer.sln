@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventec.DicomViewer", "Inventec.DicomViewer\Inventec.DicomViewer.csproj", "{56CD1255-5200-4660-92B4-9E498635007B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApplication1", "WindowsFormsApplication1\WindowsFormsApplication1.csproj", "{ED56212E-30B4-49D8-B4CE-9BE1CD1B0B74}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{56CD1255-5200-4660-92B4-9E498635007B}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{56CD1255-5200-4660-92B4-9E498635007B}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{56CD1255-5200-4660-92B4-9E498635007B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56CD1255-5200-4660-92B4-9E498635007B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED56212E-30B4-49D8-B4CE-9BE1CD1B0B74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED56212E-30B4-49D8-B4CE-9BE1CD1B0B74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED56212E-30B4-49D8-B4CE-9BE1CD1B0B74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED56212E-30B4-49D8-B4CE-9BE1CD1B0B74}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

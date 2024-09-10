@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3372CFD9-F666-40FA-BA68-009119F4DA26}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Inventec.UC.CreateReport</RootNamespace>
+    <AssemblyName>Inventec.UC.CreateReport</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility" />
+    <Reference Include="ACS.EFMODEL">
+      <HintPath>..\..\..\RELEASE\ACS\ACS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="ACS.Filter">
+      <HintPath>..\..\..\RELEASE\ACS\ACS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Charts.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Spreadsheet.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraNavBar.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Inventec.Common.DateTime, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.TypeConvert">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.WebApiClient">
+      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core">
+      <HintPath>..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.ClientSystem">
+      <HintPath>..\..\..\RELEASE\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.Core">
+      <HintPath>..\..\..\RELEASE\Inventec.Token\Inventec.Token.Core\Inventec.Token.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Login">
+      <HintPath>..\..\..\RELEASE\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+    </Reference>
+    <Reference Include="MRS.Filter">
+      <HintPath>..\..\..\RELEASE\MRS\MRS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="MRS.SDO">
+      <HintPath>..\..\..\RELEASE\MRS\MRS.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.EFMODEL">
+      <HintPath>..\..\..\RELEASE\SAR\SAR.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.Filter">
+      <HintPath>..\..\..\RELEASE\SAR\SAR.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.SDO">
+      <HintPath>..\..\..\RELEASE\SAR\SAR.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.EFMODEL">
+      <HintPath>..\..\..\RELEASE\SDA\SDA.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.Filter">
+      <HintPath>..\..\..\RELEASE\SDA\SDA.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Acs\AcsUserGet.cs" />
+    <Compile Include="Base\ApiConsumerStore.cs" />
+    <Compile Include="Base\BusinessBase.cs" />
+    <Compile Include="Base\GetBase.cs" />
+    <Compile Include="Base\IFormCallBack.cs" />
+    <Compile Include="Base\LanguageWorker.cs" />
+    <Compile Include="Base\MessageUtil.cs" />
+    <Compile Include="Base\ResultManager.cs" />
+    <Compile Include="Base\TokenClientStore.cs" />
+    <Compile Include="Base\TokenManager.cs" />
+    <Compile Include="Base\TroubleCache.cs" />
+    <Compile Include="Config\GlobalStore.cs" />
+    <Compile Include="Config\Loader.cs" />
+    <Compile Include="Config\SarPaperSizeCFG.cs" />
+    <Compile Include="Config\SarReportSttCFG.cs" />
+    <Compile Include="Data\InitData.cs" />
+    <Compile Include="Data\SaveClickData.cs" />
+    <Compile Include="DelegateUC.cs" />
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly2\TemplateBetweenTimeFilterOnly2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly2\TemplateBetweenTimeFilterOnly2.Designer.cs">
+      <DependentUpon>TemplateBetweenTimeFilterOnly2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly2\TemplateBetweenTimeFilterOnly2_Plus_Button.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly2\TemplateBetweenTimeFilterOnly2_Plus_Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly2\TemplateBetweenTimeFilterOnly2_Plus_Get.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly2\TemplateBetweenTimeFilterOnly2_Plus_Load.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly2\TemplateBetweenTimeFilterOnly2_Plus_Set.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly2\TemplateBetweenTimeFilterOnly2_Plus_Validate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly2\Validate\ReportTemplateValidationRule.cs" />
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly2\Validate\ReportTypeValidationRule.cs" />
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly2\Validate\TimeFromValidationRule.cs" />
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly2\Validate\TimeToValidationRule.cs" />
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly\TemplateBetweenTimeFilterOnlyValidationPlus.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly\TemplateBetweenTimeFilterOnly.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly\TemplateBetweenTimeFilterOnly.Designer.cs">
+      <DependentUpon>TemplateBetweenTimeFilterOnly.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly\TemplateBetweenTimeFilterOnlyPlus_Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly\TemplateBetweenTimeFilterOnlyPlus_Get.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly\TemplateBetweenTimeFilterOnlyPlus_Load.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly\TemplateBetweenTimeFilterOnlyPlus_Set.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly\CreateReportProcess.cs" />
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly\TemplateBetweenTimeFilterOnlyValidation\ExecuteDateValidationRule.cs" />
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly\TemplateBetweenTimeFilterOnlyValidation\ReportNameValidationRule.cs" />
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly\TemplateBetweenTimeFilterOnlyValidation\ReportTemplateValidationRule.cs" />
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly\TemplateBetweenTimeFilterOnlyValidation\ReportTypeValidationRule.cs" />
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly\TemplateBetweenTimeFilterOnlyValidation\TimeFromDateValidationRule.cs" />
+    <Compile Include="Design\TemplateBetweenTimeFilterOnly\TemplateBetweenTimeFilterOnlyValidation\TimeToDateValidationRule.cs" />
+    <Compile Include="Init\IInit.cs" />
+    <Compile Include="Init\Init.cs" />
+    <Compile Include="Init\InitFactory.cs" />
+    <Compile Include="MainCreateReport.cs" />
+    <Compile Include="MessageLang\FrontendMessage.cs" />
+    <Compile Include="MessageLang\Message.cs" />
+    <Compile Include="MessageLang\MessageEnResource.Designer.cs" />
+    <Compile Include="MessageLang\MessagePartialEnum.cs" />
+    <Compile Include="MessageLang\MessagePartialGetMessage.cs" />
+    <Compile Include="MessageLang\MessageViResource.Designer.cs" />
+    <Compile Include="Mrs\GetFile\MrsReportGetFile.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Sar\SarPaperSize\Get\SarPaperSizeGet.cs" />
+    <Compile Include="Sar\SarReportStt\SarReportSttGet.cs" />
+    <Compile Include="Mrs\Create\ISarReportCreate.cs" />
+    <Compile Include="Mrs\Create\SarReportCreate.cs" />
+    <Compile Include="Mrs\Create\SarReportCreateBehaviorDefault.cs" />
+    <Compile Include="Mrs\Create\SarReportCreateFactory.cs" />
+    <Compile Include="Sar\SarReportTemplate\Get\SarReportTemplateGet.cs" />
+    <Compile Include="Sar\SarReportType\Get\SarReportTypeGet.cs" />
+    <Compile Include="Sar\SarReport\Delete\ISarReportDelete.cs" />
+    <Compile Include="Sar\SarReport\Delete\SarReportDelete.cs" />
+    <Compile Include="Sar\SarReport\Delete\SarReportDeleteBehaviorDefault.cs" />
+    <Compile Include="Sar\SarReport\Delete\SarReportDeleteFactory.cs" />
+    <Compile Include="Sar\SarReport\Get\SarReportGet.cs" />
+    <Compile Include="Sar\SarReport\Lock\ISarReportLock.cs" />
+    <Compile Include="Sar\SarReport\Lock\SarReportLock.cs" />
+    <Compile Include="Sar\SarReport\Lock\SarReportLockBehaviorDefault.cs" />
+    <Compile Include="Sar\SarReport\Lock\SarReportLockFactory.cs" />
+    <Compile Include="Sar\SarReport\Public\ISarReportPublic.cs" />
+    <Compile Include="Sar\SarReport\Public\SarReportPublic.cs" />
+    <Compile Include="Sar\SarReport\Public\SarReportPublicBehaviorDefault.cs" />
+    <Compile Include="Sar\SarReport\Public\SarReportPublicFactory.cs" />
+    <Compile Include="Sar\SarReport\Send\ISarReportSend.cs" />
+    <Compile Include="Sar\SarReport\Send\SarReportSend.cs" />
+    <Compile Include="Sar\SarReport\Send\SarReportSendBehaviorDefault.cs" />
+    <Compile Include="Sar\SarReport\Send\SarReportSendFactory.cs" />
+    <Compile Include="Sar\SarReport\Update\ISarReportUpdate.cs" />
+    <Compile Include="Sar\SarReport\Update\SarReportUpdate.cs" />
+    <Compile Include="Sar\SarReport\Update\SarReportUpdateBehaviorDefault.cs" />
+    <Compile Include="Sar\SarReport\Update\SarReportUpdateFactory.cs" />
+    <Compile Include="Set\Delegate\SetGetObjectFilter\ISetDelegateGetObjectFilter.cs" />
+    <Compile Include="Set\Delegate\SetGetObjectFilter\SetDelegateGetObjectFilter.cs" />
+    <Compile Include="Set\Delegate\SetGetObjectFilter\SetDelegateGetObjectFilterFactory.cs" />
+    <Compile Include="Set\Delegate\ISetDelegateCloseContainerForm.cs" />
+    <Compile Include="Set\Delegate\ISetDelegateHasException.cs" />
+    <Compile Include="Set\Delegate\SetDelegateCloseContainerForm.cs" />
+    <Compile Include="Set\Delegate\SetDelegateCloseContainerFormFactory.cs" />
+    <Compile Include="Set\Delegate\SetDelegateHasException.cs" />
+    <Compile Include="Set\Delegate\SetDelegateHasExceptionFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Design\TemplateBetweenTimeFilterOnly2\TemplateBetweenTimeFilterOnly2.resx">
+      <DependentUpon>TemplateBetweenTimeFilterOnly2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\TemplateBetweenTimeFilterOnly\TemplateBetweenTimeFilterOnly.resx">
+      <DependentUpon>TemplateBetweenTimeFilterOnly.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageLang\MessageEnResource.resx" />
+    <EmbeddedResource Include="MessageLang\MessageViResource.resx" />
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Set\ShortcutButton\Refresh\" />
+    <Folder Include="Set\ShortcutButton\Search\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

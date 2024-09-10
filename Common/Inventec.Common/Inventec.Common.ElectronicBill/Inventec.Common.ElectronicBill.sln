@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventec.Common.ElectronicBill", "Inventec.Common.ElectronicBill\Inventec.Common.ElectronicBill.csproj", "{7B82F5A9-E041-4CA1-8E84-44838D514E51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApplication1", "WindowsFormsApplication1\WindowsFormsApplication1.csproj", "{CA01C88E-AB85-4E5D-9A7F-CDF2CB667ECD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7B82F5A9-E041-4CA1-8E84-44838D514E51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B82F5A9-E041-4CA1-8E84-44838D514E51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B82F5A9-E041-4CA1-8E84-44838D514E51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B82F5A9-E041-4CA1-8E84-44838D514E51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA01C88E-AB85-4E5D-9A7F-CDF2CB667ECD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA01C88E-AB85-4E5D-9A7F-CDF2CB667ECD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA01C88E-AB85-4E5D-9A7F-CDF2CB667ECD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA01C88E-AB85-4E5D-9A7F-CDF2CB667ECD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
