@@ -31,67 +31,70 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Aspose.Cells">
-      <HintPath>..\..\..\..\LIB\Library packages\Aspose.Cells\Aspose.Cells.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Library packages\Aspose.Cells\Aspose.Cells.dll</HintPath>
     </Reference>
     <Reference Include="Aspose.Pdf">
-      <HintPath>..\..\..\..\LIB\Library packages\Aspose.Total for .NET July 2019\Aspose.Pdf.11.1.1\lib\net40-client\Aspose.Pdf.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Library packages\Aspose.Total for .NET July 2019\Aspose.Pdf.11.1.1\lib\net40-client\Aspose.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2">
-      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.Data.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Data.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Docs.v15.2">
-      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.Docs.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Docs.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Office.v15.2.Core">
-      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.Office.v15.2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Office.v15.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Pdf.v15.2.Core">
-      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.Pdf.v15.2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Pdf.v15.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Pdf.v15.2.Drawing">
-      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.Pdf.v15.2.Drawing.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Pdf.v15.2.Drawing.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Printing.v15.2.Core">
-      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.Printing.v15.2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Printing.v15.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Spreadsheet.v15.2.Core">
-      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.Spreadsheet.v15.2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Spreadsheet.v15.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Utils.v15.2">
-      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.Utils.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Utils.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraBars.v15.2">
-      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.XtraBars.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraBars.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraCharts.v15.2">
-      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.XtraCharts.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraCharts.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraEditors.v15.2">
-      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.XtraEditors.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraEditors.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraGrid.v15.2">
-      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.XtraGrid.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraGrid.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraLayout.v15.2">
-      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.XtraLayout.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraLayout.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraPdfViewer.v15.2">
-      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.XtraPdfViewer.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraPdfViewer.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraPrinting.v15.2">
-      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.XtraPrinting.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraPrinting.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraSpreadsheet.v15.2">
-      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.XtraSpreadsheet.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraSpreadsheet.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraTreeList.v15.2">
-      <HintPath>..\..\..\FE\LIBRARY\Dev 15.2.9\DevExpress.XtraTreeList.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraTreeList.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="EMR.TDO">
       <HintPath>..\..\..\..\LIB\EMR\EMR.TDO.dll</HintPath>
     </Reference>
     <Reference Include="FlexCel">
       <HintPath>..\..\..\..\LIB\FlexCellReport\FlexCel.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.MSOfficePrint">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.MSOfficePrint\Inventec.Common.MSOfficePrint.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.SignFile">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.SignFile\Inventec.Common.SignFile.dll</HintPath>
@@ -210,10 +213,6 @@
     <ProjectReference Include="..\Inventec.Common.Logging\Inventec.Common.Logging.csproj">
       <Project>{4859008d-a40d-47bb-a185-019c8b140569}</Project>
       <Name>Inventec.Common.Logging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Inventec.Common.MSOfficePrint\Inventec.Common.MSOfficePrint.csproj">
-      <Project>{f44c8833-ef86-48f8-a28f-06877ff52b44}</Project>
-      <Name>Inventec.Common.MSOfficePrint</Name>
     </ProjectReference>
     <ProjectReference Include="..\Inventec.Common.Resource\Inventec.Common.Resource.csproj">
       <Project>{b7281efe-d0d4-4c75-8f32-5e6d1d580ff6}</Project>

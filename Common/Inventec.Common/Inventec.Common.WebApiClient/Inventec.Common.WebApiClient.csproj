@@ -67,6 +67,7 @@
     <Reference Include="System.Web">
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq">
       <Private>True</Private>
     </Reference>

@@ -37,50 +37,49 @@
       <HintPath>..\..\..\..\LIB\Library packages\Aspose.Total for .NET July 2019\Aspose.Words.11.1.0\lib\net3.5\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Charts.v15.2.Core">
-      <HintPath>lib\DevExpress.Charts.v15.2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\DEVEXPRESS\DevExpress.Charts.v15.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2">
-      <HintPath>lib\DevExpress.Data.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\DEVEXPRESS\DevExpress.Data.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Docs.v15.2">
-      <HintPath>lib\DevExpress.Docs.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\DEVEXPRESS\DevExpress.Docs.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Office.v15.2.Core">
-      <HintPath>lib\DevExpress.Office.v15.2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\DEVEXPRESS\DevExpress.Office.v15.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Printing.v15.2.Core">
-      <HintPath>lib\DevExpress.Printing.v15.2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\DEVEXPRESS\DevExpress.Printing.v15.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Spreadsheet.v15.2.Core">
-      <HintPath>lib\DevExpress.Spreadsheet.v15.2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\DEVEXPRESS\DevExpress.Spreadsheet.v15.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Utils.v15.2">
-      <HintPath>lib\DevExpress.Utils.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\DEVEXPRESS\DevExpress.Utils.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraBars.v15.2">
-      <HintPath>lib\DevExpress.XtraBars.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\DEVEXPRESS\DevExpress.XtraBars.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraCharts.v15.2">
-      <HintPath>lib\DevExpress.XtraCharts.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\DEVEXPRESS\DevExpress.XtraCharts.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraEditors.v15.2">
-      <HintPath>lib\DevExpress.XtraEditors.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\DEVEXPRESS\DevExpress.XtraEditors.v15.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraGrid.v15.2.dll</HintPath>
+    <Reference Include="DevExpress.XtraGrid.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraGrid.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraLayout.v15.2">
-      <HintPath>lib\DevExpress.XtraLayout.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\DEVEXPRESS\DevExpress.XtraLayout.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraPrinting.v15.2">
-      <HintPath>lib\DevExpress.XtraPrinting.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\DEVEXPRESS\DevExpress.XtraPrinting.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraSpreadsheet.v15.2">
-      <HintPath>lib\DevExpress.XtraSpreadsheet.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\DEVEXPRESS\DevExpress.XtraSpreadsheet.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraTreeList.v15.2">
-      <HintPath>lib\DevExpress.XtraTreeList.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\DEVEXPRESS\DevExpress.XtraTreeList.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="FlexCel">
       <HintPath>..\..\..\..\LIB\FlexCellReport\FlexCel.dll</HintPath>

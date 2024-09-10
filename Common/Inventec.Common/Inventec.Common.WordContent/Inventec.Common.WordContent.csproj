@@ -39,21 +39,26 @@
     <Reference Include="AutoMapper">
       <HintPath>..\..\..\..\LIB\MOS\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraGrid.v15.2.dll</HintPath>
+    <Reference Include="DevExpress.Data.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Data.v15.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraLayout.v15.2.dll</HintPath>
+    <Reference Include="DevExpress.Utils.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Utils.v15.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\FE\LIBRARY\DevLib\DevExpress.XtraTreeList.v15.2.dll</HintPath>
+    <Reference Include="DevExpress.XtraBars.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraBars.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraEditors.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraGrid.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraLayout.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeList.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraTreeList.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="Interop.Office">
       <HintPath>Lib\Interop.Office.dll</HintPath>

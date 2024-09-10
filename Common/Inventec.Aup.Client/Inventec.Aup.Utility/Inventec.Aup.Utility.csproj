@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{68DECCE6-8629-4F57-9D4E-58E4DC42BDC8}</ProjectGuid>
+    <ProjectGuid>{D6F9E3DD-7029-499F-A759-2E28D80687EA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Inventec.Aup.Utility</RootNamespace>

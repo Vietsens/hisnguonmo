@@ -31,17 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIBRARY\DevLib\DevExpress.Data.v15.2.dll</HintPath>
+    <Reference Include="DevExpress.Data.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Data.v15.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIBRARY\DevLib\DevExpress.Utils.v15.2.dll</HintPath>
+    <Reference Include="DevExpress.Utils.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Utils.v15.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIBRARY\DevLib\DevExpress.XtraBars.v15.2.dll</HintPath>
+    <Reference Include="DevExpress.XtraBars.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraBars.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
       <HintPath>..\..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>

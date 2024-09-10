@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{13563854-68C6-4362-B99C-14626A2F31F8}</ProjectGuid>
+    <ProjectGuid>{3B1D5E89-8B0B-49ED-9752-E69571F2C21C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HIS.Common.Treatment</RootNamespace>

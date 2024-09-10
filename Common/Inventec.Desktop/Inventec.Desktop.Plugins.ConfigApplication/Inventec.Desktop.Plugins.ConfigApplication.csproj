@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\Inventec.Common\Inventec.Common.Logging\bin\Debug\Inventec.Common.Logging.dll</HintPath>
-    </Reference>
     <Reference Include="Inventec.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>
@@ -94,6 +91,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.csproj">
+      <Project>{4859008d-a40d-47bb-a185-019c8b140569}</Project>
+      <Name>Inventec.Common.Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Inventec.Desktop.Common.Token\Inventec.Desktop.Common.Token.csproj">
       <Project>{2db338b9-2e6d-4545-b51d-99396acdc636}</Project>
       <Name>Inventec.Desktop.Common.Token</Name>
