@@ -1,5 +1,6 @@
 ﻿using Inventec.Common.BankQrCode.ADO;
 using Inventec.Common.BankQrCode.Provider.BIDV;
+using Inventec.Common.BankQrCode.Provider.LPBANK;
 using Inventec.Common.BankQrCode.Provider.PVCB;
 using Inventec.Common.BankQrCode.Provider.VIETTINBANK;
 using System;
@@ -39,6 +40,9 @@ namespace Inventec.Common.BankQrCode
                 case ProvinceType.PVCB:
                     iRunQrData = new PvcomBankProcessor(this.InputData);
                     break;
+                case ProvinceType.LPBANK:
+                    iRunQrData = new LPBankProcessor(this.InputData);
+                    break;
                 default:
                     break;
             }
@@ -66,6 +70,9 @@ namespace Inventec.Common.BankQrCode
                     break;
                 case ProvinceType.PVCB:
                     iRunQrData = new PvcomBankProcessor(this.InputData);
+                    break;
+                case ProvinceType.LPBANK:
+                    iRunQrData = new LPBankProcessor(this.InputData);
                     break;
                 default:
                     break;

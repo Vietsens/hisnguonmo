@@ -292,6 +292,42 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             return obj;
         }
 
+        private void txtResultSubclinical5_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameSItem = ENameSItem.KET_QUA_5;
+            GetSpecInformation(ReturnObject = false);
+        }
+
+
+        private void txtMorphineHeroin5_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.MOR_HER_5;
+            GetSpecInformation();
+        }
+
+        private void txtAmphetamin5_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.AMP_5;
+            GetSpecInformation();
+        }
+
+        private void txtTestMethamphetamin5_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.MET_5;
+            GetSpecInformation();
+        }
+
+        private void txtTestConcentration5_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.MAR_5;
+            GetSpecInformation();
+        }
+
+        private void txtTestMarijuna5_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.NDC_5;
+            GetSpecInformation();
+        }
         #region ---PREVIEWKEYDOWN----
 
         private void cboLicenseClass_Closed(object sender, ClosedEventArgs e)

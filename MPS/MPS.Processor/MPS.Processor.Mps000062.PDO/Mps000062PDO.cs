@@ -60,6 +60,8 @@ namespace MPS.Processor.Mps000062.PDO
         public List<V_HIS_SERVICE> _HisServiceViews { get; set; }
         public List<V_HIS_IMP_MEST_BLOOD> _ImpMestBlood_TL { get; set; }
         public HIS_PATIENT_TYPE_ALTER PatientTypeAlter { get; set; }
+        public List<HIS_MEDICINE_LINE> MedicineLine { get; set; }
+        public List<HIS_DOSAGE_FORM> DosageForm { get; set; }
         #region -------------
         //public Mps000062PDO(
         //    HIS_TREATMENT _treatment,
@@ -115,7 +117,7 @@ namespace MPS.Processor.Mps000062.PDO
         //    }
         //}
         #endregion
-
+          
         public Mps000062PDO() { }
 
         public Mps000062PDO(
@@ -146,11 +148,15 @@ namespace MPS.Processor.Mps000062.PDO
             List<V_HIS_EXP_MEST_BLTY_REQ_2> ExpMestBltyReq2,
             List<V_HIS_SERVICE> HisServiceViews,
             List<V_HIS_IMP_MEST_BLOOD> _ImpMestBlood_TL, 
-            HIS_PATIENT_TYPE_ALTER PatientTypeAlter
+            HIS_PATIENT_TYPE_ALTER PatientTypeAlter,
+            List<HIS_MEDICINE_LINE> MedicineLine,
+            List<HIS_DOSAGE_FORM> DosageForm
            )
         {
             try
             {
+                this.MedicineLine = MedicineLine;
+                this.DosageForm = DosageForm;
                 this.PatientTypeAlter = PatientTypeAlter;
                 this._Treatment = _treatment;
                 this._TreatmentBedRooms = _treatmentBedRooms;

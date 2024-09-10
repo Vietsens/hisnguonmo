@@ -1172,7 +1172,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             {
                                 WaitingManager.Hide();
                                 string message = paramCheck.GetMessage();
-                                if (String.IsNullOrWhiteSpace(message) || !message.EndsWith("."))
+                                if (!message.Trim().EndsWith(".")) //String.IsNullOrWhiteSpace(message) ||
                                     message += ".";
                                 if (DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("{0} {1}", message, ResourceMessage.BanCoMuonTiepTucKhong), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
                                 {

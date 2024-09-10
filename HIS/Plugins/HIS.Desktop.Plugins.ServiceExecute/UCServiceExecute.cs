@@ -3898,6 +3898,147 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     }
                 }
 
+                List<string> lstLoginValid = new List<string>();
+                List<MOS.EFMODEL.DataModels.HIS_EKIP_USER> ekipUsers = new List<MOS.EFMODEL.DataModels.HIS_EKIP_USER>();
+                //List<MOS.EFMODEL.DataModels.HIS_EKIP_USER> newEkipUsers = new List<MOS.EFMODEL.DataModels.HIS_EKIP_USER>();
+                var dataGrid = gridViewEkip.DataSource as List<HisEkipUserADO>;
+                if (dataGrid != null && dataGrid.Count() > 0)
+                    foreach (var item in dataGrid)
+                    {
+                        MOS.EFMODEL.DataModels.HIS_EKIP_USER ekipUser = new HIS_EKIP_USER();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EKIP_USER>(ekipUser, item);
+                        if (ekipUser != null && ekipUser.EXECUTE_ROLE_ID != 0)
+                            ekipUsers.Add(ekipUser);
+                    }
+
+                if (HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsAssignServiceSimulTaneityOption)
+                {
+                    HisSereServCheckExecuteTimesSDO inputSDO = new HisSereServCheckExecuteTimesSDO();
+                    var login = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();//currentServiceReq.EXECUTE_LOGINNAME;
+                    long beginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime)??0;
+                    long endTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) ?? 0;
+                    inputSDO.ExecuteTime = new ExecuteTime
+                    {
+                        BeginTime = beginTime,
+                        EndTime = endTime
+                    };
+                    inputSDO.TreatmentId = currentServiceReq.TREATMENT_ID;
+                    List<string> dsLogin = new List<string> { login };
+               
+                    List<string> lstLogin = ekipUsers.Select(o => o.LOGINNAME).Distinct().ToList();
+                    foreach (string acc in lstLogin)
+                    {
+                        if (acc != null)
+                        {
+                            lstLoginValid.Add(acc);
+                        }
+                        //else
+                        //{
+                        //    lstLoginValid.Add(login);
+                        //}
+                    }
+                    if (lstLogin.Count == 0 && lstLoginValid.Count ==0 )
+                    {
+                        lstLoginValid.Add(login);
+                    }   
+                    inputSDO.Loginnames = lstLoginValid;
+                    //if (lstLogin != null && lstLogin.Count() > 0)
+                    //{
+                    //    inputSDO.Loginnames = lstLogin;
+                    //}
+                    //else
+                    //{
+                    //    inputSDO.Loginnames = dsLogin;
+                    //}
+                    string message = "";
+                    CommonParam paramCheckEx = new CommonParam();
+                    bool suscess = new BackendAdapter(paramCheckEx).Post<bool>("api/HisSereServ/CheckExecuteTimes", ApiConsumers.MosConsumer, inputSDO, paramCheckEx);
+                     if (suscess == true)
+                        {
+
+                        }
+                        else
+                        {
+                            message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckEx.GetMessage());
+                          if (MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                               return;
+                        }
+
+                }
+
+                 if (HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption)
+                {
+                    //List<HIS_EKIP_USER> kipUsers = new List<HIS_EKIP_USER>();
+                    HisSurgServiceReqUpdateListSDO  InputSDO= new HisSurgServiceReqUpdateListSDO ();  
+                    List<SurgUpdateSDO> surgUpdateSDOs = new List<SurgUpdateSDO>();
+                    SurgUpdateSDO surgUpdate = new SurgUpdateSDO();
+                     surgUpdate.SereServId = sereServ.ID;
+                     //AutoMapper.Mapper.CreateMap<V_HIS_EKIP_USER, HIS_EKIP_USER>();
+                     //if (dicEkipUser.ContainsKey(sereServ.ID))
+                     //{
+                     if (ekipUsers.Count > 0 && ekipUsers != null)
+                     {
+                         //foreach (var i in ekipUsers)
+                         //{
+                         //    if (string.IsNullOrEmpty(i.LOGINNAME))
+                         //    {
+                         //        i.LOGINNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                         //    }
+                         //}
+
+                         surgUpdate.EkipUsers = ekipUsers;
+                     }
+                     else
+                     {
+                         var resuilt = BackendDataWorker.Get<HIS_EKIP_USER>().Where(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()).FirstOrDefault();
+                         List<HIS_EKIP_USER> userList = new List<HIS_EKIP_USER> { resuilt };
+                         surgUpdate.EkipUsers = userList;
+                     }
+                    
+                     //foreach (string login in lstLoginValid)
+                     //{
+                     //    kipUsers.Add(new HIS_EKIP_USER { LOGINNAME = login });
+                     //}
+                     //surgUpdate.EkipUsers = kipUsers;//AutoMapper.Mapper.Map<List<HIS_EKIP_USER>>(lstLoginValid);
+                     surgUpdate.SereServExt = sereServExt;
+                     if (dicSereServPttt.ContainsKey(sereServ.ID))
+                     {
+                         surgUpdate.SereServPttt = dicSereServPttt[sereServ.ID];
+                     }
+                     surgUpdateSDOs.Add(surgUpdate);
+
+                    InputSDO.SurgUpdateSDOs = surgUpdateSDOs;
+                    //InputSDO.IsFinished = currentServiceReq.FINISH_TIME != null ? true : false;
+                    if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERVICE_REQ.ALLOW_FINISH_WHEN_ACCOUNT_IS_DOCTOR") == "1" && BackendDataWorker.Get<HIS_EMPLOYEE>().Where(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()).FirstOrDefault().IS_DOCTOR != 1)
+                    {
+                        InputSDO.IsFinished = false;
+                    }
+                    else
+                    {
+                        if (dtEndTime.EditValue != null && ChkAutoFinish.Checked)
+                        {
+                            InputSDO.IsFinished = true;
+                        }
+                    }
+                    string message = "";
+                    CommonParam paramCheckSurg = new CommonParam();
+                    Inventec.Common.Logging.LogSystem.Debug("____________SERE_SERV_ID: " + sereServ.ID);
+                    Inventec.Common.Logging.LogSystem.Debug("____________LOGINAME:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ekipUsers), ekipUsers));
+                    Inventec.Common.Logging.LogSystem.Debug("____________BEGIN_TIME: " + sereServExt.BEGIN_TIME);
+                    Inventec.Common.Logging.LogSystem.Debug("____________END_TIME: " + sereServExt.END_TIME);
+                    bool suscess = new BackendAdapter(paramCheckSurg).Post<bool>("api/HisServiceReq/CheckSurgSimultaneily", ApiConsumers.MosConsumer, InputSDO, paramCheckSurg);
+                     if (suscess == true)
+                        {
+
+                        }
+                        else
+                        {
+                            message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckSurg.GetMessage());
+                          if (MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                               return;
+                        }
+                } 
+
                 if (CheckAllInOne.Checked)
                 {
                     InsertRow(this.sereServ);//cập nhật lại dữ liệu

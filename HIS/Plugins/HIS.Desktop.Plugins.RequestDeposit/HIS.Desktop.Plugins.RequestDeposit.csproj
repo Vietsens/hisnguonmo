@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MRS\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Images.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
@@ -61,10 +61,6 @@
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\HIS.Desktop.Plugins.Library.EmrGenerate\bin\Debug\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.UC.ListDepositRequest, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\UC\HIS.UC\HIS.UC.ListDepositRequest\bin\Debug\HIS.UC.ListDepositRequest.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -165,7 +161,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.Token\Inventec.Token.Core\Inventec.Token.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Login">
-      <HintPath>..\..\..\..\LIB\HIS\ReferencedAssemblies\Inventec.UC.Login.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
@@ -183,7 +179,7 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000091.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000489.PDO">
-      <HintPath>..\..\..\..\..\..\REPORT\MPSv2\MPS.Processor\MPS.Processor.Mps000489.PDO\bin\Debug\MPS.Processor.Mps000489.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000489.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS\MPS.ProcessorBase.dll</HintPath>
@@ -265,6 +261,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\UC\HIS.UC.ListDepositRequest\HIS.UC.ListDepositRequest.csproj">
+      <Project>{845c1557-375f-4c7a-8f81-015ce738eb47}</Project>
+      <Name>HIS.UC.ListDepositRequest</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
+      <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
+      <Name>HIS.Desktop.ADO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>
@@ -312,6 +316,10 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.SdaConfigKey\HIS.Desktop.LocalStorage.SdaConfigKey.csproj">
       <Project>{d46b3ba7-4549-4f4e-a7a4-587879c51166}</Project>
       <Name>HIS.Desktop.LocalStorage.SdaConfigKey</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
+      <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>
+      <Name>HIS.Desktop.ModuleExt</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.Print\HIS.Desktop.Print.csproj">
       <Project>{aeeca321-fd65-407a-8d70-ba5362883b87}</Project>

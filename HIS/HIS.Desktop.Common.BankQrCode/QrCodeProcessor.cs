@@ -100,6 +100,10 @@ namespace HIS.Desktop.Common.BankQrCode
                     result = "PAYMENT_QR_CODE_BIDV";
                     bankType = ProvinceType.BIDV;
                     break;
+                case "HIS.Desktop.Plugins.PaymentQrCode.LPBankInfo":
+                    result = "PAYMENT_QR_CODE_LPBANK";
+                    bankType = ProvinceType.LPBANK;
+                    break;
                 default:
                     break;
             }

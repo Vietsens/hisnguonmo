@@ -514,6 +514,41 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
             return obj;
         }
+        private void txtResultSubclinical4_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameSItem = ENameSItem.KET_QUA_4;
+            GetSpecInformation(ReturnObject = false);
+        }
+
+        private void txtMorphineHeroin4_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.MOR_HER_4;
+            GetSpecInformation();
+        }
+
+        private void txtTestAmphetamin4_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.AMP_4;
+            GetSpecInformation();
+        }
+
+        private void txtTestMethamphetamin4_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.MET_4;
+            GetSpecInformation();
+        }
+
+        private void txtTestMarijuna4_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.MAR_4;
+            GetSpecInformation();
+        }
+
+        private void txtTestConcentration4_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.NDC_4;
+            GetSpecInformation();
+        }
 
         #region ---PREVIEWKEYDOWN---
 

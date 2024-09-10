@@ -401,6 +401,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
             return obj;
         }
+        private void txtResultSubclinical_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameSItem = ENameSItem.KET_LUAN_1;
+            GetSpecInformation(ReturnObject = false);
+        }
 
         #region --PREVIEWKEYDOWN--
         private void txtPathologicalHistory_PreviewKeyDown(object sender, System.Windows.Forms.PreviewKeyDownEventArgs e)

@@ -30,9 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\RELEASE\Library packages\Newtonsoft.Json.6.0.8\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Library packages\Newtonsoft.Json.6.0.8\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -58,6 +58,8 @@
     <Compile Include="Provider\BIDV\Model\BidvInfoData.cs" />
     <Compile Include="Provider\CreatQrData.cs" />
     <Compile Include="Provider\BIDV\Model\ResponseData.cs" />
+    <Compile Include="Provider\LPBANK\LPBankProcessor.cs" />
+    <Compile Include="Provider\LPBANK\Model\LpInfoData.cs" />
     <Compile Include="Provider\Qrcode.cs" />
     <Compile Include="Provider\BIDV\UriStore.cs" />
     <Compile Include="Provider\PVCB\PvcomBankProcessor.cs" />
