@@ -62,6 +62,14 @@ namespace HIS.UC.ListDepositRequest
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.gridControlDepositRequest = new DevExpress.XtraGrid.GridControl();
             this.gridViewDepositRequest = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -71,8 +79,11 @@ namespace HIS.UC.ListDepositRequest
             this.btnDeleteE = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.colPrint = new DevExpress.XtraGrid.Columns.GridColumn();
             this.btnPrintE = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.btnQR_E = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.btnPrintD = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.btnDeleteD = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.btnQR_D = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.txtKeyword = new DevExpress.XtraEditors.TextEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutKeyword = new DevExpress.XtraLayout.LayoutControlItem();
@@ -83,8 +94,10 @@ namespace HIS.UC.ListDepositRequest
             ((System.ComponentModel.ISupportInitialize)(this.gridViewDepositRequest)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnDeleteE)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnPrintE)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnQR_E)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnPrintD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnDeleteD)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnQR_D)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutKeyword)).BeginInit();
@@ -112,7 +125,9 @@ namespace HIS.UC.ListDepositRequest
             this.btnDeleteE,
             this.btnPrintE,
             this.btnPrintD,
-            this.btnDeleteD});
+            this.btnDeleteD,
+            this.btnQR_E,
+            this.btnQR_D});
             this.gridControlDepositRequest.Size = new System.Drawing.Size(677, 398);
             this.gridControlDepositRequest.TabIndex = 5;
             this.gridControlDepositRequest.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -124,7 +139,8 @@ namespace HIS.UC.ListDepositRequest
             this.STT,
             this.colCode,
             this.colDelete,
-            this.colPrint});
+            this.colPrint,
+            this.gridColumn1});
             this.gridViewDepositRequest.GridControl = this.gridControlDepositRequest;
             this.gridViewDepositRequest.Name = "gridViewDepositRequest";
             this.gridViewDepositRequest.OptionsBehavior.AutoPopulateColumns = false;
@@ -159,7 +175,7 @@ namespace HIS.UC.ListDepositRequest
             this.colCode.Name = "colCode";
             this.colCode.OptionsColumn.AllowEdit = false;
             this.colCode.Visible = true;
-            this.colCode.VisibleIndex = 3;
+            this.colCode.VisibleIndex = 4;
             this.colCode.Width = 100;
             // 
             // colDelete
@@ -206,11 +222,32 @@ namespace HIS.UC.ListDepositRequest
             this.btnPrintE.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnPrintE.Click += new System.EventHandler(this.btnPrintE_Click);
             // 
+            // gridColumn1
+            // 
+            this.gridColumn1.ColumnEdit = this.btnQR_E;
+            this.gridColumn1.FieldName = "QR";
+            this.gridColumn1.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn1.Name = "gridColumn1";
+            this.gridColumn1.OptionsColumn.ShowCaption = false;
+            this.gridColumn1.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn1.Visible = true;
+            this.gridColumn1.VisibleIndex = 3;
+            this.gridColumn1.Width = 20;
+            // 
+            // btnQR_E
+            // 
+            this.btnQR_E.AutoHeight = false;
+            this.btnQR_E.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnQR_E.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Thanh toán bằng QR", null, null, true)});
+            this.btnQR_E.Name = "btnQR_E";
+            this.btnQR_E.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.btnQR_E.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnQR_E_ButtonClick);
+            // 
             // btnPrintD
             // 
             this.btnPrintD.AutoHeight = false;
             this.btnPrintD.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnPrintD.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "In", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnPrintD.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "In", null, null, true)});
             this.btnPrintD.Name = "btnPrintD";
             this.btnPrintD.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -218,9 +255,17 @@ namespace HIS.UC.ListDepositRequest
             // 
             this.btnDeleteD.AutoHeight = false;
             this.btnDeleteD.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnDeleteD.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnDeleteD.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Xóa", null, null, true)});
             this.btnDeleteD.Name = "btnDeleteD";
             this.btnDeleteD.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // btnQR_D
+            // 
+            this.btnQR_D.AutoHeight = false;
+            this.btnQR_D.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnQR_D.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
+            this.btnQR_D.Name = "btnQR_D";
+            this.btnQR_D.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
             // txtKeyword
             // 
@@ -276,8 +321,10 @@ namespace HIS.UC.ListDepositRequest
             ((System.ComponentModel.ISupportInitialize)(this.gridViewDepositRequest)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnDeleteE)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnPrintE)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnQR_E)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnPrintD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnDeleteD)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnQR_D)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutKeyword)).EndInit();
@@ -303,5 +350,8 @@ namespace HIS.UC.ListDepositRequest
         private DevExpress.XtraGrid.Columns.GridColumn colPrint;
         private DevExpress.XtraGrid.Columns.GridColumn STT;
         private DevExpress.XtraGrid.Columns.GridColumn colCode;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnQR_E;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnQR_D;
     }
 }
