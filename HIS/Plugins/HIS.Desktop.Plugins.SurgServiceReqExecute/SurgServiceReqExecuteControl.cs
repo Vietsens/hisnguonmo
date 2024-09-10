@@ -777,11 +777,15 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             {
                                 lstLoginValid.Add(acc);
                             }
-                            else
-                            {
-                                lstLoginValid.Add(Login);
-                            }
+                            //else
+                            //{
+                            //    lstLoginValid.Add(Login);
+                            //}
                         }
+                        if (lstLogin.Count == 0 && lstLoginValid.Count == 0)
+                        {
+                            lstLoginValid.Add(Login);
+                        }   
                         inputSDO.Loginnames = lstLoginValid;
                         //if (lstLogin != null && lstLogin.Count() > 0)
                         //{
