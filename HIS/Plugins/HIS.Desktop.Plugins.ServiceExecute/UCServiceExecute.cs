@@ -3937,7 +3937,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         //    lstLoginValid.Add(login);
                         //}
                     }
-                    if (lstLogin.Count == 0 && lstLoginValid.Count ==0 )
+                    if (lstLoginValid.Count ==0 )
                     {
                         lstLoginValid.Add(login);
                     }   
@@ -4000,7 +4000,18 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                      //    kipUsers.Add(new HIS_EKIP_USER { LOGINNAME = login });
                      //}
                      //surgUpdate.EkipUsers = kipUsers;//AutoMapper.Mapper.Map<List<HIS_EKIP_USER>>(lstLoginValid);
-                     surgUpdate.SereServExt = sereServExt;
+                     if (sereServExt != null)
+                     {
+                         surgUpdate.SereServExt = sereServExt;
+                     }
+                     else
+                     {
+                         HIS_SERE_SERV_EXT dataExt = new HIS_SERE_SERV_EXT();
+                         dataExt.BEGIN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime);
+                         dataExt.END_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime);
+                         dataExt.ID = 0;
+                         surgUpdate.SereServExt = dataExt;
+                     }
                      if (dicSereServPttt.ContainsKey(sereServ.ID))
                      {
                          surgUpdate.SereServPttt = dicSereServPttt[sereServ.ID];
@@ -4024,8 +4035,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     CommonParam paramCheckSurg = new CommonParam();
                     Inventec.Common.Logging.LogSystem.Debug("____________SERE_SERV_ID: " + sereServ.ID);
                     Inventec.Common.Logging.LogSystem.Debug("____________LOGINAME:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ekipUsers), ekipUsers));
-                    Inventec.Common.Logging.LogSystem.Debug("____________BEGIN_TIME: " + sereServExt.BEGIN_TIME);
-                    Inventec.Common.Logging.LogSystem.Debug("____________END_TIME: " + sereServExt.END_TIME);
+                    Inventec.Common.Logging.LogSystem.Debug("____________BEGIN_TIME: " + surgUpdate.SereServExt.BEGIN_TIME);
+                    Inventec.Common.Logging.LogSystem.Debug("____________END_TIME: " + surgUpdate.SereServExt.END_TIME);
+                   
                     bool suscess = new BackendAdapter(paramCheckSurg).Post<bool>("api/HisServiceReq/CheckSurgSimultaneily", ApiConsumers.MosConsumer, InputSDO, paramCheckSurg);
                      if (suscess == true)
                         {
