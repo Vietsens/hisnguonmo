@@ -812,7 +812,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             try
             {
                 var columnFocus = gridViewSample.FocusedColumn;
-                var sampleStt = rowSample.SAMPLE_STT_ID;
+                var sampleStt = rowSample2.SAMPLE_STT_ID;
                 if (columnFocus.FieldName == "KET_QUA")
                 {
                     if (LisConfigCFG.MUST_APPROVE_RESULT == "1")
@@ -900,8 +900,8 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 }
                 else if (columnFocus.FieldName == "REJECT")
                 {
-                    if ((rowSample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM
-                           || rowSample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN))
+                    if ((sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM
+                           || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN))
                     {
                         repositoryTuChoiMauE_ButtonClick(null, null);
                     }
@@ -4661,11 +4661,11 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                     var rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/UnApprove", ApiConsumers.LisConsumer, sdo, param);
                     if (rs != null)
                     {
-                        data.SAMPLE_STT_ID = rs.SAMPLE_STT_ID;
-                        data.APPROVAL_TIME = rs.APPROVAL_TIME;
-                        data.APPROVAL_LOGINNAME = rs.APPROVAL_LOGINNAME;
-                        data.APPROVAL_USERNAME = rs.APPROVAL_USERNAME;
-                        data.IS_SAMPLE_ORDER_REQUEST = rs.IS_SAMPLE_ORDER_REQUEST;
+                        row.SAMPLE_STT_ID = rs.SAMPLE_STT_ID;
+                        row.APPROVAL_TIME = rs.APPROVAL_TIME;
+                        row.APPROVAL_LOGINNAME = rs.APPROVAL_LOGINNAME;
+                        row.APPROVAL_USERNAME = rs.APPROVAL_USERNAME;
+                        row.IS_SAMPLE_ORDER_REQUEST = rs.IS_SAMPLE_ORDER_REQUEST;
                         gridControlSample.RefreshDataSource();
                         gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle - 1;
                         gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle + 1;
