@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -41,6 +41,10 @@ using System.Resources;
 using HIS.Desktop.Plugins.DepositRequest.Resources;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.Plugins.DepositRequest.Config;
+using HIS.Desktop.LocalStorage.BackendData;
+using DevExpress.XtraBars;
+using HIS.Desktop.ADO;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.DepositRequest
 {
@@ -69,6 +73,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
         long roomId;
         long roomTypeId;
         int positionHandleControl = -1;
+        List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
 
         public UCDepositRequest(Inventec.Desktop.Common.Modules.Module module, List<V_HIS_DEPOSIT_REQ> treatmentID)
             : base(module)
@@ -119,7 +124,9 @@ namespace HIS.Desktop.Plugins.DepositRequest
                 SetCaptionByLanguageKey();
 
                 LoadCombo();
+                HisConfigCFG.LoadConfig();
                 SetDefaultTransactionTime();
+                SetDefaultCreateQR();
                 FillDataToControlEditor(currentdepositReq);
                 WaitingManager.Hide();
             }
@@ -130,12 +137,37 @@ namespace HIS.Desktop.Plugins.DepositRequest
             }
         }
 
+        private void SetDefaultCreateQR()
+        {
+            try
+            {
+                listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(s.VALUE)).ToList();
+                if (listConfig.Count > 0 && listConfig != null)
+                {
+                    btnCreateQR.Visible = true;
+                }
+                else
+                {
+                    btnCreateQR.Visible = false;
+                }
+                if (currentdepositReq.DEPOSIT_ID != null)
+                {
+                    btnCreateQR.Enabled = true;
+                }
+                else
+                    btnCreateQR.Enabled = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         void SetDefaultTransactionTime()
         {
             try
             {
                 dtTransactionTime.DateTime = DateTime.Now;
-                HisConfigCFG.LoadConfig();
                 if (HisConfigCFG.IsEditTransactionTimeCFG != null && HisConfigCFG.IsEditTransactionTimeCFG.Equals("1"))
                 {
                     lciTransactionTime.Enabled = true;
@@ -594,6 +626,82 @@ namespace HIS.Desktop.Plugins.DepositRequest
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+
+        private HIS_CONFIG selectedConfig = new HIS_CONFIG();
+        private void btnCreateQR_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (listConfig != null)
+                {
+                    if (listConfig.Count > 1)
+                    {
+                        popupMenu1.ClearLinks();
+                        foreach (var item in listConfig)
+                        {
+                            string key = "";
+                            string value = item.KEY;
+                            int index = value.IndexOf("Info");
+                            if (index > 0)
+                            {
+                                var shotkey = value.Substring(0, index);
+                                string[] parts = shotkey.Split('.');
+                                if (parts.Length > 0)
+                                {
+                                    key = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
+                                }
+                            }
+                            else
+                            {
+                                key = item.KEY;
+                            }
+
+
+                            BarButtonItem btnOption = new BarButtonItem(null, key);
+                            btnOption.ItemClick += (s, args) =>
+                            {
+
+                                selectedConfig = item;
+                                List<object> listArgs = new List<object>();
+                                TransReqQRADO adoqr = new TransReqQRADO();
+                                adoqr.TreatmentId = currentdepositReq.TREATMENT_ID;
+                                adoqr.ConfigValue = selectedConfig;
+                                adoqr.TransReqId = CreateReqType.Deposit;
+                                adoqr.DepositReq = currentdepositReq;
+                                listArgs.Add(adoqr);
+                                LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
+
+                                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+                            };
+                            popupMenu1.AddItem(btnOption);
+                        }
+                        popupMenu1.Manager = barManager1;
+                        popupMenu1.ShowPopup(Control.MousePosition);
+                    }
+                    else
+                    {
+                        selectedConfig = listConfig[0];
+                        List<object> listArgs = new List<object>();
+                        TransReqQRADO adoqr = new TransReqQRADO();
+                        adoqr.TreatmentId = currentdepositReq.TREATMENT_ID;
+                        adoqr.ConfigValue = selectedConfig;
+                        adoqr.TransReqId = CreateReqType.Deposit;
+                        adoqr.DepositReq = currentdepositReq;
+                        listArgs.Add(adoqr);
+                        LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
+                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+                    }
+                }
+
+               // if()
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error("Loi khi thuc hien thanh toan QR tam thu: " + ex);
+            }
         }
     }
 }

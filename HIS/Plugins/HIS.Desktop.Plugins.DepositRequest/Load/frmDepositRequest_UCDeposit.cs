@@ -432,6 +432,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
                         btnSavePrint.Enabled = false;
                         //btnCancel.Enabled = true;
                         btnPrint.Enabled = true;
+                        btnCreateQR.Enabled = true;
                     }
                     else if (data.DEPOSIT_ID == null)
                     {
@@ -439,6 +440,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
                         btnSave.Enabled = true;
                         btnSavePrint.Enabled = true;
                         btnPrint.Enabled = false;
+                        btnCreateQR.Enabled = false;
                     }
 
                     //chọn lại sổ để update
@@ -456,6 +458,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
                     btnSavePrint.Enabled = true;
                     btnPrint.Enabled = false;
                 }
+              
             }
             catch (Exception ex)
             {
