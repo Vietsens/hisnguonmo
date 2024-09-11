@@ -31,7 +31,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FlexCel">
-      <HintPath>..\..\..\..\LIB\FlexCellReport\FlexCel.dll</HintPath>
+      <HintPath>..\..\..\..\lib\FlexCellReport\FlexCel.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.BarcodeLib">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.BarcodeLib\Inventec.Common.BarcodeLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.QRCoder">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.QRCoder\Inventec.Common.QRCoder.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -66,10 +72,6 @@
     <Compile Include="TFlexCelUFRowNumber.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Inventec.Common.BarcodeLib\Inventec.Common.BarcodeLib.csproj">
-      <Project>{f8646414-0c9c-49bb-9da3-3923bf78a398}</Project>
-      <Name>Inventec.Common.BarcodeLib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Inventec.Common.DateTime\Inventec.Common.DateTime.csproj">
       <Project>{d3437a35-37ed-4697-a3fa-109939baaf47}</Project>
       <Name>Inventec.Common.DateTime</Name>
@@ -81,10 +83,6 @@
     <ProjectReference Include="..\Inventec.Common.Number\Inventec.Common.Number.csproj">
       <Project>{7428c903-6c07-4763-9154-a5c7461a9cbf}</Project>
       <Name>Inventec.Common.Number</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Inventec.Common.QRCoder\Inventec.Common.QRCoder\Inventec.Common.QRCoder.csproj">
-      <Project>{aece5df3-c379-46ca-bb7d-7bdbe59011fd}</Project>
-      <Name>Inventec.Common.QRCoder</Name>
     </ProjectReference>
     <ProjectReference Include="..\Inventec.Common.String\Inventec.Common.String.csproj">
       <Project>{dce10a9c-b9df-4306-ac93-691275a5e456}</Project>
