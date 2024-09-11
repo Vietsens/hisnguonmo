@@ -782,7 +782,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             //    lstLoginValid.Add(Login);
                             //}
                         }
-                        if (lstLogin.Count == 0 && lstLoginValid.Count == 0)
+                        if (lstLoginValid.Count == 0)
                         {
                             lstLoginValid.Add(Login);
                         }   
