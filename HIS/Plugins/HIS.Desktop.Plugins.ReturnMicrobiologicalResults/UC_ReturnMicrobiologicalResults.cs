@@ -456,6 +456,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 WaitingManager.Show();
                 rowSample2 = null;
                 rowSample2 = (V_LIS_SAMPLE_2)gridViewSample.GetFocusedRow();
+                ClickColumnItem();
                 LoadLisResult(rowSample2);
                 LoadDataToGridTestResultWithVKKS();
                 DataLoadUser(rowSample2);
@@ -806,8 +807,140 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void ClickColumnItem()
+        {
+            try
+            {
+                var columnFocus = gridViewSample.FocusedColumn;
+                var sampleStt = rowSample.SAMPLE_STT_ID;
+                if (columnFocus.FieldName == "KET_QUA")
+                {
+                    if (LisConfigCFG.MUST_APPROVE_RESULT == "1")
+                    {
+                        if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ)// if (sampleStt == 1 || sampleStt == 2)
+                        {
+                            TraKetQuaE_Click(null, null);
+                        }
+                        else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ)
+                        {
+                            if (((controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == ControlCode.BtnHuyTraKQ) != null) || IsLoginameAddmin))
+                            {
+                                HuyTraKQE_Click(null, null);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM
+                           || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ
+                            || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ
+                            || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN)// if (sampleStt == 1 || sampleStt == 2)
+                        {
+                            TraKetQuaE_Click(null, null);
+                        }
+                        else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ
+                            && ((controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == ControlCode.BtnHuyTraKQ) != null) || IsLoginameAddmin))
+                        {
+                            HuyTraKQE_Click(null, null);
+                        }
+                    }
+                }
+                else if (columnFocus.FieldName == "DUYET")
+                {
+                    bool alowUnsample = controlAcs.Exists(o => o.CONTROL_CODE == "HIS000028");
+                    if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM
+                        || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI)
+                    {
+                        DuyetE_Click(null, null);
+                    }
+                    else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM
+                        || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN)
+                    {
+                        if (alowUnsample)
+                            HuyDuyetE_Click(null, null);
+                    }
+                    else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ)
+                    {
+                    }
+                    else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ)
+                    {
+                        if (LisConfigCFG.MUST_APPROVE_RESULT == "1" && alowUnsample)
+                        {
+                            HuyDuyetE_Click(null, null);
+                        }
+                    }
+                    else
+                    {
+                        if (alowUnsample || CheckEmployIsAdmin())
+                        {
+                            HuyDuyetE_Click(null, null);
+                        }
+                    }
+                }
+                else if (columnFocus.FieldName == "UPDATE_BARCODE_TIME")
+                {
+                    if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM
+                            || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM
+                            || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN
+                            || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI)
+                    {
+                        repositoryItemBtnUpdateBarcodeTime_Enable_ButtonClick(null, null);
+                    }
+                }
+                else if (columnFocus.FieldName == "NUM_ORDER")
+                {
+                    if (rowSample != null && rowSample.NUM_ORDER.HasValue)
+                    {
 
-        
+                    }
+                    else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM)
+                    {
+                        repositoryItemBtnUpdateNumOrder_ButtonClick(null, null);
+                    }
+                }
+                else if (columnFocus.FieldName == "REJECT")
+                {
+                    if ((rowSample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM
+                           || rowSample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN))
+                    {
+                        repositoryTuChoiMauE_ButtonClick(null, null);
+                    }
+                }
+                else if (columnFocus.FieldName == "APPROVE_SAMPLE")
+                {
+                    if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM)
+                    {
+                        repositoryChapNhanMauE_ButtonClick(null, null);
+                    }
+                    else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN)
+                    {
+                        repUnAppove_ButtonClick(null, null);
+                    }
+                }
+                else if (columnFocus.FieldName == "APPROVE_RESULT")
+                {
+                    if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ
+                            || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN)
+                    {
+                        repositoryDuyetKetQuaE_ButtonClick(null, null);
+                    }
+                    else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ)
+                    {
+                        repositoryHuyDuyetKetQuaE_ButtonClick(null, null);
+                    }
+                }
+                else if (columnFocus.FieldName == "PRINT_BARCODE")
+                {
+                    InBarcode_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
 
         private void gridViewSample_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
         {
