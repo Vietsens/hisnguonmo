@@ -222,8 +222,8 @@ namespace Inventec.Common.BankQrCode.Provider
                 && string.IsNullOrWhiteSpace(this.v_62_08)
                 && string.IsNullOrWhiteSpace(this.v_62_09)) return "";
             var v_01 = this.calc_val("01", this.v_62_01);
-            var v_03 = this.calc_val("03", this.v_62_03);
-            var v_07 = this.calc_val("07", this.v_62_07);
+            var v_03 = string.IsNullOrEmpty(this.v_62_03) ? "" : this.calc_val("03", this.v_62_03);
+            var v_07 = string.IsNullOrEmpty(this.v_62_07) ? "" : this.calc_val("07", this.v_62_07);
             var v_08 = this.calc_val("08", this.v_62_08);
             var v_09 = this.calc_val("09", this.v_62_09);
             return this.calc_val("62", v_01 + v_03 + v_07 + v_08 + v_09);
@@ -252,7 +252,7 @@ namespace Inventec.Common.BankQrCode.Provider
 
         public string createTotal()
         {
-            string v = this.f_00() + this.f_01() + this.f_26() + this.f_38() + this.f_52() +
+            string v = this.f_00() + this.f_01() + this.f_26() + this.f_38() + (string.IsNullOrEmpty(v_52) ? "" : this.f_52()) +
                 this.f_53() + this.f_54() + this.f_58() + this.f_59() +
                 this.f_60() + this.f_61() + this.f_62();
             return v + this.f_63(v);
