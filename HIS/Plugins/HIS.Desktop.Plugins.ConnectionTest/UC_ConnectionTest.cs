@@ -9220,7 +9220,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         gridControlSample.RefreshDataSource();
                         gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle - 1;
                         gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle + 1;
-                        gridViewSample_RowCellClick(null, null);
                         success = true;
                     }
                     WaitingManager.Hide();

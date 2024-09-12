@@ -3434,7 +3434,6 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                                 gridControlSample.RefreshDataSource();
                                 gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle - 1;
                                 gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle + 1;
-                                gridViewSample_RowCellClick(null, null);
                             }
                         }, row);
                         frm.ShowDialog();
