@@ -684,10 +684,28 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             try
             {
+                if (e.Column.FieldName == "KET_QUA" || e.Column.FieldName == "DUYET" || e.Column.FieldName == "UPDATE_BARCODE_TIME" || e.Column.FieldName == "NUM_ORDER" || e.Column.FieldName == "REJECT" || e.Column.FieldName == "APPROVE_SAMPLE" || e.Column.FieldName == "APPROVE_RESULT" || e.Column.FieldName == "PRINT_BARCODE")
+                {
+                    ClickColumnItem();
+                    return;
+                }
+                RowClick();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void RowClick()
+        {
+
+            try
+            {
                 WaitingManager.Show();
                 rowSample = null;
                 rowSample = (LisSampleADO)gridViewSample.GetFocusedRow();
-                ClickColumnItem();
+
                 LoadLisResult(rowSample);
                 LoadDataToGridTestResult2();
                 SetDataToCommon(rowSample);
@@ -711,19 +729,23 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 dxValidationProviderEditorInfo.RemoveControlError(DateLM);
                 ValidationSampleTime(rowSample.INTRUCTION_TIME ?? 0);
                 CheckConfigSignWarningOption(rowSample);
+
                 WaitingManager.Hide();
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
+
         }
 
         private void ClickColumnItem()
         {
             try
             {
+                rowSample = null;
+                rowSample = (LisSampleADO)gridViewSample.GetFocusedRow();
                 var columnFocus = gridViewSample.FocusedColumn;
                 var sampleStt = rowSample.SAMPLE_STT_ID;
                 if (columnFocus.FieldName == "KET_QUA")
@@ -814,7 +836,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         repositoryItemBtnUpdateNumOrder_ButtonClick(null, null);
                     }
                 }
-                else if (columnFocus.FieldName == "REJECT") 
+                else if (columnFocus.FieldName == "REJECT")
                 {
                     if ((rowSample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM
                            || rowSample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN))
@@ -844,7 +866,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         repositoryHuyDuyetKetQuaE_ButtonClick(null, null);
                     }
-                }else if(columnFocus.FieldName == "PRINT_BARCODE")
+                }
+                else if (columnFocus.FieldName == "PRINT_BARCODE")
                 {
                     InBarcode_Click(null, null);
                 }
@@ -1341,7 +1364,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     if (dataSource.Count == 1)
                     {
                         gridViewSample.FocusedRowHandle = 0;
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick();
                     }
                     else if (rowSample != null)
                     {
@@ -1939,7 +1962,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             gridControlSample.RefreshDataSource();
                             gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle - 1;
                             gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle + 1;
-                            gridViewSample_RowCellClick(null, null);
                         }
                     }, room.ROOM_CODE);
                     frm.ShowDialog();
@@ -4939,7 +4961,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         {
                             success = true;
                             FillDataToGridControl();
-                            gridViewSample_RowCellClick(null, null);
+                            if (lstSampleAll.Count > 1)
+                                RowClick();
 
                             string testIndexStr = "";
                             foreach (var item in dataChilds)
@@ -5425,7 +5448,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     if (result != null)
                     {
                         success = true;
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick();
                     }
                     WaitingManager.Hide();
                     #region Show message
@@ -5480,7 +5503,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     if (result)
                     {
                         success = true;
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick();
                     }
                     WaitingManager.Hide();
                     #region Show message
@@ -5526,7 +5549,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     if (result)
                     {
                         success = true;
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick();
                     }
                     WaitingManager.Hide();
                     #region Show message
@@ -5563,7 +5586,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     if (result)
                     {
                         success = true;
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick();
                     }
                     WaitingManager.Hide();
                     #region Show message
@@ -5600,7 +5623,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     if (result)
                     {
                         success = true;
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick();
                     }
                     WaitingManager.Hide();
                     #region Show message
@@ -5657,7 +5680,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (rs != null && rs.Count > 0)
                             {
                                 success = true;
-                                gridViewSample_RowCellClick(null, null);
+                                RowClick();
                             }
                             treeListSereServTein.RefreshDataSource();
                             WaitingManager.Hide();
@@ -5790,7 +5813,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             gridControlSample.RefreshDataSource();
                             gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle - 1;
                             gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle + 1;
-                            gridViewSample_RowCellClick(null, null);
                         }
                     }, row);
                     frm.ShowDialog();
@@ -5826,7 +5848,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         gridControlSample.RefreshDataSource();
                         gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle - 1;
                         gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle + 1;
-                        gridViewSample_RowCellClick(null, null);
                     }
                     MessageManager.Show(this.ParentForm, param, success);
                     WaitingManager.Hide();
@@ -5904,7 +5925,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                                 gridControlSample.RefreshDataSource();
                                 gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle - 1;
                                 gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle + 1;
-                                gridViewSample_RowCellClick(null, null);
                                 result = true;
                             }
                         }, (IsShow) => IsShowMessage = IsShow);
@@ -5928,7 +5948,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle - 1;
                             gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle + 1;
                             result = true;
-                            gridViewSample_RowCellClick(null, null);
                         }
                         WaitingManager.Hide();
                     }
@@ -6453,7 +6472,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     if (result)
                     {
                         success = true;
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick();
                     }
                     WaitingManager.Hide();
                     #region Show message

@@ -452,11 +452,28 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
         {
             try
             {
+                if (e.Column.FieldName == "KET_QUA" || e.Column.FieldName == "DUYET" || e.Column.FieldName == "UPDATE_BARCODE_TIME" || e.Column.FieldName == "NUM_ORDER" || e.Column.FieldName == "REJECT" || e.Column.FieldName == "APPROVE_SAMPLE" || e.Column.FieldName == "APPROVE_RESULT" || e.Column.FieldName == "PRINT_BARCODE")
+                {
+                    ClickColumnItem();
+                    return;
+                }
+                RowClick(null,null);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void RowClick(object sender, DevExpress.XtraGrid.Views.Grid.RowCellClickEventArgs e)
+        {
+
+            try
+            {
                 string Note = mmNote.Text;
                 WaitingManager.Show();
                 rowSample2 = null;
                 rowSample2 = (V_LIS_SAMPLE_2)gridViewSample.GetFocusedRow();
-                ClickColumnItem();
                 LoadLisResult(rowSample2);
                 LoadDataToGridTestResultWithVKKS();
                 DataLoadUser(rowSample2);
@@ -485,9 +502,9 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             }
             catch (Exception ex)
             {
-                WaitingManager.Hide();
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
+
         }
         private async Task DataLoadUser(V_LIS_SAMPLE_2 sample)
         {
@@ -811,6 +828,8 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
         {
             try
             {
+                rowSample2 = null;
+                rowSample2 = (V_LIS_SAMPLE_2)gridViewSample.GetFocusedRow();
                 var columnFocus = gridViewSample.FocusedColumn;
                 var sampleStt = rowSample2.SAMPLE_STT_ID;
                 if (columnFocus.FieldName == "KET_QUA")
@@ -2874,7 +2893,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                         {
                             success = true;
                             FillDataToGridControl();
-                            gridViewSample_RowCellClick(null, null);
+                            RowClick(null, null);
 
                             string testIndexStr = "";
                             foreach (var item in dataChilds)
@@ -3226,7 +3245,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                     if (result)
                     {
                         success = true;
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick(null, null);
                     }
                     WaitingManager.Hide();
                     #region Show message
@@ -3272,7 +3291,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                     if (result)
                     {
                         success = true;
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick(null, null);
                     }
                     WaitingManager.Hide();
                     #region Show message
@@ -3424,13 +3443,13 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                         {
                             if (obj != null)
                             {
-                                row.SAMPLE_STT_ID = obj.SAMPLE_STT_ID;
-                                row.APPROVAL_TIME = obj.APPROVAL_TIME;
-                                row.APPROVAL_LOGINNAME = obj.APPROVAL_LOGINNAME;
-                                row.APPROVAL_USERNAME = obj.APPROVAL_USERNAME;
-                                row.IS_SAMPLE_ORDER_REQUEST = obj.IS_SAMPLE_ORDER_REQUEST;
-                                row.REJECT_REASON = obj.REJECT_REASON;
-                                row.SAMPLE_ORDER = obj.SAMPLE_ORDER;
+                                data.SAMPLE_STT_ID = obj.SAMPLE_STT_ID;
+                                data.APPROVAL_TIME = obj.APPROVAL_TIME;
+                                data.APPROVAL_LOGINNAME = obj.APPROVAL_LOGINNAME;
+                                data.APPROVAL_USERNAME = obj.APPROVAL_USERNAME;
+                                data.IS_SAMPLE_ORDER_REQUEST = obj.IS_SAMPLE_ORDER_REQUEST;
+                                data.REJECT_REASON = obj.REJECT_REASON;
+                                data.SAMPLE_ORDER = obj.SAMPLE_ORDER;
                                 gridControlSample.RefreshDataSource();
                                 gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle - 1;
                                 gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle + 1;
@@ -3750,7 +3769,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                     Inventec.Common.Logging.LogSystem.Debug("repositoryItemcboMachineReturnResult_EditValueChanged Khong co du lieu sampleservice => " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => testLisResultADO), testLisResultADO) + "__" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sampleServices), sampleServices));
                 }
 
-                gridViewSample_RowCellClick(null, null);
+                RowClick(null, null);
             }
             catch (Exception ex)
             {
@@ -3814,7 +3833,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                     Inventec.Common.Logging.LogSystem.Debug("repositoryItemcboMachineReturnResult_EditValueChanged Khong co du lieu sampleservice => " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => testLisResultADO), testLisResultADO) + "__" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sampleServices), sampleServices));
                 }
 
-                gridViewSample_RowCellClick(null, null);
+                RowClick(null, null);
             }
             catch (Exception ex)
             {
@@ -4258,7 +4277,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                             Inventec.Common.Logging.LogSystem.Debug("repositoryItemcboMachineReturnResult_EditValueChanged Khong co du lieu sampleservice => " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => testLisResultADO), testLisResultADO) + "__" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sampleServices), sampleServices));
                         }
 
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick(null, null);
                     }
                 }
 
