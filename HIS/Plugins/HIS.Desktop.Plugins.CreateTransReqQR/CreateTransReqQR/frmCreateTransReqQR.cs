@@ -218,7 +218,10 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             try
             {
                 if (inputTransReq.TransReqId == CreateReqType.Deposit || inputTransReq.TransReqId == CreateReqType.Transaction)
+                {
+                    btnCreate_Click(null, null);
                     return;
+                }
                 this.sereServByTreatment = GetSereByTreatmentId();
                 if (this.sereServByTreatment == null || this.sereServByTreatment.Count == 0)
                 {
@@ -804,6 +807,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 }
                 else
                 {
+                    Amount = currentTransReq.AMOUNT;
+                    lblAmount.Text = Inventec.Common.Number.Convert.NumberToString(Amount, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
                     btnNew.Enabled = true;
                     btnCreate.Enabled = false;
                     ShowQR();
