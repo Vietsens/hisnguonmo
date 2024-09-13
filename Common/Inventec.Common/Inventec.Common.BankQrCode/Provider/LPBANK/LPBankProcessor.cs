@@ -42,8 +42,7 @@ namespace Inventec.Common.BankQrCode.Provider.LPBANK
                     }
                     apiData.billNumber = this.InputData.TransactionCode;
                     apiData.purpose = InputData.Purpose;
-                    var qrcode = new Qrcode(apiData);
-
+                    var qrcode = new Qrcode(apiData); 
                     result.Data = qrcode.createTotal();
                 }
             }
