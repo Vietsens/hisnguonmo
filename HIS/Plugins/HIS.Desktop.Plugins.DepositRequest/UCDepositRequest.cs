@@ -136,7 +136,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+         
         private void SetDefaultCreateQR()
         {
             try
@@ -144,18 +144,18 @@ namespace HIS.Desktop.Plugins.DepositRequest
                 listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(s.VALUE)).ToList();
                 if (listConfig.Count > 0 && listConfig != null)
                 {
-                    btnCreateQR.Visible = true;
+                    layoutbtnQRCe.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 }
                 else
                 {
-                    btnCreateQR.Visible = false;
+                    layoutbtnQRCe.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
                 if (currentdepositReq.DEPOSIT_ID != null)
                 {
-                    btnCreateQR.Enabled = true;
+                    btnCreateQR.Enabled = false;
                 }
                 else
-                    btnCreateQR.Enabled = false;
+                    btnCreateQR.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -696,6 +696,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
                     }
                 }
 
+                FillDataToGrid();
                // if()
             }
             catch (Exception ex)
