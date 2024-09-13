@@ -62,6 +62,7 @@ using static DevExpress.Data.Helpers.ExpressiveSortInfo;
 
 namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
 {
+    public delegate void SubScreenDelegate(DataSubScreen data);
     public partial class frmCreateTransReqQR : HIS.Desktop.Utility.FormBase
     {
         Inventec.Desktop.Common.Modules.Module currentModule;
@@ -73,6 +74,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
         V_HIS_TREATMENT hisTreatmentView;
         int SetDefaultDepositPrice;
         HIS_TRANS_REQ currentTransReq { get; set; }
+        SubScreenDelegate dlg { get; set; }
         bool IsCheckNode { get; set; }
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
@@ -166,6 +168,9 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                             cboCom.EditValue = item.VALUE;
                             IsConnectOld = true;
                             btnConnect_Click(null, null);
+                        }else if(item.KEY == chkOtherScreen.Name)
+                        {
+                            chkOtherScreen.Checked = item.VALUE == "1";
                         }
                         foreach (var phieu in lstLoaiPhieu)
                         {
@@ -212,6 +217,11 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
         {
             try
             {
+                if (inputTransReq.TransReqId == CreateReqType.Deposit || inputTransReq.TransReqId == CreateReqType.Transaction)
+                {
+                    btnCreate_Click(null, null);
+                    return;
+                }
                 this.sereServByTreatment = GetSereByTreatmentId();
                 if (this.sereServByTreatment == null || this.sereServByTreatment.Count == 0)
                 {
@@ -538,7 +548,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         SereServIds.Add(item.ID);
                     }
                 }
-                lblAmount.Text = Inventec.Common.Number.Convert.NumberToString(Amount, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
+                lblAmount.Text = Inventec.Common.Number.Convert.NumberToString(Amount, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator); 
+                SendData();
             }
             catch (Exception ex)
             {
@@ -781,10 +792,12 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 CommonParam param = new CommonParam();
                 TransReqCreateSDO sdo = new TransReqCreateSDO();
                 sdo.TreatmentId = this.inputTransReq.TreatmentId;
-                sdo.TransReqType = 2; //Loại yêu cầu thanh toán. Giá trị mặc định 2(Yeu cau thanh toan theo so tien con thieu (co gan voi dich vu))
+                sdo.TransReqType = inputTransReq.TransReqId == CreateReqType.Deposit ? 4 : inputTransReq.TransReqId == CreateReqType.Transaction ? 5 : 2;
                 sdo.SereServIds = SereServIds.Distinct().ToList();
                 sdo.RequestRoomId = this.currentModule.RoomId;
                 sdo.Amount = this.Amount;
+                sdo.DepositReqId = inputTransReq.DepositReq != null ? (long?)inputTransReq.DepositReq.ID : null;
+                sdo.TransactionId = inputTransReq.Transaction != null ? (long?)inputTransReq.Transaction.ID : null;
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
                 currentTransReq = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANS_REQ>("api/HisTransReq/CreateSDO", ApiConsumers.MosConsumer, sdo, param);
                 InitPopupMenuOther();
@@ -794,6 +807,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 }
                 else
                 {
+                    Amount = currentTransReq.AMOUNT;
+                    lblAmount.Text = Inventec.Common.Number.Convert.NumberToString(Amount, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
                     btnNew.Enabled = true;
                     btnCreate.Enabled = false;
                     ShowQR();
@@ -1238,6 +1253,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 {
                     PosStatic.SendData(null);
                 }
+                if (frmSubSc != null)
+                    frmSubSc.Close();
             }
             catch (Exception ex)
             {
@@ -1497,9 +1514,146 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             }
 
         }
+
+        frmSubScreen frmSubSc = null;
+        private void chkOtherScreen_CheckedChanged(object sender, EventArgs e)
+        {
+
+            try
+            {
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkOtherScreen.Name && o.MODULE_LINK == currentModule.ModuleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = chkOtherScreen.Checked ? "1" : "0";
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkOtherScreen.Name;
+                    csAddOrUpdate.VALUE = chkOtherScreen.Checked ? "1" : "0";
+                    csAddOrUpdate.MODULE_LINK = currentModule.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                frmSubSc = new frmSubScreen(hisTreatmentView);
+                dlg = new SubScreenDelegate(frmSubSc.dataGet);
+                if (chkOtherScreen.Checked && frmSubSc != null)
+                {
+                    ShowFormInExtendMonitor(frmSubSc);
+                }
+                else
+                {
+                    TurnOffExtendMonitor(frmSubSc);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void ShowFormInExtendMonitor(Form control)
+        {
+            try
+            {
+                Screen[] sc;
+                sc = Screen.AllScreens;
+                if (sc.Length <= 1)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Không tìm thấy màn hình mở rộng");
+                    control.Show();
+                }
+                else
+                {
+                    Screen secondScreen = sc.FirstOrDefault(o => o != Screen.PrimaryScreen);
+                    //control.FormBorderStyle = FormBorderStyle.None;
+                    control.Left = secondScreen.Bounds.Width;
+                    control.Top = secondScreen.Bounds.Height;
+                    control.StartPosition = FormStartPosition.Manual;
+                    control.Location = secondScreen.Bounds.Location;
+                    Point p = new Point(secondScreen.Bounds.Location.X, secondScreen.Bounds.Location.Y);
+                    control.Location = p;
+                    control.WindowState = FormWindowState.Maximized;
+                    control.Show();
+                    SendData();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+        private void TurnOffExtendMonitor(Form control)
+        {
+            try
+            {
+                if (control != null)
+                {
+                    if (Application.OpenForms != null && Application.OpenForms.Count > 0)
+                    {
+                        for (int i = 0; i < Application.OpenForms.Count; i++)
+                        {
+                            Form f = Application.OpenForms[i];
+                            if (f.Name == control.Name)
+                            {
+                                f.Close();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
+        private void pbQr_EditValueChanged(object sender, EventArgs e)
+        {
+
+            try
+            {
+                SendData();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+        private void SendData()
+        {
+
+            try
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new MethodInvoker(delegate {
+                        if (dlg != null)
+                            dlg(new DataSubScreen() { image = pbQr.Image, amount = lblAmount.Text, status = lblStt.Text });
+                    }));
+                }
+                else
+                {
+                    if (dlg != null)
+                        dlg(new DataSubScreen() { image = pbQr.Image, amount = lblAmount.Text, status = lblStt.Text });
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
     }
     public class ComQR
     {
         public string comName { get; set; }
+    }
+    public class DataSubScreen
+    {
+        public Image image { get; set; }
+        public string amount { get; set; }
+        public string status { get; set; }
     }
 }

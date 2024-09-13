@@ -452,6 +452,24 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
         {
             try
             {
+                if (e.Column.FieldName == "KET_QUA" || e.Column.FieldName == "DUYET" || e.Column.FieldName == "UPDATE_BARCODE_TIME" || e.Column.FieldName == "NUM_ORDER" || e.Column.FieldName == "REJECT" || e.Column.FieldName == "APPROVE_SAMPLE" || e.Column.FieldName == "APPROVE_RESULT" || e.Column.FieldName == "PRINT_BARCODE")
+                {
+                    ClickColumnItem();
+                    return;
+                }
+                RowClick(null,null);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void RowClick(object sender, DevExpress.XtraGrid.Views.Grid.RowCellClickEventArgs e)
+        {
+
+            try
+            {
                 string Note = mmNote.Text;
                 WaitingManager.Show();
                 rowSample2 = null;
@@ -484,9 +502,9 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             }
             catch (Exception ex)
             {
-                WaitingManager.Hide();
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
+
         }
         private async Task DataLoadUser(V_LIS_SAMPLE_2 sample)
         {
@@ -806,8 +824,142 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void ClickColumnItem()
+        {
+            try
+            {
+                rowSample2 = null;
+                rowSample2 = (V_LIS_SAMPLE_2)gridViewSample.GetFocusedRow();
+                var columnFocus = gridViewSample.FocusedColumn;
+                var sampleStt = rowSample2.SAMPLE_STT_ID;
+                if (columnFocus.FieldName == "KET_QUA")
+                {
+                    if (LisConfigCFG.MUST_APPROVE_RESULT == "1")
+                    {
+                        if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ)// if (sampleStt == 1 || sampleStt == 2)
+                        {
+                            TraKetQuaE_Click(null, null);
+                        }
+                        else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ)
+                        {
+                            if (((controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == ControlCode.BtnHuyTraKQ) != null) || IsLoginameAddmin))
+                            {
+                                HuyTraKQE_Click(null, null);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM
+                           || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ
+                            || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ
+                            || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN)// if (sampleStt == 1 || sampleStt == 2)
+                        {
+                            TraKetQuaE_Click(null, null);
+                        }
+                        else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ
+                            && ((controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == ControlCode.BtnHuyTraKQ) != null) || IsLoginameAddmin))
+                        {
+                            HuyTraKQE_Click(null, null);
+                        }
+                    }
+                }
+                else if (columnFocus.FieldName == "DUYET")
+                {
+                    bool alowUnsample = controlAcs.Exists(o => o.CONTROL_CODE == "HIS000028");
+                    if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM
+                        || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI)
+                    {
+                        DuyetE_Click(null, null);
+                    }
+                    else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM
+                        || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN)
+                    {
+                        if (alowUnsample)
+                            HuyDuyetE_Click(null, null);
+                    }
+                    else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ)
+                    {
+                    }
+                    else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ)
+                    {
+                        if (LisConfigCFG.MUST_APPROVE_RESULT == "1" && alowUnsample)
+                        {
+                            HuyDuyetE_Click(null, null);
+                        }
+                    }
+                    else
+                    {
+                        if (alowUnsample || CheckEmployIsAdmin())
+                        {
+                            HuyDuyetE_Click(null, null);
+                        }
+                    }
+                }
+                else if (columnFocus.FieldName == "UPDATE_BARCODE_TIME")
+                {
+                    if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM
+                            || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM
+                            || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN
+                            || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI)
+                    {
+                        repositoryItemBtnUpdateBarcodeTime_Enable_ButtonClick(null, null);
+                    }
+                }
+                else if (columnFocus.FieldName == "NUM_ORDER")
+                {
+                    if (rowSample != null && rowSample.NUM_ORDER.HasValue)
+                    {
 
-        
+                    }
+                    else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM)
+                    {
+                        repositoryItemBtnUpdateNumOrder_ButtonClick(null, null);
+                    }
+                }
+                else if (columnFocus.FieldName == "REJECT")
+                {
+                    if ((sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM
+                           || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN))
+                    {
+                        repositoryTuChoiMauE_ButtonClick(null, null);
+                    }
+                }
+                else if (columnFocus.FieldName == "APPROVE_SAMPLE")
+                {
+                    if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM)
+                    {
+                        repositoryChapNhanMauE_ButtonClick(null, null);
+                    }
+                    else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN)
+                    {
+                        repUnAppove_ButtonClick(null, null);
+                    }
+                }
+                else if (columnFocus.FieldName == "APPROVE_RESULT")
+                {
+                    if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ
+                            || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN)
+                    {
+                        repositoryDuyetKetQuaE_ButtonClick(null, null);
+                    }
+                    else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ)
+                    {
+                        repositoryHuyDuyetKetQuaE_ButtonClick(null, null);
+                    }
+                }
+                else if (columnFocus.FieldName == "PRINT_BARCODE")
+                {
+                    InBarcode_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
 
         private void gridViewSample_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
         {
@@ -2741,7 +2893,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                         {
                             success = true;
                             FillDataToGridControl();
-                            gridViewSample_RowCellClick(null, null);
+                            RowClick(null, null);
 
                             string testIndexStr = "";
                             foreach (var item in dataChilds)
@@ -3093,7 +3245,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                     if (result)
                     {
                         success = true;
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick(null, null);
                     }
                     WaitingManager.Hide();
                     #region Show message
@@ -3139,7 +3291,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                     if (result)
                     {
                         success = true;
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick(null, null);
                     }
                     WaitingManager.Hide();
                     #region Show message
@@ -3291,17 +3443,16 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                         {
                             if (obj != null)
                             {
-                                row.SAMPLE_STT_ID = obj.SAMPLE_STT_ID;
-                                row.APPROVAL_TIME = obj.APPROVAL_TIME;
-                                row.APPROVAL_LOGINNAME = obj.APPROVAL_LOGINNAME;
-                                row.APPROVAL_USERNAME = obj.APPROVAL_USERNAME;
-                                row.IS_SAMPLE_ORDER_REQUEST = obj.IS_SAMPLE_ORDER_REQUEST;
-                                row.REJECT_REASON = obj.REJECT_REASON;
-                                row.SAMPLE_ORDER = obj.SAMPLE_ORDER;
+                                data.SAMPLE_STT_ID = obj.SAMPLE_STT_ID;
+                                data.APPROVAL_TIME = obj.APPROVAL_TIME;
+                                data.APPROVAL_LOGINNAME = obj.APPROVAL_LOGINNAME;
+                                data.APPROVAL_USERNAME = obj.APPROVAL_USERNAME;
+                                data.IS_SAMPLE_ORDER_REQUEST = obj.IS_SAMPLE_ORDER_REQUEST;
+                                data.REJECT_REASON = obj.REJECT_REASON;
+                                data.SAMPLE_ORDER = obj.SAMPLE_ORDER;
                                 gridControlSample.RefreshDataSource();
                                 gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle - 1;
                                 gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle + 1;
-                                gridViewSample_RowCellClick(null, null);
                             }
                         }, row);
                         frm.ShowDialog();
@@ -3618,7 +3769,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                     Inventec.Common.Logging.LogSystem.Debug("repositoryItemcboMachineReturnResult_EditValueChanged Khong co du lieu sampleservice => " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => testLisResultADO), testLisResultADO) + "__" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sampleServices), sampleServices));
                 }
 
-                gridViewSample_RowCellClick(null, null);
+                RowClick(null, null);
             }
             catch (Exception ex)
             {
@@ -3682,7 +3833,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                     Inventec.Common.Logging.LogSystem.Debug("repositoryItemcboMachineReturnResult_EditValueChanged Khong co du lieu sampleservice => " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => testLisResultADO), testLisResultADO) + "__" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sampleServices), sampleServices));
                 }
 
-                gridViewSample_RowCellClick(null, null);
+                RowClick(null, null);
             }
             catch (Exception ex)
             {
@@ -4126,7 +4277,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                             Inventec.Common.Logging.LogSystem.Debug("repositoryItemcboMachineReturnResult_EditValueChanged Khong co du lieu sampleservice => " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => testLisResultADO), testLisResultADO) + "__" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sampleServices), sampleServices));
                         }
 
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick(null, null);
                     }
                 }
 
@@ -4528,11 +4679,11 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                     var rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/UnApprove", ApiConsumers.LisConsumer, sdo, param);
                     if (rs != null)
                     {
-                        data.SAMPLE_STT_ID = rs.SAMPLE_STT_ID;
-                        data.APPROVAL_TIME = rs.APPROVAL_TIME;
-                        data.APPROVAL_LOGINNAME = rs.APPROVAL_LOGINNAME;
-                        data.APPROVAL_USERNAME = rs.APPROVAL_USERNAME;
-                        data.IS_SAMPLE_ORDER_REQUEST = rs.IS_SAMPLE_ORDER_REQUEST;
+                        row.SAMPLE_STT_ID = rs.SAMPLE_STT_ID;
+                        row.APPROVAL_TIME = rs.APPROVAL_TIME;
+                        row.APPROVAL_LOGINNAME = rs.APPROVAL_LOGINNAME;
+                        row.APPROVAL_USERNAME = rs.APPROVAL_USERNAME;
+                        row.IS_SAMPLE_ORDER_REQUEST = rs.IS_SAMPLE_ORDER_REQUEST;
                         gridControlSample.RefreshDataSource();
                         gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle - 1;
                         gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle + 1;

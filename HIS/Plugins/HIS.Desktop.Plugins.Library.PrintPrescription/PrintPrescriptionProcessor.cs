@@ -679,6 +679,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                     var expMest = saleExpMest != null ? (saleExpMest.FirstOrDefault(o => o.PRESCRIPTION_ID == sevicereq.ID) ?? new MOS.EFMODEL.DataModels.HIS_EXP_MEST()) : new MOS.EFMODEL.DataModels.HIS_EXP_MEST();
 
                     expMest.SERVICE_REQ_ID = sevicereq.ID;
+                    expMest.TDL_SERVICE_REQ_CODE = sevicereq.SERVICE_REQ_CODE;
                     result.Add(expMest);
                 }
             }
