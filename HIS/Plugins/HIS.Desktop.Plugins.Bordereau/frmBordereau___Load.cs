@@ -546,6 +546,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                 await GetTreatmentFeeV2();
 
                 LoadDataFromTreatmentFeeV2();
+                LoadPicUpdateQR();
             }
             catch (Exception ex)
             {
@@ -1073,6 +1074,7 @@ namespace HIS.Desktop.Plugins.Bordereau
             try
             {
                 LoadDataFromTreatmentFee();
+                LoadPicUpdateQR();
             }
             catch (Exception ex)
             {
@@ -1245,6 +1247,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                                 lblTotalDepositPrice.ForeColor = Color.Red;
                             }
                         }
+
                     }));
                 }
             }
