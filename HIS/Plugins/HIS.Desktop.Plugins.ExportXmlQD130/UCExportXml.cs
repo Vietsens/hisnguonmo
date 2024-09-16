@@ -1744,14 +1744,21 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         var ekipIds = resultSS.Select(o => o.EKIP_ID ?? 0).Where(o => o != 0).Distinct().ToList();
                         if (ekipIds != null && ekipIds.Count > 0)//null sẽ có 1 id bằng 0
                         {
-                            HisEkipUserFilter ekipFilter = new HisEkipUserFilter();
-                            ekipFilter.EKIP_IDs = ekipIds;
-                            var resultEkip = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_EKIP_USER>>("api/HisEkipUser/Get", ApiConsumers.MosConsumer, ekipFilter, param);
-                            if (resultEkip != null && resultEkip.Count > 0)
+                            int skipEkip = 0;
+                            while (ekipIds.Count - skipEkip > 0)
                             {
-                                ListEkipUser.AddRange(resultEkip);
+                                var limitLong = ekipIds.Skip(skipEkip).Take(GlobalVariables.MAX_REQUEST_LENGTH_PARAM).ToList();
+                                skipEkip = skipEkip + GlobalVariables.MAX_REQUEST_LENGTH_PARAM;
+                                HisEkipUserFilter ekipFilter = new HisEkipUserFilter();
+                                ekipFilter.EKIP_IDs = limitLong;
+                                var resultEkip = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_EKIP_USER>>("api/HisEkipUser/Get", ApiConsumers.MosConsumer, ekipFilter, param);
+                                if (resultEkip != null && resultEkip.Count > 0)
+                                {
+                                    ListEkipUser.AddRange(resultEkip);
+                                }
                             }
                         }
+                       
                     }
 
                     HisBedLogViewFilter bedFilter = new HisBedLogViewFilter();

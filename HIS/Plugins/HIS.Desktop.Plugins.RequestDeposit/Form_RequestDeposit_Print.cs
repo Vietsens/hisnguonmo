@@ -45,8 +45,18 @@ namespace HIS.Desktop.Plugins.RequestDeposit
             bool result = false;
             try
             {
-                InYeuCauTamUng(printTypeCode, fileName, depositReqPrint);
-                InXacNhanTamUng(printTypeCode, fileName, depositReqPrint);
+                switch (printTypeCode)
+                {
+                    case PrintTypeCodeStore.PRINT_TYPE_CODE__BIEUMAU__XAC_NHAN_TAM_UNG__MPS000489:
+                        InXacNhanTamUng(printTypeCode, fileName, depositReqPrint);
+                        break;
+                    case PrintTypeCodeStore.PRINT_TYPE_CODE__BIEUMAU__YEU_CAU_TAM_UNG__MPS000091:
+                        InYeuCauTamUng(printTypeCode, fileName, depositReqPrint);
+                        break;
+                    default:
+                        break;
+                }
+                //InYeuCauTamUng(printTypeCode, fileName, depositReqPrint);
             }
             catch (Exception ex)
             {

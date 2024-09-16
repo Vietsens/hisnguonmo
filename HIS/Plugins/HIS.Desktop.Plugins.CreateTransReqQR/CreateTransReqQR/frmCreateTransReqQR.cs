@@ -812,6 +812,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     btnNew.Enabled = true;
                     btnCreate.Enabled = false;
                     ShowQR();
+                    SendData();
                     timerReloadTransReq.Start();
                 }
             }
@@ -1575,8 +1576,9 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     control.Location = p;
                     control.WindowState = FormWindowState.Maximized;
                     control.Show();
-                    SendData();
                 }
+
+                SendData();
             }
             catch (Exception ex)
             {
@@ -1620,7 +1622,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
-        }
+        } 
         private void SendData()
         {
 
