@@ -41,6 +41,7 @@ namespace HIS.UC.SecondaryIcd
     public class SecondaryIcdProcessor : BussinessBase
     {
         private List<HIS_ICD> HisIcds { get; set; }
+        private List<V_HIS_ICD> ViewHisIcds { get; set; }
 
         object uc;
         public SecondaryIcdProcessor()
@@ -65,6 +66,20 @@ namespace HIS.UC.SecondaryIcd
                 }
             }
         }
+        public SecondaryIcdProcessor(CommonParam paramBusiness, List<V_HIS_ICD> ViewHisIcds)
+    : base(paramBusiness)
+        {
+            if (ViewHisIcds != null && ViewHisIcds.Count > 0)
+            {
+                this.ViewHisIcds = ViewHisIcds.Where(p => p.IS_ACTIVE == 1).ToList();
+                List<V_HIS_ICD> icdIsTraditionals = (this.ViewHisIcds != null && this.ViewHisIcds.Count > 0) ? this.ViewHisIcds.Where(o => o.IS_TRADITIONAL == Constant.IS_TRUE).ToList() : null;
+                List<V_HIS_ICD> icdNotIsTraditionals = (this.ViewHisIcds != null && this.ViewHisIcds.Count > 0) ? this.ViewHisIcds.Where(o => o.IS_TRADITIONAL == null || o.IS_TRADITIONAL == Constant.IS_FALSE).ToList() : null;
+                if (icdIsTraditionals != null && icdIsTraditionals.Count > 0 && icdNotIsTraditionals != null && icdNotIsTraditionals.Count > 0)
+                {
+                    this.ViewHisIcds = icdNotIsTraditionals;
+                }
+            }
+        }
 
         public object Run(SecondaryIcdInitADO arg)
         {
@@ -74,6 +89,10 @@ namespace HIS.UC.SecondaryIcd
                 if (arg.HisIcds == null)
                 {
                     arg.HisIcds = HisIcds;
+                }
+                if (arg.ViewHisIcds == null)
+                {
+                    arg.ViewHisIcds = ViewHisIcds;
                 }
                 IRun behavior = RunFactory.MakeISecondaryIcd(param, arg);
                 uc = behavior != null ? (behavior.Run()) : null;

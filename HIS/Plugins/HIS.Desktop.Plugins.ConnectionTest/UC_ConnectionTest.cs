@@ -689,6 +689,10 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     ClickColumnItem();
                     return;
                 }
+                if(e.Column.FieldName == "IsCheck")
+                {
+                    repositoryItemChkApproveList_CheckedChanged(null,null);
+                }
                 RowClick();
             }
             catch (Exception ex)
@@ -9467,6 +9471,20 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             try
             {
                 FillDataToGridControl();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repositoryItemChkApproveList_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                rowSample = (LisSampleADO)gridViewSample.GetFocusedRow();
+                rowSample.IsCheck = !rowSample.IsCheck;
+                gridControlSample.RefreshDataSource();
             }
             catch (Exception ex)
             {

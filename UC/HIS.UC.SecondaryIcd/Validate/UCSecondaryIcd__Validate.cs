@@ -44,6 +44,7 @@ namespace HIS.UC.SecondaryIcd
                 mainRule.getIcdMain = this.GetIcdMain;
                 mainRule.ErrorType = ErrorType.Warning;
                 mainRule.listIcd = this.ListHisIcds;
+                mainRule.listViewIcd = this.ListViewHisIcds;
                 this.dxValidationProvider1.SetValidationRule(txtIcdSubCode, mainRule);
             }
             catch (Exception ex)

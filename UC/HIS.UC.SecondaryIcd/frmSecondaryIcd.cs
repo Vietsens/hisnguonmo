@@ -51,7 +51,7 @@ namespace HIS.UC.SecondaryIcd
         HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager checkIcd;
         HIS_TREATMENT treatment;
 
-        public frmSecondaryIcd(DelegateRefeshIcdChandoanphu delegateIcds, string icdCodes, string icdNames, int _limit, List<HIS_ICD> listIcd, HIS_TREATMENT hisTreatment = null)
+        public frmSecondaryIcd(DelegateRefeshIcdChandoanphu delegateIcds, string icdCodes, string icdNames, int _limit, List<V_HIS_ICD> listIcd, HIS_TREATMENT hisTreatment = null)
         {
             InitializeComponent();
             try
@@ -78,7 +78,6 @@ namespace HIS.UC.SecondaryIcd
                 txtIcdNames.Text = this.icdNames;
                 Language_secondaryDisease();
                 dataTotal = (icdAdoChecks.Count);
-                FillDataToGrid();
                 FillDataToGrid();
                 if(treatment != null)
                 {

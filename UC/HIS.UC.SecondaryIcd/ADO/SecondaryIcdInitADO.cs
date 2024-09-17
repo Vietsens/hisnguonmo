@@ -39,6 +39,7 @@ namespace HIS.UC.SecondaryIcd.ADO
         public DelegateGetIcdMain DelegateGetIcdMain { get; set; }
 
         public List<HIS_ICD> HisIcds { get; set; }
+        public List<V_HIS_ICD> ViewHisIcds { get; set; }
         public HIS_TREATMENT hisTreatment { get; set; }
     }
 }
