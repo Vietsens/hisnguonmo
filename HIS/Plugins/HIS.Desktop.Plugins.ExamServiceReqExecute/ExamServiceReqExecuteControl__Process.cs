@@ -1496,6 +1496,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 examServiceReqUpdateSDO.PartExamEyeSightGlassLeft = txtPartExamEyeSightGlassLeft.EditValue != null ? txtPartExamEyeSightGlassLeft.Text.Trim().ToString() : null;
                 examServiceReqUpdateSDO.PartEyeGlassKcdtLeft = txtPartEyeGlassKcdtLeft.EditValue != null ? txtPartEyeGlassKcdtLeft.Text.Trim().ToString() : null;
                 examServiceReqUpdateSDO.PartEyeGlassAddLeft = txtPartEyeGlassAddLeft.EditValue != null ? txtPartEyeGlassAddLeft.Text.Trim().ToString() : null;
+
+                examServiceReqUpdateSDO.TraditionalIcdCode = !string.IsNullOrEmpty(txtYHCTCode.Text.Trim()) ? txtYHCTCode.Text.Trim() : null;
+                examServiceReqUpdateSDO.TraditionalIcdName = !string.IsNullOrEmpty(cboYHCTs.Text.Trim()) ? cboYHCTs.Text.Trim() : null;
+                examServiceReqUpdateSDO.TraditionalIcdSubCode = !string.IsNullOrEmpty(txtSubYHCTCode.Text.Trim()) ? txtSubYHCTCode.Text.Trim() : null;
+                examServiceReqUpdateSDO.TraditionalIcdText = !string.IsNullOrEmpty(txtSubYHCTName.Text.Trim()) ? txtYHCTCode.Text.Trim() : null;
+
             }
             catch (Exception ex)
             {
