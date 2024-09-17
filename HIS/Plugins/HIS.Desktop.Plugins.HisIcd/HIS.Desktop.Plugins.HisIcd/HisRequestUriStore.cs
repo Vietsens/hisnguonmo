@@ -29,6 +29,7 @@ namespace HIS.Desktop.Plugins.HisIcd
         internal const string MOSHIS_ICD_DELETE = "api/HisIcd/Delete";
         internal const string MOSHIS_ICD_UPDATE = "api/HisIcd/Update";
         internal const string MOSHIS_ICD_GET = "api/HisIcd/Get";
+        internal const string MOSHIS_ICD_GETVIEW = "api/HisIcd/GetView";
         internal const string MOSHIS_ICD_CHANGELOCK = "api/HisIcd/ChangeLock";
     }
 }
