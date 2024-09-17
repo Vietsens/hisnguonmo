@@ -129,9 +129,9 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
                             return false;
                         }
                     }
-                    #endregion                    
+                    #endregion
                     #region IsSubCode
-                    if (listIcdCode.FirstOrDefault(o=>o.Equals(item.ICD_CODE)) != null)
+                    if (listIcdCode.FirstOrDefault(o => o.Equals(item.ICD_CODE)) != null)
                     {
                         if (item.IS_SUBCODE == 1)
                         {
@@ -164,10 +164,23 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
                             {
                                 frmAttachIcd frm = new frmAttachIcd(delegateRefeshIcd, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, icdList.Where(o => lstIcdCodeAttach.Exists(p => p.Equals(o.ICD_CODE))).ToList(), item.IS_SWORD == 1, this);
                                 frm.ShowDialog();
-                            }                         
+                            }
                         }
                     }
                     #endregion
+
+                    var data = icdList.Where(i => i.ICD_CODE == icd).FirstOrDefault();
+                    if (data.CHECK_SAME_ICD_GROUP == 1)
+                    {
+                        if (data.ICD_CODE == treatment.ICD_CODE && data.SUB_CODE == treatment.ICD_SUB_CODE)
+                        {
+                            List<string> lstICD = icdList.Where(i => i.ICD_GROUP_ID == data.ICD_GROUP_ID).Select(i => i.ICD_CODE) .ToList();
+                            string fruitsString = string.Join(",", lstICD);
+                            IcdCodeError = item.ICD_CODE;
+                            MessageError = String.Format("Mã bệnh {0} cùng nhóm {1} với mã bệnh {2} đã dùng trong đợt điều trị", IcdCodeError, data.ICD_GROUP_NAME, lstICD);
+                            return false;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
