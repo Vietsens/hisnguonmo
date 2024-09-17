@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,7 +34,7 @@
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="AutoMapper">
-      <HintPath>..\..\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="CARD.WCF.Client.TransactionClient">
       <HintPath>..\..\..\..\LIB\WCF\CARD.WCF\TransactionClient\4.5\CARD.WCF.Client.TransactionClient.dll</HintPath>
@@ -86,8 +87,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\HIS.Desktop.Utility\bin\Release\HIS.Desktop.Utility.dll</HintPath>
+    <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="His.EventLog">
       <HintPath>..\..\..\..\LIB\HIS\His.EventLog\His.EventLog.dll</HintPath>
@@ -112,6 +114,9 @@
     </Reference>
     <Reference Include="Inventec.Common.DateTime">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.FlexCelPrint">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.LocalStorage.SdaConfig, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -190,7 +195,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.WCF.JsonConvert">
-      <HintPath>..\..\..\TEST\HIS\x64\Integrate\POS.WCFService\Inventec.WCF.JsonConvert.dll</HintPath>
+      <HintPath>..\..\..\..\lib\WCF\Inventec.WCF\Service\.Net 4.5\Inventec.WCFService.ResultSaleService\Inventec.WCF.JsonConvert.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -209,7 +214,7 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS">
-      <HintPath>..\..\..\..\LIB\MPS\MPS.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000102.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000102.PDO.dll</HintPath>
@@ -245,10 +250,10 @@
     <Reference Include="UIAutomationProvider" />
     <Reference Include="UIAutomationTypes" />
     <Reference Include="WCF">
-      <HintPath>..\..\..\TEST\HIS\x64\Integrate\POS.WCFService\WCF.dll</HintPath>
+      <HintPath>..\..\..\..\lib\WCF\POS.WCF\WCF.dll</HintPath>
     </Reference>
     <Reference Include="WCF.Client">
-      <HintPath>..\..\..\TEST\HIS\x64\Integrate\POS.WCFService\WCF.Client.dll</HintPath>
+      <HintPath>..\..\..\..\lib\WCF\POS.WCF\WCF.Client.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -297,6 +302,7 @@
       <DependentUpon>frmDepositService.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -368,10 +374,6 @@
       <Project>{aeeca321-fd65-407a-8d70-ba5362883b87}</Project>
       <Name>HIS.Desktop.Print</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
-      <Name>HIS.Desktop.Utilities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
@@ -390,7 +392,10 @@ echo Copying files from $(ProjectDir)bin\$(Configuration) to $(SolutionDir)\$(So
 if not exist "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" mkdir "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies"
 
 xcopy "$(ProjectDir)bin\$(Configuration)\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" /i /d /y
-xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\Debug\plugins" /Y /I
+xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\Debug\Plugins\Module" /Y /I
+
+if not exist "$(ProjectDir)bin\$(Configuration)\vi" mkdir "$(ProjectDir)bin\$(Configuration)\vi"
+if not exist "$(ProjectDir)bin\$(Configuration)\en" mkdir "$(ProjectDir)bin\$(Configuration)\en"
 xcopy "$(ProjectDir)bin\$(Configuration)\vi\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\vi" /Y /I
 xcopy "$(ProjectDir)bin\$(Configuration)\en\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\en" /Y /I
 

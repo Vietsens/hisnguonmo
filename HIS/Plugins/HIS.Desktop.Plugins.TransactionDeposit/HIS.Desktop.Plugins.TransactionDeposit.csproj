@@ -31,9 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ReferencedAssemblies\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\..\..\lib\MRS\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="CARD.WCF.Client.TransactionClient">
       <HintPath>..\..\..\..\LIB\WCF\CARD.WCF\TransactionClient\4.5\CARD.WCF.Client.TransactionClient.dll</HintPath>
@@ -131,7 +130,7 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintServiceReq\MPS.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000112.PDO">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\MPS.Processor.Mps000112.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000112.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000171.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000171.PDO.dll</HintPath>
@@ -273,6 +272,10 @@
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.CreateTransReqQR\HIS.Desktop.Plugins.CreateTransReqQR.csproj">
+      <Project>{34b8d4b7-d671-484f-ab84-5a8d1d4b9b6a}</Project>
+      <Name>HIS.Desktop.Plugins.CreateTransReqQR</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.csproj">
       <Project>{0aedfd21-7195-4fdb-a3ef-035640df48f3}</Project>
       <Name>HIS.Desktop.Plugins.Library.EmrGenerate</Name>
@@ -288,7 +291,10 @@ echo Copying files from $(ProjectDir)bin\$(Configuration) to $(SolutionDir)\$(So
 if not exist "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" mkdir "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies"
 
 xcopy "$(ProjectDir)bin\$(Configuration)\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" /i /d /y
-xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\Debug\plugins" /Y /I
+xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\Debug\Plugins\Module" /Y /I
+
+if not exist "$(ProjectDir)bin\$(Configuration)\vi" mkdir "$(ProjectDir)bin\$(Configuration)\vi"
+if not exist "$(ProjectDir)bin\$(Configuration)\en" mkdir "$(ProjectDir)bin\$(Configuration)\en"
 xcopy "$(ProjectDir)bin\$(Configuration)\vi\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\vi" /Y /I
 xcopy "$(ProjectDir)bin\$(Configuration)\en\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\en" /Y /I
 
