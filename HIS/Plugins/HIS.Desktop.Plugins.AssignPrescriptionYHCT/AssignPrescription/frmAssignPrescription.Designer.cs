@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -83,9 +84,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject34 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject35 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject36 = new DevExpress.Utils.SerializableAppearanceObject();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barbtnSaveShortcut = new DevExpress.XtraBars.BarButtonItem();
             this.barbtnSaveAndPrintShortcut = new DevExpress.XtraBars.BarButtonItem();
@@ -100,13 +101,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.layoutControl6 = new DevExpress.XtraLayout.LayoutControl();
+            this.panelControlUcSubIcdYHCT = new DevExpress.XtraEditors.PanelControl();
+            this.panelControlIcdYHCT = new DevExpress.XtraEditors.PanelControl();
             this.chkYhct = new DevExpress.XtraEditors.CheckEdit();
-            this.popupControlContainerMediMaty = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerMediMaty = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControlMediMaty = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.gridViewMediMaty = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.cboNhaThuoc = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView11 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.popupControlContainerOtherPaySource = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerOtherPaySource = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControlOtherPaySource = new DevExpress.XtraGrid.GridControl();
             this.gridViewOtherPaySource = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -145,7 +148,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.lciTreatmentTypeName = new DevExpress.XtraLayout.LayoutControlItem();
             this.panelControlSubIcd = new DevExpress.XtraEditors.PanelControl();
             this.panelControlIcd = new DevExpress.XtraEditors.PanelControl();
-            this.separatorControl1 = new DevExpress.XtraEditors.SeparatorControl();
             this.rdOpionGroup = new DevExpress.XtraEditors.RadioGroup();
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
             this.txtUnitOther = new DevExpress.XtraEditors.TextEdit();
@@ -278,7 +280,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem22 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -289,14 +290,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lciExpMestReason = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidProviderBoXung = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxValidProviderBoXung__DuongDung = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.tooltipService = new DevExpress.Utils.ToolTipController();
+            this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxValidProviderBoXung = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidProviderBoXung__DuongDung = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.tooltipService = new DevExpress.Utils.ToolTipController(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).BeginInit();
             this.layoutControl6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControlUcSubIcdYHCT)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControlIcdYHCT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkYhct.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerMediMaty)).BeginInit();
             this.popupControlContainerMediMaty.SuspendLayout();
@@ -334,7 +339,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentTypeName)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlSubIcd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlIcd)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdOpionGroup.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtUnitOther.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtMedicineTypeOther.Properties)).BeginInit();
@@ -418,7 +422,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
@@ -429,6 +432,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciExpMestReason)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidProviderBoXung)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidProviderBoXung__DuongDung)).BeginInit();
             this.SuspendLayout();
@@ -573,6 +578,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             // 
             // layoutControl6
             // 
+            this.layoutControl6.Controls.Add(this.panelControlUcSubIcdYHCT);
+            this.layoutControl6.Controls.Add(this.panelControlIcdYHCT);
             this.layoutControl6.Controls.Add(this.chkYhct);
             this.layoutControl6.Controls.Add(this.popupControlContainerMediMaty);
             this.layoutControl6.Controls.Add(this.cboNhaThuoc);
@@ -589,7 +596,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.layoutControl6.Controls.Add(this.layoutControl4);
             this.layoutControl6.Controls.Add(this.panelControlSubIcd);
             this.layoutControl6.Controls.Add(this.panelControlIcd);
-            this.layoutControl6.Controls.Add(this.separatorControl1);
             this.layoutControl6.Controls.Add(this.rdOpionGroup);
             this.layoutControl6.Controls.Add(this.btnAdd);
             this.layoutControl6.Controls.Add(this.txtUnitOther);
@@ -622,6 +628,22 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.layoutControl6.Size = new System.Drawing.Size(1255, 632);
             this.layoutControl6.TabIndex = 5;
             this.layoutControl6.Text = "layoutControl6";
+            // 
+            // panelControlUcSubIcdYHCT
+            // 
+            this.panelControlUcSubIcdYHCT.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.panelControlUcSubIcdYHCT.Location = new System.Drawing.Point(324, 48);
+            this.panelControlUcSubIcdYHCT.Name = "panelControlUcSubIcdYHCT";
+            this.panelControlUcSubIcdYHCT.Size = new System.Drawing.Size(325, 24);
+            this.panelControlUcSubIcdYHCT.TabIndex = 141;
+            // 
+            // panelControlIcdYHCT
+            // 
+            this.panelControlIcdYHCT.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.panelControlIcdYHCT.Location = new System.Drawing.Point(0, 48);
+            this.panelControlIcdYHCT.Name = "panelControlIcdYHCT";
+            this.panelControlIcdYHCT.Size = new System.Drawing.Size(324, 24);
+            this.panelControlIcdYHCT.TabIndex = 140;
             // 
             // chkYhct
             // 
@@ -1135,13 +1157,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.panelControlIcd.Name = "panelControlIcd";
             this.panelControlIcd.Size = new System.Drawing.Size(606, 24);
             this.panelControlIcd.TabIndex = 2;
-            // 
-            // separatorControl1
-            // 
-            this.separatorControl1.Location = new System.Drawing.Point(2, 50);
-            this.separatorControl1.Name = "separatorControl1";
-            this.separatorControl1.Size = new System.Drawing.Size(645, 20);
-            this.separatorControl1.TabIndex = 95;
             // 
             // rdOpionGroup
             // 
@@ -2279,7 +2294,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.layoutControlItem16,
             this.layoutControlItem3,
             this.layoutControlItem4,
-            this.layoutControlItem22,
             this.layoutControlItem17,
             this.layoutControlItem12,
             this.layoutControlItem13,
@@ -2289,7 +2303,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.emptySpaceItem8,
             this.layoutControlItem18,
             this.emptySpaceItem2,
-            this.lciExpMestReason});
+            this.lciExpMestReason,
+            this.layoutControlItem19,
+            this.layoutControlItem20});
             this.layoutControlGroup5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup5.Name = "Root";
             this.layoutControlGroup5.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -2676,15 +2692,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.layoutControlItem4.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem4.TextToControlDistance = 5;
             // 
-            // layoutControlItem22
-            // 
-            this.layoutControlItem22.Control = this.separatorControl1;
-            this.layoutControlItem22.Location = new System.Drawing.Point(0, 48);
-            this.layoutControlItem22.Name = "layoutControlItem22";
-            this.layoutControlItem22.Size = new System.Drawing.Size(649, 24);
-            this.layoutControlItem22.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem22.TextVisible = false;
-            // 
             // layoutControlItem17
             // 
             this.layoutControlItem17.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -2806,6 +2813,26 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.lciExpMestReason.TextSize = new System.Drawing.Size(70, 20);
             this.lciExpMestReason.TextToControlDistance = 5;
             // 
+            // layoutControlItem19
+            // 
+            this.layoutControlItem19.Control = this.panelControlIcdYHCT;
+            this.layoutControlItem19.Location = new System.Drawing.Point(0, 48);
+            this.layoutControlItem19.Name = "layoutControlItem19";
+            this.layoutControlItem19.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlItem19.Size = new System.Drawing.Size(324, 24);
+            this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem19.TextVisible = false;
+            // 
+            // layoutControlItem20
+            // 
+            this.layoutControlItem20.Control = this.panelControlUcSubIcdYHCT;
+            this.layoutControlItem20.Location = new System.Drawing.Point(324, 48);
+            this.layoutControlItem20.Name = "layoutControlItem20";
+            this.layoutControlItem20.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlItem20.Size = new System.Drawing.Size(325, 24);
+            this.layoutControlItem20.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem20.TextVisible = false;
+            // 
             // dxValidProviderBoXung
             // 
             this.dxValidProviderBoXung.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidProviderBoXung__MedicinePage_ValidationFailed);
@@ -2846,6 +2873,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).EndInit();
             this.layoutControl6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.panelControlUcSubIcdYHCT)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControlIcdYHCT)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkYhct.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerMediMaty)).EndInit();
             this.popupControlContainerMediMaty.ResumeLayout(false);
@@ -2883,7 +2912,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentTypeName)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlSubIcd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlIcd)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdOpionGroup.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtUnitOther.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtMedicineTypeOther.Properties)).EndInit();
@@ -2967,7 +2995,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
@@ -2978,6 +3005,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciExpMestReason)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidProviderBoXung)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidProviderBoXung__DuongDung)).EndInit();
             this.ResumeLayout(false);
@@ -3097,8 +3126,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem14;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
-        private DevExpress.XtraEditors.SeparatorControl separatorControl1;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem22;
         private DevExpress.XtraEditors.LabelControl lblHeinCardNumberInfo;
         private DevExpress.XtraEditors.PanelControl panelControlSubIcd;
         private DevExpress.XtraEditors.PanelControl panelControlIcd;
@@ -3198,5 +3225,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         private RepositoryItemCustomGridLookUpEdit repositoryItemCustomGridLookUpReasion;
         private CustomGridViewWithFilterMultiColumn repositoryItemCustomGridLookUpEdit1View;
         private DevExpress.XtraGrid.Columns.GridColumn colEXP_MEST_REASON_IDUnb;
+        private DevExpress.XtraEditors.PanelControl panelControlUcSubIcdYHCT;
+        private DevExpress.XtraEditors.PanelControl panelControlIcdYHCT;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem20;
     }
 }

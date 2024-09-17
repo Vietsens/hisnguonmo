@@ -64,9 +64,13 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
         private List<MOS.EFMODEL.DataModels.HIS_ICD> listIcd;
         internal List<HIS_USER_ROOM> _UserRoom { get; set; }
         private IcdProcessor icdProcessor;
+        private IcdProcessor icdProcessorYHCT;
         private UserControl ucIcd;
+        private UserControl ucIcdYHCT;
         private SecondaryIcdProcessor subIcdProcessor;
+        private SecondaryIcdProcessor subIcdProcessorYHCT;
         private UserControl ucSecondaryIcd;
+        private UserControl ucSecondaryIcdYHCT;
         private int positionHandleControl = -1;
         private string LoggingName = "";
         internal string CheckIcdWhenSave = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<String>("HIS.Desktop.Plugins.CheckIcdWhenSave");
@@ -97,6 +101,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             VisibleLayout();
             InitUcIcd();
             InitUcSecondaryIcd();
+            InitUcIcdYhct();
+            InitUcSecondaryIcdYhct();
             FillDataCommandToControl(this.currentServiceReq);
             LoadUser();
             ValidControlInform();
@@ -198,7 +204,38 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void InitUcIcdYhct()
+        {
+            try
+            {
+                long autoCheckIcd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>("HIS.Desktop.Plugins.AutoCheckIcd");
+                icdProcessorYHCT = new HIS.UC.Icd.IcdProcessor();
+                HIS.UC.Icd.ADO.IcdInitADO ado = new HIS.UC.Icd.ADO.IcdInitADO();
+                ado.IsUCCause = false;
+                ado.DelegateNextFocus = NextForcusSubIcd;
+                //ado.DelegateRequiredCause = LoadRequiredCause;
+                ado.DelegateRefreshSubIcd = LoadSubIcd;
+                ado.LblIcdMain = "CĐ YHCT:";
+                ado.ToolTipsIcdMain = "Chẩn đoán y học cổ truyền";
+                ado.Width = 440;
+                ado.Height = 30;
+                //ado.IsColor = true;
+                ado.DataIcds = listIcd.Where(s=>s.IS_TRADITIONAL == 1 && s.IS_ACTIVE == 1).ToList();
+                ado.AutoCheckIcd = autoCheckIcd == 1 ? true : false;
+                ado.hisTreatment = currentTreatment;
+                ucIcdYHCT = (UserControl)icdProcessorYHCT.Run(ado);
 
+                if (ucIcdYHCT != null)
+                {
+                    this.panelControlCDYHCT.Controls.Add(ucIcdYHCT);
+                    ucIcdYHCT.Dock = DockStyle.Fill;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void LoadSubIcd(string icdCodes, string icdNames)
         {
             try
@@ -438,6 +475,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             try
             {
                 subIcdProcessor = new SecondaryIcdProcessor(new CommonParam(), listIcd);
+
                 HIS.UC.SecondaryIcd.ADO.SecondaryIcdInitADO ado = new UC.SecondaryIcd.ADO.SecondaryIcdInitADO();
                 ado.DelegateNextFocus = NextForcusOut;
                 ado.Width = 440;
@@ -459,7 +497,33 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void InitUcSecondaryIcdYhct()
+        {
+            try
+            {
+                subIcdProcessorYHCT = new SecondaryIcdProcessor(new CommonParam(), listIcd.Where(s=>s.IS_TRADITIONAL == 1).ToList());
+                HIS.UC.SecondaryIcd.ADO.SecondaryIcdInitADO ado = new UC.SecondaryIcd.ADO.SecondaryIcdInitADO();
+                ado.DelegateNextFocus = NextForcusOut;
+                ado.Width = 440;
+                ado.Height = 30;
+                ado.TextLblIcd = "CĐ YHCT Phụ:";
+                ado.TootiplciIcdSubCode = "Chẩn đoán y học cổ truyền phụ";
+                ado.TextNullValue = Inventec.Common.Resource.Get.Value("frmInstructionUpdate.cboSub.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                ado.limitDataSource = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;
+                ado.hisTreatment = currentTreatment;
+                ucSecondaryIcdYHCT = (UserControl)subIcdProcessorYHCT.Run(ado);
 
+                if (ucSecondaryIcdYHCT != null)
+                {
+                    this.panelControlICDSubYHCT.Controls.Add(ucSecondaryIcdYHCT);
+                    ucSecondaryIcdYHCT.Dock = DockStyle.Fill;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void SetDefaultValue()
         {
             try
@@ -625,7 +689,24 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     {
                         subIcdProcessor.Reload(ucSecondaryIcd, subIcd);
                     }
+                    //yhct
+                    IcdInputADO icdYHCT = new IcdInputADO();
+                    icdYHCT.ICD_CODE = serviceReq.TRADITIONAL_ICD_CODE;
+                    icdYHCT.ICD_NAME = serviceReq.TRADITIONAL_ICD_NAME;
 
+                    if (ucIcdYHCT != null)
+                    {
+                        icdProcessorYHCT.Reload(ucIcdYHCT, icdYHCT);
+                    }
+
+                    SecondaryIcdDataADO subIcdYHCT = new SecondaryIcdDataADO();
+                    subIcdYHCT.ICD_SUB_CODE = serviceReq.TRADITIONAL_ICD_SUB_CODE;
+                    subIcdYHCT.ICD_TEXT = serviceReq.TRADITIONAL_ICD_TEXT;
+                    if (ucSecondaryIcdYHCT != null)
+                    {
+                        subIcdProcessorYHCT.Reload(ucSecondaryIcdYHCT, subIcdYHCT);
+                    }
+                    //
                     txtLoginname.Text = serviceReq.EXECUTE_LOGINNAME;
                     cboEndServiceReq.EditValue = serviceReq.EXECUTE_LOGINNAME;
 
@@ -758,6 +839,25 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     }
                 }
 
+                //yhct
+                if (ucIcdYHCT != null)
+                {
+                    var subIcd = icdProcessorYHCT.GetValue(ucIcdYHCT);
+                    if (subIcd != null && subIcd is IcdInputADO)
+                    {
+                        currentServiceReq.TRADITIONAL_ICD_CODE = ((IcdInputADO)subIcd).ICD_CODE;
+                        currentServiceReq.TRADITIONAL_ICD_NAME = ((IcdInputADO)subIcd).ICD_NAME;
+                    }
+                }
+                if (ucSecondaryIcdYHCT != null)
+                {
+                    var subIcd = subIcdProcessorYHCT.GetValue(ucSecondaryIcd);
+                    if (subIcd != null && subIcd is SecondaryIcdDataADO)
+                    {
+                        currentServiceReq.TRADITIONAL_ICD_SUB_CODE = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
+                        currentServiceReq.TRADITIONAL_ICD_TEXT = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
+                    }
+                }
                 if (this.ucIcdCause != null)
                 {
                     var icdCauseValue = this.IcdCauseProcessor.GetValue(this.ucIcdCause);
@@ -855,6 +955,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     currentServiceReq.APPOINTMENT_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtAppointmentTime.DateTime);
                     currentServiceReq.APPOINTMENT_DESC = txtAppointmentDes.Text;
                 }
+                
 
             }
             catch (Exception ex)
@@ -950,7 +1051,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     }
                     var update = new HIS_SERVICE_REQ();
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE_REQ>(update, this.currentServiceReq);
-
+                    
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => update), update));
                     var serviceReqUpdate = new BackendAdapter(param)
                         .Post<HIS_SERVICE_REQ>("api/HisServiceReq/UpdateCommonInfo", ApiConsumers.MosConsumer, update, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
@@ -1970,8 +2071,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     {
                         HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
                         sdo.TreatmentId = currentTreatment.ID;
-                        var username = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && cboRequestUser.EditValue.ToString() == p.LOGINNAME).FirstOrDefault()?.LOGINNAME;
-                        sdo.Loginnames = new List<string>() { username };
+                        var username = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && cboRequestUser.EditValue.ToString() == p.LOGINNAME).FirstOrDefault();
+                        if(username != null)sdo.Loginnames = new List<string>() { username.LOGINNAME };
                         long sereTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTime.DateTime) ?? 0;
                         sdo.SereTimes = new List<long> { sereTime };
                         Inventec.Common.Logging.LogSystem.Debug("HisServiceReqCheckSereTimesSDO:" + LogUtil.TraceData("HisServiceReqCheckSereTimesSDO", sdo));

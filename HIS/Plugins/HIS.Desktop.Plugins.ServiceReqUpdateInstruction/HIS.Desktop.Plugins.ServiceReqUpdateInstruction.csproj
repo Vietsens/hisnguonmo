@@ -59,9 +59,6 @@
     <Reference Include="HIS.UC.Icd">
       <HintPath>..\..\..\..\LIB\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.SecondaryIcd">
-      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.dll</HintPath>
-    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
@@ -184,6 +181,10 @@
     <EmbeddedResource Include="Resources\Message.Lang.vi.resx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\UC\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.csproj">
+      <Project>{04b2ab94-562d-4753-a158-1aad3217408b}</Project>
+      <Name>HIS.UC.SecondaryIcd %28HIS.UC\HIS.UC.SecondaryIcd%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>

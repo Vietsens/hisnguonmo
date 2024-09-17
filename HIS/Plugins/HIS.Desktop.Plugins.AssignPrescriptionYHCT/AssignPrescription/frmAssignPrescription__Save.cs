@@ -46,6 +46,7 @@ using System.Windows.Forms;
 using HIS.Desktop.LibraryMessage;
 using HIS.UC.Icd.ADO;
 using HIS.UC.SecondaryIcd.ADO;
+using HIS.Desktop.LocalStorage.HisConfig;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 {
@@ -496,7 +497,53 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
             
         }
+        private bool CheckICDPreSave()
+        {
+            bool valid = true;
+            try
+            {
+                if (this.icdProcessor != null && this.ucIcd != null || (this.subIcdProcessor != null && this.ucSecondaryIcd != null))
+                {
+                    var icdValue = this.icdProcessor.GetValue(this.ucIcd);
+                    var icdValueSecond = this.subIcdProcessor.GetValue(this.ucSecondaryIcd);
 
+                    if (icdValue != null && icdValue is HIS.UC.Icd.ADO.IcdInputADO || (icdValueSecond != null && icdValueSecond is SecondaryIcdDataADO))
+                    {
+                        string mess = "";
+                        var mainCode = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
+                        var mainCodeSecond = ((SecondaryIcdDataADO)icdValueSecond).ICD_SUB_CODE;
+                        if (CheckICD(mainCode, mainCodeSecond, ref mess))
+                        {
+                            HIS.UC.Icd.ADO.IcdInputADO Icd = new HIS.UC.Icd.ADO.IcdInputADO();
+                            Icd.ICD_CODE = null;
+                            Icd.ICD_NAME = null;
+
+                            if (ucIcd != null)
+                            {
+                                icdProcessor.Reload(ucIcd, Icd);
+                            }
+
+                            SecondaryIcdDataADO subIcd = new SecondaryIcdDataADO();
+                            subIcd.ICD_SUB_CODE = null;
+                            subIcd.ICD_TEXT = null;
+
+                            if (ucSecondaryIcd != null)
+                            {
+                                subIcdProcessor.Reload(ucSecondaryIcd, subIcd);
+                            }
+                            valid = false;
+                            if (!string.IsNullOrEmpty(mess)) MessageBox.Show(this, mess, "Thông báo",MessageBoxButtons.OK);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return valid;
+        }
         private void ProcessSaveData(bool isSaveAndPrint)
         {
             try
@@ -515,7 +562,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 valid = this.dxValidationProviderControl.Validate() && valid;
                 valid = valid && CheckReasonRequied(); //kiểm tra bắt buộc nhập lý do xuất
                 valid = valid && CheckPayICD(); //kiểm tra đối tượng thanh toán theo chẩn đoán
-               
+                var config = HisConfigs.Get<string>("HIS.Desktop.Plugins.CheckIcdWhenSave");
+                valid = valid && (config == "2" && !CheckICDPreSave()) ? false : true ;
                 if (valid)
                 {
                     foreach (var item in this.mediMatyTypeADOs)

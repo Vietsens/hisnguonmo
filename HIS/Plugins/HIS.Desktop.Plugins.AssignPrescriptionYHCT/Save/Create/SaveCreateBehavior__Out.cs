@@ -149,6 +149,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save.Create
                 prescriptionSDO.IcdCauseCode = this.IcdCauseCode;
                 prescriptionSDO.IcdText = this.IcdText;
                 prescriptionSDO.IcdSubCode = this.IcdSubCode;
+                prescriptionSDO.TraditionalIcdCode = this.IcdCodeYHCT;
+                prescriptionSDO.TraditionalIcdName = this.IcdNameYHCT;
+                prescriptionSDO.TraditionalIcdSubCode = this.IcdSubCodeYHCT;
+                prescriptionSDO.TraditionalIcdText = this.IcdTextYHCT;
+
             }
             catch (Exception ex)
             {
@@ -216,6 +221,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save.Create
                     prescriptionSDO.TreatmentFinishSDO.IcdName = this.IcdName;
                     prescriptionSDO.TreatmentFinishSDO.IcdSubCode = this.IcdSubCode;
                     prescriptionSDO.TreatmentFinishSDO.IcdText = this.IcdText;
+                    //yhct
+                    prescriptionSDO.TreatmentFinishSDO.TraditionalIcdCode = this.IcdCodeYHCT;
+                    prescriptionSDO.TreatmentFinishSDO.TraditionalIcdName = this.IcdNameYHCT;
+                    prescriptionSDO.TreatmentFinishSDO.TraditionalIcdSubCode = this.IcdSubCodeYHCT;
+                    prescriptionSDO.TreatmentFinishSDO.TraditionalIcdText = this.IcdTextYHCT;
                     prescriptionSDO.TreatmentFinishSDO.TreatmentId = this.TreatmentId;
                     prescriptionSDO.TreatmentFinishSDO.TreatmentEndTypeId = this.TreatmentEndTypeId;
                     prescriptionSDO.TreatmentFinishSDO.AppointmentTime = this.AppointmentTime;
