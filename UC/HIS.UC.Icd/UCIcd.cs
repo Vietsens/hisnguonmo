@@ -44,6 +44,7 @@ namespace HIS.UC.Icd
 {
     public partial class UCIcd : UserControl
     {
+        //
         private IcdInitADO InitAdo { get; set; }
         private int positionHandle = -1;
         private List<HIS_ICD> dataIcds;

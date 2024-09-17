@@ -50,7 +50,7 @@ namespace HIS.UC.SecondaryIcd
         int limit = 0;
         HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager checkIcd;
         HIS_TREATMENT treatment;
-
+        //
         public frmSecondaryIcd(DelegateRefeshIcdChandoanphu delegateIcds, string icdCodes, string icdNames, int _limit, List<V_HIS_ICD> listIcd, HIS_TREATMENT hisTreatment = null)
         {
             InitializeComponent();
