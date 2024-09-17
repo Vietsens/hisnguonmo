@@ -45,6 +45,7 @@ namespace HIS.UC.SecondaryIcd
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSecondaryIcd));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
@@ -66,7 +67,7 @@ namespace HIS.UC.SecondaryIcd
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lciPaging = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.bbtnChoose = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnClose = new DevExpress.XtraBars.BarButtonItem();
@@ -74,6 +75,7 @@ namespace HIS.UC.SecondaryIcd
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtIcdCodes.Properties)).BeginInit();
@@ -184,7 +186,8 @@ namespace HIS.UC.SecondaryIcd
             this.gridViewSecondaryDisease.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumn1,
             this.grdColCode,
-            this.grdColName});
+            this.grdColName,
+            this.gridColumn2});
             this.gridViewSecondaryDisease.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
             this.gridViewSecondaryDisease.GridControl = this.gridControlSecondaryDisease;
             this.gridViewSecondaryDisease.Name = "gridViewSecondaryDisease";
@@ -210,7 +213,7 @@ namespace HIS.UC.SecondaryIcd
             this.gridColumn1.Name = "gridColumn1";
             this.gridColumn1.Visible = true;
             this.gridColumn1.VisibleIndex = 0;
-            this.gridColumn1.Width = 23;
+            this.gridColumn1.Width = 21;
             // 
             // repositoryItemCheckEdit1
             // 
@@ -227,7 +230,7 @@ namespace HIS.UC.SecondaryIcd
             this.grdColCode.OptionsColumn.ReadOnly = true;
             this.grdColCode.Visible = true;
             this.grdColCode.VisibleIndex = 1;
-            this.grdColCode.Width = 100;
+            this.grdColCode.Width = 92;
             // 
             // grdColName
             // 
@@ -238,7 +241,7 @@ namespace HIS.UC.SecondaryIcd
             this.grdColName.OptionsColumn.ReadOnly = true;
             this.grdColName.Visible = true;
             this.grdColName.VisibleIndex = 2;
-            this.grdColName.Width = 759;
+            this.grdColName.Width = 667;
             // 
             // layoutControlGroup1
             // 
@@ -405,6 +408,15 @@ namespace HIS.UC.SecondaryIcd
             this.barDockControlRight.Location = new System.Drawing.Point(894, 22);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 489);
             // 
+            // gridColumn2
+            // 
+            this.gridColumn2.Caption = "Nhóm bệnh";
+            this.gridColumn2.FieldName = "ICD_GROUP_NAME";
+            this.gridColumn2.Name = "gridColumn2";
+            this.gridColumn2.Visible = true;
+            this.gridColumn2.VisibleIndex = 3;
+            this.gridColumn2.Width = 102;
+            // 
             // frmSecondaryIcd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -474,5 +486,6 @@ namespace HIS.UC.SecondaryIcd
         private DevExpress.XtraBars.BarDockControl barDockControlBottom;
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
     }
 }

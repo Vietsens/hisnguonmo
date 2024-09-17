@@ -34,6 +34,7 @@ namespace HIS.UC.SecondaryIcd.Validate.ValidateRule
         internal DevExpress.XtraEditors.TextEdit tenBenhPhuTxt;
         private string[] icdSeparators = new string[] { ";" };
         internal List<HIS_ICD> listIcd;
+        internal List<V_HIS_ICD> listViewIcd;
         internal DelegateGetIcdMain getIcdMain;
 
         public override bool Validate(Control control, object value)
@@ -188,7 +189,18 @@ namespace HIS.UC.SecondaryIcd.Validate.ValidateRule
                     {
                         foreach (var itemCode in arrIcdExtraCodes)
                         {
-                            var icdByCode = listIcd.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.ToLower());
+                            HIS_ICD icdByCode = null;
+
+                            if (listIcd != null && listIcd.Count > 0)
+                                icdByCode = listIcd.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.Trim().ToLower());
+                            else
+                            {
+                                var ViewicdByCode = listViewIcd.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.Trim().ToLower());
+                                icdByCode = new HIS_ICD();
+                                icdByCode.ID = ViewicdByCode.ID;
+                                icdByCode.ICD_CODE = ViewicdByCode.ICD_CODE;
+                                icdByCode.ICD_NAME = ViewicdByCode.ICD_NAME;
+                            }
                             if (icdByCode != null && icdByCode.ID > 0)
                             {
                                 strIcdNames += (IcdUtil.seperator + icdByCode.ICD_NAME);
