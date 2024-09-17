@@ -33,5 +33,6 @@ namespace HIS.UC.Icd
     public delegate void DelegateControlTxtIcdCode(TextEdit icdCode);
     public delegate void DelegateRequiredCause(bool isRequired);
     public delegate void DelegateRefreshSubIcd(string icdCodes, string icdNames);
+    public delegate void DelegateCheckICD();
     
 }

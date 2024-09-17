@@ -52,6 +52,7 @@ namespace HIS.UC.Icd
         private DelegateRefeshIcd refeshIcd;
         private DelegatNextFocus nextFocus;
         private DelegateRefreshSubIcd refreshSubIcd;
+        private DelegateCheckICD checkICD;
         DevExpress.XtraGrid.Columns.GridColumn aColumnCode;
         string _TextIcdName = "";
         bool IsObligatoryTranferMediOrg = false;
@@ -81,6 +82,10 @@ namespace HIS.UC.Icd
             if (data.DelegateRefeshIcd != null)
             {
                 refeshIcd = data.DelegateRefeshIcd;
+            }
+            if(data.delegateCheckICD != null)
+            {
+                this.checkICD = data.delegateCheckICD;
             }
             if (data.DelegateRequiredCause != null)
             {
@@ -130,7 +135,6 @@ namespace HIS.UC.Icd
                 this.layoutControlItem3.AppearanceItemCaption.Font = new Font(this.lciIcdText.AppearanceItemCaption.Font.FontFamily, data.SizeText);
                 this.lciIcdText.Size = new Size(321, 40);
             }
-
             this.chkEditIcd.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_ICD__LCI_CHECK_EDIT_ICD", Resources.ResourceMessage.languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
             if (!String.IsNullOrEmpty(data.LblIcdMain))
             {
@@ -435,6 +439,11 @@ namespace HIS.UC.Icd
                             Inventec.Common.Logging.LogSystem.Debug("this.refeshIcd.execute");
                             this.refeshIcd(result.First());
                         }
+                        if(this.checkICD != null)
+                        {
+                            Inventec.Common.Logging.LogSystem.Debug("this.check icd");
+                            checkICD();
+                        }
                     }
                 }
 
@@ -477,6 +486,11 @@ namespace HIS.UC.Icd
                         this.ChangecboChanDoanTD_V2_GanICDNAME(this._TextIcdName);
                     else
                         SendKeys.Send("{TAB}");
+                    if (this.checkICD != null)
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("this.check icd");
+                        checkICD();
+                    }
                 }
 
             }

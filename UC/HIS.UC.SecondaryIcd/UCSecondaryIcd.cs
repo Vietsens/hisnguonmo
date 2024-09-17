@@ -50,6 +50,7 @@ namespace HIS.UC.SecondaryIcd
         private HIS_TREATMENT treatment;
         HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager checkIcd;
         private frmSecondaryIcd FormSecondaryIcd { get; set; }
+        DelegateCheckICD checkICD { get; set; }
 
         #region ctor
         public UCSecondaryIcd()
@@ -77,6 +78,10 @@ namespace HIS.UC.SecondaryIcd
                     }
                     this.DelegateNextFocus = data.DelegateNextFocus;
                     this.GetIcdMain = data.DelegateGetIcdMain;
+                    if(data.delegateCheckICD != null)
+                    {
+                        this.checkICD = data.delegateCheckICD;
+                    }
                     if (data != null && !String.IsNullOrEmpty(data.TextLblIcd))
                     {
                         this.lciIcdSubCode.Text = data.TextLblIcd;
@@ -395,6 +400,7 @@ namespace HIS.UC.SecondaryIcd
                         return;
                     }
                     DelegateNextFocus();
+                    checkICD();
                 }
             }
             catch (Exception ex)
@@ -413,6 +419,7 @@ namespace HIS.UC.SecondaryIcd
                     FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, limit, this.ListViewHisIcds, this.treatment);
                     WaitingManager.Hide();
                     FormSecondaryIcd.ShowDialog();
+
                 }
             }
             catch (Exception ex)
@@ -432,6 +439,7 @@ namespace HIS.UC.SecondaryIcd
                     {
                         DelegateNextFocus();
                     }
+                    checkICD();
                 }
             }
             catch (Exception ex)
@@ -466,6 +474,7 @@ namespace HIS.UC.SecondaryIcd
             {
                 txtIcdSubCode.Text = icdCode;
                 txtIcdText.Text = icdName;
+                checkICD();
             }
             catch (Exception ex)
             {
