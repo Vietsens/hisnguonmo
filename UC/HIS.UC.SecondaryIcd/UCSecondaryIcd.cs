@@ -380,7 +380,14 @@ namespace HIS.UC.SecondaryIcd
             try
             {
                 WaitingManager.Show();
-                this.FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, limit, this.ListViewHisIcds, this.treatment);
+                if (this.ListViewHisIcds != null && this.ListViewHisIcds.Count > 0)
+                {
+                    this.FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, limit, this.ListViewHisIcds, this.treatment);
+                }
+                else
+                {
+                    this.FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, limit, this.ListHisIcds, this.treatment);
+                }
                 WaitingManager.Hide();
                 this.FormSecondaryIcd.ShowDialog();
             }
@@ -420,7 +427,14 @@ namespace HIS.UC.SecondaryIcd
                 if (e.KeyCode == Keys.F1)
                 {
                     WaitingManager.Show();
-                    FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, limit, this.ListViewHisIcds, this.treatment);
+                    if (this.ListViewHisIcds != null && this.ListViewHisIcds.Count > 0)
+                    {
+                        this.FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, limit, this.ListViewHisIcds, this.treatment);
+                    }
+                    else
+                    {
+                        this.FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, limit, this.ListHisIcds, this.treatment);
+                    }
                     WaitingManager.Hide();
                     FormSecondaryIcd.ShowDialog();
 
@@ -460,7 +474,14 @@ namespace HIS.UC.SecondaryIcd
                 if (e.KeyCode == Keys.F1)
                 {
                     WaitingManager.Show();
-                    FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, limit, this.ListViewHisIcds, this.treatment);
+                    if (this.ListViewHisIcds != null && this.ListViewHisIcds.Count > 0)
+                    {
+                        this.FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, limit, this.ListViewHisIcds, this.treatment);
+                    }
+                    else
+                    {
+                        this.FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, limit, this.ListHisIcds, this.treatment);
+                    }
                     WaitingManager.Hide();
                     FormSecondaryIcd.ShowDialog();
                 }
