@@ -186,6 +186,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Debug("3. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentMediStock.Count), currentMediStock.Count));
 
                 LoadIcdToControl(this.oldServiceReq.ICD_CODE, this.oldServiceReq.ICD_NAME);
+                LoadIcdTranditionalToControl(this.oldServiceReq.TRADITIONAL_ICD_CODE, this.oldServiceReq.TRADITIONAL_ICD_NAME);
+                LoadIcdSubTranditionalToControl(this.oldServiceReq.TRADITIONAL_ICD_SUB_CODE, this.oldServiceReq.TRADITIONAL_ICD_TEXT);
                 LoadIcdCauseToControl(this.oldServiceReq.ICD_CAUSE_CODE, this.oldServiceReq.ICD_CAUSE_NAME);
                 var icdCaus = this.currentIcds.FirstOrDefault(o => o.ICD_CODE == this.oldServiceReq.ICD_CODE);
                 if (icdCaus != null)
