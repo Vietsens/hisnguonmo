@@ -869,68 +869,79 @@ namespace HIS.Desktop.Plugins.BedHistory
 
                     List<long> bedIds = datas.Select(p => p.ID).Distinct().ToList();
 
-                    int skip = 0;
-                    while (bedIds.Count - skip > 0)
-                    {
-                        var listIds = bedIds.Skip(skip).Take(MaxReq).ToList();
-                        skip += MaxReq;
+                    //api moi
 
-                        MOS.Filter.HisBedLogFilter filter = new MOS.Filter.HisBedLogFilter();
-                        filter.BED_IDs = listIds;
-                        if (startTimeFilter != null)
+                    MOS.SDO.TakeBedsInUseSDO sdo = new TakeBedsInUseSDO();
+                    sdo.BedIds = bedIds;
+                    sdo.StartTime = startTimeFilter ?? 0;
+                    sdo.FinishTime = finishTimeFilter;
+                    CommonParam param = new CommonParam();
+                    Inventec.Common.Logging.LogSystem.Debug("Du lieu goi den api: HisBedLog/TakeBedsInUse. TakeBedsInUseSDO: " + Inventec.Common.Logging.LogUtil.TraceData("TakeBedsInUseSDO", sdo));
+                    List<HIS_BED_LOG> dataBedLogs = new BackendAdapter(param).Post<List<HIS_BED_LOG>>("/api/HisBedLog/TakeBedsInUse", ApiConsumers.MosConsumer, sdo, param);
+                    if (dataBedLogs != null && dataBedLogs.Count > 0)
+                    {
+                        foreach (var itemADO in result)
                         {
-                            //filter.START_TIME_TO = startTimeFilter;
-                            filter.FINISH_TIME_FROM__OR__NULL = startTimeFilter;
-                        }
-                        if (finishTimeFilter != null)
-                        {
-                            filter.START_TIME_TO = finishTimeFilter;
-                        }
-                        CommonParam param = new CommonParam();
-                        var dataBedLogs = new BackendAdapter(param).Get<List<HIS_BED_LOG>>("api/HisBedLog/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
-                        if (dataBedLogs != null && dataBedLogs.Count > 0)
-                        {
-                            foreach (var itemADO in result)
+                            var dataByBedLogs_onStartTime = dataBedLogs.Where(p => p.BED_ID == itemADO.ID && p.START_TIME <= startTimeFilter && (!p.FINISH_TIME.HasValue || (p.FINISH_TIME.HasValue && p.FINISH_TIME.Value >= startTimeFilter))).ToList() ?? new List<HIS_BED_LOG>();
+                            List<HIS_BED_LOG> dataByBedLogs_onFinishTime = new List<HIS_BED_LOG>();
+                            if (finishTimeFilter != null)
+                                dataByBedLogs_onFinishTime = dataBedLogs.Where(p => p.BED_ID == itemADO.ID && p.START_TIME <= finishTimeFilter && (!p.FINISH_TIME.HasValue || (p.FINISH_TIME.HasValue && p.FINISH_TIME.Value >= finishTimeFilter))).ToList() ?? new List<HIS_BED_LOG>();
+                            else
+                                dataByBedLogs_onFinishTime = dataBedLogs.Where(p => p.BED_ID == itemADO.ID && (!p.FINISH_TIME.HasValue || (p.FINISH_TIME.HasValue && p.FINISH_TIME.Value >= startTimeFilter))).ToList() ?? new List<HIS_BED_LOG>();
+                            List<HIS_BED_LOG> dataByBedLogs = new List<HIS_BED_LOG>();
+                            dataByBedLogs.AddRange(dataByBedLogs_onStartTime);
+                            dataByBedLogs.AddRange(dataByBedLogs_onFinishTime);
+                            dataByBedLogs = dataByBedLogs.Distinct().ToList();
+                            if (dataByBedLogs_onStartTime != null && dataByBedLogs_onStartTime.Count > 0)
                             {
-                                var dataByBedLogs_onStartTime = dataBedLogs.Where(p => p.BED_ID == itemADO.ID && p.START_TIME <= startTimeFilter && (!p.FINISH_TIME.HasValue || (p.FINISH_TIME.HasValue && p.FINISH_TIME.Value >= startTimeFilter))).ToList() ?? new List<HIS_BED_LOG>();
-                                List<HIS_BED_LOG> dataByBedLogs_onFinishTime = new List<HIS_BED_LOG>();
-                                if (finishTimeFilter != null)
-                                    dataByBedLogs_onFinishTime = dataBedLogs.Where(p => p.BED_ID == itemADO.ID && p.START_TIME <= finishTimeFilter && (!p.FINISH_TIME.HasValue || (p.FINISH_TIME.HasValue && p.FINISH_TIME.Value >= finishTimeFilter))).ToList() ?? new List<HIS_BED_LOG>();
-                                else
-                                    dataByBedLogs_onFinishTime = dataBedLogs.Where(p => p.BED_ID == itemADO.ID && (!p.FINISH_TIME.HasValue || (p.FINISH_TIME.HasValue && p.FINISH_TIME.Value >= startTimeFilter))).ToList() ?? new List<HIS_BED_LOG>();
-                                List<HIS_BED_LOG> dataByBedLogs = new List<HIS_BED_LOG>();
-                                dataByBedLogs.AddRange(dataByBedLogs_onStartTime);
-                                dataByBedLogs.AddRange(dataByBedLogs_onFinishTime);
-                                dataByBedLogs = dataByBedLogs.Distinct().ToList();
-                                if (dataByBedLogs_onStartTime != null && dataByBedLogs_onStartTime.Count > 0)
+                                itemADO.BedLogStartIds = dataByBedLogs_onStartTime.Select(o => o.ID).ToList();
+                            }
+                            if (dataByBedLogs_onFinishTime != null && dataByBedLogs_onFinishTime.Count > 0)
+                            {
+                                itemADO.BedLogFinishIds = dataByBedLogs_onFinishTime.Select(o => o.ID).ToList();
+                            }
+                            if (dataByBedLogs != null && dataByBedLogs.Count > 0)
+                            {
+                                if (itemADO.MAX_CAPACITY.HasValue)
                                 {
-                                    itemADO.BedLogStartIds = dataByBedLogs_onStartTime.Select(o => o.ID).ToList();
-                                }
-                                if (dataByBedLogs_onFinishTime != null && dataByBedLogs_onFinishTime.Count > 0)
-                                {
-                                    itemADO.BedLogFinishIds = dataByBedLogs_onFinishTime.Select(o => o.ID).ToList();
-                                }
-                                if (dataByBedLogs != null && dataByBedLogs.Count > 0)
-                                {
-                                    if (itemADO.MAX_CAPACITY.HasValue)
-                                    {
-                                        if (dataByBedLogs.Count >= itemADO.MAX_CAPACITY)
-                                            itemADO.IsKey = 2;
-                                        else
-                                            itemADO.IsKey = 1;
-                                    }
+                                    if (dataByBedLogs.Count >= itemADO.MAX_CAPACITY)
+                                        itemADO.IsKey = 2;
                                     else
                                         itemADO.IsKey = 1;
-                                    itemADO.BedLogAllIds = dataByBedLogs.Select(o => o.ID).ToList();
-                                    itemADO.AMOUNT = dataByBedLogs.Count;
-                                    itemADO.AMOUNT_STR = dataByBedLogs.Count + "/" + itemADO.MAX_CAPACITY;
-                                    itemADO.TREATMENT_BED_ROOM_IDs = dataByBedLogs.Select(o => o.TREATMENT_BED_ROOM_ID).ToList();
-                                    dicTreatmentBedRoom[itemADO.ID] = itemADO.TREATMENT_BED_ROOM_IDs;
                                 }
+                                else
+                                    itemADO.IsKey = 1;
+                                itemADO.BedLogAllIds = dataByBedLogs.Select(o => o.ID).ToList();
+                                itemADO.AMOUNT = dataByBedLogs.Count;
+                                itemADO.AMOUNT_STR = dataByBedLogs.Count + "/" + itemADO.MAX_CAPACITY;
+                                itemADO.TREATMENT_BED_ROOM_IDs = dataByBedLogs.Select(o => o.TREATMENT_BED_ROOM_ID).ToList();
+                                dicTreatmentBedRoom[itemADO.ID] = itemADO.TREATMENT_BED_ROOM_IDs;
                             }
-
                         }
+
                     }
+                    //api cu
+                    //int skip = 0;
+                    //while (bedIds.Count - skip > 0)
+                    //{
+                    //    var listIds = bedIds.Skip(skip).Take(MaxReq).ToList();
+                    //    skip += MaxReq;
+
+                    //    MOS.Filter.HisBedLogFilter filter = new MOS.Filter.HisBedLogFilter();
+                    //    filter.BED_IDs = listIds;
+                    //    if (startTimeFilter != null)
+                    //    {
+                    //        //filter.START_TIME_TO = startTimeFilter;
+                    //        filter.FINISH_TIME_FROM__OR__NULL = startTimeFilter;
+                    //    }
+                    //    if (finishTimeFilter != null)
+                    //    {
+                    //        filter.START_TIME_TO = finishTimeFilter;
+                    //    }
+                    //    CommonParam param = new CommonParam();
+                    //    var dataBedLogs = new BackendAdapter(param).Get<List<HIS_BED_LOG>>("api/HisBedLog/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                        
+                    //}
                 }
             }
             catch (Exception ex)
