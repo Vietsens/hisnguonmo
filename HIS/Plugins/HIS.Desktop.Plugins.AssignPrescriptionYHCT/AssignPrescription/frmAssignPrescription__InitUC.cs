@@ -493,7 +493,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         {
             try
             {
-                this.subIcdProcessor = new SecondaryIcdProcessor(new CommonParam(), BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_TRADITIONAL != 1).OrderBy(o => o.ICD_CODE).ToList());
+                var dataICD = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_TRADITIONAL != 1).OrderBy(o => o.ICD_CODE).ToList();
+                this.subIcdProcessor = new SecondaryIcdProcessor(new CommonParam(), dataICD);
                 HIS.UC.SecondaryIcd.ADO.SecondaryIcdInitADO ado = new UC.SecondaryIcd.ADO.SecondaryIcdInitADO();
                 ado.DelegateNextFocus = NextForcusOut;
                 ado.DelegateGetIcdMain = GetIcdMainCode;
@@ -552,7 +553,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         {
             try
             {
-                this.subIcdProcessorYHCT = new SecondaryIcdProcessor(new CommonParam(), BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_TRADITIONAL == 1).OrderBy(o => o.ICD_CODE).ToList());
+                var dataICD = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_TRADITIONAL == 1).OrderBy(o => o.ICD_CODE).ToList();
+                this.subIcdProcessorYHCT = new SecondaryIcdProcessor(new CommonParam(), dataICD);
                 HIS.UC.SecondaryIcd.ADO.SecondaryIcdInitADO ado = new UC.SecondaryIcd.ADO.SecondaryIcdInitADO();
                 ado.DelegateNextFocus = NextForcusOut;
                 //ado.DelegateGetIcdMain = GetIcdMainCode;
@@ -586,8 +588,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             {
                 HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager mana = new CheckIcdManager(DlgIcdSubCode, this.Histreatment);
                 
-                if (string.IsNullOrEmpty(mess) && mana.ProcessCheckIcd(icd_code, icd_sub_code, ref mess))
+                if (string.IsNullOrEmpty(mess) && !mana.ProcessCheckIcd(icd_code, icd_sub_code, ref mess))
                 {
+                    LogSystem.Debug("icd: " + icd_code + " va icd_phu: " + icd_sub_code + "co trung nhom ICD10");
                     valid = true;
                 }
             }
