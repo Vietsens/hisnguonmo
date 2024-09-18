@@ -1678,7 +1678,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     SetValueContronlDepositSuccess();
                     UpdateDictionaryNumOrderAccountBook(accountBook);
 
-                    btnQR.Enabled = true;
+                    if (rs.PAY_FORM_ID == 8) btnQR.Enabled = true;
                     loadConfig();
                     if (rs.PAY_FORM_ID == 8 && rs.IS_ACTIVE == 0) CreateQR(rs,false);
 

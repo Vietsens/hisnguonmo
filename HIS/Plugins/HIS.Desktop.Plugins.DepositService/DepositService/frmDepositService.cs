@@ -2190,7 +2190,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                         FillDataToControl(this.hisDeposit);
                         RefreshDataAfterSave();
                         EnableButton(false);
-                        btnQR.Enabled = true;
+                        if(hisDeposit.PAY_FORM_ID == 8)btnQR.Enabled = true;
                         loadConfig();
                         if (hisDeposit.PAY_FORM_ID == 8 && hisDeposit.IS_ACTIVE == 0) CreateQR(hisDeposit, false);
                         V_HIS_ACCOUNT_BOOK accountBookDefault = null;
