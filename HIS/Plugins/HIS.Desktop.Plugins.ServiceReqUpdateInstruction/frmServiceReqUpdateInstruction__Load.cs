@@ -39,6 +39,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 {
                     lciThoiGianYLenh.Enabled = true;
                     panelControlUcIcd.Enabled = true;
+                    panelControlCDYHCT.Enabled = true;
+                    panelControlICDSubYHCT.Enabled = true;
                     panelControlSubIcd.Enabled = true;
                     panelControlCauseIcd.Enabled = true;
                     btnSave.Enabled = true;
@@ -77,6 +79,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     panelControlSubIcd.Enabled = true;
                     panelControlUcIcd.Enabled = true;
                     panelControlCauseIcd.Enabled = true;
+                    panelControlCDYHCT.Enabled = true;
+                    panelControlICDSubYHCT.Enabled = true;
                     btnSave.Enabled = true;
                 }
 

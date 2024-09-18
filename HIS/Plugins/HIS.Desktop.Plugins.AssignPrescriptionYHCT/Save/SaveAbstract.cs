@@ -56,11 +56,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
         protected DateTime DtInstructionTime { get; set; }
         protected DateTime TimeSelested { get; set; }
         protected string IcdName { get; set; }
+        protected string IcdNameYHCT { get; set; }
         protected string IcdCode { get; set; }
+        protected string IcdCodeYHCT { get; set; }
         protected string IcdCauseName { get; set; }
         protected string IcdCauseCode { get; set; }
         protected string IcdText { get; set; }
+        protected string IcdTextYHCT { get; set; }
         protected string IcdSubCode { get; set; }
+        protected string IcdSubCodeYHCT { get; set; }
         protected long SoNgay { get; set; }
         protected bool IsAutoTreatmentEnd { get; set; }
         protected long EndTime { get; set; }
@@ -127,6 +131,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                     this.IcdName = ((IcdInputADO)icdValue).ICD_NAME;
                 }
             }
+            if (frmAssignPrescription.ucIcdYHCT != null)
+            {
+                var icdValue = frmAssignPrescription.icdProcessorYHCT.GetValue(frmAssignPrescription.ucIcdYHCT);
+                if (icdValue != null && icdValue is IcdInputADO)
+                {
+                    this.IcdCodeYHCT = ((IcdInputADO)icdValue).ICD_CODE;
+                    this.IcdNameYHCT = ((IcdInputADO)icdValue).ICD_NAME;
+                }
+            }
             if (frmAssignPrescription.ucIcdCause != null)
             {
                 var icdValue = frmAssignPrescription.icdCauseProcessor.GetValue(frmAssignPrescription.ucIcdCause);
@@ -145,7 +158,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                     this.IcdText = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
                 }
             }
-
+            if (frmAssignPrescription.ucSecondaryIcdYHCT != null)
+            {
+                var subIcd = frmAssignPrescription.subIcdProcessorYHCT.GetValue(frmAssignPrescription.ucSecondaryIcdYHCT);
+                if (subIcd != null && subIcd is SecondaryIcdDataADO)
+                {
+                    this.IcdSubCodeYHCT = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
+                    this.IcdTextYHCT = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
+                }
+            }
             if (frmAssignPrescription.treatmentFinishProcessor != null && frmAssignPrescription.ucTreatmentFinish != null)
             {
                 var treatDT = frmAssignPrescription.treatmentFinishProcessor.GetDataOutput(frmAssignPrescription.ucTreatmentFinish);

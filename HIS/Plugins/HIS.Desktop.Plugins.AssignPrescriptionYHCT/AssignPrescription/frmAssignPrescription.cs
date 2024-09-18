@@ -152,11 +152,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         List<MOS.EFMODEL.DataModels.V_HIS_MATERIAL_BEAN_1> listMaterialBeanForEdits = new List<V_HIS_MATERIAL_BEAN_1>();
         CommonParam paramCommon;
         internal IcdProcessor icdProcessor;
+        internal IcdProcessor icdProcessorYHCT;
         internal UserControl ucIcd;
+        internal UserControl ucIcdYHCT;
         internal IcdProcessor icdCauseProcessor;
         internal UserControl ucIcdCause;
         internal SecondaryIcdProcessor subIcdProcessor;
+        internal SecondaryIcdProcessor subIcdProcessorYHCT;
         internal UserControl ucSecondaryIcd;
+        internal UserControl ucSecondaryIcdYHCT;
         internal UCDateProcessor ucDateProcessor;
         internal UserControl ucDate;
         internal PeriousExpMestListProcessor periousExpMestListProcessor;
