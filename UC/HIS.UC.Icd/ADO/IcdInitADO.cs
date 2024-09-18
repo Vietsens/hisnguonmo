@@ -45,6 +45,7 @@ namespace HIS.UC.Icd.ADO
         public Template Template { get; set; }
         public DelegatNextFocus DelegateNextFocus { get; set; }
         public DelegateRefeshIcd DelegateRefeshIcd { get; set; }
+        public DelegateCheckICD delegateCheckICD { get; set; }
         public DelegateRefeshIcdMainText DelegateRefeshIcdMainText { get; set; }
         public DelegateRequiredCause DelegateRequiredCause { get; set; }
         public DelegateRefreshSubIcd DelegateRefreshSubIcd { get; set; }
