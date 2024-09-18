@@ -100,42 +100,46 @@ namespace HIS.UC.SecondaryIcd
                         this.limit = data.limitDataSource;
                     }
 
-                    ListHisIcds = data.HisIcds.Where(p => p.IS_ACTIVE == 1).ToList();;
-                    List<HIS_ICD> icdIsTraditionals = (ListHisIcds != null && ListHisIcds.Count > 0) ? ListHisIcds.Where(o =>  o.IS_TRADITIONAL == Constant.IS_TRUE).ToList() : null;
-                    List<HIS_ICD> icdNotIsTraditionals = (data.HisIcds != null && data.HisIcds.Count > 0) ? data.HisIcds.Where(o => o.IS_TRADITIONAL == null || o.IS_TRADITIONAL == Constant.IS_FALSE).ToList() : null;
-                    if (icdIsTraditionals != null && icdIsTraditionals.Count > 0 && icdNotIsTraditionals != null && icdNotIsTraditionals.Count > 0)
+                    if (data.HisIcds != null && data.HisIcds.Count > 0)
                     {
-                        ListHisIcds = icdNotIsTraditionals;
+                        ListHisIcds = data.HisIcds.Where(p => p.IS_ACTIVE == 1).ToList(); ;
+                        List<HIS_ICD> icdIsTraditionals = (ListHisIcds != null && ListHisIcds.Count > 0) ? ListHisIcds.Where(o => o.IS_TRADITIONAL == Constant.IS_TRUE).ToList() : null;
+                        List<HIS_ICD> icdNotIsTraditionals = (data.HisIcds != null && data.HisIcds.Count > 0) ? data.HisIcds.Where(o => o.IS_TRADITIONAL == null || o.IS_TRADITIONAL == Constant.IS_FALSE).ToList() : null;
+                        if (icdIsTraditionals != null && icdIsTraditionals.Count > 0 && icdNotIsTraditionals != null && icdNotIsTraditionals.Count > 0)
+                        {
+                            ListHisIcds = icdNotIsTraditionals;
+                        }
+                        if (icdIsTraditionals != null && icdIsTraditionals.Count > 0 && icdIsTraditionals.Count == ListHisIcds.Count)
+                        {
+                            ListHisIcds = icdIsTraditionals;
+                        }
+                        if (icdNotIsTraditionals != null && icdNotIsTraditionals.Count > 0 && icdNotIsTraditionals.Count == ListHisIcds.Count)
+                        {
+                            ListHisIcds = icdNotIsTraditionals;
+                        }
                     }
-                    if (icdIsTraditionals != null && icdIsTraditionals.Count > 0 && icdIsTraditionals.Count == ListHisIcds.Count)
+                    if (data.ViewHisIcds != null && data.ViewHisIcds.Count > 0)
                     {
-                        ListHisIcds = icdIsTraditionals;
-                    }
-                    if (icdNotIsTraditionals != null && icdNotIsTraditionals.Count > 0 && icdNotIsTraditionals.Count == ListHisIcds.Count)
-                    {
-                        ListHisIcds = icdNotIsTraditionals;
-                    }
-
-
-                    ListViewHisIcds = data.ViewHisIcds.Where(p => p.IS_ACTIVE == 1).ToList(); ;
-                    List<V_HIS_ICD> icdIsTraditionalsV = (ListViewHisIcds != null && ListViewHisIcds.Count > 0) ? ListViewHisIcds.Where(o => o.IS_TRADITIONAL == Constant.IS_TRUE).ToList() : null;
-                    List<V_HIS_ICD> icdNotIsTraditionalsV = (data.ViewHisIcds != null && data.ViewHisIcds.Count > 0) ? data.ViewHisIcds.Where(o => o.IS_TRADITIONAL == null || o.IS_TRADITIONAL == Constant.IS_FALSE).ToList() : null;
-                    if (icdIsTraditionalsV != null && icdIsTraditionalsV.Count > 0 && icdNotIsTraditionalsV != null && icdNotIsTraditionalsV.Count > 0)
-                    {
-                        ListViewHisIcds = icdNotIsTraditionalsV;
-                    }
-                    if (icdIsTraditionalsV != null && icdIsTraditionalsV.Count > 0 && icdIsTraditionalsV.Count == ListViewHisIcds.Count)
-                    {
-                        ListViewHisIcds = icdIsTraditionalsV;
-                    }
-                    if (icdNotIsTraditionalsV != null && icdNotIsTraditionalsV.Count > 0 && icdNotIsTraditionalsV.Count == ListViewHisIcds.Count)
-                    {
-                        ListViewHisIcds = icdNotIsTraditionalsV;
-                    }
-                    if (data.hisTreatment != null)
-                    {
-                        treatment = data.hisTreatment;
-                        checkIcd = new CheckIcdManager(null, treatment);
+                        ListViewHisIcds = data.ViewHisIcds.Where(p => p.IS_ACTIVE == 1).ToList(); ;
+                        List<V_HIS_ICD> icdIsTraditionalsV = (ListViewHisIcds != null && ListViewHisIcds.Count > 0) ? ListViewHisIcds.Where(o => o.IS_TRADITIONAL == Constant.IS_TRUE).ToList() : null;
+                        List<V_HIS_ICD> icdNotIsTraditionalsV = (data.ViewHisIcds != null && data.ViewHisIcds.Count > 0) ? data.ViewHisIcds.Where(o => o.IS_TRADITIONAL == null || o.IS_TRADITIONAL == Constant.IS_FALSE).ToList() : null;
+                        if (icdIsTraditionalsV != null && icdIsTraditionalsV.Count > 0 && icdNotIsTraditionalsV != null && icdNotIsTraditionalsV.Count > 0)
+                        {
+                            ListViewHisIcds = icdNotIsTraditionalsV;
+                        }
+                        if (icdIsTraditionalsV != null && icdIsTraditionalsV.Count > 0 && icdIsTraditionalsV.Count == ListViewHisIcds.Count)
+                        {
+                            ListViewHisIcds = icdIsTraditionalsV;
+                        }
+                        if (icdNotIsTraditionalsV != null && icdNotIsTraditionalsV.Count > 0 && icdNotIsTraditionalsV.Count == ListViewHisIcds.Count)
+                        {
+                            ListViewHisIcds = icdNotIsTraditionalsV;
+                        }
+                        if (data.hisTreatment != null)
+                        {
+                            treatment = data.hisTreatment;
+                            checkIcd = new CheckIcdManager(null, treatment);
+                        }
                     }
                 }
             }

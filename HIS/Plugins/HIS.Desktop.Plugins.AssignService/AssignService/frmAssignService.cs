@@ -74,6 +74,8 @@ using HIS.Desktop.LocalStorage.ConfigSystem;
 using System.Reflection;
 using Inventec.Desktop.Common.Modules;
 using DevExpress.XtraBars;
+using HIS.UC.Icd;
+using HIS.UC.Icd.ADO;
 
 namespace HIS.Desktop.Plugins.AssignService.AssignService
 {
@@ -262,6 +264,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         List<long> serviceTypeIdRequired { get; set; }
         frmSettingAssignOld sAssignOld { get; set; }
         int indexServiceType = 0;
+
+        internal IcdProcessor icdYhctProcessor;
+        internal UserControl ucIcdYhct;
+        internal SecondaryIcdProcessor subIcdYhctProcessor;
+        internal UserControl ucSecondaryIcdYhct;
         #endregion
 
         #region Construct
@@ -333,6 +340,129 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         #endregion
 
         #region Private method
+
+        private void InitUcIcdYhct()
+        {
+            try
+            {
+                icdYhctProcessor = new HIS.UC.Icd.IcdProcessor();
+                HIS.UC.Icd.ADO.IcdInitADO ado = new HIS.UC.Icd.ADO.IcdInitADO();
+                ado.DelegateNextFocus = NextForcusOutYhct;
+                ado.IsUCCause = false;
+                ado.Width = 440;
+                ado.LabelTextSize = 90;
+                ado.Height = 24;
+                ado.Template = Template.NoFocus;
+                ado.DataIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_TRADITIONAL == 1).ToList();
+                ado.AutoCheckIcd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<String>("HIS.Desktop.Plugins.AutoCheckIcd") == "1";
+                ado.LblIcdMain = "CĐ YHCT:";
+                ado.ToolTipsIcdMain = "Chẩn đoán y học cổ truyền";
+                ucIcdYhct = (UserControl)icdYhctProcessor.Run(ado);
+
+                if (ucIcdYhct != null)
+                {
+                    this.pnIcdTranditional.Controls.Add(ucIcdYhct);
+                    ucIcdYhct.Dock = DockStyle.Fill;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void NextForcusOutYhct()
+        {
+            try
+            {
+                if (subIcdYhctProcessor != null && ucSecondaryIcdYhct != null && ucSecondaryIcdYhct.Visible == true)
+                {
+                    ModuleControlProcess controlProcess = new ModuleControlProcess(true);
+                    ModuleControls = controlProcess.GetControls(ucSecondaryIcdYhct);
+                    int count = 0;
+                    foreach (var itemCtrl in ModuleControls)
+                    {
+                        if (itemCtrl.ControlName == "txtIcdSubCode")
+                        {
+                            if (itemCtrl.IsVisible)
+                            {
+                                count = count + 1;
+                            }
+                        }
+                        else if (itemCtrl.ControlName == "txtIcdText")
+                        {
+                            if (itemCtrl.IsVisible)
+                            {
+                                count = count + 1;
+                            }
+                        }
+                    }
+
+                    if (count > 0)
+                    {
+                        subIcdYhctProcessor.FocusControl(ucSecondaryIcdYhct);
+                    }
+                }
+                else
+                {
+                    SendKeys.Send("{TAB}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void InitUcSecondaryIcdYhct()
+        {
+            try
+            {
+                var icdYhct = BackendDataWorker.Get<V_HIS_ICD>().Where(o => o.IS_TRADITIONAL == 1).ToList();
+                subIcdYhctProcessor = new SecondaryIcdProcessor(new CommonParam(), icdYhct);
+                HIS.UC.SecondaryIcd.ADO.SecondaryIcdInitADO ado = new UC.SecondaryIcd.ADO.SecondaryIcdInitADO();
+                ado.DelegateGetIcdMain = GetIcdMainCodeYhct;
+                ado.Width = 440;
+                ado.TextSize = 80;
+                ado.Height = 24;
+                ado.TextLblIcd = "CĐ YHCT phụ:";
+                ado.TootiplciIcdSubCode = "Chẩn đoán y học cổ truyền phụ";
+                ado.TextNullValue = "Nhấn F1 để chọn bệnh";
+                ado.ViewHisIcds = icdYhct;
+                ado.limitDataSource = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;
+                ucSecondaryIcdYhct = (UserControl)subIcdYhctProcessor.Run(ado);
+
+                if (ucSecondaryIcdYhct != null)
+                {
+                    this.pnSubIcdTranditional.Controls.Add(ucSecondaryIcdYhct);
+                    ucSecondaryIcdYhct.Dock = DockStyle.Fill;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private string GetIcdMainCodeYhct()
+        {
+            string mainCode = "";
+            try
+            {
+                if (this.icdYhctProcessor != null && this.ucIcdYhct != null)
+                {
+                    var icdValue = this.icdYhctProcessor.GetValue(this.ucIcdYhct, Template.NoFocus);
+                    if (icdValue != null && icdValue is UC.Icd.ADO.IcdInputADO)
+                    {
+                        mainCode = ((UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return mainCode;
+        }
+
+
         bool isCheckAssignServiceSimultaneityOption = false;
         bool isCallingApi = false;
         private void CheckAssignServiceSimultaneityOption()
@@ -898,6 +1028,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 //BackendDataWorker.Reset<MOS.EFMODEL.DataModels.HIS_EXECUTE_ROOM>();
                 //BackendDataWorker.Reset<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM>();
                 this.allDataExecuteRooms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                InitUcIcdYhct();
+                InitUcSecondaryIcdYhct();
                 GetLCounter1Async();
                 TimerGetDataGetLCounter1(); // 5 phút
                 this.SetDefaultData(true);
@@ -5378,7 +5510,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 serviceReqSDO.IcdCauseName = item.ICD_CAUSE_NAME;
                                 serviceReqSDO.IcdSubCode = item.ICD_SUB_CODE;
                                 serviceReqSDO.IcdText = item.ICD_TEXT;
-
                                 currentHisPatientTypeAlter.PATIENT_TYPE_ID = item.TDL_PATIENT_TYPE_ID ?? 0;
                                 currentHisPatientTypeAlter.TREATMENT_TYPE_ID = item.TDL_TREATMENT_TYPE_ID ?? 0;
                                 if (this.ServiceAttachForServicePrimary(ref serviceReqSDO, this.currentHisPatientTypeAlter.PATIENT_TYPE_ID))
@@ -6003,7 +6134,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             try
             {
                 WaitingManager.Show();
-                frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, this.currentIcds.Where(o => o.IS_TRADITIONAL != 1).ToList(), currentTreatment);
+                frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, BackendDataWorker.Get<V_HIS_ICD>().Where(o => o.IS_TRADITIONAL != 1 && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), currentTreatment);
                 WaitingManager.Hide();
                 FormSecondaryIcd.ShowDialog();
             }
@@ -6083,7 +6214,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (e.KeyCode == Keys.F1)
                 {
                     WaitingManager.Show();
-                    frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, this.currentIcds.Where(o => o.IS_TRADITIONAL != 1).ToList(), currentTreatment);
+                    frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, BackendDataWorker.Get<V_HIS_ICD>().Where(o => o.IS_TRADITIONAL != 1 && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), currentTreatment);
                     WaitingManager.Hide();
                     FormSecondaryIcd.ShowDialog();
                 }
@@ -6163,7 +6294,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 {
 
                     WaitingManager.Show();
-                    frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, this.currentIcds.Where(o => o.IS_TRADITIONAL != 1).ToList(), currentTreatment);
+                    frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, BackendDataWorker.Get<V_HIS_ICD>().Where(o => o.IS_TRADITIONAL != 1 && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), currentTreatment);
                     WaitingManager.Hide();
                     FormSecondaryIcd.ShowDialog();
                 }

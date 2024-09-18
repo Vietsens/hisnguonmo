@@ -177,6 +177,10 @@ namespace HIS.Desktop.Plugins.TransactionList
                         return;
                     }
                 }
+                if(transactionBill.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE && (MessageBox.Show("Giao dịch đang tạm khóa bạn có muốn tiếp tục", Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No))
+                {
+                    return;
+                }
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
                 bool success = this.XuatHoaDonDienTu(transactionBill, false, ref param);

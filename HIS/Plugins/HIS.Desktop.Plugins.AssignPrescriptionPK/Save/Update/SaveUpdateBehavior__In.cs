@@ -139,6 +139,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save.Update
                 prescriptionSDO.IcdCauseCode = this.IcdCauseCode;
                 prescriptionSDO.IcdText = this.IcdText;
                 prescriptionSDO.IcdSubCode = this.IcdSubCode;
+                prescriptionSDO.TraditionalIcdCode = this.IcdTranditionalCode;
+                prescriptionSDO.TraditionalIcdName = this.IcdTranditionalName;
+                prescriptionSDO.TraditionalIcdSubCode = this.IcdTranditionalSubCode;
+                prescriptionSDO.TraditionalIcdText = this.IcdTranditionalText;
             }
             catch (Exception ex)
             {

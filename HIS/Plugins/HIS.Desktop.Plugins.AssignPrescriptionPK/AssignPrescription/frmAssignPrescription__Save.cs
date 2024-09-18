@@ -431,6 +431,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 //this.mediMatyTypeADOs = this.gridViewServiceProcess.DataSource as List<MediMatyTypeADO>;
                 valid = this.dxValidationProviderControl.Validate() && valid;
+                if (ucIcdYhct != null)
+                    valid = valid && icdYhctProcessor.ValidationIcd(ucIcdYhct);
+                if(ucSecondaryIcdYhct != null)
+                    valid = valid && subIcdYhctProcessor.GetValidate(ucSecondaryIcdYhct);
                 Inventec.Common.Logging.LogSystem.Info("frmAssignPrescription.ProcessSaveData.2");
                 bool isHasUcTreatmentFinish = ((!GlobalStore.IsTreatmentIn) && this.treatmentFinishProcessor != null && this.ucTreatmentFinish != null);
                 var treatUC = isHasUcTreatmentFinish ? treatmentFinishProcessor.GetDataOutput(this.ucTreatmentFinish) : null;

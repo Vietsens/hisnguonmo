@@ -58,6 +58,7 @@ using DevExpress.XtraEditors;
 using HIS.Desktop.Utilities.Extensions;
 using Inventec.Desktop.Common.LanguageManager;
 using MOS.SDO;
+using HIS.Desktop.ADO;
 
 namespace HIS.Desktop.Plugins.TransactionList
 {
@@ -186,6 +187,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             {
                 WaitingManager.Show();
                 HisConfigCFG.LoadConfig();
+                CheckEnableBtnQR();
                 LoadAcsControls();
                 LoadDataCboFilterType();
                 LoadKeyFrmLanguage();
@@ -1441,6 +1443,10 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 e.RepositoryItem = repositoryItemUnrejectCancellationDis;
                             }
 
+                        }else  if(e.Column.FieldName == "QR")
+                        {
+                            if (listConfig != null && listConfig.Count > 0 && data.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                                e.RepositoryItem = repQr;
                         }
                     }
                 }
@@ -1451,6 +1457,18 @@ namespace HIS.Desktop.Plugins.TransactionList
             }
         }
 
+        List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
+        private void CheckEnableBtnQR()
+        {
+            try
+            {
+                listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
         private void gridViewTransaction_RowCellStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowCellStyleEventArgs e)
         {
             try
@@ -2338,6 +2356,11 @@ namespace HIS.Desktop.Plugins.TransactionList
                         {
                             listTransaction.Add(row);
                         }
+                    }
+                    var tranLock = listTransaction.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE).ToList();
+                    if (tranLock != null && tranLock.Count > 0 && (MessageBox.Show(string.Format("Các giao dịch {0} đang tạm khóa bạn có muốn tiếp tục?", tranLock.Select(o=>o.TRANSACTION_CODE).ToList()), Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No))
+                    {
+                        return;
                     }
                     if (listTransaction.All(o => o.TRANSACTION_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT))
                     {
@@ -3269,6 +3292,87 @@ namespace HIS.Desktop.Plugins.TransactionList
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private HIS_CONFIG selectedConfig = new HIS_CONFIG();
+        private void repQr_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                this.transactionPrint = (V_HIS_TRANSACTION)gridViewTransaction.GetFocusedRow();
+                if (listConfig != null && listConfig.Count > 0)
+                {
+                    if (listConfig.Count > 1)
+                    {
+                        popupMenu1.ClearLinks();
+                        foreach (var item in listConfig)
+                        {
+                            string key = "";
+                            string value = item.KEY;
+                            int index = value.IndexOf("Info");
+                            if (index > 0)
+                            {
+                                var shotkey = value.Substring(0, index);
+                                string[] parts = shotkey.Split('.');
+                                if (parts.Length > 0)
+                                {
+                                    key = parts[parts.Length - 1];
+                                }
+                            }
+                            else
+                            {
+                                key = item.KEY;
+                            }
+
+
+                            BarButtonItem btnOption = new BarButtonItem(null, key);
+                            btnOption.ItemClick += (s, args) =>
+                            {
+
+                                selectedConfig = item;
+                                List<object> listArgs = new List<object>();
+                                TransReqQRADO adoqr = new TransReqQRADO();
+                                adoqr.TreatmentId = this.transactionPrint.TREATMENT_ID ?? 0;
+                                adoqr.TransReqId = CreateReqType.Transaction;
+                                adoqr.ConfigValue = selectedConfig;
+                                HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionPrint);
+                                adoqr.Transaction = tran;
+                                listArgs.Add(adoqr);
+                                LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
+
+                                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+                            };
+                            popupMenu1.AddItem(btnOption);
+                        }
+                        popupMenu1.ShowPopup(Cursor.Position);
+                    }
+                    else
+                    { 
+                        selectedConfig = listConfig[0];
+                        List<object> listArgs = new List<object>();
+                        TransReqQRADO adoqr = new TransReqQRADO();
+                        adoqr.TreatmentId = this.transactionPrint.TREATMENT_ID ?? 0;
+                        adoqr.TransReqId = CreateReqType.Transaction;
+                        adoqr.ConfigValue = selectedConfig;
+                        HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionPrint);
+                        adoqr.Transaction = tran;
+                        listArgs.Add(adoqr);
+                        LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
+                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
     }
 }

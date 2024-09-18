@@ -48,11 +48,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 this.isAutoCheckIcd = (HisConfigCFG.AutoCheckIcd == GlobalVariables.CommonStringTrue);
                 this.currentIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_TRADITIONAL != 1).OrderBy(o => o.ICD_CODE).ToList();
+                this.currentTranditionalIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_TRADITIONAL == 1).OrderBy(o => o.ICD_CODE).ToList();
                 VisibleLayoutSubIcd(HisConfigCFG.OptionSubIcdWhenFinish == "3");
                 UCIcdInit();
                 UCIcdCauseInit();
                 UcDateInit();
-
+                InitUcIcdYhct();
+                InitUcSecondaryIcdYhct();
                 if (HisConfigCFG.IsUsingServiceTime
                     && !GlobalStore.IsTreatmentIn
                     && !GlobalStore.IsExecutePTTT)

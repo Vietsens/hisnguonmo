@@ -49,6 +49,8 @@ using System.Windows.Forms;
 using HIS.Desktop.IsAdmin;
 using DevExpress.XtraPrinting.Native;
 using HIS.Desktop.Controls.Session;
+using HIS.UC.Icd.ADO;
+using HIS.UC.SecondaryIcd.ADO;
 
 namespace HIS.Desktop.Plugins.AssignService.AssignService
 {
@@ -3617,7 +3619,43 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        private void LoadIcdTranditionalToControl(string icdCode, string icdName)
+        {
+            try
+            {
+                if (icdYhctProcessor != null)
+                {
+                    UC.Icd.ADO.IcdInputADO icdYhct = new UC.Icd.ADO.IcdInputADO();
+                    icdYhct.ICD_CODE = icdCode;
+                    icdYhct.ICD_NAME = icdName;
+                    if (ucIcdYhct != null)
+                    {
+                        this.icdYhctProcessor.Reload(ucIcdYhct, icdYhct, Template.NoFocus);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void LoadIcdSubTranditionalToControl(string icdCode, string icdName)
+        {
+            try
+            {
+                SecondaryIcdDataADO subYhctIcd = new SecondaryIcdDataADO();
+                subYhctIcd.ICD_SUB_CODE = icdCode;
+                subYhctIcd.ICD_TEXT = icdName;
+                if (ucSecondaryIcdYhct != null)
+                {
+                    subIcdYhctProcessor.Reload(ucSecondaryIcdYhct, subYhctIcd);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         /// <summary>
         /// Lay Chan doan mac dinh: Lay chan doan cuoi cung trong cac xu ly dich vu Kham benh
         /// </summary>
@@ -3628,6 +3666,23 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             {
                 this.isNotProcessWhileChangedTextSubIcd = true;
                 Inventec.Common.Logging.LogSystem.Debug("LoadIcdDefault. 1");
+                if (tracking != null && !String.IsNullOrEmpty(tracking.TRADITIONAL_ICD_CODE) && HisConfigCFG.TrackingCreate__UpdateTreatmentIcd == "1")
+                {
+                    this.LoadIcdTranditionalToControl(tracking.TRADITIONAL_ICD_CODE, tracking.TRADITIONAL_ICD_NAME);
+                    this.LoadIcdSubTranditionalToControl(tracking.TRADITIONAL_ICD_SUB_CODE, tracking.TRADITIONAL_ICD_TEXT);
+                }
+                else if ((HisConfigCFG.IsloadIcdFromExamServiceExecute || (currentHisTreatment != null && String.IsNullOrEmpty(currentHisTreatment.TRADITIONAL_ICD_CODE))) && this.icdExam != null)
+                {
+                    this.LoadIcdTranditionalToControl(icdExam.TRADITIONAL_ICD_CODE, icdExam.TRADITIONAL_ICD_NAME);
+                    this.LoadIcdSubTranditionalToControl(icdExam.TRADITIONAL_ICD_SUB_CODE, icdExam.TRADITIONAL_ICD_TEXT);
+                }
+                else if (this.currentHisTreatment != null)
+                {
+                    this.LoadIcdTranditionalToControl(currentHisTreatment.TRADITIONAL_ICD_CODE, currentHisTreatment.TRADITIONAL_ICD_NAME);
+                    this.LoadIcdSubTranditionalToControl(currentHisTreatment.TRADITIONAL_ICD_SUB_CODE, currentHisTreatment.TRADITIONAL_ICD_TEXT);
+                }
+
+
                 if (this.tracking != null && !String.IsNullOrEmpty(this.tracking.ICD_CODE) && HisConfigCFG.TrackingCreate__UpdateTreatmentIcd == "1")
                 {
                     this.LoadIcdToControl(this.tracking.ICD_CODE, this.tracking.ICD_NAME);

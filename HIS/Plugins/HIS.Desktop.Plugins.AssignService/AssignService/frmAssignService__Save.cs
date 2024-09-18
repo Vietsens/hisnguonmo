@@ -29,6 +29,8 @@ using HIS.Desktop.Plugins.AssignService.Resources;
 using HIS.Desktop.Plugins.Library.AlertWarningFee;
 using HIS.Desktop.Print;
 using HIS.Desktop.Utilities.Extensions;
+using HIS.UC.Icd.ADO;
+using HIS.UC.SecondaryIcd.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
 using Inventec.Common.SignLibrary.DTO;
@@ -61,7 +63,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     this.gridViewServiceProcess.UpdateCurrentRow();
 
                 bool isValid = true;
-              
+
                 List<SereServADO> serviceCheckeds__Send = this.ServiceIsleafADOs.FindAll(o => o.IsChecked);
                 if (serviceTypeIdRequired != null && serviceTypeIdRequired.Count > 0)
                 {
@@ -73,6 +75,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         return;
                     }
                 }
+                if (ucSecondaryIcdYhct != null)
+                    isValid = isValid && subIcdYhctProcessor.GetValidate(ucSecondaryIcdYhct);
                 isValid = isValid && this.Valid(serviceCheckeds__Send);
                 isValid = isValid && this.CheckIcd(new List<V_HIS_TREATMENT_BED_ROOM> { new V_HIS_TREATMENT_BED_ROOM() { TREATMENT_ID = currentTreatment.ID, ICD_CODE = txtIcdCode.Text.Trim(), ICD_SUB_CODE = txtIcdSubCode.Text.Trim() } });
                 List<HIS_ICD_SERVICE> icdServicePhacDos = null;
@@ -1623,6 +1627,20 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     serviceReqSDO.IcdSubCode = subIcd.ICD_SUB_CODE;
                     serviceReqSDO.IcdText = subIcd.ICD_TEXT;
                 }
+
+
+                var icdTranditional = icdYhctProcessor.GetValue(ucIcdYhct);
+                if (icdTranditional != null && icdTranditional is IcdInputADO)
+                {
+                    serviceReqSDO.TraditionalIcdCode = ((IcdInputADO)icdTranditional).ICD_CODE;
+                    serviceReqSDO.TraditionalIcdName = ((IcdInputADO)icdTranditional).ICD_NAME;
+                }
+                var subIcdTranditional = subIcdYhctProcessor.GetValue(ucSecondaryIcdYhct);
+                if (subIcdTranditional != null && subIcdTranditional is SecondaryIcdDataADO)
+                {
+                    serviceReqSDO.TraditionalIcdSubCode = ((SecondaryIcdDataADO)subIcdTranditional).ICD_SUB_CODE;
+                    serviceReqSDO.TraditionalIcdText = ((SecondaryIcdDataADO)subIcdTranditional).ICD_TEXT;
+                }
             }
             catch (Exception ex)
             {
@@ -1829,26 +1847,26 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             var checkYCDV = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_1");
 
                             var checkQR = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_3");
-                            
+
                             if (checkHDBN != null)
                             {
-                                if(!isPrinted) InTamUng(isSaveAndShow, previewType);
+                                if (!isPrinted) InTamUng(isSaveAndShow, previewType);
                                 InPhieuHuoangDanBenhNhan(isSaveAndShow);
-                                
+
                             }
 
                             if (checkYCDV != null)
                             {
                                 if (!isPrinted) InTamUng(isSaveAndShow, previewType);
                                 InPhieuYeuCauDichVu(isSaveAndShow, previewType);
-                                
+
                             }
 
                             if (checkQR != null)
                             {
                                 if (!isPrinted) InTamUng(isSaveAndShow, previewType);
                                 InYeuCauThanhToanQR(isSaveAndPrint, isSign, isPrintPreview);
-                                
+
                             }
                         }
 
