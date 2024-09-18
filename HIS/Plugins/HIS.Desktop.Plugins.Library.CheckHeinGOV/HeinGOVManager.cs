@@ -39,6 +39,8 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
         const string GOV_API_RESULT_003 = "003";
         DelegateEnableButtonSave dlgEnableButtonSave;
         DelegateHeinEnableButtonSave dlgHeinEnableButtonSave;
+        private string hoTenCb = BHXHLoginCFG.OFFICERNAME;
+        private string cccdCb = BHXHLoginCFG.CCCDOFFICER;
         public HeinGOVManager
             (
             //Action<HeinCardData> _FillDataAfterCheckBHYT_HeinInfo,
