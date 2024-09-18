@@ -50,6 +50,24 @@ namespace HIS.UC.SecondaryIcd
         int limit = 0;
         HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager checkIcd;
         HIS_TREATMENT treatment;
+        public frmSecondaryIcd(DelegateRefeshIcdChandoanphu delegateIcds, string icdCodes, string icdNames, int _limit, List<HIS_ICD> listIcd, HIS_TREATMENT hisTreatment = null)
+        {
+            InitializeComponent();
+            try
+            {
+                this.delegateIcds = delegateIcds;
+                this.icdCodes = icdCodes;
+                this.icdNames = icdNames;
+                string[] codes = this.icdCodes.Split(IcdUtil.seperator.ToCharArray());
+                icdAdoChecks = (from m in listIcd select new IcdADO(m, codes)).ToList();
+                limit = _limit;
+                treatment = hisTreatment;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
         public frmSecondaryIcd(DelegateRefeshIcdChandoanphu delegateIcds, string icdCodes, string icdNames, int _limit, List<V_HIS_ICD> listIcd, HIS_TREATMENT hisTreatment = null)
         {
