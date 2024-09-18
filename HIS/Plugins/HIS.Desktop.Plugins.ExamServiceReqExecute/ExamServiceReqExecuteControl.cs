@@ -151,7 +151,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         const int PRESCRIPTION_TYPE_ID__THUONG = 1;
         List<HIS_ICD> currentIcds;
         HIS_ICD icdPopupSelect;
-
+        List<HIS_ICD> lstICD;
         List<HIS.Desktop.Plugins.ExamServiceReqExecute.ADO.IcdADO> icdSubcodeAdoChecks;
         HIS.Desktop.Plugins.ExamServiceReqExecute.ADO.IcdADO subIcdPopupSelect;
         bool isNotProcessWhileChangedTextSubIcd;
@@ -7977,6 +7977,160 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
 
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtYHCTCode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    LoadCDYHCT(txtYHCTCode.Text.ToUpper());
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        internal void LoadCDYHCT(string searchCode)
+        {
+            try
+            {
+                bool showCbo = true;
+                lstICD  = BackendDataWorker.Get<HIS_ICD>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && p.IS_TRADITIONAL == 1).OrderBy(o => o.ICD_CODE).ToList();
+                if (!String.IsNullOrEmpty(searchCode))
+                {
+                    
+                }
+
+                if (showCbo)
+                {
+                    cboNextTreatmentInstructions.Focus();
+                    cboNextTreatmentInstructions.ShowPopup();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboYHCTs_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    if (!cboYHCTs.Properties.Buttons[1].Visible)
+                        return;
+                    this._TextNextTreatmentInstructionName = "";
+                    cboYHCTs.EditValue = null;
+                    txtYHCTCode.Text = "";
+                    cboYHCTs.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboYHCTs_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal || e.CloseMode == PopupCloseMode.Immediate)
+                {
+                    if (cboYHCTs.EditValue != null)
+                        this.ChangecboYHCTs();
+                    else if (this.IsAcceptWordNotInData && this.IsObligatoryTranferMediOrg && !string.IsNullOrEmpty(this._TextNextTreatmentInstructionName))
+                        this.ChangecboNextTreatmentInstruction_V2_GanICDNAME(this._TextNextTreatmentInstructionName);
+                    else
+                        SendKeys.Send("{TAB}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void ChangecboYHCTs()
+        {
+            try
+            {
+                cboYHCTs.Properties.Buttons[1].Visible = true;
+                MOS.EFMODEL.DataModels.HIS_ICD icdata = lstICD.FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboYHCTs.EditValue ?? 0).ToString()));
+                if (icdata != null)
+                {
+                    txtYHCTCode.Text = icdata.ICD_CODE;
+                    chkYHCT.Checked = this.AutoCheckNextTreatmentInstruction;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboYHCTs_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Control & e.KeyCode == Keys.A)
+                {
+                    cboYHCTs.ClosePopup();
+                    cboYHCTs.SelectAll();
+                }
+                else if (e.KeyCode == Keys.Enter)
+                {
+                    cboYHCTs.ClosePopup();
+                    if (cboYHCTs.EditValue != null)
+                        this.ChangecboYHCTs();
+                }
+                else
+                    cboYHCTs.ShowPopup();
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboYHCTs_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(cboYHCTs.Text.Trim()))
+                {
+                    cboYHCTs.EditValue = null;
+                    txtYHCTCode.Text = "";
+                    chkYHCT.Checked = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtSubYHCTName_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.F1)
+                {
+                    frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, checkIcdManager);
+                    FormSecondaryIcd.ShowDialog();
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

@@ -28,6 +28,7 @@ using HIS.UC.Icd.ADO;
 using HIS.UC.PatientSelect;
 using HIS.UC.PeriousExpMestList;
 using HIS.UC.SecondaryIcd;
+using HIS.UC.SecondaryIcd.ADO;
 using HIS.UC.TreatmentFinish;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
@@ -218,6 +219,43 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 {
                     chkEditIcd.Checked = (HisConfigCFG.AutoCheckIcd != "2");
                     txtIcdMainText.Text = icdName;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void LoadIcdTranditionalToControl(string icdCode, string icdName)
+        {
+            try
+            {
+                if(icdYhctProcessor != null)
+                {
+                    UC.Icd.ADO.IcdInputADO icdYhct = new UC.Icd.ADO.IcdInputADO();
+                    icdYhct.ICD_CODE = icdCode;
+                    icdYhct.ICD_NAME = icdName;
+                    if (ucIcdYhct != null)
+                    {
+                        this.icdYhctProcessor.Reload(ucIcdYhct, icdYhct, Template.NoFocus);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void LoadIcdSubTranditionalToControl(string icdCode, string icdName)
+        {
+            try
+            {
+                SecondaryIcdDataADO subYhctIcd = new SecondaryIcdDataADO();
+                subYhctIcd.ICD_SUB_CODE = icdCode;
+                subYhctIcd.ICD_TEXT = icdName;
+                if (ucSecondaryIcdYhct != null)
+                {
+                    subIcdYhctProcessor.Reload(ucSecondaryIcdYhct, subYhctIcd);
                 }
             }
             catch (Exception ex)

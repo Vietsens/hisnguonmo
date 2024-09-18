@@ -31,6 +31,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
 {
@@ -59,6 +60,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
         protected string IcdCauseCode { get; set; }
         protected string IcdText { get; set; }
         protected string IcdSubCode { get; set; }
+        protected string IcdTranditionalName { get; set; }
+        protected string IcdTranditionalCode { get; set; }
+        protected string IcdTranditionalText { get; set; }
+        protected string IcdTranditionalSubCode { get; set; }
         protected long SoNgay { get; set; }
         protected bool IsAutoTreatmentEnd { get; set; }
         protected long EndTime { get; set; }
@@ -204,6 +209,25 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                 this.IcdSubCode = subIcd.ICD_SUB_CODE;
                 this.IcdText = subIcd.ICD_TEXT;
             }
+            if (frmAssignPrescription.ucIcdYhct != null)
+            {
+                var icdTranditional = frmAssignPrescription.icdYhctProcessor.GetValue(frmAssignPrescription.ucIcdYhct, Template.NoFocus);
+                if (icdTranditional != null && icdTranditional is IcdInputADO)
+                {
+                    this.IcdTranditionalCode = ((IcdInputADO)icdTranditional).ICD_CODE;
+                    this.IcdTranditionalName = ((IcdInputADO)icdTranditional).ICD_NAME;
+                }
+            }
+            if (frmAssignPrescription.ucSecondaryIcdYhct != null)
+            {
+                var subIcdTranditional = frmAssignPrescription.subIcdYhctProcessor.GetValue(frmAssignPrescription.ucSecondaryIcdYhct);
+                if (subIcdTranditional != null && subIcdTranditional is SecondaryIcdDataADO)
+                {
+                    this.IcdTranditionalSubCode = ((SecondaryIcdDataADO)subIcdTranditional).ICD_SUB_CODE;
+                    this.IcdTranditionalText = ((SecondaryIcdDataADO)subIcdTranditional).ICD_TEXT;
+                }
+            }
+
             if (frmAssignPrescription.chkTemporayPres.Checked)
                 this.IsTemporaryPres = 1;
             if (frmAssignPrescription.treatmentFinishProcessor != null && frmAssignPrescription.ucTreatmentFinish != null)

@@ -724,7 +724,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         this.dxErrorProviver.SetError(txtConclude, "", ErrorType.None);
                     }
                 }
-
+                Inventec.Common.Logging.LogSystem.Debug("__________dxErrorProviver");
                 //
                 var rs = TypeRequiredEmotionlessMethodOption(this.sereServ);
                 if ((rs.RequiredEmotionlessOption == 1 || rs.RequiredEmotionlessOption == 2) && rs.IsServiceTypePT && cbbEmotionlessMethod.EditValue == null)
@@ -742,70 +742,66 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     }
                 }
 
-                if (Config.HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2" &&
-                      currentHisService.ALLOW_SIMULTANEITY != 1 && SereServExt.BEGIN_TIME != null && SereServExt.END_TIME != null)
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("_________phương pháp vô cảm:", rs));
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("_________SereServExt:", SereServExt));
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("_________serviceReq:", serviceReq));
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("_________currentHisService:", currentHisService));
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("_________HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION:", HIS.Desktop.Plugins.SurgServiceReqExecute.Config.HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION));
+                if (SereServExt != null && currentHisService != null)
                 {
-                    if (HIS.Desktop.Plugins.SurgServiceReqExecute.Config.HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
+                    if (currentHisService.ALLOW_SIMULTANEITY != 1 && SereServExt.BEGIN_TIME != null && SereServExt.END_TIME != null)
                     {
-                        HisSereServCheckExecuteTimesSDO inputSDO = new HisSereServCheckExecuteTimesSDO();
-                        var Login = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();//serviceReq.EXECUTE_LOGINNAME;
-                        long beginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtStart.DateTime) ?? 0;
-                        long endTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtFinish.DateTime) ?? 0;
-                        inputSDO.ExecuteTime = new ExecuteTime
+                        if (HIS.Desktop.Plugins.SurgServiceReqExecute.Config.HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
                         {
-                            BeginTime = beginTime,
-                            EndTime = endTime
-                        };
-                        inputSDO.TreatmentId = serviceReq.TREATMENT_ID;
-                        List<string> dsLogin = new List<string> { Login };
-                        List<MOS.EFMODEL.DataModels.HIS_EKIP_USER> ekipUsers = new List<MOS.EFMODEL.DataModels.HIS_EKIP_USER>();
-                        var dataGrid = ucEkip.GetDataSource();
-                        if (dataGrid != null && dataGrid.Count() > 0)
-                            foreach (var item in dataGrid)
+                            HisSereServCheckExecuteTimesSDO inputSDO = new HisSereServCheckExecuteTimesSDO();
+                            var Login = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();//serviceReq.EXECUTE_LOGINNAME;
+                            long beginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtStart.DateTime) ?? 0;
+                            long endTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtFinish.DateTime) ?? 0;
+                            inputSDO.ExecuteTime = new ExecuteTime
                             {
-                                MOS.EFMODEL.DataModels.HIS_EKIP_USER ekipUser = new HIS_EKIP_USER();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EKIP_USER>(ekipUser, item);
-                                if (ekipUser != null && ekipUser.EXECUTE_ROLE_ID != 0)
-                                    ekipUsers.Add(ekipUser);
-                            }
-                        List<string> lstLogin = ekipUsers.Select(o => o.LOGINNAME).Distinct().ToList();
-                        //List<string> lstLogin = AcsUserADOList.Select(o => o.LOGINNAME).Distinct().ToList();
-                        List<string> lstLoginValid = new List<string>();
-                        foreach (string acc in lstLogin)
-                        {
-                            if (acc != null)
+                                BeginTime = beginTime,
+                                EndTime = endTime
+                            };
+                            inputSDO.TreatmentId = serviceReq.TREATMENT_ID;
+                            List<string> dsLogin = new List<string> { Login };
+                            List<MOS.EFMODEL.DataModels.HIS_EKIP_USER> ekipUsers = new List<MOS.EFMODEL.DataModels.HIS_EKIP_USER>();
+                            var dataGrid = ucEkip.GetDataSource();
+                            if (dataGrid != null && dataGrid.Count() > 0)
+                                foreach (var item in dataGrid)
+                                {
+                                    MOS.EFMODEL.DataModels.HIS_EKIP_USER ekipUser = new HIS_EKIP_USER();
+                                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EKIP_USER>(ekipUser, item);
+                                    if (ekipUser != null && ekipUser.EXECUTE_ROLE_ID != 0)
+                                        ekipUsers.Add(ekipUser);
+                                }
+                            List<string> lstLogin = ekipUsers.Select(o => o.LOGINNAME).Distinct().ToList();
+                            List<string> lstLoginValid = new List<string>();
+                            foreach (string acc in lstLogin)
                             {
-                                lstLoginValid.Add(acc);
+                                if (acc != null)
+                                {
+                                    lstLoginValid.Add(acc);
+                                }
                             }
-                            //else
-                            //{
-                            //    lstLoginValid.Add(Login);
-                            //}
+                            if (lstLoginValid.Count == 0)
+                            {
+                                lstLoginValid.Add(Login);
+                            }
+                            inputSDO.Loginnames = lstLoginValid;
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("_________inputSDO:", inputSDO));
+                            string message = "";
+                            CommonParam paramCheckEx = new CommonParam();
+                            bool suscess = new BackendAdapter(paramCheckEx).Post<bool>("api/HisSereServ/CheckExecuteTimes", ApiConsumers.MosConsumer, inputSDO, paramCheckEx);
+                            if (suscess == false)
+                            {
+                                message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckEx.GetMessage());
+                                if (MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                                { return false; }
+                            }
                         }
-                        if (lstLoginValid.Count == 0)
-                        {
-                            lstLoginValid.Add(Login);
-                        }   
-                        inputSDO.Loginnames = lstLoginValid;
-                        //if (lstLogin != null && lstLogin.Count() > 0)
-                        //{
-                        //    inputSDO.Loginnames = lstLogin;
-                        //}
-                        //else
-                        //{
-                        //    inputSDO.Loginnames = dsLogin;
-                        //}
-                        string message = "";
-                        CommonParam paramCheckEx = new CommonParam();
-                        bool suscess = new BackendAdapter(paramCheckEx).Post<bool>("api/HisSereServ/CheckExecuteTimes", ApiConsumers.MosConsumer, inputSDO, paramCheckEx);
-                        if (suscess == false)
-                        {
-                            message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckEx.GetMessage());
-                            if (MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) 
-                            { return false; } 
-                        } 
                     }
                 }
+                Inventec.Common.Logging.LogSystem.Debug("kết thúc api/HisSereServ/CheckExecuteTimes");
 
                 if (chkSaveGroup.Checked)
                 {

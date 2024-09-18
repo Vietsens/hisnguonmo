@@ -1,8 +1,3 @@
-### Release 2.328.0
-* Tích hợp thanh toán QR LPBank
-* Bổ sung tính năng chặn khi chỉ định DVKT, đơn thuốc cùng thời gian với thực hiện cận lâm sàng và ngược lại
-* Cho phép in phiếu yêu cầu tạm ứng, Hiển thị thêm màn hình thanh toán QR
-
 ### Release 2.327.0
 * Sắp xếp thuốc trên tờ điều trị theo quy định mới
 * Không cho phép xóa chẩn đoán

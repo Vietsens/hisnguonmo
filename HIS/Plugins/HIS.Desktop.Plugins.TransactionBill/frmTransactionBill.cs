@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraBars;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.ViewInfo;
@@ -537,6 +538,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 WaitingManager.Show();
                 timerClose.Tick += new System.EventHandler(this.timerClose_Tick);
                 timerClose.Interval = 100;
+                CheckEnableBtnQR();
                 this.InitComboBuyerOrganization();
                 HisConfigCFG.LoadConfig();
                 InitControlState();
@@ -3775,6 +3777,106 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 var accountBook = this.ListAccountBookDeposit.FirstOrDefault(o => o.ID == Convert.ToInt64(cboDepositBook.EditValue.ToString()));
                 UpdateDictionaryNumOrderAccountBook(accountBook, spnNumOrder.Value);
             }
+        }
+        V_HIS_TRANSACTION TransactionQr = null;
+        List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
+        private void CheckEnableBtnQR()
+        {
+            try
+            {
+                listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+
+                lciQr.Visibility = listConfig != null && listConfig.Count > 0 ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                btnQr.Enabled = false;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+        private HIS_CONFIG selectedConfig = new HIS_CONFIG();
+        private void btnQr_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                if (!btnQr.Enabled)
+                    return;
+                btnQr.Enabled = true;
+                if (listConfig != null && listConfig.Count > 0)
+                {
+                    if (listConfig.Count > 1)
+                    {
+                        popupMenu1.ClearLinks();
+                        foreach (var item in listConfig)
+                        {
+                            string key = "";
+                            string value = item.KEY;
+                            int index = value.IndexOf("Info");
+                            if (index > 0)
+                            {
+                                var shotkey = value.Substring(0, index);
+                                string[] parts = shotkey.Split('.');
+                                if (parts.Length > 0)
+                                {
+                                    key = parts[parts.Length - 1];
+                                }
+                            }
+                            else
+                            {
+                                key = item.KEY;
+                            }
+
+
+                            BarButtonItem btnOption = new BarButtonItem(null, key);
+                            btnOption.ItemClick += (s, args) =>
+                            {
+
+                                selectedConfig = item;
+                                List<object> listArgs = new List<object>();
+                                TransReqQRADO adoqr = new TransReqQRADO();
+                                adoqr.TreatmentId = this.treatmentId ?? 0;
+                                adoqr.TransReqId = CreateReqType.Transaction;
+                                adoqr.ConfigValue = selectedConfig;
+                                HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, TransactionQr);
+                                adoqr.Transaction = tran;
+                                listArgs.Add(adoqr);
+                                LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
+
+                                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                                 
+                            };
+                            popupMenu1.AddItem(btnOption);
+                        }
+
+                        popupMenu1.ShowPopup(Cursor.Position);
+                    }
+                    else
+                    {
+                        selectedConfig = listConfig[0];
+                        List<object> listArgs = new List<object>();
+                        TransReqQRADO adoqr = new TransReqQRADO();
+                        adoqr.TreatmentId = this.treatmentId ?? 0;
+                        adoqr.TransReqId = CreateReqType.Transaction;
+                        adoqr.ConfigValue = selectedConfig;
+                        HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, TransactionQr);
+                        adoqr.Transaction = tran;
+                        listArgs.Add(adoqr);
+                        LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
+                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
     }
 }
