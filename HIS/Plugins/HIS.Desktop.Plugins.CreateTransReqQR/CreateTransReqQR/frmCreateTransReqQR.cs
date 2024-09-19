@@ -803,7 +803,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 InitPopupMenuOther();
                 if (currentTransReq == null)
                 {
-                    XtraMessageBox.Show(string.Format("Tạo QR tạm ứng thất bại. {0}", param.GetMessage()));
+                    XtraMessageBox.Show(string.Format("Tạo QR thất bại. {0}", param.GetMessage()));
                 }
                 else
                 {
