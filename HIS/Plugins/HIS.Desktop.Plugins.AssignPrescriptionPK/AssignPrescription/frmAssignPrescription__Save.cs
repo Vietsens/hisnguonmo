@@ -35,6 +35,7 @@ using HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt;
 using HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt.Base;
 using HIS.Desktop.Plugins.Library.PrintTreatmentFinish;
 using HIS.Desktop.Utility;
+using HIS.UC.Icd.ADO;
 using HIS.UC.MenuPrint.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
@@ -432,8 +433,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 //this.mediMatyTypeADOs = this.gridViewServiceProcess.DataSource as List<MediMatyTypeADO>;
                 valid = this.dxValidationProviderControl.Validate() && valid;
                 if (ucIcdYhct != null)
-                    valid = valid && icdYhctProcessor.ValidationIcd(ucIcdYhct);
-                if(ucSecondaryIcdYhct != null)
+                    valid = valid && (bool)icdYhctProcessor.ValidationIcd(ucIcdYhct);
+                if (ucSecondaryIcdYhct != null)
                     valid = valid && subIcdYhctProcessor.GetValidate(ucSecondaryIcdYhct);
                 Inventec.Common.Logging.LogSystem.Info("frmAssignPrescription.ProcessSaveData.2");
                 bool isHasUcTreatmentFinish = ((!GlobalStore.IsTreatmentIn) && this.treatmentFinishProcessor != null && this.ucTreatmentFinish != null);

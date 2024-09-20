@@ -352,7 +352,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 ado.Width = 440;
                 ado.LabelTextSize = 90;
                 ado.Height = 24;
-                ado.Template = Template.NoFocus;
                 ado.DataIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_TRADITIONAL == 1).ToList();
                 ado.AutoCheckIcd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<String>("HIS.Desktop.Plugins.AutoCheckIcd") == "1";
                 ado.LblIcdMain = "CĐ YHCT:";
@@ -448,7 +447,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             {
                 if (this.icdYhctProcessor != null && this.ucIcdYhct != null)
                 {
-                    var icdValue = this.icdYhctProcessor.GetValue(this.ucIcdYhct, Template.NoFocus);
+                    var icdValue = this.icdYhctProcessor.GetValue(this.ucIcdYhct);
                     if (icdValue != null && icdValue is UC.Icd.ADO.IcdInputADO)
                     {
                         mainCode = ((UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;

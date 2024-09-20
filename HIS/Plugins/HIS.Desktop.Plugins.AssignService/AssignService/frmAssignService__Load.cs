@@ -3630,7 +3630,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     icdYhct.ICD_NAME = icdName;
                     if (ucIcdYhct != null)
                     {
-                        this.icdYhctProcessor.Reload(ucIcdYhct, icdYhct, Template.NoFocus);
+                        this.icdYhctProcessor.Reload(ucIcdYhct, icdYhct);
                     }
                 }
             }
