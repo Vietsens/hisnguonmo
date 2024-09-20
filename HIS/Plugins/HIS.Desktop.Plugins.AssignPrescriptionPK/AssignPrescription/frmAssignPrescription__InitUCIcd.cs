@@ -237,7 +237,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     icdYhct.ICD_NAME = icdName;
                     if (ucIcdYhct != null)
                     {
-                        this.icdYhctProcessor.Reload(ucIcdYhct, icdYhct, Template.NoFocus);
+                        this.icdYhctProcessor.Reload(ucIcdYhct, icdYhct);
                     }
                 }
             }

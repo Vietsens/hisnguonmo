@@ -208,10 +208,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
             {
                 this.IcdSubCode = subIcd.ICD_SUB_CODE;
                 this.IcdText = subIcd.ICD_TEXT;
-            }
+            } 
             if (frmAssignPrescription.ucIcdYhct != null)
             {
-                var icdTranditional = frmAssignPrescription.icdYhctProcessor.GetValue(frmAssignPrescription.ucIcdYhct, Template.NoFocus);
+                var icdTranditional = frmAssignPrescription.icdYhctProcessor.GetValue(frmAssignPrescription.ucIcdYhct);
                 if (icdTranditional != null && icdTranditional is IcdInputADO)
                 {
                     this.IcdTranditionalCode = ((IcdInputADO)icdTranditional).ICD_CODE;
