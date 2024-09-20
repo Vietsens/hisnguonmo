@@ -30,6 +30,7 @@ using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AddExamInfor;
+using HIS.Desktop.Plugins.Library.CheckIcd;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord.Base;
 using HIS.Desktop.Plugins.TrackingCreate.ADO;
 using HIS.Desktop.Plugins.TrackingCreate.Config;
@@ -246,7 +247,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                     ado.IsColor = true;
                 }
                 Rectangle activeScreenDimensions = Screen.FromControl(this).Bounds;
-
+                ado.delegateCheckICD = CheckICDCode;
                 if (activeScreenDimensions != null) ado.Width = activeScreenDimensions.Width / 2 + 5;
                 ado.Height = 24;
                 ado.DataIcds = BackendDataWorker.Get<HIS_ICD>();
@@ -283,7 +284,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 ado.DelegateNextFocus = FocusTxtIcdExtraCode;
 
                 Rectangle activeScreenDimensions = Screen.FromControl(this).Bounds;
-
+                ado.delegateCheckICD = CheckICDCodeYHCT;
                 if (activeScreenDimensions != null) ado.Width = activeScreenDimensions.Width / 2 + 5;
                 ado.Height = 24;
                 ado.DataIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_TRADITIONAL == 1).ToList();
@@ -325,6 +326,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 HIS.UC.SecondaryIcd.ADO.SecondaryIcdInitADO ado = new UC.SecondaryIcd.ADO.SecondaryIcdInitADO();
                 ado.DelegateNextFocus = NextForcusSubIcdToDo;
                 ado.DelegateGetIcdMain = GetIcdMainCodeYhct;
+                ado.delegateCheckICD = CheckICDSecondYHCT;
                 Rectangle activeScreenDimensions = Screen.FromControl(this).Bounds;
 
                 if (activeScreenDimensions != null) ado.Width = activeScreenDimensions.Width / 2 - 10;
@@ -344,6 +346,177 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void CheckICDCode()
+        {
+            try
+            {
+                if (this.icdProcessor != null && this.ucIcd != null)
+                {
+                    var icdValue = this.icdProcessor.GetValue(this.ucIcd);
+                    string messError = "";
+                    if (icdValue != null && icdValue is HIS.UC.Icd.ADO.IcdInputADO)
+                    {
+                        var mainCode = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
+                        if (CheckICD(mainCode, null, ref messError))
+                        {
+                            HIS.UC.Icd.ADO.IcdInputADO subIcd = new HIS.UC.Icd.ADO.IcdInputADO();
+                            subIcd.ICD_CODE = null;
+                            subIcd.ICD_NAME = null;
+
+                            if (ucIcd != null)
+                            {
+                                icdProcessor.Reload(ucIcd, subIcd);
+                            }
+                            if (!string.IsNullOrEmpty(messError)) MessageBox.Show(this, messError);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void CheckICDCodeYHCT()
+        {
+            try
+            {
+                if (this.icdYhctProcessor != null && this.ucIcdYhct != null)
+                {
+                    var icdValue = this.icdYhctProcessor.GetValue(this.ucIcd);
+                    string messError = "";
+                    if (icdValue != null && icdValue is HIS.UC.Icd.ADO.IcdInputADO)
+                    {
+                        var mainCode = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
+                        if (CheckICD(mainCode, null, ref messError))
+                        {
+                            HIS.UC.Icd.ADO.IcdInputADO subIcd = new HIS.UC.Icd.ADO.IcdInputADO();
+                            subIcd.ICD_CODE = null;
+                            subIcd.ICD_NAME = null;
+
+                            if (ucIcdYhct != null)
+                            {
+                                icdYhctProcessor.Reload(ucIcdYhct, subIcd);
+                            }
+                            if (!string.IsNullOrEmpty(messError)) MessageBox.Show(this, messError);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void CheckICDSecond()
+        {
+            try
+            {
+                try
+                {
+                    if (!string.IsNullOrEmpty(txtIcdExtraCode.Text))
+                    {
+                        var icdValue = txtIcdExtraCode.Text;
+                        string messError = "";
+                        if (icdValue != null )
+                        {
+                            
+                            if (CheckICD( null, txtIcdExtraCode.Text, ref messError))
+                            {
+                                txtIcdExtraCode.Text = "";
+                                if (!string.IsNullOrEmpty(messError)) MessageBox.Show(this, messError);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void CheckICDSecondYHCT()
+        {
+            try
+            {
+                try
+                {
+                    if (this.subIcdYhctProcessor != null && this.ucSecondaryIcdYhct != null)
+                    {
+                        var icdValue = this.subIcdYhctProcessor.GetValue(this.ucSecondaryIcdYhct);
+                        string messError = "";
+                        if (icdValue != null && icdValue is HIS.UC.Icd.ADO.IcdInputADO)
+                        {
+                            var mainCode = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
+                            if (CheckICD(null,mainCode, ref messError))
+                            {
+                                HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subIcd = new HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO();
+                                subIcd.ICD_SUB_CODE = null;
+                                subIcd.ICD_TEXT = null;
+
+                                if (ucSecondaryIcdYhct != null)
+                                {
+                                    subIcdYhctProcessor.Reload(ucSecondaryIcdYhct, subIcd);
+                                }
+                                if (!string.IsNullOrEmpty(messError)) MessageBox.Show(this, messError);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private bool CheckICD(string icd_code, string icd_sub_code, ref string mess)
+        {
+            bool valid = false;
+
+            try
+            {
+                HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager mana = new CheckIcdManager(DlgIcdSubCode, this._Treatment);
+
+                if (string.IsNullOrEmpty(mess) && !mana.ProcessCheckIcd(icd_code, icd_sub_code, ref mess))
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("icd: " + icd_code + " va icd_phu: " + icd_sub_code + "co trung nhom ICD10");
+                    valid = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                valid = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return valid;
+        }
+        private void DlgIcdSubCode(string icdCodes, string icdNames)
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("DlgIcdSubCode.1");
+
+                Inventec.Common.Logging.LogSystem.Debug("DlgIcdSubCode.2");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
         private void NextForcusSubIcdToDo()
@@ -2245,6 +2418,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 {
                     txtIcdExtraCode.Text = delegateIcdCodes;
                 }
+                CheckICDSecond();
             }
             catch (Exception ex)
             {

@@ -1678,7 +1678,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     SetValueContronlDepositSuccess();
                     UpdateDictionaryNumOrderAccountBook(accountBook);
 
-                    btnQR.Enabled = true;
+                    if (rs.PAY_FORM_ID == 8) btnQR.Enabled = true;
                     loadConfig();
                     if (rs.PAY_FORM_ID == 8 && rs.IS_ACTIVE == 0) CreateQR(rs,false);
 
@@ -1728,8 +1728,13 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             {
                 if (listConfig != null)
                 {
-                    if (listConfig.Count > 1 && click)
+                    if (listConfig.Count > 1)
                     {
+                        if (!click)
+                        {
+                            MessageBox.Show(this, "Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo",MessageBoxButtons.OK);
+                            return;
+                        }
                         popupMenu1.ClearLinks();
                         foreach (var item in listConfig)
                         {
@@ -1764,7 +1769,8 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                                 HIS_TRANSACTION tran = new HIS_TRANSACTION();
                                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, data);
                                 adoqr.Transaction = tran;
-                                Inventec.Common.Logging.LogSystem.Debug("Goi den module CreateTransReqQR. TreatmentID:" + adoqr.TreatmentId + " config: " + adoqr.ConfigValue + " tran_id: " + adoqr.Transaction.ID);
+                                listArgs.Add(adoqr);
+                                Inventec.Common.Logging.LogSystem.Debug("Goi den module CreateTransReqQR. TreatmentID:" + adoqr.TreatmentId + " config: " + adoqr.ConfigValue.VALUE + " tran_id: " + adoqr.Transaction.ID);
                                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
 
                             };
@@ -1773,6 +1779,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                         popupMenu1.Manager = barManager1;
                         popupMenu1.ShowPopup(Control.MousePosition);
                     }
+                    
                     else
                     {
                         selectedConfig = listConfig[0];
@@ -1785,7 +1792,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                         Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, data);
                         adoqr.Transaction = tran;
                         listArgs.Add(adoqr);
-                        Inventec.Common.Logging.LogSystem.Debug("Goi den module CreateTransReqQR. TreatmentID:" + adoqr.TreatmentId + " config: " + adoqr.ConfigValue + " tran_id: " + adoqr.Transaction.ID);
+                        Inventec.Common.Logging.LogSystem.Debug("Goi den module CreateTransReqQR. TreatmentID:" + adoqr.TreatmentId + " config: " + adoqr.ConfigValue.VALUE + " tran_id: " + adoqr.Transaction.ID);
                         HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
 
 
