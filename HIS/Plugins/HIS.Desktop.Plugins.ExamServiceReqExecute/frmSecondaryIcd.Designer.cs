@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSecondaryIcd));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
@@ -58,6 +59,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.grdColCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciGridControl = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -66,7 +68,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.bbtnChoose = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnClose = new DevExpress.XtraBars.BarButtonItem();
@@ -74,7 +76,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtIcdCodes.Properties)).BeginInit();
@@ -242,6 +243,16 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.grdColName.VisibleIndex = 2;
             this.grdColName.Width = 638;
             // 
+            // gridColumn2
+            // 
+            this.gridColumn2.Caption = "Nhóm bệnh";
+            this.gridColumn2.FieldName = "ICD_GROUP_NAME";
+            this.gridColumn2.Name = "gridColumn2";
+            this.gridColumn2.OptionsColumn.AllowEdit = false;
+            this.gridColumn2.Visible = true;
+            this.gridColumn2.VisibleIndex = 3;
+            this.gridColumn2.Width = 131;
+            // 
             // layoutControlGroup1
             // 
             this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -404,16 +415,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.barDockControlRight.Location = new System.Drawing.Point(894, 22);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 489);
             // 
-            // gridColumn2
-            // 
-            this.gridColumn2.Caption = "Nhóm bệnh";
-            this.gridColumn2.FieldName = "ICD_GROUP_NAME";
-            this.gridColumn2.Name = "gridColumn2";
-            this.gridColumn2.OptionsColumn.AllowEdit = false;
-            this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 3;
-            this.gridColumn2.Width = 131;
-            // 
             // frmSecondaryIcd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -431,6 +432,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tìm chọn bệnh";
             this.Load += new System.EventHandler(this.frmSecondaryDisease_Load);
+            this.Controls.SetChildIndex(this.barDockControlTop, 0);
+            this.Controls.SetChildIndex(this.barDockControlBottom, 0);
+            this.Controls.SetChildIndex(this.barDockControlRight, 0);
+            this.Controls.SetChildIndex(this.barDockControlLeft, 0);
+            this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtIcdCodes.Properties)).EndInit();

@@ -76,7 +76,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 Inventec.Common.Logging.LogSystem.Debug("onClickSaveFormAsyncForOtherButtonClick.1");
                 HisServiceReqExamUpdateSDO hisServiceReqSDO = new HisServiceReqExamUpdateSDO();
-
+                GetUcIcdYHCT();
                 ProcessExamServiceReqDTO(ref hisServiceReqSDO);
                 ProcessExamSereIcdDTO(ref hisServiceReqSDO);
                 ProcessExamSereNextTreatmentIntructionDTO(ref hisServiceReqSDO);
@@ -1497,10 +1497,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 examServiceReqUpdateSDO.PartEyeGlassKcdtLeft = txtPartEyeGlassKcdtLeft.EditValue != null ? txtPartEyeGlassKcdtLeft.Text.Trim().ToString() : null;
                 examServiceReqUpdateSDO.PartEyeGlassAddLeft = txtPartEyeGlassAddLeft.EditValue != null ? txtPartEyeGlassAddLeft.Text.Trim().ToString() : null;
 
-                examServiceReqUpdateSDO.TraditionalIcdCode = !string.IsNullOrEmpty(txtYHCTCode.Text.Trim()) ? txtYHCTCode.Text.Trim() : null;
-                examServiceReqUpdateSDO.TraditionalIcdName = !string.IsNullOrEmpty(cboYHCTs.Text.Trim()) ? cboYHCTs.Text.Trim() : null;
-                examServiceReqUpdateSDO.TraditionalIcdSubCode = !string.IsNullOrEmpty(txtSubYHCTCode.Text.Trim()) ? txtSubYHCTCode.Text.Trim() : null;
-                examServiceReqUpdateSDO.TraditionalIcdText = !string.IsNullOrEmpty(txtSubYHCTName.Text.Trim()) ? txtYHCTCode.Text.Trim() : null;
+                examServiceReqUpdateSDO.TraditionalIcdCode = IcdCodeYHCT;
+                examServiceReqUpdateSDO.TraditionalIcdName = IcdNameYHCT;
+                examServiceReqUpdateSDO.TraditionalIcdSubCode = IcdSubCodeYHCT;
+                examServiceReqUpdateSDO.TraditionalIcdText = IcdTextYHCT;
 
             }
             catch (Exception ex)
@@ -2379,8 +2379,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                     CreateThreadPostApi();
 
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("HisServiceReqResult", HisServiceReqResult));
-
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("HisServiceReqResult", HisServiceReqResult));    
                     success = true;
                     this.HisServiceReqView = new V_HIS_SERVICE_REQ();
                     Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_SERVICE_REQ>(this.HisServiceReqView, HisServiceReqResult.ServiceReq);
@@ -2433,7 +2432,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         reLoadServiceReq(HisServiceReqResult.ServiceReq);
 
                     }
-
+                    //ucIcdYHCT.Enabled = false;
+                    //ucSecondaryIcdYHCT.Enabled = false;
                     btnPrint_ExamService.Enabled = true;
 
                     if (HisServiceReqResult.HospitalizeResult != null && HisServiceReqResult.HospitalizeResult.Treatment != null)
@@ -2604,7 +2604,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     {
                         btnVoBenhAn.Enabled = false;
                     }
-
+                    ucIcdYHCT.Enabled = false;
+                    ucSecondaryIcdYHCT.Enabled = false;
                     // đóng tab sau khi lưu
                     if (success
                         && HisConfigCFG.IsAutoExitAfterFinish
@@ -2736,6 +2737,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             bool result = true;
             try
             {
+                GetUcIcdYHCT();
                 this.positionHandleControlLeft = -1;
                 if (!dxValidationProviderForLeftPanel.Validate())
                     return false;
