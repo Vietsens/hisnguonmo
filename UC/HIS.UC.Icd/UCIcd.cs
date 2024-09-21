@@ -58,6 +58,7 @@ namespace HIS.UC.Icd
         string _TextIcdName = "";
         bool IsObligatoryTranferMediOrg = false;
         long autoCheckIcd;
+        bool IsYhct = false;
 
         HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager checkIcd;
         public UCIcd()
@@ -95,6 +96,10 @@ namespace HIS.UC.Icd
             if (data.DelegateRefreshSubIcd != null)
             {
                 refreshSubIcd = data.DelegateRefreshSubIcd;
+            }
+            if(data.IsYHCT != null)
+            {
+                IsYhct = data.IsYHCT?? false;
             }
             if (data.DataIcds != null && data.DataIcds.Count > 0)
             {
@@ -407,7 +412,7 @@ namespace HIS.UC.Icd
                         showCbo = false;
                         txtIcdCode.Text = result.First().ICD_CODE;
                         string message = null;
-                        if (checkIcd != null && !checkIcd.ProcessCheckIcd(txtIcdCode.Text, null, ref message))
+                        if (!IsYhct && checkIcd != null && !checkIcd.ProcessCheckIcd(txtIcdCode.Text, null, ref message))
                         {
                             if (!String.IsNullOrEmpty(message))
                             {
@@ -738,6 +743,13 @@ namespace HIS.UC.Icd
                     chkEditIcd.Checked = (this.autoCheckIcd != 2);
                     txtIcdMainText.Text = this.InitAdo.IcdInput.ICD_NAME;
                 }
+                else
+                {
+                    txtIcdCode.Text = null;
+                    cboIcds.EditValue = null;
+                    txtIcdMainText.Text = null;
+                    chkEditIcd.Checked = false;
+                }
             }
             catch (Exception ex)
             {
@@ -866,7 +878,7 @@ namespace HIS.UC.Icd
                 var search = ((DevExpress.XtraEditors.TextEdit)sender).Text;
                 if (!String.IsNullOrEmpty(search))
                 {
-                    var listData = dataIcds.Where(o => o.ICD_CODE.Contains(search)).ToList();
+                    var listData = dataIcds.Where(o => o.ICD_CODE.Equals(search)).ToList();
                     var result = listData != null ? (listData.Count > 1 ? listData.Where(o => o.ICD_CODE == search).ToList() : listData) : null;
                     if (result == null || result.Count <= 0)
                     {
@@ -876,6 +888,7 @@ namespace HIS.UC.Icd
                     {
                         txtIcdCode.ErrorText = "";
                         dxValidationProvider1.RemoveControlError(txtIcdCode);
+                        dxValidationProvider2.RemoveControlError(txtIcdCode);
                         //ValidationICD(10, 500, true);
                     }
                 }
