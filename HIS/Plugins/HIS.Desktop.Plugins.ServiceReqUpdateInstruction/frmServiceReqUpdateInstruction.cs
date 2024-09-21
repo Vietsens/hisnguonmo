@@ -211,14 +211,11 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 long autoCheckIcd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>("HIS.Desktop.Plugins.AutoCheckIcd");
                 icdProcessorYHCT = new HIS.UC.Icd.IcdProcessor();
                 HIS.UC.Icd.ADO.IcdInitADO ado = new HIS.UC.Icd.ADO.IcdInitADO();
-                ado.IsUCCause = false;
-                ado.DelegateNextFocus = NextForcusSubIcd;
-                //ado.DelegateRequiredCause = LoadRequiredCause;
-                ado.DelegateRefreshSubIcd = LoadSubIcd;
                 ado.LblIcdMain = "CĐ YHCT:";
                 ado.ToolTipsIcdMain = "Chẩn đoán y học cổ truyền";
                 ado.Width = 440;
                 ado.Height = 30;
+                ado.IsYHCT = true;
                 //ado.IsColor = true;
                 ado.DataIcds = listIcd.Where(s=>s.IS_TRADITIONAL == 1 && s.IS_ACTIVE == 1).ToList();
                 ado.AutoCheckIcd = autoCheckIcd == 1 ? true : false;
@@ -478,6 +475,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
 
                 HIS.UC.SecondaryIcd.ADO.SecondaryIcdInitADO ado = new UC.SecondaryIcd.ADO.SecondaryIcdInitADO();
                 ado.DelegateNextFocus = NextForcusOut;
+                ado.DelegateGetIcdMain = DelegateCheckICDMain;
                 ado.Width = 440;
                 ado.Height = 24;
                 ado.TextLblIcd = Inventec.Common.Resource.Get.Value("frmInstructionUpdate.layoutControlItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -504,6 +502,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 subIcdProcessorYHCT = new SecondaryIcdProcessor(new CommonParam(), listIcd.Where(s=>s.IS_TRADITIONAL == 1).ToList());
                 HIS.UC.SecondaryIcd.ADO.SecondaryIcdInitADO ado = new UC.SecondaryIcd.ADO.SecondaryIcdInitADO();
                 ado.DelegateNextFocus = NextForcusOut;
+                ado.DelegateGetIcdMain = DelegateCheckICDSub;
                 ado.Width = 440;
                 ado.Height = 30;
                 ado.TextLblIcd = "CĐ YHCT Phụ:";
@@ -523,6 +522,46 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private string DelegateCheckICDSub()
+        {
+            string result = "";
+            try
+            {
+                var rs = icdProcessorYHCT.GetValue(ucIcdYHCT);
+                if(ucIcdYHCT != null && rs is IcdInputADO)
+                {
+                    result = ((IcdInputADO)rs).ICD_CODE;
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        private string DelegateCheckICDMain()
+        {
+            string result = "";
+            try
+            {
+                var rs = icdProcessor.GetValue(ucIcd);
+                if (ucIcd != null && rs is IcdInputADO)
+                {
+                    result = ((IcdInputADO)rs).ICD_CODE;
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
         private void SetDefaultValue()
         {
@@ -851,7 +890,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 }
                 if (ucSecondaryIcdYHCT != null)
                 {
-                    var subIcd = subIcdProcessorYHCT.GetValue(ucSecondaryIcd);
+                    var subIcd = subIcdProcessorYHCT.GetValue(ucSecondaryIcdYHCT);
                     if (subIcd != null && subIcd is SecondaryIcdDataADO)
                     {
                         currentServiceReq.TRADITIONAL_ICD_SUB_CODE = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
@@ -989,7 +1028,12 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 bool vali = true;
                 CommonParam param = new CommonParam();
                 bool succes = false;
-                vali = (IsValiICDCause() || (panelControlUcIcd.Enabled == false)) && ((bool)subIcdProcessor.GetValidate(ucSecondaryIcd) || (panelControlUcIcd.Enabled == false)) && ((bool)icdProcessor.ValidationIcd(ucIcd) || (panelControlUcIcd.Enabled == false));
+                vali = (IsValiICDCause() || (panelControlUcIcd.Enabled == false));
+
+                vali = vali && ((bool)subIcdProcessor.GetValidate(ucSecondaryIcd) || (panelControlUcIcd.Enabled == false));
+                vali = vali && ((bool)icdProcessor.ValidationIcd(ucIcd) || (panelControlUcIcd.Enabled == false));
+                vali = vali && ((bool)icdProcessorYHCT.ValidationIcd(ucIcdYHCT) || (panelControlCDYHCT.Enabled == false));
+                vali = vali && (bool)subIcdProcessorYHCT.GetValidate(ucSecondaryIcdYHCT) || (panelControlICDSubYHCT.Enabled == false);
                 if (!vali || !dxValidationProvider1.Validate())
                     return;
                 vali = vali & CheckIntructionTimeWithInTime() & CheckMinDuration() & CheckHIS_DEPARTMENT_TRAN();

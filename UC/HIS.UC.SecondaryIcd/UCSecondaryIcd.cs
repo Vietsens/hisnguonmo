@@ -411,7 +411,7 @@ namespace HIS.UC.SecondaryIcd
                         return;
                     }
                     DelegateNextFocus();
-                    checkICD();
+                    if( checkICD != null)checkICD();
                 }
             }
             catch (Exception ex)
@@ -457,7 +457,7 @@ namespace HIS.UC.SecondaryIcd
                     {
                         DelegateNextFocus();
                     }
-                    checkICD();
+                    if (checkICD != null) checkICD();
                 }
             }
             catch (Exception ex)
@@ -499,7 +499,8 @@ namespace HIS.UC.SecondaryIcd
             {
                 txtIcdSubCode.Text = icdCode;
                 txtIcdText.Text = icdName;
-                checkICD();
+                if (checkICD != null) checkICD();
+
             }
             catch (Exception ex)
             {

@@ -682,6 +682,13 @@ namespace HIS.UC.Icd
                     chkEditIcd.Checked = (this.autoCheckIcd != 2);
                     txtIcdMainText.Text = this.InitAdo.IcdInput.ICD_NAME;
                 }
+                else
+                {
+                    txtIcdCode.Text = null;
+                    cboIcds.EditValue = null;
+                    txtIcdMainText.Text = null;
+                    chkEditIcd.Checked = false;
+                }
             }
             catch (Exception ex)
             {
@@ -810,7 +817,7 @@ namespace HIS.UC.Icd
                 var search = ((DevExpress.XtraEditors.TextEdit)sender).Text;
                 if (!String.IsNullOrEmpty(search))
                 {
-                    var listData = dataIcds.Where(o => o.ICD_CODE.Contains(search)).ToList();
+                    var listData = dataIcds.Where(o => o.ICD_CODE.Equals(search)).ToList();
                     var result = listData != null ? (listData.Count > 1 ? listData.Where(o => o.ICD_CODE == search).ToList() : listData) : null;
                     if (result == null || result.Count <= 0)
                     {

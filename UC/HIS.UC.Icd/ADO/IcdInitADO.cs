@@ -42,6 +42,7 @@ namespace HIS.UC.Icd.ADO
         public bool IsAcceptWordNotInData { get; set; }
         public bool IsUCCause { get; set; }
         public bool AutoCheckIcd { get; set; }
+        public bool? IsYHCT { get; set; }
         public Template Template { get; set; }
         public DelegatNextFocus DelegateNextFocus { get; set; }
         public DelegateRefeshIcd DelegateRefeshIcd { get; set; }

@@ -28,6 +28,7 @@ using HIS.Desktop.Controls.Session;
 using HIS.Desktop.IsAdmin;
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AddExamInfor;
 using HIS.Desktop.Plugins.Library.CheckIcd;
@@ -498,7 +499,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                     Inventec.Common.Logging.LogSystem.Debug("icd: " + icd_code + " va icd_phu: " + icd_sub_code + "co trung nhom ICD10");
                     valid = true;
                 }
-            }
+                }
             catch (Exception ex)
             {
                 valid = false;
@@ -2804,7 +2805,63 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private bool CheckICDPreSave()
+        {
+            bool valid = true;
+            try
+            {
+                if (this.icdProcessor != null && this.ucIcd != null || (this.icdYhctProcessor != null && this.ucIcdYhct != null) || !string.IsNullOrEmpty(txtIcdExtraCode.Text) 
+                    || (this.subIcdYhctProcessor != null &&this.ucSecondaryIcdYhct != null))
+                {
+                    var icdValue = this.icdProcessor.GetValue(this.ucIcd);
+                    var icdValueSecond = txtIcdExtraCode.Text;
+                    var icdYHCT = this.icdYhctProcessor.GetValue(this.ucIcdYhct);
+                    var icdValueSecondYHCT = subIcdYhctProcessor.GetValue(this.ucSecondaryIcdYhct);
 
+                    if (icdValue != null && icdValue is HIS.UC.Icd.ADO.IcdInputADO )
+                    {
+                        string mess = "";
+                        var mainCode = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
+                        var mainCodeSecond = icdValueSecond;
+                        var subCode = ((HIS.UC.Icd.ADO.IcdInputADO)icdYHCT).ICD_CODE;
+                        var subcodeSecond = ((SecondaryIcdDataADO)icdValueSecondYHCT).ICD_TEXT;
+                        if (CheckICD(string.Join(";",new List<string>() { mainCode,mainCodeSecond}), string.Join(";",new List<string>() { subCode,subcodeSecond}), ref mess))
+                        {
+                            HIS.UC.Icd.ADO.IcdInputADO Icd = new HIS.UC.Icd.ADO.IcdInputADO();
+                            Icd.ICD_CODE = null;
+                            Icd.ICD_NAME = null;
+
+                            if (ucIcd != null)
+                            {
+                                icdProcessor.Reload(ucIcd, Icd);
+                            }
+                            if(ucIcdYhct != null)
+                            {
+                                icdYhctProcessor.Reload(ucIcdYhct, Icd);
+                            }
+                            txtIcdExtraCode.Text = null;
+
+                            SecondaryIcdDataADO subIcd = new SecondaryIcdDataADO();
+                            subIcd.ICD_SUB_CODE = null;
+                            subIcd.ICD_TEXT = null;
+
+                            if (ucSecondaryIcdYhct != null)
+                            {
+                                subIcdYhctProcessor.Reload(ucSecondaryIcdYhct, subIcd);
+                            }
+                            valid = false;
+                            if (!string.IsNullOrEmpty(mess)) MessageBox.Show(this, mess, "Thông báo", MessageBoxButtons.OK);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return valid;
+        }
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
@@ -2816,6 +2873,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 if (ServiceReqIcdOption == "1")
                     IsValid = (bool)icdProcessor.ValidationIcd(this.ucIcd);
                 IsValid = IsValid && dxValidationProvider1.Validate();
+                var config = HisConfigs.Get<string>("HIS.Desktop.Plugins.CheckIcdWhenSave");
+                IsValid = IsValid && (config == "2" && !CheckICDPreSave()) ? false : true;
                 if (!IsValid)
                     return;
                 //this._Treatment = new HIS_TREATMENT();

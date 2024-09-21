@@ -1040,7 +1040,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     icdYHCT.ICD_NAME = this.icdExam.TRADITIONAL_ICD_NAME;
                     if (ucIcdYHCT != null)
                     {
-                        icdProcessorYHCT.Reload(ucIcdYHCT, icd);
+                        icdProcessorYHCT.Reload(ucIcdYHCT, icdYHCT);
                     }
                     SecondaryIcdDataADO subIcdYHCT = new SecondaryIcdDataADO();
                     subIcdYHCT.ICD_SUB_CODE = this.icdExam.TRADITIONAL_ICD_SUB_CODE;
@@ -1087,7 +1087,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     icdYHCT.ICD_NAME = this.currentTreatmentWithPatientType.TRADITIONAL_ICD_NAME;
                     if (ucIcdYHCT != null)
                     {
-                        icdProcessorYHCT.Reload(ucIcdYHCT, icd);
+                        icdProcessorYHCT.Reload(ucIcdYHCT, icdYHCT);
                     }
                     SecondaryIcdDataADO subIcdYHCT = new SecondaryIcdDataADO();
                     subIcdYHCT.ICD_SUB_CODE = this.currentTreatmentWithPatientType.TRADITIONAL_ICD_SUB_CODE;
