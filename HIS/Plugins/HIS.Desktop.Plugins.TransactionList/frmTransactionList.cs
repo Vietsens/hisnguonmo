@@ -1290,8 +1290,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                         }
                         else if (e.Column.FieldName == "ChangeLock")
                         {
-                            if ((data.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU || data.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
-                                && ((data.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && HisConfigCFG.TransactionQrPaymentStatusOption == "0") || data.PAY_FORM_ID != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR))
+                            if (data.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU || data.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
                             {
                                 if (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                                 {
@@ -1443,9 +1442,10 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 e.RepositoryItem = repositoryItemUnrejectCancellationDis;
                             }
 
-                        }else  if(e.Column.FieldName == "QR")
+                        }
+                        else if (e.Column.FieldName == "QR")
                         {
-                            if (listConfig != null && listConfig.Count > 0 && data.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                            if ((data.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT || data.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU) && data.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
                                 e.RepositoryItem = repQr;
                         }
                     }
@@ -2358,7 +2358,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                         }
                     }
                     var tranLock = listTransaction.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE).ToList();
-                    if (tranLock != null && tranLock.Count > 0 && (MessageBox.Show(string.Format("Các giao dịch {0} đang tạm khóa bạn có muốn tiếp tục?", tranLock.Select(o=>o.TRANSACTION_CODE).ToList()), Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No))
+                    if (tranLock != null && tranLock.Count > 0 && (MessageBox.Show(string.Format("Các giao dịch {0} đang tạm khóa bạn có muốn tiếp tục?", string.Join(",",tranLock.Select(o => o.TRANSACTION_CODE).ToList())), Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No))
                     {
                         return;
                     }
@@ -2693,7 +2693,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                             }
                             else if (hi.Column.FieldName == "ChangeLock")
                             {
-                                if ((transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU || transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT) && ((transactionData.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && HisConfigCFG.TransactionQrPaymentStatusOption == "0") || transactionData.PAY_FORM_ID != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR))
+                                if ((transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU || transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT))
                                 {
                                     if (transactionData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                                     {
@@ -2792,6 +2792,11 @@ namespace HIS.Desktop.Plugins.TransactionList
                             else if (hi.Column.FieldName == "UnrejectCancellation")
                             {
                                 repositoryItemUnrejectCancellation_ButtonClick(transactionData);
+                            }
+                            else if (hi.Column.FieldName == "QR")
+                            {
+                                if ((transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT || transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU) && transactionData.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && transactionData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                                    repQr_ButtonClick(null, null);
                             }
                         }
                     }
@@ -3349,7 +3354,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                         popupMenu1.ShowPopup(Cursor.Position);
                     }
                     else
-                    { 
+                    {
                         selectedConfig = listConfig[0];
                         List<object> listArgs = new List<object>();
                         TransReqQRADO adoqr = new TransReqQRADO();

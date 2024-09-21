@@ -75,6 +75,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         return;
                     }
                 }
+                if (ucIcdYhct != null)
+                    isValid = isValid && (bool)icdYhctProcessor.ValidationIcd(ucIcdYhct);
                 if (ucSecondaryIcdYhct != null)
                     isValid = isValid && subIcdYhctProcessor.GetValidate(ucSecondaryIcdYhct);
                 isValid = isValid && this.Valid(serviceCheckeds__Send);
@@ -1612,7 +1614,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                 var icdValueCause = UcIcdCauseGetValue() as HIS.UC.Icd.ADO.IcdInputADO;
                 if (icdValueCause != null)
-                {
+                { 
                     serviceReqSDO.IcdCauseCode = icdValueCause.ICD_CODE;
                     if (!string.IsNullOrEmpty(icdValueCause.ICD_CODE))
                     {
@@ -1629,7 +1631,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 }
 
 
-                var icdTranditional = icdYhctProcessor.GetValue(ucIcdYhct);
+                var icdTranditional = this.icdYhctProcessor.GetValue(this.ucIcdYhct);
                 if (icdTranditional != null && icdTranditional is IcdInputADO)
                 {
                     serviceReqSDO.TraditionalIcdCode = ((IcdInputADO)icdTranditional).ICD_CODE;

@@ -28,11 +28,13 @@ using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common.BankQrCode;
 using HIS.Desktop.Controls.Session;
+using HIS.Desktop.IsAdmin;
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.CreateTransReqQR.ADO;
+using HIS.Desktop.Print;
 using HIS.UC.SereServTree;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
@@ -740,6 +742,34 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     {
                         currentTransReq = apiData[0];
                         InitPopupMenuOther();
+                        if (transactionPrint != null)
+                        {
+                            switch (transactionPrint.TRANSACTION_TYPE_ID)
+                            {
+                                case IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT:
+                                    if (transactionPrint.SALE_TYPE_ID == null)
+                                    {
+                                        onClickThanhToanDv(null, null);
+                                    }
+                                    else if (transactionPrint.SALE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SALE_TYPE.ID__SALE_EXP)
+                                    {
+                                        onClickHoaDonXb(null, null);
+                                    }
+                                    break;
+                                case IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU:
+                                    if (transactionPrint.TDL_SERE_SERV_DEPOSIT_COUNT == null)
+                                    {
+                                        onClickTamUng(null, null);
+                                    }
+                                    else
+                                    {
+                                        onClickTamUngDv(null, null);
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
                         lblStt.Text = currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__FINISHED ? "Thành công" : currentTransReq.TRANS_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST ? "Thất bại" : "Đang chờ";
                         if (currentTransReq.TRANS_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)
                         {
@@ -803,7 +833,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 InitPopupMenuOther();
                 if (currentTransReq == null)
                 {
-                    XtraMessageBox.Show(string.Format("Tạo QR tạm ứng thất bại. {0}", param.GetMessage()));
+                    XtraMessageBox.Show(string.Format("Tạo QR thất bại. {0}", param.GetMessage()));
                 }
                 else
                 {
@@ -896,19 +926,50 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             }
 
         }
+        V_HIS_TRANSACTION transactionPrint = null;
         private void InitPopupMenuOther()
         {
             try
             {
-
+                transactionPrint = null;
                 DXPopupMenu menu = new DXPopupMenu();
                 if (currentTransReq != null)
                 {
-                    if (currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)
-                        menu.Items.Add(new DXMenuItem("QR", new EventHandler(onClickQR)));
+                    HisTransactionFilter tvf = new HisTransactionFilter();
+                    tvf.TRANS_REQ_ID = currentTransReq.ID;
+                    transactionPrint = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, tvf, null).FirstOrDefault();
 
-                    if (currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__FINISHED && inputTransReq != null && inputTransReq.TransReqId == CreateReqType.DepositService)
-                        menu.Items.Add(new DXMenuItem("Phiếu tạm ứng dịch vụ", new EventHandler(onClickTamUngDv)));
+                    //if (currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)
+                    menu.Items.Add(new DXMenuItem("QR", new EventHandler(onClickQR)));
+
+                    if (transactionPrint != null)
+                    {
+                        switch (transactionPrint.TRANSACTION_TYPE_ID)
+                        {
+                            case IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT:
+                                if(transactionPrint.SALE_TYPE_ID == null)
+                                {
+                                    menu.Items.Add(new DXMenuItem("Phiếu thu thanh toán", new EventHandler(onClickThanhToanDv)));
+                                }
+                                else if(transactionPrint.SALE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SALE_TYPE.ID__SALE_EXP)
+                                {
+                                    menu.Items.Add(new DXMenuItem("Hóa đơn xuất bán", new EventHandler(onClickHoaDonXb)));
+                                }
+                                break;
+                            case IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU:
+                                if (transactionPrint.TDL_SERE_SERV_DEPOSIT_COUNT == null)
+                                {
+                                    menu.Items.Add(new DXMenuItem("Phiếu thu tạm ứng", new EventHandler(onClickTamUng)));
+                                }
+                                else
+                                {
+                                    menu.Items.Add(new DXMenuItem("Phiếu thu phí dịch vụ", new EventHandler(onClickTamUngDv)));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
                 }
                 this.btnPrint.DropDownControl = menu;
             }
@@ -943,7 +1004,42 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        private void onClickThanhToanDv(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, LanguageManager.GetLanguage(), LocalStorage.LocalData.GlobalVariables.TemnplatePathFolder);
+                richEditorMain.RunPrintTemplate("Mps000111", DelegateRunPrinter);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void onClickHoaDonXb(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, LanguageManager.GetLanguage(), LocalStorage.LocalData.GlobalVariables.TemnplatePathFolder);
+                richEditorMain.RunPrintTemplate("Mps000339", DelegateRunPrinter);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void onClickTamUng(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, LanguageManager.GetLanguage(), LocalStorage.LocalData.GlobalVariables.TemnplatePathFolder);
+                richEditorMain.RunPrintTemplate("Mps000112", DelegateRunPrinter);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         bool DelegateRunPrinter(string printTypeCode, string fileName)
         {
             bool result = false;
@@ -957,6 +1053,15 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     case "Mps000102":
                         LoadBieuMauDepositService(printTypeCode, fileName, ref result);
                         break;
+                    case "Mps000112":
+                        InPhieuThuTamUng(printTypeCode, fileName, ref result);
+                        break;
+                    case "Mps000339":
+                        InHoaDonXuatBan(printTypeCode, fileName, ref result);
+                        break;
+                    case "Mps000111":
+                        InPhieuThuThanhToan(printTypeCode, fileName, ref result);
+                        break;
                 }
             }
             catch (Exception ex)
@@ -965,6 +1070,338 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             }
 
             return result;
+        }
+
+        private void InPhieuThuThanhToan(string printTypeCode, string fileName, ref bool result)
+        {
+            try
+            {
+                if (this.transactionPrint == null)
+                    return;
+                if (!this.transactionPrint.TREATMENT_ID.HasValue)
+                {
+                    MessageManager.Show("Hóa đơn thanh toán xuất bán thuốc/ vật tư");
+                    return;
+                }
+                if (this.transactionPrint.IS_CANCEL == 1)
+                {
+                    MessageManager.Show("Giao dịch đã bị hủy.");
+                    return;
+                }
+                WaitingManager.Show();
+
+                HisBillFundFilter billFundFilter = new HisBillFundFilter();
+                billFundFilter.BILL_ID = this.transactionPrint.ID;
+                var listBillFund = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_BILL_FUND>>("api/HisBillFund/Get", ApiConsumers.MosConsumer, billFundFilter, null);
+
+                HisSereServBillFilter ssBillFilter = new HisSereServBillFilter();
+                ssBillFilter.BILL_ID = this.transactionPrint.ID;
+                var hisSSBills = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV_BILL>>("api/HisSereServBill/Get", ApiConsumers.MosConsumer, ssBillFilter, null);
+                if (hisSSBills == null || hisSSBills.Count <= 0)
+                {
+                    throw new Exception("Khong lay duoc SSBill theo billId: " + this.transactionPrint.BILL_TYPE_ID);
+                }
+
+                List<HIS_SERE_SERV> listSereServ = new List<HIS_SERE_SERV>();
+                HisSereServFilter ssFilter = new HisSereServFilter();
+                ssFilter.TREATMENT_ID = this.transactionPrint.TREATMENT_ID.Value;
+                List<HIS_SERE_SERV> listSereServApi = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, ssFilter, null);
+
+                if (listSereServApi != null && listSereServApi.Count > 0 && hisSSBills != null && hisSSBills.Count > 0)
+                {
+                    listSereServ = listSereServApi.Where(o => hisSSBills.Select(p => p.SERE_SERV_ID).Contains(o.ID)).ToList();
+                }
+
+                HisPatientTypeAlterViewAppliedFilter patyAlterAppliedFilter = new HisPatientTypeAlterViewAppliedFilter();
+                patyAlterAppliedFilter.InstructionTime = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
+                patyAlterAppliedFilter.TreatmentId = this.transactionPrint.TREATMENT_ID.Value;
+                var currentPatientTypeAlter = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<V_HIS_PATIENT_TYPE_ALTER>(HisRequestUriStore.HIS_PATIENT_TYPE_ALTER_GET_APPLIED, ApiConsumers.MosConsumer, patyAlterAppliedFilter, null);
+
+
+                HisDepartmentTranLastFilter departLastFilter = new HisDepartmentTranLastFilter();
+                departLastFilter.TREATMENT_ID = this.transactionPrint.TREATMENT_ID.Value;
+                departLastFilter.BEFORE_LOG_TIME = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
+                var departmentTran = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<V_HIS_DEPARTMENT_TRAN>("api/HisDepartmentTran/GetLastByTreatmentId", ApiConsumers.MosConsumer, departLastFilter, null);
+
+                V_HIS_PATIENT patient = new V_HIS_PATIENT();
+                if (transactionPrint.TDL_PATIENT_ID != null)
+                {
+                    HisPatientViewFilter patientFilter = new HisPatientViewFilter();
+                    patientFilter.ID = this.transactionPrint.TDL_PATIENT_ID;
+                    var patients = new BackendAdapter(new CommonParam()).Get<List<V_HIS_PATIENT>>("api/HisPatient/GetView", ApiConsumer.ApiConsumers.MosConsumer, patientFilter, null);
+
+                    if (patients != null && patients.Count > 0)
+                    {
+                        patient = patients.FirstOrDefault();
+                    }
+                }
+
+                WaitingManager.Hide();
+                string printerName = "";
+                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                {
+                    printerName = GlobalVariables.dicPrinter[printTypeCode];
+                }
+
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((transactionPrint != null ? transactionPrint.TDL_TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
+
+                // Lay thong tin cac dich vu da tam ung khong bi huy
+                List<HIS_SERE_SERV_DEPOSIT> listSereServDeposit = new List<HIS_SERE_SERV_DEPOSIT>();
+                CommonParam paramCommon = new CommonParam();
+                MOS.Filter.HisSereServDepositFilter sereServDepositFilter = new HisSereServDepositFilter();
+                sereServDepositFilter.TDL_TREATMENT_ID = transactionPrint.TREATMENT_ID;
+                sereServDepositFilter.IS_CANCEL = false;
+                listSereServDeposit = new BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_DEPOSIT>>("api/HisSereServDeposit/Get", ApiConsumer.ApiConsumers.MosConsumer, sereServDepositFilter, paramCommon);
+
+                List<HIS_SESE_DEPO_REPAY> listSeseDepoRepay = new List<HIS_SESE_DEPO_REPAY>();
+                MOS.Filter.HisSeseDepoRepayFilter filterSeseDepoRepay = new MOS.Filter.HisSeseDepoRepayFilter();
+                filterSeseDepoRepay.TDL_TREATMENT_ID = transactionPrint.TREATMENT_ID;
+                filterSeseDepoRepay.IS_CANCEL = false;
+                listSeseDepoRepay = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<HIS_SESE_DEPO_REPAY>>("api/HisSeseDepoRepay/Get", ApiConsumer.ApiConsumers.MosConsumer, filterSeseDepoRepay, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
+
+                HisTransactionViewFilter depositFilter = new HisTransactionViewFilter();
+                depositFilter.TREATMENT_ID = this.transactionPrint.TREATMENT_ID.Value;
+                var lstTran = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, depositFilter, null);
+
+                LogSystem.Debug("dich vu da hoan ung bang " + listSeseDepoRepay.Count.ToString());
+                List<HIS_SERE_SERV_DEPOSIT> finalListSereServDeposit = new List<HIS_SERE_SERV_DEPOSIT>();
+
+                if (listSeseDepoRepay != null && listSeseDepoRepay.Count > 0)
+                {
+                    finalListSereServDeposit = listSereServDeposit.Where(o => listSeseDepoRepay.All(k => k.SERE_SERV_DEPOSIT_ID != o.ID)).ToList();
+                }
+                else
+                {
+                    finalListSereServDeposit = listSereServDeposit;
+                }
+
+                MPS.Processor.Mps000111.PDO.Mps000111PDO pdo = new MPS.Processor.Mps000111.PDO.Mps000111PDO(transactionPrint,
+                    patient,
+                    listBillFund,
+                    listSereServ,
+                    departmentTran,
+                    currentPatientTypeAlter,
+                    GetId(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT")),
+                    null,
+                    finalListSereServDeposit,
+                    lstTran,
+                    listSeseDepoRepay
+                    );
+
+                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                }
+                else
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO });
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                WaitingManager.Hide();
+            }
+        }
+
+        private long GetId(string code)
+        {
+            long result = 0;
+            try
+            {
+                var data = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.PATIENT_TYPE_CODE == code);
+                result = data.ID;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Debug(ex);
+                result = 0;
+            }
+            return result;
+        }
+
+        private void InHoaDonXuatBan(string printTypeCode, string fileName, ref bool result)
+        {
+            try
+            {
+                if (transactionPrint == null) return;
+                WaitingManager.Show();
+
+                CommonParam param = new CommonParam();
+                HisBillGoodsFilter goodsFilter = new HisBillGoodsFilter();
+                goodsFilter.BILL_ID = this.transactionPrint.ID;
+                List<HIS_BILL_GOODS> billGoods = new BackendAdapter(param).Get<List<HIS_BILL_GOODS>>("api/HisBillGoods/Get", ApiConsumers.MosConsumer, goodsFilter, param);
+
+                HisExpMestViewFilter expMestFilter = new HisExpMestViewFilter();
+                expMestFilter.BILL_ID = this.transactionPrint.ID;
+                List<V_HIS_EXP_MEST> expMests = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST>>("api/HisExpMest/GetView", ApiConsumers.MosConsumer, expMestFilter, param);
+
+                HisExpMestMedicineViewFilter expMestMedicineFilter = new HisExpMestMedicineViewFilter();
+                expMestMedicineFilter.EXP_MEST_IDs = expMests.Select(s => s.ID).ToList();
+                List<V_HIS_EXP_MEST_MEDICINE> expMestMedicines = new BackendAdapter(param)
+                    .Get<List<V_HIS_EXP_MEST_MEDICINE>>("api/HisExpMestMedicine/GetVIew", ApiConsumers.MosConsumer, expMestMedicineFilter, param);
+
+                HisExpMestMaterialViewFilter expMestMaterialFilter = new HisExpMestMaterialViewFilter();
+                expMestMaterialFilter.EXP_MEST_IDs = expMests.Select(s => s.ID).ToList();
+                List<V_HIS_EXP_MEST_MATERIAL> expMestMaterials = new BackendAdapter(param)
+                    .Get<List<V_HIS_EXP_MEST_MATERIAL>>("api/HisExpMestMaterial/GetVIew", ApiConsumers.MosConsumer, expMestMaterialFilter, param);
+
+                HisExpMestFilter hisexpmestFilter = new HisExpMestFilter();
+                hisexpmestFilter.BILL_ID = this.transactionPrint.ID;
+                List<V_HIS_EXP_MEST> hisexpmest = new BackendAdapter(param)
+                    .Get<List<V_HIS_EXP_MEST>>("api/HisExpMest/GetVIew", ApiConsumers.MosConsumer, hisexpmestFilter, param);
+
+                HisImpMestFilter hisimpmestFilter = new HisImpMestFilter();
+                hisimpmestFilter.MOBA_EXP_MEST_IDs = hisexpmest.Select(o => o.ID).ToList();
+                List<V_HIS_IMP_MEST> hisimpmest = new BackendAdapter(param)
+                    .Get<List<V_HIS_IMP_MEST>>("api/HisImpMest/GetVIew", ApiConsumers.MosConsumer, hisimpmestFilter, param);
+
+                MPS.Processor.Mps000339.PDO.Mps000339PDO rdo = new MPS.Processor.Mps000339.PDO.Mps000339PDO(transactionPrint, billGoods, expMestMedicines, expMestMaterials, hisexpmest, hisimpmest);
+
+                string printerName = "";
+                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                {
+                    printerName = GlobalVariables.dicPrinter[printTypeCode];
+                }
+
+                MPS.ProcessorBase.Core.PrintData printdata = null;
+                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+                    printdata = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                }
+                else
+                {
+                    printdata = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
+                }
+
+                WaitingManager.Hide();
+                result = MPS.MpsPrinter.Run(printdata);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void InPhieuThuTamUng(string printTypeCode, string fileName, ref bool result)
+        {
+            try
+            {
+                if (this.transactionPrint == null || !this.transactionPrint.TREATMENT_ID.HasValue)
+                    return;
+                if (this.transactionPrint.IS_CANCEL == 1)
+                {
+                    if (this.transactionPrint.CREATOR != Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName() && this.transactionPrint.CANCEL_LOGINNAME != Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName() && !CheckLoginAdmin.IsAdmin(Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()))
+                    {
+                        MessageManager.Show("Bạn không có quyền in giao dịch đã hủy");
+                        return;
+                    }
+                }
+                WaitingManager.Show();
+                V_HIS_PATIENT patient = null;
+
+                HisTransactionViewFilter depositFilter = new HisTransactionViewFilter();
+                depositFilter.ID = this.transactionPrint.ID;
+                var listDeposit = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, depositFilter, null);
+                if (listDeposit == null || listDeposit.Count != 1)
+                {
+                    throw new Exception("Khong lay duoc V_HIS_DEPOSIT theo transactionId, TransactionCode:" + transactionPrint.TRANSACTION_CODE);
+                }
+
+                var deposit = listDeposit.First();
+
+                if (this.transactionPrint.TDL_PATIENT_ID.HasValue)
+                {
+                    HisPatientViewFilter patientFilter = new HisPatientViewFilter();
+                    patientFilter.ID = this.transactionPrint.TDL_PATIENT_ID;
+                    var listPatient = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_PATIENT>>(HisRequestUriStore.HIS_PATIENT_GETVIEW, ApiConsumers.MosConsumer, patientFilter, null);
+                    patient = listPatient.First();
+                }
+
+                decimal ratio = 0;
+                var PatyAlterBhyt = new V_HIS_PATIENT_TYPE_ALTER();
+                PrintGlobalStore.LoadCurrentPatientTypeAlter(this.transactionPrint.TREATMENT_ID.Value, 0, ref PatyAlterBhyt);
+                if (PatyAlterBhyt != null && !String.IsNullOrEmpty(PatyAlterBhyt.HEIN_CARD_NUMBER))
+                {
+                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE) ?? 0;
+                }
+
+                HisDepartmentTranViewFilter departLastFilter = new HisDepartmentTranViewFilter();
+                departLastFilter.TREATMENT_ID = this.transactionPrint.TREATMENT_ID.Value;
+                var departmentTrans = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_DEPARTMENT_TRAN>>("api/HisDepartmentTran/GetView", ApiConsumers.MosConsumer, departLastFilter, null);
+
+                string printerName = "";
+                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                {
+                    printerName = GlobalVariables.dicPrinter[printTypeCode];
+                }
+
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((deposit != null ? deposit.TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
+
+                MPS.Processor.Mps000112.PDO.Mps000112ADO ado = new MPS.Processor.Mps000112.PDO.Mps000112ADO();
+
+                HisTransactionFilter depositCountFilter = new HisTransactionFilter();
+                depositCountFilter.TREATMENT_ID = this.transactionPrint.TREATMENT_ID;
+                depositCountFilter.TRANSACTION_TIME_TO = this.transactionPrint.TRANSACTION_TIME;
+                var deposits = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_TRANSACTION>>("api/HisTransaction/Get", ApiConsumers.MosConsumer, depositCountFilter, null);
+                if (deposits != null && deposits.Count > 0)
+                {
+                    ado.DEPOSIT_NUM_ORDER = deposits.Where(o => o.IS_CANCEL != 1 && o.IS_DELETE == 0 && o.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU).Count();
+                    ado.DEPOSIT_SERVICE_NUM_ORDER = deposits.Where(o => o.TDL_SERE_SERV_DEPOSIT_COUNT != null && o.IS_CANCEL != 1 && o.IS_DELETE == 0).Count().ToString();
+                }
+
+                V_HIS_TREATMENT treatment = null;
+                HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
+                filter.ID = this.transactionPrint.TREATMENT_ID;
+                var treatmentList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, null);
+                if (treatmentList != null && treatmentList.Count > 0)
+                    treatment = treatmentList.First();
+                MPS.Processor.Mps000112.PDO.Mps000112PDO rdo =
+                    new MPS.Processor.Mps000112.PDO.Mps000112PDO(deposit, null, ratio, PatyAlterBhyt, departmentTrans, ado, treatment, BackendDataWorker.Get<HIS_TREATMENT_TYPE>());
+                MPS.ProcessorBase.Core.PrintData printData = null;
+                WaitingManager.Hide();
+                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
+                }
+                else
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                WaitingManager.Hide();
+            }
+        }
+        private void CallModuleShowPrintLog(string printTypeCode, string uniqueCode)
+        {
+            try
+            {
+                if (!String.IsNullOrWhiteSpace(printTypeCode) && !String.IsNullOrWhiteSpace(uniqueCode))
+                {
+                    //goi modul
+                    HIS.Desktop.ADO.PrintLogADO ado = new HIS.Desktop.ADO.PrintLogADO(printTypeCode, uniqueCode);
+
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(ado);
+
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("Inventec.Desktop.Plugins.PrintLog", currentModule.RoomId, currentModule.RoomTypeId, listArgs);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void LoadBieuMauDepositService(string printTypeCode, string fileName, ref bool result)
