@@ -331,17 +331,24 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 string icdCodes = null;// = IcdUtil.seperator;
                 string icdName__Olds = txtIcdNames.Text.Trim();
                 var checkList = icdAdoChecks.Where(o => o.IsChecked == true).ToList();
+                var data = checkList.Select(o => o.ICD_CODE);
+                string result = string.Join(";", data);
+               
                 int count = 0;
                 foreach (var item in checkList)
                 {
                     count++;
                     string messErr = null;
-                    if (!checkIcdManager.ProcessCheckIcd(null, item.ICD_CODE, ref messErr))
+                    if (!checkIcdManager.ProcessCheckIcd(null, result, ref messErr, false))
                     {
-                        XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
-                        item.IsChecked = false;
+                        if (count == checkList.Count)
+                        {
+                            XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
+                            item.IsChecked = false;
+                        }
                         continue;
                     }
+                    //break;
                     if (count == checkList.Count)
                     {
                         icdCodes += item.ICD_CODE;
