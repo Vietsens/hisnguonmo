@@ -1,3 +1,9 @@
+### Release 2.328.0
+* Sửa thông báo trên hệ thống ký số
+* Sửa lỗi chức năng báo động đỏ gây treo hệ thống
+* Bổ sung quét QR thanh toán tại các chức năng thu tiền(xuất bán, tạm ứng, thanh toán, ...)
+* Sửa chức năng cảnh báo giường trùng thời gian với hồ sơ khác
+
 ### Release 2.327.0
 * Sắp xếp thuốc trên tờ điều trị theo quy định mới
 * Không cho phép xóa chẩn đoán
