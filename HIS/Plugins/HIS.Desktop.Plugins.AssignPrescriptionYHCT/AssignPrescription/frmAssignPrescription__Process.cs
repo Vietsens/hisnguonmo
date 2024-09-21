@@ -65,6 +65,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 this.isMultiDateState = false;
                 if(string.IsNullOrEmpty(HisConfigs.Get<string>("HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION")) && !string.IsNullOrEmpty(HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd")))
                 {
+                    LogSystem.Debug("cau hinh :  HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION khong duoc bat va cau hinh HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd duoc bat. -> load icd yhct");
                     if(tracking.TRADITIONAL_ICD_CODE != null)
                     {
                         HIS.UC.Icd.ADO.IcdInputADO ado = new UC.Icd.ADO.IcdInputADO();

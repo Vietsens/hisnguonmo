@@ -632,9 +632,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             // panelControlUcSubIcdYHCT
             // 
             this.panelControlUcSubIcdYHCT.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.panelControlUcSubIcdYHCT.Location = new System.Drawing.Point(324, 48);
+            this.panelControlUcSubIcdYHCT.Location = new System.Drawing.Point(343, 48);
             this.panelControlUcSubIcdYHCT.Name = "panelControlUcSubIcdYHCT";
-            this.panelControlUcSubIcdYHCT.Size = new System.Drawing.Size(325, 24);
+            this.panelControlUcSubIcdYHCT.Size = new System.Drawing.Size(306, 24);
             this.panelControlUcSubIcdYHCT.TabIndex = 141;
             // 
             // panelControlIcdYHCT
@@ -642,7 +642,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.panelControlIcdYHCT.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.panelControlIcdYHCT.Location = new System.Drawing.Point(0, 48);
             this.panelControlIcdYHCT.Name = "panelControlIcdYHCT";
-            this.panelControlIcdYHCT.Size = new System.Drawing.Size(324, 24);
+            this.panelControlIcdYHCT.Size = new System.Drawing.Size(343, 24);
             this.panelControlIcdYHCT.TabIndex = 140;
             // 
             // chkYhct
@@ -2819,18 +2819,22 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.layoutControlItem19.Location = new System.Drawing.Point(0, 48);
             this.layoutControlItem19.Name = "layoutControlItem19";
             this.layoutControlItem19.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem19.Size = new System.Drawing.Size(324, 24);
+            this.layoutControlItem19.Size = new System.Drawing.Size(343, 24);
+            this.layoutControlItem19.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem19.TextToControlDistance = 0;
             this.layoutControlItem19.TextVisible = false;
             // 
             // layoutControlItem20
             // 
             this.layoutControlItem20.Control = this.panelControlUcSubIcdYHCT;
-            this.layoutControlItem20.Location = new System.Drawing.Point(324, 48);
+            this.layoutControlItem20.Location = new System.Drawing.Point(343, 48);
             this.layoutControlItem20.Name = "layoutControlItem20";
             this.layoutControlItem20.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem20.Size = new System.Drawing.Size(325, 24);
+            this.layoutControlItem20.Size = new System.Drawing.Size(306, 24);
+            this.layoutControlItem20.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem20.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem20.TextToControlDistance = 0;
             this.layoutControlItem20.TextVisible = false;
             // 
             // dxValidProviderBoXung
