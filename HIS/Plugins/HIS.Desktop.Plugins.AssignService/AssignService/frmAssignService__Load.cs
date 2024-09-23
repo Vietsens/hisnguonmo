@@ -3150,6 +3150,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     }
                 }
                 if (!btnEn) cboTracking.Enabled = false;
+                isInitTracking = false;
             }
             catch (Exception ex)
             {
@@ -3659,7 +3660,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         /// <summary>
         /// Lay Chan doan mac dinh: Lay chan doan cuoi cung trong cac xu ly dich vu Kham benh
         /// </summary>
-        HIS_ICD icdMain = null;
+        HIS_ICD icdMain = null; 
         private void LoadIcdDefault()
         {
             try

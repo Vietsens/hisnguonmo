@@ -1413,6 +1413,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 HIS_TRACKING tracking = new HIS_TRACKING();
                 tracking = (this.Listtrackings != null && this.Listtrackings.Count > 0) ? this.Listtrackings.OrderByDescending(o => o.TRACKING_TIME).FirstOrDefault() : null;
 
+
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => icdExam), icdExam));
+
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => tracking), tracking));
+
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentTreatmentWithPatientType), currentTreatmentWithPatientType));
                 if (tracking != null && !String.IsNullOrEmpty(tracking.TRADITIONAL_ICD_CODE) && HisConfigCFG.TrackingCreate__UpdateTreatmentIcd == "1")
                 {
                     this.LoadIcdTranditionalToControl(tracking.TRADITIONAL_ICD_CODE, tracking.TRADITIONAL_ICD_NAME);
