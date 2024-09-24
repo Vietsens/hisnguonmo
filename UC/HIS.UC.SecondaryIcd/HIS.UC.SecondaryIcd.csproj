@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{04B2AB94-562D-4753-A158-1AAD3217408B}</ProjectGuid>
+    <ProjectGuid>{4C6D63B0-DAE5-4FAC-83BC-34BD635E4474}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HIS.UC.SecondaryIcd</RootNamespace>

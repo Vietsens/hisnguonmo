@@ -18,6 +18,7 @@
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Plugins.Library.CheckIcd;
 using HIS.UC.SecondaryIcd.ADO;
 using Inventec.Core;
@@ -59,7 +60,8 @@ namespace HIS.UC.SecondaryIcd
                 this.icdCodes = icdCodes;
                 this.icdNames = icdNames;
                 string[] codes = this.icdCodes.Split(IcdUtil.seperator.ToCharArray());
-                icdAdoChecks = (from m in listIcd select new IcdADO(m, codes)).ToList();
+                var icds = BackendDataWorker.Get<V_HIS_ICD>().Where(o => listIcd.Exists(p => p.ID == o.ID)).ToList();
+                icdAdoChecks = (from m in icds select new IcdADO(m, codes)).ToList();
                 limit = _limit;
                 treatment = hisTreatment;
             }
