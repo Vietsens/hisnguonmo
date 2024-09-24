@@ -742,34 +742,6 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     {
                         currentTransReq = apiData[0];
                         InitPopupMenuOther();
-                        if (transactionPrint != null)
-                        {
-                            switch (transactionPrint.TRANSACTION_TYPE_ID)
-                            {
-                                case IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT:
-                                    if (transactionPrint.SALE_TYPE_ID == null)
-                                    {
-                                        onClickThanhToanDv(null, null);
-                                    }
-                                    else if (transactionPrint.SALE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SALE_TYPE.ID__SALE_EXP)
-                                    {
-                                        onClickHoaDonXb(null, null);
-                                    }
-                                    break;
-                                case IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU:
-                                    if (transactionPrint.TDL_SERE_SERV_DEPOSIT_COUNT == null)
-                                    {
-                                        onClickTamUng(null, null);
-                                    }
-                                    else
-                                    {
-                                        onClickTamUngDv(null, null);
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
                         lblStt.Text = currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__FINISHED ? "Thành công" : currentTransReq.TRANS_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST ? "Thất bại" : "Đang chờ";
                         if (currentTransReq.TRANS_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)
                         {
@@ -778,6 +750,35 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                             timerReloadTransReq.Stop();
                             if (currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__FINISHED)
                             {
+                                if (transactionPrint != null)
+                                {
+                                    switch (transactionPrint.TRANSACTION_TYPE_ID)
+                                    {
+                                        case IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT:
+                                            if (transactionPrint.SALE_TYPE_ID == null)
+                                            {
+                                                onClickThanhToanDv(null, null);
+                                            }
+                                            else if (transactionPrint.SALE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SALE_TYPE.ID__SALE_EXP)
+                                            {
+                                                onClickHoaDonXb(null, null);
+                                            }
+                                            break;
+                                        case IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU:
+                                            if (transactionPrint.TDL_SERE_SERV_DEPOSIT_COUNT == null)
+                                            {
+                                                onClickTamUng(null, null);
+                                            }
+                                            else
+                                            {
+                                                if(!lstLoaiPhieu.FirstOrDefault(o => o.ID == "Mps000102").Check)
+                                                    onClickTamUngDv(null, null);
+                                            }
+                                            break;
+                                        default:
+                                            break;
+                                    } 
+                                }
                                 pbQr.EditValue = global::HIS.Desktop.Plugins.CreateTransReqQR.Properties.Resources.check;
 
                                 btnNew.Enabled = btnCreate.Enabled = false;
@@ -935,10 +936,12 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 DXPopupMenu menu = new DXPopupMenu();
                 if (currentTransReq != null)
                 {
-                    HisTransactionFilter tvf = new HisTransactionFilter();
-                    tvf.TRANS_REQ_ID = currentTransReq.ID;
-                    transactionPrint = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, tvf, null).FirstOrDefault();
-
+                    if (currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__FINISHED)
+                    {
+                        HisTransactionViewFilter tvf = new HisTransactionViewFilter();
+                        tvf.TRANS_REQ_CODE__EXACT = currentTransReq.TRANS_REQ_CODE;
+                        transactionPrint = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, tvf, null).FirstOrDefault();
+                    }
                     //if (currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)
                     menu.Items.Add(new DXMenuItem("QR", new EventHandler(onClickQR)));
 

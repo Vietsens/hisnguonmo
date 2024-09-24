@@ -55,6 +55,7 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
         public bool ProcessCheckIcd(string icdCodes, string icdSubCodes, ref string MessageError, bool IsCheck = false)
         {
             bool rs = true;
+            bool go = true;
             try
             {
                 if (treatment == null)
@@ -168,19 +169,73 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
                         }
                     }
                     #endregion
-
-                    var data = icdList.Where(i => i.ICD_CODE == icd).FirstOrDefault();
-                    if (data.CHECK_SAME_ICD_GROUP == 1)
+                    if (item.CHECK_SAME_ICD_GROUP == 1 && go == true)
                     {
-                        if (data.ICD_CODE == treatment.ICD_CODE && data.SUB_CODE == treatment.ICD_SUB_CODE)
+                        if (listIcdTotal != null && listIcdTotal.Count > 0)
                         {
-                            List<string> lstICD = icdList.Where(i => i.ICD_GROUP_ID == data.ICD_GROUP_ID).Select(i => i.ICD_CODE) .ToList();
-                            string fruitsString = string.Join(",", lstICD);
-                            IcdCodeError = item.ICD_CODE;
-                            MessageError = String.Format("Mã bệnh {0} cùng nhóm {1} với mã bệnh {2} đã dùng trong đợt điều trị", IcdCodeError, data.ICD_GROUP_NAME, lstICD);
-                            return false;
+                            var icdTreatment = icdList.Where(i => listIcdTotal.Distinct().ToList().Contains(i.ICD_CODE)).ToList();
+                            if (icdTreatment.Exists(o => o.ICD_GROUP_ID == item.ICD_GROUP_ID))
+                            {
+                                List<string> lstICD = icdTreatment.Where(i => i.ICD_GROUP_ID == item.ICD_GROUP_ID).Where(i=>i.ICD_CODE != icd).Select(i => i.ICD_CODE).ToList();
+                                if (lstICD.Count > 0)
+                                {
+                                    go = false;
+                                    IcdCodeError = item.ICD_CODE;
+                                    MessageError = String.Format("Mã bệnh {0} cùng nhóm {1} với mã bệnh {2} đã dùng trong đợt điều trị", IcdCodeError, item.ICD_GROUP_NAME, string.Join(",", lstICD));
+                                    return false;
+                                }
+                            }
                         }
                     }
+
+                    //var data = icdList.Where(i => i.ICD_CODE == icd || i.SUB_CODE == icd).FirstOrDefault();
+                    //List<V_HIS_ICD> dataTre = new List<V_HIS_ICD>() ;
+                    //string[] stringArray = treatment.ICD_SUB_CODE.Split(';');
+                    //List<string> lst = new List<string>(stringArray).Where(x => !string.IsNullOrEmpty(x)).ToList();
+
+                    //if (treatment.ICD_SUB_CODE == null && treatment.ICD_CODE != null)
+                    //{
+                    //    dataTre = icdList.Where(i => i.ICD_CODE == treatment.ICD_CODE).ToList();
+                    //}
+                    //else if (treatment.ICD_CODE == null && treatment.ICD_SUB_CODE != null)
+                    //{
+                    //    dataTre = icdList.Where(i => lst.Any(x => i.ICD_CODE.Contains(x))).ToList();
+                    //    //dataTre = icdList.Where(i => i.ICD_CODE.Contains(lst)).ToList();
+                    //}
+                    //else if (treatment.ICD_CODE != null && treatment.ICD_SUB_CODE != null)
+                    //{
+                    //    //dataTre = icdList.Where(i => i.ICD_CODE == treatment.ICD_CODE || i.ICD_CODE.Contains(lst)).ToList();
+                    //    dataTre = icdList.Where(i => i.ICD_CODE == treatment.ICD_CODE || lst.Any(x => i.ICD_CODE.Contains(x))).ToList();
+                    //}
+                    //else
+                    //{
+                    //    dataTre = null;
+                    //}
+                    ////foreach (var i in lst)
+                    ////{
+                    ////    if (data.ICD_CODE == treatment.ICD_CODE || data.ICD_CODE == i)
+                    ////    {
+                    ////        continue;
+                    ////    }
+                    ////}
+                    //if (data.ICD_CODE == treatment.ICD_CODE || lst.Any(x => treatment.ICD_CODE.Contains(x)))
+                    //{
+                    //    continue;
+                    //}
+                    //if (data.CHECK_SAME_ICD_GROUP == 1)
+                    //{
+                    //    if (dataTre.Count() >0 )
+                    //    {
+                    //        List<string> lstICD = dataTre.Where(i => i.ICD_GROUP_ID == data.ICD_GROUP_ID).Select(i => i.ICD_CODE).ToList();
+                    //        if (lstICD.Count > 0)
+                    //        {
+                    //            string fruitsString = string.Join(",", lstICD);
+                    //            IcdCodeError = item.ICD_CODE;
+                    //            MessageError = String.Format("Mã bệnh {0} cùng nhóm {1} với mã bệnh {2} đã dùng trong đợt điều trị", IcdCodeError, data.ICD_GROUP_NAME, fruitsString);
+                    //            return false;
+                    //        }
+                    //    }
+                    //}
                 }
             }
             catch (Exception ex)

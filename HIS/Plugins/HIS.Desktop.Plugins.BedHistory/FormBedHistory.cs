@@ -878,10 +878,11 @@ namespace HIS.Desktop.Plugins.BedHistory
                     CommonParam param = new CommonParam();
                     Inventec.Common.Logging.LogSystem.Debug("Du lieu goi den api: HisBedLog/TakeBedsInUse. TakeBedsInUseSDO: " + Inventec.Common.Logging.LogUtil.TraceData("TakeBedsInUseSDO", sdo));
                     List<HIS_BED_LOG> dataBedLogs = new BackendAdapter(param).Post<List<HIS_BED_LOG>>("/api/HisBedLog/TakeBedsInUse", ApiConsumers.MosConsumer, sdo, param);
-                    Inventec.Common.Logging.LogSystem.Debug("Du lieu goi den api tra ve: HisBedLog/TakeBedsInUse. dataBedLogs: " + Inventec.Common.Logging.LogUtil.TraceData("dataBedLogs", dataBedLogs.Select(s=>s.BED_ID).ToList()));
-
+                    
                     if (dataBedLogs != null && dataBedLogs.Count > 0)
                     {
+                        Inventec.Common.Logging.LogSystem.Debug("Du lieu goi den api tra ve: HisBedLog/TakeBedsInUse. dataBedLogs: " + Inventec.Common.Logging.LogUtil.TraceData("dataBedLogs", dataBedLogs.Select(s => s.BED_ID).ToList()));
+
                         foreach (var itemADO in result)
                         {
                             var dataByBedLogs_onStartTime = dataBedLogs.Where(p => p.BED_ID == itemADO.ID && p.START_TIME <= startTimeFilter && (!p.FINISH_TIME.HasValue || (p.FINISH_TIME.HasValue && p.FINISH_TIME.Value >= startTimeFilter))).ToList() ?? new List<HIS_BED_LOG>();

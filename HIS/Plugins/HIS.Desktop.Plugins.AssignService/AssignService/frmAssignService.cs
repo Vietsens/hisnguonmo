@@ -4838,6 +4838,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
+                tracking = new HIS_TRACKING();
                 cboTracking.Properties.Buttons[1].Visible = (cboTracking.EditValue != null);
                 if (this.isInitTracking)
                 {
@@ -4849,9 +4850,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     if (trackingData != null)
                     {
                         this.Listtrackings = new List<HIS_TRACKING>();
-                        HIS_TRACKING tracking = new HIS_TRACKING();
                         Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRACKING>(tracking, trackingData);
                         this.Listtrackings.Add(tracking);
+                        
                     }
                     else
                     {
@@ -8904,6 +8905,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 {
                     foreach (var item in this.Listtrackings)
                     {
+                        if (item == null)
+                            continue;
                         ToDieuTri += Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(item.TRACKING_TIME);
 
                         if (this.chkMultiIntructionTime.Checked)

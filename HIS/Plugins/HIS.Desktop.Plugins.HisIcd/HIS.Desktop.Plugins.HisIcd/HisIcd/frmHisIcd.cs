@@ -1312,8 +1312,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             //bool notHandler = false;
             try
             {
-
-                HIS_ICD data = (HIS_ICD)gridviewFormList.GetFocusedRow();
+                V_HIS_ICD data = (V_HIS_ICD)gridviewFormList.GetFocusedRow();
                 if (MessageBox.Show(LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonBoKhoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     HIS_ICD data1 = new HIS_ICD();
@@ -1341,8 +1340,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             //bool notHandler = false;
             try
             {
-
-                HIS_ICD data = (HIS_ICD)gridviewFormList.GetFocusedRow();
+                V_HIS_ICD data = (V_HIS_ICD)gridviewFormList.GetFocusedRow();
                 if (MessageBox.Show(LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonKhoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     HIS_ICD data1 = new HIS_ICD();
