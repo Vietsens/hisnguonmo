@@ -514,19 +514,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     
 
                     if ( !(bool)icdProcessor.ValidationIcd(ucIcd) || !(bool)icdProcessorYHCT.ValidationIcd(ucIcdYHCT) || !subIcdProcessor.GetValidate(this.ucSecondaryIcd) || !subIcdProcessorYHCT.GetValidate(ucSecondaryIcdYHCT)) return false;
-                    if (icdValue != null && icdValue is HIS.UC.Icd.ADO.IcdInputADO || (icdValueSecond != null && icdValueSecond is SecondaryIcdDataADO))
+                    string mess = "";
+                    var mainCode = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
+                    var mainCodeSecond = ((SecondaryIcdDataADO)icdValueSecond).ICD_SUB_CODE;
+                    List<string> listicd = new List<string>();
+                    string icd_code_error = "";
+                    var listSubCode = mainCodeSecond.Split(';').ToList();
+                    if (CheckICD(mainCode, mainCodeSecond, ref mess, ref icd_code_error))
                     {
-                        
-                        string mess = "";
-                        var mainCode = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
-                        string mainCodeSecond = ((SecondaryIcdDataADO)icdValueSecond).ICD_SUB_CODE;
-                        var param = mainCodeSecond.Split(';').ToList();
-                        LogSystem.Debug("List ICD: " + mainCode + " sub icd: " + string.Join(";", param));
-                        List<string> listicd = new List<string>();
-
-                        foreach(var _i in param)
+                        var param_error = icd_code_error.Split(';').ToList();
+                        if (!string.IsNullOrEmpty(mess))
                         {
-                            if (CheckICD(mainCode, _i, ref mess))
+                            if (param_error.Contains(mainCode))
                             {
                                 HIS.UC.Icd.ADO.IcdInputADO Icd = new HIS.UC.Icd.ADO.IcdInputADO();
                                 Icd.ICD_CODE = null;
@@ -536,27 +535,22 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                                 {
                                     icdProcessor.Reload(ucIcd, Icd);
                                 }
-
-                                
-                                valid = false;
-                                
                             }
-                            else
+                            var icd_cdoe = listSubCode.Where(code => !param_error.Contains(code)).ToList();
+
+                            var icd = BackendDataWorker.Get<HIS_ICD>().Where(s => icd_cdoe.Contains(s.ICD_CODE)).ToList();
+                            MessageBox.Show(this, mess, "Thông báo", MessageBoxButtons.OK);
+                            SecondaryIcdDataADO subIcd = new SecondaryIcdDataADO();
+                            subIcd.ICD_SUB_CODE = string.Join(";", icd.Select(s => s.ICD_CODE).ToList());
+
+                            subIcd.ICD_TEXT = string.Join(";", icd.Select(s => s.ICD_NAME).ToList());
+
+                            if (ucSecondaryIcd != null)
                             {
-                                listicd.Add(_i);
+                                subIcdProcessor.Reload(ucSecondaryIcd, subIcd);
                             }
+                            valid = false;
                         }
-                        SecondaryIcdDataADO subIcd = new SecondaryIcdDataADO();
-                        subIcd.ICD_SUB_CODE = string.Join(";",listicd);
-                        var icd = BackendDataWorker.Get<HIS_ICD>().Where(s => listicd.Equals(s.ICD_CODE)).ToList();
-                        subIcd.ICD_TEXT = string.Join(";",icd.Select(s=>s.ICD_NAME).ToList());
-
-                        if (ucSecondaryIcd != null)
-                        {
-                            subIcdProcessor.Reload(ucSecondaryIcd, subIcd);
-                        }
-                        if (!string.IsNullOrEmpty(mess)) MessageBox.Show(this, mess, "Thông báo", MessageBoxButtons.OK);
-
                     }
                 }
             }
