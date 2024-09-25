@@ -1041,10 +1041,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             string mainCode = "";
             try
             {
-                var icdValue = this.UcIcdGetValue();
-                if (icdValue != null && icdValue is UC.Icd.ADO.IcdInputADO)
+                if (this.icdProcessorYHCT != null && this.ucIcdYHCT != null)
                 {
-                    mainCode = ((UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
+                    var icdValue = this.icdProcessorYHCT.GetValue(this.ucIcdYHCT);
+                    if (icdValue != null && icdValue is UC.Icd.ADO.IcdInputADO)
+                    {
+                        mainCode = ((UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
+                    }
                 }
             }
             catch (Exception ex)
@@ -1226,11 +1229,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 HIS.UC.Icd.ADO.IcdInitADO ado = new HIS.UC.Icd.ADO.IcdInitADO();
                 ado.DelegateNextFocus = NextForcusSubIcd;
                 //ado.DelegateRequiredCause = DelegateRequiredCause;
-
                 ado.LblIcdMain = "CĐ YHCT:";
                 ado.ToolTipsIcdMain = "Chẩn đoán y học cổ truyền";
                 ado.Width = 450;
                 ado.Height = 30;
+                ado.hisTreatment = treatment;
                 //ado.LabelTextSize = 100;
                 ado.DataIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_TRADITIONAL == 1).OrderBy(o => o.ICD_CODE).ToList();
                 ado.AutoCheckIcd = HisConfigCFG.AutoCheckIcd == GlobalVariables.CommonStringTrue;
@@ -1261,6 +1264,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 ado.Height = 30;
                 ado.TextLblIcd = "CĐ YHCT Phụ:";
                 ado.TootiplciIcdSubCode = "Chẩn đoán y học cổ truyền phụ";
+                ado.hisTreatment = treatment;
                 //ado.TextLblIcd = Inventec.Common.Resource.Get.Value("frmAssignPrescription.lciIcdText.Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 ado.TextNullValue = "Nhấn F1 để chọn bệnh";
                 ado.limitDataSource = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;

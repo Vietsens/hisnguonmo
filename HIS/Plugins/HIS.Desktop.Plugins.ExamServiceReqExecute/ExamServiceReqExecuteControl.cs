@@ -358,6 +358,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 ModuleList();
                 EnableViaKeyDisablePartExamByExecutor();
                 FillDatatoCDYHCT();
+                
                 checkIcdManager = new CheckIcdManager(DlgIcdSubCode, treatment);
             }
             catch (Exception ex)
@@ -370,26 +371,26 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-                if (serviceReq != null)
+                if (HisServiceReqView != null)
                 {
-                    if (!string.IsNullOrEmpty(serviceReq.TRADITIONAL_ICD_CODE))
+                    if (!string.IsNullOrEmpty(HisServiceReqView.TRADITIONAL_ICD_CODE))
                     { 
                             HIS.UC.Icd.ADO.IcdInputADO Icd = new HIS.UC.Icd.ADO.IcdInputADO();
-                            Icd.ICD_CODE = serviceReq.TRADITIONAL_ICD_CODE;
-                            Icd.ICD_NAME = serviceReq.TRADITIONAL_ICD_NAME;
+                            Icd.ICD_CODE = HisServiceReqView.TRADITIONAL_ICD_CODE;
+                            Icd.ICD_NAME = HisServiceReqView.TRADITIONAL_ICD_NAME;
 
                             if (ucIcdYHCT != null)
                             {
-                                icdProcessor.Reload(ucIcdYHCT, Icd);
+                                icdProcessorYHCT.Reload(ucIcdYHCT, Icd);
                             }
 
-                            HIS.UC.Icd.ADO.IcdInputADO subIcd = new HIS.UC.Icd.ADO.IcdInputADO();
-                            subIcd.ICD_CODE = serviceReq.TRADITIONAL_ICD_SUB_CODE;
-                            subIcd.ICD_NAME = serviceReq.TRADITIONAL_ICD_TEXT;
+                            HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subIcd = new HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO();
+                            subIcd.ICD_SUB_CODE = HisServiceReqView.TRADITIONAL_ICD_SUB_CODE;
+                            subIcd.ICD_TEXT = HisServiceReqView.TRADITIONAL_ICD_TEXT;
 
                             if (ucSecondaryIcdYHCT != null)
                             {
-                                icdProcessor.Reload(ucSecondaryIcdYHCT, subIcd);
+                                subIcdProcessorYHCT.Reload(ucSecondaryIcdYHCT, subIcd);
                             }
                     }
                 }
@@ -2042,8 +2043,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     hospitalizeADO.ModuleLink = this.moduleData.ModuleLink;
                     hospitalizeADO.IcdCode = this.icdDefaultFinish.ICD_CODE;
                     hospitalizeADO.IcdName = this.icdDefaultFinish.ICD_NAME;
-                    hospitalizeADO.TraditionalIcdCode = this.treatment.TRADITIONAL_ICD_CODE;
-                    hospitalizeADO.TraditionalIcdName = this.treatment.TRADITIONAL_ICD_NAME;
+                    hospitalizeADO.TraditionalIcdCode = IcdCodeYHCT;
+                    hospitalizeADO.TraditionalIcdName = IcdNameYHCT;
+                    hospitalizeADO.TraditionalIcdSubCode = IcdSubCodeYHCT;
+                    hospitalizeADO.TraditionalIcdText = IcdTextYHCT;
                     if (this.patient == null || this.patient.ID == 0)
                     {
                         LoadPatient();
@@ -2273,8 +2276,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         }
                         treatmentFinishInitADO.CareerId = this.patient.CAREER_ID;
                     }
-
                     treatmentFinishInitADO.Treatment = treatment;
+                    treatmentFinishInitADO.TraditionalIcdCode = IcdCodeYHCT;
+                    treatmentFinishInitADO.TraditionalIcdName = IcdNameYHCT;
+                    treatmentFinishInitADO.TraditionalIcdText = IcdTextYHCT;
+                    treatmentFinishInitADO.TraditionalIcdSubCode = IcdSubCodeYHCT;
                     GetTotalIcd();
                     if (dicIcd != null && dicIcd.Count > 0)
                     {
@@ -2306,8 +2312,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     treatmentFinishInitADO.TreatmentEndTypeExts = GetTreatmentEndTypeExt();
                     treatmentFinishInitADO.IcdCode = this.icdDefaultFinish.ICD_CODE;
                     treatmentFinishInitADO.IcdName = this.icdDefaultFinish.ICD_NAME;
-                    treatmentFinishInitADO.TraditionalIcdCode = this.treatment.TRADITIONAL_ICD_CODE;
-                    treatmentFinishInitADO.TraditionalIcdName = this.treatment.TRADITIONAL_ICD_NAME;
+                    //treatmentFinishInitADO.TraditionalIcdCode = this.treatment.TRADITIONAL_ICD_CODE;
+                    //treatmentFinishInitADO.TraditionalIcdName = this.treatment.TRADITIONAL_ICD_NAME;
                     treatmentFinishInitADO.moduleData = this.moduleData;
                     var dataRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.moduleData.RoomId);
                     treatmentFinishInitADO.IsBlockNumOrder = dataRoom.IS_BLOCK_NUM_ORDER == 1 ? true : false;
@@ -2846,12 +2852,25 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 }
 
                 GetUcIcdYHCT();
+                bool valid = true;
+
+                //valid = (bool)this.icdProcessor.ValidationIcd(this.ucIcd, paramMessageErrorEmpty, paramMessageErrorOther) && valid;
+                //valid = (bool)this.subIcdProcessor.GetValidateWithMessage(this.ucSecondaryIcd, paramMessageErrorEmpty, paramMessageErrorOther) && valid;
+
+                valid = (bool)this.icdProcessorYHCT.ValidationIcd(this.ucIcdYHCT) && valid;
+                valid = (bool)this.subIcdProcessorYHCT.GetValidate(this.ucSecondaryIcdYHCT) && valid;
+
+
+                if (!valid) return;
                 bool check = CheckIcd(hisServiceReqSDO.TreatmentFinishSDO);
                 if (check == false)
                 {
                     return;
                 }
-
+                hisServiceReqSDO.TraditionalIcdCode = IcdCodeYHCT;
+                hisServiceReqSDO.TraditionalIcdName = IcdNameYHCT;
+                hisServiceReqSDO.TraditionalIcdSubCode = IcdSubCodeYHCT;
+                hisServiceReqSDO.TraditionalIcdText = IcdTextYHCT;
                 if (this.CheckExecuteExt(hisServiceReqSDO)
                     && this.CheckHospitalizeTime(hisServiceReqSDO)
                     //&& this.CheckSunSatAppointmentTime(hisServiceReqSDO)//đã cảnh báo trong popup chọn thời gian hẹn khám
@@ -2888,12 +2907,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
         }
 
-        private bool CheckIcd( HisTreatmentFinishSDO TreatmentFinishSDO) 
+        private bool CheckIcd( HisTreatmentFinishSDO TreatmentFinishSDO = null) 
         {
             bool valid = true;
             try
             {
                 GetUcIcdYHCT();
+                totalIcd = new List<string>();
+                totalSubIcd = new List<string>();
                 //treatment.ICD_CODE = txtIcdCode.Text;
                 //treatment.ICD_SUB_CODE = txtIcdSubCode.Text;
                 //checkIcdManager = new CheckIcdManager(DlgIcdSubCode, treatment);
@@ -2971,28 +2992,28 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                                 }
                             }
                         }
-                        if (!string.IsNullOrEmpty(txtIcdSubCode.Text))
-                        {
-                            string[] stringArray = txtIcdSubCode.Text.Split(';');
-                            List<string> lst = new List<string>(stringArray);
+                        //if (!string.IsNullOrEmpty(txtIcdSubCode.Text))
+                        //{
+                        //    string[] stringArray = txtIcdSubCode.Text.Split(';');
+                        //    List<string> lst = new List<string>(stringArray);
 
-                            if (!checkIcdManager.ProcessCheckIcd(txtIcdCode.Text, txtIcdSubCode.Text, ref messErr, HisConfigCFG.CheckIcdWhenSave == "1" || HisConfigCFG.CheckIcdWhenSave == "2"))
-                                {
-                                    if (HisConfigCFG.CheckIcdWhenSave == "1")
-                                    {
-                                        if (DevExpress.XtraEditors.XtraMessageBox.Show(messErr + ". Bạn có muốn tiếp tục?",
-                                     HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
-                                     MessageBoxButtons.YesNo) == DialogResult.No) valid = false;
-                                    }
-                                    else
-                                    {
-                                        DevExpress.XtraEditors.XtraMessageBox.Show(messErr,
-                                     HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
-                                     MessageBoxButtons.OK);
-                                        valid = false;
-                                    }
-                                }
-                            }
+                        //    if (!checkIcdManager.ProcessCheckIcd(txtIcdCode.Text, txtIcdSubCode.Text, ref messErr, HisConfigCFG.CheckIcdWhenSave == "1" || HisConfigCFG.CheckIcdWhenSave == "2"))
+                        //        {
+                        //            if (HisConfigCFG.CheckIcdWhenSave == "1")
+                        //            {
+                        //                if (DevExpress.XtraEditors.XtraMessageBox.Show(messErr + ". Bạn có muốn tiếp tục?",
+                        //             HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                        //             MessageBoxButtons.YesNo) == DialogResult.No) valid = false;
+                        //            }
+                        //            else
+                        //            {
+                        //                DevExpress.XtraEditors.XtraMessageBox.Show(messErr,
+                        //             HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                        //             MessageBoxButtons.OK);
+                        //                valid = false;
+                        //            }
+                        //        }
+                        //    }
                         }
             catch (Exception ex)
             {
@@ -3426,6 +3447,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     return;
                 }
 
+                GetUcIcdYHCT();
+                bool check = CheckIcd();
+                if (check == false)
+                {
+                    return;
+                }
                 this.onClickSaveFormAsyncForOtherButtonClick();
 
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecute.btnAssignService_Click.2");
@@ -3542,6 +3569,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     return;
                 }
                 if (!ValidAddress())
+                {
+                    return;
+                }
+
+                GetUcIcdYHCT();
+                bool check = CheckIcd();
+                if (check == false)
                 {
                     return;
                 }
@@ -3975,6 +4009,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         return;
                 }
 
+                GetUcIcdYHCT();
+                bool check = CheckIcd();
+                if (check == false)
+                {
+                    return;
+                }
+
                 HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
                 serviceReqFilter.TREATMENT_ID = HisServiceReqView.TREATMENT_ID;
                 serviceReqFilter.CREATOR = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
@@ -4249,6 +4290,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 btnSave_Click(null, null);
                 if (!IsValidForSave)
                     return;
+
+                GetUcIcdYHCT();
+                bool check = CheckIcd();
+                if (check == false)
+                {
+                    return;
+                }
 
                 Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignPrescriptionPK").FirstOrDefault();
                 if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.AssignPrescriptionPK");
@@ -6246,6 +6294,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         ado.InCode = HisServiceReqResult.HospitalizeResult.Treatment.IN_CODE;
                         ado.TraditionalIcdCode = HisServiceReqResult.HospitalizeResult.Treatment.TRADITIONAL_ICD_CODE;
                         ado.TraditionalIcdName = HisServiceReqResult.HospitalizeResult.Treatment.TRADITIONAL_ICD_NAME;
+                        ado.TraditionalIcdSubCode = HisServiceReqResult.HospitalizeResult.Treatment.TRADITIONAL_ICD_SUB_CODE;
+                        ado.TraditionalIcdText = HisServiceReqResult.HospitalizeResult.Treatment.TRADITIONAL_ICD_TEXT;
                         ado.isAutoCheckChkHospitalizeExam = HisConfigCFG.IsAutoCheckPrintHospitalizeExam;
                     }
                     hospitalizeProcessor.ReLoad(ucHospitalize, ado);
@@ -7496,18 +7546,21 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     }
                 }
                 var arrIcdCode = txtIcdSubCode.Text.Trim().Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
-                icdCodeList = new List<string>();
-                foreach (var item in arrIcdCode)
-                {
+                string icdCodeList = txtIcdSubCode.Text.Trim();
                     string messErr = null;
-                    if (!checkIcdManager.ProcessCheckIcd(null, item, ref messErr))
+                    if (!checkIcdManager.ProcessCheckIcd(txtIcdCode.Text, txtIcdSubCode.Text, ref messErr))
                     {
                         XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
-                        continue;
+                        string[] parts = icdCodeList.Split(';');
+                        parts = parts.Where(p => !string.IsNullOrEmpty(p)).ToArray();
+                        icdCodeList = string.Join(";", parts);
+                        int lastIndexOfSemicolon = icdCodeList.LastIndexOf(';');
+                        if (lastIndexOfSemicolon > 0)
+                        {
+                            icdCodeList = icdCodeList.Substring(0, lastIndexOfSemicolon);
+                        }
                     }
-                    icdCodeList.Add(item);
-                }
-                txtIcdSubCode.Text = string.Join(";", icdCodeList);
+                    txtIcdSubCode.Text = icdCodeList;//string.Join(";", icdCodeList);
             }
             catch (Exception ex)
             {

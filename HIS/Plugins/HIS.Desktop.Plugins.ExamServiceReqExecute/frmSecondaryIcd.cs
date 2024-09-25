@@ -314,7 +314,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (e.Column.FieldName == "IsChecked")
                 {
-                    SetCheckedIcdsToControl();
+                    int rowHandle = e.RowHandle;
+                    var row = gridViewSecondaryDisease.GetRow(rowHandle) as IcdADO;
+                    string icdCode = row.ICD_CODE;
+                    SetCheckedIcdsToControl(icdCode);
                 }
             }
             catch (Exception ex)
@@ -323,7 +326,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
         }
 
-        private void SetCheckedIcdsToControl()
+        private void SetCheckedIcdsToControl(string dataChoose = null)
         {
             try
             {
@@ -333,31 +336,42 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 var checkList = icdAdoChecks.Where(o => o.IsChecked == true).ToList();
                 var data = checkList.Select(o => o.ICD_CODE);
                 string result = string.Join(";", data);
-               
+
                 int count = 0;
                 foreach (var item in checkList)
                 {
                     count++;
+                    bool next = true;
                     string messErr = null;
                     if (!checkIcdManager.ProcessCheckIcd(null, result, ref messErr, false))
                     {
                         if (count == checkList.Count)
                         {
                             XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
-                            item.IsChecked = false;
                         }
-                        continue;
+                        if (!string.IsNullOrEmpty(dataChoose))
+                        {
+                            if (item.ICD_CODE == dataChoose)
+                            {
+                                item.IsChecked = false;
+                                next = false;
+                            }
+                        }
+                        //continue;
                     }
                     //break;
-                    if (count == checkList.Count)
+                    if (next == true)
                     {
-                        icdCodes += item.ICD_CODE;
-                        icdNames += item.ICD_NAME;
-                    }
-                    else
-                    {
-                        icdCodes += item.ICD_CODE + IcdUtil.seperator;
-                        icdNames += item.ICD_NAME + IcdUtil.seperator;
+                        if (count == checkList.Count)
+                        {
+                            icdCodes += item.ICD_CODE;
+                            icdNames += item.ICD_NAME;
+                        }
+                        else
+                        {
+                            icdCodes += item.ICD_CODE + IcdUtil.seperator;
+                            icdNames += item.ICD_NAME + IcdUtil.seperator;
+                        }
                     }
                 }
 
