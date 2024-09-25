@@ -163,7 +163,21 @@ namespace HIS.UC.Hospitalize.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        private void LoadTraditionalSubIcdToControl(string icdCode, string icdName)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(icdCode))
+                {
+                    txtTraditionIcdSubCode.Text = icdCode;
+                    txtTraditionIcdText.Text = icdName;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void DataToComboChuanDoanTD(CustomGridLookUpEditWithFilterMultiColumn cbo, List<HIS_ICD> data)
         {
             try

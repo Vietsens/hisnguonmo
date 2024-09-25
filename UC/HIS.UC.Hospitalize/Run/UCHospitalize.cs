@@ -220,6 +220,7 @@ namespace HIS.UC.Hospitalize.Run
 
                 LoadIcdToControl(this.hospitalizeInitADO.IcdCode, this.hospitalizeInitADO.IcdName);
                 LoadTraditionalIcdToControl(this.hospitalizeInitADO.TraditionalIcdCode, this.hospitalizeInitADO.TraditionalIcdName);
+                LoadTraditionalSubIcdToControl(this.hospitalizeInitADO.TraditionalIcdSubCode, this.hospitalizeInitADO.TraditionalIcdText);
                 txtNote.Text = this.hospitalizeInitADO.Note;
                 LoadDataToIcdSub(this.hospitalizeInitADO.IcdSubCode, this.hospitalizeInitADO.IcdText);
                 LoadHospitalReason();
