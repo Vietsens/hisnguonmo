@@ -51,6 +51,8 @@ namespace HIS.UC.ExamTreatmentFinish.ADO
 
         public string TraditionalIcdCode { get; set; }
         public string TraditionalIcdName { get; set; }
+        public string TraditionalIcdSubCode { get; set; }
+        public string TraditionalIcdText { get; set; }
 
         public bool IsBlockNumOrder { get; set; }
         public bool IsAutoSetIcdWhenFinishInOtherExam { get; set; }

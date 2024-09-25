@@ -164,6 +164,22 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             }
         }
 
+        private void LoadTraditionalSubIcdToControl(string icdCode, string icdName)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(icdCode))
+                {
+                    txtIcdSubCode.Text = icdCode;
+                    txtIcdText.Text = icdName;
+                }
+       
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void DataToComboChuanDoanTD(CustomGridLookUpEditWithFilterMultiColumn cbo, List<HIS_ICD> data)
         {
             try
