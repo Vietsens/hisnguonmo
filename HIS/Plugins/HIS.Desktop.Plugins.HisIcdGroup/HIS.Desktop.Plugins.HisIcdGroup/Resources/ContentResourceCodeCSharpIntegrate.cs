@@ -38,12 +38,12 @@
                 this.gridColumn5.Caption = Inventec.Common.Resource.Get.Value("frmIcdGroup.gridColumn5.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn6.Caption = Inventec.Common.Resource.Get.Value("frmIcdGroup.gridColumn6.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn7.Caption = Inventec.Common.Resource.Get.Value("frmIcdGroup.gridColumn7.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("frmIcdGroup.gridColumn3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn8.Caption = Inventec.Common.Resource.Get.Value("frmIcdGroup.gridColumn8.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn9.Caption = Inventec.Common.Resource.Get.Value("frmIcdGroup.gridColumn9.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn10.Caption = Inventec.Common.Resource.Get.Value("frmIcdGroup.gridColumn10.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn11.Caption = Inventec.Common.Resource.Get.Value("frmIcdGroup.gridColumn11.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn2.Caption = Inventec.Common.Resource.Get.Value("frmIcdGroup.gridColumn2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("frmIcdGroup.gridColumn3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnSearch.Text = Inventec.Common.Resource.Get.Value("frmIcdGroup.btnSearch.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("frmIcdGroup.layoutControl2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnReset.Text = Inventec.Common.Resource.Get.Value("frmIcdGroup.btnReset.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
