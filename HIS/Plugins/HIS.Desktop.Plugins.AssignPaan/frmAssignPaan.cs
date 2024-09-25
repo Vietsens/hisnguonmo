@@ -21,6 +21,7 @@ using DevExpress.XtraEditors.ViewInfo;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.LocalStorage.Location;
 using HIS.Desktop.Plugins.AssignPaan.ADO;
@@ -401,8 +402,9 @@ namespace HIS.Desktop.Plugins.AssignPaan
                         _roomIds = rooms.Select(p => p.ID).ToList();
                     }
                     var executeRoomIDs = BackendDataWorker.Get<HIS_EXECUTE_ROOM>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && _roomIds.Contains(p.ROOM_ID)).Select(o => o.ROOM_ID).ToList();
-
-                    foreach (var item in BackendDataWorker.Get<V_HIS_SERVICE_ROOM>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList())
+                    var dataold = BackendDataWorker.Get<V_HIS_SERVICE_ROOM>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                    
+                    foreach (var item in dataold)
                     {
                         if (item.SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL || item.BRANCH_ID != WorkPlace.GetBranchId())
                             continue;
@@ -420,7 +422,6 @@ namespace HIS.Desktop.Plugins.AssignPaan
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         void LoadDataPatientTypeByInstructionTime(long instructionTime)
         {
             try
