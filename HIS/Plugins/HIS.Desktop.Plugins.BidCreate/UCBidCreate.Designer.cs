@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.BidCreate
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCBidCreate));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -231,11 +232,13 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciFileDownload = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProviderLeft = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxValidationProviderRight = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProviderLeft = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProviderRight = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.lciQCĐG = new DevExpress.XtraLayout.LayoutControlItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.timer1 = new System.Windows.Forms.Timer();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.txtBidApThauCode = new DevExpress.XtraEditors.TextEdit();
+            this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboBidForm.Properties)).BeginInit();
@@ -366,10 +369,13 @@ namespace HIS.Desktop.Plugins.BidCreate
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderLeft)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciQCĐG)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtBidApThauCode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.txtBidApThauCode);
             this.layoutControl1.Controls.Add(this.cboBidForm);
             this.layoutControl1.Controls.Add(this.txtBID);
             this.layoutControl1.Controls.Add(this.btnFileDownload);
@@ -442,7 +448,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.txtBidYear.Properties.Mask.EditMask = "d";
             this.txtBidYear.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric;
             this.txtBidYear.Properties.MaxLength = 4;
-            this.txtBidYear.Size = new System.Drawing.Size(334, 20);
+            this.txtBidYear.Size = new System.Drawing.Size(131, 20);
             this.txtBidYear.StyleController = this.layoutControl1;
             this.txtBidYear.TabIndex = 14;
             this.txtBidYear.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBidYear_KeyDown);
@@ -2310,7 +2316,8 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciToTime,
             this.lciFileDownload,
             this.layoutControlItem17,
-            this.layoutControlItem18});
+            this.layoutControlItem18,
+            this.layoutControlItem20});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -2418,7 +2425,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciBidYear.Control = this.txtBidYear;
             this.lciBidYear.Location = new System.Drawing.Point(897, 24);
             this.lciBidYear.Name = "lciBidYear";
-            this.lciBidYear.Size = new System.Drawing.Size(423, 24);
+            this.lciBidYear.Size = new System.Drawing.Size(220, 24);
             this.lciBidYear.Text = "Năm QĐ:";
             this.lciBidYear.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBidYear.TextSize = new System.Drawing.Size(80, 20);
@@ -2530,6 +2537,27 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // txtBidApThauCode
+            // 
+            this.txtBidApThauCode.Location = new System.Drawing.Point(1194, 26);
+            this.txtBidApThauCode.Name = "txtBidApThauCode";
+            this.txtBidApThauCode.Size = new System.Drawing.Size(124, 20);
+            this.txtBidApThauCode.StyleController = this.layoutControl1;
+            this.txtBidApThauCode.TabIndex = 20;
+            // 
+            // layoutControlItem20
+            // 
+            this.layoutControlItem20.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem20.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem20.Control = this.txtBidApThauCode;
+            this.layoutControlItem20.Location = new System.Drawing.Point(1117, 24);
+            this.layoutControlItem20.Name = "layoutControlItem20";
+            this.layoutControlItem20.Size = new System.Drawing.Size(203, 24);
+            this.layoutControlItem20.Text = "Mã áp thầu:";
+            this.layoutControlItem20.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem20.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem20.TextToControlDistance = 5;
             // 
             // UCBidCreate
             // 
@@ -2670,6 +2698,8 @@ namespace HIS.Desktop.Plugins.BidCreate
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderLeft)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderRight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciQCĐG)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtBidApThauCode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2842,5 +2872,7 @@ namespace HIS.Desktop.Plugins.BidCreate
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repAdjustAmount;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repAdjustAmountDis;
+        private DevExpress.XtraEditors.TextEdit txtBidApThauCode;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem20;
     }
 }

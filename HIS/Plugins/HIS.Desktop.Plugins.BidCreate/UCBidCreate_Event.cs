@@ -313,6 +313,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 this.bidModel.BID_NUMBER = txtBidNumber.Text.Trim();
                 this.bidModel.BID_TYPE_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboBidType.EditValue.ToString());
                 this.bidModel.BID_YEAR = txtBidYear.Text.Trim();
+                this.bidModel.BID_APTHAU_CODE = txtBidApThauCode.Text.Trim();
                 if (dtFromTime.EditValue != null && dtFromTime.DateTime != DateTime.MinValue && dtToTime.EditValue != null && dtToTime.DateTime != DateTime.MinValue)
                 {
                     if (dtToTime.DateTime < dtFromTime.DateTime)
