@@ -2346,12 +2346,13 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         this.currrentServiceAdo.HisMedicine.TDL_BID_PACKAGE_CODE = this.currrentServiceAdo.TDL_BID_PACKAGE_CODE;
                         this.currrentServiceAdo.HisMedicine.TDL_BID_NUMBER = this.currrentServiceAdo.TDL_BID_NUMBER;
                     }
-                    this.currrentServiceAdo.TT_THAU = this.currrentServiceAdo.HisMedicine.TT_THAU = string.Format("{0};{1};{2};{3}", this.currrentServiceAdo.TDL_BID_NUMBER, this.currrentServiceAdo.TDL_BID_PACKAGE_CODE, this.currrentServiceAdo.TDL_BID_GROUP_CODE, this.currrentServiceAdo.TDL_BID_YEAR);
+
                     this.currrentServiceAdo.BidId = medicineProcessor.GetBid(this.ucMedicineTypeTree);
                     if (this.currentBid != null && this.currrentServiceAdo.BidId == null)
                     {
                         this.currrentServiceAdo.BidId = this.currentBid.ID;
                     }
+                    this.currrentServiceAdo.TT_THAU = this.currrentServiceAdo.HisMedicine.TT_THAU = string.Format("{0};{1};{2};{3};{4}", this.currrentServiceAdo.TDL_BID_NUMBER, this.currrentServiceAdo.TDL_BID_PACKAGE_CODE, this.currrentServiceAdo.TDL_BID_GROUP_CODE, this.currrentServiceAdo.TDL_BID_YEAR, this.currrentServiceAdo.BidId.HasValue ? listBids.FirstOrDefault(o=>o.ID == this.currrentServiceAdo.BidId).BID_APTHAU_CODE : "");
 
                     this.currrentServiceAdo.HisMedicine.MEDICAL_CONTRACT_ID = this.currrentServiceAdo.MEDICAL_CONTRACT_ID;
                     this.currrentServiceAdo.HisMedicine.CONTRACT_PRICE = this.currrentServiceAdo.CONTRACT_PRICE;
@@ -3391,7 +3392,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     this.currrentServiceAdo.HisMedicine.ACTIVE_INGR_BHYT_NAME = this.currrentServiceAdo.activeIngrBhytName;
                     this.currrentServiceAdo.HisMedicine.DOSAGE_FORM = this.currrentServiceAdo.dosageForm;
                     this.currrentServiceAdo.HisMedicine.MEDICINE_USE_FORM_ID = this.currrentServiceAdo.medicineUseFormId;
-                    this.currrentServiceAdo.TT_THAU = this.currrentServiceAdo.HisMedicine.TT_THAU = string.Format("{0};{1};{2};{3}", this.currrentServiceAdo.TDL_BID_NUMBER, this.currrentServiceAdo.TDL_BID_PACKAGE_CODE, this.currrentServiceAdo.TDL_BID_GROUP_CODE, this.currrentServiceAdo.TDL_BID_YEAR);
+                    this.currrentServiceAdo.TT_THAU = this.currrentServiceAdo.HisMedicine.TT_THAU = string.Format("{0};{1};{2};{3};{4}", this.currrentServiceAdo.TDL_BID_NUMBER, this.currrentServiceAdo.TDL_BID_PACKAGE_CODE, this.currrentServiceAdo.TDL_BID_GROUP_CODE, this.currrentServiceAdo.TDL_BID_YEAR, this.currrentServiceAdo.BidId.HasValue ? listBids.FirstOrDefault(o => o.ID == this.currrentServiceAdo.BidId).BID_APTHAU_CODE : "");
                     if (this.currrentServiceAdo.HisMedicinePatys == null)
                     {
                         this.currrentServiceAdo.HisMedicinePatys = new List<HIS_MEDICINE_PATY>();
