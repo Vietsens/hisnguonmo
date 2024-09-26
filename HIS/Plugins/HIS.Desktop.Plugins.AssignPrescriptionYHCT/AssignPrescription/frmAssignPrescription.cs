@@ -2156,6 +2156,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                             if(!string.IsNullOrEmpty(currentTracking.TRADITIONAL_ICD_CODE))
                                 LoadICDFoUC("", "", "", "", currentTracking.TRADITIONAL_ICD_CODE, currentTracking.TRADITIONAL_ICD_NAME, currentTracking.TRADITIONAL_ICD_SUB_CODE, currentTracking.TRADITIONAL_ICD_TEXT);
                         }
+                        else
+                        {
+                            LogSystem.Debug("KHONG LOAD ICD KHI TO DIEU TRI THAY DOI.(Dieu kien : SERVICE_REQ_ICD_OPTION == null va UpdateTreatmentIcd not null)");
+                            LogSystem.Debug("cau hinh :  HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION );" + HisConfigs.Get<string>("HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION")
+                                + " ,cau hinh HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd : "+ HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd"));
+                        }
                     }
                 }
             }
