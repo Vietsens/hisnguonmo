@@ -250,7 +250,7 @@
             // 
             // gridColumn3
             // 
-            this.gridColumn3.Caption = "Kiểm tra cùng nhóm ICD";
+            this.gridColumn3.Caption = "Chặn cùng nhóm ICD";
             this.gridColumn3.ColumnEdit = this.repositoryItemCheckEdit1;
             this.gridColumn3.FieldName = "CHECK_SAME_ICD_GROUPP";
             this.gridColumn3.Name = "gridColumn3";

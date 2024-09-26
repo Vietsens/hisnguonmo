@@ -49,6 +49,8 @@ namespace HIS.UC.Hospitalize.ADO
         public string IcdText { get; set; }
         public string TraditionalIcdCode { get; set; }
         public string TraditionalIcdName { get; set; }
+        public string TraditionalIcdSubCode { get; set; }
+        public string TraditionalIcdText { get; set; }
 
         public bool isEmergency  { get; set; }
 

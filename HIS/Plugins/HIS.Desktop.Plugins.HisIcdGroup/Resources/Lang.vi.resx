@@ -130,10 +130,10 @@
     <value>Tìm(Ctrl F)</value>
   </data>
   <data name="frmIcdGroup.chkICD.Properties.Caption" xml:space="preserve">
-    <value>Kiểm tra cùng nhóm ICD</value>
+    <value>Chặn cùng nhóm ICD</value>
   </data>
   <data name="frmIcdGroup.chkICD.ToolTip" xml:space="preserve">
-    <value>Kiểm tra chẩn đoán nếu cùng nhóm với ICD cũ trong đợt điều trị</value>
+    <value>Chặn chẩn đoán nếu cùng nhóm với ICD cũ trong đợt điều trị</value>
   </data>
   <data name="frmIcdGroup.gridColumn10.Caption" xml:space="preserve">
     <value>Người tạo</value>
@@ -145,7 +145,7 @@
     <value>Người sửa</value>
   </data>
   <data name="frmIcdGroup.gridColumn3.Caption" xml:space="preserve">
-    <value>Kiểm tra cùng nhóm ICD</value>
+    <value>Chặn cùng nhóm ICD</value>
   </data>
   <data name="frmIcdGroup.gridColumn4.Caption" xml:space="preserve">
     <value>LOCK</value>
