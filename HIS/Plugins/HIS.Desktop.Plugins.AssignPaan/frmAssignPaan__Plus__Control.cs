@@ -19,6 +19,7 @@ using ACS.EFMODEL.DataModels;
 using DevExpress.XtraEditors.Controls;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignPaan.Config;
 using HIS.Desktop.Plugins.AssignPaan.Resources;
@@ -532,6 +533,13 @@ namespace HIS.Desktop.Plugins.AssignPaan
                         if (dicServiceRoom.ContainsKey(service.ID))
                         {
                             this.hisCurrentServiceRooms = dicServiceRoom[service.ID];
+                            //key moi
+                            var listPatientTypeRoom = BackendDataWorker.Get<HIS_PATIENT_TYPE_ROOM>().Where(s => s.PATIENT_TYPE_ID == this.treatment.TDL_PATIENT_TYPE_ID).ToList();
+
+                            if (HisConfigs.Get<string>("MOS.HIS_SERVICE_REQ.ASSIGN_ROOM_BY_PATIENT_TYPE") == "1")
+                            {
+                                hisCurrentServiceRooms = hisCurrentServiceRooms.Where(s => listPatientTypeRoom.Select(o => o.ROOM_ID).Contains(s.ROOM_ID)).ToList();
+                            }
                         }
 
                         long? intructionNumByType = 1;
