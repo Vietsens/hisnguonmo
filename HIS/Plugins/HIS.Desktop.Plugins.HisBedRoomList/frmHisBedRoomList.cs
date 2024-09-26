@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using AutoMapper;
+using DevExpress.XtraBars.Controls;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.Repository;
@@ -32,6 +33,7 @@ using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
@@ -929,7 +931,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                     checkEdit1.Checked = row.IS_RESTRICT_EXECUTE_ROOM == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? true : false;
                     cboChuyenKhoa.EditValue = row.SPECIALITY_ID;
                     cboCashierRoom.EditValue = row.DEFAULT_CASHIER_ROOM_ID;
-                    //cboAccountBook.EditValue = row.QR_ACCOUNT_BOOK_ID;
+                    cboAccountBook.EditValue = row.QR_ACCOUNT_BOOK_ID;
                     //txtConfig.Text = row.QR_CONFIG_JSON;
                     if (row.IS_ACTIVE == IS_ACTIVE_TRUE)
                     {
@@ -942,6 +944,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                         cboKhuVuc.EditValue = data.Where(p => p.ID == row.ROOM_ID).FirstOrDefault().AREA_ID;
                         Inventec.Common.Logging.LogSystem.Warn("api/HisRoom/Get        " + data.FirstOrDefault().AREA_ID);
                         cboKhuVuc.Refresh();
+                        txtConfig.Text = data.Where(p => p.ID == row.ROOM_ID).FirstOrDefault() != null ? data.Where(p => p.ID == row.ROOM_ID).FirstOrDefault().QR_CONFIG_JSON : "";
                     }
                     ActionType = GlobalVariables.ActionEdit;
                     EnableControlChanged(ActionType);
@@ -1045,7 +1048,8 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 hisRoom.ID = currentBedRoom.ROOM_ID;
                 hisRoom.IS_PAUSE = chkIsPause.Checked ? (short)1 : (short)0;
                 hisRoom.IS_RESTRICT_REQ_SERVICE = chkIsRestrictReqService.Checked ? (short)1 : (short)0;
-                //if(cboAccountBook.EditValue != null) hisRoom.QR_ACCOUNT_BOOK_ID = Convert.ToInt64(Convert.ToInt64(cboAccountBook.EditValue));
+                if(cboAccountBook.EditValue != null) hisRoom.QR_ACCOUNT_BOOK_ID = Convert.ToInt64(Convert.ToInt64(cboAccountBook.EditValue));
+                hisRoom.QR_CONFIG_JSON = txtConfig.Text;
                 if (cboChuyenKhoa.EditValue != null)
                 {
                     hisRoom.SPECIALITY_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboChuyenKhoa.EditValue.ToString());
@@ -1079,6 +1083,8 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
 
                 WaitingManager.Show();
                 HisBedRoomSDO result = null;
+                Inventec.Common.Logging.LogSystem.Debug("Du lieu gui len api: " + RequestUriStore.HIS_BED_ROOM_CREATE + " : " + LogUtil.TraceData("HisBedRoomSDO", HisBedRoomSDO));
+
                 if (this.ActionType == GlobalVariables.ActionAdd)
                 {
 
@@ -1793,8 +1799,11 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
 
                     string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(result);
                     txtConfig.Text = jsonString.ToString();
-                    popupControlContainer1.Hide();
+                    
+                    
                 }
+                PopupContainerBarControl control = popupControlContainer1.Parent as PopupContainerBarControl;
+                control.ClosePopup();
             }
             catch (Exception ex)
             {
