@@ -19,6 +19,7 @@ using DevExpress.XtraEditors;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.Plugins.ServiceExecute.ADO;
 using HIS.Desktop.Plugins.ServiceExecute.Config;
 using HIS.Desktop.Utility;
@@ -479,15 +480,20 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        private string key = HisConfigs.Get<string>("HIS.Desktop.Plugins.SurgServiceReqExecute.ExecuteRoleUserOption");
         private void ComboAcsUser(GridLookUpEdit cbo, List<string> loginNames)
         {
             try
             {
                 List<AcsUserADO> acsUserAlows = new List<AcsUserADO>();
+                
                 if (loginNames != null && loginNames.Count > 0)
                 {
                     acsUserAlows = AcsUserADOList.Where(o => loginNames.Contains(o.LOGINNAME)).ToList();
+                }
+                else if(key == "1")
+                {
+                    acsUserAlows = null;
                 }
                 else
                 {
@@ -500,6 +506,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 columnInfos.Add(new ColumnInfo("DEPARTMENT_NAME", "", 250, 3));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("USERNAME", "LOGINNAME", columnInfos, false, 250);
                 ControlEditorLoader.Load(cbo, acsUserAlows, controlEditorADO);
+                
             }
             catch (Exception ex)
             {

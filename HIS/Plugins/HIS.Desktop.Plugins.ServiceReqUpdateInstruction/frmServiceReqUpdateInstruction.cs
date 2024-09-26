@@ -502,7 +502,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 subIcdProcessorYHCT = new SecondaryIcdProcessor(new CommonParam(), listIcd.Where(s=>s.IS_TRADITIONAL == 1).ToList());
                 HIS.UC.SecondaryIcd.ADO.SecondaryIcdInitADO ado = new UC.SecondaryIcd.ADO.SecondaryIcdInitADO();
                 ado.DelegateNextFocus = NextForcusOut;
-                ado.DelegateGetIcdMain = DelegateCheckICDSub;
+                //ado.DelegateGetIcdMain = DelegateCheckICDSub;
                 ado.Width = 440;
                 ado.Height = 30;
                 ado.TextLblIcd = "CĐ YHCT Phụ:";

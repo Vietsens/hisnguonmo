@@ -386,11 +386,14 @@ namespace HIS.Desktop.Plugins.SereServTein
                     HisSereServTeinFilter filterSereServTeinToCheck = new HisSereServTeinFilter();
                     filterSereServTeinToCheck.TDL_TREATMENT_ID = this.currentServiceReq.TREATMENT_ID;
                     filterSereServTeinToCheck.TEST_INDEX_IDs = testIndexIds;
+                    LogSystem.Debug("HisSereServTeinFilter: " + LogUtil.TraceData("HisSereServTeinFilter", filterSereServTeinToCheck));
                     var sereServTeinToCheck = new BackendAdapter(param).Get<List<HIS_SERE_SERV_TEIN>>("/api/HisSereServTein/Get", ApiConsumers.MosConsumer, filterSereServTeinToCheck, param);
-
+                    
                     if (sereServTeinToCheck != null && sereServTeinToCheck.Count() > 0)
                     {
-                        var sereServTein = sereServTeinToCheck.Where(o => !String.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ThenByDescending(o => o.ID).FirstOrDefault();
+                        
+                        var sereServTein = sereServTeinToCheck.Where(o => !String.IsNullOrEmpty(o.VALUE)).FirstOrDefault();
+                        LogSystem.Debug("có chỉ số được đánh dấu là để tính mức lọc cầu thận. sereServTein: " + LogUtil.TraceData("sereServTein", sereServTein));
                         if (sereServTein != null)
                         {
                             var testIndex = TestIndexDatas.FirstOrDefault(o => o.ID == (sereServTein.TEST_INDEX_ID ?? 0));
@@ -408,6 +411,47 @@ namespace HIS.Desktop.Plugins.SereServTein
 
                                 }
                             }
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            LogSystem.Debug("không có chỉ số được đánh dấu là để tính mức lọc cầu thận. sereServTeinToCheck is null -> lấy dữ liệu từ bảng  V_HIS_SERE_SERV_TEIN_1.");
+                            HisSereServTeinView1Filter teFilter = new HisSereServTeinView1Filter();
+                            teFilter.TREATMENT_IDs = new List<long>() { this.currentServiceReq.TREATMENT_ID };
+                            teFilter.TEST_INDEX_IDs = testIndexIds;
+                            LogSystem.Debug("HisSereServTeinView1Filter: " + LogUtil.TraceData("HisSereServTeinView1Filter", teFilter));
+                            var View1Tein = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN_1>>("/api/HisSereServTein/GetView1", ApiConsumers.MosConsumer, teFilter, param);
+                            if (View1Tein != null && View1Tein.Count > 0)
+                            {
+
+                                var sereServTein = View1Tein.Where(o => !String.IsNullOrEmpty(o.VALUE) && o.TDL_INTRUCTION_TIME < currentServiceReq.INTRUCTION_TIME).OrderByDescending(s => s.TDL_INTRUCTION_TIME).ThenByDescending(o => o.ID).FirstOrDefault();
+
+                                if (sereServTein != null)
+                                {
+                                    var testIndex = TestIndexDatas.FirstOrDefault(o => o.ID == (sereServTein.TEST_INDEX_ID ?? 0));
+                                    if (currentDhst != null && currentTreatment != null && testIndex != null)
+                                    {
+                                        decimal chiso;
+                                        string ssTeinVL = sereServTein.VALUE.Replace(".", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+                                         .Replace(",", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                                        if (Decimal.TryParse(ssTeinVL, out chiso))
+                                        {
+                                            if (testIndex.CONVERT_RATIO_MLCT.HasValue)
+                                                chiso *= (testIndex.CONVERT_RATIO_MLCT ?? 0);
+                                            decimal mlct = Inventec.Common.Calculate.Calculation.MucLocCauThan(currentTreatment.TDL_PATIENT_DOB, currentDhst.WEIGHT ?? 0, currentDhst.HEIGHT ?? 0, chiso, currentTreatment.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE);
+                                            lblMlct.Text = mlct > 0 ? mlct.ToString() : "";
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+
+                            LogSystem.Error(e);
                         }
                     }
 
