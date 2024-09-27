@@ -55,7 +55,7 @@ using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.HisBedRoomList
 {
-    public partial class frmHisBedRoomList : HIS.Desktop.Utility.FormBase
+    public partial class frmHisBedRoomList : Form//HIS.Desktop.Utility.FormBase
     {
         #region Declare
         Inventec.Desktop.Common.Modules.Module currentModule;
@@ -92,7 +92,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             }
         }
         public frmHisBedRoomList(Inventec.Desktop.Common.Modules.Module module)
-            : base(module)
+            //: base(module)
         {
             InitializeComponent();
             try
@@ -1642,7 +1642,14 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        // thinhdt2
+        //xu ly them cua hinh QR
+        #region them cau hinh QR
+        public class CONFIGADO
+        {
+            public string BANK { get; set; }
+            public string VALUE { get; set; }
+        }
         private void btnChangeConfig_CheckedChanged(object sender, EventArgs e)
         {
             try
@@ -1655,14 +1662,24 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 table.Columns.Add("Value", typeof(object));
 
                 // Thêm dữ liệu cho 2 dòng "Ngân hàng" và "Cấu hình"
+                
+                
                 table.Rows.Add("Ngân hàng", null);  
                 table.Rows.Add("Cấu hình", "");   
 
                 gridControl2.DataSource = table;
 
 
-
-
+                if (!string.IsNullOrEmpty(txtConfig.Text))
+                {
+                    CONFIGADO config = Newtonsoft.Json.JsonConvert.DeserializeObject<CONFIGADO>(txtConfig.Text);
+                    var cbocf = listConfigEncode.FirstOrDefault(s => s.KEY == config.BANK);
+                    if (cbocf != null)
+                    {
+                        gridView12.SetRowCellValue(0, "Value", cbocf.KEY);
+                        gridView12.SetRowCellValue(1, "Value", cbocf.VALUE);
+                    }
+                }
                 gridView12.OptionsView.NewItemRowPosition = DevExpress.XtraGrid.Views.Grid.NewItemRowPosition.None;
                 gridView12.OptionsBehavior.Editable = true;
 
@@ -1811,5 +1828,48 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void cboAccountBook_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete) 
+                {
+                    
+                    var gridLookupEdit = sender as DevExpress.XtraEditors.GridLookUpEdit;
+                    if (gridLookupEdit != null)
+                    {
+                        gridLookupEdit.EditValue = null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtConfigValue_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var textEdit = sender as DevExpress.XtraEditors.TextEdit;
+                if (textEdit != null)
+                {
+                    
+                    this.VALUE = textEdit.EditValue.ToString();
+
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        //
+#endregion
     }
 }
