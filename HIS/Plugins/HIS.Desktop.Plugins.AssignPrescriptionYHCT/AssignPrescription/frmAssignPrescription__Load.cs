@@ -1077,25 +1077,33 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     }
                 }
                 LogSystem.Debug("cau hinh HIS.Desktop.Plugins.IsloadIcdFromExamServiceExecute: " + HisConfigCFG.IsloadIcdFromExamServiceExecute);
-                if((HisConfigCFG.IsloadIcdFromExamServiceExecute && this.icdExam != null) 
-                    || string.IsNullOrEmpty(this.currentTreatmentWithPatientType.TRADITIONAL_ICD_CODE))
+                if(this.icdExam != null &&
+                    (HisConfigCFG.IsloadIcdFromExamServiceExecute || string.IsNullOrEmpty(this.currentTreatmentWithPatientType.TRADITIONAL_ICD_CODE)))
                 {
                     LogSystem.Debug("Ho so dieu tri khong co YHCT -> load tu xlkham ");
                     //yhct
-                    IcdInputADO icdYHCT = new IcdInputADO();
-                    icdYHCT.ICD_CODE = this.icdExam.TRADITIONAL_ICD_CODE;
-                    icdYHCT.ICD_NAME = this.icdExam.TRADITIONAL_ICD_NAME;
-                    if (ucIcdYHCT != null)
+                    if (!string.IsNullOrEmpty(this.icdExam.TRADITIONAL_ICD_CODE))
                     {
-                        icdProcessorYHCT.Reload(ucIcdYHCT, icdYHCT);
+                        IcdInputADO icdYHCT = new IcdInputADO();
+                        icdYHCT.ICD_CODE = this.icdExam.TRADITIONAL_ICD_CODE;
+                        icdYHCT.ICD_NAME = this.icdExam.TRADITIONAL_ICD_NAME;
+                        if (ucIcdYHCT != null)
+                        {
+                            icdProcessorYHCT.Reload(ucIcdYHCT, icdYHCT);
+                        }
                     }
-                    SecondaryIcdDataADO subIcdYHCT = new SecondaryIcdDataADO();
-                    subIcdYHCT.ICD_SUB_CODE = this.icdExam.TRADITIONAL_ICD_SUB_CODE;
-                    subIcdYHCT.ICD_TEXT = this.icdExam.TRADITIONAL_ICD_TEXT;
-                    if (ucSecondaryIcdYHCT != null)
+                    
+                    if (!string.IsNullOrEmpty(this.icdExam.TRADITIONAL_ICD_SUB_CODE))
                     {
-                        subIcdProcessorYHCT.Reload(ucSecondaryIcdYHCT, subIcdYHCT);
+                        SecondaryIcdDataADO subIcdYHCT = new SecondaryIcdDataADO();
+                        subIcdYHCT.ICD_SUB_CODE = this.icdExam.TRADITIONAL_ICD_SUB_CODE;
+                        subIcdYHCT.ICD_TEXT = this.icdExam.TRADITIONAL_ICD_TEXT;
+                        if (ucSecondaryIcdYHCT != null)
+                        {
+                            subIcdProcessorYHCT.Reload(ucSecondaryIcdYHCT, subIcdYHCT);
+                        }
                     }
+                    
                     //
                 }
                 else if(!string.IsNullOrEmpty(this.currentTreatmentWithPatientType.TRADITIONAL_ICD_CODE) 
@@ -1103,20 +1111,28 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 {
                     LogSystem.Debug("Ho so dieu tri co YHCT -> load tu treatment ");
                     //yhct
-                    IcdInputADO icdYHCT = new IcdInputADO();
-                    icdYHCT.ICD_CODE = this.currentTreatmentWithPatientType.TRADITIONAL_ICD_CODE;
-                    icdYHCT.ICD_NAME = this.currentTreatmentWithPatientType.TRADITIONAL_ICD_NAME;
-                    if (ucIcdYHCT != null)
+                    if (!string.IsNullOrEmpty(this.currentTreatmentWithPatientType.TRADITIONAL_ICD_CODE))
                     {
-                        icdProcessorYHCT.Reload(ucIcdYHCT, icdYHCT);
+                        IcdInputADO icdYHCT = new IcdInputADO();
+                        icdYHCT.ICD_CODE = this.currentTreatmentWithPatientType.TRADITIONAL_ICD_CODE;
+                        icdYHCT.ICD_NAME = this.currentTreatmentWithPatientType.TRADITIONAL_ICD_NAME;
+                        if (ucIcdYHCT != null)
+                        {
+                            icdProcessorYHCT.Reload(ucIcdYHCT, icdYHCT);
+                        }
                     }
-                    SecondaryIcdDataADO subIcdYHCT = new SecondaryIcdDataADO();
-                    subIcdYHCT.ICD_SUB_CODE = this.currentTreatmentWithPatientType.TRADITIONAL_ICD_SUB_CODE;
-                    subIcdYHCT.ICD_TEXT = this.currentTreatmentWithPatientType.TRADITIONAL_ICD_TEXT;
-                    if (ucSecondaryIcdYHCT != null)
+                    
+                    if (!string.IsNullOrEmpty(this.currentTreatmentWithPatientType.TRADITIONAL_ICD_SUB_CODE))
                     {
-                        subIcdProcessorYHCT.Reload(ucSecondaryIcdYHCT, subIcdYHCT);
+                        SecondaryIcdDataADO subIcdYHCT = new SecondaryIcdDataADO();
+                        subIcdYHCT.ICD_SUB_CODE = this.currentTreatmentWithPatientType.TRADITIONAL_ICD_SUB_CODE;
+                        subIcdYHCT.ICD_TEXT = this.currentTreatmentWithPatientType.TRADITIONAL_ICD_TEXT;
+                        if (ucSecondaryIcdYHCT != null)
+                        {
+                            subIcdProcessorYHCT.Reload(ucSecondaryIcdYHCT, subIcdYHCT);
+                        }
                     }
+                    
                     //
                 }
             }
