@@ -507,51 +507,51 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 var icdValueSecond = (SecondaryIcdDataADO)this.subIcdProcessor.GetValue(this.ucSecondaryIcd);
                 var icdYHCT = (IcdInputADO)this.icdProcessorYHCT.GetValue(this.ucIcdYHCT);
                 var icdSecondYHCT = (SecondaryIcdDataADO)subIcdProcessorYHCT.GetValue(this.ucSecondaryIcdYHCT);
-
+                var config = HisConfigs.Get<string>("HIS.Desktop.Plugins.CheckIcdWhenSave");
                 if (this.icdProcessor != null && this.ucIcd != null || (this.subIcdProcessor != null && this.ucSecondaryIcd != null))
                 {
                     
                     
 
-                    if ( !(bool)icdProcessor.ValidationIcd(ucIcd) || !(bool)icdProcessorYHCT.ValidationIcd(ucIcdYHCT) || !subIcdProcessor.GetValidate(this.ucSecondaryIcd) || !subIcdProcessorYHCT.GetValidate(ucSecondaryIcdYHCT)) return false;
+                    //if ( !(bool)icdProcessor.ValidationIcd(ucIcd) || !(bool)icdProcessorYHCT.ValidationIcd(ucIcdYHCT) || !subIcdProcessor.GetValidate(this.ucSecondaryIcd) || !subIcdProcessorYHCT.GetValidate(ucSecondaryIcdYHCT)) return false;
                     string mess = "";
                     var mainCode = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
                     var mainCodeSecond = ((SecondaryIcdDataADO)icdValueSecond).ICD_SUB_CODE;
                     List<string> listicd = new List<string>();
                     string icd_code_error = "";
-                    var listSubCode = mainCodeSecond.Split(';').ToList();
-                    if (CheckICD(mainCode, mainCodeSecond, ref mess, ref icd_code_error))
+                    if (!string.IsNullOrEmpty(mainCode) || !string.IsNullOrEmpty(mainCodeSecond))
                     {
-                        var param_error = icd_code_error.Split(';').ToList();
-                        if (!string.IsNullOrEmpty(mess))
+                        List<string> listSubCode = new List<string>();
+
+                        if (!string.IsNullOrEmpty(mainCodeSecond))
                         {
-                            if (param_error.Contains(mainCode))
+                            listSubCode = mainCodeSecond.Split(';').ToList();
+                        }
+                        if (CheckICD(mainCode, mainCodeSecond, ref mess, ref icd_code_error))
+                        {
+                            var param_error = icd_code_error.Split(';').ToList();
+                            if (!string.IsNullOrEmpty(mess))
                             {
-                                HIS.UC.Icd.ADO.IcdInputADO Icd = new HIS.UC.Icd.ADO.IcdInputADO();
-                                Icd.ICD_CODE = null;
-                                Icd.ICD_NAME = null;
-
-                                if (ucIcd != null)
+                               
+                                if(config == "1")
                                 {
-                                    icdProcessor.Reload(ucIcd, Icd);
+                                    if (MessageBox.Show(this, mess, "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                                    {
+                                        valid = true;
+                                    }
+                                    else valid = false;
                                 }
+                                else if (config == "2")
+                                {
+                                    MessageBox.Show(this, mess, "Thông báo", MessageBoxButtons.OK);
+
+                                    valid = false;
+                                }
+                                
                             }
-                            var icd_cdoe = listSubCode.Where(code => !param_error.Contains(code)).ToList();
-
-                            var icd = BackendDataWorker.Get<HIS_ICD>().Where(s => icd_cdoe.Contains(s.ICD_CODE)).ToList();
-                            MessageBox.Show(this, mess, "Thông báo", MessageBoxButtons.OK);
-                            SecondaryIcdDataADO subIcd = new SecondaryIcdDataADO();
-                            subIcd.ICD_SUB_CODE = string.Join(";", icd.Select(s => s.ICD_CODE).ToList());
-
-                            subIcd.ICD_TEXT = string.Join(";", icd.Select(s => s.ICD_NAME).ToList());
-
-                            if (ucSecondaryIcd != null)
-                            {
-                                subIcdProcessor.Reload(ucSecondaryIcd, subIcd);
-                            }
-                            valid = false;
                         }
                     }
+                    
                 }
             }
             catch (Exception ex)
@@ -572,8 +572,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 List<string> paramMessageErrorOther = new List<string>();
                 List<string> paramMessageErrorEmpty = new List<string>();
 
-                var config = HisConfigs.Get<string>("HIS.Desktop.Plugins.CheckIcdWhenSave");
-                valid = valid && ((config == "2" && !CheckICDPreSave()) ? false : true);
+                
 
                 valid = (bool)this.icdProcessor.ValidationIcdWithMessage(this.ucIcd, paramMessageErrorEmpty, paramMessageErrorOther) && valid;
                 valid = (bool)this.icdCauseProcessor.ValidationIcdWithMessage(this.ucIcdCause, paramMessageErrorEmpty, paramMessageErrorOther) && valid;
@@ -582,7 +581,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 valid = this.dxValidationProviderControl.Validate() && valid;
                 valid = valid && CheckReasonRequied(); //kiểm tra bắt buộc nhập lý do xuất
                 valid = valid && CheckPayICD(); //kiểm tra đối tượng thanh toán theo chẩn đoán
-
+                
+                
+                valid = valid &&CheckICDPreSave() ;
                 if (valid)
                 {
                     foreach (var item in this.mediMatyTypeADOs)
@@ -700,7 +701,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     if (!string.IsNullOrEmpty(msgTuVong)) paramCommon.Messages.Add(msgTuVong);
                 }
 
-
+                LogSystem.Debug("Du lieu luu, delegate lai chuc nang. " + LogUtil.TraceData("rsData", rsData));
                 success = ((GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) ?
                     ProcessAfterSaveForIn(isave, isSaveAndPrint, (InPatientPresResultSDO)rsData)
                     : ProcessAfterSaveForOut(isave, isSaveAndPrint, (OutPatientPresResultSDO)rsData));

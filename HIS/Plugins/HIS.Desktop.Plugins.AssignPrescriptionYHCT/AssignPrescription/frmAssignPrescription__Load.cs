@@ -1076,8 +1076,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         subIcdProcessor.Reload(ucSecondaryIcd, subIcd);
                     }
                 }
-                if(HisConfigCFG.IsloadIcdFromExamServiceExecute || string.IsNullOrEmpty(this.currentTreatmentWithPatientType.TRADITIONAL_ICD_CODE))
+                LogSystem.Debug("cau hinh HIS.Desktop.Plugins.IsloadIcdFromExamServiceExecute: " + HisConfigCFG.IsloadIcdFromExamServiceExecute);
+                if((HisConfigCFG.IsloadIcdFromExamServiceExecute && this.icdExam != null) 
+                    || string.IsNullOrEmpty(this.currentTreatmentWithPatientType.TRADITIONAL_ICD_CODE))
                 {
+                    LogSystem.Debug("Ho so dieu tri khong co YHCT -> load tu xlkham ");
                     //yhct
                     IcdInputADO icdYHCT = new IcdInputADO();
                     icdYHCT.ICD_CODE = this.icdExam.TRADITIONAL_ICD_CODE;
@@ -1095,8 +1098,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     }
                     //
                 }
-                else if(!string.IsNullOrEmpty(this.currentTreatmentWithPatientType.TRADITIONAL_ICD_CODE) && !string.IsNullOrEmpty(this.currentTreatmentWithPatientType.TRADITIONAL_ICD_SUB_CODE))
+                else if(!string.IsNullOrEmpty(this.currentTreatmentWithPatientType.TRADITIONAL_ICD_CODE) 
+                    && !string.IsNullOrEmpty(this.currentTreatmentWithPatientType.TRADITIONAL_ICD_SUB_CODE))
                 {
+                    LogSystem.Debug("Ho so dieu tri co YHCT -> load tu treatment ");
                     //yhct
                     IcdInputADO icdYHCT = new IcdInputADO();
                     icdYHCT.ICD_CODE = this.currentTreatmentWithPatientType.TRADITIONAL_ICD_CODE;
