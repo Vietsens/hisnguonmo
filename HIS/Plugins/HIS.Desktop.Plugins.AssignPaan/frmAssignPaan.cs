@@ -781,6 +781,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
             try
             {
                 this.cboExecuteRoom.Properties.DataSource = this.hisCurrentServiceRooms;
+                //this.cboExecuteRoom.Refresh();
             }
             catch (Exception ex)
             {
