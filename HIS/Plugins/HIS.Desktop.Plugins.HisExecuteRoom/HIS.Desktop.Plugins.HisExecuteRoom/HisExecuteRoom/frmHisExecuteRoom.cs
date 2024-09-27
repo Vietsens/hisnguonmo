@@ -19,6 +19,7 @@ using ACS.EFMODEL.DataModels;
 using ACS.Filter;
 using DevExpress.Data;
 using DevExpress.Utils;
+using DevExpress.XtraBars.Controls;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
@@ -31,6 +32,7 @@ using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.HisExecuteRoom.ADO;
 using HIS.Desktop.Utilities.Extensions;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
@@ -51,6 +53,7 @@ using System.Linq;
 using System.Resources;
 using System.Text;
 using System.Windows.Forms;
+using System.Windows.Markup;
 
 namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
 {
@@ -289,7 +292,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 spinKidneyCount.Enabled = false;
                 lkRoomId.EditValue = null;
                 cboWaitingScreen.EditValue = null;
-
+                cboAccountBook.EditValue = null;
+                txtJsonQr.Text = null;
                 if (cboDefaultDrug.EditValue != null)
                 {
                     cboDefaultDrug.EditValue = null;
@@ -404,14 +408,85 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 //
                 InitComboDepositBook();
                 InitComboAccountBook();
+                InitComboAccountBookQr();
                 //
                 InitComboDefaultService();
                 InitComboDefaultsCLS();
+                //
+                LoadResQrInfo();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void InitComboAccountBookQr()
+        {
+            try
+            {
+                cboAccountQr.EditValue = null;
+                cboAccountQr.Properties.Buttons[1].Visible = false;
+                CommonParam param = new CommonParam();
+                HisAccountBookFilter filter = new HisAccountBookFilter();
+                filter.IS_ACTIVE = 1;
+                filter.FOR_DEPOSIT = true;
+                filter.FOR_BILL = true;
+                var data = new BackendAdapter(param).Get<List<HIS_ACCOUNT_BOOK>>("api/HisAccountBook/Get", ApiConsumers.MosConsumer, filter, param).ToList();
+                if (data != null && data.Count > 0)
+                {
+                    data = data.Where(o => o.IS_NOT_GEN_TRANSACTION_ORDER != 1).ToList();
+                    List<ColumnInfo> colum = new List<ColumnInfo>();
+                    colum.Add(new ColumnInfo("ACCOUNT_BOOK_CODE", "", 100, 1));
+                    colum.Add(new ColumnInfo("ACCOUNT_BOOK_NAME", "", 200, 2));
+                    ControlEditorADO controlADO = new ControlEditorADO("ACCOUNT_BOOK_NAME", "ID", colum, false, 300);
+                    ControlEditorLoader.Load(cboAccountQr, data, controlADO);
+                    cboAccountQr.Properties.ImmediatePopup = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+        private void LoadResQrInfo()
+        {
+
+            try
+            {
+                var listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode")).ToList();
+                List<ConfigADO> data = new List<ConfigADO>();
+                foreach (var item in listConfig)
+                {
+                    string key = "";
+                    string value = item.KEY;
+                    int index = value.IndexOf("Info");
+                    if (index > 0)
+                    {
+                        var shotkey = value.Substring(0, index);
+                        string[] parts = shotkey.Split('.');
+                        if (parts.Length > 0)
+                        {
+                            key = parts[parts.Length - 1];
+                        }
+                    }
+                    else
+                    {
+                        key = item.KEY;
+                    }
+                    data.Add(new ConfigADO() { ID_CONFIG = key });
+                }
+                List<ColumnInfo> colum = new List<ColumnInfo>();
+                colum.Add(new ColumnInfo("ID_CONFIG", "", 100, 1));
+                ControlEditorADO controlADO = new ControlEditorADO("ID_CONFIG", "ID_CONFIG", colum, false, 100);
+                ControlEditorLoader.Load(repConfig, data, controlADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         #region Init combo
@@ -499,14 +574,16 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
         {
             try
             {
-                CommonParam param = new CommonParam();
-                HisCashierRoomViewFilter filter = new HisCashierRoomViewFilter();
-                filter.IS_ACTIVE = 1;
-                filter.BRANCH_ID = department.BRANCH_ID;
+                List<V_HIS_CASHIER_ROOM> data = null;
+                if (department != null)
+                {
+                    CommonParam param = new CommonParam();
+                    HisCashierRoomViewFilter filter = new HisCashierRoomViewFilter();
+                    filter.IS_ACTIVE = 1;
+                    filter.BRANCH_ID = department.BRANCH_ID;
 
-                List<V_HIS_CASHIER_ROOM> data = new BackendAdapter(param).Get<List<V_HIS_CASHIER_ROOM>>("api/HisCashierRoom/GetView", ApiConsumers.MosConsumer, filter, param);
-                if (data == null)
-                    return;
+                    data = new BackendAdapter(param).Get<List<V_HIS_CASHIER_ROOM>>("api/HisCashierRoom/GetView", ApiConsumers.MosConsumer, filter, param);
+                }
                 //data = data.Where(me => me.IS_BUSINESS == 1).ToList();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("CASHIER_ROOM_CODE", "", 100, 1));
@@ -837,7 +914,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
 
                 if (data != null)
                 {
-
+                    cboAccountQr.EditValue = null;
+                    txtJsonQr.Text = null;
                     roomId = data.ROOM_ID;
                     InitComboDefaultService();
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => roomId), roomId));
@@ -925,6 +1003,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                         cboAccountBook.Properties.Buttons[1].Visible = room.BILL_ACCOUNT_BOOK_ID.HasValue;
                         cboDefaultService.EditValue = room.DEFAULT_SERVICE_ID;
                         cboDefaultsCLS.EditValue = room.DEFAULT_INSTR_PATIENT_TYPE_ID;
+                        cboAccountQr.EditValue = room.QR_ACCOUNT_BOOK_ID;
+                        txtJsonQr.Text = room.QR_CONFIG_JSON;
                         var bhyt = BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(p => p.ID == room.ID);
                         if (bhyt != null)
                         {
@@ -2984,7 +3064,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
 
                 //Focus default
                 SetDefaultFocus();
-                
+
             }
             catch (Exception ex)
             {
@@ -3559,6 +3639,172 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        List<ConfigSettingsADO> lstConfigQrSetting = new List<ConfigSettingsADO>();
+        private void btnOkQr_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                BankInfo bankif = new BankInfo();
+                if (!string.IsNullOrEmpty(lstConfigQrSetting.First().ID_CONFIG))
+                    bankif.BANK = lstConfigQrSetting.First().ID_CONFIG;
+                if (!string.IsNullOrEmpty(lstConfigQrSetting.Last().VALUE_CONFIG))
+                    bankif.VALUE = lstConfigQrSetting.Last().VALUE_CONFIG;
+                if (!string.IsNullOrEmpty(bankif.BANK) || !string.IsNullOrEmpty(bankif.VALUE))
+                {
+                    string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(bankif);
+                    txtJsonQr.Text = jsonString;
+                }
+                else
+                {
+                    txtJsonQr.Text = null;
+                }
+                PopupContainerBarControl control = popupControlContainer1.Parent as PopupContainerBarControl;
+                control.ClosePopup();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void gridView19_CustomUnboundColumnData(object sender, CustomColumnDataEventArgs e)
+        {
+
+            try
+            {
+                if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
+                {
+                    DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                    ConfigSettingsADO pData = (ConfigSettingsADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    if (e.Column.FieldName == "VALUE")
+                    {
+                        if (pData.IS_VALUE)
+                            e.Value = pData.VALUE_CONFIG;
+                        else
+                            e.Value = pData.ID_CONFIG;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void gridView19_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
+        {
+            try
+            {
+
+                DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (e.RowHandle >= 0)
+                {
+
+                    ConfigSettingsADO data = (ConfigSettingsADO)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                    if (e.Column.FieldName == "VALUE")
+                    {
+                        if (!data.IS_VALUE)
+                            e.RepositoryItem = repConfig;
+                        else
+                            e.RepositoryItem = repValue;
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnJsonQr_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                lstConfigQrSetting = new List<ConfigSettingsADO>();
+                if (!String.IsNullOrEmpty(txtJsonQr.Text))
+                {
+                    BankInfo ados = Newtonsoft.Json.JsonConvert.DeserializeObject<BankInfo>(txtJsonQr.Text);
+                    lstConfigQrSetting.Add(new ConfigSettingsADO() { NAME = "Ngân hàng", ID_CONFIG = ados.BANK });
+                    lstConfigQrSetting.Add(new ConfigSettingsADO() { NAME = "Giá trị cấu hình", IS_VALUE = true, VALUE_CONFIG = ados.VALUE });
+                }
+                else
+                {
+                    lstConfigQrSetting.Add(new ConfigSettingsADO() { NAME = "Ngân hàng" });
+                    lstConfigQrSetting.Add(new ConfigSettingsADO() { NAME = "Giá trị cấu hình", IS_VALUE = true });
+                }
+                gridControl2.DataSource = lstConfigQrSetting;
+                Rectangle buttonPosition = new Rectangle(btnJsonQr.Bounds.X, btnJsonQr.Bounds.Y, btnJsonQr.Bounds.Width, btnJsonQr.Bounds.Height);
+                popupControlContainer1.ShowPopup(new Point(buttonPosition.X + 480, buttonPosition.Bottom + btnJsonQr.Bounds.Height - 10));
+                //popupControlContainer1.ShowPopup(new Point(Cursor.Position.X - 150, Cursor.Position.Y + 200));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void repConfig_EditValueChanged(object sender, EventArgs e)
+        {
+
+            try
+            {
+                var data = (ConfigSettingsADO)gridView19.GetFocusedRow();
+                if (data != null && !data.IS_VALUE) { 
+                    GridLookUpEdit cbo = sender as GridLookUpEdit;
+                    data.ID_CONFIG = cbo.EditValue.ToString();
+                    gridControl2.RefreshDataSource();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void repValue_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                var data = (ConfigSettingsADO)gridView19.GetFocusedRow();
+                if (data != null && data.IS_VALUE)
+                {
+                    TextEdit txt = sender as TextEdit;
+                    data.VALUE_CONFIG = txt.Text.Trim();
+                    gridControl2.RefreshDataSource();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repConfig_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    var data = (ConfigSettingsADO)gridView19.GetFocusedRow();
+                    if (data != null && !data.IS_VALUE)
+                    {
+                        data.ID_CONFIG = null;
+                        gridControl2.DataSource = null;
+                        gridControl2.DataSource = lstConfigQrSetting;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
