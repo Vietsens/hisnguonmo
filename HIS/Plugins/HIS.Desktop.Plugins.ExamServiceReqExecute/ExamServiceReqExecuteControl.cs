@@ -371,10 +371,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-                if (HisServiceReqView != null)
+                if (HisServiceReqView != null && !string.IsNullOrEmpty(HisServiceReqView.TRADITIONAL_ICD_CODE))
                 {
-                    if (!string.IsNullOrEmpty(HisServiceReqView.TRADITIONAL_ICD_CODE))
-                    { 
                             HIS.UC.Icd.ADO.IcdInputADO Icd = new HIS.UC.Icd.ADO.IcdInputADO();
                             Icd.ICD_CODE = HisServiceReqView.TRADITIONAL_ICD_CODE;
                             Icd.ICD_NAME = HisServiceReqView.TRADITIONAL_ICD_NAME;
@@ -392,31 +390,27 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             {
                                 subIcdProcessorYHCT.Reload(ucSecondaryIcdYHCT, subIcd);
                             }
-                    }
                 }
-                else if (treatment != null)
+                else if (treatment != null && !string.IsNullOrEmpty(treatment.TRADITIONAL_ICD_CODE))
                 {
-                    if (!string.IsNullOrEmpty(treatment.TRADITIONAL_ICD_CODE))
-                    {
                         HIS.UC.Icd.ADO.IcdInputADO Icd = new HIS.UC.Icd.ADO.IcdInputADO();
                         Icd.ICD_CODE = treatment.TRADITIONAL_ICD_CODE;
                         Icd.ICD_NAME = treatment.TRADITIONAL_ICD_NAME;
 
                         if (ucIcdYHCT != null)
                         {
-                            icdProcessor.Reload(ucIcdYHCT, Icd);
+                            icdProcessorYHCT.Reload(ucIcdYHCT, Icd);
                         }
 
-                        HIS.UC.Icd.ADO.IcdInputADO subIcd = new HIS.UC.Icd.ADO.IcdInputADO();
-                        subIcd.ICD_CODE = treatment.TRADITIONAL_ICD_SUB_CODE;
-                        subIcd.ICD_NAME = treatment.TRADITIONAL_ICD_TEXT;
+                        HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subIcd = new HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO();
+                        subIcd.ICD_SUB_CODE = treatment.TRADITIONAL_ICD_SUB_CODE;
+                        subIcd.ICD_TEXT = treatment.TRADITIONAL_ICD_TEXT;
 
                         if (ucSecondaryIcdYHCT != null)
                         {
-                            icdProcessor.Reload(ucSecondaryIcdYHCT, subIcd);
+                            subIcdProcessorYHCT.Reload(ucSecondaryIcdYHCT, subIcd);
                         }
                     }
-                }
             }
             catch (Exception ex)
             {
@@ -2016,6 +2010,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
+                GetUcIcdYHCT();
                 if (isReturnCheckboxHosTreat)
                 {
                     chkHospitalize.Checked = false;
@@ -3090,6 +3085,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
+                bool check = CheckIcd();
+                if (check == false)
+                {
+                    return;
+                }
                 btnSave_Click(null, null);
                 if (!IsValidForSave)
                     return;
@@ -3471,7 +3471,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         assignServiceADO.GenderName = HisServiceReqView.TDL_PATIENT_GENDER_NAME;
                         assignServiceADO.PatientName = HisServiceReqView.TDL_PATIENT_NAME;
                         assignServiceADO.PatientDob = HisServiceReqView.TDL_PATIENT_DOB;
-                        assignServiceADO.DgProcessRefeshIcd = RefeshIcd;
+                        //assignServiceADO.DgProcessRefeshIcd = RefeshIcd;
+                        assignServiceADO.DgProcessDataResult = RefeshServiceReqInfoAfterFinish;
                         assignServiceADO.SereServsInTreatment = SereServsCurrentTreatment;
                         assignServiceADO.ProvisionalDiagnosis = this.txtProvisionalDianosis.Text.Trim();
                         assignServiceADO.IsPriority = (HisServiceReqView.PRIORITY.HasValue && HisServiceReqView.PRIORITY == 1);
@@ -3573,7 +3574,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     return;
                 }
 
-                GetUcIcdYHCT();
                 bool check = CheckIcd();
                 if (check == false)
                 {
@@ -3679,7 +3679,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             assignServiceADO.Dhst = (dhst != null ? dhst : new HIS_DHST());
 
                             assignServiceADO.SereServsInTreatment = SereServsCurrentTreatment;
-                            assignServiceADO.DgProcessRefeshIcd = RefeshIcd;
+                            //assignServiceADO.DgProcessRefeshIcd = RefeshIcd;
                             assignServiceADO.DgProcessDataResult = RefeshServiceReqInfoAfterFinish;
                             if (HisConfigCFG.IsAutoExitAfterFinish)
                             {
@@ -3760,7 +3760,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         assignPrescription.GenderName = HisServiceReqView.TDL_PATIENT_GENDER_NAME;
                         assignPrescription.PatientName = HisServiceReqView.TDL_PATIENT_NAME;
                         assignPrescription.PatientDob = HisServiceReqView.TDL_PATIENT_DOB;
-                        assignPrescription.DgProcessRefeshIcd = RefeshIcd;
+                        //assignPrescription.DgProcessRefeshIcd = RefeshIcd;
                         assignPrescription.DgProcessDataResult = RefeshServiceReqInfoAfterFinish;
                         assignPrescription.PatientId = HisServiceReqView.TDL_PATIENT_ID;
                         if (HisConfigCFG.IsAutoExitAfterFinish)
@@ -3976,7 +3976,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-
+                GetUcIcdYHCT();
+                bool check = CheckIcd();
+                if (check == false)
+                {
+                    return;
+                }
                 btnSave_Click(null, null);
                 if (!IsValidForSave)
                     return;
@@ -4007,13 +4012,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                     if (myResult == DialogResult.Cancel)
                         return;
-                }
-
-                GetUcIcdYHCT();
-                bool check = CheckIcd();
-                if (check == false)
-                {
-                    return;
                 }
 
                 HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
@@ -4070,7 +4068,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             assignServiceADO.Dhst = (dhst != null ? dhst : new HIS_DHST());
 
                             assignServiceADO.SereServsInTreatment = SereServsCurrentTreatment;
-                            assignServiceADO.DgProcessRefeshIcd = RefeshIcd;
+                            //assignServiceADO.DgProcessRefeshIcd = RefeshIcd;
                             if (HisConfigCFG.IsAutoExitAfterFinish)
                             {
                                 assignServiceADO.DlgWhileAutoTreatmentEnd = WhileAutoTreatmentEnd;
@@ -4112,7 +4110,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         assignPrescription.GenderName = HisServiceReqView.TDL_PATIENT_GENDER_NAME;
                         assignPrescription.PatientName = HisServiceReqView.TDL_PATIENT_NAME;
                         assignPrescription.PatientDob = HisServiceReqView.TDL_PATIENT_DOB;
-                        assignPrescription.DgProcessRefeshIcd = RefeshIcd;
+                        //assignPrescription.DgProcessRefeshIcd = RefeshIcd;
                         if (HisConfigCFG.IsAutoExitAfterFinish)
                         {
                             assignPrescription.DlgWhileAutoTreatmentEnd = WhileAutoTreatmentEnd;
@@ -4283,6 +4281,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
+                bool check = CheckIcd();
+                if (check == false)
+                {
+                    return;
+                }
                 if ((HisConfigCFG.RequiredWeightHeight_Option == "1" || HisConfigCFG.RequiredWeightHeight_Option == "3") && !ValidDhstOption())
                     return;
                 ValiTemperatureOption();
@@ -4291,13 +4294,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (!IsValidForSave)
                     return;
 
-                GetUcIcdYHCT();
-                bool check = CheckIcd();
-                if (check == false)
-                {
-                    return;
-                }
-
+             
                 Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignPrescriptionPK").FirstOrDefault();
                 if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.AssignPrescriptionPK");
                 if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
@@ -4312,7 +4309,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     assignPrescription.GenderName = HisServiceReqView.TDL_PATIENT_GENDER_NAME;
                     assignPrescription.PatientName = HisServiceReqView.TDL_PATIENT_NAME;
                     assignPrescription.PatientDob = HisServiceReqView.TDL_PATIENT_DOB;
-                    assignPrescription.DgProcessRefeshIcd = RefeshIcd;
+                    //assignPrescription.DgProcessRefeshIcd = RefeshIcd;
                     assignPrescription.DgProcessDataResult = RefeshServiceReqInfoAfterFinish;
                     assignPrescription.ProvisionalDiagnosis = txtProvisionalDianosis.Text.Trim();
                     assignPrescription.IsCabinet = true;
@@ -4570,7 +4567,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 WaitingManager.Show();
-                frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, checkIcdManager);
+                frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, checkIcdManager,txtIcdCode.Text);
                 WaitingManager.Hide();
                 FormSecondaryIcd.ShowDialog();
             }
@@ -5223,7 +5220,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-                frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, checkIcdManager);
+                frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, checkIcdManager,txtIcdCode.Text);
                 FormSecondaryIcd.ShowDialog();
             }
             catch (Exception ex)
@@ -5325,7 +5322,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (e.KeyCode == Keys.F1)
                 {
-                    frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, checkIcdManager);
+                    frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, checkIcdManager,txtIcdCode.Text);
                     FormSecondaryIcd.ShowDialog();
                 }
             }
@@ -5520,7 +5517,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (e.KeyCode == Keys.F1)
                 {
-                    frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, checkIcdManager);
+                    frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, checkIcdManager,txtIcdCode.Text);
                     FormSecondaryIcd.ShowDialog();
                 }
                 //else if (e.KeyCode == Keys.Delete || e.KeyCode == Keys.Back)
@@ -5687,8 +5684,50 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 //treatment.ICD_CODE = txtIcdCode.Text;
                 //treatment.ICD_SUB_CODE = txtIcdSubCode.Text;
                 //checkIcdManager = new CheckIcdManager(DlgIcdSubCode, treatment);
+                totalIcd = new List<string>(); // danh sách tổng hợp CD ICD chinh
+                totalSubIcd = new List<string>(); // danh sách tổng hợp CD ICD phu
+
+                if (!string.IsNullOrEmpty(txtIcdCode.Text))
+                {
+                    string[] stringArray = txtIcdCode.Text.Split(';');
+                    totalIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
+                }
+                if (!string.IsNullOrEmpty(txtIcdSubCode.Text))
+                {
+                    string[] stringArray = txtIcdSubCode.Text.Split(';');
+                    totalSubIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
+                }
+                if (!string.IsNullOrEmpty(IcdCodeYHCT))
+                {
+                    string[] stringArray = IcdCodeYHCT.Split(';');
+                    totalIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
+                }
+                if (!string.IsNullOrEmpty(IcdSubCodeYHCT))
+                {
+                    string[] stringArray = IcdSubCodeYHCT.Split(';');
+                    totalSubIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
+                }
+                if (HisServiceReqView != null && ucHospitalize != null)
+                {
+                    if (!string.IsNullOrEmpty(HisServiceReqView.ICD_CODE))
+                    {
+                        string[] stringArray = HisServiceReqView.ICD_CODE.Split(';');
+                        totalIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
+                    }
+                    if (!string.IsNullOrEmpty(HisServiceReqView.ICD_SUB_CODE))
+                    {
+                        string[] stringArray = HisServiceReqView.ICD_SUB_CODE.Split(';');
+                        totalSubIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
+                    }
+                }
+
+                string result = string.Join(";", totalIcd);
+                string resultSub = string.Join(";", totalSubIcd);
+                //string subcode = txtIcdSubCode.Text.Trim();
+
                 if (!String.IsNullOrEmpty(this.txtIcdSubCode.Text.Trim()))
                 {
+                    string icd_code_error = null;
                     strWrongIcdCodes = "";
                     List<string> arrWrongCodes = new List<string>();
                     List<string> lstIcdCodes = new List<string>();
@@ -5696,16 +5735,22 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     List<string> arrIcdExtraCodes = this.txtIcdSubCode.Text.Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries).Where(o => !string.IsNullOrEmpty(o)).Select(o => o.Trim()).Distinct().Where(o => !string.IsNullOrEmpty(o)).ToList();
                     if (arrIcdExtraCodes != null && arrIcdExtraCodes.Count() > 0)
                     {
+                        bool next = true;
                         foreach (var itemCode in arrIcdExtraCodes)
                         {
                             var icdByCode = this.currentIcds.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.ToLower());
                             if (icdByCode != null && icdByCode.ID > 0)
                             {
                                 string messErr = null;
-                                if (!checkIcdManager.ProcessCheckIcd(null, icdByCode.ICD_CODE, ref messErr))
+                               
+                                if (next == true)
                                 {
-                                    XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
-                                    continue;
+                                    if (!checkIcdManager.ProcessCheckIcdWithErrorCode(result, resultSub, ref messErr, ref icd_code_error,false))
+                                    {
+                                        next = false;
+                                        XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
+                                        continue;
+                                    }
                                 }
                                 strIcdNames += (IcdUtil.seperator + icdByCode.ICD_NAME);
                                 lstIcdCodes.Add(icdByCode.ICD_CODE);
@@ -5718,18 +5763,28 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             }
                         }
                         strIcdNames += IcdUtil.seperator;
+
                         if (lstIcdCodes != null && lstIcdCodes.Count > 0)
                         {
-                            this.txtIcdSubCode.Text = String.Join(";", lstIcdCodes);
+
+
+                           // this.txtIcdSubCode.Text = String.Join(";", lstIcdCodes);
                             this.txtIcdText.Text = String.Join(";", lstIcdSubName);
 
                         }
                         else
                         {
 
-                            this.txtIcdSubCode.Text = null;
+                            //this.txtIcdSubCode.Text = null;
                             this.txtIcdText.Text = null;
                         }
+                        var lstSubCode = icd_code_error.Split(';').ToList();
+                        if (lstSubCode != null && lstSubCode.Count > 0)
+                        {
+                            arrIcdExtraCodes.Remove(lstSubCode[0]);
+                            this.txtIcdSubCode.Text = String.Join(";", arrIcdExtraCodes);
+                        }
+
                         if (!String.IsNullOrEmpty(strWrongIcdCodes))
                         {
                             valid = false;
@@ -5757,6 +5812,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         txtIcdSubCode.Focus();
                     }
                 }
+                
             }
             catch (Exception ex)
             {
@@ -8165,6 +8221,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 txtPathologicalHistory.Text = data.PATHOLOGICAL_HISTORY;
                 txtPathologicalHistoryFamily.Text = data.PATHOLOGICAL_HISTORY_FAMILY;
                 txtKhamToanThan.Text = data.FULL_EXAM;
+                LogSystem.Debug("FillDataCopyToControl.Load thanh cong tt kham");
                 //kham bo phan
                 #region KHAM BO PHAN
                 txtKhamBoPhan.Text = data.PART_EXAM;
@@ -8174,6 +8231,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 txtThanTietNieu.Text = data.PART_EXAM_KIDNEY_UROLOGY;
                 txtThanKinh.Text = data.PART_EXAM_NEUROLOGICAL;
                 txtCoXuongKhop.Text = data.PART_EXAM_MUSCLE_BONE;
+                LogSystem.Debug("FillDataCopyToControl.Load thanh cong kham bo phan");
                 //tai mui hong
                 #region TAI MUI HONG
                 txtTai.Text = data.PART_EXAM_EAR;
@@ -8184,12 +8242,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 txtMui.Text = data.PART_EXAM_NOSE;
                 txtHong.Text = data.PART_EXAM_THROAT;
                 #endregion
+                LogSystem.Debug("FillDataCopyToControl.Load thanh cong tai mui hong");
                 ///rang ham mat
                 #region RHM
                 txtPART_EXAM_UPPER_JAW.Text = data.PART_EXAM_UPPER_JAW;
                 txtPART_EXAM_LOWER_JAW.Text = data.PART_EXAM_LOWER_JAW;
                 txtRHM.Text = data.PART_EXAM_STOMATOLOGY;
                 #endregion
+                LogSystem.Debug("FillDataCopyToControl.Load thanh cong rang ham mat");
                 ///mat
                 #region MAT
                 txtMat.Text = data.PART_EXAM_EYE;
@@ -8211,8 +8271,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 txtKinhLoPhai.Text = data.PART_EXAM_HOLE_GLASS_RIGHT;
                 txtKinhLoTrai.Text = data.PART_EXAM_HOLE_GLASS_LEFT;
                 ////
-                chkPART_EXAM_HORIZONTAL_SIGHT__BT.Checked = data.PART_EXAM_HORIZONTAL_SIGHT == 1 ;
-                chkPART_EXAM_HORIZONTAL_SIGHT__HC.Checked = data.PART_EXAM_HORIZONTAL_SIGHT == 2 ;
+                chkPART_EXAM_HORIZONTAL_SIGHT__BT.Checked = data.PART_EXAM_HORIZONTAL_SIGHT == 1;
+                chkPART_EXAM_HORIZONTAL_SIGHT__HC.Checked = data.PART_EXAM_HORIZONTAL_SIGHT == 2;
                 chkPART_EXAM_VERTICAL_SIGHT__BT.Checked = data.PART_EXAM_VERTICAL_SIGHT == 1;
                 chkPART_EXAM_VERTICAL_SIGHT__HC.Checked = data.PART_EXAM_VERTICAL_SIGHT == 1;
 
@@ -8246,6 +8306,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 txtPartEyeGlassAddLeft.Text = data.PART_EYE_GLASS_ADD_LEFT;
                 ////end
                 #endregion
+                LogSystem.Debug("FillDataCopyToControl.Load thanh cong mat");
                 ///noi tiet
                 txtNoiTiet.Text = data.PART_EXAM;
                 txtPartExamMental.Text = data.PART_EXAM_MENTAL;
@@ -8253,37 +8314,52 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 txtPartExamMotion.Text = data.PART_EXAM_MOTION;
                 txtPartExanObstetric.Text = data.PART_EXAM_OBSTETRIC;
                 txtDaLieu.Text = data.PART_EXAM_DERMATOLOGY;
+                LogSystem.Debug("FillDataCopyToControl.Load thanh cong kham noi tiet");
                 #endregion
                 //
                 txtSubclinical.Text = data.SUBCLINICAL;
                 txtTreatmentInstruction.Text = data.TREATMENT_INSTRUCTION;
                 txtProvisionalDianosis.Text = data.PROVISIONAL_DIAGNOSIS;
                 txtResultNote.Text = data.NOTE;
-                cboKskCode.EditValue = data.HEALTH_EXAM_RANK_ID;
+                if (data.HEALTH_EXAM_RANK_ID != null) cboKskCode.EditValue = data.HEALTH_EXAM_RANK_ID;
                 txtNextTreatmentInstructionCode.Text = data.NEXT_TREAT_INTR_CODE;
 
-                if (data.NEXT_TREATMENT_INSTRUCTION != null) cboNextTreatmentInstructions.EditValue = this.dataNextTreatmentInstructions.FirstOrDefault(o => o.NEXT_TREA_INTR_NAME.Equals(data.NEXT_TREATMENT_INSTRUCTION)).ID;
-                if (data.ICD_CODE != null)
+                if (data.NEXT_TREATMENT_INSTRUCTION != null && dataNextTreatmentInstructions != null && dataNextTreatmentInstructions.Count > 0)
+                {
+                    var rs = this.dataNextTreatmentInstructions.FirstOrDefault(o => o.NEXT_TREA_INTR_NAME.Equals(data.NEXT_TREATMENT_INSTRUCTION));
+                    if (rs != null) cboNextTreatmentInstructions.EditValue = rs.ID;
+                }
+                if (data.ICD_CODE != null && currentIcds != null && currentIcds.Count > 0)
                 {
                     txtIcdCode.Text = data.ICD_CODE;
                     cboIcds.EditValue = currentIcds.FirstOrDefault(o => o.ICD_CODE.Equals(data.ICD_CODE)).ID;
                 }
-                txtIcdSubCode.Text = data.ICD_SUB_CODE;
-                List<string> listICD_CODE = data.ICD_SUB_CODE.Split(';').ToList();
-                if(listICD_CODE != null) txtIcdText.Text = string.Join(";",currentIcds.Where(o => listICD_CODE.Contains(o.ICD_CODE)).Select(p=>p.ICD_NAME));
-                if (data.ICD_CAUSE_CODE != null)
+                if (!string.IsNullOrEmpty(data.ICD_SUB_CODE) && currentIcds != null && currentIcds.Count > 0)
                 {
-                    cboIcdsCause.EditValue = currentIcds.FirstOrDefault(o => o.ICD_CODE.Equals(data.ICD_CAUSE_CODE)).ID;
+                    txtIcdSubCode.Text = data.ICD_SUB_CODE;
+                    List<string> listICD_CODE = data.ICD_SUB_CODE.Split(';').ToList();
+                    if (listICD_CODE != null)
+                    {
+                        var icd = currentIcds.Where(o => listICD_CODE.Contains(o.ICD_CODE)).Select(p => p.ICD_NAME).ToList();
+                        txtIcdText.Text = string.Join(";", icd);
+                    }
+                }
+                if (data.ICD_CAUSE_CODE != null && currentIcds != null && currentIcds.Count > 0)
+                {
+                    var rs = currentIcds.FirstOrDefault(o => o.ICD_CODE.Equals(data.ICD_CAUSE_CODE));
+                    if (rs != null)
+                        cboIcdsCause.EditValue = rs.ID;
                     txtIcdCodeCause.Text = data.ICD_CAUSE_CODE;
                 }
-                if(data.DHST_ID != null)
+                LogSystem.Debug("FillDataCopyToControl.Load thanh cong ICD");
+                if (data.DHST_ID != null)
                 {
                     HisDhstFilter filter = new HisDhstFilter();
                     filter.TREATMENT_ID = data.TREATMENT_ID;
                     var listDhst = new BackendAdapter(new CommonParam()).Get<List<HIS_DHST>>("/api/HisDhst/Get", ApiConsumers.MosConsumer, filter, new CommonParam());
-                    if(listDhst != null)
+                    if (listDhst != null)
                     {
-                        var dhst = listDhst.First();
+                        var dhst = listDhst.FirstOrDefault();
                         dtExecuteTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(dhst.EXECUTE_TIME ?? 0) ?? DateTime.Now;
                         if (dhst.PULSE != null) spinPulse.EditValue = dhst.PULSE;
                         if (dhst.BLOOD_PRESSURE_MAX != null) spinBloodPressureMax.EditValue = dhst.BLOOD_PRESSURE_MAX;
@@ -8296,8 +8372,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         if (dhst.CHEST != null) spinChest.EditValue = dhst.CHEST;
                         if (dhst.BELLY != null) spinBelly.EditValue = dhst.BELLY;
                         txtNote.Text = dhst.NOTE;
+                        LogSystem.Debug("FillDataCopyToControl.Load thanh cong DHST");
                     }
-                    
+
                 }
             }
             catch (Exception ex)

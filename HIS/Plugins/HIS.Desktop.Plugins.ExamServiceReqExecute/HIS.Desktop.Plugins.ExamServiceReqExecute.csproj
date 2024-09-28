@@ -174,7 +174,8 @@
     <Reference Include="HIS.UC.NextTreatmentInstruction">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.NextTreatmentInstruction\HIS.UC.NextTreatmentInstruction.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.SecondaryIcd">
+    <Reference Include="HIS.UC.SecondaryIcd, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.UC.SecondaryIcd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TranPati">

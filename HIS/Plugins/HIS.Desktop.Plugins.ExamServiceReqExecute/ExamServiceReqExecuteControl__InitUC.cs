@@ -137,7 +137,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 // 56405
                 var _hisRoom = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(p => p.ID == this.moduleData.RoomId);
-                if (HisConfigCFG.executeRoomPaymentOption == "2" && _hisRoom.DEFAULT_CASHIER_ROOM_ID != null && _hisRoom.BILL_ACCOUNT_BOOK_ID!=null)
+                if (HisConfigCFG.executeRoomPaymentOption == "2" && _hisRoom.DEFAULT_CASHIER_ROOM_ID != null && _hisRoom.BILL_ACCOUNT_BOOK_ID != null)
                 {
                     DXSubMenuItem subPay = null;
 
@@ -569,7 +569,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 reloadMenuOption.Type = ReloadMenuOption.MenuType.NORMAL;
                 reloadMenuOption.BordereauPrint = BordereauPrint.Type.MPS_BASE;
                 HIS.Desktop.Plugins.Library.PrintBordereau.PrintBordereauProcessor processor = new PrintBordereauProcessor(this.HisServiceReqView.TREATMENT_ID, this.HisServiceReqView.TDL_PATIENT_ID, bordereauInitData, reloadMenuOption);
-                if(HisConfigCFG.IsAutoExitAfterFinish && this.isPrintBordereau)
+                if (HisConfigCFG.IsAutoExitAfterFinish && this.isPrintBordereau)
                 {
                     processor.Print(PrintOption.Value.PRINT_NOW);
                 }
@@ -783,32 +783,73 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (dataResult == null)
                     return;
 
-                if (dataResult is OutPatientPresResultSDO && ((OutPatientPresResultSDO)dataResult).ServiceReqs[0].SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
+                string icdCode = null; string icdName = null; string icSubCode = null; string ictSubName = null;
+                string icdCodeYHCT = null; string icdNameYHCT = null; string icSubCodeYHCT = null; string ictSubNameYHCT = null;
+                if (dataResult is OutPatientPresResultSDO)
                 {
-                    this.HisServiceReqView.SERVICE_REQ_STT_ID = ((OutPatientPresResultSDO)dataResult).ServiceReqs[0].SERVICE_REQ_STT_ID;
-                    if (this.reLoadServiceReq != null)
-                        this.reLoadServiceReq(this.HisServiceReqView);
+                    var serviceReq = ((OutPatientPresResultSDO)dataResult).ServiceReqs[0];
 
-                    if (HisConfigCFG.IsAutoExitAfterFinish)
+                    icdCode = serviceReq.ICD_CODE;
+                    icdName = serviceReq.ICD_NAME;
+                    icSubCode = serviceReq.ICD_SUB_CODE;
+                    ictSubName = serviceReq.ICD_TEXT;
+                    icdCodeYHCT = serviceReq.TRADITIONAL_ICD_CODE;
+                    icdNameYHCT = serviceReq.TRADITIONAL_ICD_NAME;
+                    icSubCodeYHCT = serviceReq.TRADITIONAL_ICD_SUB_CODE;
+                    ictSubNameYHCT = serviceReq.TRADITIONAL_ICD_TEXT;
+                    
+                    if (serviceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
                     {
-                        XtraTabControl main = SessionManager.GetTabControlMain();
-                        XtraTabPage page = main.TabPages[GlobalVariables.SelectedTabPageIndex];
-                        TabControlBaseProcess.CloseCurrentTabPage(page, main);
+                        this.HisServiceReqView.SERVICE_REQ_STT_ID = ((OutPatientPresResultSDO)dataResult).ServiceReqs[0].SERVICE_REQ_STT_ID;
+                        if (this.reLoadServiceReq != null)
+                            this.reLoadServiceReq(this.HisServiceReqView);
+
+                        if (HisConfigCFG.IsAutoExitAfterFinish)
+                        {
+                            XtraTabControl main = SessionManager.GetTabControlMain();
+                            XtraTabPage page = main.TabPages[GlobalVariables.SelectedTabPageIndex];
+                            TabControlBaseProcess.CloseCurrentTabPage(page, main);
+                        }
                     }
                 }
-                else if (dataResult is InPatientPresResultSDO && ((InPatientPresResultSDO)dataResult).ServiceReqs[0].SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
+                else if (dataResult is InPatientPresResultSDO )
                 {
-                    this.HisServiceReqView.SERVICE_REQ_STT_ID = ((InPatientPresResultSDO)dataResult).ServiceReqs[0].SERVICE_REQ_STT_ID;
-                    if (this.reLoadServiceReq != null)
-                        this.reLoadServiceReq(this.HisServiceReqView);
-
-                    if (HisConfigCFG.IsAutoExitAfterFinish)
+                    var serviceReq = ((InPatientPresResultSDO)dataResult).ServiceReqs[0];//.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT
+                    icdCode = serviceReq.ICD_CODE;
+                    icdName = serviceReq.ICD_NAME;
+                    icSubCode = serviceReq.ICD_SUB_CODE;
+                    ictSubName = serviceReq.ICD_TEXT;
+                    icdCodeYHCT = serviceReq.TRADITIONAL_ICD_CODE;
+                    icdNameYHCT = serviceReq.TRADITIONAL_ICD_NAME;
+                    icSubCodeYHCT = serviceReq.TRADITIONAL_ICD_SUB_CODE;
+                    ictSubNameYHCT = serviceReq.TRADITIONAL_ICD_TEXT;
+                    if (serviceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
                     {
-                        XtraTabControl main = SessionManager.GetTabControlMain();
-                        XtraTabPage page = main.TabPages[GlobalVariables.SelectedTabPageIndex];
-                        TabControlBaseProcess.CloseCurrentTabPage(page, main);
+                        this.HisServiceReqView.SERVICE_REQ_STT_ID = ((InPatientPresResultSDO)dataResult).ServiceReqs[0].SERVICE_REQ_STT_ID;
+                        if (this.reLoadServiceReq != null)
+                            this.reLoadServiceReq(this.HisServiceReqView);
+
+                        if (HisConfigCFG.IsAutoExitAfterFinish)
+                        {
+                            XtraTabControl main = SessionManager.GetTabControlMain();
+                            XtraTabPage page = main.TabPages[GlobalVariables.SelectedTabPageIndex];
+                            TabControlBaseProcess.CloseCurrentTabPage(page, main);
+                        }
                     }
                 }
+                else if (dataResult is HisServiceReqListResultSDO)
+                {
+                    var serviceReq = ((HisServiceReqListResultSDO)dataResult).ServiceReqs[0];//.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT
+                    icdCode = serviceReq.ICD_CODE;
+                    icdName = serviceReq.ICD_NAME;
+                    icSubCode = serviceReq.ICD_SUB_CODE;
+                    ictSubName = serviceReq.ICD_TEXT;
+                    icdCodeYHCT = serviceReq.TRADITIONAL_ICD_CODE;
+                    icdNameYHCT = serviceReq.TRADITIONAL_ICD_NAME;
+                    icSubCodeYHCT = serviceReq.TRADITIONAL_ICD_SUB_CODE;
+                    ictSubNameYHCT = serviceReq.TRADITIONAL_ICD_TEXT;
+                }
+                RefeshIcd(icdCode, icdName, icSubCode, ictSubName, icdCodeYHCT, icdNameYHCT, icSubCodeYHCT, ictSubNameYHCT);
             }
             catch (Exception ex)
             {
@@ -838,8 +879,18 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private void RefeshIcd(string icdCode, string icdMainText, string ictExtraCodes, string ictExtraNames)
+        {
+            try
+            {
+                RefeshIcd(icdCode, icdMainText, ictExtraCodes, ictExtraNames, null, null, null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void RefeshIcd(string icdCode, string icdMainText, string ictExtraCodes, string ictExtraNames, string icdCodeYHCT, string icdMainTextYHCT, string ictExtraCodesYHCT, string ictExtraNamesYHCT)
         {
             try
             {
@@ -856,6 +907,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 LoadIcdToControl(icdInput.ICD_CODE, icdInput.ICD_NAME);
                 LoadIcdToControlIcdSub(ictExtraCodes, ictExtraNames);
+                LoadIcdToControlIcdYHCT(icdCodeYHCT, icdMainTextYHCT, ictExtraCodesYHCT, ictExtraNamesYHCT);
                 if (ucHospitalize != null)
                 {
                     UC.Hospitalize.ADO.HospitalizeInitADO ado = new UC.Hospitalize.ADO.HospitalizeInitADO();
@@ -863,6 +915,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     ado.IcdName = icdInput.ICD_NAME;
                     ado.IcdSubCode = ictExtraCodes;
                     ado.IcdText = ictExtraNames;
+
+                    ado.TraditionalIcdCode = icdCodeYHCT;
+                    ado.TraditionalIcdName = icdMainTextYHCT;
+                    ado.TraditionalIcdSubCode = ictExtraCodesYHCT;
+                    ado.TraditionalIcdText = ictExtraNamesYHCT;
 
                     if (HisServiceReqResult != null && HisServiceReqResult.HospitalizeResult != null && HisServiceReqResult.HospitalizeResult.Treatment != null)
                     {
@@ -877,6 +934,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     UC.ExamTreatmentFinish.ADO.TreatmentFinishInitADO ado = new UC.ExamTreatmentFinish.ADO.TreatmentFinishInitADO();
                     ado.IcdCode = icdInput.ICD_CODE;
                     ado.IcdName = icdInput.ICD_NAME;
+                    ado.TraditionalIcdCode = icdCodeYHCT;
+                    ado.TraditionalIcdName = icdMainTextYHCT;
+                    ado.TraditionalIcdSubCode = ictExtraCodesYHCT;
+                    ado.TraditionalIcdText = ictExtraNamesYHCT;
                     if (dicIcd != null && dicIcd.Count > 0)
                     {
                         Dictionary<string, string> dicNotIcdMain = new Dictionary<string, string>();
@@ -918,31 +979,31 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     icdSubCode = ((UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
                     icdText = ((UC.Icd.ADO.IcdInputADO)icdValue).ICD_NAME;
-                        if (dicIcd.ContainsKey(icdSubCode))
-                            dicIcd.Remove(icdSubCode);
-                        dicIcd[icdSubCode] = icdText;
+                    if (dicIcd.ContainsKey(icdSubCode))
+                        dicIcd.Remove(icdSubCode);
+                    dicIcd[icdSubCode] = icdText;
                 }
                 SecondaryIcdDataADO icdSub = this.UcSecondaryIcdGetValue() as SecondaryIcdDataADO;
                 icdSubCode = icdSub != null ? icdSub.ICD_SUB_CODE : null;
                 icdText = icdSub != null ? icdSub.ICD_TEXT : null;
-                if(!string.IsNullOrEmpty(icdSubCode))
+                if (!string.IsNullOrEmpty(icdSubCode))
                 {
                     var arrIcdSub = icdSubCode.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
-                    var arrText = icdText.Split(new string[] {";"},StringSplitOptions.RemoveEmptyEntries);
+                    var arrText = icdText.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
                     for (int i = 0; i < arrIcdSub.Length; i++)
                     {
-                            if (dicIcd.ContainsKey(arrIcdSub[i]))
-                                dicIcd.Remove(arrIcdSub[i]);
-                            dicIcd[arrIcdSub[i]] = arrText.Length - 1 >= i ? arrText[i] : null;
+                        if (dicIcd.ContainsKey(arrIcdSub[i]))
+                            dicIcd.Remove(arrIcdSub[i]);
+                        dicIcd[arrIcdSub[i]] = arrText.Length - 1 >= i ? arrText[i] : null;
                     }
-                    if(arrIcdSub.Length < arrText.Length)
+                    if (arrIcdSub.Length < arrText.Length)
                     {
                         for (int i = arrIcdSub.Length; i < arrText.Length; i++)
                         {
                             lstIcdText.Add(arrText[i]);
                         }
-                    }    
-                }  
+                    }
+                }
             }
             catch (Exception ex)
             {

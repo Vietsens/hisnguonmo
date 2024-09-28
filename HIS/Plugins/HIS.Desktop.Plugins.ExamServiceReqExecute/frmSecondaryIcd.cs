@@ -47,6 +47,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         DelegateRefeshIcdChandoanphu delegateIcds;
         string icdCodes;
         string icdNames;
+        string icdMainCode;
         int rowCount = 0;
         int dataTotal = 0;
         int start = 0;
@@ -56,7 +57,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             InitializeComponent();
         }
-        public frmSecondaryIcd(DelegateRefeshIcdChandoanphu delegateIcds, string icdCodes, string icdNames, long _limit, CheckIcdManager checkIcdManager)
+        public frmSecondaryIcd(DelegateRefeshIcdChandoanphu delegateIcds, string icdCodes, string icdNames, long _limit, CheckIcdManager checkIcdManager,string icdMainCode)
         {
             InitializeComponent();
             try
@@ -64,6 +65,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.delegateIcds = delegateIcds;
                 this.icdCodes = icdCodes;
                 this.icdNames = icdNames;
+                this.icdMainCode = icdMainCode;
                 string[] codes = this.icdCodes.Split(IcdUtil.seperator.ToCharArray());
                 icdAdoChecks = (from m in BackendDataWorker.Get<V_HIS_ICD>() where m.IS_ACTIVE == 1 && m.IS_TRADITIONAL != 1 select new IcdADO(m, codes)).ToList();
                 limit = (int)_limit;
@@ -343,7 +345,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     count++;
                     bool next = true;
                     string messErr = null;
-                    if (!checkIcdManager.ProcessCheckIcd(null, result, ref messErr, false))
+                    if (!checkIcdManager.ProcessCheckIcd(icdMainCode, result, ref messErr, false))
                     {
                         if (count == checkList.Count)
                         {

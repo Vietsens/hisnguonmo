@@ -85,6 +85,33 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
         }
 
+        private void LoadIcdToControlIcdYHCT(string icdCodeYHCT, string icdNameYHCT, string icdSubCodeYHCT, string icdSubNameYHCT)
+        {
+            try
+            {
+                HIS.UC.Icd.ADO.IcdInputADO Icd = new HIS.UC.Icd.ADO.IcdInputADO();
+                Icd.ICD_CODE = icdCodeYHCT;
+                Icd.ICD_NAME = icdNameYHCT;
+
+                if (ucIcdYHCT != null)
+                {
+                    icdProcessorYHCT.Reload(ucIcdYHCT, Icd);
+                }
+
+                HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subIcd = new HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO();
+                subIcd.ICD_SUB_CODE = icdSubCodeYHCT;
+                subIcd.ICD_TEXT = icdSubNameYHCT; 
+
+                if (ucSecondaryIcdYHCT != null)
+                {
+                    subIcdProcessorYHCT.Reload(ucSecondaryIcdYHCT, subIcd);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
         private void UcSecondaryIcdFocusComtrol()
         {
