@@ -1,8 +1,19 @@
-### Release 2.328.0
+### Release 2.330.0
+* Bổ sung thông tin trong XML phục vụ XML 130 và QĐ 4750/QĐ-BYT 
+* Điều chỉnh cảnh báo mức lọc cầu thận theo ngày
+* Bổ sung phân phòng xử lý theo thiết lập phòng xử lý - đối tượng thanh toán
+* Bổ sung bắt buộc thiết lập tài khoản - vai trò thực hiện phục vụ nhập kíp
+
+### Release 2.329.0
 * Sửa thông báo trên hệ thống ký số
 * Sửa lỗi chức năng báo động đỏ gây treo hệ thống
 * Bổ sung quét QR thanh toán tại các chức năng thu tiền(xuất bán, tạm ứng, thanh toán, ...)
 * Sửa chức năng cảnh báo giường trùng thời gian với hồ sơ khác
+
+### Release 2.328.0
+* Tích hợp thanh toán QR LPBank
+* Bổ sung tính năng chặn khi chỉ định DVKT, đơn thuốc cùng thời gian với thực hiện cận lâm sàng và ngược lại
+* Cho phép in phiếu yêu cầu tạm ứng, Hiển thị thêm màn hình thanh toán QR
 
 ### Release 2.327.0
 * Sắp xếp thuốc trên tờ điều trị theo quy định mới

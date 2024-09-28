@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -132,29 +133,31 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmHisBedRoomList));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.layoutControl8 = new DevExpress.XtraLayout.LayoutControl();
             this.btnSaveConfig = new DevExpress.XtraEditors.SimpleButton();
             this.gridControl2 = new DevExpress.XtraGrid.GridControl();
             this.gridView12 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn21 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem_Import = new DevExpress.XtraBars.BarButtonItem();
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem4 = new DevExpress.XtraBars.BarButtonItem();
-            this.bar3 = new DevExpress.XtraBars.Bar();
             this.barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.txtConfigValue = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.cboBank = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
             this.repositoryItemGridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.layoutControlGroup7 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem46 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem47 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.btnImport = new DevExpress.XtraEditors.SimpleButton();
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
             this.gridControlBedRoom = new DevExpress.XtraGrid.GridControl();
@@ -200,7 +203,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.btnChangeConfig = new DevExpress.XtraEditors.CheckButton();
-            this.txtConfig = new DevExpress.XtraEditors.TextEdit();
             this.cboCashierRoom = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboKhuVuc = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -221,7 +223,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.cboTreatmentTypeIds = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboDefaultsCLS = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.barManager2 = new DevExpress.XtraBars.BarManager();
+            this.barManager2 = new DevExpress.XtraBars.BarManager(this.components);
             this.barDockControl1 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl2 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl3 = new DevExpress.XtraBars.BarDockControl();
@@ -252,18 +254,13 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.layoutControlItem21 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem43 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem40 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem45 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem44 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.imageList1 = new System.Windows.Forms.ImageList();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl5 = new DevExpress.XtraLayout.LayoutControl();
             this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
@@ -345,7 +342,11 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.layoutControlGroup6 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem41 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem42 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider2 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProvider2 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.layoutControlItem48 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.txtConfig = new DevExpress.XtraEditors.ButtonEdit();
+            this.layoutControlItem45 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
@@ -363,7 +364,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem46)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem47)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlBedRoom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewListBedRoom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnLock)).BeginInit();
@@ -389,7 +389,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtConfig.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboCashierRoom.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboKhuVuc.Properties)).BeginInit();
@@ -429,7 +428,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem43)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem45)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem44)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
@@ -498,6 +496,9 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem41)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem42)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem48)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtConfig.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem45)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -508,7 +509,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.layoutControl1.Location = new System.Drawing.Point(0, 51);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1184, 536);
+            this.layoutControl1.Size = new System.Drawing.Size(1184, 561);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -524,7 +525,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(370, 306, 250, 350);
             this.layoutControl3.Root = this.layoutControlGroup2;
-            this.layoutControl3.Size = new System.Drawing.Size(875, 532);
+            this.layoutControl3.Size = new System.Drawing.Size(875, 557);
             this.layoutControl3.TabIndex = 0;
             this.layoutControl3.Text = "layoutControl3";
             // 
@@ -535,27 +536,28 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.popupControlContainer1.Location = new System.Drawing.Point(105, 173);
             this.popupControlContainer1.Manager = this.barManager1;
             this.popupControlContainer1.Name = "popupControlContainer1";
-            this.popupControlContainer1.Size = new System.Drawing.Size(474, 230);
+            this.popupControlContainer1.Size = new System.Drawing.Size(474, 244);
             this.popupControlContainer1.TabIndex = 24;
             this.popupControlContainer1.Visible = false;
             // 
             // layoutControl8
             // 
+            this.layoutControl8.Controls.Add(this.label1);
             this.layoutControl8.Controls.Add(this.btnSaveConfig);
             this.layoutControl8.Controls.Add(this.gridControl2);
             this.layoutControl8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl8.Location = new System.Drawing.Point(0, 0);
             this.layoutControl8.Name = "layoutControl8";
             this.layoutControl8.Root = this.layoutControlGroup7;
-            this.layoutControl8.Size = new System.Drawing.Size(474, 230);
+            this.layoutControl8.Size = new System.Drawing.Size(474, 244);
             this.layoutControl8.TabIndex = 0;
             this.layoutControl8.Text = "layoutControl8";
             // 
             // btnSaveConfig
             // 
-            this.btnSaveConfig.Location = new System.Drawing.Point(350, 196);
+            this.btnSaveConfig.Location = new System.Drawing.Point(337, 204);
             this.btnSaveConfig.Name = "btnSaveConfig";
-            this.btnSaveConfig.Size = new System.Drawing.Size(112, 22);
+            this.btnSaveConfig.Size = new System.Drawing.Size(122, 22);
             this.btnSaveConfig.StyleController = this.layoutControl8;
             this.btnSaveConfig.TabIndex = 4;
             this.btnSaveConfig.Text = "Đồng ý";
@@ -570,7 +572,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.gridControl2.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.txtConfigValue,
             this.cboBank});
-            this.gridControl2.Size = new System.Drawing.Size(450, 180);
+            this.gridControl2.Size = new System.Drawing.Size(450, 185);
             this.gridControl2.TabIndex = 0;
             this.gridControl2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView12});
@@ -605,8 +607,11 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1,
-            this.bar2,
-            this.bar3});
+            this.bar2});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem1,
@@ -616,7 +621,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.barButtonItem4});
             this.barManager1.MainMenu = this.bar2;
             this.barManager1.MaxItemId = 5;
-            this.barManager1.StatusBar = this.bar3;
             // 
             // bar1
             // 
@@ -677,21 +681,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.barButtonItem4.Name = "barButtonItem4";
             this.barButtonItem4.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItemAdd_ItemClick);
             // 
-            // bar3
-            // 
-            this.bar3.BarName = "Status bar";
-            this.bar3.CanDockStyle = DevExpress.XtraBars.BarCanDockStyle.Bottom;
-            this.bar3.DockCol = 0;
-            this.bar3.DockRow = 0;
-            this.bar3.DockStyle = DevExpress.XtraBars.BarDockStyle.Bottom;
-            this.bar3.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem3)});
-            this.bar3.OptionsBar.AllowQuickCustomization = false;
-            this.bar3.OptionsBar.DrawDragBorder = false;
-            this.bar3.OptionsBar.UseWholeRow = true;
-            this.bar3.Text = "Status bar";
-            this.bar3.Visible = false;
-            // 
             // barButtonItem3
             // 
             this.barButtonItem3.Caption = "Tìm";
@@ -700,10 +689,39 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.barButtonItem3.Name = "barButtonItem3";
             this.barButtonItem3.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem3_ItemClick);
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1184, 51);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 612);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1184, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 51);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 561);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1184, 51);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 561);
+            // 
             // txtConfigValue
             // 
             this.txtConfigValue.AutoHeight = false;
             this.txtConfigValue.Name = "txtConfigValue";
+            this.txtConfigValue.EditValueChanged += new System.EventHandler(this.txtConfigValue_EditValueChanged);
             // 
             // cboBank
             // 
@@ -732,10 +750,10 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.layoutControlGroup7.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem46,
             this.layoutControlItem47,
-            this.emptySpaceItem5});
+            this.layoutControlItem48});
             this.layoutControlGroup7.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup7.Name = "layoutControlGroup7";
-            this.layoutControlGroup7.Size = new System.Drawing.Size(474, 230);
+            this.layoutControlGroup7.Size = new System.Drawing.Size(474, 244);
             this.layoutControlGroup7.TextVisible = false;
             // 
             // layoutControlItem46
@@ -743,26 +761,19 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.layoutControlItem46.Control = this.gridControl2;
             this.layoutControlItem46.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem46.Name = "layoutControlItem46";
-            this.layoutControlItem46.Size = new System.Drawing.Size(454, 184);
+            this.layoutControlItem46.Size = new System.Drawing.Size(454, 189);
             this.layoutControlItem46.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem46.TextVisible = false;
             // 
             // layoutControlItem47
             // 
             this.layoutControlItem47.Control = this.btnSaveConfig;
-            this.layoutControlItem47.Location = new System.Drawing.Point(338, 184);
+            this.layoutControlItem47.Location = new System.Drawing.Point(322, 189);
             this.layoutControlItem47.Name = "layoutControlItem47";
-            this.layoutControlItem47.Size = new System.Drawing.Size(116, 26);
+            this.layoutControlItem47.Padding = new DevExpress.XtraLayout.Utils.Padding(5, 5, 5, 5);
+            this.layoutControlItem47.Size = new System.Drawing.Size(132, 35);
             this.layoutControlItem47.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem47.TextVisible = false;
-            // 
-            // emptySpaceItem5
-            // 
-            this.emptySpaceItem5.AllowHotTrack = false;
-            this.emptySpaceItem5.Location = new System.Drawing.Point(0, 184);
-            this.emptySpaceItem5.Name = "emptySpaceItem5";
-            this.emptySpaceItem5.Size = new System.Drawing.Size(338, 26);
-            this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
             // 
             // btnImport
             // 
@@ -776,9 +787,9 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             // 
             // ucPaging1
             // 
-            this.ucPaging1.Location = new System.Drawing.Point(2, 506);
+            this.ucPaging1.Location = new System.Drawing.Point(2, 530);
             this.ucPaging1.Name = "ucPaging1";
-            this.ucPaging1.Size = new System.Drawing.Size(871, 24);
+            this.ucPaging1.Size = new System.Drawing.Size(871, 25);
             this.ucPaging1.TabIndex = 7;
             // 
             // gridControlBedRoom
@@ -800,7 +811,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.repositoryItemCheckEdit1,
             this.btnThietlapEnable,
             this.btnThietlapDisable});
-            this.gridControlBedRoom.Size = new System.Drawing.Size(871, 474);
+            this.gridControlBedRoom.Size = new System.Drawing.Size(871, 498);
             this.gridControlBedRoom.TabIndex = 6;
             this.gridControlBedRoom.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewListBedRoom});
@@ -1160,7 +1171,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "Root";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(875, 532);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(875, 557);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem3
@@ -1199,16 +1210,16 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.layoutControlItem5.Control = this.gridControlBedRoom;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(875, 478);
+            this.layoutControlItem5.Size = new System.Drawing.Size(875, 502);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.ucPaging1;
-            this.layoutControlItem6.Location = new System.Drawing.Point(0, 504);
+            this.layoutControlItem6.Location = new System.Drawing.Point(0, 528);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(875, 28);
+            this.layoutControlItem6.Size = new System.Drawing.Size(875, 29);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
@@ -1223,8 +1234,8 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             // 
             // layoutControl2
             // 
-            this.layoutControl2.Controls.Add(this.btnChangeConfig);
             this.layoutControl2.Controls.Add(this.txtConfig);
+            this.layoutControl2.Controls.Add(this.btnChangeConfig);
             this.layoutControl2.Controls.Add(this.cboCashierRoom);
             this.layoutControl2.Controls.Add(this.cboKhuVuc);
             this.layoutControl2.Controls.Add(this.checkEdit1);
@@ -1245,28 +1256,19 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(1446, 452, 312, 437);
             this.layoutControl2.Root = this.Root;
-            this.layoutControl2.Size = new System.Drawing.Size(301, 532);
+            this.layoutControl2.Size = new System.Drawing.Size(301, 557);
             this.layoutControl2.TabIndex = 2;
             this.layoutControl2.Text = "\\";
             // 
             // btnChangeConfig
             // 
             this.btnChangeConfig.Image = ((System.Drawing.Image)(resources.GetObject("btnChangeConfig.Image")));
-            this.btnChangeConfig.Location = new System.Drawing.Point(274, 218);
+            this.btnChangeConfig.Location = new System.Drawing.Point(275, 218);
             this.btnChangeConfig.Name = "btnChangeConfig";
-            this.btnChangeConfig.Size = new System.Drawing.Size(25, 22);
+            this.btnChangeConfig.Size = new System.Drawing.Size(24, 22);
             this.btnChangeConfig.StyleController = this.layoutControl2;
             this.btnChangeConfig.TabIndex = 22;
             this.btnChangeConfig.CheckedChanged += new System.EventHandler(this.btnChangeConfig_CheckedChanged);
-            // 
-            // txtConfig
-            // 
-            this.txtConfig.Location = new System.Drawing.Point(102, 218);
-            this.txtConfig.MenuManager = this.barManager1;
-            this.txtConfig.Name = "txtConfig";
-            this.txtConfig.Size = new System.Drawing.Size(168, 20);
-            this.txtConfig.StyleController = this.layoutControl2;
-            this.txtConfig.TabIndex = 21;
             // 
             // cboCashierRoom
             // 
@@ -1618,6 +1620,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.cboAccountBook.Size = new System.Drawing.Size(197, 20);
             this.cboAccountBook.StyleController = this.layoutControl2;
             this.cboAccountBook.TabIndex = 19;
+            this.cboAccountBook.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboAccountBook_ButtonClick);
             // 
             // gridView11
             // 
@@ -1648,12 +1651,12 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.layoutControlItem21,
             this.layoutControlItem43,
             this.layoutControlItem40,
-            this.layoutControlItem45,
-            this.layoutControlItem44});
+            this.layoutControlItem44,
+            this.layoutControlItem45});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.Root.Size = new System.Drawing.Size(301, 532);
+            this.Root.Size = new System.Drawing.Size(301, 557);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem7
@@ -1758,7 +1761,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.emptySpaceItem3.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.emptySpaceItem3.Location = new System.Drawing.Point(0, 380);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(301, 152);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(301, 177);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem16
@@ -1913,27 +1916,12 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.layoutControlItem40.TextSize = new System.Drawing.Size(95, 20);
             this.layoutControlItem40.TextToControlDistance = 5;
             // 
-            // layoutControlItem45
-            // 
-            this.layoutControlItem45.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem45.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem45.Control = this.txtConfig;
-            this.layoutControlItem45.Enabled = false;
-            this.layoutControlItem45.Location = new System.Drawing.Point(0, 216);
-            this.layoutControlItem45.Name = "layoutControlItem45";
-            this.layoutControlItem45.OptionsToolTip.ToolTip = "Thiết lập thanh toán QR";
-            this.layoutControlItem45.Size = new System.Drawing.Size(272, 26);
-            this.layoutControlItem45.Text = "Thiết lập TT QR:";
-            this.layoutControlItem45.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem45.TextSize = new System.Drawing.Size(95, 13);
-            this.layoutControlItem45.TextToControlDistance = 5;
-            // 
             // layoutControlItem44
             // 
             this.layoutControlItem44.Control = this.btnChangeConfig;
-            this.layoutControlItem44.Location = new System.Drawing.Point(272, 216);
+            this.layoutControlItem44.Location = new System.Drawing.Point(273, 216);
             this.layoutControlItem44.Name = "layoutControlItem44";
-            this.layoutControlItem44.Size = new System.Drawing.Size(29, 26);
+            this.layoutControlItem44.Size = new System.Drawing.Size(28, 26);
             this.layoutControlItem44.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem44.TextVisible = false;
             // 
@@ -1947,7 +1935,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1184, 536);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1184, 561);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -1955,7 +1943,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.layoutControlItem1.Control = this.layoutControl2;
             this.layoutControlItem1.Location = new System.Drawing.Point(879, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(305, 536);
+            this.layoutControlItem1.Size = new System.Drawing.Size(305, 561);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -1964,37 +1952,9 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.layoutControlItem2.Control = this.layoutControl3;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(879, 536);
+            this.layoutControlItem2.Size = new System.Drawing.Size(879, 561);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 51);
-            this.barDockControlTop.Size = new System.Drawing.Size(1184, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 587);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1184, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 51);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 536);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1184, 51);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 536);
             // 
             // imageList1
             // 
@@ -2960,6 +2920,53 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.layoutControlItem42.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem42.TextVisible = false;
             // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(12, 201);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(318, 31);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Giá trị cấu hình của ngân hàng tương ứng với giá trị cấu hình hệ thống";
+            // 
+            // layoutControlItem48
+            // 
+            this.layoutControlItem48.Control = this.label1;
+            this.layoutControlItem48.Location = new System.Drawing.Point(0, 189);
+            this.layoutControlItem48.MinSize = new System.Drawing.Size(24, 35);
+            this.layoutControlItem48.Name = "layoutControlItem48";
+            this.layoutControlItem48.Size = new System.Drawing.Size(322, 35);
+            this.layoutControlItem48.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem48.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem48.TextVisible = false;
+            // 
+            // txtConfig
+            // 
+            this.txtConfig.EditValue = "";
+            this.txtConfig.Location = new System.Drawing.Point(102, 218);
+            this.txtConfig.MenuManager = this.barManager1;
+            this.txtConfig.Name = "txtConfig";
+            this.txtConfig.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.txtConfig.Size = new System.Drawing.Size(169, 20);
+            this.txtConfig.StyleController = this.layoutControl2;
+            this.txtConfig.TabIndex = 23;
+            this.txtConfig.ToolTip = "Thiết lập thanh toán QR";
+            this.txtConfig.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.buttonEdit1_ButtonClick);
+            // 
+            // layoutControlItem45
+            // 
+            this.layoutControlItem45.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem45.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem45.Control = this.txtConfig;
+            this.layoutControlItem45.Location = new System.Drawing.Point(0, 216);
+            this.layoutControlItem45.Name = "layoutControlItem45";
+            this.layoutControlItem45.OptionsToolTip.ToolTip = "Thiết lập thanh toán QR";
+            this.layoutControlItem45.Size = new System.Drawing.Size(273, 26);
+            this.layoutControlItem45.Text = "Thiết lập TT QR:";
+            this.layoutControlItem45.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem45.TextSize = new System.Drawing.Size(95, 20);
+            this.layoutControlItem45.TextToControlDistance = 5;
+            // 
             // frmHisBedRoomList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2980,15 +2987,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Danh mục buồng bệnh";
             this.Load += new System.EventHandler(this.frmHisBedRoomList_Load);
-            this.Controls.SetChildIndex(this.barDockControl1, 0);
-            this.Controls.SetChildIndex(this.barDockControl2, 0);
-            this.Controls.SetChildIndex(this.barDockControl4, 0);
-            this.Controls.SetChildIndex(this.barDockControl3, 0);
-            this.Controls.SetChildIndex(this.barDockControlTop, 0);
-            this.Controls.SetChildIndex(this.barDockControlBottom, 0);
-            this.Controls.SetChildIndex(this.barDockControlRight, 0);
-            this.Controls.SetChildIndex(this.barDockControlLeft, 0);
-            this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
@@ -3006,7 +3004,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem46)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem47)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlBedRoom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewListBedRoom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnLock)).EndInit();
@@ -3032,7 +3029,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.txtConfig.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboCashierRoom.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboKhuVuc.Properties)).EndInit();
@@ -3072,7 +3068,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem43)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem45)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem44)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
@@ -3141,6 +3136,9 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem41)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem42)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem48)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtConfig.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem45)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3203,7 +3201,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
         private DevExpress.XtraBars.BarButtonItem barButtonItem2;
         private DevExpress.XtraBars.Bar bar2;
         private DevExpress.XtraBars.BarButtonItem barButtonItem1;
-        private DevExpress.XtraBars.Bar bar3;
         private DevExpress.XtraBars.BarDockControl barDockControlTop;
         private DevExpress.XtraBars.BarDockControl barDockControlBottom;
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
@@ -3346,8 +3343,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem40;
         private DevExpress.XtraEditors.GridLookUpEdit cboAccountBook;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView11;
-        private DevExpress.XtraEditors.TextEdit txtConfig;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem45;
         private DevExpress.XtraEditors.CheckButton btnChangeConfig;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem44;
         private DevExpress.XtraGrid.GridControl gridControl2;
@@ -3363,6 +3358,9 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem46;
         private DevExpress.XtraEditors.SimpleButton btnSaveConfig;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem47;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem5;
+        private System.Windows.Forms.Label label1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem48;
+        private DevExpress.XtraEditors.ButtonEdit txtConfig;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem45;
     }
 }

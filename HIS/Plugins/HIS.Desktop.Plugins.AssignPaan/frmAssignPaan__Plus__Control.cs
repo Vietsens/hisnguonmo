@@ -195,6 +195,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        //thinhdt2
         private void CheckTimeSereServ()
         {
 
@@ -280,6 +281,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
                 {
                     txtPaanServiceTypeCode.Focus();
                     txtPaanServiceTypeCode.SelectAll();
+                    ReloadCboExecuteRoom();
                 }
             }
             catch (Exception ex)
@@ -530,17 +532,10 @@ namespace HIS.Desktop.Plugins.AssignPaan
                             }
                         }
                         txtPaanServiceTypeCode.Text = service.SERVICE_CODE;
-                        if (dicServiceRoom.ContainsKey(service.ID))
-                        {
-                            this.hisCurrentServiceRooms = dicServiceRoom[service.ID];
-                            //key moi
-                            var listPatientTypeRoom = BackendDataWorker.Get<HIS_PATIENT_TYPE_ROOM>().Where(s => s.PATIENT_TYPE_ID == this.treatment.TDL_PATIENT_TYPE_ID).ToList();
+                        //LogSystem.Debug("danh sach phong xu ly : " + LogUtil.TraceData("dicServiceRoom", dicServiceRoom));
+                        LogSystem.Debug("service id: " + service.ID);
+                        ReloadCboExecuteRoom();
 
-                            if (HisConfigs.Get<string>("MOS.HIS_SERVICE_REQ.ASSIGN_ROOM_BY_PATIENT_TYPE") == "1")
-                            {
-                                hisCurrentServiceRooms = hisCurrentServiceRooms.Where(s => listPatientTypeRoom.Select(o => o.ROOM_ID).Contains(s.ROOM_ID)).ToList();
-                            }
-                        }
 
                         long? intructionNumByType = 1;
                         var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId) ?? new V_HIS_ROOM();
@@ -563,6 +558,44 @@ namespace HIS.Desktop.Plugins.AssignPaan
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ReloadCboExecuteRoom()
+        {
+            try
+            {
+                //key moi
+                //thinhdt2
+
+                if (HisConfigs.Get<string>("MOS.HIS_SERVICE_REQ.ASSIGN_ROOM_BY_PATIENT_TYPE") == "1")
+                {
+                    var listPatientTypeRoom = BackendDataWorker.Get<HIS_PATIENT_TYPE_ROOM>().Where(s => s.PATIENT_TYPE_ID == Convert.ToInt64(cboPatientType.EditValue)).ToList();
+                    if (dicServiceRoom.ContainsKey(Convert.ToInt64(cboPaanServiceType.EditValue)))
+                    {
+                        hisCurrentServiceRooms = dicServiceRoom[Convert.ToInt64(cboPaanServiceType.EditValue)].Where(s => listPatientTypeRoom.Select(o => o.ROOM_ID).Contains(s.ROOM_ID)).ToList();
+                        this.SetDataSourceCboExecuteRoom();
+                    }
+                    else
+                    {
+                        LogSystem.Debug("Khong thay phong xu ly cho dich vu.");
+                    }
+                    
+                }
+                else
+                {
+                    if (dicServiceRoom.ContainsKey(Convert.ToInt64(cboPaanServiceType.EditValue)))
+                    {
+                        hisCurrentServiceRooms = dicServiceRoom[Convert.ToInt64(cboPaanServiceType.EditValue)];//.Where(s => listPatientTypeRoom.Select(o => o.ROOM_ID).Contains(s.ROOM_ID)).ToList();
+                        this.SetDataSourceCboExecuteRoom();
+                    }
+                    LogSystem.Debug("cau hinh MOS.HIS_SERVICE_REQ.ASSIGN_ROOM_BY_PATIENT_TYPE khong duoc bat. khong load");
+                }
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

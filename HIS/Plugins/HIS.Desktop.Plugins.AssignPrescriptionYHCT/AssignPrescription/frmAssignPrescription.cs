@@ -2150,11 +2150,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     var currentTracking = trackings.FirstOrDefault(s => s.ID == Convert.ToInt64(cboPhieuDieuTri.EditValue));
                     if(currentTracking != null)
                     {
-                        if (string.IsNullOrEmpty(HisConfigs.Get<string>("HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION")) && !string.IsNullOrEmpty(HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd")))
+                        if ((string.IsNullOrEmpty(HisConfigs.Get<string>("HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION")) || (HisConfigs.Get<string>("HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION") != "1") ) 
+                            && (!string.IsNullOrEmpty(HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd")) || (HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd") == "1")))
                         {
                             LogSystem.Debug("cau hinh :  HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION khong duoc bat va cau hinh HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd duoc bat. -> load icd yhct");
                             if(!string.IsNullOrEmpty(currentTracking.TRADITIONAL_ICD_CODE))
                                 LoadICDFoUC("", "", "", "", currentTracking.TRADITIONAL_ICD_CODE, currentTracking.TRADITIONAL_ICD_NAME, currentTracking.TRADITIONAL_ICD_SUB_CODE, currentTracking.TRADITIONAL_ICD_TEXT);
+                        }
+                        else
+                        {
+                            LogSystem.Debug("KHONG LOAD ICD KHI TO DIEU TRI THAY DOI.(Dieu kien : SERVICE_REQ_ICD_OPTION  <> 1 va UpdateTreatmentIcd  == 1)");
+                            LogSystem.Debug("cau hinh  HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION ): " + HisConfigs.Get<string>("HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION")
+                                + " ,cau hinh HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd : "+ HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd"));
                         }
                     }
                 }

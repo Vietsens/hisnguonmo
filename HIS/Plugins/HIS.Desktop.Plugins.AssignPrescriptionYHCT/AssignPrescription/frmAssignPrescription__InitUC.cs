@@ -629,7 +629,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             {
                 HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager mana = new CheckIcdManager(DlgIcdSubCode, this.Histreatment);
                 string messError = "";
-                if (!mana.ProcessCheckIcdWithErrorCode(icd_code, icd_sub_code, ref messError,ref error_code))
+                if (!mana.ProcessCheckIcd(icd_code, icd_sub_code, ref messError))
                 {
 
                     LogSystem.Debug("icd: " + icd_code + " va icd_phu: " + icd_sub_code + "co trung nhom ICD10");
