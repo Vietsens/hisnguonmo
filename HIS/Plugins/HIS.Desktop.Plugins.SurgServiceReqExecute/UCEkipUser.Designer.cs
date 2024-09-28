@@ -159,6 +159,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.cboPosition.Name = "cboPosition";
             this.cboPosition.NullText = "";
             this.cboPosition.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboPosition.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboPosition_Closed);
             // 
             // gridColumn2
             // 
