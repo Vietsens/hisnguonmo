@@ -68,6 +68,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
+                GetUcIcdYHCT();
+                bool check = CheckIcd();
+                if (check == false)
+                {
+                    return;
+                }
                 btnSave_Click(null, null);
                 if (!IsValidForSave)
                     return;

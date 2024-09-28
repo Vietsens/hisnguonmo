@@ -52,6 +52,7 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
         public bool ProcessCheckIcd(string icdCodes, string icdSubCodes, ref string MessageError, bool IsCheck = false)
         {
             bool rs = true;
@@ -69,10 +70,17 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
                 List<string> listIcdSubCodeTre = new List<string>();
                 if (treatment != null)
                 {
-                    listIcdSubCodeTre.AddRange(treatment.ICD_SUB_CODE.Split(Seperator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
-                    listIcdTotal.AddRange(listIcdSubCodeTre);
-                    listIcdCodeTre.AddRange(treatment.ICD_CODE.Split(Seperator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
-                    listIcdTotal.AddRange(listIcdCodeTre);
+                    if (!string.IsNullOrEmpty(treatment.ICD_SUB_CODE))
+                    {
+                        listIcdSubCodeTre.AddRange(treatment.ICD_SUB_CODE.Split(Seperator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
+                        listIcdTotal.AddRange(listIcdSubCodeTre);
+                    }
+                    if (!string.IsNullOrEmpty(treatment.ICD_CODE))
+                    {
+                        listIcdCodeTre.AddRange(treatment.ICD_CODE.Split(Seperator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
+                        listIcdTotal.AddRange(listIcdCodeTre);
+                    }
+                  
                 }
                
                 if (!string.IsNullOrEmpty(icdSubCodes))
@@ -191,7 +199,7 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
                                 {
                                     go = false;
                                     IcdCodeError = item.ICD_CODE;
-                                    MessageError = String.Format("Mã bệnh {0} cùng nhóm {1} với mã bệnh {2} đã dùng trong đợt điều trị", IcdCodeError, item.ICD_GROUP_NAME, string.Join(",", lstICD));
+                                    MessageError = String.Format("Mã bệnh {0} cùng nhóm {1} với mã bệnh {2} đã dùng trong đợt điều trị", string.Join(",", lstICD), item.ICD_GROUP_NAME, IcdCodeError);
                                     return false;
                                 }
                             }
@@ -273,10 +281,16 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
                 List<string> listIcdSubCodeTre = new List<string>();
                 if (treatment != null)
                 {
-                    listIcdCodeTre.AddRange(treatment.ICD_CODE.Split(Seperator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
-                    listIcdTotal.AddRange(listIcdCodeTre);
-                    listIcdSubCodeTre.AddRange(treatment.ICD_SUB_CODE.Split(Seperator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
-                    listIcdTotal.AddRange(listIcdSubCodeTre);
+                    if (!string.IsNullOrEmpty(treatment.ICD_SUB_CODE))
+                    {
+                        listIcdSubCodeTre.AddRange(treatment.ICD_SUB_CODE.Split(Seperator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
+                        listIcdTotal.AddRange(listIcdSubCodeTre);
+                    }
+                    if (!string.IsNullOrEmpty(treatment.ICD_CODE))
+                    {
+                        listIcdCodeTre.AddRange(treatment.ICD_CODE.Split(Seperator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
+                        listIcdTotal.AddRange(listIcdCodeTre);
+                    }
                 }
                 
                 if (!string.IsNullOrEmpty(icdSubCodes))
@@ -395,8 +409,8 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
                                 {
                                     go = false;
                                     IcdCodeError = item.ICD_CODE;
-                                    MessageError = String.Format("Mã bệnh {0} cùng nhóm {1} với mã bệnh {2} đã dùng trong đợt điều trị", IcdCodeError, item.ICD_GROUP_NAME, string.Join(",", lstICD));
-                                    icd_code_error += ";" + IcdCodeError;
+                                    MessageError = String.Format("Mã bệnh {0} cùng nhóm {1} với mã bệnh {2} đã dùng trong đợt điều trị", string.Join(",", lstICD), item.ICD_GROUP_NAME, IcdCodeError);
+                                    icd_code_error += string.Join(";", lstICD);
                                     return false;
                                 }
                             }
