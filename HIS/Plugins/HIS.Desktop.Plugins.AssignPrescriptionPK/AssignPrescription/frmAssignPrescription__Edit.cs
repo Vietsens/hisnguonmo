@@ -344,6 +344,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         this.SetTotalPrice__TrongDon();
                         this.idRow = (int)((this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0) ? (this.mediMatyTypeADOs.Max(o => o.NUM_ORDER ?? 0) + stepRow) : 0 + stepRow);
                         this.InstructionTime = this.oldServiceReq.INTRUCTION_TIME;
+                        this.LoadMLCT();
                         this.EnableCheckTemporaryPres();
                         if (this.oldServiceReq.TRACKING_ID.HasValue)
                         {

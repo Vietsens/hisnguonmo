@@ -677,6 +677,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     else if (this.allDataExecuteRooms != null && this.allDataExecuteRooms.Count > 0 && serviceRoomViews != null && serviceRoomViews.Count > 0)
                     {
                         arrExcuteRoomCode = serviceRoomViews.Where(o => sereServADOOld != null && o.SERVICE_ID == sereServADOOld.SERVICE_ID).ToList();
+                        if (HisConfigCFG.IsAssignRoomByPatientType && PatientTypeRooms != null && PatientTypeRooms.Count > 0 && PatientTypeRooms.Exists(o => o.PATIENT_TYPE_ID == sereServADOOld.PATIENT_TYPE_ID))
+                        {
+                            var RoomIds = PatientTypeRooms.Where(o => o.PATIENT_TYPE_ID == sereServADOOld.PATIENT_TYPE_ID).Select(o => o.ROOM_ID).ToList();
+                            arrExcuteRoomCode = arrExcuteRoomCode.Where(o => RoomIds.Contains(o.ROOM_ID)).ToList();
+                        }
                         dataCombo = ((arrExcuteRoomCode != null && arrExcuteRoomCode.Count > 0 && this.allDataExecuteRooms != null) ?
                             this.allDataExecuteRooms.Where(o => arrExcuteRoomCode.Select(p => p.ROOM_ID).Contains(o.ROOM_ID) && o.BRANCH_ID == this.requestRoom.BRANCH_ID).ToList()
                             : null);
@@ -1194,7 +1199,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                                     if (this.allDataExecuteRooms != null && this.allDataExecuteRooms.Count > 0 && serviceRoomViews != null && serviceRoomViews.Count > 0)
                                     {
-                                        var arrExcuteRoomCode = serviceRoomViews.Where(o => item != null && o.SERVICE_ID == item.SERVICE_ID).Select(o => o.ROOM_ID).ToArray();
+                                        var arrExcuteRoom = serviceRoomViews.Where(o => item != null && o.SERVICE_ID == item.SERVICE_ID);
+
+                                        if (HisConfigCFG.IsAssignRoomByPatientType && PatientTypeRooms != null && PatientTypeRooms.Count > 0 && PatientTypeRooms.Exists(o => o.PATIENT_TYPE_ID == item.PATIENT_TYPE_ID))
+                                        {
+                                            var RoomIds = PatientTypeRooms.Where(o => o.PATIENT_TYPE_ID == item.PATIENT_TYPE_ID).Select(o => o.ROOM_ID).ToList();
+                                            arrExcuteRoom = arrExcuteRoom.Where(o => RoomIds.Contains(o.ROOM_ID)).ToList();
+                                        }
+                                        var arrExcuteRoomCode = arrExcuteRoom.Select(o => o.ROOM_ID).ToArray();
                                         dataCombo = ((arrExcuteRoomCode != null && arrExcuteRoomCode.Count() > 0 && this.allDataExecuteRooms != null) ? this.allDataExecuteRooms.Where(o => arrExcuteRoomCode.Contains(o.ROOM_ID)).ToList() : null);
                                     }
                                     var checkExecuteRoom = dataCombo != null && dataCombo.Count > 0 ? dataCombo.FirstOrDefault(o => o.BRANCH_ID == this.requestRoom.BRANCH_ID) : null;
@@ -1816,7 +1828,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             {
                                 Inventec.Common.Logging.LogSystem.Debug("ChoosePatientTypeDefaultlService.2");
                                 listResult = currentPatientTypeTemps.Where(o => (!this.isNotUseBhyt || (this.isNotUseBhyt && o.ID != HisConfigCFG.PatientTypeId__BHYT)) && o.ID == patientTypeAppointmentId.Value).ToList();
-                            }else if (HisConfigCFG.IsSetPrimaryPatientType != commonString__true
+                            }
+                            else if (HisConfigCFG.IsSetPrimaryPatientType != commonString__true
                                 && this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.HasValue
                                 && this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.Value != HisConfigCFG.PatientTypeId__BHYT
                                 && currentPatientTypeTemps.Exists(e => e.ID == this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.Value))
@@ -2546,10 +2559,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                     executeRoomId = this.SetDefaultExcuteRoom(executeRoomList);
 
                                 //data.TDL_EXECUTE_ROOM_ID = executeRoomDefault;
-                                if (sereServADO.TDL_EXECUTE_ROOM_ID <= 0)
-                                {
+
+                                if (sereServADO.TDL_EXECUTE_ROOM_ID <= 0 && executeRoomId > 0)
                                     sereServADO.TDL_EXECUTE_ROOM_ID = executeRoomId;
-                                }
                                 this.ValidServiceDetailProcessing(sereServADO);
                             }
 
@@ -3345,10 +3357,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                     executeRoomId = this.SetDefaultExcuteRoom(executeRoomList);
 
                                 //data.TDL_EXECUTE_ROOM_ID = executeRoomDefault;
-                                if (sereServADO.TDL_EXECUTE_ROOM_ID <= 0)
-                                {
+                                if (sereServADO.TDL_EXECUTE_ROOM_ID <= 0 && executeRoomId > 0)
                                     sereServADO.TDL_EXECUTE_ROOM_ID = executeRoomId;
-                                }
                                 this.ValidServiceDetailProcessing(sereServADO);
                                 this.SetAssignNumOrder(sereServADO);
                             }
@@ -3539,6 +3549,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         var patientTypeAllow = this.currentPatientTypeAllows.Where(o => o.PATIENT_TYPE_ID == patientType.ID).Select(m => m.PATIENT_TYPE_ALLOW_ID).Distinct().ToList();
 
                         this.currentPatientTypeWithPatientTypeAlter = ((patientTypeAllow != null && patientTypeAllow.Count > 0) ? currentPatientTypes.Where(o => patientTypeAllow.Contains(o.ID)).OrderBy(o => o.PRIORITY).ToList() : new List<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>());
+                        if (HisConfigCFG.IsAssignRoomByPatientType && currentPatientTypeWithPatientTypeAlter != null && currentPatientTypeWithPatientTypeAlter.Count > 0)
+                        {
+                            MOS.Filter.HisPatientTypeRoomFilter _patienttypeRoomFIlter = new MOS.Filter.HisPatientTypeRoomFilter();
+                            _patienttypeRoomFIlter.PATIENT_TYPE_IDs = currentPatientTypeWithPatientTypeAlter.Select(o => o.ID).ToList();
+                            _patienttypeRoomFIlter.IS_ACTIVE = (short)1;
+                            PatientTypeRooms = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT_TYPE_ROOM>>("api/HisPatientTypeRoom/Get", ApiConsumers.MosConsumer, _patienttypeRoomFIlter, null);
+                        }
                     }
                     else
                         throw new AggregateException("currentHisTreatment.PATIENT_TYPE_CODE is null");
@@ -3660,7 +3677,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         /// <summary>
         /// Lay Chan doan mac dinh: Lay chan doan cuoi cung trong cac xu ly dich vu Kham benh
         /// </summary>
-        HIS_ICD icdMain = null; 
+        HIS_ICD icdMain = null;
         private void LoadIcdDefault()
         {
             try
@@ -4025,6 +4042,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (excuteRoomCombo != null && this.allDataExecuteRooms != null && serviceRoomViews != null && serviceRoomViews.Count() > 0)
                 {
                     var arrExcuteRoom = serviceRoomViews.Where(o => data != null && o.SERVICE_ID == data.SERVICE_ID).ToList();
+                    if (HisConfigCFG.IsAssignRoomByPatientType && PatientTypeRooms != null && PatientTypeRooms.Count > 0 && PatientTypeRooms.Exists(o => o.PATIENT_TYPE_ID == data.PATIENT_TYPE_ID))
+                    {
+                        var RoomIds = PatientTypeRooms.Where(o => o.PATIENT_TYPE_ID == data.PATIENT_TYPE_ID).Select(o => o.ROOM_ID).ToList();
+                        arrExcuteRoom = arrExcuteRoom.Where(o => RoomIds.Contains(o.ROOM_ID)).ToList();
+                    }
                     var arrExcuteRoomIds = arrExcuteRoom.Select(o => o.ROOM_ID).ToArray();
                     var dataComboExcuteRooms = ((arrExcuteRoomIds != null && arrExcuteRoomIds.Count() > 0 && this.allDataExecuteRooms != null) ? this.allDataExecuteRooms.Where(o => arrExcuteRoomIds.Contains(o.ROOM_ID)).ToList() : null);
                     if (this.IsTreatmentInBedRoom)
@@ -4049,10 +4071,15 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (this.allDataExecuteRooms != null && serviceRoomViews != null && serviceRoomViews.Count() > 0)
                 {
                     var arrExcuteRoom = serviceRoomViews.Where(o => data != null && o.SERVICE_ID == data.SERVICE_ID).ToList();
+                    if (HisConfigCFG.IsAssignRoomByPatientType && PatientTypeRooms != null && PatientTypeRooms.Count > 0 && PatientTypeRooms.Exists(o => o.PATIENT_TYPE_ID == data.PATIENT_TYPE_ID))
+                    {
+                        var RoomIds = PatientTypeRooms.Where(o => o.PATIENT_TYPE_ID == data.PATIENT_TYPE_ID).Select(o => o.ROOM_ID).ToList();
+                        arrExcuteRoom = arrExcuteRoom.Where(o => RoomIds.Contains(o.ROOM_ID)).ToList();
+                    }
                     var arrExcuteRoomIds = arrExcuteRoom.Select(o => o.ROOM_ID).ToArray();
                     executeRoomList = ((arrExcuteRoomIds != null && arrExcuteRoomIds.Count() > 0 && this.allDataExecuteRooms != null) ? this.allDataExecuteRooms.Where(o => arrExcuteRoomIds.Contains(o.ROOM_ID)).ToList() : null);
                     List<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM> executeRoomFilters = ProcessExecuteRoom();
-                    executeRoomList = (executeRoomFilters != null && executeRoomFilters.Count > 0) ? executeRoomList.Where(p => executeRoomFilters.Select(o => o.ID).Distinct().Contains(p.ID)).ToList() : null;
+                    executeRoomList = (executeRoomFilters != null && executeRoomFilters.Count > 0 && executeRoomList != null && executeRoomList.Count > 0) ? executeRoomList.Where(p => executeRoomFilters.Select(o => o.ID).Distinct().Contains(p.ID)).ToList() : null;
                     if (this.IsTreatmentInBedRoom)
                     {
                         ProcessAddBedRoomToExecuteRoom(arrExcuteRoomIds.ToList(), ref executeRoomList);

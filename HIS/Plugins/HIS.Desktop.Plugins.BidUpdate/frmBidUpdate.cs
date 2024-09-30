@@ -1240,6 +1240,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 cboBidForm.EditValue = null;
                 txtBidNumber.Text = "";
                 txtBidYear.Text = "";
+                txtBidApthauCode.Text = "";
                 dtFromTime.EditValue = null;
                 dtToTime.EditValue = null;
                 txtNationalMainText.Visible = false;
@@ -1313,6 +1314,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 txtBidNumber.Text = hisBid.BID_NUMBER;
                 cboBidType.EditValue = hisBid.BID_TYPE_ID;
                 txtBidYear.Text = hisBid.BID_YEAR;
+                txtBidApthauCode.Text = hisBid.BID_APTHAU_CODE;
                 if (hisBid.VALID_FROM_TIME.HasValue)
                 {
                     dtFromTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(hisBid.VALID_FROM_TIME ?? 0) ?? DateTime.Now;
@@ -2494,6 +2496,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 this.bidModel.BID_NUMBER = txtBidNumber.Text.Trim();
                 this.bidModel.BID_TYPE_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboBidType.EditValue.ToString());
                 this.bidModel.BID_YEAR = txtBidYear.Text.Trim();
+                this.bidModel.BID_APTHAU_CODE = txtBidApthauCode.Text.Trim();
                 this.bidModel.ALLOW_UPDATE_LOGINNAMES = this.currenthisBid != null ? this.currenthisBid.ALLOW_UPDATE_LOGINNAMES : "";
 
                 if (dtFromTime.EditValue != null && dtFromTime.DateTime != DateTime.MinValue)
@@ -4029,6 +4032,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
 
         private void txtMaDT_KeyDown(object sender, KeyEventArgs e)
         {

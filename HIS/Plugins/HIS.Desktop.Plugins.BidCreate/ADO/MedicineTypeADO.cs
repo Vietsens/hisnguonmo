@@ -43,6 +43,7 @@ namespace HIS.Desktop.Plugins.BidCreate.ADO
         public string BID_GROUP_CODE { get; set; }
         public string BID_PACKAGE_CODE { get; set; }
         public string BID_YEAR { get; set; }
+        public string BID_APTHAU_CODE { get; set; }
         public long? EXPIRED_DATE { get; set; }
         public string BID_EXTRA_CODE { get; set; }
 
@@ -93,7 +94,8 @@ namespace HIS.Desktop.Plugins.BidCreate.ADO
                      string.IsNullOrEmpty(CONCENTRA) &&
                     string.IsNullOrEmpty(REGISTER_NUMBER) &&
                     string.IsNullOrEmpty(MANUFACTURER_CODE) &&
-                    string.IsNullOrEmpty(NATIONAL_NAME)
+                    string.IsNullOrEmpty(NATIONAL_NAME) &&
+                    string.IsNullOrEmpty(BID_APTHAU_CODE)
                     )
                     valid = false;
                 return valid;
