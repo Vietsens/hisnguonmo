@@ -159,6 +159,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
 
 
                 LoadTraditionalIcdToControl(this.ExamTreatmentFinishInitADO.TraditionalIcdCode, this.ExamTreatmentFinishInitADO.TraditionalIcdName);
+                LoadTraditionalSubIcdToControl(this.ExamTreatmentFinishInitADO.TraditionalIcdSubCode, this.ExamTreatmentFinishInitADO.TraditionalIcdText);
                 //LoadDataToIcdSub(this.ExamTreatmentFinishInitADO.IcdSubCode, this.ExamTreatmentFinishInitADO.IcdText);
                 if (this.ExamTreatmentFinishInitADO != null)
                 {

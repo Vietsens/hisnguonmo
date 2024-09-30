@@ -208,6 +208,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 }
                 timerInitForm.Enabled = true;
                 timerInitForm.Start();
+                Inventec.Common.Logging.LogSystem.Debug(". 6");
+                GetSereServByTreatment();
                 isNotLoadWhileChangeControlStateInFirst = false;
 
                 btnFinish.Enabled = !(HisConfigKeys.allowFinishWhenAccountIsDoctor == "1" && BackendDataWorker.Get<HIS_EMPLOYEE>().Where(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()).FirstOrDefault().IS_DOCTOR != 1);
@@ -234,12 +236,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("_________HisConfigCFG.REQUIRED_GROUPPTTT_OPTION:", HisConfigCFG.REQUIRED_GROUPPTTT_OPTION));
                 if (HisConfigCFG.REQUIRED_GROUPPTTT_OPTION != "1")
                 {
                     this.sereServ = (MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_5)grdViewService.GetFocusedRow();
                     if (this.sereServ != null)
                     {
-
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("_________sereServ:", sereServ));
                         var surgMisuService = lstService.FirstOrDefault(o => o.ID == sereServ.SERVICE_ID);
                         if (surgMisuService != null)
                         {
@@ -247,6 +250,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             {
                                 this.currentHisService = new HIS_SERVICE();
                                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE>(currentHisService, surgMisuService);
+                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("_________currentHisService(lúc map data):", currentHisService));
                                 if (surgMisuService.IS_OUT_OF_MANAGEMENT != null && surgMisuService.IS_OUT_OF_MANAGEMENT == 1)
                                 {
                                     ucEkip.SetColorTitle(false);
@@ -741,15 +745,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         return false;
                     }
                 }
-
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("_________phương pháp vô cảm:", rs));
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("_________SereServExt:", SereServExt));
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("_________serviceReq:", serviceReq));
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("_________currentHisService:", currentHisService));
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("_________HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION:", HIS.Desktop.Plugins.SurgServiceReqExecute.Config.HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION));
-                if (SereServExt != null && currentHisService != null)
+                V_HIS_SERVICE currentVHisService = lstService.FirstOrDefault(o => o.ID == sereServ.SERVICE_ID);
+                if (SereServExt != null && currentVHisService != null)
                 {
-                    if (currentHisService.ALLOW_SIMULTANEITY != 1 && SereServExt.BEGIN_TIME != null && SereServExt.END_TIME != null)
+                    if (currentVHisService.ALLOW_SIMULTANEITY != 1 && SereServExt.BEGIN_TIME != null && SereServExt.END_TIME != null)
                     {
                         if (HIS.Desktop.Plugins.SurgServiceReqExecute.Config.HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
                         {
@@ -801,7 +800,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         }
                     }
                 }
-                Inventec.Common.Logging.LogSystem.Debug("kết thúc api/HisSereServ/CheckExecuteTimes");
 
                 if (chkSaveGroup.Checked)
                 {

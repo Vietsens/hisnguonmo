@@ -64,6 +64,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Inventec.Common.Controls.EditorLoader;
+using HIS.Desktop.LocalStorage.HisConfig;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 {
@@ -2125,11 +2126,105 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     if (cboPhieuDieuTri.EditValue != null)
                     {
                         cboPhieuDieuTri.Properties.Buttons[1].Visible = true;
+                        LoadICDFromTracking();
                     }
                 }
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadICDFromTracking()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisTrackingFilter filter = new HisTrackingFilter();
+                filter.TREATMENT_ID = this.treatmentId;
+                List<HIS_TRACKING> trackings = new BackendAdapter(param)
+                    .Get<List<MOS.EFMODEL.DataModels.HIS_TRACKING>>("api/HisTracking/Get", ApiConsumers.MosConsumer, filter, param);
+                if(trackings != null)
+                {
+                    var currentTracking = trackings.FirstOrDefault(s => s.ID == Convert.ToInt64(cboPhieuDieuTri.EditValue));
+                    if(currentTracking != null)
+                    {
+                        if ((string.IsNullOrEmpty(HisConfigs.Get<string>("HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION")) || (HisConfigs.Get<string>("HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION") != "1") ) 
+                            && (!string.IsNullOrEmpty(HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd")) || (HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd") == "1")))
+                        {
+                            LogSystem.Debug("cau hinh :  HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION khong duoc bat va cau hinh HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd duoc bat. -> load icd yhct");
+                            if(!string.IsNullOrEmpty(currentTracking.TRADITIONAL_ICD_CODE))
+                                LoadICDFoUC("", "", "", "", currentTracking.TRADITIONAL_ICD_CODE, currentTracking.TRADITIONAL_ICD_NAME, currentTracking.TRADITIONAL_ICD_SUB_CODE, currentTracking.TRADITIONAL_ICD_TEXT);
+                        }
+                        else
+                        {
+                            LogSystem.Debug("KHONG LOAD ICD KHI TO DIEU TRI THAY DOI.(Dieu kien : SERVICE_REQ_ICD_OPTION  <> 1 va UpdateTreatmentIcd  == 1)");
+                            LogSystem.Debug("cau hinh  HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION ): " + HisConfigs.Get<string>("HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION")
+                                + " ,cau hinh HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd : "+ HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd"));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadICDFoUC(string iCD_CODE, string iCD_NAME, string iCD_SUB_CODE, string iCD_TEXT,
+            string tRADITIONAL_ICD_CODE, string tRADITIONAL_ICD_NAME,string tRADITIONAL_ICD_SUB_CODE, string tRADITIONAL_ICD_TEXT)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(iCD_CODE))
+                {
+                    HIS.UC.Icd.ADO.IcdInputADO icd = new UC.Icd.ADO.IcdInputADO();
+                    icd.ICD_CODE = iCD_CODE;
+                    icd.ICD_NAME = iCD_NAME;
+                    if(ucIcd != null)
+                    {
+                        icdProcessor.Reload(ucIcd, icd);
+                    }
+                }
+                
+                if (!string.IsNullOrEmpty(iCD_SUB_CODE))
+                {
+                    HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subICD = new SecondaryIcdDataADO();
+                    subICD.ICD_SUB_CODE = iCD_SUB_CODE;
+                    subICD.ICD_TEXT = iCD_TEXT;
+                    if(ucSecondaryIcd != null)
+                    {
+                        subIcdProcessor.Reload(ucSecondaryIcd, subICD);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(tRADITIONAL_ICD_CODE))
+                {
+                    HIS.UC.Icd.ADO.IcdInputADO icd = new UC.Icd.ADO.IcdInputADO();
+                    icd.ICD_CODE = tRADITIONAL_ICD_CODE;
+                    icd.ICD_NAME = tRADITIONAL_ICD_NAME;
+                    if (ucIcdYHCT != null)
+                    {
+                        icdProcessorYHCT.Reload(ucIcdYHCT, icd);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(tRADITIONAL_ICD_SUB_CODE))
+                {
+                    HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subICD = new SecondaryIcdDataADO();
+                    subICD.ICD_SUB_CODE = tRADITIONAL_ICD_SUB_CODE;
+                    subICD.ICD_TEXT = tRADITIONAL_ICD_TEXT;
+                    if (ucSecondaryIcdYHCT != null)
+                    {
+                        subIcdProcessorYHCT.Reload(ucSecondaryIcdYHCT, subICD);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }

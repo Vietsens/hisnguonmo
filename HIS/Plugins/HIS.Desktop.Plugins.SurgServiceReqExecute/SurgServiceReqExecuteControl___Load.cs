@@ -370,6 +370,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("serviceReq.TREATMENT_ID: " + serviceReq.TREATMENT_ID);
                 Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
                 sereServs = new List<V_HIS_SERE_SERV_5>();
                 HisSereServFilter sereServFilter = new HisSereServFilter();

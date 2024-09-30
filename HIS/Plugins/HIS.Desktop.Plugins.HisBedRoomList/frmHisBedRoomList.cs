@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using AutoMapper;
+using DevExpress.XtraBars.Controls;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.Repository;
@@ -32,6 +33,7 @@ using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
@@ -53,7 +55,7 @@ using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.HisBedRoomList
 {
-    public partial class frmHisBedRoomList : HIS.Desktop.Utility.FormBase
+    public partial class frmHisBedRoomList : Form//HIS.Desktop.Utility.FormBase
     {
         #region Declare
         Inventec.Desktop.Common.Modules.Module currentModule;
@@ -90,7 +92,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             }
         }
         public frmHisBedRoomList(Inventec.Desktop.Common.Modules.Module module)
-            : base(module)
+        //: base(module)
         {
             InitializeComponent();
             try
@@ -157,6 +159,8 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 InitComboCashierRoom();
                 InitComboDefaultsCLS();
                 InitComboTreatmentTypeIds();
+                InitComboAccountBook();
+                //InitComboControlConfig();
                 SetCaptionByLanguageKey();
                 WaitingManager.Hide();
             }
@@ -166,6 +170,8 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+
 
         private void InitComboCashierRoom()
         {
@@ -189,6 +195,24 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             }
         }
 
+        private void InitComboAccountBook()
+        {
+            try
+            {
+
+                var datass = BackendDataWorker.Get<HIS_ACCOUNT_BOOK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_FOR_DEPOSIT == 1 && o.IS_FOR_BILL == 1 && o.IS_NOT_GEN_TRANSACTION_ORDER != 1).ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("ACCOUNT_BOOK_CODE", "", 50, 1));
+                columnInfos.Add(new ColumnInfo("ACCOUNT_BOOK_NAME", "", 150, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("ACCOUNT_BOOK_NAME", "ID", columnInfos, false, 200);
+                ControlEditorLoader.Load(cboAccountBook, datass, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void InitComboDefaultsCLS()
         {
             try
@@ -235,46 +259,46 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
 
         private void InitComboTreatmentTypeIds()
         {
-                try
+            try
+            {
+                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cboTreatmentTypeIds.Properties);
+                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(SelectionGrid__cboTreatmentTypeIds);
+                cboTreatmentTypeIds.Properties.Tag = gridCheck;
+                cboTreatmentTypeIds.Properties.View.OptionsSelection.MultiSelect = true;
+
+                CommonParam param = new CommonParam();
+                HisTreatmentTypeFilter filter = new HisTreatmentTypeFilter();
+                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                listTreatmentTypeIds = new BackendAdapter(param).Get<List<HIS_TREATMENT_TYPE>>("api/HisTreatmentType/Get", ApiConsumers.MosConsumer, filter, null).ToList();
+
+                if (listTreatmentTypeIds != null)
                 {
-                    GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cboTreatmentTypeIds.Properties);
-                    gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(SelectionGrid__cboTreatmentTypeIds);
-                    cboTreatmentTypeIds.Properties.Tag = gridCheck;
+                    cboTreatmentTypeIds.Properties.DataSource = listTreatmentTypeIds;
+                    cboTreatmentTypeIds.Properties.DisplayMember = "TREATMENT_TYPE_NAME";
+                    cboTreatmentTypeIds.Properties.ValueMember = "ID";
+                    DevExpress.XtraGrid.Columns.GridColumn col2 = cboTreatmentTypeIds.Properties.View.Columns.AddField("TREATMENT_TYPE_CODE");
+                    col2.VisibleIndex = 1;
+                    col2.Width = 100;
+                    col2.Caption = "";
+                    DevExpress.XtraGrid.Columns.GridColumn col3 = cboTreatmentTypeIds.Properties.View.Columns.AddField("TREATMENT_TYPE_NAME");
+                    col3.VisibleIndex = 2;
+                    col3.Width = 200;
+                    col3.Caption = "";
+
+                    cboTreatmentTypeIds.Properties.PopupFormWidth = 200;
+                    cboTreatmentTypeIds.Properties.View.OptionsView.ShowColumnHeaders = false;
                     cboTreatmentTypeIds.Properties.View.OptionsSelection.MultiSelect = true;
-
-                    CommonParam param = new CommonParam();
-                    HisTreatmentTypeFilter filter = new HisTreatmentTypeFilter();
-                    filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                    listTreatmentTypeIds = new BackendAdapter(param).Get<List<HIS_TREATMENT_TYPE>>("api/HisTreatmentType/Get", ApiConsumers.MosConsumer, filter, null).ToList();
-
-                    if (listTreatmentTypeIds != null)
+                    GridCheckMarksSelection gridCheckMark = cboTreatmentTypeIds.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
                     {
-                        cboTreatmentTypeIds.Properties.DataSource = listTreatmentTypeIds;
-                        cboTreatmentTypeIds.Properties.DisplayMember = "TREATMENT_TYPE_NAME";
-                        cboTreatmentTypeIds.Properties.ValueMember = "ID";
-                        DevExpress.XtraGrid.Columns.GridColumn col2 = cboTreatmentTypeIds.Properties.View.Columns.AddField("TREATMENT_TYPE_CODE");
-                        col2.VisibleIndex = 1;
-                        col2.Width = 100;
-                        col2.Caption = "";
-                        DevExpress.XtraGrid.Columns.GridColumn col3 = cboTreatmentTypeIds.Properties.View.Columns.AddField("TREATMENT_TYPE_NAME");
-                        col3.VisibleIndex = 2;
-                        col3.Width = 200;
-                        col3.Caption = "";
-
-                        cboTreatmentTypeIds.Properties.PopupFormWidth = 200;
-                        cboTreatmentTypeIds.Properties.View.OptionsView.ShowColumnHeaders = false;
-                        cboTreatmentTypeIds.Properties.View.OptionsSelection.MultiSelect = true;
-                        GridCheckMarksSelection gridCheckMark = cboTreatmentTypeIds.Properties.Tag as GridCheckMarksSelection;
-                        if (gridCheckMark != null)
-                        {
-                            gridCheckMark.ClearSelection(cboTreatmentTypeIds.Properties.View);
-                        }
+                        gridCheckMark.ClearSelection(cboTreatmentTypeIds.Properties.View);
                     }
                 }
-                catch (Exception ex)
-                {
-                    Inventec.Common.Logging.LogSystem.Warn(ex);
-                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void SelectionGrid__cboTreatmentTypeIds(object sender, EventArgs e)
@@ -380,7 +404,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 this.bar2.Text = Inventec.Common.Resource.Get.Value("frmHisBedRoomList.bar2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.barButtonItem1.Caption = Inventec.Common.Resource.Get.Value("frmHisBedRoomList.barButtonItem1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.barButtonItem4.Caption = Inventec.Common.Resource.Get.Value("frmHisBedRoomList.barButtonItem4.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.bar3.Text = Inventec.Common.Resource.Get.Value("frmHisBedRoomList.bar3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.bar3.Text = Inventec.Common.Resource.Get.Value("frmHisBedRoomList.bar3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.barButtonItem3.Caption = Inventec.Common.Resource.Get.Value("frmHisBedRoomList.barButtonItem3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnRefresh.Text = Inventec.Common.Resource.Get.Value("frmHisBedRoomList.btnRefresh.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnEdit.Text = Inventec.Common.Resource.Get.Value("frmHisBedRoomList.btnEdit.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -474,9 +498,13 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 this.cboTreatmentTypeIds.EditValue = null;
                 this.cboCashierRoom.EditValue = null;
                 this.cboDefaultsCLS.EditValue = null;
+                this.cboAccountBook.EditValue = null;
                 this.checkEdit1.Checked = false;
                 this.cboChuyenKhoa.EditValue = null;
                 this.cboKhuVuc.EditValue = null;
+                txtConfig.Text = "";
+                txtConfig.ReadOnly = true;
+                cboAccountBook.EditValue = null;
                 this.ActionType = GlobalVariables.ActionAdd;
                 EnableControlChanged(this.ActionType);
                 this.txtBedRoomCode.Focus();
@@ -906,6 +934,8 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                     checkEdit1.Checked = row.IS_RESTRICT_EXECUTE_ROOM == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? true : false;
                     cboChuyenKhoa.EditValue = row.SPECIALITY_ID;
                     cboCashierRoom.EditValue = row.DEFAULT_CASHIER_ROOM_ID;
+                    cboAccountBook.EditValue = row.QR_ACCOUNT_BOOK_ID;
+                    //txtConfig.Text = row.QR_CONFIG_JSON;
                     if (row.IS_ACTIVE == IS_ACTIVE_TRUE)
                     {
                         CommonParam param = new CommonParam();
@@ -917,6 +947,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                         cboKhuVuc.EditValue = data.Where(p => p.ID == row.ROOM_ID).FirstOrDefault().AREA_ID;
                         Inventec.Common.Logging.LogSystem.Warn("api/HisRoom/Get        " + data.FirstOrDefault().AREA_ID);
                         cboKhuVuc.Refresh();
+                        txtConfig.Text = data.Where(p => p.ID == row.ROOM_ID).FirstOrDefault() != null ? data.Where(p => p.ID == row.ROOM_ID).FirstOrDefault().QR_CONFIG_JSON : "";
                     }
                     ActionType = GlobalVariables.ActionEdit;
                     EnableControlChanged(ActionType);
@@ -1020,6 +1051,8 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 hisRoom.ID = currentBedRoom.ROOM_ID;
                 hisRoom.IS_PAUSE = chkIsPause.Checked ? (short)1 : (short)0;
                 hisRoom.IS_RESTRICT_REQ_SERVICE = chkIsRestrictReqService.Checked ? (short)1 : (short)0;
+                if (cboAccountBook.EditValue != null) hisRoom.QR_ACCOUNT_BOOK_ID = Convert.ToInt64(Convert.ToInt64(cboAccountBook.EditValue));
+                hisRoom.QR_CONFIG_JSON = txtConfig.Text;
                 if (cboChuyenKhoa.EditValue != null)
                 {
                     hisRoom.SPECIALITY_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboChuyenKhoa.EditValue.ToString());
@@ -1053,6 +1086,8 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
 
                 WaitingManager.Show();
                 HisBedRoomSDO result = null;
+                Inventec.Common.Logging.LogSystem.Debug("Du lieu gui len api: " + RequestUriStore.HIS_BED_ROOM_CREATE + " : " + LogUtil.TraceData("HisBedRoomSDO", HisBedRoomSDO));
+
                 if (this.ActionType == GlobalVariables.ActionAdd)
                 {
 
@@ -1599,7 +1634,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 {
                     string selectedValue = cboDefaultsCLS.EditValue.ToString().Trim('{', '}');
                     string[] parts = selectedValue.Split(',');
-                   
+
                     //cboDefaultsCLS.EditValue = dataSource.PATIENT_TYPE_NAME;
                     cboDefaultsCLS.EditValue = parts[2].Trim('"');
                 }
@@ -1610,7 +1645,230 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-      
-      
+        // thinhdt2
+        //xu ly them cua hinh QR
+        #region them cau hinh QR
+        public class CONFIGADO
+        {
+            public string BANK { get; set; }
+            public string VALUE { get; set; }
+        }
+        private void btnChangeConfig_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                Rectangle buttonPosition = new Rectangle(btnChangeConfig.Bounds.X, btnChangeConfig.Bounds.Y, btnChangeConfig.Bounds.Width, btnChangeConfig.Bounds.Height);
+                popupControlContainer1.ShowPopup(new Point(buttonPosition.X + 480, buttonPosition.Bottom + btnChangeConfig.Bounds.Height - 10));
+                InitComboControlConfig();
+                DataTable table = new DataTable();
+                table.Columns.Add("Name", typeof(string));
+                table.Columns.Add("Value", typeof(object));
+
+                // Thêm dữ liệu cho 2 dòng "Ngân hàng" và "Cấu hình"
+
+
+                table.Rows.Add("Ngân hàng", null);
+                table.Rows.Add("Cấu hình", "");
+
+                gridControl2.DataSource = table;
+
+
+                if (!string.IsNullOrEmpty(txtConfig.Text))
+                {
+                    CONFIGADO config = Newtonsoft.Json.JsonConvert.DeserializeObject<CONFIGADO>(txtConfig.Text);
+                    gridView12.SetRowCellValue(0, "Value", config.BANK);
+                    gridView12.SetRowCellValue(1, "Value", config.VALUE);
+                    
+                }
+                gridView12.OptionsView.NewItemRowPosition = DevExpress.XtraGrid.Views.Grid.NewItemRowPosition.None;
+                gridView12.OptionsBehavior.Editable = true;
+
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        List<HIS_CONFIG> listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+        List<HIS_CONFIG> listConfigEncode = new List<HIS_CONFIG>();
+        private void InitComboControlConfig()
+        {
+            try
+            {
+
+
+                int count = 0;
+                listConfigEncode.Clear();
+                foreach (var item in listConfig)
+                {
+                    HIS_CONFIG cf = new HIS_CONFIG();
+                    cf.ID = count++;
+
+
+                    string value = item.KEY;
+                    int index = value.IndexOf("Info");
+                    if (index > 0)
+                    {
+                        var shotkey = value.Substring(0, index);
+                        string[] parts = shotkey.Split('.');
+                        if (parts.Length > 0)
+                        {
+                            cf.KEY = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
+                        }
+                    }
+                    cf.VALUE = item.VALUE;
+                    listConfigEncode.Add(cf);
+                }
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("KEY", "", 150, 1));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("KEY", "KEY", columnInfos, false, 250);
+                controlEditorADO.ImmediatePopup = true;
+                ControlEditorLoader.Load(cboBank, listConfigEncode, controlEditorADO);
+            }
+
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridView12_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
+        {
+            try
+            {
+                if (e.RowHandle == 0 && e.Column.FieldName == "Value")
+                {
+                    e.RepositoryItem = cboBank;
+                }
+                if (e.RowHandle == 1 && e.Column.FieldName == "Value")
+                {
+                    e.RepositoryItem = txtConfigValue;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        public string KEY { get; set; }
+        public string VALUE { get; set; }
+        private void cboBank_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                GridLookUpEdit grid = gridView12.ActiveEditor as GridLookUpEdit;
+
+                if (grid != null)
+                {
+                    var selectedBank = grid.EditValue.ToString();
+                    KEY = selectedBank;
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboBank_EditValueChanged(object sender, EventArgs e)
+        {
+
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnSaveConfig_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                var result = new
+                {
+                    BANK = this.KEY,
+                    VALUE = this.VALUE
+                };
+
+                string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                txtConfig.Text = jsonString.ToString();
+
+
+
+                PopupContainerBarControl control = popupControlContainer1.Parent as PopupContainerBarControl;
+                control.ClosePopup();
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboAccountBook_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+
+                    cboAccountBook.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtConfigValue_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var textEdit = sender as DevExpress.XtraEditors.TextEdit;
+                if (textEdit != null)
+                {
+
+                    this.VALUE = textEdit.EditValue.ToString();
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        //
+        #endregion
+
+        private void buttonEdit1_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    txtConfig.Text = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }

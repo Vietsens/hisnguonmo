@@ -110,6 +110,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save.Create
                 prescriptionSDO.IcdCauseCode = this.IcdCauseCode;
                 prescriptionSDO.IcdText = this.IcdText;
                 prescriptionSDO.IcdSubCode = this.IcdSubCode;
+                prescriptionSDO.TraditionalIcdCode = this.IcdCodeYHCT;
+                prescriptionSDO.TraditionalIcdName = this.IcdNameYHCT;
+                prescriptionSDO.TraditionalIcdSubCode = this.IcdSubCodeYHCT;
+                prescriptionSDO.TraditionalIcdText = this.IcdTextYHCT;
             }
             catch (Exception ex)
             {

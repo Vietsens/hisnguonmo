@@ -2885,6 +2885,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     if ((edit.EditValue ?? 0).ToString() != (edit.OldEditValue ?? 0).ToString())
                     {
                         //grdViewInformationSurg.SetRowCellValue(grdViewInformationSurg.FocusedRowHandle, gridColumnParticipants_Id, edit.EditValue);
+                        
                     }
                 }
             }

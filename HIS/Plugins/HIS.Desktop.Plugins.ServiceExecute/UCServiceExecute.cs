@@ -6902,41 +6902,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 if (view.FocusedColumn.FieldName == "LOGINNAME" && view.ActiveEditor is GridLookUpEdit)
                 {
                     GridLookUpEdit editor = view.ActiveEditor as GridLookUpEdit;
-                    List<string> loginNames = new List<string>();
-                    if (data != null && data.EXECUTE_ROLE_ID > 0)
-                    {
-                        if (data.LOGINNAME != null)
-                            editor.EditValue = data.LOGINNAME;
-                        var executeRoleUserTemps = executeRoleUsers != null ? executeRoleUsers.Where(o => o.EXECUTE_ROLE_ID == data.EXECUTE_ROLE_ID).ToList() : null;
-                        if (executeRoleUserTemps != null && executeRoleUserTemps.Count > 0)
-                        {
-                            loginNames = executeRoleUserTemps.Select(o => o.LOGINNAME).Distinct().ToList();
-                        }
-                    }
-
-                    //ComboAcsUser(editor, loginNames);
-
-                    //SetDepartment(data);
-                    //gridViewEkip.RefreshData();
-
-                    if (data != null && data.DEPARTMENT_ID > 0)
-                    {
-                        if (data.LOGINNAME != null)
-                            editor.EditValue = data.LOGINNAME;
-                        var depaloginNames = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => o.DEPARTMENT_ID == data.DEPARTMENT_ID || o.DEPARTMENT_ID == null).Select(i => i.LOGINNAME).ToList();
-                        if (depaloginNames != null && depaloginNames.Count > 0)
-                        {
-                            if (loginNames.Count > 0)
-                            {
-                                loginNames = loginNames.Where(o => depaloginNames.Contains(o)).ToList();
-                            }
-                            else
-                            {
-                                loginNames = depaloginNames;
-                            }
-                        }
-                    }
-                    ComboAcsUser(editor, loginNames);
+                    LoadUser(data, editor);
                 }
             }
             catch (Exception ex)
@@ -6944,7 +6910,96 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void LoadUser(HisEkipUserADO data, GridLookUpEdit editor)
+        {
+            try
+            {
+                List<string> loginNames = new List<string>();
+                if (data != null && data.EXECUTE_ROLE_ID > 0)
+                {
+                    
+                    var executeRoleUserTemps = executeRoleUsers != null ? executeRoleUsers.Where(o => o.EXECUTE_ROLE_ID == data.EXECUTE_ROLE_ID).ToList() : null;
+                    if (executeRoleUserTemps != null && executeRoleUserTemps.Count > 0)
+                    {
+                        loginNames = executeRoleUserTemps.Select(o => o.LOGINNAME).Distinct().ToList();
+                    }
+                    if (data.LOGINNAME != null)
+                    {
+                        if (key == "1")
+                        {
+                            if (loginNames.Contains(data.LOGINNAME))
+                            {
+                                editor.EditValue = data.LOGINNAME;
+                            }
+                            else
+                            {
+                                editor.EditValue = null;
+                                data.LOGINNAME = null;
+                            }
+                        }
+                        else
+                        {
+                            editor.EditValue = data.LOGINNAME;
+                        }
 
+
+
+                        //editor.Text = loginNames.Contains(data.LOGINNAME) ? data.LOGINNAME : null;
+                    }
+                }
+
+                //ComboAcsUser(editor, loginNames);
+
+                //SetDepartment(data);
+                //gridViewEkip.RefreshData();
+
+                if (data != null && data.DEPARTMENT_ID > 0)
+                {
+                    
+                    var depaloginNames = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => o.DEPARTMENT_ID == data.DEPARTMENT_ID || o.DEPARTMENT_ID == null).Select(i => i.LOGINNAME).ToList();
+                    if (depaloginNames != null && depaloginNames.Count > 0)
+                    {
+                        if (loginNames.Count > 0)
+                        {
+                            loginNames = loginNames.Where(o => depaloginNames.Contains(o)).ToList();
+                        }
+                        else
+                        {
+                            loginNames = depaloginNames;
+                        }
+                    }
+                    if (data.LOGINNAME != null)
+                    {
+                        if (key == "1")
+                        {
+                            if (loginNames.Contains(data.LOGINNAME))
+                            {
+                                editor.EditValue = data.LOGINNAME;
+                            }
+                            else
+                            {
+                                editor.EditValue = null;
+                                data.LOGINNAME = null;
+                            }
+                        }
+                        else
+                        {
+                            editor.EditValue = data.LOGINNAME;
+                        }
+
+
+
+                        //editor.Text = loginNames.Contains(data.LOGINNAME) ? data.LOGINNAME : null;
+                    }
+                }
+                ComboAcsUser(editor, loginNames);
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void repositoryItemBtnAddEkip_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
@@ -7624,6 +7679,43 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        private void repositoryItemCboPosition_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                LookUpEdit edit = sender as LookUpEdit;
+                if (edit == null) return;
+                if (edit.EditValue != null)
+                {
+                    if ((edit.EditValue ?? 0).ToString() != (edit.OldEditValue ?? 0).ToString())
+                    {
+                        DevExpress.XtraGrid.Views.Grid.GridView view = gridViewEkip as DevExpress.XtraGrid.Views.Grid.GridView;
+                        var data = (HisEkipUserADO)gridViewEkip.GetFocusedRow();
+                        data.EXECUTE_ROLE_ID = Convert.ToInt64(edit.EditValue);
+                        GridLookUpEdit editor = view.ActiveEditor as GridLookUpEdit;
+                        if (editor != null)
+                        {
+                            LoadUser(data, editor);
+                        }
+                        else
+                        {
+                            GridLookUpEdit newEditor = new GridLookUpEdit();
+                            LoadUser(data, newEditor);
+                        }
+                        if(data.LOGINNAME == null && (key == "1"))
+                        {
+                            view.SetRowCellValue(view.FocusedRowHandle, view.Columns["LOGINNAME"], null);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void xtraTabControl1_CustomHeaderButtonClick(object sender, DevExpress.XtraTab.ViewInfo.CustomHeaderButtonEventArgs e)

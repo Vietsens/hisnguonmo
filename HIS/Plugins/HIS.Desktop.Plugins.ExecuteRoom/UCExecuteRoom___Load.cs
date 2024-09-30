@@ -55,7 +55,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraTab;
 using DevExpress.Utils;
 using EMR.SDO;
-using static Aspose.Pdf.Operator;
+//using static Aspose.Pdf.Operator;
 
 namespace HIS.Desktop.Plugins.ExecuteRoom
 {
@@ -1637,6 +1637,11 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 filter.ColumnParams.Add("IS_NOT_USE_BHYT");
                 filter.ColumnParams.Add("APPOINTMENT_TIME");
                 filter.ColumnParams.Add("APPOINTMENT_DESC");
+
+                filter.ColumnParams.Add("TRADITIONAL_ICD_CODE");
+                filter.ColumnParams.Add("TRADITIONAL_ICD_NAME");
+                filter.ColumnParams.Add("TRADITIONAL_ICD_SUB_CODE");
+                filter.ColumnParams.Add("TRADITIONAL_ICD_TEXT");
                 //bỏ bớt các thông tin cần get Dynamic để tránh làm dài param
                 if (serviceReqInput.EXE_SERVICE_MODULE_ID == IMSys.DbConfig.HIS_RS.HIS_EXE_SERVICE_MODULE.ID__KHAM)
                 {

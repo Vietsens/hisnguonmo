@@ -78,7 +78,7 @@ namespace HIS.UC.SecondaryIcd
                     }
                     this.DelegateNextFocus = data.DelegateNextFocus;
                     this.GetIcdMain = data.DelegateGetIcdMain;
-                    if(data.delegateCheckICD != null)
+                    if (data.delegateCheckICD != null)
                     {
                         this.checkICD = data.delegateCheckICD;
                     }
@@ -135,12 +135,13 @@ namespace HIS.UC.SecondaryIcd
                         {
                             ListViewHisIcds = icdNotIsTraditionalsV;
                         }
-                        if (data.hisTreatment != null)
-                        {
-                            treatment = data.hisTreatment;
-                            checkIcd = new CheckIcdManager(null, treatment);
-                        }
                     }
+                    if (data.hisTreatment != null)
+                    {
+                        treatment = data.hisTreatment;
+                        checkIcd = new CheckIcdManager(null, treatment);
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -411,7 +412,7 @@ namespace HIS.UC.SecondaryIcd
                         return;
                     }
                     DelegateNextFocus();
-                    if( checkICD != null)checkICD();
+                    if (checkICD != null) checkICD();
                 }
             }
             catch (Exception ex)
@@ -613,42 +614,48 @@ namespace HIS.UC.SecondaryIcd
                     List<string> arrWrongCodes = new List<string>();
                     List<string> lstIcdSubName = new List<string>();
                     List<string> lstIcdCodes = new List<string>();
+
+
+
+                    // check icd moi
                     string[] arrIcdExtraCodes = this.txtIcdSubCode.Text.Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
                     if (arrIcdExtraCodes != null && arrIcdExtraCodes.Count() > 0)
                     {
-                        foreach (var itemCode in arrIcdExtraCodes)
+                        //check icd moi
+                        string messErr = null;
+                        
+                        if (checkIcd != null)
                         {
-                            HIS_ICD icdByCode = null;
-
-                            if (ListHisIcds != null && ListHisIcds.Count > 0)
-                                icdByCode = ListHisIcds.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.Trim().ToLower());
-                            else
+                            if (!checkIcd.ProcessCheckIcd(null, string.Join(";", arrIcdExtraCodes), ref messErr))
                             {
-                                var ViewicdByCode = ListViewHisIcds.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.Trim().ToLower());
-                                icdByCode = new HIS_ICD();
-                                icdByCode.ID = ViewicdByCode.ID;
-                                icdByCode.ICD_CODE = ViewicdByCode.ICD_CODE;
-                                icdByCode.ICD_NAME = ViewicdByCode.ICD_NAME;
-                            }
-                            if (icdByCode != null && icdByCode.ID > 0)
-                            {
-                                string messErr = null;
-                                if (checkIcd != null && !checkIcd.ProcessCheckIcd(null, icdByCode.ICD_CODE, ref messErr))
+                                if (arrIcdExtraCodes.Length > 0)
                                 {
-                                    XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
-                                    continue;
+                                    arrIcdExtraCodes = arrIcdExtraCodes.Take(arrIcdExtraCodes.Length - 1).ToArray();
+
+                                    this.txtIcdSubCode.Text = string.Join(";", arrIcdExtraCodes);
                                 }
-                                strIcdNames += (IcdUtil.seperator + icdByCode.ICD_NAME);
-                                lstIcdCodes.Add(icdByCode.ICD_CODE);
-                                lstIcdSubName.Add(icdByCode.ICD_NAME);
-                            }
-                            else
-                            {
-                                arrWrongCodes.Add(itemCode.Trim());
-                                strWrongIcdCodes += (IcdUtil.seperator + itemCode.Trim());
+
+                                XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
+
                             }
                         }
-                        strIcdNames += IcdUtil.seperator;
+                        List<HIS_ICD> icdByCode = null;
+
+                        if (ListHisIcds != null && ListHisIcds.Count > 0)
+                            icdByCode = ListHisIcds.Where(o => arrIcdExtraCodes.Contains(o.ICD_CODE)).ToList();
+                        else
+                        {
+                            var ViewicdByCode = ListViewHisIcds.Where(o => arrIcdExtraCodes.Contains(o.ICD_CODE)).ToList();
+                            ViewicdByCode.ForEach(o =>
+                            {
+                                HIS_ICD _icd = new HIS_ICD();
+                                _icd.ID = o.ID;
+                                _icd.ICD_CODE = o.ICD_CODE;
+                                _icd.ICD_NAME = o.ICD_NAME;
+                                icdByCode.Add(_icd);
+                            });
+
+                        }
                         if (lstIcdCodes != null && lstIcdCodes.Count > 0)
                         {
                             this.txtIcdSubCode.Text = String.Join(";", lstIcdCodes);

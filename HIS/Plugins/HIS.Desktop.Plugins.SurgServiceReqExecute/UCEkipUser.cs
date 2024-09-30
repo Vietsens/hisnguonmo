@@ -41,6 +41,7 @@ using AutoMapper;
 using ACS.Filter;
 using System.Resources;
 using Inventec.Desktop.Common.LanguageManager;
+using HIS.Desktop.Plugins.SurgServiceReqExecute.Config;
 namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 {
     public partial class UCEkipUser : UserControlBase
@@ -523,25 +524,60 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 if (view.FocusedColumn.FieldName == "LOGINNAME" && view.ActiveEditor is GridLookUpEdit)
                 {
                     GridLookUpEdit editor = view.ActiveEditor as GridLookUpEdit;
-                    List<string> loginNames = new List<string>();
-                    if (data != null && data.EXECUTE_ROLE_ID > 0)
-                    {
-                        if (data.LOGINNAME != null)
-                            editor.EditValue = data.LOGINNAME;
-                        var executeRoleUserTemps = executeRoleUsers != null ? executeRoleUsers.Where(o => o.EXECUTE_ROLE_ID == data.EXECUTE_ROLE_ID).ToList() : null;
-                        if (executeRoleUserTemps != null && executeRoleUserTemps.Count > 0)
-                        {
-                            loginNames = executeRoleUserTemps.Select(o => o.LOGINNAME).Distinct().ToList();
-                        }
-                    }
-
-                    ComboAcsUser(editor, loginNames);
-                    SetDepartment(data);
+                    LoadDataToUser(data, editor);
                     grdViewInformationSurg.RefreshData();
                 }
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadDataToUser(HisEkipUserADO data, GridLookUpEdit editor)
+        {
+            try
+            {
+                List<string> loginNames = new List<string>();
+
+
+                if (data != null && data.EXECUTE_ROLE_ID > 0)
+                {
+
+                    var executeRoleUserTemps = executeRoleUsers != null ? executeRoleUsers.Where(o => o.EXECUTE_ROLE_ID == data.EXECUTE_ROLE_ID).ToList() : null;
+                    if (executeRoleUserTemps != null && executeRoleUserTemps.Count > 0)
+                    {
+                        loginNames = executeRoleUserTemps.Select(o => o.LOGINNAME).Distinct().ToList();
+                    }
+                    if (data.LOGINNAME != null)
+                    {
+                        if (HisConfigCFG.SURG_SERVICE_REQ_EXECUTE_ROLE_USER_OPTION == "1")
+                        {
+                            if (loginNames.Contains(data.LOGINNAME))
+                            {
+                                editor.EditValue = data.LOGINNAME;
+                            }
+                            else
+                            {
+                                editor.EditValue = null;
+                                data.LOGINNAME = null;
+                            }
+                        }
+                        else
+                        {
+                            editor.EditValue = data.LOGINNAME;
+                        }
+                    }
+
+                }
+                ComboAcsUser(editor, loginNames);
+
+
+                SetDepartment(data);
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -619,9 +655,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 //BackendDataWorker.Get<HIS_EMPLOYEE>().FirstOrDefault(o => o.ID == this.serviceReq.EXECUTE_DEPARTMENT_ID);
                 if (loginNames != null && loginNames.Count > 0)
                 {
-
                     acsUserAlows = this.AcsUserADOList.Where(o => loginNames.Contains(o.LOGINNAME) && o.IS_ACTIVE == 1).ToList();
-
+                }
+                else if (HisConfigCFG.SURG_SERVICE_REQ_EXECUTE_ROLE_USER_OPTION == "1")
+                {
+                    acsUserAlows = null;
                 }
                 else
                 {
@@ -993,6 +1031,44 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboPosition_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                LookUpEdit edit = sender as LookUpEdit;
+                if (edit == null) return;
+                if (edit.EditValue != null)
+                {
+                    if ((edit.EditValue ?? 0).ToString() != (edit.OldEditValue ?? 0).ToString())
+                    {
+                        DevExpress.XtraGrid.Views.Grid.GridView view = grdViewInformationSurg as DevExpress.XtraGrid.Views.Grid.GridView;
+                        var data = (HisEkipUserADO)grdViewInformationSurg.GetFocusedRow();
+                        data.EXECUTE_ROLE_ID = Convert.ToInt64(edit.EditValue);
+                        GridLookUpEdit editor = view.ActiveEditor as GridLookUpEdit;
+                        if (editor != null)
+                        {
+                            LoadDataToUser(data, editor);
+                        }
+                        else
+                        {
+                            GridLookUpEdit newEditor = new GridLookUpEdit();
+                            LoadDataToUser(data, newEditor);
+                        }
+                        if (data.LOGINNAME == null && (HisConfigCFG.SURG_SERVICE_REQ_EXECUTE_ROLE_USER_OPTION == "1"))
+                        {
+                            view.SetRowCellValue(view.FocusedRowHandle, view.Columns["LOGINNAME"], null);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }

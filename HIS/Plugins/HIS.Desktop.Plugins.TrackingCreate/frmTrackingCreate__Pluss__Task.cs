@@ -150,8 +150,18 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 {
                     icdProcessor.Reload(ucIcd, icd);
                 }
-                txtIcdExtraName.Text = _Treatment.ICD_TEXT;
-                txtIcdExtraCode.Text = _Treatment.ICD_SUB_CODE;
+
+                SecondaryIcdDataADO subIcd = new SecondaryIcdDataADO();
+                subIcd.ICD_SUB_CODE = _Treatment.ICD_SUB_CODE;
+                subIcd.ICD_TEXT = _Treatment.ICD_TEXT;
+                if (ucSecondaryIcd != null)
+                {
+                    subIcdProcessor.Reload(ucSecondaryIcd, subIcd);
+                }
+
+                //dùng UC
+                //txtIcdExtraName.Text = _Treatment.ICD_TEXT;
+                //txtIcdExtraCode.Text = _Treatment.ICD_SUB_CODE;
 
                 HIS.UC.Icd.ADO.IcdInputADO icdYhct = new HIS.UC.Icd.ADO.IcdInputADO();
                 icdYhct.ICD_CODE = _Treatment.TRADITIONAL_ICD_CODE;

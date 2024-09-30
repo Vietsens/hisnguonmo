@@ -2525,6 +2525,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             {
                                 this.LoadProcessAndPrintBHXH();
                             }
+                            ucIcdYHCT.Enabled = false;
+                            ucSecondaryIcdYHCT.Enabled = false;
                         }
                         if (this.isPrintBANT)
                         {
@@ -2604,8 +2606,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     {
                         btnVoBenhAn.Enabled = false;
                     }
-                    ucIcdYHCT.Enabled = false;
-                    ucSecondaryIcdYHCT.Enabled = false;
                     // đóng tab sau khi lưu
                     if (success
                         && HisConfigCFG.IsAutoExitAfterFinish
