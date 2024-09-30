@@ -278,6 +278,9 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 {
                     room.DEFAULT_INSTR_PATIENT_TYPE_ID = null;
                 }
+
+                room.QR_ACCOUNT_BOOK_ID = cboAccountQr.EditValue != null ? (long?)Int64.Parse(cboAccountQr.EditValue.ToString()) : null;
+                room.QR_CONFIG_JSON = txtJsonQr.Text;
             }
             catch (Exception ex)
             {

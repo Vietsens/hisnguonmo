@@ -661,7 +661,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             try
             {
                 List<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM> executeRoomFilters = ProcessExecuteRoom();
-                data = (executeRoomFilters != null && executeRoomFilters.Count > 0) ? data.Where(p => executeRoomFilters.Select(o => o.ID).Distinct().Contains(p.ID)
+                data = (executeRoomFilters != null && executeRoomFilters.Count > 0 && data != null && data.Count > 0) ? data.Where(p => executeRoomFilters.Select(o => o.ID).Distinct().Contains(p.ID)
                     || p.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__BUONG).ToList() : null;
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("EXECUTE_ROOM_CODE", "", 100, 1));

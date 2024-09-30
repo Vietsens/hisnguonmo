@@ -499,6 +499,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 subIcdYhctProcessor = new SecondaryIcdProcessor(new CommonParam(), icdYhct);
                 HIS.UC.SecondaryIcd.ADO.SecondaryIcdInitADO ado = new UC.SecondaryIcd.ADO.SecondaryIcdInitADO();
                 ado.DelegateGetIcdMain = GetIcdMainCodeYhct;
+                ado.hisTreatment = GetTreatment(this.treatmentId);
                 ado.Width = 440;
                 ado.TextSize = 95;
                 ado.Height = 24;
@@ -3826,6 +3827,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 {
                     this.OpionGroupSelectedChangedAsync();
                 }
+                LoadMLCT();
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.intructionTimeSelecteds), this.intructionTimeSelecteds));
                 Inventec.Common.Logging.LogSystem.Debug("ChangeIntructionTime. 2");
             }
@@ -10505,6 +10507,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             }
         }
 
+        List<V_HIS_SERE_SERV_TEIN_1> SereServTeinData { get; set; }
         private void LoadMLCT()
         {
             try
@@ -10519,42 +10522,37 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     var TestIndexData = BackendDataWorker.Get<HIS_TEST_INDEX>().Where(o => o.IS_TO_CALCULATE_EGFR == 1).ToList();
                     if (TestIndexData != null && TestIndexData.Count > 0)
                     {
-                        CommonParam param = new CommonParam();
-                        HisSereServTeinFilter filter = new HisSereServTeinFilter();
-                        filter.TDL_TREATMENT_ID = treatmentId;
-                        filter.TEST_INDEX_IDs = TestIndexData.Select(o => o.ID).ToList();
-                        var SereServTeinData = new BackendAdapter(param).Get<List<HIS_SERE_SERV_TEIN>>("/api/HisSereServTein/Get", ApiConsumers.MosConsumer, filter, param);
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("dữ liệu SereServTeinData: " + Inventec.Common.Logging.LogUtil.GetMemberName(() => SereServTeinData), SereServTeinData));
-                        if (SereServTeinData != null && SereServTeinData.Count > 0)
+                        if (SereServTeinData == null || SereServTeinData.Count == 0 || !SereServTeinData.Exists(o=>o.TDL_TREATMENT_ID == treatmentId))
                         {
-                            var DataSereServTein = SereServTeinData.Where(o => !String.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ThenByDescending(o => o.ID).FirstOrDefault();
-                            var testIndex = TestIndexData.FirstOrDefault(o => o.ID == (DataSereServTein.TEST_INDEX_ID ?? 0));
-                            if (testIndex != null)
+                            CommonParam param = new CommonParam();
+                            HisSereServTeinView1Filter filter = new HisSereServTeinView1Filter();
+                            filter.TREATMENT_IDs = new List<long>() { treatmentId };
+                            filter.TEST_INDEX_IDs = TestIndexData.Select(o => o.ID).ToList();
+                            SereServTeinData = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN_1>>("/api/HisSereServTein/GetView1", ApiConsumers.MosConsumer, filter, param);
+                        }
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("dữ liệu SereServTeinData: " + Inventec.Common.Logging.LogUtil.GetMemberName(() => SereServTeinData), SereServTeinData));
+                        if (SereServTeinData != null && SereServTeinData.Count > 0 && InstructionTime > 0)
+                        {
+                            var DataSereServTeins = SereServTeinData.Where(o => !String.IsNullOrEmpty(o.VALUE) && o.TDL_INTRUCTION_TIME < InstructionTime).OrderByDescending(o => o.TDL_INTRUCTION_TIME).ThenByDescending(o => o.ID).ToList();
+                            if (DataSereServTeins != null && DataSereServTeins.Count > 0)
                             {
-                                decimal chiso;
-                                string ssTeinVL = DataSereServTein.VALUE.Replace(".", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
-                                 .Replace(",", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
-                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ssTeinVL), ssTeinVL));
-                                if (Decimal.TryParse(ssTeinVL, out chiso) && currentTreatmentWithPatientType != null)
+                                var DataSereServTein = DataSereServTeins.FirstOrDefault();
+                                var testIndex = TestIndexData.FirstOrDefault(o => o.ID == (DataSereServTein.TEST_INDEX_ID ?? 0));
+                                if (testIndex != null)
                                 {
-                                    if (testIndex.CONVERT_RATIO_MLCT.HasValue)
-                                        chiso *= (testIndex.CONVERT_RATIO_MLCT ?? 0);
-                                    strIsToCalculateEgfr = Inventec.Common.Calculate.Calculation.MucLocCauThan(this.currentTreatmentWithPatientType.TDL_PATIENT_DOB, spinWeight.Value, spinHeight.Value, chiso, this.currentTreatmentWithPatientType.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE).ToString();
+                                    decimal chiso;
+                                    string ssTeinVL = DataSereServTein.VALUE.Replace(".", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+                                     .Replace(",", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ssTeinVL), ssTeinVL));
+                                    if (Decimal.TryParse(ssTeinVL, out chiso) && currentTreatmentWithPatientType != null)
+                                    {
+                                        if (testIndex.CONVERT_RATIO_MLCT.HasValue)
+                                            chiso *= (testIndex.CONVERT_RATIO_MLCT ?? 0);
+                                        strIsToCalculateEgfr = Inventec.Common.Calculate.Calculation.MucLocCauThan(this.currentTreatmentWithPatientType.TDL_PATIENT_DOB, spinWeight.Value, spinHeight.Value, chiso, this.currentTreatmentWithPatientType.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE).ToString();
+                                    }
                                 }
                             }
-                            else
-                            {
-                                strIsToCalculateEgfr = "";
-                            }
                         }
-                        else
-                        {
-                            strIsToCalculateEgfr = "";
-                        }
-                    }
-                    else
-                    {
-                        strIsToCalculateEgfr = "";
                     }
                 }
                 lblIsToCalculateEgfr.Text = strIsToCalculateEgfr;

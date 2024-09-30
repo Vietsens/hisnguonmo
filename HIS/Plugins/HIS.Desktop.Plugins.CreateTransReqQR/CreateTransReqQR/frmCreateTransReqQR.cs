@@ -750,6 +750,9 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                             timerReloadTransReq.Stop();
                             if (currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__FINISHED)
                             {
+                                pbQr.EditValue = global::HIS.Desktop.Plugins.CreateTransReqQR.Properties.Resources.check;
+
+                                btnNew.Enabled = btnCreate.Enabled = false;
                                 if (transactionPrint != null)
                                 {
                                     switch (transactionPrint.TRANSACTION_TYPE_ID)
@@ -771,19 +774,14 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                                             }
                                             else
                                             {
-                                                if(!lstLoaiPhieu.FirstOrDefault(o => o.ID == "Mps000102").Check)
+                                                if (lstLoaiPhieu.FirstOrDefault(o => o.ID == "Mps000102").Check)
                                                     onClickTamUngDv(null, null);
                                             }
                                             break;
                                         default:
                                             break;
-                                    } 
+                                    }
                                 }
-                                pbQr.EditValue = global::HIS.Desktop.Plugins.CreateTransReqQR.Properties.Resources.check;
-
-                                btnNew.Enabled = btnCreate.Enabled = false;
-                                if (lstLoaiPhieu.FirstOrDefault(o => o.ID == "Mps000102").Check)
-                                    onClickTamUngDv(null, null);
                                 
                                 if (lstLoaiPhieu.FirstOrDefault(o => o.ID == "Mps000276").Check)
                                 {
@@ -797,7 +795,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                                     if (serviceReq != null && serviceReq.Count > 0)
                                     {
                                         HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor proc = new Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(serviceReq, currentModule.RoomId);
-                                        proc.Print("Mps000276");
+                                        proc.Print("Mps000276", true);
                                     }
                                 }
                             }
@@ -823,7 +821,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 CommonParam param = new CommonParam();
                 TransReqCreateSDO sdo = new TransReqCreateSDO();
                 sdo.TreatmentId = this.inputTransReq.TreatmentId;
-                sdo.TransReqType = inputTransReq.TransReqId == CreateReqType.Deposit ? 4 : inputTransReq.TransReqId == CreateReqType.Transaction ? 5 : 2;
+                sdo.TransReqType = inputTransReq.TransReqId == CreateReqType.Deposit ? IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_TYPE.ID__BY_DEPOSIT : inputTransReq.TransReqId == CreateReqType.Transaction ? IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_TYPE.ID__BY_TRANSACTION : IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_TYPE.ID__BY_SERVICE;
                 sdo.SereServIds = SereServIds.Distinct().ToList();
                 sdo.RequestRoomId = this.currentModule.RoomId;
                 sdo.Amount = this.Amount;
@@ -1190,15 +1188,15 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     lstTran,
                     listSeseDepoRepay
                     );
-
-                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
-                }
-                else
-                {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO });
-                }
+                result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                //if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                //{
+                //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                //}
+                //else
+                //{
+                //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO });
+                //}
             }
             catch (Exception ex)
             {
@@ -1272,14 +1270,15 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 }
 
                 MPS.ProcessorBase.Core.PrintData printdata = null;
-                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    printdata = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                }
-                else
-                {
-                    printdata = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
-                }
+                printdata = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                //if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                //{
+                //    printdata = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                //}
+                //else
+                //{
+                //    printdata = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
+                //} 
 
                 WaitingManager.Hide();
                 result = MPS.MpsPrinter.Run(printdata);
@@ -1367,14 +1366,15 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     new MPS.Processor.Mps000112.PDO.Mps000112PDO(deposit, null, ratio, PatyAlterBhyt, departmentTrans, ado, treatment, BackendDataWorker.Get<HIS_TREATMENT_TYPE>());
                 MPS.ProcessorBase.Core.PrintData printData = null;
                 WaitingManager.Hide();
-                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
-                }
-                else
-                {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
-                }
+                result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
+                //if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                //{
+                //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
+                //}
+                //else
+                //{
+                //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
+                //}
             }
             catch (Exception ex)
             {
@@ -1450,13 +1450,28 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 }
 
                 string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentHisPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentHisPatientTypeAlter.HEIN_CARD_NUMBER, currentHisPatientTypeAlter.LEVEL_CODE, currentHisPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100) + "";
-
+                 
                 //sử dụng DepositedSereServs để hiển thị thêm dịch vụ thanh toán cha
                 List<V_HIS_SERE_SERV_5> sereServs5 = new List<V_HIS_SERE_SERV_5>();
                 List<V_HIS_SERE_SERV> sereServs = new List<V_HIS_SERE_SERV>();
 
                 if (SereServIds != null && SereServIds.Count > 0)
                     sereServs5 = sereServByTreatment.Where(o => SereServIds.Exists(p => p == o.ID)).ToList();
+                else if (this.transactionPrint != null && this.transactionPrint.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU && this.transactionPrint.TDL_SERE_SERV_DEPOSIT_COUNT != null)
+                {
+                    MOS.Filter.HisSereServDepositFilter sereServDepositFilter = new HisSereServDepositFilter();
+                    sereServDepositFilter.DEPOSIT_ID = this.transactionPrint.ID;
+                    var sereServDeposits = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_DEPOSIT>>("api/HisSereServDeposit/Get", ApiConsumer.ApiConsumers.MosConsumer, sereServDepositFilter, param);
+                    if (sereServDeposits != null && sereServDeposits.Count > 0)
+                    {
+                        HisSereServView5Filter ss5 = new HisSereServView5Filter();
+                        ss5.IDs = sereServDeposits.Select(o => o.SERE_SERV_ID).ToList();
+                        sereServs5 = new BackendAdapter(null)
+      .Get<List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_5>>("api/HisSereServ/GetView5", ApiConsumer.ApiConsumers.MosConsumer, ss5, null);
+
+                    }
+                }
+
                 List<MPS.Processor.Mps000102.PDO.SereServGroupPlusADO> sereServNotHitechADOs = new List<MPS.Processor.Mps000102.PDO.SereServGroupPlusADO>();
                 List<MPS.Processor.Mps000102.PDO.SereServGroupPlusADO> sereServHitechADOs = new List<MPS.Processor.Mps000102.PDO.SereServGroupPlusADO>();
                 List<MPS.Processor.Mps000102.PDO.SereServGroupPlusADO> sereServVTTTADOs = new List<MPS.Processor.Mps000102.PDO.SereServGroupPlusADO>();
@@ -1641,14 +1656,15 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         currentTransReq,
                         new List<HIS_CONFIG>() { inputTransReq.ConfigValue }
                         );
-                if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
-                }
-                else
-                {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO });
-                }
+                result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                //if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                //{
+                //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                //}
+                //else
+                //{
+                //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO });
+                //}
             }
             catch (Exception ex)
             {
