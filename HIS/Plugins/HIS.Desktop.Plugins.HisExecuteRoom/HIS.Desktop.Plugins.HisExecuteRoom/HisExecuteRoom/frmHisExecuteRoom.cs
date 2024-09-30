@@ -426,7 +426,6 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             try
             {
                 cboAccountQr.EditValue = null;
-                cboAccountQr.Properties.Buttons[1].Visible = false;
                 CommonParam param = new CommonParam();
                 HisAccountBookFilter filter = new HisAccountBookFilter();
                 filter.IS_ACTIVE = 1;
@@ -3806,6 +3805,36 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void cboAccountQr_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboAccountQr.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtJsonQr_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+
+            try
+            {
+                txtJsonQr.Text = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         //private void frmHisExecuteRoom_KeyDown(object sender, KeyEventArgs e)

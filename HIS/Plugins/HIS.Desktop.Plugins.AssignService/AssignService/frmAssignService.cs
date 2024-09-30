@@ -269,6 +269,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         internal UserControl ucIcdYhct;
         internal SecondaryIcdProcessor subIcdYhctProcessor;
         internal UserControl ucSecondaryIcdYhct;
+        List<HIS_PATIENT_TYPE_ROOM> PatientTypeRooms { get; set; }
         #endregion
 
         #region Construct
@@ -486,7 +487,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         MessageManager.Show(this, param, CheckSereTimes);
                     }
                     else if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
-                    { 
+                    {
                         if (XtraMessageBox.Show(param.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
                         {
                             isCheckAssignServiceSimultaneityOption = true;
@@ -1083,7 +1084,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 LoadDataSereServToGetPatientType();
                 LogSystem.Debug("frmAssignService_Load => End...");
                 VisibleGridPatient();
-                ModuleList(); 
+                ModuleList();
                 IsFirstloadForm = false;
                 CheckEnableBtnQR();
                 CheckAssignServiceSimultaneityOption();
@@ -2244,7 +2245,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         {
                             e.RepositoryItem = this.repSampleTypeDis;
                         }
-                    }else if(e.Column.FieldName == "AssignNumOrder")
+                    }
+                    else if (e.Column.FieldName == "AssignNumOrder")
                     {
                         if (data.IsChecked && !assignMulti)
                             e.RepositoryItem = this.repositoryItemSpinAmount_TabService;
@@ -2301,7 +2303,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         this.gridControlServiceProcess.RefreshDataSource();
                         this.SetEnableButtonControl(this.actionType);
                     }
-                    if(e.Column.FieldName == this.grcChecked_TabService.FieldName)
+                    if (e.Column.FieldName == this.grcChecked_TabService.FieldName)
                     {
                         if (sereServADO.IsChecked)
                             this.SetAssignNumOrder(sereServADO);
@@ -2355,14 +2357,17 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             sereServADO.OldPatientType = sereServADO.PATIENT_TYPE_ID;
                             this.FillDataOtherPaySourceDataRow(sereServADO);
 
-                            List<V_HIS_EXECUTE_ROOM> executeRoomList = null;
-                            FilterExecuteRoom(sereServADO, ref executeRoomList);
-                            long executeRoomId = this.SetPriorityRequired(executeRoomList);
-                            if (executeRoomId <= 0)
-                                executeRoomId = this.SetDefaultExcuteRoom(executeRoomList);
-                            if (sereServADO.TDL_EXECUTE_ROOM_ID <= 0 && executeRoomId > 0)
+                            if (e.Column.FieldName == this.gridColumnPatientTypeName__TabService.FieldName || e.Column.FieldName == this.grcChecked_TabService.FieldName)
                             {
-                                sereServADO.TDL_EXECUTE_ROOM_ID = executeRoomId;
+                                List<V_HIS_EXECUTE_ROOM> executeRoomList = null;
+                                FilterExecuteRoom(sereServADO, ref executeRoomList);
+                                long executeRoomId = this.SetPriorityRequired(executeRoomList);
+                                if (executeRoomId <= 0)
+                                    executeRoomId = this.SetDefaultExcuteRoom(executeRoomList);
+                                //if (sereServADO.TDL_EXECUTE_ROOM_ID <= 0 && executeRoomId > 0)
+                                //{
+                                    sereServADO.TDL_EXECUTE_ROOM_ID = executeRoomId;
+                                //}
                             }
                             this.VerifyWarningOverCeiling();
                             this.ValidServiceDetailProcessing(sereServADO);
@@ -2575,9 +2580,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                             if (executeRoomId <= 0)
                                                 executeRoomId = this.SetDefaultExcuteRoom(executeRoomList);
                                             if (sereServADO.TDL_EXECUTE_ROOM_ID <= 0 && executeRoomId > 0)
-                                            {
                                                 sereServADO.TDL_EXECUTE_ROOM_ID = executeRoomId;
-                                            }
                                             this.FillDataOtherPaySourceDataRow(sereServADO);
                                             this.ValidServiceDetailProcessing(sereServADO);
                                             this.SetAssignNumOrder(sereServADO);
@@ -3078,9 +3081,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             if (executeRoomId <= 0)
                                 executeRoomId = this.SetDefaultExcuteRoom(executeRoomList);
                             if (sereServADO.TDL_EXECUTE_ROOM_ID <= 0 && executeRoomId > 0)
-                            {
                                 sereServADO.TDL_EXECUTE_ROOM_ID = executeRoomId;
-                            }
                             if (sereServADO.IsAutoExpend == (short?)1 && sereServADO.IsAllowExpend == (short?)1 && !sereServADO.PackagePriceId.HasValue)
                                 sereServADO.IsExpend = true;
                             this.ValidServiceDetailProcessing(sereServADO);
@@ -3335,7 +3336,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         return;
                     }
 
-
                     List<V_HIS_EXECUTE_ROOM> executeRoomList = null;
                     FilterExecuteRoom(sereServADO, ref executeRoomList);
 
@@ -3345,10 +3345,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         executeRoomId = this.SetDefaultExcuteRoom(executeRoomList);
 
                     //data.TDL_EXECUTE_ROOM_ID = executeRoomDefault;
-                    if (sereServADO.TDL_EXECUTE_ROOM_ID <= 0)
-                    {
+                    if (sereServADO.TDL_EXECUTE_ROOM_ID <= 0 && executeRoomId > 0)
                         sereServADO.TDL_EXECUTE_ROOM_ID = executeRoomId;
-                    }
                     if (sereServADO.IsAutoExpend == (short?)1 && sereServADO.IsAllowExpend == (short?)1 && !sereServADO.PackagePriceId.HasValue)
                         sereServADO.IsExpend = true;
                     this.ValidServiceDetailProcessing(sereServADO);
@@ -3743,10 +3741,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 executeRoomId = this.SetDefaultExcuteRoom(executeRoomList);
 
                             //data.TDL_EXECUTE_ROOM_ID = executeRoomDefault;
-                            if (service.TDL_EXECUTE_ROOM_ID <= 0)
-                            {
+                            if (service.TDL_EXECUTE_ROOM_ID <= 0 && executeRoomId > 0)
                                 service.TDL_EXECUTE_ROOM_ID = executeRoomId;
-                            }
 
                             this.ValidServiceDetailProcessing(service);
                         }
@@ -3858,10 +3854,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                         executeRoomId = this.SetDefaultExcuteRoom(executeRoomList);
 
                                     //data.TDL_EXECUTE_ROOM_ID = executeRoomDefault;
-                                    if (service.TDL_EXECUTE_ROOM_ID <= 0)
-                                    {
+                                    if (service.TDL_EXECUTE_ROOM_ID <= 0 && executeRoomId > 0)
                                         service.TDL_EXECUTE_ROOM_ID = executeRoomId;
-                                    }
 
                                     this.ValidServiceDetailProcessing(service);
                                 }
@@ -4852,7 +4846,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         this.Listtrackings = new List<HIS_TRACKING>();
                         Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRACKING>(tracking, trackingData);
                         this.Listtrackings.Add(tracking);
-                        
+
                     }
                     else
                     {
@@ -5721,7 +5715,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 {
                     this.gridControlServiceProcess.DataSource = this.ServiceIsleafADOs;
                     this.gridControlServiceProcess.RefreshDataSource();
-                } 
+                }
 
                 this.gridViewServiceProcess.ClearColumnsFilter();
                 this.EnableCboTracking();
@@ -6103,9 +6097,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (LblBtnPrint.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && BtnPrint.Enabled)
                 {
                     PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, null, currentModule != null ? currentModule.RoomId : 0);
-                    
+
                     InPhieuYeuCauDichVu(true);
-                    
+
                     //PrintServiceReqProcessor.Print("Mps000340", false);
                 }
             }
@@ -9447,7 +9441,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             try
             {
                 listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
-                
+
                 btnQRPay.Enabled = true;
             }
             catch (Exception ex)
@@ -9458,8 +9452,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         private HIS_CONFIG selectedConfig = new HIS_CONFIG();
         private void btnQRPay_Click(object sender, EventArgs e)
         {
-            try 
-	        {
+            try
+            {
                 if (listConfig != null)
                 {
                     if (listConfig.Count > 1)
@@ -9484,7 +9478,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 key = item.KEY;
                             }
 
-                           
+
                             BarButtonItem btnOption = new BarButtonItem(null, key);
                             btnOption.ItemClick += (s, args) =>
                             {
@@ -9495,10 +9489,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 adoqr.TreatmentId = this.treatmentId;
                                 adoqr.ConfigValue = selectedConfig;
                                 adoqr.TransReqId = 0;
-                                adoqr.DelegtePrint = this.serviceReqComboResultSDO != null  ? (HIS.Desktop.Common.RefeshReference)IN_QR : null;
+                                adoqr.DelegtePrint = this.serviceReqComboResultSDO != null ? (HIS.Desktop.Common.RefeshReference)IN_QR : null;
                                 listArgs.Add(adoqr);
                                 LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
-                                
+
                                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
 
                             };
@@ -9520,15 +9514,15 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
                         HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
 
-                        
+
                     }
-                    
+
                 }
-	        }
-	        catch (Exception ex)
-	        {
-		        LogSystem.Error("Loi khi thuc hien thanh toan QR tam thu: "+ex);
-	        }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error("Loi khi thuc hien thanh toan QR tam thu: " + ex);
+            }
         }
         private void IN_QR()
         {
@@ -9558,8 +9552,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         InYeuCauThanhToanQR(chkPrint.Checked, false, true);
                     }
                 }
-                
-                
+
+
             }
             catch (Exception ex)
             {
