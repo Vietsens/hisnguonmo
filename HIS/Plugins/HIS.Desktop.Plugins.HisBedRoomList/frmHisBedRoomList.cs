@@ -1797,8 +1797,8 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
 
                 var result = new
                 {
-                    BANK = this.KEY,
-                    VALUE = this.VALUE
+                    BANK = this.KEY == null ? " ": this.KEY,
+                    VALUE = this.VALUE == null ? " " : this.VALUE
                 };
 
                 string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(result);
@@ -1823,6 +1823,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
 
+                    cboAccountBook.DataBindings.Clear();
                     cboAccountBook.EditValue = null;
                 }
             }
@@ -1867,6 +1868,19 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboAccountBook_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboAccountBook.EditValue == null) return;
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }

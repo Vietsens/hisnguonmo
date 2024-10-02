@@ -613,6 +613,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                                                 long id = item.ID;
                                                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE_REQ>(item, exp);
                                                 item.ID = id;
+                                                item.SERVICE_REQ_CODE = exp.TDL_SERVICE_REQ_CODE;
                                             }
                                         }
                                     }
@@ -627,6 +628,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                                     HIS_SERVICE_REQ req = new HIS_SERVICE_REQ();
                                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE_REQ>(req, item);
                                     req.ID = --count;
+                                    req.SERVICE_REQ_CODE = item.TDL_SERVICE_REQ_CODE;
                                     currentOutPresSDO.ServiceReqs.Add(req);
                                 }
                             }

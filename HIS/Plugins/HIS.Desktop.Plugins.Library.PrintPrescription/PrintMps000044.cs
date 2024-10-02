@@ -330,7 +330,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         if (currentOutPresSDO.ServiceReqs != null &&
                             currentOutPresSDO.ServiceReqs.Count > 0)
                         { 
-                            HisPrescriptionSDOPrintPlus = currentOutPresSDO.ServiceReqs.FirstOrDefault(o => o.SERVICE_REQ_CODE == item.TDL_SERVICE_REQ_CODE);
+                            HisPrescriptionSDOPrintPlus = currentOutPresSDO.ServiceReqs.FirstOrDefault(o => o.SERVICE_REQ_CODE == item.TDL_SERVICE_REQ_CODE || o.ID == item.SERVICE_REQ_ID);
                         }
 
                         if (HisPrescriptionSDOPrintPlus == null) continue;
