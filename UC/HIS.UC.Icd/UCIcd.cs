@@ -412,7 +412,7 @@ namespace HIS.UC.Icd
                         showCbo = false;
                         txtIcdCode.Text = result.First().ICD_CODE;
                         string message = null;
-                        if (!IsYhct && checkIcd != null && !checkIcd.ProcessCheckIcd(txtIcdCode.Text, null, ref message))
+                        if (!IsYhct && checkIcd != null && !checkIcd.ProcessCheckIcd(txtIcdCode.Text, null, ref message,false))
                         {
                             if (!String.IsNullOrEmpty(message))
                             {
@@ -516,7 +516,7 @@ namespace HIS.UC.Icd
                 {
                     txtIcdCode.Text = icd.ICD_CODE;
                     string message = null;
-                    if (checkIcd != null && !checkIcd.ProcessCheckIcd(icd.ICD_CODE, null, ref message))
+                    if (checkIcd != null && !checkIcd.ProcessCheckIcd(icd.ICD_CODE, null, ref message,false))
                     {
                         if (!String.IsNullOrEmpty(message))
                         {
