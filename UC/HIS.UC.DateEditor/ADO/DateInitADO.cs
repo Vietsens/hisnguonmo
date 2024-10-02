@@ -33,6 +33,7 @@ namespace HIS.UC.DateEditor.ADO
         public int Height { get; set; }
         public bool IsValidate { get; set; }
         public bool IsVisibleMultiDate { get; set; }
+        
 
         public DelegatNextFocus DelegateNextFocus { get; set; }
         public DelegateSelectMultiDate DelegateSelectMultiDate { get; set; }
