@@ -60,6 +60,12 @@
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReq">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintServiceReq\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.Icd">
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.UC.Icd.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.SecondaryIcd">
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.UC.SecondaryIcd.dll</HintPath>
+    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
@@ -118,9 +124,8 @@
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+    <Reference Include="MOS.EFMODEL">
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -174,7 +179,6 @@
       <DependentUpon>frmServiceReqUpdateInstruction.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -183,14 +187,6 @@
     <EmbeddedResource Include="Resources\Message.Lang.vi.resx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UC\HIS.UC.Icd\HIS.UC.Icd.csproj">
-      <Project>{5d946729-034f-4911-b8d9-a79a8521f6b3}</Project>
-      <Name>HIS.UC.Icd</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.csproj">
-      <Project>{04b2ab94-562d-4753-a158-1aad3217408b}</Project>
-      <Name>HIS.UC.SecondaryIcd %28HIS.UC\HIS.UC.SecondaryIcd%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>

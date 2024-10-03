@@ -2481,7 +2481,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                             icdSubCode = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
                         }
                     }
-                    if (!check.ProcessCheckIcd(icdCode, icdSubCode, ref message, true))
+                    if (!check.ProcessCheckIcd(icdCode, icdSubCode, ref message, true,true))
                     {
                         if (CheckIcdWhenSave == "1" && !String.IsNullOrEmpty(message))
                         {

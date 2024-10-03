@@ -47,6 +47,7 @@ namespace MPS.Processor.Mps000215
                 this.TDL_PATIENT_LAST_NAME = dataPatient.TDL_PATIENT_LAST_NAME;
                 this.TDL_PATIENT_NAME = dataPatient.TDL_PATIENT_NAME;
             }
+             
         }
 
         public Mps000215ADODetail(V_HIS_EXP_MEST _BcsExpMest, List<HIS_EXP_MEST_MATY_REQ> req, List<V_HIS_MATERIAL_TYPE> _materialTypes, List<V_HIS_EXP_MEST_MATERIAL> material, bool isReplace, HIS_TREATMENT dataPatient)
