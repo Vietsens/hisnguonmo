@@ -86,8 +86,9 @@
     <Reference Include="HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT\HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.CheckIcd">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.CheckIcd.dll</HintPath>
+    <Reference Include="HIS.Desktop.Plugins.Library.CheckIcd, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\HIS.Desktop.Plugins.Library.CheckIcd\bin\Debug\HIS.Desktop.Plugins.Library.CheckIcd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.ConnectBloodPressure">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.ConnectBloodPressure\HIS.Desktop.Plugins.Library.ConnectBloodPressure.dll</HintPath>
