@@ -369,7 +369,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                         icdSubCode = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
                     }
                 }
-                if (!checkIcdManager.ProcessCheckIcd(txtIcdCode.Text.Trim(), icdSubCode + ";" + icdSubCodeScreeen, ref messErr))
+                if (!checkIcdManager.ProcessCheckIcd(txtIcdCode.Text.Trim(), icdSubCode + ";" + icdSubCodeScreeen, ref messErr,false,false))
                 {
                     XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
                     if (Desktop.Plugins.Library.CheckIcd.CheckIcdManager.IcdCodeError.Equals(txtIcdCode.Text))
