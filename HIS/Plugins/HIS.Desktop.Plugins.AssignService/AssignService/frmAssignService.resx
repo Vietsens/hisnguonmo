@@ -123,7 +123,30 @@
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>31</value>
   </metadata>
+  <metadata name="barManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>364, 10</value>
+  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="txtDutruTime.Properties.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABx0RVh0VGl0
+        bGUAR3JvdXBCeU5vbmU7U2NoZWR1bGVyO57wEMgAAAMvSURBVDhPRZJpSJRRFIZNK5d22t36FwqGmmW0
+        GKWRiBMRBCOOlmJaORWZVmqiqaltLsNoYSiZWz8KsQjFogUrTcIUs8xqLHVsbPbNUceRt3MmqQ9eDt89
+        933uOedeh7lvHsnx2PmrLxIuXEN8WtEr+ncjLSQ5k1wS0opeci4utaCd/pfzGsmR5DCvM3Dzy67AAJSE
+        CqDRm1EQEo6nvr5oZ/n44NXGjSgNO/Av98jbm9VBXlcGOL0LCISlsRH520NR2/QMGUEhGJZIYLpzB8aK
+        CuglZf9ymVtCMHDuHNq8vEDeZQyY3+nvD1NdHaS7wpDqtxUFW3dCJhJBdfQofotiMCYUQrJtN+WCkee/
+        Df3R0Wj19GTACgYs6Ny0CeaaGvyKj4csNtZuVlBUxsRAESWE/PBhfDsgQG/4fvSEhUJG660eHgxYyYCF
+        b/z8oCwrhSwyEt8jIvCVNn7ZF4ZPe/egL2QXendsR3dwMN4HBeFdQAA+0L4Wd3cGrGKAc355I2ZsNths
+        s5idncUMaXrGhqnpGZgnp2EwT0JrmIBKa4JCbcS42oDTl8sZsJoBLrnSelgJwCaODU0tOBSXghsV92Cc
+        mITOOIH7zW2orGuC/LcecqUe4mwpA9YywDWntHbuRCumrFYMy8fxeXAIB4+cQXf/IDILpRCIxKhqaMLo
+        uI4AOiRnSRiwjgFuWSU1mCTzBJXLUmq0SM2+iZzrt2AwWfC6qwdRx1LxuK0dowqtvYoTl8oY4M6ARZnF
+        d2GxWGGkXrlkVu2DJ0hMuQw1PR6NwYxI4XH0DQxh+JfGXsXxzFIGeDBgSfr1apgsU9BSrwOyUYoWtNOp
+        AlEylDS4ju6PiBAmYYxK/zGmwYhCQ4ASBngyYOnFa1XQmy1Q6UyobmyGIEYMQXQyWp+/pakbUP+wBacu
+        XsFPOl0mV9ljUkYxA7ztgLTCyr/XRAAG9X76inGVjtbMdGVG+/qIQo0RKp3NQ3I1EtP/A9zEWSWvU/Jv
+        42zeLZzOLcepnHKIc6Q4SZPmYXG/SVRyEpnYyIoWZ3eT1/6QnEiLSfws+WGsIfH98hWtJ/GguFcvEp+4
+        YS7SXocFfwDoIU+3VwTepwAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="btnSettingAssignOld.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAACt0RVh0VGl0
@@ -145,9 +168,6 @@
         TkSuQmCC
 </value>
   </data>
-  <metadata name="barManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>364, 10</value>
-  </metadata>
   <data name="btnConfiguration.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABl0RVh0U29m

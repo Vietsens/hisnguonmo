@@ -400,6 +400,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                 this.IsExpend = ((inputData.IS_EXPEND ?? -1) == GlobalVariables.CommonNumberTrue ? true : false);
                 this.IsOutKtcFee = ((inputData.IS_OUT_PARENT_FEE ?? 0) == GlobalVariables.CommonNumberTrue);
                 this.IsKHBHYT = false;
+                
                 if (serviceReq.REMEDY_COUNT > 0)
                 {
                     this.RemedyCount = serviceReq.REMEDY_COUNT;
@@ -811,6 +812,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                 this.UseTimeTo = inputData.USE_TIME_TO;
                 this.TUTORIAL = inputData.TUTORIAL;
                 this.AMOUNT = inputData.AMOUNT;
+                
+
                 if (serviceReq.REMEDY_COUNT > 0)
                 {
                     this.RemedyCount = serviceReq.REMEDY_COUNT;
@@ -965,6 +968,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
         public string PATIENT_TYPE_CODE { get; set; }
         public string PATIENT_TYPE_NAME { get; set; }
         public decimal? AMOUNT { get; set; }
+        public long Assign_time { get; set; }
         public decimal? BK_AMOUNT { get; set; }
         public decimal? PRE_AMOUNT { get; set; }
         public bool IsExpend { get; set; }

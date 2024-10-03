@@ -107,7 +107,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save.Create
                     prescriptionSDO.ParentServiceReqId = this.ParentServiceReqId;
                 prescriptionSDO.InstructionTime = this.InstructionTimes.OrderByDescending(o => o).First();
                 prescriptionSDO.UseTime = this.InstructionTimes.OrderByDescending(o => o).First();
-
+                prescriptionSDO.UseTimes = this.USE_TIMES;
+                
                 //Set numofday của đươn ngoài kho
                 //Kiem tra khong có đơn trong kho thì set numofday cho đơn ngoài kho
                 if ((prescriptionSDO.Medicines == null || prescriptionSDO.Medicines.Count == 0)

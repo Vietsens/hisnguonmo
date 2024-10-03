@@ -1206,7 +1206,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                             var RoomIds = PatientTypeRooms.Where(o => o.PATIENT_TYPE_ID == item.PATIENT_TYPE_ID).Select(o => o.ROOM_ID).ToList();
                                             arrExcuteRoom = arrExcuteRoom.Where(o => RoomIds.Contains(o.ROOM_ID)).ToList();
                                         }
-                                        var arrExcuteRoomCode = arrExcuteRoom.Select(o => o.ROOM_ID).ToArray();
+                                        var arrExcuteRoomCode = arrExcuteRoom.Select(o => o.ROOM_ID).ToArray(); 
                                         dataCombo = ((arrExcuteRoomCode != null && arrExcuteRoomCode.Count() > 0 && this.allDataExecuteRooms != null) ? this.allDataExecuteRooms.Where(o => arrExcuteRoomCode.Contains(o.ROOM_ID)).ToList() : null);
                                     }
                                     var checkExecuteRoom = dataCombo != null && dataCombo.Count > 0 ? dataCombo.FirstOrDefault(o => o.BRANCH_ID == this.requestRoom.BRANCH_ID) : null;
@@ -1828,8 +1828,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             {
                                 Inventec.Common.Logging.LogSystem.Debug("ChoosePatientTypeDefaultlService.2");
                                 listResult = currentPatientTypeTemps.Where(o => (!this.isNotUseBhyt || (this.isNotUseBhyt && o.ID != HisConfigCFG.PatientTypeId__BHYT)) && o.ID == patientTypeAppointmentId.Value).ToList();
-                            }
-                            else if (HisConfigCFG.IsSetPrimaryPatientType != commonString__true
+                            }else if (HisConfigCFG.IsSetPrimaryPatientType != commonString__true
                                 && this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.HasValue
                                 && this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.Value != HisConfigCFG.PatientTypeId__BHYT
                                 && currentPatientTypeTemps.Exists(e => e.ID == this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.Value))
@@ -2559,9 +2558,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                     executeRoomId = this.SetDefaultExcuteRoom(executeRoomList);
 
                                 //data.TDL_EXECUTE_ROOM_ID = executeRoomDefault;
-
                                 if (sereServADO.TDL_EXECUTE_ROOM_ID <= 0 && executeRoomId > 0)
+                                {
                                     sereServADO.TDL_EXECUTE_ROOM_ID = executeRoomId;
+                                }
                                 this.ValidServiceDetailProcessing(sereServADO);
                             }
 
@@ -3358,7 +3358,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                                 //data.TDL_EXECUTE_ROOM_ID = executeRoomDefault;
                                 if (sereServADO.TDL_EXECUTE_ROOM_ID <= 0 && executeRoomId > 0)
+                                {
                                     sereServADO.TDL_EXECUTE_ROOM_ID = executeRoomId;
+                                }
                                 this.ValidServiceDetailProcessing(sereServADO);
                                 this.SetAssignNumOrder(sereServADO);
                             }
@@ -3677,7 +3679,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         /// <summary>
         /// Lay Chan doan mac dinh: Lay chan doan cuoi cung trong cac xu ly dich vu Kham benh
         /// </summary>
-        HIS_ICD icdMain = null;
+        HIS_ICD icdMain = null; 
         private void LoadIcdDefault()
         {
             try
