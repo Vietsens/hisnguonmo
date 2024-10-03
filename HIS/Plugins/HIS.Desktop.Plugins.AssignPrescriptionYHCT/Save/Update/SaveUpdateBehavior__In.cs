@@ -50,10 +50,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save.Update
                 prescriptionSDO.Id = OldServiceReq.ID;
                 prescriptionSDO.TreatmentId = this.TreatmentId;
                 prescriptionSDO.PrescriptionTypeId = PrescriptionType.TRADITIONAL;
+                if(this.USE_TIMES != null)prescriptionSDO.UseTime = this.USE_TIMES.FirstOrDefault();
+                prescriptionSDO.AssignTimeTo = this.TIME_TO;
                 this.ProcessPrescriptionUpdateSDO(prescriptionSDO);
                 this.ProcessPrescriptionUpdateSDOICD(prescriptionSDO);
                 this.ProcessPrescriptionSDOForSereServInKip(prescriptionSDO);
                 LogSystem.Debug("Process data => 3");
+                Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => prescriptionSDO), prescriptionSDO));
+
                 result = new Inventec.Common.Adapter.BackendAdapter(Param).Post<InPatientPresResultSDO>(RequestUriStore.HIS_SERVICE_REQ__IN_PATIENT_PRES_UPDATE, ApiConsumers.MosConsumer, prescriptionSDO, Param);
                 if (result == null
                     || result.ServiceReqs == null || result.ServiceReqs.Count == 0

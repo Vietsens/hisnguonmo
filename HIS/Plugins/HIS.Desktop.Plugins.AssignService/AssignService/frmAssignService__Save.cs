@@ -167,6 +167,17 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Inventec.Common.Logging.LogSystem.Debug("Valid14__ValidFeeForExamTreatment:" + isValid);
                 isValid = isValid && CheckMaxAmount(serviceCheckeds__Send);
                 Inventec.Common.Logging.LogSystem.Debug("Valid15__CheckMaxAmount:" + isValid);
+                if(this.USE_TIME != null && this.USE_TIME.Count > 0)
+                {
+                    var exits = serviceCheckeds__Send.Where(s => s.SERVICE_TYPE_ID == 1 || s.SERVICE_TYPE_ID == 12);
+                    if (exits.Any())
+                    {
+                        MessageBox.Show(this, "Dịch vụ loại khám và dịch vụ loại khác không cho phép dự trù");
+                        isValid = false;
+                        return;
+                    }
+
+                }
                 if (HisConfigCFG.IsCheckDepartmentInTimeWhenPresOrAssign && this.currentWorkingRoom != null && currentWorkingRoom.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__BUONG)
                 {
                     isValid = isValid && CheckTimeInDepartment(this.intructionTimeSelecteds);
@@ -1700,6 +1711,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 serviceReqSDO.InstructionTime = intructionTimeSelecteds.First();
                 serviceReqSDO.InstructionTimes = intructionTimeSelecteds;//TODO
 
+                serviceReqSDO.UseTimes = this.USE_TIME ;
                 //Trường hợp chỉ định từ màn hình xử lý pttt, cập nhật dữ liệu cùng kíp, khác kíp tương ứng
                 long sereservid = this.GetSereServInKip();
                 if (sereservid > 0)

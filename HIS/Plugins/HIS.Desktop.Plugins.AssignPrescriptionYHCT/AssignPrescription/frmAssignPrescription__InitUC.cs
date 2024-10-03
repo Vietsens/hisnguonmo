@@ -264,8 +264,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 ado.Height = 24;
                 ado.Width = 364;
                 ado.IsVisibleMultiDate = (GlobalStore.IsTreatmentIn && (this.actionType != GlobalVariables.ActionEdit)
-                    && !GlobalStore.IsCabinet
-                    );
+                    && !GlobalStore.IsCabinet );
                 ado.IsValidate = true;
                 ado.LanguageInputADO = new UC.DateEditor.ADO.LanguageInputADO();
                 ado.LanguageInputADO.TruongDuLieuBatBuoc = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
@@ -366,7 +365,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 ado.DelegateNextFocus = NextForcusSubIcd;
                 ado.DelegateRequiredCause = DelegateRequiredCause;
                 ado.DelegateRefreshSubIcd = LoadSubIcd;
-                ado.delegateCheckICD = CheckICDCode;
+                //ado.delegateCheckICD = CheckICDCode;
                 ado.Width = 330;
                 ado.Height = 24;
                 ado.hisTreatment = this.Histreatment;
@@ -420,39 +419,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        private void CheckICDCode()
-        {
-            try
-            {
-                if (this.icdProcessor != null && this.ucIcd != null)
-                {
-                    var icdValue = this.icdProcessor.GetValue(this.ucIcd);
-                    string messError = "";
-                    string error_code = "";
-                    if (icdValue != null && icdValue is HIS.UC.Icd.ADO.IcdInputADO)
-                    {
-                        var mainCode = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
-                        if (CheckICD( mainCode, null,ref messError,ref error_code))
-                        {
-                            HIS.UC.Icd.ADO.IcdInputADO subIcd = new HIS.UC.Icd.ADO.IcdInputADO();
-                            subIcd.ICD_CODE = null;
-                            subIcd.ICD_NAME = null;
-
-                            if (ucIcd != null)
-                            {
-                                icdProcessor.Reload(ucIcd, subIcd);
-                            }
-                            if (!string.IsNullOrEmpty(messError)) MessageBox.Show(this, messError);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
+        
         private void InitUcIcdYHCT()
         {
             try
@@ -556,39 +523,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private void CheckICDSecond()
-        {
-            try
-            {
-                if (this.subIcdProcessor != null && this.ucSecondaryIcd != null)
-                {
-                    var icdValue = this.subIcdProcessor.GetValue(this.ucSecondaryIcd);
-                    string messError = "";
-                    string error_code = "";
-                    if (icdValue != null && icdValue is SecondaryIcdDataADO)
-                    {
-                        var mainCode = ((SecondaryIcdDataADO)icdValue).ICD_SUB_CODE;
-                        if (CheckICD(null,mainCode,ref messError,ref error_code))
-                        {
-                            SecondaryIcdDataADO subIcd = new SecondaryIcdDataADO();
-                            subIcd.ICD_SUB_CODE = null;
-                            subIcd.ICD_TEXT = null;
-
-                            if (ucSecondaryIcd != null)
-                            {
-                                subIcdProcessor.Reload(ucSecondaryIcd, subIcd);
-                            }
-                            if(!string.IsNullOrEmpty(messError))MessageBox.Show(this, messError);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
+       
         private void InitUcSecondaryIcdYHCT()
         {
             try
@@ -620,7 +555,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
         }
 
-        
+        //viec 178289 thinhdt1
         private bool CheckICD(string icd_code,string icd_sub_code,ref string mess,ref string error_code)
         {
             bool valid = false;
@@ -629,7 +564,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             {
                 HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager mana = new CheckIcdManager(DlgIcdSubCode, this.Histreatment);
                 string messError = "";
-                if (!mana.ProcessCheckIcd(icd_code, icd_sub_code, ref messError))
+                if (!mana.ProcessCheckIcd(icd_code, icd_sub_code, ref messError,false,true))
                 {
 
                     LogSystem.Debug("icd: " + icd_code + " va icd_phu: " + icd_sub_code + "co trung nhom ICD10");

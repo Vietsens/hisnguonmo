@@ -644,6 +644,42 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 valid = valid && this.ProcessValidMedicineTypeAge();
                 valid = valid && this.ValidSereServWithOtherPaySource(this.mediMatyTypeADOs);
                 valid = valid && this.CheckOverlapWarningOption();
+                bool isValid = true;
+                //kiem tra thoi gian du tru va thoi gian y lenh
+                if (this.USE_TIME != null && this.USE_TIME.Count > 0)
+                {
+                    foreach (var time in this.USE_TIME)
+                    {
+                        var exits = this.intructionTimeSelecteds
+
+                                     .Where(s => s > time);
+
+                        if (exits.Any())
+                        {
+                            isValid = false;
+                            break;
+                        }
+                    }
+                }
+                if (!isValid)
+                {
+                    MessageBox.Show(this, "Ngày dự trù không được nhỏ hơn thời gian chỉ định", "Thông Báo");
+                    return;
+                }
+
+                if (this.TIME_TO != null && this.TIME_TO > 0)
+                {
+                    var exits = this.intructionTimeSelecteds.Where(s => s > this.TIME_TO);
+                    if (exits.Any())
+                    {
+                        valid = false;
+                        MessageBox.Show(this, "Ngày Chỉ định đến không được nhỏ hơn thời gian chỉ định", "Thông Báo");
+                        return;
+                        
+                    }
+                }
+                valid = valid && isValid;
+
                 if (valid)
                     ProcessUpdateTutorialForSave();
 
@@ -661,6 +697,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     this.gridViewServiceProcess.UpdateCurrentRow();
 
                 paramCommon = new CommonParam();
+                
                 this.mediMatyTypeADOs = this.gridViewServiceProcess.DataSource as List<MediMatyTypeADO>;
                 msgTuVong = "";
 

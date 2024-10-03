@@ -83,6 +83,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 dateInputADO.Dates = new List<DateTime?>();
                 dateInputADO.Dates.Add(dateInputADO.Time);
 
+                this.txtTimeTo.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(this.oldServiceReq.ASSIGN_TIME_TO??0);
+                this.TIME_TO = this.oldServiceReq.ASSIGN_TIME_TO;
                 this.ucDateProcessor.Reload(this.ucDate, dateInputADO);
                 this.intructionTimeSelecteds = this.ucDateProcessor.GetValue(ucDate);
                 this.isMultiDateState = false;
@@ -166,6 +168,29 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     this.oldExpMest = this.assignPrescriptionEditADO.ExpMest;
                     this.oldExpMestId = (this.oldExpMest != null ? this.oldExpMest.ID : 0);
                     this.oldServiceReq = this.assignPrescriptionEditADO.ServiceReq;
+                    this.IsManyDay = false;
+
+                    if (this.USE_TIME == null)
+                    {
+                        this.USE_TIME = new List<long>();
+                    }
+                    if (this.assignPrescriptionEditADO.ServiceReq.USE_TIME != null && this.assignPrescriptionEditADO.ServiceReq.USE_TIME > 0)
+                    {
+                        DateTime use_time = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.assignPrescriptionEditADO.ServiceReq.USE_TIME ?? 0) ?? DateTime.MinValue;
+
+                        this.USE_TIME.Add(this.assignPrescriptionEditADO.ServiceReq.USE_TIME ?? 0);
+                        this.txtDuTruTime.Text = use_time.ToString("dd/MM/yyyy");
+                        //this.cboDuTruTime.DateTime = use_time;
+                    }
+
+                    if(this.assignPrescriptionEditADO.ServiceReq.ASSIGN_TIME_TO != null && this.assignPrescriptionEditADO.ServiceReq.ASSIGN_TIME_TO > 0)
+                    {
+                        DateTime to_time = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.assignPrescriptionEditADO.ServiceReq.ASSIGN_TIME_TO ?? 0) ?? DateTime.MinValue;
+                        this.txtTimeTo.Text = to_time.ToString("dd/MM/yyyy");
+                        this.TIME_TO = this.assignPrescriptionEditADO.ServiceReq.ASSIGN_TIME_TO;
+                        cboTimeTo.DateTime = to_time;
+                    }
+                    LogSystem.Debug("Du lieu use_time load len tu don cu,USE_TIME : " + this.assignPrescriptionEditADO.ServiceReq.USE_TIME + " TIME_TO: "+ this.assignPrescriptionEditADO.ServiceReq.ASSIGN_TIME_TO);
                     if (this.oldServiceReq != null)
                     {
                         LogSystem.Debug("LoadPrescriptionForEdit => 2");
