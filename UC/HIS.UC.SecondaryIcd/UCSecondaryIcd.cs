@@ -623,18 +623,21 @@ namespace HIS.UC.SecondaryIcd
                     {
                         //check icd moi
                         string messErr = null;
-                        
+                        string erorr_code = null;
                         if (checkIcd != null)
                         {
-                            if (!checkIcd.ProcessCheckIcd(null, string.Join(";", arrIcdExtraCodes), ref messErr))
+                            if (!checkIcd.ProcessCheckIcd(null, string.Join(";", arrIcdExtraCodes), ref messErr,false))
                             {
-                                if (arrIcdExtraCodes.Length > 0)
+                                if (!string.IsNullOrEmpty(erorr_code) && !string.IsNullOrEmpty(messErr))
                                 {
-                                    arrIcdExtraCodes = arrIcdExtraCodes.Take(arrIcdExtraCodes.Length - 1).ToArray();
+                                    var icd_code = erorr_code.Split(';').ToList();
+                                    var arrIcdExtraCodesList = arrIcdExtraCodes.ToList();
+                                    arrIcdExtraCodesList = arrIcdExtraCodesList.Where(s => !icd_code.Contains(s)).ToList();
 
+                                    // Cập nhật lại danh sách sau khi lọc
+                                    arrIcdExtraCodes = arrIcdExtraCodesList.ToArray();
                                     this.txtIcdSubCode.Text = string.Join(";", arrIcdExtraCodes);
                                 }
-
                                 XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
 
                             }
@@ -656,10 +659,10 @@ namespace HIS.UC.SecondaryIcd
                             });
 
                         }
-                        if (lstIcdCodes != null && lstIcdCodes.Count > 0)
+                        if (icdByCode != null && icdByCode.Count > 0)
                         {
-                            this.txtIcdSubCode.Text = String.Join(";", lstIcdCodes);
-                            this.txtIcdText.Text = String.Join(";", lstIcdSubName);
+                            this.txtIcdSubCode.Text = String.Join(";", icdByCode.Select(s=>s.ICD_CODE).ToList());
+                            this.txtIcdText.Text = String.Join(";", icdByCode.Select(s => s.ICD_NAME).ToList());
                         }
                         else
                         {

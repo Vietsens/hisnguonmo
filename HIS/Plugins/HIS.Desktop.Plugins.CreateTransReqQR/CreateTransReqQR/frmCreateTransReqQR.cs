@@ -170,7 +170,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                             cboCom.EditValue = item.VALUE;
                             IsConnectOld = true;
                             btnConnect_Click(null, null);
-                        }else if(item.KEY == chkOtherScreen.Name)
+                        }
+                        else if (item.KEY == chkOtherScreen.Name)
                         {
                             chkOtherScreen.Checked = item.VALUE == "1";
                         }
@@ -195,18 +196,22 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
         {
             try
             {
-                CommonParam param = new CommonParam();
-                MOS.Filter.HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
-                filter.ID = this.inputTransReq.TreatmentId;
-                hisTreatmentView = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT>>("/api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, null).FirstOrDefault();
-                if (hisTreatmentView != null)
+                if (this.inputTransReq.TreatmentId > 0)
                 {
-                    lblPatientName.Text = hisTreatmentView.TDL_PATIENT_NAME;
-                    lblPatientCode.Text = hisTreatmentView.TDL_PATIENT_CODE;
-                    lblGenderName.Text = hisTreatmentView.TDL_PATIENT_GENDER_NAME;
-                    lblAddress.Text = hisTreatmentView.TDL_PATIENT_ADDRESS;
-                    lblDob.Text = hisTreatmentView.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1 ? hisTreatmentView.TDL_PATIENT_DOB.ToString().Substring(0, 4) : Inventec.Common.DateTime.Convert.TimeNumberToDateString(hisTreatmentView.TDL_PATIENT_DOB);
+                    CommonParam param = new CommonParam();
+                    MOS.Filter.HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
+                    filter.ID = this.inputTransReq.TreatmentId;
+                    hisTreatmentView = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT>>("/api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, null).FirstOrDefault();
+                    if (hisTreatmentView != null)
+                    {
+                        lblPatientName.Text = hisTreatmentView.TDL_PATIENT_NAME;
+                        lblPatientCode.Text = hisTreatmentView.TDL_PATIENT_CODE;
+                        lblGenderName.Text = hisTreatmentView.TDL_PATIENT_GENDER_NAME;
+                        lblAddress.Text = hisTreatmentView.TDL_PATIENT_ADDRESS;
+                        lblDob.Text = hisTreatmentView.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1 ? hisTreatmentView.TDL_PATIENT_DOB.ToString().Substring(0, 4) : Inventec.Common.DateTime.Convert.TimeNumberToDateString(hisTreatmentView.TDL_PATIENT_DOB);
+                    }
                 }
+
             }
             catch (Exception ex)
             {
@@ -550,7 +555,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         SereServIds.Add(item.ID);
                     }
                 }
-                lblAmount.Text = Inventec.Common.Number.Convert.NumberToString(Amount, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator); 
+                lblAmount.Text = Inventec.Common.Number.Convert.NumberToString(Amount, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
                 SendData();
             }
             catch (Exception ex)
@@ -782,7 +787,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                                             break;
                                     }
                                 }
-                                
+
                                 if (lstLoaiPhieu.FirstOrDefault(o => o.ID == "Mps000276").Check)
                                 {
                                     HisSereServFilter ssfilter = new HisSereServFilter();
@@ -820,7 +825,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 btnNew.Enabled = false;
                 CommonParam param = new CommonParam();
                 TransReqCreateSDO sdo = new TransReqCreateSDO();
-                sdo.TreatmentId = this.inputTransReq.TreatmentId;
+                if (this.inputTransReq.TreatmentId > 0)
+                    sdo.TreatmentId = this.inputTransReq.TreatmentId;
                 sdo.TransReqType = inputTransReq.TransReqId == CreateReqType.Deposit ? IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_TYPE.ID__BY_DEPOSIT : inputTransReq.TransReqId == CreateReqType.Transaction ? IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_TYPE.ID__BY_TRANSACTION : IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_TYPE.ID__BY_SERVICE;
                 sdo.SereServIds = SereServIds.Distinct().ToList();
                 sdo.RequestRoomId = this.currentModule.RoomId;
@@ -829,6 +835,15 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 sdo.TransactionId = inputTransReq.Transaction != null ? (long?)inputTransReq.Transaction.ID : null;
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
                 currentTransReq = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANS_REQ>("api/HisTransReq/CreateSDO", ApiConsumers.MosConsumer, sdo, param);
+                if (inputTransReq.TreatmentId <= 0)
+                {
+                    HisTransactionViewFilter tvf = new HisTransactionViewFilter();
+                    tvf.TRANS_REQ_CODE__EXACT = currentTransReq.TRANS_REQ_CODE;
+                    transactionPrint = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, tvf, null).FirstOrDefault();
+
+                    lblPatientName.Text = transactionPrint.BUYER_NAME;
+                    lblAddress.Text = transactionPrint.BUYER_ADDRESS;
+                }
                 InitPopupMenuOther();
                 if (currentTransReq == null)
                 {
@@ -948,11 +963,11 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         switch (transactionPrint.TRANSACTION_TYPE_ID)
                         {
                             case IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT:
-                                if(transactionPrint.SALE_TYPE_ID == null)
+                                if (transactionPrint.SALE_TYPE_ID == null)
                                 {
                                     menu.Items.Add(new DXMenuItem("Phiếu thu thanh toán", new EventHandler(onClickThanhToanDv)));
                                 }
-                                else if(transactionPrint.SALE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SALE_TYPE.ID__SALE_EXP)
+                                else if (transactionPrint.SALE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SALE_TYPE.ID__SALE_EXP)
                                 {
                                     menu.Items.Add(new DXMenuItem("Hóa đơn xuất bán", new EventHandler(onClickHoaDonXb)));
                                 }
@@ -1450,7 +1465,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 }
 
                 string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentHisPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentHisPatientTypeAlter.HEIN_CARD_NUMBER, currentHisPatientTypeAlter.LEVEL_CODE, currentHisPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100) + "";
-                 
+
                 //sử dụng DepositedSereServs để hiển thị thêm dịch vụ thanh toán cha
                 List<V_HIS_SERE_SERV_5> sereServs5 = new List<V_HIS_SERE_SERV_5>();
                 List<V_HIS_SERE_SERV> sereServs = new List<V_HIS_SERE_SERV>();
@@ -2078,7 +2093,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
-        } 
+        }
         private void SendData()
         {
 
@@ -2086,7 +2101,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             {
                 if (this.InvokeRequired)
                 {
-                    this.Invoke(new MethodInvoker(delegate {
+                    this.Invoke(new MethodInvoker(delegate
+                    {
                         if (dlg != null)
                             dlg(new DataSubScreen() { image = pbQr.Image, amount = lblAmount.Text, status = lblStt.Text });
                     }));

@@ -1389,6 +1389,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 spinSoNgay.EditValue = 1;
                 repositoryItemChkIsExpend__MedicinePage_Disable.ReadOnly = true;
                 repositoryItemChkIsExpend__MedicinePage_Disable.Enabled = false;
+                txtDuTruTime.Text = "";
+                cboDuTruTime.EditValue = null;
+                txtTimeTo.Text = "";
+
+                this.IsManyDay = true;
             }
             catch (Exception ex)
             {
@@ -2740,6 +2745,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 
                 if (this.currentSereServInEkip != null)
                     result = this.currentSereServInEkip.ID;
+
+                LogSystem.Debug("__________currentSereServ " + currentSereServ + " __________currentSereServInEkip: " + currentSereServInEkip);
             }
             catch (Exception ex)
             {

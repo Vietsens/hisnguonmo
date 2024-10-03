@@ -103,7 +103,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save.Update
                 prescriptionSDO.RequestUserName = this.RequestUserName;
                 //prescriptionSDO.ExpMestReasonId = this.ExpMestReasonId;
                 prescriptionSDO.InstructionTime = this.InstructionTimes.OrderByDescending(o => o).First();
-                prescriptionSDO.UseTime = this.InstructionTimes.OrderByDescending(o => o).First();
+                //prescriptionSDO.UseTime = this.InstructionTimes.OrderByDescending(o => o).First();
+                prescriptionSDO.UseTime = this.USE_TIMES.FirstOrDefault();
+                
                 if (frmAssignPrescription.lciPhieuDieuTri.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always
                     && frmAssignPrescription.cboPhieuDieuTri.EditValue != null)
                 {

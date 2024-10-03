@@ -389,13 +389,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                     Inventec.Common.Logging.LogSystem.Debug("icd: " + icd_code + " va icd_phu: " + icd_sub_code + "co trung nhom ICD10");
                     valid = true;
                 }
-                if (ref_code)
-                {
-                    if (!mana.ProcessCheckIcdWithErrorCode(icd_code, icd_sub_code, ref mess, ref code_error))
-                    {
-                        valid = true;
-                    }
-                }
+                
             }
             catch (Exception ex)
             {
@@ -2846,6 +2840,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                                     {
                                         valid = true;
                                     }
+                                    else valid = false;
                                 }
                                 else if (config == "2")
                                 {

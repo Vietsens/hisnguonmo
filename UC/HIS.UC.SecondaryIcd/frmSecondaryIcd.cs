@@ -312,7 +312,7 @@ namespace HIS.UC.SecondaryIcd
                 int count = 0;
 
                 string messErr = null;
-                if (checkIcd != null && !checkIcd.ProcessCheckIcd(null, string.Join(";",checkList.Select(s=>s.ICD_CODE)), ref messErr))
+                if (checkIcd != null && !checkIcd.ProcessCheckIcd(null, string.Join(";",checkList.Select(s=>s.ICD_CODE)), ref messErr,false))
                 {
                     XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
                     checkList.Last().IsChecked = false;

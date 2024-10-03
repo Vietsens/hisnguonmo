@@ -70,6 +70,8 @@ namespace HIS.UC.DateEditor
                 }
                 if (data.DelegateNextFocus != null)
                     nextFocus = data.DelegateNextFocus;
+                if(data.DateInputADO != null)
+                    chkMultiIntructionTime.Enabled = !data.DateInputADO.IsDutruTime ?? true;// có thời gian dự trù thì disable check chọn nhiều ngày y lệnh
 
                 if (data.DelegateSelectMultiDate != null)
                     selectMultiDate = data.DelegateSelectMultiDate;
@@ -410,12 +412,15 @@ namespace HIS.UC.DateEditor
                     this.intructionTimeSelecteds = new List<DateTime?>();
                     this.intructionTimeSelecteds.Add(this.dtInstructionTime.DateTime);
                 }
+                
                 System.DateTime today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 1);
                 timeSelested = today.Add(timeIntruction.TimeSpan);
                 this.intructionTimeSelected = (this.intructionTimeSelecteds.Select(o => Inventec.Common.TypeConvert.Parse.ToInt64(o.Value.ToString("yyyyMMdd") + timeSelested.ToString("HHmm") + "00")).First());
                 chkMultiIntructionTime.Checked = false;
                 isInitForm = false;
-
+                if(input.IsDutruTime != null)
+                    chkMultiIntructionTime.Enabled = !input.IsDutruTime??true;
+                
                 if (input != null && input.IsVisibleMultiDate.HasValue)
                 {
                     lcichkMultiDate.Visibility = (input.IsVisibleMultiDate.Value ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never);
