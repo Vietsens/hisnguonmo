@@ -369,7 +369,7 @@ namespace HIS.UC.Hospitalize.Run
                         cboIcds.EditValue = listData.First().ID;
                         chkEditIcd.Checked = (chkEditIcd.Enabled ? this.isAutoCheckIcd : false);
                         string messErr = null;
-                        if (!checkIcdManager.ProcessCheckIcd(txtIcdCode.Text.Trim(), icdSubCodeScreeen, ref messErr))
+                        if (!checkIcdManager.ProcessCheckIcd(txtIcdCode.Text.Trim(), icdSubCodeScreeen, ref messErr,false,false))
                         {
                             XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
                             if (Desktop.Plugins.Library.CheckIcd.CheckIcdManager.IcdCodeError.Equals(txtIcdCode.Text))
@@ -522,7 +522,7 @@ namespace HIS.UC.Hospitalize.Run
                     txtIcdMainText.Text = icd.ICD_NAME;
                     chkEditIcd.Checked = (chkEditIcd.Enabled ? this.isAutoCheckIcd : false);
                     string messErr = null;
-                    if (!checkIcdManager.ProcessCheckIcd(txtIcdCode.Text.Trim(), icdSubCodeScreeen, ref messErr))
+                    if (!checkIcdManager.ProcessCheckIcd(txtIcdCode.Text.Trim(), icdSubCodeScreeen, ref messErr,false,false))
                     {
                         XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
                         if (Desktop.Plugins.Library.CheckIcd.CheckIcdManager.IcdCodeError.Equals(txtIcdCode.Text))
