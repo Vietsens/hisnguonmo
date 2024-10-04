@@ -1,3 +1,9 @@
+### Release 2.331.0
+* Sửa thông tin hướng dẫn sử dụng đơn y học cổ truyền trên tờ điều trị
+* Bổ sung thông tin dự trù dịch vụ kỹ thuật trên tờ điều trị
+* Sửa cảnh báo ICD cùng nhóm
+* Bổ sung thanh toán QR cho khách vãng lai tại nhà thuốc
+
 ### Release 2.330.0
 * Bổ sung thông tin trong XML phục vụ XML 130 và QĐ 4750/QĐ-BYT 
 * Điều chỉnh cảnh báo mức lọc cầu thận theo ngày
