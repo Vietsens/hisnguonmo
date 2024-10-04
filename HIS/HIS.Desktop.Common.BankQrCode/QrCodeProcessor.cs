@@ -104,6 +104,10 @@ namespace HIS.Desktop.Common.BankQrCode
                     result = "PAYMENT_QR_CODE_LPBANK";
                     bankType = ProvinceType.LPBANK;
                     break;
+                case "HIS.Desktop.Plugins.PaymentQrCode.PVCBInfo":
+                    result = "PAYMENT_QR_CODE_PVCB";
+                    bankType = ProvinceType.PVCB;
+                    break;
                 default:
                     break;
             }
