@@ -350,6 +350,7 @@ namespace HIS.Desktop.Plugins.RationSumPrint
                         CommonParam param = new CommonParam();
                         MOS.Filter.HisTreatmentBedRoomViewFilter bedFilter = new MOS.Filter.HisTreatmentBedRoomViewFilter();
                         bedFilter.TREATMENT_IDs = listIds;
+                        bedFilter.IS_IN_ROOM = true;
                         var treaBedRoom = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_TREATMENT_BED_ROOM>>("/api/HisTreatmentBedRoom/GetView", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, bedFilter, param);
                         if (treaBedRoom != null && treaBedRoom.Count > 0)
                         {
