@@ -52,6 +52,8 @@ using DevExpress.Utils;
 using DevExpress.Data;
 using HIS.Desktop.Plugins.MedicineTypeCreate.Popup;
 using HIS.Desktop.Plugins.MedicineTypeCreate.Config;
+using HIS.Desktop.ADO;
+using HIS.Desktop.Utility;
 
 namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 {
@@ -237,6 +239,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                         rdoUpdateNotFee.ReadOnly = false;
                         rdoUpdateNotFee.CheckState = CheckState.Checked;
                         chkIsBusiness.Checked = false;
+                        btnEditInfo.Enabled = true;
                         FillDataMedicineTypeToControl(currentVHisMedicineTypeDTODefault, currentVHisServiceDTODefault);
                         btnSave.Enabled = (currentVHisMedicineTypeDTODefault.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
                     }
@@ -1332,6 +1335,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             try
             {
                 spUnitConvertRatio.Enabled = false;
+                btnEditInfo.Enabled = false;
                 if (this.ActionType == GlobalVariables.ActionEdit)
                 {
                     txtMedicineType.Enabled = true;
@@ -3254,6 +3258,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     WaitingManager.Hide();
                     btnSave.Enabled = false;
                     btnRefresh.Enabled = true;
+                    btnEditInfo.Enabled = true;
                     // nếu thuốc là lá mới thiết lập chính sách giá
                     txtMedicineTypeCode.Text = resultData.MEDICINE_TYPE_CODE;
                     SuccessLog(resultData);
@@ -7680,6 +7685,31 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             }
         }
 
+        private void btnEditInfo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ProductInfoADO ado = new ProductInfoADO();
+                ado.MedicineTypeId = this.currentMedicineTypeId??0;
+                ado.ProductInfoOpen = 1;
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisProductInfo").FirstOrDefault();
+                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.HisProductInfo");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(module);
+                    listArgs.Add(ado);
+                    var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.module.RoomId, this.module.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                    ((Form)extenceInstance).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Warn(ex);
+            }
+        }
     }
 }
 

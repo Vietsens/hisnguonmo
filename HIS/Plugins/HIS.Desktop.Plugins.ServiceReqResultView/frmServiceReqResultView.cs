@@ -363,6 +363,11 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                         {
                             lblEndTime.Text = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(sereServExt.END_TIME ?? 0);
                         }
+                        
+                        lblNumFilm.Text = ""+(sereServExt.NUMBER_OF_FILM??0);
+                        var size = BackendDataWorker.Get<HIS_FILM_SIZE>().Where(s => s.ID == sereServExt.FILM_SIZE_ID).FirstOrDefault();
+                        lblSizeFilm.Text = size != null ? size.FILM_SIZE_NAME : "";
+                        txtDesciptions.Text = sereServExt.DESCRIPTION;
                     }
                     else
                     {
