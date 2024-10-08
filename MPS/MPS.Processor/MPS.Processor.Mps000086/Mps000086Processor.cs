@@ -29,6 +29,7 @@ using MPS.Processor.Mps000086.PDO;
 using FlexCel.Report;
 using MPS.ProcessorBase;
 using Inventec.Common.Logging;
+using HIS.Desktop.LocalStorage.HisConfig;
 
 namespace MPS.Processor.Mps000086
 {
@@ -46,6 +47,7 @@ namespace MPS.Processor.Mps000086
             bool result = false;
             try
             {
+                
                 Inventec.Common.FlexCellExport.ProcessSingleTag singleTag = new Inventec.Common.FlexCellExport.ProcessSingleTag();
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
 
@@ -90,6 +92,8 @@ namespace MPS.Processor.Mps000086
                             ado.AMOUNT_REQUEST_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(ado.TOTAL_AMOUNT_IN_REQUEST)));
                             ado.AMOUNT_EXECUTE_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(ado.TOTAL_AMOUNT_IN_EXECUTE)));
                             ado.AMOUNT_EXPORT_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(ado.TOTAL_AMOUNT_IN_EXPORT)));
+                            ado.EXP_PRICE_VP = itemGroup.FirstOrDefault().EXP_PRICE_VP;
+                            ado.EXP_VAT_RATIO_VP = itemGroup.FirstOrDefault().EXP_VAT_RATIO_VP;
                             listAdoPrint.Add(ado);
                         }
                         //listAdoPrintSplitedByPackage ProcessData
@@ -124,6 +128,8 @@ namespace MPS.Processor.Mps000086
                             ado.AMOUNT_REQUEST_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(ado.TOTAL_AMOUNT_IN_REQUEST)));
                             ado.AMOUNT_EXECUTE_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(ado.TOTAL_AMOUNT_IN_EXECUTE)));
                             ado.AMOUNT_EXPORT_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(ado.TOTAL_AMOUNT_IN_EXPORT)));
+                            ado.EXP_PRICE_VP = itemGroup.FirstOrDefault().EXP_PRICE_VP;
+                            ado.EXP_VAT_RATIO_VP = itemGroup.FirstOrDefault().EXP_VAT_RATIO_VP;
                             listAdoPrintSplitedByPackage.Add(ado);
                         }
                     }
@@ -281,6 +287,40 @@ namespace MPS.Processor.Mps000086
                                     {
                                         adoMediGr.PARENT_MEDICINE_TYPE_NAME = _parentMedicineType.MEDICINE_TYPE_NAME;
                                     }
+                                    //bo sung gia 
+                                    if(_dataMedi.IS_SALE_EQUAL_IMP_PRICE != 1)
+                                    {
+                                        if(rdo.listConfig == null)
+                                        {
+                                            LogSystem.Debug("Danh sach cau hinh null.(HIS_PATIENT_TYPE.PATIENT_TYPE_CODE)");
+                                        }
+                                        else if(rdo.mediPaty == null)
+                                        {
+                                            LogSystem.Debug("Danh sach V_HIS_MEDICINE_PATY null");
+                                        }
+                                        else
+                                        {
+                                            LogSystem.Debug("Danh sach cau hinh " + rdo.listConfig.Count + " danh sach medicine_paty: " + rdo.mediPaty.Count );
+
+                                            var config = rdo.listConfig.FirstOrDefault(s => s.KEY == "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.HOSPITAL_FEE");
+                                            if (config != null)
+                                            {
+                                                var paty = rdo.mediPaty.Where(s => s.MEDICINE_ID == _dataMedi.ID && config.VALUE == s.PATIENT_TYPE_CODE).OrderByDescending(o => o.CREATE_TIME).FirstOrDefault();
+                                                if (paty != null)
+                                                {
+                                                    adoMediGr.EXP_PRICE_VP = paty.EXP_PRICE;
+                                                    adoMediGr.EXP_VAT_RATIO_VP = paty.EXP_VAT_RATIO;
+                                                }
+                                            }
+                                        }
+                                        
+
+                                    }
+                                    else
+                                    {
+                                        adoMediGr.EXP_PRICE_VP = _dataMedi.IMP_PRICE??0;
+                                        adoMediGr.EXP_VAT_RATIO_VP = _dataMedi.IMP_VAT_RATIO ?? 0;
+                                    }
                                 }
 
                                 var medicines = rdo._Medicines.Where(p => mediGr.Select(x => x.MEDICINE_ID).ToList().Contains(p.ID)).ToList();
@@ -288,7 +328,7 @@ namespace MPS.Processor.Mps000086
                                 adoMediGr.BID_PACKAGE_CODE = string.Join(",", medicines.Select(p => p.TDL_BID_PACKAGE_CODE).Distinct().ToList());
                                 adoMediGr.BID_GROUP_CODE = string.Join(",", medicines.Select(p => p.TDL_BID_GROUP_CODE).Distinct().ToList());
                                 adoMediGr.BID_YEAR = string.Join(",", medicines.Select(p => p.TDL_BID_YEAR).Distinct().ToList());
-
+                                
                                 if (rdo._ChmsExpMest.EXP_MEST_STT_ID == rdo.expMesttSttId__Export)
                                 {
                                     adoMediGr.TOTAL_AMOUNT_IN_EXPORT = adoMediGr.TOTAL_AMOUNT_IN_EXECUTE;
@@ -297,7 +337,7 @@ namespace MPS.Processor.Mps000086
                                 adoMediGr.AMOUNT_REQUEST_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(adoMediGr.TOTAL_AMOUNT_IN_REQUEST)));
                                 adoMediGr.AMOUNT_EXECUTE_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(adoMediGr.TOTAL_AMOUNT_IN_EXECUTE)));
                                 adoMediGr.AMOUNT_EXPORT_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(adoMediGr.TOTAL_AMOUNT_IN_EXPORT)));
-
+                                
                                 rdo.listAdo.Add(adoMediGr);
 
                                 var listByGroup = mediGr.ToList<V_HIS_EXP_MEST_MEDICINE>();
@@ -411,6 +451,39 @@ namespace MPS.Processor.Mps000086
                                     adoMediGr.MANUFACTURER_CODE = _dataMate.MANUFACTURER_CODE;
                                     adoMediGr.MANUFACTURER_NAME = _dataMate.MANUFACTURER_NAME;
                                     adoMediGr.REGISTER_NUMBER = _dataMate.REGISTER_NUMBER;
+                                    //bo sung gia 
+                                    if (_dataMate.IS_SALE_EQUAL_IMP_PRICE != 1)
+                                    {
+                                        if (rdo.listConfig == null)
+                                        {
+                                            LogSystem.Debug("Danh sach cau hinh null.(HIS_PATIENT_TYPE.PATIENT_TYPE_CODE)");
+                                        }
+                                        else if (rdo.matePaty == null)
+                                        {
+                                            LogSystem.Debug("Danh sach V_HIS_MATERIAL_PATY null");
+                                        }
+                                        else
+                                        {
+                                            LogSystem.Debug("Danh sach cau hinh "+rdo.listConfig.Count+ " danh sach material_paty "+rdo.matePaty.Count);
+                                            var config = rdo.listConfig.FirstOrDefault(s => s.KEY == "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.HOSPITAL_FEE");
+                                            if (config != null)
+                                            {
+                                                var paty = rdo.matePaty.Where(s => s.MATERIAL_ID == _dataMate.ID && config.VALUE == s.PATIENT_TYPE_CODE).OrderByDescending(o => o.CREATE_TIME).FirstOrDefault();
+                                                if (paty != null)
+                                                {
+                                                    adoMediGr.EXP_PRICE_VP = paty.EXP_PRICE;
+                                                    adoMediGr.EXP_VAT_RATIO_VP = paty.EXP_VAT_RATIO;
+                                                }
+                                            }
+                                        }
+                                        
+
+                                    }
+                                    else
+                                    {
+                                        adoMediGr.EXP_PRICE_VP = _dataMate.IMP_PRICE ?? 0;
+                                        adoMediGr.EXP_VAT_RATIO_VP = _dataMate.IMP_VAT_RATIO ?? 0;
+                                    }
                                 }
 
                                 var materials = rdo._Materials.Where(p => mediGr.Select(x => x.MATERIAL_ID).ToList().Contains(p.ID)).ToList();
