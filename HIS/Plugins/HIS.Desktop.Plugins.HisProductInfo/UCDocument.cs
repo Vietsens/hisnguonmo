@@ -141,6 +141,40 @@ namespace HIS.Desktop.Plugins.HisProductInfo
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void UCDocument_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if(e.Control && e.KeyCode == Keys.S)
+                {
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtContent_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            try
+            {
+                if (e.Control && e.KeyCode == Keys.S)
+                {
+                    e.SuppressKeyPress = true;
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }
 

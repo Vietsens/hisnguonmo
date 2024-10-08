@@ -246,5 +246,21 @@ namespace HIS.Desktop.Plugins.HisProductInfo
                 LogSystem.Error(ex);
             }
         }
+
+        private void HisProductInfo_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if(e.Control && e.KeyCode == Keys.S)
+                {
+                    btnSave.PerformClick();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }

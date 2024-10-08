@@ -63,9 +63,9 @@ namespace HIS.Desktop.Plugins.HisProductInfo
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(621, 454);
+            this.btnSave.Location = new System.Drawing.Point(616, 454);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(163, 22);
+            this.btnSave.Size = new System.Drawing.Size(168, 22);
             this.btnSave.StyleController = this.layoutControl1;
             this.btnSave.TabIndex = 6;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -123,18 +123,18 @@ namespace HIS.Desktop.Plugins.HisProductInfo
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnSave;
-            this.layoutControlItem3.Location = new System.Drawing.Point(609, 442);
+            this.layoutControlItem3.Location = new System.Drawing.Point(604, 442);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(167, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(172, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 404);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 442);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(510, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(604, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // HisProductInfo
@@ -143,10 +143,12 @@ namespace HIS.Desktop.Plugins.HisProductInfo
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(952, 488);
             this.Controls.Add(this.layoutControl1);
+            this.KeyPreview = true;
             this.Name = "HisProductInfo";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "HisProductInfo";
             this.Load += new System.EventHandler(this.HisProductInfo_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HisProductInfo_KeyDown);
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
