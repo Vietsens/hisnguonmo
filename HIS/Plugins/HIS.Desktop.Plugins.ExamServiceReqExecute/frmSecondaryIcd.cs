@@ -345,7 +345,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     count++;
                     bool next = true;
                     string messErr = null;
-                    if (!checkIcdManager.ProcessCheckIcd(icdMainCode, result, ref messErr, false))
+                    if (!checkIcdManager.ProcessCheckIcd(null, result, ref messErr, false))
                     {
                         if (count == checkList.Count)
                         {
@@ -355,7 +355,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         {
                             if (item.ICD_CODE == dataChoose)
                             {
-                                item.IsChecked = false;
+                                //item.IsChecked = false;
                                 next = false;
                             }
                         }

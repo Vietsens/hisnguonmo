@@ -1533,7 +1533,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 emrFilter.IDs = docIds;
             sdo.EmrDocumentViewFilter = emrFilter;
             sdo.IsMerge = IsMerge;
-            sdo.IsView = true;
             sdo.IsShowPatientSign = IsShowPatientSign;
             sdo.IsShowWatermark = IsShowWatermark;
             sdo.RoomCode = room != null ? room.ROOM_CODE : null;

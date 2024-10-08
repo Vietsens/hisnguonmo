@@ -122,6 +122,27 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             {
                 VisibleResultApprover();
                 VisibleAppointmentTimeAndDes();
+                VisibleAssignTimeTo();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void VisibleAssignTimeTo()
+        {
+            try
+            {
+                if (currentServiceReq != null && currentServiceReq.SERVICE_REQ_TYPE_ID == 15 && currentServiceReq.REMEDY_COUNT != null)
+                {
+                    ControlDtAssignTimeTo.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                }
+                else
+                {
+                    ControlDtAssignTimeTo.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
+
             }
             catch (Exception ex)
             {
@@ -819,6 +840,14 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     {
                         txtAppointmentDes.Text = serviceReq.APPOINTMENT_DESC;
                     }
+                    if (serviceReq.ASSIGN_TIME_TO != null && serviceReq.ASSIGN_TIME_TO > 0)
+                    {
+                        dtAssignTimeTo.DateTime = (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(serviceReq.ASSIGN_TIME_TO ?? 0);
+                    }
+                    else
+                    {
+                        dtAssignTimeTo.EditValue = null;
+                    }
                 }
             }
             catch (Exception ex)
@@ -988,7 +1017,15 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 currentServiceReq.IS_NOT_REQUIRE_FEE = (short)(chkIsNotRequireFee.Checked ? 1 : 0);
                 currentServiceReq.IS_NOT_USE_BHYT = (short)(chkIsNotUseBHYT.Checked ? 1 : 0);
                 currentServiceReq.USE_TIME = dtUseTime.EditValue != null && dtUseTime.DateTime != DateTime.MinValue ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtUseTime.DateTime) : null;
-
+                if (dtAssignTimeTo.DateTime != null && dtAssignTimeTo.DateTime != DateTime.MinValue && dtAssignTimeTo.DateTime != DateTime.MaxValue)
+                {
+                    currentServiceReq.ASSIGN_TIME_TO = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtAssignTimeTo.DateTime);
+                }
+                else
+                {
+                    currentServiceReq.ASSIGN_TIME_TO = null;
+                }
+                //currentServiceReq.ASSIGN_TIME_TO = dtAssignTimeTo.EditValue != null && dtAssignTimeTo.DateTime != DateTime.MinValue ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtAssignTimeTo.DateTime) : null;
                 if (lciAppointmentTime.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && lciAppointmentDes.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
                 {
                     currentServiceReq.APPOINTMENT_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtAppointmentTime.DateTime);
@@ -1043,6 +1080,13 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     WaitingManager.Show();
                     UpdateData();
 
+                    if (currentServiceReq != null && currentServiceReq.ASSIGN_TIME_TO != null && currentServiceReq.INTRUCTION_TIME > (currentServiceReq.ASSIGN_TIME_TO ?? 0))
+                    {
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Chỉ định đến không được nhỏ hơn thời gian y lệnh"),
+                           "Thông báo",
+                          MessageBoxButtons.OK) == DialogResult.OK)
+                            return;
+                    }
                     HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager check = new Desktop.Plugins.Library.CheckIcd.CheckIcdManager(null, currentTreatment);
                     string message = null;
                     if (CheckIcdWhenSave == "1" || CheckIcdWhenSave == "2")
@@ -1095,7 +1139,6 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     }
                     var update = new HIS_SERVICE_REQ();
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE_REQ>(update, this.currentServiceReq);
-                    
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => update), update));
                     var serviceReqUpdate = new BackendAdapter(param)
                         .Post<HIS_SERVICE_REQ>("api/HisServiceReq/UpdateCommonInfo", ApiConsumers.MosConsumer, update, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);

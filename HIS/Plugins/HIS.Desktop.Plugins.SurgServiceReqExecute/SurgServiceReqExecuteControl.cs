@@ -208,8 +208,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 }
                 timerInitForm.Enabled = true;
                 timerInitForm.Start();
-                Inventec.Common.Logging.LogSystem.Debug(". 6");
-                GetSereServByTreatment();
                 isNotLoadWhileChangeControlStateInFirst = false;
 
                 btnFinish.Enabled = !(HisConfigKeys.allowFinishWhenAccountIsDoctor == "1" && BackendDataWorker.Get<HIS_EMPLOYEE>().Where(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()).FirstOrDefault().IS_DOCTOR != 1);

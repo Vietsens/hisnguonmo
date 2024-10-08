@@ -320,6 +320,14 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                     lblPatientCode.Text = serviceReq.TDL_PATIENT_CODE;
                     lblServiceReqCode.Text = serviceReq.SERVICE_REQ_CODE;
                     cboRoom.EditValue = serviceReq.EXECUTE_ROOM_ID;
+                    if (serviceReq.USE_TIME != null && serviceReq.USE_TIME > 0)
+                    {
+                        dtUseTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(serviceReq.USE_TIME ?? 0) ?? DateTime.MinValue;
+                    }
+                    else
+                    {
+                        dtUseTime.EditValue = null;
+                    }
                 }
                 else
                 {
@@ -331,6 +339,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                     lblPatientCode.Text = "";
                     lblServiceReqCode.Text = "";
                     cboRoom.Text = "";
+                    dtUseTime.EditValue = null;
                 }
             }
             catch (Exception ex)
@@ -2164,6 +2173,14 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                 serviceReqUpdate.DeleteSereServIds = sereServDeleteInputDatas.Select(o => o.ID).ToList();
                 serviceReqUpdate.ExecuteRoomId = (long)cboRoom.EditValue;
                 serviceReqUpdate.InstructionTime = instructionTime;
+                if (dtUseTime.DateTime != null && dtUseTime.DateTime != DateTime.MinValue && dtUseTime.DateTime != DateTime.MaxValue)
+                {
+                    serviceReqUpdate.UseTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtUseTime.DateTime);
+                }
+                else
+                { 
+                    serviceReqUpdate.UseTime = null;
+                }
                 foreach (var item in SereServAdditonSdos)
                 {
                     MOS.SDO.ServiceReqDetailSDO serviceReqDetail = new MOS.SDO.ServiceReqDetailSDO();
@@ -2814,14 +2831,20 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                         var PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, bedLogs, currentModule != null ? currentModule.RoomId : 0, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow);
                         PrintServiceReqProcessor.SaveNPrint(false);
                     }
-                }
 
+                    #region Show message
+                    MessageManager.Show(this, param, success);
+                    #endregion
+
+                }
+                else
+                {
+                    MessageManager.Show(this, param, false);
+                }
 
                 WaitingManager.Hide();
 
-                #region Show message
-                MessageManager.Show(this, param, success);
-                #endregion
+               
 
                 #region Process has exception
                 HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
