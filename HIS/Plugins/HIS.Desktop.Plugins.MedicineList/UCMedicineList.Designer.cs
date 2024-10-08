@@ -132,6 +132,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_MedicineRegisterNumber = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_Concentra = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_ActiveIngrBhytCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_ActiveIngrBhytName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_MedicineUseFromName = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -141,11 +142,12 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_CreateTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_Creator = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_ModifyTime = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.Gc_Modifier = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_BidGroupCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_BidPackageCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_BidTypeName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_BidForm = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_Modifier = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_TTThau = new DevExpress.XtraGrid.Columns.GridColumn();
             this.ButtonLock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.ButtonUnlock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.ButtonEditMedicinePatyEnable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -155,7 +157,6 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.toolTipController1 = new DevExpress.Utils.ToolTipController();
-            this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
@@ -688,6 +689,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_PackgeNumber,
             this.Gc_BidNumOrder,
             this.Gc_BidNumber,
+            this.Gc_TTThau,
             this.Gc_BidName,
             this.gridColumn1,
             this.Gc_NationalName,
@@ -706,11 +708,11 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_CreateTime,
             this.Gc_Creator,
             this.Gc_ModifyTime,
-            this.Gc_Modifier,
             this.Gc_BidGroupCode,
             this.Gc_BidPackageCode,
             this.Gc_BidTypeName,
-            this.Gc_BidForm});
+            this.Gc_BidForm,
+            this.Gc_Modifier});
             this.gridView.GridControl = this.gridControl;
             this.gridView.Name = "gridView";
             this.gridView.OptionsView.ColumnAutoWidth = false;
@@ -943,7 +945,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_BidName.OptionsColumn.AllowEdit = false;
             this.Gc_BidName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gc_BidName.Visible = true;
-            this.Gc_BidName.VisibleIndex = 16;
+            this.Gc_BidName.VisibleIndex = 17;
             this.Gc_BidName.Width = 80;
             // 
             // gridColumn1
@@ -954,7 +956,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.gridColumn1.OptionsColumn.AllowEdit = false;
             this.gridColumn1.ToolTip = "Năm thầu";
             this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 17;
+            this.gridColumn1.VisibleIndex = 18;
             // 
             // Gc_NationalName
             // 
@@ -963,7 +965,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_NationalName.Name = "Gc_NationalName";
             this.Gc_NationalName.OptionsColumn.AllowEdit = false;
             this.Gc_NationalName.Visible = true;
-            this.Gc_NationalName.VisibleIndex = 22;
+            this.Gc_NationalName.VisibleIndex = 23;
             this.Gc_NationalName.Width = 70;
             // 
             // Gc_SupplierName
@@ -973,7 +975,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_SupplierName.Name = "Gc_SupplierName";
             this.Gc_SupplierName.OptionsColumn.AllowEdit = false;
             this.Gc_SupplierName.Visible = true;
-            this.Gc_SupplierName.VisibleIndex = 23;
+            this.Gc_SupplierName.VisibleIndex = 24;
             this.Gc_SupplierName.Width = 200;
             // 
             // Gc_ManufacturerName
@@ -983,7 +985,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_ManufacturerName.Name = "Gc_ManufacturerName";
             this.Gc_ManufacturerName.OptionsColumn.AllowEdit = false;
             this.Gc_ManufacturerName.Visible = true;
-            this.Gc_ManufacturerName.VisibleIndex = 24;
+            this.Gc_ManufacturerName.VisibleIndex = 25;
             this.Gc_ManufacturerName.Width = 200;
             // 
             // gridColumn6
@@ -993,7 +995,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 25;
+            this.gridColumn6.VisibleIndex = 26;
             this.gridColumn6.Width = 200;
             // 
             // Gc_MedicineRegisterNumber
@@ -1004,7 +1006,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_MedicineRegisterNumber.OptionsColumn.AllowEdit = false;
             this.Gc_MedicineRegisterNumber.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gc_MedicineRegisterNumber.Visible = true;
-            this.Gc_MedicineRegisterNumber.VisibleIndex = 26;
+            this.Gc_MedicineRegisterNumber.VisibleIndex = 27;
             this.Gc_MedicineRegisterNumber.Width = 80;
             // 
             // Gc_Concentra
@@ -1015,8 +1017,18 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_Concentra.OptionsColumn.AllowEdit = false;
             this.Gc_Concentra.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gc_Concentra.Visible = true;
-            this.Gc_Concentra.VisibleIndex = 27;
+            this.Gc_Concentra.VisibleIndex = 28;
             this.Gc_Concentra.Width = 80;
+            // 
+            // gridColumn7
+            // 
+            this.gridColumn7.Caption = "Đơn vị tính";
+            this.gridColumn7.FieldName = "SERVICE_UNIT_NAME";
+            this.gridColumn7.Name = "gridColumn7";
+            this.gridColumn7.OptionsColumn.AllowEdit = false;
+            this.gridColumn7.Visible = true;
+            this.gridColumn7.VisibleIndex = 29;
+            this.gridColumn7.Width = 80;
             // 
             // Gc_ActiveIngrBhytCode
             // 
@@ -1026,7 +1038,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_ActiveIngrBhytCode.OptionsColumn.AllowEdit = false;
             this.Gc_ActiveIngrBhytCode.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gc_ActiveIngrBhytCode.Visible = true;
-            this.Gc_ActiveIngrBhytCode.VisibleIndex = 29;
+            this.Gc_ActiveIngrBhytCode.VisibleIndex = 30;
             this.Gc_ActiveIngrBhytCode.Width = 80;
             // 
             // Gc_ActiveIngrBhytName
@@ -1037,7 +1049,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_ActiveIngrBhytName.OptionsColumn.AllowEdit = false;
             this.Gc_ActiveIngrBhytName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gc_ActiveIngrBhytName.Visible = true;
-            this.Gc_ActiveIngrBhytName.VisibleIndex = 30;
+            this.Gc_ActiveIngrBhytName.VisibleIndex = 31;
             this.Gc_ActiveIngrBhytName.Width = 150;
             // 
             // Gc_MedicineUseFromName
@@ -1048,7 +1060,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_MedicineUseFromName.OptionsColumn.AllowEdit = false;
             this.Gc_MedicineUseFromName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gc_MedicineUseFromName.Visible = true;
-            this.Gc_MedicineUseFromName.VisibleIndex = 31;
+            this.Gc_MedicineUseFromName.VisibleIndex = 32;
             this.Gc_MedicineUseFromName.Width = 80;
             // 
             // Gc_HeinServiceName
@@ -1058,7 +1070,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_HeinServiceName.Name = "Gc_HeinServiceName";
             this.Gc_HeinServiceName.OptionsColumn.AllowEdit = false;
             this.Gc_HeinServiceName.Visible = true;
-            this.Gc_HeinServiceName.VisibleIndex = 32;
+            this.Gc_HeinServiceName.VisibleIndex = 33;
             this.Gc_HeinServiceName.Width = 130;
             // 
             // gridColumn5
@@ -1068,7 +1080,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.OptionsColumn.AllowEdit = false;
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 33;
+            this.gridColumn5.VisibleIndex = 34;
             this.gridColumn5.Width = 80;
             // 
             // Gc_ImpTime
@@ -1079,7 +1091,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_ImpTime.OptionsColumn.AllowEdit = false;
             this.Gc_ImpTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gc_ImpTime.Visible = true;
-            this.Gc_ImpTime.VisibleIndex = 34;
+            this.Gc_ImpTime.VisibleIndex = 35;
             this.Gc_ImpTime.Width = 120;
             // 
             // Gc_CreateTime
@@ -1094,7 +1106,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_CreateTime.OptionsColumn.AllowEdit = false;
             this.Gc_CreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gc_CreateTime.Visible = true;
-            this.Gc_CreateTime.VisibleIndex = 35;
+            this.Gc_CreateTime.VisibleIndex = 36;
             this.Gc_CreateTime.Width = 120;
             // 
             // Gc_Creator
@@ -1104,7 +1116,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_Creator.Name = "Gc_Creator";
             this.Gc_Creator.OptionsColumn.AllowEdit = false;
             this.Gc_Creator.Visible = true;
-            this.Gc_Creator.VisibleIndex = 36;
+            this.Gc_Creator.VisibleIndex = 37;
             this.Gc_Creator.Width = 80;
             // 
             // Gc_ModifyTime
@@ -1119,18 +1131,8 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_ModifyTime.OptionsColumn.AllowEdit = false;
             this.Gc_ModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gc_ModifyTime.Visible = true;
-            this.Gc_ModifyTime.VisibleIndex = 37;
+            this.Gc_ModifyTime.VisibleIndex = 38;
             this.Gc_ModifyTime.Width = 120;
-            // 
-            // Gc_Modifier
-            // 
-            this.Gc_Modifier.Caption = "Người sửa";
-            this.Gc_Modifier.FieldName = "MODIFIER";
-            this.Gc_Modifier.Name = "Gc_Modifier";
-            this.Gc_Modifier.OptionsColumn.AllowEdit = false;
-            this.Gc_Modifier.Visible = true;
-            this.Gc_Modifier.VisibleIndex = 38;
-            this.Gc_Modifier.Width = 80;
             // 
             // Gc_BidGroupCode
             // 
@@ -1139,7 +1141,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_BidGroupCode.Name = "Gc_BidGroupCode";
             this.Gc_BidGroupCode.OptionsColumn.AllowEdit = false;
             this.Gc_BidGroupCode.Visible = true;
-            this.Gc_BidGroupCode.VisibleIndex = 18;
+            this.Gc_BidGroupCode.VisibleIndex = 19;
             // 
             // Gc_BidPackageCode
             // 
@@ -1148,7 +1150,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_BidPackageCode.Name = "Gc_BidPackageCode";
             this.Gc_BidPackageCode.OptionsColumn.AllowEdit = false;
             this.Gc_BidPackageCode.Visible = true;
-            this.Gc_BidPackageCode.VisibleIndex = 19;
+            this.Gc_BidPackageCode.VisibleIndex = 20;
             // 
             // Gc_BidTypeName
             // 
@@ -1156,7 +1158,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_BidTypeName.FieldName = "BID_TYPE_NAME";
             this.Gc_BidTypeName.Name = "Gc_BidTypeName";
             this.Gc_BidTypeName.Visible = true;
-            this.Gc_BidTypeName.VisibleIndex = 20;
+            this.Gc_BidTypeName.VisibleIndex = 21;
             this.Gc_BidTypeName.Width = 80;
             // 
             // Gc_BidForm
@@ -1166,14 +1168,35 @@ namespace HIS.Desktop.Plugins.MedicineList
             this.Gc_BidForm.Name = "Gc_BidForm";
             this.Gc_BidForm.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gc_BidForm.Visible = true;
-            this.Gc_BidForm.VisibleIndex = 21;
+            this.Gc_BidForm.VisibleIndex = 22;
             this.Gc_BidForm.Width = 125;
+            // 
+            // Gc_Modifier
+            // 
+            this.Gc_Modifier.Caption = "Người sửa";
+            this.Gc_Modifier.FieldName = "MODIFIER";
+            this.Gc_Modifier.Name = "Gc_Modifier";
+            this.Gc_Modifier.OptionsColumn.AllowEdit = false;
+            this.Gc_Modifier.Visible = true;
+            this.Gc_Modifier.VisibleIndex = 39;
+            this.Gc_Modifier.Width = 80;
+            // 
+            // Gc_TTThau
+            // 
+            this.Gc_TTThau.AppearanceHeader.Options.UseTextOptions = true;
+            this.Gc_TTThau.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.Gc_TTThau.Caption = "TT thầu";
+            this.Gc_TTThau.FieldName = "TT_THAU";
+            this.Gc_TTThau.Name = "Gc_TTThau";
+            this.Gc_TTThau.OptionsColumn.AllowEdit = false;
+            this.Gc_TTThau.Visible = true;
+            this.Gc_TTThau.VisibleIndex = 16;
             // 
             // ButtonLock
             // 
             this.ButtonLock.AutoHeight = false;
             this.ButtonLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.MedicineList.Properties.Resources.hmenu_unlock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Khóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.MedicineList.Properties.Resources.hmenu_unlock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.ButtonLock.Name = "ButtonLock";
             this.ButtonLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.ButtonLock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonLock_ButtonClick);
@@ -1182,7 +1205,7 @@ namespace HIS.Desktop.Plugins.MedicineList
             // 
             this.ButtonUnlock.AutoHeight = false;
             this.ButtonUnlock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.MedicineList.Properties.Resources.hmenu_lock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Mở khóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.MedicineList.Properties.Resources.hmenu_lock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.ButtonUnlock.Name = "ButtonUnlock";
             this.ButtonUnlock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.ButtonUnlock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonUnlock_ButtonClick);
@@ -1248,16 +1271,6 @@ namespace HIS.Desktop.Plugins.MedicineList
             // toolTipController1
             // 
             this.toolTipController1.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.toolTipController1_GetActiveObjectInfo);
-            // 
-            // gridColumn7
-            // 
-            this.gridColumn7.Caption = "Đơn vị tính";
-            this.gridColumn7.FieldName = "SERVICE_UNIT_NAME";
-            this.gridColumn7.Name = "gridColumn7";
-            this.gridColumn7.OptionsColumn.AllowEdit = false;
-            this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 28;
-            this.gridColumn7.Width = 80;
             // 
             // UCMedicineList
             // 
@@ -1415,5 +1428,6 @@ namespace HIS.Desktop.Plugins.MedicineList
         private DevExpress.XtraGrid.Columns.GridColumn Gc_BidForm;
         private DevExpress.XtraGrid.Columns.GridColumn Gc_HeinServiceName;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
+        private DevExpress.XtraGrid.Columns.GridColumn Gc_TTThau;
     }
 }
