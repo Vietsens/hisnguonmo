@@ -5855,6 +5855,12 @@ namespace MPS.Processor.Mps000062
                                             if (meys.Exists(o => o.ServiceReqId == serviceReq.ID))
                                             {
                                                 item.MEDICINES_DONG_DETAIL___DATA += string.Format("{0}{1}{2}", PreDetail, string.Join("", meys.Where(o=>o.ServiceReqId == serviceReq.ID).Select(o=>o.Content)), AfterDetail);
+                                                if (!string.IsNullOrEmpty(serviceReq.ADVISE))
+                                                {
+                                                    item.MEDICINES_DONG_DETAIL___DATA += serviceReq.ADVISE;
+                                                    item.MEDICINES_DONG_DETAIL___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                                }
+
                                             }
                                         }
                                     }

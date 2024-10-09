@@ -904,10 +904,6 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                         else if (HisConfigCFG.OptionStoreBordereauCode == "2")
                             txtStoreBordereauCodeOption2.Text = treatment1.STORE_BORDEREAU_CODE;
                     }
-                    else
-                    {
-                        GetNextStoreBordereauCode();
-                    }
                 }
             }
             catch (Exception ex)
