@@ -80,6 +80,9 @@ namespace MPS.Processor.Mps000085.PDO
         public long? BID_VALID_FROM_TIME { get; set; }
         public long? BID_VALID_TO_TIME { get; set; }
 
+        public string BATCH_REGISTER_NUMBER { get; set; }
+        public string BATCH_MANUFACTURER_CODE { get; set; }
+        public string BATCH_MANUFACTURER_NAME { get; set; }
         //public Mps000085ADO(V_HIS_IMP_MEST_MEDICINE medicine)
         //{
         //    try
@@ -189,6 +192,9 @@ namespace MPS.Processor.Mps000085.PDO
                     this.BID_VALID_FROM_TIME = medicine.BID_VALID_FROM_TIME;
                     this.BID_VALID_FROM_TIME = medicine.BID_VALID_FROM_TIME;
                     this.BID_VALID_TO_TIME = medicine.BID_VALID_TO_TIME;
+                    this.BATCH_REGISTER_NUMBER = medicine.MEDICINE_REGISTER_NUMBER;
+                    this.BATCH_MANUFACTURER_CODE = medicine.MEDICINE_MANUFACTURER_CODE;
+                    this.BATCH_MANUFACTURER_NAME = medicine.MEDICINE_MANUFACTURER_NAME;
                 }
             }
             catch (Exception ex)
@@ -240,6 +246,9 @@ namespace MPS.Processor.Mps000085.PDO
                     this.VENTURE_AGREENING = material.VENTURE_AGREENING;
                     this.BID_VALID_FROM_TIME = material.BID_VALID_FROM_TIME;
                     this.BID_VALID_TO_TIME = material.BID_VALID_TO_TIME;
+                    this.BATCH_REGISTER_NUMBER = material.MATERIAL_REGISTER_NUMBER;
+                    this.BATCH_MANUFACTURER_CODE = material.MATERIAL_MANUFACTURER_CODE;
+                    this.BATCH_MANUFACTURER_NAME = material.MATERIAL_MANUFACTURER_NAME;
                 }
             }
             catch (Exception ex)
@@ -285,6 +294,10 @@ namespace MPS.Processor.Mps000085.PDO
         public string MEDICAL_CONTRACT_NAME { get; set; }
         public string DOCUMENT_SUPPLIER_NAME { get; set; }
         public string VENTURE_AGREENING { get; set; }
+        public string BATCH_REGISTER_NUMBER { get; set; }
+        public string BATCH_MANUFACTURER_CODE { get; set; }
+        public string BATCH_MANUFACTURER_NAME { get; set; }
+
     }
 
     public class ImpMestMaterialADO : V_HIS_IMP_MEST_MATERIAL
@@ -299,6 +312,9 @@ namespace MPS.Processor.Mps000085.PDO
         public string MEDICAL_CONTRACT_NAME { get; set; }
         public string DOCUMENT_SUPPLIER_NAME { get; set; }
         public string VENTURE_AGREENING { get; set; }
+        public string BATCH_REGISTER_NUMBER { get; set; }
+        public string BATCH_MANUFACTURER_CODE { get; set; }
+        public string BATCH_MANUFACTURER_NAME { get; set; }
     }
 
     public class MedicalContractADO : V_HIS_MEDICAL_CONTRACT
