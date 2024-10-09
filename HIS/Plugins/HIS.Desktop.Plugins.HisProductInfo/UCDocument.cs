@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.HisProductInfo
 {
-    
+
     public partial class UCDocument : UserControl
     {
         public UCDocument()
@@ -146,7 +146,7 @@ namespace HIS.Desktop.Plugins.HisProductInfo
         {
             try
             {
-                if(e.Control && e.KeyCode == Keys.S)
+                if (e.Control && e.KeyCode == Keys.S)
                 {
                     return;
                 }
@@ -168,6 +168,18 @@ namespace HIS.Desktop.Plugins.HisProductInfo
                     e.SuppressKeyPress = true;
                     return;
                 }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        public void AllowEdit(bool allow)
+        {
+            try
+            {
+                txtContent.ReadOnly = !allow;
             }
             catch (Exception ex)
             {
