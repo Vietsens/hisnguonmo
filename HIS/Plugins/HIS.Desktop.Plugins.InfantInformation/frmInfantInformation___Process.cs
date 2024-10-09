@@ -218,7 +218,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
 
                 if (txtDirectorLoginname.Text != null && txtDirectorLoginname.Text != "")
                 {
-                    currentDTO.DirectorLoginname = cboDirectorUsername.EditValue.ToString();
+                    currentDTO.DirectorLoginname = txtDirectorLoginname.Text.Trim();
                 }
                 else
                 {

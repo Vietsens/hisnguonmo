@@ -4337,8 +4337,26 @@ namespace HIS.Desktop.Plugins.InfantInformation
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    txtCMT.Focus();
-                    txtCMT.SelectAll();
+                    if (!string.IsNullOrEmpty(txtDirectorLoginname.Text.Trim()))
+                    {
+                        var employee = (cboDirectorUsername.Properties.DataSource as List<V_HIS_EMPLOYEE>).FirstOrDefault(o => o.LOGINNAME == txtDirectorLoginname.Text.Trim());
+                        if (employee != null)
+                        {
+                            cboDirectorUsername.EditValue = employee.LOGINNAME;
+                            txtCMT.Focus();
+                            txtCMT.SelectAll();
+                        }
+                        else
+                        {
+                            cboDirectorUsername.Focus();
+                            cboDirectorUsername.ShowPopup();
+                        }
+                    }
+                    else
+                    {
+                        cboDirectorUsername.Focus();
+                        cboDirectorUsername.ShowPopup();
+                    }
                 }
             }
             catch (Exception ex)
