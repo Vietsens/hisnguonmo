@@ -87,6 +87,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject38 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject39 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject40 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject41 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject42 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject43 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject44 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject45 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject46 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject47 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject48 = new DevExpress.Utils.SerializableAppearanceObject();
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
@@ -230,6 +238,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.repositoryItemCustomGridLookUpEdit1View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.colEXP_MEST_REASON_NAMEUnb = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colEXP_MEST_REASON_IDUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colINFORMATION_MEDICINEUnb = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemcboPatientType_TabMedicine = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
             this.repositoryItemChkIsExpend__MedicinePage = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemChkIsKH__MedicinePage = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
@@ -249,6 +259,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.gridView9 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.repositoryItemGridLookUpEditEquipmentSet__Disabled = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
             this.repositoryItemGridLookUpEdit2View = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.repInForMedicineEnable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repInForMedicineDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.txtAdvise = new DevExpress.XtraEditors.MemoEdit();
             this.btnSaveAndPrint = new DevExpress.XtraEditors.SimpleButton();
             this.txtLadder = new DevExpress.XtraEditors.TextEdit();
@@ -415,6 +427,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.gridView9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEditEquipmentSet__Disabled)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit2View)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repInForMedicineEnable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repInForMedicineDisable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAdvise.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtLadder.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExpMestTemplate.Properties)).BeginInit();
@@ -1576,7 +1590,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.repositoryItemGridLookUpEditEquipmentSet__Enabled,
             this.repositoryItemGridLookUpEditEquipmentSet__Disabled,
             this.repositoryItemButtonOthePaySource,
-            this.repositoryItemCustomGridLookUpReasion});
+            this.repositoryItemCustomGridLookUpReasion,
+            this.repInForMedicineEnable,
+            this.repInForMedicineDisable});
             this.gridControlServiceProcess.Size = new System.Drawing.Size(941, 355);
             this.gridControlServiceProcess.TabIndex = 26;
             this.gridControlServiceProcess.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1629,7 +1645,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.colOTHER_PAY_SOURCE_NAMEUnb,
             this.grcExpMestReason__TabMedicine,
             this.colEXP_MEST_REASON_NAMEUnb,
-            this.colEXP_MEST_REASON_IDUnb});
+            this.colEXP_MEST_REASON_IDUnb,
+            this.gridColumn4,
+            this.colINFORMATION_MEDICINEUnb});
             this.gridViewServiceProcess.GridControl = this.gridControlServiceProcess;
             this.gridViewServiceProcess.Name = "gridViewServiceProcess";
             this.gridViewServiceProcess.OptionsBehavior.AutoExpandAllGroups = true;
@@ -2146,6 +2164,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.colEXP_MEST_REASON_IDUnb.Name = "colEXP_MEST_REASON_IDUnb";
             this.colEXP_MEST_REASON_IDUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
             // 
+            // gridColumn4
+            // 
+            this.gridColumn4.Caption = "Thông tin SP";
+            this.gridColumn4.FieldName = "INFORMATION_MEDICINE";
+            this.gridColumn4.FieldNameSortGroup = "INFORMATION_MEDICINEUnb";
+            this.gridColumn4.Name = "gridColumn4";
+            this.gridColumn4.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColumn4.ToolTip = "Thông tin sản phẩm";
+            this.gridColumn4.Visible = true;
+            this.gridColumn4.VisibleIndex = 18;
+            // 
+            // colINFORMATION_MEDICINEUnb
+            // 
+            this.colINFORMATION_MEDICINEUnb.FieldName = "INFORMATION_MEDICINEUnb";
+            this.colINFORMATION_MEDICINEUnb.Name = "colINFORMATION_MEDICINEUnb";
+            this.colINFORMATION_MEDICINEUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
             // repositoryItemcboPatientType_TabMedicine
             // 
             this.repositoryItemcboPatientType_TabMedicine.AutoHeight = false;
@@ -2303,6 +2338,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.repositoryItemGridLookUpEdit2View.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.repositoryItemGridLookUpEdit2View.OptionsView.ShowGroupPanel = false;
             // 
+            // repInForMedicineEnable
+            // 
+            this.repInForMedicineEnable.AutoHeight = false;
+            this.repInForMedicineEnable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.AssignPrescriptionYHCT.Properties.Resources.noi_dung_mau, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "Thông tin sản phẩm", null, null, true)});
+            this.repInForMedicineEnable.Name = "repInForMedicineEnable";
+            this.repInForMedicineEnable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repInForMedicineEnable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repInForMedicineEnable_ButtonClick);
+            // 
+            // repInForMedicineDisable
+            // 
+            this.repInForMedicineDisable.AutoHeight = false;
+            this.repInForMedicineDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.AssignPrescriptionYHCT.Properties.Resources.noi_dung_mau_dis, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject37, serializableAppearanceObject38, serializableAppearanceObject39, serializableAppearanceObject40, "Thông tin sản phẩm", null, null, true)});
+            this.repInForMedicineDisable.Name = "repInForMedicineDisable";
+            this.repInForMedicineDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
             // txtAdvise
             // 
             this.txtAdvise.Location = new System.Drawing.Point(830, 74);
@@ -2344,7 +2396,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.cboExpMestTemplate.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboExpMestTemplate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "", null, null, true),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject41, serializableAppearanceObject42, serializableAppearanceObject43, serializableAppearanceObject44, "", null, null, true),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus)});
             this.cboExpMestTemplate.Properties.NullText = "";
             this.cboExpMestTemplate.Properties.View = this.gridView7;
@@ -2370,7 +2422,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.cboMediStockExport.Name = "cboMediStockExport";
             this.cboMediStockExport.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject37, serializableAppearanceObject38, serializableAppearanceObject39, serializableAppearanceObject40, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "", null, null, true)});
             this.cboMediStockExport.Properties.NullText = "";
             this.cboMediStockExport.Properties.View = this.gridView3;
             this.cboMediStockExport.Size = new System.Drawing.Size(114, 20);
@@ -3222,6 +3274,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.gridView9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEditEquipmentSet__Disabled)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit2View)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repInForMedicineEnable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repInForMedicineDisable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAdvise.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtLadder.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExpMestTemplate.Properties)).EndInit();
@@ -3519,5 +3573,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         private DevExpress.XtraEditors.SimpleButton btnSave_duTru;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem25;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem4;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn4;
+        private DevExpress.XtraGrid.Columns.GridColumn colINFORMATION_MEDICINEUnb;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repInForMedicineEnable;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repInForMedicineDisable;
     }
 }
