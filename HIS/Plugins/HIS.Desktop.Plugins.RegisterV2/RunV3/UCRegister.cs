@@ -500,6 +500,23 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 					this.ucServiceRoomInfo1.RefreshUserControl();
 
 					this.ReloadExamServiceRoom();
+					if(this.ucPatientRaw1.GetValue().DOB != null && patientTypeId == HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__BHYT)
+                    {
+						DateTime dateofbirth = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.ucPatientRaw1.GetValue().DOB)??DateTime.MinValue;
+						if(dateofbirth != DateTime.MinValue)
+                        {
+							if(DateTime.Now.Year - dateofbirth.Year < 6)
+                            {
+								this.ucHeinInfo1.SetEnableChkSS(true);
+
+							}
+                            else
+                            {
+								this.ucHeinInfo1.SetEnableChkSS(false);
+							}
+                        }
+
+                    }
 					if (HisConfigCFG.AutoCheckPrintExam__PatientTypeIds != null && HisConfigCFG.AutoCheckPrintExam__PatientTypeIds.Count > 0 && HisConfigCFG.AutoCheckPrintExam__PatientTypeIds.Contains(patientTypeId))
 					{
 						chkPrintExam.Checked = true;

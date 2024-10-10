@@ -115,6 +115,7 @@ namespace HIS.UC.UCHeniInfo
 				patientProfileSDO.HisPatientTypeAlter.LEVEL_CODE = HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT;
 				patientProfileSDO.HisPatientTypeAlter.TREATMENT_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM;
 				patientProfileSDO.HisPatientTypeAlter.LIVE_AREA_CODE = (this.cboNoiSong.EditValue ?? "").ToString();
+				patientProfileSDO.HisPatientTypeAlter.IS_NEWBORN = (short)(this.chkSs.Checked ? 1 : 0);
 				if (isTempQN && this.chkHasCardTemp.Checked)
 					patientProfileSDO.HisPatientTypeAlter.IS_TEMP_QN = 1;
 				else

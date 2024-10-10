@@ -216,7 +216,19 @@ namespace HIS.UC.UCHeniInfo
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        public void SetEnableChkSS(bool isEnable)
+        {
+            try
+            {
+                chkSs.Enabled = isEnable;
+                if (!isEnable) chkSs.Checked = isEnable;
+            }
+            catch (Exception ex)
+            {
 
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         public void SetEnableControlEmergency(DelegateVisible _dlgEnableEmergency)
         {
             try
@@ -235,7 +247,13 @@ namespace HIS.UC.UCHeniInfo
             try
             {
                 if (uc != null)
+                {
                     this.currentPatientRaw = uc;
+                    
+
+                }    
+                    
+                
             }
             catch (Exception ex)
             {

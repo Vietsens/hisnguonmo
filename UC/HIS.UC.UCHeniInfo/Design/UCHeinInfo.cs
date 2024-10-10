@@ -68,6 +68,7 @@ namespace HIS.UC.UCHeniInfo
 		DelegateSetCareerByHeinCardNumber dlgSetCareerByHeinCardNumber;
 		UpdateTranPatiDataByPatientOld updateTranPatiDataByPatientOld;
 		DelegateSend3WBhytCode dlgSend3WBhytCode;
+		DelegateCheckSS dlgCheckSS;
 		Action dlgProcessChangePatientDob;
         public ResultDataADO ResultDataADO { get; set; }
         UCHeinADO dataHein = new UCHeinADO();
@@ -249,6 +250,7 @@ namespace HIS.UC.UCHeniInfo
 			{
 				this.dlgFocusNextUserControl = dataInitUCHeniInfo.dlgFocusNextUserControl;
 				this.dlgValidationControl = dataInitUCHeniInfo.dlgValidationControl;
+				this.dlgCheckSS = dataInitUCHeniInfo.dlgCheckSS;//check SS
 				this.dlgProcessFillDataCareerUnder6AgeByHeinCardNumber = dataInitUCHeniInfo.dlgProcessFillDataCareerUnder6AgeByHeinCardNumber;
 				this.dlgfillDataPatientSDOToRegisterForm = dataInitUCHeniInfo.dlgFillDataPatientSDOToRegisterForm;
 				this.dlgcheckExamHistory = dataInitUCHeniInfo.dlgCheckExamHistory;
@@ -380,6 +382,14 @@ namespace HIS.UC.UCHeniInfo
 								oldHeinCardNumber = null;
 								CheckExamHistoryFromBHXHApi(null);
 							}
+
+							if(this.currentPatientSdo != null && DateTime.Now.Year - this.currentPatientSdo.VIR_DOB_YEAR > 5)
+                            {
+								chkSs.Enabled = false;
+								chkSs.Checked = false;
+                            }
+
+							
 						}
 						else if (!String.IsNullOrEmpty(this.txtSoThe.Text) && !(this.txtSoThe.EditValue.Equals(this.txtSoThe.OldEditValue == null ? "" : this.txtSoThe.OldEditValue)))
                         {
@@ -465,7 +475,27 @@ namespace HIS.UC.UCHeniInfo
 			{
 				oldHeinCardNumber = txtSoThe.Text.Trim();
 
+
                 this.CheckHSDAndTECard();
+				if (this.currentPatientRaw != null && this.currentPatientRaw.GetValue().DOB > 0)
+				{
+					DateTime dateofbirth = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.currentPatientRaw.GetValue().DOB) ?? DateTime.MinValue;
+					if (dateofbirth != DateTime.MinValue)
+					{
+						if (DateTime.Now.Year - dateofbirth.Year < 6)
+						{
+							this.chkSs.Enabled = true;
+
+						}
+						else
+						{
+							this.chkSs.Enabled = false;
+							this.chkSs.Checked = false;
+
+						}
+					}
+
+				}
 
 			}
 			catch (Exception ex)
@@ -2192,5 +2222,21 @@ namespace HIS.UC.UCHeniInfo
 				Inventec.Common.Logging.LogSystem.Error(ex);
 			}
 		}
-	}
+
+        private void chkSs_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                
+				this.cboHeinRightRoute.EditValue = chkSs.Checked ?  MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.TRUE : null;
+				this.dlgCheckSS(chkSs.Checked);
+				
+            }
+            catch (Exception ex)
+            {
+
+				Inventec.Common.Logging.LogSystem.Error(ex);
+			}
+        }
+    }
 }
