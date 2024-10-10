@@ -628,17 +628,12 @@ namespace HIS.UC.SecondaryIcd
                         {
                             if (!checkIcd.ProcessCheckIcd(null, string.Join(";", arrIcdExtraCodes), ref messErr,false))
                             {
-                                if (!string.IsNullOrEmpty(erorr_code) && !string.IsNullOrEmpty(messErr))
+                                if (!string.IsNullOrEmpty(messErr))
                                 {
-                                    var icd_code = erorr_code.Split(';').ToList();
-                                    var arrIcdExtraCodesList = arrIcdExtraCodes.ToList();
-                                    arrIcdExtraCodesList = arrIcdExtraCodesList.Where(s => !icd_code.Contains(s)).ToList();
-
-                                    // Cập nhật lại danh sách sau khi lọc
-                                    arrIcdExtraCodes = arrIcdExtraCodesList.ToArray();
                                     this.txtIcdSubCode.Text = string.Join(";", arrIcdExtraCodes);
+                                    XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
                                 }
-                                XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
+                                
 
                             }
                         }
@@ -659,6 +654,7 @@ namespace HIS.UC.SecondaryIcd
                             });
 
                         }
+                        icdByCode = icdByCode.OrderBy(o => Array.IndexOf(arrIcdExtraCodes, o.ICD_CODE)).ToList();
                         if (icdByCode != null && icdByCode.Count > 0)
                         {
                             this.txtIcdSubCode.Text = String.Join(";", icdByCode.Select(s=>s.ICD_CODE).ToList());
