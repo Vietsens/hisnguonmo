@@ -2591,7 +2591,9 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 _ExpMestMetyReq_LAOs = new List<HIS_EXP_MEST_METY_REQ>();
                 List<HIS_MEDICINE> _Medicines = new List<HIS_MEDICINE>();
                 List<HIS_MATERIAL> _Materials = new List<HIS_MATERIAL>();
-                List<HIS_BLOOD> _Bloods = new List<HIS_BLOOD>(); ;
+                List<HIS_BLOOD> _Bloods = new List<HIS_BLOOD>(); 
+                List<V_HIS_MEDICINE_PATY> _Medicines_PATY = new List<V_HIS_MEDICINE_PATY >();
+                List<V_HIS_MATERIAL_PATY> _Materials_PATY = new List<V_HIS_MATERIAL_PATY >();
                 CommonParam param = new CommonParam();
 
                 if (this._ExpMestMedicines_Print != null && this._ExpMestMedicines_Print.Count > 0)
@@ -2611,6 +2613,21 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
 
                     }
                     _Medicines = _Medicines.Distinct().ToList();
+                   var his_medipaty = BackendDataWorker.Get<V_HIS_MEDICINE_PATY>().ToList();
+                    if(_Medicines != null && _Medicines.Count >0)
+                    {
+                       foreach(var item in _Medicines)
+                       {
+                            if(item.IS_SALE_EQUAL_IMP_PRICE != 1)
+                            {
+                                var data = his_medipaty.Where(o=> o.MEDICINE_ID == item.ID).ToList();
+                                if(data != null && data.Count>0)
+                                {
+                                   _Medicines_PATY.AddRange(data);
+                                }
+                            }
+                       }
+                    }
                 }
 
                 if (this._ExpMestMaterials_Print != null && this._ExpMestMaterials_Print.Count > 0)
@@ -2630,6 +2647,21 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
 
                     }
                     _Materials = _Materials.Distinct().ToList();
+                    var his_matepaty = BackendDataWorker.Get<V_HIS_MATERIAL_PATY>().ToList();
+                    if(_Materials!=null&& _Materials.Count >0)
+                    {
+                       foreach(var item in _Materials)
+                       {
+                            if(item.IS_SALE_EQUAL_IMP_PRICE != 1)
+                            {
+                                var data = his_matepaty.Where(o=> o.MATERIAL_ID == item.ID).ToList();
+                                if(data != null && data.Count>0)
+                                {
+                                   _Materials_PATY.AddRange(data);
+                                }
+                            }
+                       }
+                    }
                 }
 
                 if (this._ExpMestBloods_Print != null && this._ExpMestBloods_Print.Count > 0)
@@ -2864,6 +2896,8 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                              BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
                              null,
                              null,
+                             null,
+                             null,
                              keyNameAggr,
                              configKeyMert,
                              keyPhieuTra,
@@ -2871,8 +2905,19 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                              _Materials,
                              _Bloods,
                              Config.HisConfigCFG.ODER_OPTION,
-                             BackendDataWorker.Get<HIS_MEDICINE_USE_FORM>()
+                             BackendDataWorker.Get<HIS_MEDICINE_USE_FORM>(),
+                             _Medicines_PATY,
+                             _Materials_PATY,
+                             lstConfig
                              );
+                        if (lstConfig != null && lstConfig.Count > 0)
+                        {
+                            Inventec.Common.Logging.LogSystem.Info("lstConfig: " + lstConfig.Count());
+                        }
+                        else
+                        {
+                            Inventec.Common.Logging.LogSystem.Info("lstConfig NULL ");
+                        }
                         MPS.ProcessorBase.Core.PrintData PrintData = null;
                         if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
                         {
@@ -2938,14 +2983,28 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                                  BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
                                  BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                                  BackendDataWorker.Get<V_HIS_BLOOD_TYPE>(),
+                                  null,
+                                  null,
                                  keyNameAggrHc,
                                  configKeyMert,
                                  keyPhieuTra,
                                  _Medicines,
                                  _Materials,
                                  _Bloods,
-                                 Config.HisConfigCFG.ODER_OPTION
+                                 Config.HisConfigCFG.ODER_OPTION,
+                                 null,
+                                 _Medicines_PATY,
+                                 _Materials_PATY,
+                                 lstConfig
                                  );
+                            if (lstConfig != null && lstConfig.Count > 0)
+                            {
+                                Inventec.Common.Logging.LogSystem.Info("lstConfig: " + lstConfig.Count());
+                            }
+                            else
+                            {
+                                Inventec.Common.Logging.LogSystem.Info("lstConfig NULL ");
+                            }
                             MPS.ProcessorBase.Core.PrintData PrintData = null;
                             if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
                             {
@@ -2993,14 +3052,28 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                                  BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
                                  BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                                  BackendDataWorker.Get<V_HIS_BLOOD_TYPE>(),
+                                 null,
+                                 null,
                                  keyNameAggr,
                                  configKeyMert,
                                  keyPhieuTra,
                                  _Medicines,
                                  _Materials,
                                  _Bloods,
-                                 Config.HisConfigCFG.ODER_OPTION
+                                 Config.HisConfigCFG.ODER_OPTION,
+                                 null,
+                                 _Medicines_PATY,
+                                 _Materials_PATY,
+                                 lstConfig
                                  );
+                            if (lstConfig != null && lstConfig.Count > 0)
+                            {
+                                Inventec.Common.Logging.LogSystem.Info("lstConfig: " + lstConfig.Count());
+                            }
+                            else
+                            {
+                                Inventec.Common.Logging.LogSystem.Info("lstConfig NULL ");
+                            }
                             MPS.ProcessorBase.Core.PrintData PrintData = null;
                             if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
                             {
