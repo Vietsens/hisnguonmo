@@ -146,6 +146,8 @@ namespace HIS.UC.UCHeniInfo
 				this.TuDongCheckCapCuuTheoGiaTriTuyen();
 				this.lciIsBhytHolded.TextVisible = true;
 				this.lciIsBhytHolded.TextSize = lciHasAbsentLetter.TextSize;
+				this.chkSs.Enabled = false;
+				this.chkSs.Checked = false;
 			}
 			catch (Exception ex)
 			{
@@ -319,6 +321,8 @@ namespace HIS.UC.UCHeniInfo
 				this.lciHeinRightRoute.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
 				this.IsShowMessage = false;
 				this.SetTreatmentId(0);
+				this.chkSs.Checked = false;
+				this.chkSs.Enabled = false;
 			}
 			catch (Exception ex)
 			{

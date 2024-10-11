@@ -111,6 +111,22 @@ namespace HIS.UC.UCHeniInfo
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        public void ShowCheckSS(bool En)
+        {
+            try
+            {
+                chkSs.Enabled = En;
+                if (!En)
+                {
+                    chkSs.Checked = false;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
         #endregion
 

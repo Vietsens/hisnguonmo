@@ -159,6 +159,32 @@ namespace HIS.UC.UCHeniInfo
 			}
 			return patientProfileSDO;
 		}
+		/// <summary>
+		/// hàm lấy thông tin thẻ. tránh trường hợp khi thay đổi control ở patient raw thì check lại thẻ
+		/// </summary>
+		/// <returns></returns>
+		public HisPatientProfileSDO GetValuePatientTypeAlter()
+        {
+			HisPatientProfileSDO patientProfileSDO = new HisPatientProfileSDO();
+			try
+            {
+				if (patientProfileSDO.HisPatientTypeAlter == null)
+					patientProfileSDO.HisPatientTypeAlter = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE_ALTER();
+				if (chkHasCardTemp.Checked && !string.IsNullOrEmpty(this.txtSoThe.Text) && this.isTempQN == false && HeinUtils.TrimHeinCardNumber(this.txtSoThe.Text).Length == 10)
+				{
+					this.txtSoThe.Text = "TE1" + CodeProvince + HeinUtils.TrimHeinCardNumber(this.txtSoThe.Text);
+				}
+				patientProfileSDO.HisPatientTypeAlter.HEIN_CARD_NUMBER = HeinUtils.TrimHeinCardNumber(this.txtSoThe.Text);
+
+
+			}
+			catch (Exception ex)
+            {
+
+				Inventec.Common.Logging.LogSystem.Warn(ex);
+			}
+			return patientProfileSDO;
+		}
 
 		public void SetValue(HisPatientSDO patientsdo)
 		{
