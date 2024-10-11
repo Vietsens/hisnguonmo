@@ -33,7 +33,24 @@ using System.Windows.Forms;
 namespace His.UC.UCHein.Design.TemplateHeinBHYT1
 {
     public partial class Template__HeinBHYT1 : UserControl
-    {
+    {   /// <summary>
+        /// Hàm hiển thị dữ liệu khi BN dưới 6 tuổi
+        /// </summary>
+        /// <param name="IsChild"></param>
+        internal void FillDataPatientOldYnder6(bool IsChild)
+        {
+            try
+            {
+                chkBaby.Enabled = IsChild;
+                if (!chkBaby.Enabled)
+                    this.chkBaby.Checked = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
         /// <summary>
         /// Hàm lấy dữ liệu từ form cập nhật vào đối tượng HisPatientProfileSDO
         /// </summary>
@@ -214,6 +231,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     patientProfileSDO.HisPatientTypeAlter.IS_NO_CHECK_EXPIRE = (short)1;
                 else
                     patientProfileSDO.HisPatientTypeAlter.IS_NO_CHECK_EXPIRE = null;
+                if(chkBaby.Checked)
+                    patientProfileSDO.HisPatientTypeAlter.IS_NEWBORN = (short)1;
             }
             catch (Exception ex)
             {

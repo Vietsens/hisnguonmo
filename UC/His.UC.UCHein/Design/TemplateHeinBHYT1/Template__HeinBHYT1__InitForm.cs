@@ -75,6 +75,9 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.chkHasDobCertificate.Focus();
                 else
                     this.FocusMoveOut();
+                chkBaby.Enabled = this.entity.IsChild;
+                if (!chkBaby.Enabled)
+                    this.chkBaby.Checked = false;
             }
             catch (Exception ex)
             {
@@ -244,6 +247,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 IsAutoCheck = true;
                 this.chkJoin5Year.Checked = (patientTypeAlter.JOIN_5_YEAR == MOS.LibraryHein.Bhyt.HeinJoin5Year.HeinJoin5YearCode.TRUE);
                 this.chkPaid6Month.Checked = (patientTypeAlter.PAID_6_MONTH == MOS.LibraryHein.Bhyt.HeinPaid6Month.HeinPaid6MonthCode.TRUE);
+                if(chkBaby.Enabled)
+                    this.chkBaby.Checked = (patientTypeAlter.IS_NEWBORN == 1);
                 IsAutoCheck = false;
                 this.txtAddress.Text = patientTypeAlter.ADDRESS;
                 this.txtHNCode.Text = patientTypeAlter.HNCODE;

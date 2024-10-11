@@ -98,5 +98,9 @@ namespace Inventec.Common.ElectronicBillViettel.Model
         /// - false: tổng tiền trước thuế là âm
         /// </summary>
         public bool? isDiscountAmtPos { get; set; }
+        /// <summary>
+        /// Tổng tiền sau khi chiết khấu. Tổng tiền chưa thuế của chi tiết dịch vụ(amountWithoutTax) trừ đi tổng tiền miễn giảm(discountAmount)
+        /// </summary>
+        public decimal? totalAmountAfterDiscount { get; set; }
     }
 }
