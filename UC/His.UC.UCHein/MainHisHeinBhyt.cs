@@ -241,5 +241,16 @@ namespace His.UC.UCHein
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        public void PatientOldUnder6(UserControl UC, bool IsChild)
+        {
+            try
+            {
+                PatientOldUnder6Factory.MakeIPatientOldUnder6(param, UC, IsChild).Run();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }

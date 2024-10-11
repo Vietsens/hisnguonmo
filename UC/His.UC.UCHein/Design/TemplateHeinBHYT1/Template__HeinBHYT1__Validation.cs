@@ -148,6 +148,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         {
             try
             {
+                lblRightRouteType.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
                 TemplateHeinBHYT1__RightRouteType__ValidationRule oDobDateRule = new TemplateHeinBHYT1__RightRouteType__ValidationRule();
                 oDobDateRule.txtHeinRightRouteCode = this.txtHeinRightRouteCode;
                 oDobDateRule.cboHeinRightRoute = this.cboHeinRightRoute;
