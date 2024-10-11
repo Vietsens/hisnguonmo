@@ -122,10 +122,6 @@
     <Reference Include="HIS.UC.UCOtherServiceReqInfo">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCOtherServiceReqInfo\HIS.UC.UCOtherServiceReqInfo.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.UCPatientRaw, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCPatientRaw\HIS.UC.UCPatientRaw.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.UC.UCRelativeInfo">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCRelativeInfo\HIS.UC.UCRelativeInfo.dll</HintPath>
     </Reference>
@@ -516,6 +512,10 @@
     <ProjectReference Include="..\..\..\UC\HIS.UC.UCHeniInfo\HIS.UC.UCHeniInfo.csproj">
       <Project>{b44f0290-c07f-4fbb-9fbf-22f6c7c33712}</Project>
       <Name>HIS.UC.UCHeniInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC.UCPatientRaw\HIS.UC.UCPatientRaw.csproj">
+      <Project>{56fea3a2-be4c-4025-880d-e4a5f89b6ff6}</Project>
+      <Name>HIS.UC.UCPatientRaw</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>

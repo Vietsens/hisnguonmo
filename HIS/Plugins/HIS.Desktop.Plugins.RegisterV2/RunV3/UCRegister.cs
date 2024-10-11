@@ -76,6 +76,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 		HisPatientProfileSDO resultHisPatientProfileSDO = null;
         Inventec.Common.QrCodeBHYT.HeinCardData _HeinCardData { get; set; }
 		ResultDataADO ResultDataADO { get; set; }
+		public bool isCheckSS { get; set; }
 		internal bool isNotPatientDayDob = false;
 		int actionType = 0;
 		bool isPrintNow;
@@ -955,9 +956,11 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 		{
 			try
 			{
-				var heindata = this.ucHeinInfo1.GetValue();
+				var heindata = this.ucHeinInfo1.GetValuePatientTypeAlter();
+				
 				var patientRaw = this.ucPatientRaw1.GetValue();
 				if (heindata != null && patientRaw != null)
+					this.ucHeinInfo1.ShowCheckSS(DateTime.Now.Year - (Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(patientRaw.DOB)??DateTime.MinValue).Year <6);
 					this.ucOtherServiceReqInfo1.AutoCheckPriorityByPriorityType(patientRaw.DOB, heindata.HisPatientTypeAlter.HEIN_CARD_NUMBER);
 			}
 			catch (Exception ex)
@@ -1047,6 +1050,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 			{
 				this.isResetForm = true;
 				this.IsReadCardTheViet = false;
+				this.isCheckSS = false;
 				this.RefreshUserControl();
 				var patientTypeDefault = HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.PatientTypeDefault;
 				if (!(patientTypeDefault != null && patientTypeDefault.ID > 0) && !HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.UsingPatientTypeOfPreviousPatient)

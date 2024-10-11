@@ -270,7 +270,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                     Inventec.Desktop.Common.Message.WaitingManager.Show();
                 }
             }
-
+            
             //Execute call api
             result = (HisServiceReqExamRegisterResultSDO)base.RunBase(serviceReqExamRegister, this.ucRequestService);
 

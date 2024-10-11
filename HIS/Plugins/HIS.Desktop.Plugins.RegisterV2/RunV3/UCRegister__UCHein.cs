@@ -164,7 +164,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        public bool isCheckSS { get; set; }
+        
         private void UpdateCheckSS(bool isCheck)
         {
             try
