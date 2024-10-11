@@ -326,18 +326,39 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             }
         }
 
-        private void GetDataDefault()
+        private void GetDataDefaultHisBedLog()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentServiceReq), currentServiceReq));
+                CommonParam param = new CommonParam();
+                Inventec.Common.Logging.LogSystem.Info("1. Begin api/HisBedLog/GetView ");
+                HisBedLogViewFilter blFilter = new HisBedLogViewFilter();
+                if (currentServiceReq != null)
+                {
+                    blFilter.TREATMENT_ID = currentServiceReq.TREATMENT_ID;
+                }
+                lstBedLogData = new BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, blFilter, param);
+                Inventec.Common.Logging.LogSystem.Info("1. End api/HisBedLog/GetView ");
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void GetDataDefaultHisDHST()
         {
             try
             {
                 CommonParam param = new CommonParam();
-                Inventec.Common.Logging.LogSystem.Info("1. Begin api/HisBedLog/GetView ");
-                HisBedLogViewFilter blFilter = new HisBedLogViewFilter();
-                lstBedLogData = new BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, blFilter, param);
-                Inventec.Common.Logging.LogSystem.Info("1. End api/HisBedLog/GetView ");
-
                 Inventec.Common.Logging.LogSystem.Info("1. Begin api/HisDhst/Get ");
                 HisDhstFilter dhFilter = new HisDhstFilter();
+                if (currentServiceReq != null)
+                {
+                    dhFilter.TREATMENT_ID = currentServiceReq.TREATMENT_ID;
+                }
                 lstDhstData = new BackendAdapter(param).Get<List<HIS_DHST>>("api/HisDhst/Get", ApiConsumer.ApiConsumers.MosConsumer, dhFilter, param);
                 Inventec.Common.Logging.LogSystem.Info("1. End api/HisDhst/Get ");
             }
@@ -1017,14 +1038,16 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             Thread listTemplate = new Thread(ProcessLoadListTemplate);
             Thread dataFillTemplate = new Thread(ProcessDataForTemplate);
             Thread treatment = new Thread(LoadTreatmentWithPaty);
-            Thread hisbebDHST  = new Thread(GetDataDefault);
+            Thread hisBedLog  = new Thread(GetDataDefaultHisBedLog);
+            Thread hisDHST = new Thread(GetDataDefaultHisDHST);
             try
             {
                 serviceReq.Start();
                 listTemplate.Start();
                 dataFillTemplate.Start();
                 treatment.Start();
-                hisbebDHST.Start();
+                hisBedLog.Start();
+                hisDHST.Start();
 
                 serviceReq.Join();
                 listTemplate.Join();
@@ -1038,7 +1061,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 listTemplate.Abort();
                 dataFillTemplate.Abort();
                 treatment.Abort();
-                hisbebDHST.Abort();
+                hisBedLog.Abort();
+                hisDHST.Abort();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
