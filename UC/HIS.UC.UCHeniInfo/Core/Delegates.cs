@@ -33,4 +33,5 @@ namespace HIS.UC.UCHeniInfo
     public delegate bool GetIsChild();
     public delegate void UpdateTranPatiDataByPatientOld(HIS_PATIENT_TYPE_ALTER patientTypeAlter);
     //public delegate long DelegateGetPatientTypeId();
+    public delegate void DelegateCheckSS(bool isCheck);
 }

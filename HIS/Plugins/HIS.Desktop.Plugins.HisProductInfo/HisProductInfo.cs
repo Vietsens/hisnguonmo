@@ -99,7 +99,8 @@ namespace HIS.Desktop.Plugins.HisProductInfo
             {
                 this.ucDocument.SetRtfText("");
                 this.ucDocument.SetText("");
-                this.panelControl1.Enabled = this.btnSave.Enabled = data != null && data.ProductInfoOpen == 1;
+                this.ucDocument.AllowEdit(data != null && data.ProductInfoOpen == 1);
+                this.btnSave.Enabled = data != null && data.ProductInfoOpen == 1;
                 
             }
             catch (Exception ex)

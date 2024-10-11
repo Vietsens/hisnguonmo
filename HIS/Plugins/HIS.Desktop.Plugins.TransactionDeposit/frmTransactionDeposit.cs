@@ -1764,13 +1764,13 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                                 List<object> listArgs = new List<object>();
                                 TransReqQRADO adoqr = new TransReqQRADO();
                                 adoqr.TreatmentId = this.treatment.ID;
-                                adoqr.ConfigValue = listConfig.First();
+                                adoqr.ConfigValue = selectedConfig;
                                 adoqr.TransReqId = CreateReqType.Transaction;
                                 HIS_TRANSACTION tran = new HIS_TRANSACTION();
                                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, data);
                                 adoqr.Transaction = tran;
                                 listArgs.Add(adoqr);
-                                Inventec.Common.Logging.LogSystem.Debug("Goi den module CreateTransReqQR. TreatmentID:" + adoqr.TreatmentId + " config: " + adoqr.ConfigValue.VALUE + " tran_id: " + adoqr.Transaction.ID);
+                                Inventec.Common.Logging.LogSystem.Debug("Goi den module CreateTransReqQR. TreatmentID:" + adoqr.TreatmentId + " config: " + adoqr.ConfigValue.KEY + " tran_id: " + adoqr.Transaction.ID);
                                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
 
                             };
@@ -1786,13 +1786,13 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                         List<object> listArgs = new List<object>();
                         TransReqQRADO adoqr = new TransReqQRADO();
                         adoqr.TreatmentId = this.treatment.ID;
-                        adoqr.ConfigValue = listConfig.First();
+                        adoqr.ConfigValue = selectedConfig;
                         adoqr.TransReqId = CreateReqType.Transaction;
                         HIS_TRANSACTION tran = new HIS_TRANSACTION();
                         Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, data);
                         adoqr.Transaction = tran;
                         listArgs.Add(adoqr);
-                        Inventec.Common.Logging.LogSystem.Debug("Goi den module CreateTransReqQR. TreatmentID:" + adoqr.TreatmentId + " config: " + adoqr.ConfigValue.VALUE + " tran_id: " + adoqr.Transaction.ID);
+                        Inventec.Common.Logging.LogSystem.Debug("Goi den module CreateTransReqQR. TreatmentID:" + adoqr.TreatmentId + " config: " + adoqr.ConfigValue.KEY + " tran_id: " + adoqr.Transaction.ID);
                         HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
 
 
