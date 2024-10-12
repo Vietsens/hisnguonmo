@@ -1122,17 +1122,17 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                         var sumData = listItem.Where(o => o.itemCode.Equals("TONG")).ToList();
                         if (sumData != null && sumData.Count > 0)
                         {
-                            amount = sumData.Sum(s => s.itemTotalAmountWithTax ?? 0);
-                            amountWithoutTax = sumData.Sum(s => s.itemTotalAmountWithoutTax ?? 0);
+                            amount = Math.Round(sumData.Sum(s => s.itemTotalAmountWithTax ?? 0), 0);
+                            amountWithoutTax = Math.Round(sumData.Sum(s => s.itemTotalAmountWithoutTax ?? 0), 0);
                         }
                     }
                     else
                     {
-                        amount = listItem.Sum(s => s.itemTotalAmountWithTax ?? 0);
-                        amountWithoutTax = listItem.Sum(s => s.itemTotalAmountWithoutTax ?? 0);
+                        amount = Math.Round(listItem.Where(s => s.selection == 1).Sum(s => s.itemTotalAmountWithTax ?? 0), 0);
+                        amountWithoutTax = Math.Round(listItem.Where(s => s.selection == 1).Sum(s => s.itemTotalAmountWithoutTax ?? 0), 0);
                     }
 
-                    result.discountAmount = listItem.Sum(s => s.discount ?? 0); ;
+                    result.discountAmount = Math.Round(listItem.Sum(s => s.discount ?? 0) + (this.ElectronicBillDataInput.Transaction != null ? this.ElectronicBillDataInput.Transaction.EXEMPTION ?? 0 : 0), 0);
                     result.sumOfTotalLineAmountWithoutTax = amountWithoutTax;
                     result.totalAmountWithoutTax = amountWithoutTax;
                     result.totalAmountWithTax = amount;
@@ -1143,8 +1143,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                     }
                     else
                     {
-                        result.totalTaxAmount = listItem.Sum(s => s.taxAmount ?? 0);
+                        result.totalTaxAmount = Math.Round(listItem.Sum(s => s.taxAmount ?? 0), 0);
                     }
+                    result.totalAmountAfterDiscount = Math.Round(amountWithoutTax - result.discountAmount, 0);
                     //result.settlementDiscountAmount = 0;
                 }
             }
@@ -1313,37 +1314,48 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             {
                 ItemInfo product = new ItemInfo();
                 product.lineNumber = i;
-                product.itemCode = item.ProdCode;
-                product.itemName = item.ProdName;
-                product.quantity = item.ProdQuantity;
-                product.unitName = item.ProdUnit;
-                product.discount = null;
-                product.itemDiscount = null;
-                product.selection = 1;
-                if (this.TempType == TemplateEnum.TYPE.Template10 && i > 7)
+                if (this.ElectronicBillDataInput.Transaction != null && this.ElectronicBillDataInput.Transaction.EXEMPTION != null && this.TempType != TemplateEnum.TYPE.Template10)
                 {
-                    product.selection = 2;
-                }
-
-                product.itemTotalAmountWithTax = item.Amount;
-                product.itemTotalAmountWithoutTax = item.Amount;
-                product.unitPrice = item.ProdPrice;
-                if (HisConfigCFG.Viettel_TaxBreakdownOption == HisConfigCFG.TaxBreakdownOption.KhongHienThiThongTinThue)
-                {
-                    product.taxPercentage = null;
-                    product.taxAmount = null;
+                    product.selection = 3; //Chiết khấu
+                    product.itemCode = "Chiet_Khau";
+                    product.itemName = "Miễn giảm";
+                    product.itemTotalAmountWithoutTax = this.ElectronicBillDataInput.Transaction.EXEMPTION;
+                    product.itemTotalAmountAfterDiscount = this.ElectronicBillDataInput.Transaction.EXEMPTION;
+                    product.itemTotalAmountWithTax = this.ElectronicBillDataInput.Transaction.EXEMPTION;
                 }
                 else
                 {
-                    product.taxPercentage = -2;
-                    product.taxAmount = 0;
-                }
+                    product.itemCode = item.ProdCode;
+                    product.itemName = item.ProdName;
+                    product.quantity = item.ProdQuantity;
+                    product.unitName = item.ProdUnit;
+                    product.discount = null;
+                    product.itemDiscount = null;
+                    product.selection = 1;
+                    if (this.TempType == TemplateEnum.TYPE.Template10 && i > 7)
+                    {
+                        product.selection = 2;
+                    }
 
+                    product.itemTotalAmountWithTax = item.Amount;
+                    product.itemTotalAmountWithoutTax = item.Amount;
+                    product.unitPrice = item.ProdPrice;
+                    if (HisConfigCFG.Viettel_TaxBreakdownOption == HisConfigCFG.TaxBreakdownOption.KhongHienThiThongTinThue)
+                    {
+                        product.taxPercentage = null;
+                        product.taxAmount = null;
+                    }
+                    else
+                    {
+                        product.taxPercentage = -2;
+                        product.taxAmount = 0;
+                    }
+                }
                 result.Add(product);
                 i++;
             }
 
-            if (this.TempType == TemplateEnum.TYPE.Template3)
+            if ((this.ElectronicBillDataInput.Transaction == null || this.ElectronicBillDataInput.Transaction.EXEMPTION == null) && this.TempType == TemplateEnum.TYPE.Template3)
             {
                 decimal billFund = 0;
                 if (!ElectronicBillDataInput.IsTransactionList)//ko phải xuất hóa đơn từ danh sách giao dịch
@@ -1375,37 +1387,49 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             {
                 ItemInfo product = new ItemInfo();
                 product.lineNumber = i;
-                product.itemName = item.ProdName;
-                product.unitPrice = item.ProdPrice;
-                product.quantity = item.ProdQuantity;
-                product.unitName = item.ProdUnit;
-
-                if (HisConfigCFG.Viettel_TaxBreakdownOption == HisConfigCFG.TaxBreakdownOption.KhongHienThiThongTinThue)
+                if (this.ElectronicBillDataInput.Transaction != null && this.ElectronicBillDataInput.Transaction.EXEMPTION != null && this.TempType != TemplateEnum.TYPE.Template10)
                 {
-                    product.taxPercentage = null;
-                    product.itemTotalAmountWithTax = item.Amount;
-                    product.itemTotalAmountWithoutTax = item.Amount;
-                    product.taxAmount = null;
+                    product.selection = 3; //Chiết khấu
+                    product.itemCode = "Chiet_Khau";
+                    product.itemName = "Miễn giảm";
+                    product.itemTotalAmountWithoutTax = this.ElectronicBillDataInput.Transaction.EXEMPTION;
+                    product.itemTotalAmountAfterDiscount = this.ElectronicBillDataInput.Transaction.EXEMPTION;
+                    product.itemTotalAmountWithTax = this.ElectronicBillDataInput.Transaction.EXEMPTION;
                 }
                 else
                 {
-                    if (item.TaxPercentage.HasValue)
+                    product.itemName = item.ProdName;
+                    product.unitPrice = item.ProdPrice;
+                    product.quantity = item.ProdQuantity;
+                    product.unitName = item.ProdUnit;
+
+                    if (HisConfigCFG.Viettel_TaxBreakdownOption == HisConfigCFG.TaxBreakdownOption.KhongHienThiThongTinThue)
                     {
-                        product.taxPercentage = (long)Math.Round(item.TaxConvert, 0);
+                        product.taxPercentage = null;
+                        product.itemTotalAmountWithTax = item.Amount;
+                        product.itemTotalAmountWithoutTax = item.Amount;
+                        product.taxAmount = null;
                     }
                     else
                     {
-                        //không thuế
-                        product.taxPercentage = -2;
+                        if (item.TaxPercentage.HasValue)
+                        {
+                            product.taxPercentage = (long)Math.Round(item.TaxConvert, 0);
+                        }
+                        else
+                        {
+                            //không thuế
+                            product.taxPercentage = -2;
+                        }
+                        product.itemTotalAmountWithTax = item.Amount;
+                        product.itemTotalAmountWithoutTax = item.AmountWithoutTax;
+                        product.taxAmount = item.TaxAmount;
                     }
-                    product.itemTotalAmountWithTax = item.Amount;
-                    product.itemTotalAmountWithoutTax = item.AmountWithoutTax;
-                    product.taxAmount = item.TaxAmount;
-                }
 
-                product.discount = null;
-                product.itemDiscount = null;
-                product.selection = 1;
+                    product.discount = null;
+                    product.itemDiscount = null;
+                    product.selection = 1;
+                }
                 result.Add(product);
                 i++;
             }

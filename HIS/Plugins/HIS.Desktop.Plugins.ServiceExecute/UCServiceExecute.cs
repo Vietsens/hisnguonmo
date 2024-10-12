@@ -185,6 +185,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         public bool IsPin { get; private set; }
         public bool IsLoadFromPin { get; private set; }
         List<HisEkipUserADO> ekipUserAdos { get; set; }
+        List<V_HIS_BED_LOG> lstBedLogData { get; set; }
+        List<HIS_DHST> lstDhstData { get; set; }
         #endregion
 
         #region Construct
@@ -323,6 +325,48 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void GetDataDefaultHisBedLog()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentServiceReq), currentServiceReq));
+                CommonParam param = new CommonParam();
+                Inventec.Common.Logging.LogSystem.Info("1. Begin api/HisBedLog/GetView ");
+                HisBedLogViewFilter blFilter = new HisBedLogViewFilter();
+                if (currentServiceReq != null)
+                {
+                    blFilter.TREATMENT_ID = currentServiceReq.TREATMENT_ID;
+                }
+                lstBedLogData = new BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, blFilter, param);
+                Inventec.Common.Logging.LogSystem.Info("1. End api/HisBedLog/GetView ");
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void GetDataDefaultHisDHST()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                Inventec.Common.Logging.LogSystem.Info("1. Begin api/HisDhst/Get ");
+                HisDhstFilter dhFilter = new HisDhstFilter();
+                if (currentServiceReq != null)
+                {
+                    dhFilter.TREATMENT_ID = currentServiceReq.TREATMENT_ID;
+                }
+                lstDhstData = new BackendAdapter(param).Get<List<HIS_DHST>>("api/HisDhst/Get", ApiConsumer.ApiConsumers.MosConsumer, dhFilter, param);
+                Inventec.Common.Logging.LogSystem.Info("1. End api/HisDhst/Get ");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private async Task LoadSuim(bool IsReloadCallApi = false)
         {
 
@@ -401,7 +445,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             {
                 lstService = BackendDataWorker.Get<V_HIS_SERVICE>().ToList();
                 lstDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1).ToList();
-                lstExecuteRole = BackendDataWorker.Get<HIS_EXECUTE_ROLE>().Where(o => o.IS_ACTIVE == 1 && o.IS_DISABLE_IN_EKIP != 1).ToList().ToList();
+                lstExecuteRole = BackendDataWorker.Get<HIS_EXECUTE_ROLE>().Where(o => o.IS_ACTIVE == 1 && o.IS_DISABLE_IN_EKIP != 1).ToList().ToList();  
             }
             catch (Exception ex)
             {
@@ -994,17 +1038,22 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             Thread listTemplate = new Thread(ProcessLoadListTemplate);
             Thread dataFillTemplate = new Thread(ProcessDataForTemplate);
             Thread treatment = new Thread(LoadTreatmentWithPaty);
+            Thread hisBedLog  = new Thread(GetDataDefaultHisBedLog);
+            Thread hisDHST = new Thread(GetDataDefaultHisDHST);
             try
             {
                 serviceReq.Start();
                 listTemplate.Start();
                 dataFillTemplate.Start();
                 treatment.Start();
+                hisBedLog.Start();
+                hisDHST.Start();
 
                 serviceReq.Join();
                 listTemplate.Join();
                 dataFillTemplate.Join();
                 treatment.Join();
+                //hisbebDHST.Join();
             }
             catch (Exception ex)
             {
@@ -1012,6 +1061,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 listTemplate.Abort();
                 dataFillTemplate.Abort();
                 treatment.Abort();
+                hisBedLog.Abort();
+                hisDHST.Abort();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -3900,7 +3951,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                 List<string> lstLoginValid = new List<string>();
                 List<MOS.EFMODEL.DataModels.HIS_EKIP_USER> ekipUsers = new List<MOS.EFMODEL.DataModels.HIS_EKIP_USER>();
-                //List<MOS.EFMODEL.DataModels.HIS_EKIP_USER> newEkipUsers = new List<MOS.EFMODEL.DataModels.HIS_EKIP_USER>();
                 var dataGrid = gridViewEkip.DataSource as List<HisEkipUserADO>;
                 if (dataGrid != null && dataGrid.Count() > 0)
                     foreach (var item in dataGrid)
@@ -3932,24 +3982,14 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         {
                             lstLoginValid.Add(acc);
                         }
-                        //else
-                        //{
-                        //    lstLoginValid.Add(login);
-                        //}
+                      
                     }
                     if (lstLoginValid.Count ==0 )
                     {
                         lstLoginValid.Add(login);
                     }   
                     inputSDO.Loginnames = lstLoginValid;
-                    //if (lstLogin != null && lstLogin.Count() > 0)
-                    //{
-                    //    inputSDO.Loginnames = lstLogin;
-                    //}
-                    //else
-                    //{
-                    //    inputSDO.Loginnames = dsLogin;
-                    //}
+                   
                     string message = "";
                     CommonParam paramCheckEx = new CommonParam();
                     bool suscess = new BackendAdapter(paramCheckEx).Post<bool>("api/HisSereServ/CheckExecuteTimes", ApiConsumers.MosConsumer, inputSDO, paramCheckEx);
@@ -3968,38 +4008,30 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                  if (HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption)
                 {
-                    //List<HIS_EKIP_USER> kipUsers = new List<HIS_EKIP_USER>();
                     HisSurgServiceReqUpdateListSDO  InputSDO= new HisSurgServiceReqUpdateListSDO ();  
                     List<SurgUpdateSDO> surgUpdateSDOs = new List<SurgUpdateSDO>();
                     SurgUpdateSDO surgUpdate = new SurgUpdateSDO();
                      surgUpdate.SereServId = sereServ.ID;
-                     //AutoMapper.Mapper.CreateMap<V_HIS_EKIP_USER, HIS_EKIP_USER>();
-                     //if (dicEkipUser.ContainsKey(sereServ.ID))
-                     //{
                      if (ekipUsers.Count > 0 && ekipUsers != null)
                      {
-                         //foreach (var i in ekipUsers)
-                         //{
-                         //    if (string.IsNullOrEmpty(i.LOGINNAME))
-                         //    {
-                         //        i.LOGINNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                         //    }
-                         //}
-
                          surgUpdate.EkipUsers = ekipUsers;
                      }
                      else
                      {
-                         var resuilt = BackendDataWorker.Get<HIS_EKIP_USER>().Where(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()).FirstOrDefault();
-                         List<HIS_EKIP_USER> userList = new List<HIS_EKIP_USER> { resuilt };
-                         surgUpdate.EkipUsers = userList;
+                         surgUpdate.EkipUsers = null;
+                         // lấy kíp theo tài khoản đăng nhập (bỏ do pmem chạy chậm)
+                         //var resuilt = BackendDataWorker.Get<HIS_EKIP_USER>().Where(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()).FirstOrDefault();
+                         //if (resuilt != null)
+                         //{
+                         //    List<HIS_EKIP_USER> userList = new List<HIS_EKIP_USER> { resuilt };
+                         //    surgUpdate.EkipUsers = userList;
+                         //}
+                         //else
+                         //{
+                         //    surgUpdate.EkipUsers = null;
+                         //}
                      }
                     
-                     //foreach (string login in lstLoginValid)
-                     //{
-                     //    kipUsers.Add(new HIS_EKIP_USER { LOGINNAME = login });
-                     //}
-                     //surgUpdate.EkipUsers = kipUsers;//AutoMapper.Mapper.Map<List<HIS_EKIP_USER>>(lstLoginValid);
                      if (sereServExt != null)
                      {
                          surgUpdate.SereServExt = sereServExt;

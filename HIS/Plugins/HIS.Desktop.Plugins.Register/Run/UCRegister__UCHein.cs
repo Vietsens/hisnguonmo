@@ -179,6 +179,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     DateTime? dt = DateTimeHelper.ConvertDateStringToSystemDate(this.txtPatientDob.Text);
                     HisPatientProfileSDO patientProfileSDO = new HisPatientProfileSDO();
                     this.mainHeinProcessor.UpdateDataFormIntoPatientTypeAlter(this.ucHeinBHYT, patientProfileSDO);
+                    this.mainHeinProcessor.PatientOldUnder6(this.ucHeinBHYT, MOS.LibraryHein.Bhyt.BhytPatientTypeData.IsChild(dtPatientDob.DateTime));
                     this.AutoCheckPriorityByPriorityType(Inventec.Common.TypeConvert.Parse.ToInt64(dt.Value.ToString("yyyyMMdd") + "000000"), patientProfileSDO.HisPatientTypeAlter.HEIN_CARD_NUMBER);
                 }
             }

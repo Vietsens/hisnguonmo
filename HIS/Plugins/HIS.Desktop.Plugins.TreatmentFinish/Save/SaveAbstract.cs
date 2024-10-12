@@ -131,7 +131,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save
                     }
                 }
 
-                if (Form.lciChkChronic.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && Form.chkChronic.Checked)
+                if (Form.chkChronic.Checked)
                 {
                     this.IsChronic = true;
                 }

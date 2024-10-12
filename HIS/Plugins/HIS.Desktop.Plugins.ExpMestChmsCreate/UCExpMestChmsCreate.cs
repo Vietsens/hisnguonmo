@@ -91,6 +91,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
         List<HisMedicineInStockADO> listMediInStock { get; set; }
         List<HisMaterialInStockADO> listMateInStock { get; set; }
 
+        public List<HIS_CONFIG> lstConfig;
+
         bool IsReasonRequired { get; set; }
         public UCExpMestChmsCreate(Inventec.Desktop.Common.Modules.Module module)
             : base(module)
@@ -148,7 +150,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                 txtExpMediStock.Focus();
                 gridColumnMedicine_Chon.Image = imageCollectionExpMest.Images[1];
                 gridColumnMaterial_Chon.Image = imageCollectionExpMest.Images[1];
-
+                GetConfig();
                 ValidControlMaxLength1();
                 ValidControlMaxLength2();
                 if (this._ExpMestChmsUpdate != null)
@@ -179,6 +181,18 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void GetConfig()
+        {
+            try
+            {
+                lstConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE")).ToList();
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -1095,7 +1109,7 @@ ApiConsumers.MosConsumer, medicineFilter, param);
                            check,
                            item1.FirstOrDefault().MATERIAL_TYPE_ID))
                             {
-                                Inventec.Common.Logging.LogSystem.Info("\r\n  item1.FirstOrDefault().EXPIRED_DATE______:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item1.FirstOrDefault().EXPIRED_DATE), item1.FirstOrDefault().EXPIRED_DATE));
+                                //Inventec.Common.Logging.LogSystem.Info("\r\n  item1.FirstOrDefault().EXPIRED_DATE______:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item1.FirstOrDefault().EXPIRED_DATE), item1.FirstOrDefault().EXPIRED_DATE));
                                 HisMaterialIn2StockSDO sdo = new HisMaterialIn2StockSDO();
                                 sdo = item1.FirstOrDefault();
                                 sdo.AvailableAmount = item1.Sum(p => p.AvailableAmount);
