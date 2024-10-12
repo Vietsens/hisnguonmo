@@ -231,8 +231,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     patientProfileSDO.HisPatientTypeAlter.IS_NO_CHECK_EXPIRE = (short)1;
                 else
                     patientProfileSDO.HisPatientTypeAlter.IS_NO_CHECK_EXPIRE = null;
-                if(chkBaby.Checked)
-                    patientProfileSDO.HisPatientTypeAlter.IS_NEWBORN = (short)1;
+                patientProfileSDO.HisPatientTypeAlter.IS_NEWBORN = chkBaby.Checked ? (short?)1 : null;
             }
             catch (Exception ex)
             {
