@@ -52,12 +52,14 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 				this.ucPatientRaw1.SetDelegateSendPatientName(this.SendPatientName);
 				this.ucPatientRaw1.SetDelegateSendPatientSDO(this.SendPatientSDO);
 				this.ucPatientRaw1.SetDelegateShowCheckWorkingLetter(this.ucHeinInfo1.ShowCheckWorkingLetter);
+				this.ucPatientRaw1.SetDelegateCheckSS(this.ucHeinInfo1.ShowCheckSS);
 				this.ucPatientRaw1.SetDelegateShowOrtherPaySource(this.ucOtherServiceReqInfo1.ShowOrtherPay);
 				this.ucPatientRaw1.SetDelegateSendTypeFind(ChangeFindTypeInPatientRaw);
 				this.ucPatientRaw1.SetDelegateCheckboxExamOnline(this.ucOtherServiceReqInfo1.CheckExamOnline);
                 this.ucOtherServiceReqInfo1.SetDelegateHeinRightRouteType(this.SetRightRouteEmergencyWhenRegisterOutTime);
 				this.ucOtherServiceReqInfo1.SetDelegatePriorityNumberChanged(this.SetServuceRoomAddButtonWhenRegisterHasPriorityNumber);
 				this.ucOtherServiceReqInfo1.FillDataOweTypeDefault();
+				
 				if (HisConfigCFG.IsAutoFocusToSavePrintAfterChoosingExam)
 				{
 					this.ucServiceRoomInfo1.FocusNextUserControl(focusToBtnSaveAndPrint);

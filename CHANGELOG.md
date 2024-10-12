@@ -1,3 +1,11 @@
+### Release 2.332.0
+* Bổ sung thông tin sản phẩm chi tiết cho danh mục thuốc
+* Bổ sung hiển thị thông tin thầu cho lô thuốc/vật tư
+* Tích hợp thanh toán QR cho hệ thống PVComBank
+* Bổ sung thông tin trên phiếu xuất thuốc
+* Bổ sung thông tin số film, cỡ film kết nối hệ thống PACS
+* Điều chỉnh thông tin chiết khấu trong hóa đơn điện tử VIETTEL
+
 ### Release 2.331.0
 * Sửa thông tin hướng dẫn sử dụng đơn y học cổ truyền trên tờ điều trị
 * Bổ sung thông tin dự trù dịch vụ kỹ thuật trên tờ điều trị

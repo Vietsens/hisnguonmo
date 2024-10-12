@@ -83,6 +83,7 @@ namespace HIS.UC.UCPatientRaw
 		DelegateSendPatientName dlgSendPatientName;
 		DelegateSendPatientSDO dlgSendPatientSdo;
 		Action dlgProcessChangePatientDob;
+		DelegateCheckSS dlgCheckSS;
         DelegateEnableFindType dlgEnableFindType;
         DelegateCheckExamOnline dlgCheckExamOnline;
         bool isDefault = false;
@@ -574,6 +575,7 @@ namespace HIS.UC.UCPatientRaw
 					{
 						this.dtPatientDob.EditValue = dt;
 						this.dtPatientDob.Update();
+						this.dlgCheckSS(DateTime.Now.Year - dtPatientDob.DateTime.Year < 6);
 					}
 					this.dtPatientDob.Visible = true;
 					this.dtPatientDob.ShowPopup();
@@ -655,6 +657,7 @@ namespace HIS.UC.UCPatientRaw
 						this.txtAge.Text = this.txtPatientDob.Text;
 						this.cboAge.EditValue = 1;
 						this.txtPatientDob.Text = dateValidObject.Age.ToString();
+						this.dlgCheckSS(dateValidObject.Age < 6);
 					}
 					else if (String.IsNullOrEmpty(dateValidObject.Message))
 					{
@@ -663,8 +666,10 @@ namespace HIS.UC.UCPatientRaw
 							this.txtPatientDob.Text = dateValidObject.OutDate;
 							this.dtPatientDob.EditValue = HIS.Desktop.Utility.DateTimeHelper.ConvertDateStringToSystemDate(dateValidObject.OutDate);
 							this.dtPatientDob.Update();
+							this.dlgCheckSS(DateTime.Now.Year - dtPatientDob.DateTime.Year < 6);
 						}
 					}
+					
 					if ((txtPatientCode.Text.Trim().Length == 12 && !string.IsNullOrEmpty(txtPatientName.Text) && (!string.IsNullOrEmpty(txtPatientDob.Text) || dtPatientDob.EditValue != null)) && this.typeCodeFind == ResourceMessage.typeCodeFind__MaCMCC)
 					{
 						SearchPatientByCodeOrQrCode(txtPatientCode.Text.Trim());
@@ -712,6 +717,7 @@ namespace HIS.UC.UCPatientRaw
 					this.txtAge.Text = this.txtPatientDob.Text;
 					this.cboAge.EditValue = 1;
 					this.txtPatientDob.Text = dateValidObject.Age.ToString();
+					this.dlgCheckSS(dateValidObject.Age < 6);
 				}
 				else if (String.IsNullOrEmpty(dateValidObject.Message))
 				{
@@ -720,6 +726,7 @@ namespace HIS.UC.UCPatientRaw
 						this.txtPatientDob.Text = dateValidObject.OutDate;
 						this.dtPatientDob.EditValue = HIS.Desktop.Utility.DateTimeHelper.ConvertDateStringToSystemDate(dateValidObject.OutDate);
 						this.dtPatientDob.Update();
+						this.dlgCheckSS(DateTime.Now.Year - dtPatientDob.DateTime.Year < 6);
 					}
 				}
 				else
@@ -1595,7 +1602,10 @@ namespace HIS.UC.UCPatientRaw
         {
             this.dlgCheckExamOnline = dlgCheck;
         }
-
+		public void SetDelegateCheckSS(DelegateCheckSS dlgcheck)
+        {
+			this.dlgCheckSS = dlgcheck;
+        }
         public void SetDelegateSendTypeFind(DelegateEnableFindType dlgEnableFindType)
 		{
 			this.dlgEnableFindType = dlgEnableFindType;

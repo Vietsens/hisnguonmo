@@ -368,6 +368,24 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                         var size = BackendDataWorker.Get<HIS_FILM_SIZE>().Where(s => s.ID == sereServExt.FILM_SIZE_ID).FirstOrDefault();
                         lblSizeFilm.Text = size != null ? size.FILM_SIZE_NAME : "";
                         txtDesciptions.Text = sereServExt.DESCRIPTION;
+                        var login_names = sereServExt.SUBCLINICAL_RESULT_LOGINNAME;
+                        var user_names = sereServExt.SUBCLINICAL_RESULT_USERNAME;
+                        if (!string.IsNullOrEmpty(login_names) && !string.IsNullOrEmpty(user_names))
+                        {
+                            var loginName = login_names.Split(',').ToList();
+                            var username = user_names.Split(',').ToList();
+                            string ptv = "";
+                            for(int i = 0; i < loginName.Count; i++)
+                            {
+                                ptv += "" + loginName[i] + "-" + username[i];
+                                ptv += ";";
+                            }
+                            if (ptv.EndsWith(";"))
+                            {
+                                ptv = ptv.TrimEnd(';');
+                            }
+                            txtPtv.Text = ptv;
+                        }
                     }
                     else
                     {

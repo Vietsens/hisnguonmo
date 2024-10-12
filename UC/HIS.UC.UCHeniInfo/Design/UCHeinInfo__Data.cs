@@ -115,6 +115,7 @@ namespace HIS.UC.UCHeniInfo
 				patientProfileSDO.HisPatientTypeAlter.LEVEL_CODE = HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT;
 				patientProfileSDO.HisPatientTypeAlter.TREATMENT_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM;
 				patientProfileSDO.HisPatientTypeAlter.LIVE_AREA_CODE = (this.cboNoiSong.EditValue ?? "").ToString();
+				patientProfileSDO.HisPatientTypeAlter.IS_NEWBORN = (short)(this.chkSs.Checked ? 1 : 0);
 				if (isTempQN && this.chkHasCardTemp.Checked)
 					patientProfileSDO.HisPatientTypeAlter.IS_TEMP_QN = 1;
 				else
@@ -154,6 +155,32 @@ namespace HIS.UC.UCHeniInfo
 			}
 			catch (Exception ex)
 			{
+				Inventec.Common.Logging.LogSystem.Warn(ex);
+			}
+			return patientProfileSDO;
+		}
+		/// <summary>
+		/// hàm lấy thông tin thẻ. tránh trường hợp khi thay đổi control ở patient raw thì check lại thẻ
+		/// </summary>
+		/// <returns></returns>
+		public HisPatientProfileSDO GetValuePatientTypeAlter()
+        {
+			HisPatientProfileSDO patientProfileSDO = new HisPatientProfileSDO();
+			try
+            {
+				if (patientProfileSDO.HisPatientTypeAlter == null)
+					patientProfileSDO.HisPatientTypeAlter = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE_ALTER();
+				if (chkHasCardTemp.Checked && !string.IsNullOrEmpty(this.txtSoThe.Text) && this.isTempQN == false && HeinUtils.TrimHeinCardNumber(this.txtSoThe.Text).Length == 10)
+				{
+					this.txtSoThe.Text = "TE1" + CodeProvince + HeinUtils.TrimHeinCardNumber(this.txtSoThe.Text);
+				}
+				patientProfileSDO.HisPatientTypeAlter.HEIN_CARD_NUMBER = HeinUtils.TrimHeinCardNumber(this.txtSoThe.Text);
+
+
+			}
+			catch (Exception ex)
+            {
+
 				Inventec.Common.Logging.LogSystem.Warn(ex);
 			}
 			return patientProfileSDO;

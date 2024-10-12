@@ -234,6 +234,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
         protected HIS.UC.PlusInfo.ADO.UCPatientExtendADO patientInformationADO { get; set; }
         protected HisPatientSDO patientData { get; set; }
         protected HisPatientProfileSDO patientProfile { get; set; }
+        public bool isCheckSS { get; set; }
         protected Module currentModule { get; set; }
         protected UCRegister ucRequestService;
         protected HisPatientProfileSDO heinInfoValue { get; set; }
@@ -371,7 +372,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 {
                     this.isBhytHolded = this.heinInfoValue.HisTreatment.IS_BHYT_HOLDED;
                 }
-
+                this.isCheckSS = ucServiceRequestRegiter.isCheckSS;
                 // UCPlusInfo
                 this.born_provinceCode = patientPlusInformationInfoValue.PROVINCE_OfBIRTH_CODE;
                 this.born_provinceName = patientPlusInformationInfoValue.PROVINCE_OfBIRTH_NAME;
@@ -918,6 +919,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                     patientProfile.HisPatientTypeAlter.GUARANTEE_LOGINNAME = this.GUARANTEE_LOGINNAME;
                     patientProfile.HisPatientTypeAlter.GUARANTEE_USERNAME = this.GUARANTEE_USERNAME;
                     patientProfile.HisPatientTypeAlter.GUARANTEE_REASON = this.GUARANTEE_REASON;
+                    patientProfile.HisPatientTypeAlter.IS_NEWBORN = (short)(isCheckSS ? 1 : 0);
                 }
                 else
                 {

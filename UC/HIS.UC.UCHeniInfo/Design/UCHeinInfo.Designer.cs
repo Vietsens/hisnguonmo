@@ -46,30 +46,30 @@ namespace HIS.UC.UCHeniInfo
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCHeinInfo));
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SuperToolTip superToolTip3 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem3 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip5 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem5 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
             DevExpress.Utils.SuperToolTip superToolTip2 = new DevExpress.Utils.SuperToolTip();
             DevExpress.Utils.ToolTipItem toolTipItem2 = new DevExpress.Utils.ToolTipItem();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SuperToolTip superToolTip3 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem3 = new DevExpress.Utils.ToolTipItem();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SuperToolTip superToolTip4 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem4 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnCheckInfoBHYT = new DevExpress.XtraEditors.SimpleButton();
             this.txtNote = new DevExpress.XtraEditors.TextEdit();
@@ -128,6 +128,8 @@ namespace HIS.UC.UCHeniInfo
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.dxErrorProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.chkSs = new DevExpress.XtraEditors.CheckEdit();
+            this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtNote.Properties)).BeginInit();
@@ -191,10 +193,13 @@ namespace HIS.UC.UCHeniInfo
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderControl)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSs.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.chkSs);
             this.layoutControl1.Controls.Add(this.btnCheckInfoBHYT);
             this.layoutControl1.Controls.Add(this.txtNote);
             this.layoutControl1.Controls.Add(this.chkIsTt46);
@@ -413,7 +418,7 @@ namespace HIS.UC.UCHeniInfo
             this.cboNoiSong.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboNoiSong.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
             this.cboNoiSong.Properties.NullText = "";
             this.cboNoiSong.Properties.NullValuePrompt = "Nơi sống";
             this.cboNoiSong.Properties.NullValuePromptShowForEmptyValue = true;
@@ -487,34 +492,34 @@ namespace HIS.UC.UCHeniInfo
             // 
             // chkPaid6Month
             // 
-            this.chkPaid6Month.Location = new System.Drawing.Point(396, 119);
+            this.chkPaid6Month.Location = new System.Drawing.Point(416, 119);
             this.chkPaid6Month.Name = "chkPaid6Month";
             this.chkPaid6Month.Properties.AppearanceFocused.BackColor = System.Drawing.Color.Silver;
             this.chkPaid6Month.Properties.AppearanceFocused.Options.UseBackColor = true;
             this.chkPaid6Month.Properties.Caption = "";
             this.chkPaid6Month.Properties.FullFocusRect = true;
-            this.chkPaid6Month.Size = new System.Drawing.Size(39, 19);
+            this.chkPaid6Month.Size = new System.Drawing.Size(19, 19);
             this.chkPaid6Month.StyleController = this.layoutControl1;
-            toolTipItem1.Text = "Đồng chi trả lũy kế đủ 6 tháng lương tối thiểu";
-            superToolTip1.Items.Add(toolTipItem1);
-            this.chkPaid6Month.SuperTip = superToolTip1;
+            toolTipItem3.Text = "Đồng chi trả lũy kế đủ 6 tháng lương tối thiểu";
+            superToolTip3.Items.Add(toolTipItem3);
+            this.chkPaid6Month.SuperTip = superToolTip3;
             this.chkPaid6Month.TabIndex = 16;
             this.chkPaid6Month.CheckedChanged += new System.EventHandler(this.chkPaid6Month_CheckedChanged);
             this.chkPaid6Month.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkPaid6Month_PreviewKeyDown);
             // 
             // chkJoin5Year
             // 
-            this.chkJoin5Year.Location = new System.Drawing.Point(337, 119);
+            this.chkJoin5Year.Location = new System.Drawing.Point(364, 119);
             this.chkJoin5Year.Name = "chkJoin5Year";
             this.chkJoin5Year.Properties.AppearanceFocused.BackColor = System.Drawing.Color.Silver;
             this.chkJoin5Year.Properties.AppearanceFocused.Options.UseBackColor = true;
             this.chkJoin5Year.Properties.Caption = "";
             this.chkJoin5Year.Properties.FullFocusRect = true;
-            this.chkJoin5Year.Size = new System.Drawing.Size(30, 19);
+            this.chkJoin5Year.Size = new System.Drawing.Size(23, 19);
             this.chkJoin5Year.StyleController = this.layoutControl1;
-            toolTipItem2.Text = "Đóng bảo hiểm y tế đủ 5 năm liên tục";
-            superToolTip2.Items.Add(toolTipItem2);
-            this.chkJoin5Year.SuperTip = superToolTip2;
+            toolTipItem5.Text = "Đóng bảo hiểm y tế đủ 5 năm liên tục";
+            superToolTip5.Items.Add(toolTipItem5);
+            this.chkJoin5Year.SuperTip = superToolTip5;
             this.chkJoin5Year.TabIndex = 15;
             this.chkJoin5Year.CheckedChanged += new System.EventHandler(this.chkJoin5Year_CheckedChanged);
             this.chkJoin5Year.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkJoin5Year_PreviewKeyDown);
@@ -527,13 +532,13 @@ namespace HIS.UC.UCHeniInfo
             this.cboHeinRightRoute.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
             this.cboHeinRightRoute.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
             this.cboHeinRightRoute.Properties.NullText = "";
             this.cboHeinRightRoute.Properties.NullValuePrompt = "Tuyến";
             this.cboHeinRightRoute.Properties.NullValuePromptShowForEmptyValue = true;
             this.cboHeinRightRoute.Properties.PopupSizeable = false;
             this.cboHeinRightRoute.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboHeinRightRoute.Size = new System.Drawing.Size(116, 20);
+            this.cboHeinRightRoute.Size = new System.Drawing.Size(100, 20);
             this.cboHeinRightRoute.StyleController = this.layoutControl1;
             this.cboHeinRightRoute.TabIndex = 11;
             this.cboHeinRightRoute.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboHeinRightRoute_Closed);
@@ -659,7 +664,7 @@ namespace HIS.UC.UCHeniInfo
             this.txtSoThe.Properties.Appearance.Options.UseTextOptions = true;
             this.txtSoThe.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
             this.txtSoThe.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.DropDown, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.DropDown, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus)});
             this.txtSoThe.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.txtSoThe.Properties.Mask.EditMask = "\\w{2}-\\d{1}-\\w{2}-\\w{2}-\\w{3}-\\w{5}";
@@ -667,9 +672,9 @@ namespace HIS.UC.UCHeniInfo
             this.txtSoThe.Properties.Mask.UseMaskAsDisplayFormat = true;
             this.txtSoThe.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtSoThe_Properties_ButtonClick);
             this.txtSoThe.Size = new System.Drawing.Size(156, 20);
-            toolTipItem3.Text = "Nhấn tổ hợp phím Ctrl + F để mở danh sách thẻ của bệnh  nhân";
-            superToolTip3.Items.Add(toolTipItem3);
-            this.txtSoThe.SuperTip = superToolTip3;
+            toolTipItem2.Text = "Nhấn tổ hợp phím Ctrl + F để mở danh sách thẻ của bệnh  nhân";
+            superToolTip2.Items.Add(toolTipItem2);
+            this.txtSoThe.SuperTip = superToolTip2;
             this.txtSoThe.TabIndex = 2;
             this.txtSoThe.InvalidValue += new DevExpress.XtraEditors.Controls.InvalidValueExceptionEventHandler(this.txtSoThe_InvalidValue);
             this.txtSoThe.EditValueChanged += new System.EventHandler(this.txtSoThe_EditValueChanged);
@@ -685,7 +690,7 @@ namespace HIS.UC.UCHeniInfo
             this.cboSoThe.Properties.AutoHeight = false;
             this.cboSoThe.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Nhập số thẻ mới", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Nhập số thẻ mới", null, null, true)});
             this.cboSoThe.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.cboSoThe.Properties.MaxLength = 17;
             this.cboSoThe.Properties.NullText = "";
@@ -708,9 +713,9 @@ namespace HIS.UC.UCHeniInfo
             this.chkHasCardTemp.Properties.FullFocusRect = true;
             this.chkHasCardTemp.Size = new System.Drawing.Size(19, 19);
             this.chkHasCardTemp.StyleController = this.layoutControl1;
-            toolTipItem4.Text = "Tự tạo thẻ BHYT cho trường hợp trẻ em dưới 6 tuổi có giấy khai sinh";
-            superToolTip4.Items.Add(toolTipItem4);
-            this.chkHasCardTemp.SuperTip = superToolTip4;
+            toolTipItem1.Text = "Tự tạo thẻ BHYT cho trường hợp trẻ em dưới 6 tuổi có giấy khai sinh";
+            superToolTip1.Items.Add(toolTipItem1);
+            this.chkHasCardTemp.SuperTip = superToolTip1;
             this.chkHasCardTemp.TabIndex = 3;
             this.chkHasCardTemp.CheckedChanged += new System.EventHandler(this.chkHasCardTemp_CheckedChanged);
             this.chkHasCardTemp.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkHasDobCertificate_PreviewKeyDown);
@@ -740,7 +745,8 @@ namespace HIS.UC.UCHeniInfo
             this.lciHasAbsentLetter,
             this.lciIsTt46,
             this.lciNote,
-            this.layoutControlItem1});
+            this.layoutControlItem1,
+            this.layoutControlItem2});
             this.gboxHeinCardInformation.Location = new System.Drawing.Point(0, 0);
             this.gboxHeinCardInformation.Name = "Root";
             this.gboxHeinCardInformation.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -836,7 +842,7 @@ namespace HIS.UC.UCHeniInfo
             this.lciHeinRightRoute.Control = this.cboHeinRightRoute;
             this.lciHeinRightRoute.Location = new System.Drawing.Point(134, 98);
             this.lciHeinRightRoute.Name = "lciHeinRightRoute";
-            this.lciHeinRightRoute.Size = new System.Drawing.Size(175, 24);
+            this.lciHeinRightRoute.Size = new System.Drawing.Size(159, 24);
             this.lciHeinRightRoute.Text = "Loại:";
             this.lciHeinRightRoute.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciHeinRightRoute.TextSize = new System.Drawing.Size(50, 20);
@@ -903,12 +909,12 @@ namespace HIS.UC.UCHeniInfo
             this.lciJoin5Year.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciJoin5Year.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciJoin5Year.Control = this.chkJoin5Year;
-            this.lciJoin5Year.Location = new System.Drawing.Point(309, 98);
+            this.lciJoin5Year.Location = new System.Drawing.Point(336, 98);
             this.lciJoin5Year.MaxSize = new System.Drawing.Size(0, 23);
             this.lciJoin5Year.MinSize = new System.Drawing.Size(20, 23);
             this.lciJoin5Year.Name = "lciJoin5Year";
             this.lciJoin5Year.OptionsToolTip.ToolTip = "Đã tham gia bảo hiểm đủ 5 năm";
-            this.lciJoin5Year.Size = new System.Drawing.Size(59, 24);
+            this.lciJoin5Year.Size = new System.Drawing.Size(52, 24);
             this.lciJoin5Year.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciJoin5Year.Text = "5N:";
             this.lciJoin5Year.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -933,10 +939,10 @@ namespace HIS.UC.UCHeniInfo
             this.lciPaid6Month.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciPaid6Month.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciPaid6Month.Control = this.chkPaid6Month;
-            this.lciPaid6Month.Location = new System.Drawing.Point(368, 98);
+            this.lciPaid6Month.Location = new System.Drawing.Point(388, 98);
             this.lciPaid6Month.Name = "lciPaid6Month";
             this.lciPaid6Month.OptionsToolTip.ToolTip = "Đồng chi trả bảo hiểm đã đủ 6 tháng lương tối thiểu";
-            this.lciPaid6Month.Size = new System.Drawing.Size(68, 24);
+            this.lciPaid6Month.Size = new System.Drawing.Size(48, 24);
             this.lciPaid6Month.Text = "6T:";
             this.lciPaid6Month.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPaid6Month.TextSize = new System.Drawing.Size(20, 13);
@@ -1040,6 +1046,28 @@ namespace HIS.UC.UCHeniInfo
             // 
             this.dxErrorProviderControl.ContainerControl = this;
             // 
+            // chkSs
+            // 
+            this.chkSs.Location = new System.Drawing.Point(316, 119);
+            this.chkSs.Name = "chkSs";
+            this.chkSs.Properties.Caption = "";
+            this.chkSs.Size = new System.Drawing.Size(19, 19);
+            this.chkSs.StyleController = this.layoutControl1;
+            this.chkSs.TabIndex = 27;
+            this.chkSs.CheckedChanged += new System.EventHandler(this.chkSs_CheckedChanged);
+            // 
+            // layoutControlItem2
+            // 
+            this.layoutControlItem2.Control = this.chkSs;
+            this.layoutControlItem2.Location = new System.Drawing.Point(293, 98);
+            this.layoutControlItem2.Name = "layoutControlItem2";
+            this.layoutControlItem2.OptionsToolTip.ToolTip = "Trẻ cần điều trị ngay sau khi sinh";
+            this.layoutControlItem2.Size = new System.Drawing.Size(43, 24);
+            this.layoutControlItem2.Text = "SS:";
+            this.layoutControlItem2.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem2.TextSize = new System.Drawing.Size(15, 20);
+            this.layoutControlItem2.TextToControlDistance = 5;
+            // 
             // UCHeinInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1111,6 +1139,8 @@ namespace HIS.UC.UCHeniInfo
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderControl)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSs.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1179,5 +1209,7 @@ namespace HIS.UC.UCHeniInfo
 		private DevExpress.Utils.ToolTipItem toolTipItem2 = new DevExpress.Utils.ToolTipItem();
 		private DevExpress.Utils.ToolTipItem toolTipItem3 = new DevExpress.Utils.ToolTipItem();
 		private DevExpress.Utils.ToolTipItem toolTipItem4 = new DevExpress.Utils.ToolTipItem();
+        private DevExpress.XtraEditors.CheckEdit chkSs;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
     }
 }

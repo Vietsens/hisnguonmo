@@ -1122,17 +1122,17 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                         var sumData = listItem.Where(o => o.itemCode.Equals("TONG")).ToList();
                         if (sumData != null && sumData.Count > 0)
                         {
-                            amount = sumData.Sum(s => s.itemTotalAmountWithTax ?? 0);
-                            amountWithoutTax = sumData.Sum(s => s.itemTotalAmountWithoutTax ?? 0);
+                            amount = Math.Round(sumData.Sum(s => s.itemTotalAmountWithTax ?? 0), 0);
+                            amountWithoutTax = Math.Round(sumData.Sum(s => s.itemTotalAmountWithoutTax ?? 0), 0);
                         }
                     }
                     else
                     {
-                        amount = listItem.Where(s => s.selection == 1).Sum(s => s.itemTotalAmountWithTax ?? 0);
-                        amountWithoutTax = listItem.Where(s => s.selection == 1).Sum(s => s.itemTotalAmountWithoutTax ?? 0);
+                        amount = Math.Round(listItem.Where(s => s.selection == 1).Sum(s => s.itemTotalAmountWithTax ?? 0), 0);
+                        amountWithoutTax = Math.Round(listItem.Where(s => s.selection == 1).Sum(s => s.itemTotalAmountWithoutTax ?? 0), 0);
                     }
 
-                    result.discountAmount = listItem.Sum(s => s.discount ?? 0) + (this.ElectronicBillDataInput.Transaction != null ? this.ElectronicBillDataInput.Transaction.EXEMPTION ?? 0 : 0);
+                    result.discountAmount = Math.Round(listItem.Sum(s => s.discount ?? 0) + (this.ElectronicBillDataInput.Transaction != null ? this.ElectronicBillDataInput.Transaction.EXEMPTION ?? 0 : 0), 0);
                     result.sumOfTotalLineAmountWithoutTax = amountWithoutTax;
                     result.totalAmountWithoutTax = amountWithoutTax;
                     result.totalAmountWithTax = amount;
@@ -1143,9 +1143,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                     }
                     else
                     {
-                        result.totalTaxAmount = listItem.Sum(s => s.taxAmount ?? 0);
+                        result.totalTaxAmount = Math.Round(listItem.Sum(s => s.taxAmount ?? 0), 0);
                     }
-                    result.totalAmountAfterDiscount = amountWithoutTax - result.discountAmount;
+                    result.totalAmountAfterDiscount = Math.Round(amountWithoutTax - result.discountAmount, 0);
                     //result.settlementDiscountAmount = 0;
                 }
             }

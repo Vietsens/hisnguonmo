@@ -76,6 +76,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 		HisPatientProfileSDO resultHisPatientProfileSDO = null;
         Inventec.Common.QrCodeBHYT.HeinCardData _HeinCardData { get; set; }
 		ResultDataADO ResultDataADO { get; set; }
+		public bool isCheckSS { get; set; }
 		internal bool isNotPatientDayDob = false;
 		int actionType = 0;
 		bool isPrintNow;
@@ -500,6 +501,23 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 					this.ucServiceRoomInfo1.RefreshUserControl();
 
 					this.ReloadExamServiceRoom();
+					if(this.ucPatientRaw1.GetValue().DOB != null && patientTypeId == HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__BHYT)
+                    {
+						DateTime dateofbirth = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.ucPatientRaw1.GetValue().DOB)??DateTime.MinValue;
+						if(dateofbirth != DateTime.MinValue)
+                        {
+							if(DateTime.Now.Year - dateofbirth.Year < 6)
+                            {
+								this.ucHeinInfo1.SetEnableChkSS(true);
+
+							}
+                            else
+                            {
+								this.ucHeinInfo1.SetEnableChkSS(false);
+							}
+                        }
+
+                    }
 					if (HisConfigCFG.AutoCheckPrintExam__PatientTypeIds != null && HisConfigCFG.AutoCheckPrintExam__PatientTypeIds.Count > 0 && HisConfigCFG.AutoCheckPrintExam__PatientTypeIds.Contains(patientTypeId))
 					{
 						chkPrintExam.Checked = true;
@@ -938,9 +956,11 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 		{
 			try
 			{
-				var heindata = this.ucHeinInfo1.GetValue();
+				var heindata = this.ucHeinInfo1.GetValuePatientTypeAlter();
+				
 				var patientRaw = this.ucPatientRaw1.GetValue();
 				if (heindata != null && patientRaw != null)
+					this.ucHeinInfo1.ShowCheckSS(DateTime.Now.Year - (Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(patientRaw.DOB)??DateTime.MinValue).Year <6);
 					this.ucOtherServiceReqInfo1.AutoCheckPriorityByPriorityType(patientRaw.DOB, heindata.HisPatientTypeAlter.HEIN_CARD_NUMBER);
 			}
 			catch (Exception ex)
@@ -1030,6 +1050,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 			{
 				this.isResetForm = true;
 				this.IsReadCardTheViet = false;
+				this.isCheckSS = false;
 				this.RefreshUserControl();
 				var patientTypeDefault = HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.PatientTypeDefault;
 				if (!(patientTypeDefault != null && patientTypeDefault.ID > 0) && !HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.UsingPatientTypeOfPreviousPatient)
