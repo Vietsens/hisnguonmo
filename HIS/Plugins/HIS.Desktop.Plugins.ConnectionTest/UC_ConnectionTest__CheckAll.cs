@@ -55,8 +55,10 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         private bool IsAllSelectedReRun(TreeList tree)
         {
             List<TestLisResultADO> data = null;
-            if (tree.DataSource != null && tree.DataSource is BindingList<TestLisResultADO> bindingList)
+            BindingList<TestLisResultADO> bindingList;
+            if (tree.DataSource != null && tree.DataSource is BindingList<TestLisResultADO>)
             {
+                bindingList = (BindingList<TestLisResultADO>)tree.DataSource;
                 data = bindingList.ToList();
             }
 
@@ -102,15 +104,18 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         private List<TestLisResultADO> EmbeddedCheckBoxCheckedReRun(TreeList tree, ref bool checkAll)
         {
             List<TestLisResultADO> data = null;
+            BindingList<TestLisResultADO> bindingList;
             try
             {
                 tree.BeginUpdate();
                 if (IsAllSelectedReRun(tree))
                 {
+                    
                     checkAll = false;
-                    if (tree != null && tree.DataSource != null && tree.DataSource is BindingList<TestLisResultADO> bindingList)
+                    if (tree != null && tree.DataSource != null && tree.DataSource is BindingList<TestLisResultADO>)
                     {
-                        data = bindingList.Where(o => o.IS_PARENT == 1 && o.IS_RUNNING == 1).ToList();
+                        bindingList = ( BindingList<TestLisResultADO>)tree.DataSource;
+                        data =  bindingList.Where(o => o.IS_PARENT == 1 && o.IS_RUNNING == 1).ToList();
                     }
 
                     if (data != null && data.Count > 0)
@@ -120,8 +125,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 }
                 else
                 {
-                    if (tree != null && tree.DataSource != null && tree.DataSource is BindingList<TestLisResultADO> bindingList)
+                    if (tree != null && tree.DataSource != null && tree.DataSource is BindingList<TestLisResultADO> )
                     {
+                        bindingList = (BindingList<TestLisResultADO>)tree.DataSource;
                         data = bindingList.Where(o => o.IS_PARENT == 1 && o.IS_RUNNING == 1).ToList();
                     }
 
