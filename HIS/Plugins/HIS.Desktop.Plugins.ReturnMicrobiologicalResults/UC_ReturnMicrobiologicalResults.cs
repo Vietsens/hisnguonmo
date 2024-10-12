@@ -18,7 +18,7 @@
 using ACS.EFMODEL.DataModels;
 using ACS.SDO;
 using DevExpress.Data;
-using DevExpress.Utils; 
+using DevExpress.Utils;
 using DevExpress.Utils.Menu;
 using DevExpress.XtraBars;
 using DevExpress.XtraEditors;
@@ -50,6 +50,7 @@ using Inventec.Core;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
+using Inventec.Desktop.CustomControl.CustomGrid;
 using LIS.EFMODEL.DataModels;
 using LIS.Filter;
 using LIS.SDO;
@@ -103,7 +104,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
         internal List<TestLisResultADO> lstCheckPrint = new List<TestLisResultADO>();
         List<TestLisResultADO> testLisResultADODetails = new List<TestLisResultADO>();
         internal List<LIS_MACHINE> _Machines { get; set; }
-        HideCheckBoxHelper hideCheckBoxHelper__Service;
+        Inventec.Desktop.CustomControl.CustomGrid.HideCheckBoxHelper hideCheckBoxHelper__Service;
         BindingList<TestLisResultADO> records;
         public PRINT_OPTION PrintOption { get; set; }
         List<ACS.EFMODEL.DataModels.ACS_CONTROL> controlAcs;
@@ -118,6 +119,12 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
         DateTime currentTimer;
         DateTime currentTimerLM;
         TimerSDO timeSync { get; set; }
+
+        List<HIS_DEPARTMENT> lstDepart;
+        List<HIS_DEPARTMENT> _StatusSelecteds;
+        List<V_HIS_ROOM> _StatusSelectedRooms;
+        List<long> lstIDDepart = new List<long>();
+        List<long> lstIDRoom = new List<long>();
 
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentBySessionControlStateRDO;
         bool isInit = true;
@@ -155,6 +162,9 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             {
                 InitBacterium();
                 InitAntibiotic();
+                loadDepartment();
+                LoadDefaulRoom();
+                LoadDataToDepartRoom();
                 LoadUser();
                 InitControlState();
                 lstAntibioticRange = GetlstAntibioticRange();
@@ -1188,7 +1198,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
 
                 gridControlSample.DataSource = null;
 
-                LisSampleView2Filter lisSampleFilter = new LisSampleView2Filter();
+                LisSampleViewFilter lisSampleFilter = new LisSampleViewFilter();
                 if (room == null)
                 {
                     room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == currentModule.RoomId);
@@ -1297,6 +1307,19 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                     }
                 }
                 lisSampleFilter.IS_ANTIBIOTIC_RESISTANCE = true;
+
+                if (!string.IsNullOrEmpty(cboDepart.Text))
+                {
+                    var lstSelectDepartCode = _StatusSelecteds.Select(o => o.DEPARTMENT_CODE).ToList();
+                    lisSampleFilter.REQUEST_DEPARTMENT_CODEs = lstSelectDepartCode;
+                }
+
+                if (!string.IsNullOrEmpty(cboRoom.Text))
+                {
+                    var lstSelectRoomCode = _StatusSelectedRooms.Select(o => o.ROOM_CODE).ToList();
+                    lisSampleFilter.REQUEST_ROOM_CODEs = lstSelectRoomCode;
+                }
+
                 apiResult = new ApiResultObject<List<V_LIS_SAMPLE_2>>();
 
                 apiResult = new BackendAdapter(paramCommon).GetRO<List<V_LIS_SAMPLE_2>>("api/LisSample/GetView2", ApiConsumer.ApiConsumers.LisConsumer, lisSampleFilter, paramCommon);
@@ -2118,7 +2141,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
 
                 btnPrint.Enabled = true;
 
-                this.hideCheckBoxHelper__Service = new HideCheckBoxHelper(this.treeListSereServTein);
+                this.hideCheckBoxHelper__Service = new Inventec.Desktop.CustomControl.CustomGrid.HideCheckBoxHelper(this.treeListSereServTein);
             }
             catch (Exception ex)
             {
@@ -4754,5 +4777,305 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void LoadDataToDepartRoom()
+        {
+            try
+            {
+                //List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                //columnInfos.Add(new ColumnInfo("DEPARTMENT_CODE", "Mã", 50, 1));
+                //columnInfos.Add(new ColumnInfo("DEPARTMENT_NAME", "Tên", 100, 2));
+                //ControlEditorADO controlEditorADO = new ControlEditorADO("DEPARTMENT_NAME", "DEPARTMENT_CODE", columnInfos, true, 50);
+                //ControlEditorLoader.Load(cboDepart, lstDepart, controlEditorADO);
+
+                InitCheck(cboDepart, SelectionGrid__Status);
+                InitCombo(cboDepart, lstDepart, "DEPARTMENT_NAME", "DEPARTMENT_CODE", "Khoa");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+
+        private void loadDepartment()
+        {
+            try
+            {
+                lstDepart = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1).ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboDepart_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)
+                {
+                    cboDepart.ShowPopup();
+                }
+                else if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    cboDepart.Properties.Buttons[1].Visible = false;
+                    cboDepart.EditValue = null;
+                    GridCheckMarksSelection gridCheckMark = cboDepart.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboDepart.Properties.View);
+                    }
+                    this.cboDepart.Focus();
+                    cboDepart.Refresh();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void InitCheck(GridLookUpEdit cbo, GridCheckMarksSelection.SelectionChangedEventHandler eventSelect)
+        {
+            try
+            {
+                cbo.Properties.View.Columns.Clear();
+                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cbo.Properties);
+                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(eventSelect);
+                cbo.Properties.Tag = gridCheck;
+                cbo.Properties.View.OptionsSelection.CheckBoxSelectorColumnWidth = 30;
+                cbo.Properties.View.OptionsSelection.MultiSelect = true;
+                cbo.Properties.View.OptionsView.GroupDrawMode = DevExpress.XtraGrid.Views.Grid.GroupDrawMode.Office;
+                cbo.Properties.View.OptionsView.HeaderFilterButtonShowMode = DevExpress.XtraEditors.Controls.FilterButtonShowMode.SmartTag;
+                cbo.Properties.View.OptionsView.ShowAutoFilterRow = true;
+                cbo.Properties.View.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
+                GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cbo.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SelectionGrid__Status(object sender, EventArgs e)
+        {
+            try
+            {
+                _StatusSelecteds = new List<HIS_DEPARTMENT>();
+                lstIDDepart.Clear();
+                foreach (HIS_DEPARTMENT rv in (sender as GridCheckMarksSelection).Selection)
+                {
+                    if (rv != null)
+                    {
+                        lstIDDepart.Add(rv.ID);
+                        _StatusSelecteds.Add(rv);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void SelectionGrid__StatusRoom(object sender, EventArgs e)
+        {
+            try
+            {
+                _StatusSelectedRooms = new List<V_HIS_ROOM>();
+                foreach (V_HIS_ROOM rv in (sender as GridCheckMarksSelection).Selection)
+                {
+                    if (rv != null)
+                        _StatusSelectedRooms.Add(rv);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboRoom_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)
+                {
+                    cboRoom.ShowPopup();
+                }
+                else if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+
+                    cboRoom.EditValue = null;
+                    GridCheckMarksSelection gridCheckMark = cboRoom.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboRoom.Properties.View);
+                    }
+                    this.cboRoom.Focus();
+                    cboRoom.Text = "";
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboDepart_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = "";
+                string statusName = "";
+                if (_StatusSelecteds != null && _StatusSelecteds.Count > 0)
+                {
+                    foreach (var item in _StatusSelecteds)
+                    {
+                        statusName += item.DEPARTMENT_NAME + ", ";
+                    }
+                }
+                if (!string.IsNullOrEmpty(statusName))
+                {
+                    cboDepart.Properties.Buttons[1].Visible = true;
+                }
+                else
+                {
+                    cboDepart.Properties.Buttons[1].Visible = false;
+                }
+                e.DisplayText = statusName;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboDepart_Validated(object sender, EventArgs e)
+        {
+            try
+            {
+                LoadDefaulRoom();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadDefaulRoom()
+        {
+            try
+            {
+                List<V_HIS_ROOM> lstRoom;
+                if (lstIDDepart != null && lstIDDepart.Count > 0)
+                {
+                    lstRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.IS_ACTIVE == 1 && (o.ROOM_TYPE_ID == 1 || o.ROOM_TYPE_ID == 3 || o.ROOM_TYPE_ID == 4) && lstIDDepart.Contains(o.DEPARTMENT_ID)).ToList();
+                }
+                else
+                {
+                    lstRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.IS_ACTIVE == 1 && (o.ROOM_TYPE_ID == 1 || o.ROOM_TYPE_ID == 3 || o.ROOM_TYPE_ID == 4)).ToList();
+                }
+                InitCheck(cboRoom, SelectionGrid__StatusRoom);
+                InitCombo(cboRoom, lstRoom, "ROOM_NAME", "ROOM_CODE", "Phòng");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboRoom_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+             try
+            {
+                e.DisplayText = "";
+                string statusName = "";
+                if (_StatusSelectedRooms != null && _StatusSelectedRooms.Count > 0)
+                {
+                    foreach (var item in _StatusSelectedRooms)
+                    {
+                        statusName += item.ROOM_NAME + ", ";
+                    }
+                }
+                if (!string.IsNullOrEmpty(statusName))
+                {
+                    cboRoom.Properties.Buttons[1].Visible = true;
+                }
+                else
+                {
+                    cboRoom.Properties.Buttons[1].Visible = false;
+                }
+                e.DisplayText = statusName;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        
+        }
+
+        private void InitCombo(GridLookUpEdit cbo, object data, string DisplayValue, string ValueMember, string title)
+        {
+            try
+            {
+                cbo.Properties.DataSource = data;
+                cbo.Properties.DisplayMember = DisplayValue;
+                cbo.Properties.ValueMember = ValueMember;
+
+                DevExpress.XtraGrid.Columns.GridColumn col2 = cbo.Properties.View.Columns.AddField(DisplayValue);
+                col2.VisibleIndex = 1;
+                col2.Width = 220;
+                col2.Caption = title;
+                cbo.Properties.PopupFormWidth = 250;
+                cbo.Properties.View.OptionsView.ShowColumnHeaders = true;
+                cbo.Properties.View.OptionsSelection.MultiSelect = true;
+
+                GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    //gridCheckMark.SelectAll(cbo.Properties.DataSource);
+                    gridCheckMark.ClearSelection(cbo.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+
+        private void cboRoom_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                //LoadDefaulRoom();
+                cboRoom.Properties.View.ClearColumnsFilter();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboDepart_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                 //LoadDataToDepartRoom();
+                cboDepart.Properties.View.ClearColumnsFilter();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
     }
 }

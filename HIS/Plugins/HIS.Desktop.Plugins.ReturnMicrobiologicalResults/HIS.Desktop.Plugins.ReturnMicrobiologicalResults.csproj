@@ -172,7 +172,7 @@
     </Reference>
     <Reference Include="LIS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\LIS\LIS.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\lib\LIS\LIS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="LIS.SDO">
       <HintPath>..\..\..\..\LIB\LIS\LIS.SDO.dll</HintPath>
@@ -328,6 +328,7 @@
       <DependentUpon>frmUpdateCondition.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
