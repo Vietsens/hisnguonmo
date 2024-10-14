@@ -306,6 +306,24 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private bool checkMaxLength(string txt, int maxlength, ref string error,string control)
+        {
+            bool rs = true;
+            try
+            {
+                if(txt.Length > maxlength)
+                {
+                    error += string.Format(Message.MessageImport.MaxLength,control);
+                    rs= false;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return rs;
+        }
         private void addServiceToProcessList(List<EmpUserADO> service, ref List<EmpUserADO> empUserRef)
         {
             try
@@ -318,6 +336,93 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                     string error = "";
                     var serAdo = new EmpUserADO();
                     Inventec.Common.Mapper.DataObjectMapper.Map<EmpUserADO>(serAdo, item);
+                    if (item.IDENTIFICATION_NUMBER != null &&  item.IDENTIFICATION_NUMBER > 0)
+                    {
+                        checkMaxLength(item.IDENTIFICATION_NUMBER.ToString(), 15, ref error, "Số CMT/CCCD/HC");
+                    }
+                    if (item.SOCIAL_INSURANCE_NUMBER != null && item.SOCIAL_INSURANCE_NUMBER > 0)
+                    {
+                        checkMaxLength(item.SOCIAL_INSURANCE_NUMBER.ToString(), 20, ref error, "Số BHXH");
+                    }
+                    if (!string.IsNullOrEmpty(item.TITLE))
+                    {
+                        checkMaxLength(item.TITLE.ToString(), 100, ref error, "Chức danh");
+                    }
+                    if (!string.IsNullOrEmpty(item.ERX_LOGINNAME))
+                    {
+                        checkMaxLength(item.ERX_LOGINNAME.ToString(), 100, ref error, "Tên đăng nhập ERX");
+                    }
+                    if (!string.IsNullOrEmpty(item.ERX_PASSWORD))
+                    {
+                        checkMaxLength(item.ERX_PASSWORD.ToString(), 400, ref error, "Mật khẩu ERX");
+                    }
+                    if (!string.IsNullOrEmpty(item.DIPLOMA_PLACE))
+                    {
+                        checkMaxLength(item.DIPLOMA_PLACE.ToString(), 50, ref error, "Nơi cấp CCHN");
+                    }
+                    if (item.MAX_SERVICE_REQ_PER_DAY_STR != null && item.MAX_SERVICE_REQ_PER_DAY_STR > 0)
+                    {
+                        checkMaxLength(item.MAX_SERVICE_REQ_PER_DAY_STR.ToString(), 19, ref error, "Số BN xử lý tối đa trong ngày");
+                    }
+                    
+                    if (!string.IsNullOrEmpty(item.DOB_STR))
+                    {
+                        string dobStr = item.DOB_STR; // Chuỗi ngày cần chuyển đổi
+                        DateTime dob;
+
+                        if (DateTime.TryParseExact(dobStr, "dd/MM/yyyy HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out dob))
+                        {
+                            serAdo.DOB = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dob);
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Ngày sinh");
+                        }
+                        
+                    }
+                    if (!string.IsNullOrEmpty(item.DIPLOMA_DATE_STR))
+                    {
+                        string dobStr = item.DIPLOMA_DATE_STR; // Chuỗi ngày cần chuyển đổi
+                        DateTime dob;
+
+                        if (DateTime.TryParseExact(dobStr, "dd/MM/yyyy HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out dob))
+                        {
+                            serAdo.DIPLOMA_DATE = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dob);
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Ngày cấp CCHN");
+                        }
+                        
+                    }
+                    if (!string.IsNullOrEmpty(item.ALLOW_UPDATE_OTHER_SCLINICAL_STR))
+                    {
+                        if(item.ALLOW_UPDATE_OTHER_SCLINICAL_STR.ToString().Trim().ToLower() == "x")
+                        {
+                            serAdo.ALLOW_UPDATE_OTHER_SCLINICAL = 1;
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(item.DO_NOT_ALLOW_SIMULTANEITY_STR))
+                    {
+                        if (item.DO_NOT_ALLOW_SIMULTANEITY_STR.ToString().Trim().ToLower() == "x")
+                        {
+                            serAdo.DO_NOT_ALLOW_SIMULTANEITY = 1;
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(item.IS_LIMIT_SCHEDULE_STR))
+                    {
+                        if (item.IS_LIMIT_SCHEDULE_STR.ToString().Trim().ToLower() == "x")
+                        {
+                            serAdo.IS_LIMIT_SCHEDULE = 1;
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(item.IS_NEED_SIGN_INSTEAD_STR))
+                    {
+                        if (item.IS_NEED_SIGN_INSTEAD_STR.ToString().Trim().ToLower() == "x")
+                        {
+                            serAdo.IS_NEED_SIGN_INSTEAD = 1;
+                        }
+                    }
                     if (!string.IsNullOrEmpty(item.LOGINNAME))
                     {
                         if (item.LOGINNAME.Length > 50)

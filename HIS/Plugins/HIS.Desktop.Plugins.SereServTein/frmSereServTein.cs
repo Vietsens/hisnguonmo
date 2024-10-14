@@ -67,7 +67,7 @@ namespace HIS.Desktop.Plugins.SereServTein
         List<ADO.ImageADO> imageLoad;
         internal HIS_TREATMENT currentTreatment { get; set; }
         internal HIS_DHST currentDhst { get; set; }
-
+		///cmt để đẩy code. xem lại việc cũ ở lần đẩy dưới
 
         bool isNotLoadWhileChangeControlStateInFirst;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
