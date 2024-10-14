@@ -38,6 +38,27 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.ADO
         public string BANK { get; set; }
         public string DEPARTMENT_CODE { get; set; }
         public string MAX_BHYT { get; set; }
-       
+        public long? IDENTIFICATION_NUMBER { get; set; }
+        public long? SOCIAL_INSURANCE_NUMBER { get; set; }
+        public string DOB_STR { get; set; }
+        public long? DOB { get; set; }
+        public long? DIPLOMA_DATE { get; set; }
+        public string TITLE { get; set; }
+        public string ERX_LOGINNAME { get; set; }
+        public string ERX_PASSWORD { get; set; }
+        public string DIPLOMA_DATE_STR { get; set; }
+        public string DIPLOMA_PLACE { get; set; }
+        public long? MAX_SERVICE_REQ_PER_DAY_STR { get; set; }
+        public string ALLOW_UPDATE_OTHER_SCLINICAL_STR { get; set; }
+        public short? ALLOW_UPDATE_OTHER_SCLINICAL { get; set; }
+        public short? DO_NOT_ALLOW_SIMULTANEITY { get; set; }
+        public short? IS_LIMIT_SCHEDULE { get; set; }
+        public short? IS_NEED_SIGN_INSTEAD { get; set; }
+        public string DO_NOT_ALLOW_SIMULTANEITY_STR { get; set; }
+        public string IS_LIMIT_SCHEDULE_STR { get; set; }
+        public string IS_NEED_SIGN_INSTEAD_STR { get; set; }
+
+
+
     }
 }
