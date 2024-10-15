@@ -68,7 +68,7 @@
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.CheckIcd, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\HIS\Plugins\HIS.Desktop.Plugins.Library.CheckIcd\bin\Debug\HIS.Desktop.Plugins.Library.CheckIcd.dll</HintPath>
+      <HintPath>..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.CheckIcd\HIS.Desktop.Plugins.Library.CheckIcd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Death">
       <HintPath>..\..\..\..\..\..\RELEASE\HIS\HIS.UC.Death\HIS.UC.Death.dll</HintPath>
