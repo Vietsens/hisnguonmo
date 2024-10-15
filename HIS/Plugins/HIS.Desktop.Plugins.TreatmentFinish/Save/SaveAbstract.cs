@@ -89,8 +89,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save
         {
             try
             {
-                String dt = Form.dtEndTime.DateTime.ToString("yyyyMMddHHmm");
-                this.TreatmentFinishTime = Inventec.Common.TypeConvert.Parse.ToInt64(dt + "00");
+                String dt = Form.dtEndTime.DateTime.ToString("yyyyMMddHHmmss");
+                this.TreatmentFinishTime = Inventec.Common.TypeConvert.Parse.ToInt64(dt);
 
                 var treatmentEndType = Base.GlobalStore.HisTreatmentEndTypes.FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((Form.cboTreatmentEndType.EditValue ?? 0).ToString()));
                 if (treatmentEndType != null)
