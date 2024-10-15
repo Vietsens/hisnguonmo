@@ -736,6 +736,9 @@ namespace HIS.Desktop.Plugins.HisService
                 GridCheckMarksSelection gridCheckDTTT3 = cboDTTT3.Properties.Tag as GridCheckMarksSelection;
                 gridCheckDTTT3.ClearSelection(cboDTTT3.Properties.View);
                 cboDTTT3.Text = "";
+                GridCheckMarksSelection gridCheckPhieuBA = cboPhieuBA.Properties.Tag as GridCheckMarksSelection;
+                gridCheckPhieuBA.ClearSelection(cboPhieuBA.Properties.View);
+                cboPhieuBA.Text = "";
 
                 cboAttachAssignPrintTypeCode.EditValue = null;
                 cboFILM_SIZE.EditValue = null;
@@ -2157,20 +2160,20 @@ namespace HIS.Desktop.Plugins.HisService
                     }
                     //else
                     //{
-                        CommonParam param = new CommonParam();
-                        HisSuimSetySuinFilter SetyFilter = new HisSuimSetySuinFilter();
-                        SetyFilter.SUIM_SERVICE_TYPE_ID = data.ID;
-                        var listHisSuimSety = new BackendAdapter(param).Get<List<HIS_SUIM_SETY_SUIN>>("api/HisSuimSetySuin/Get", ApiConsumers.MosConsumer, SetyFilter, null).ToList();
+                    CommonParam param = new CommonParam();
+                    HisSuimSetySuinFilter SetyFilter = new HisSuimSetySuinFilter();
+                    SetyFilter.SUIM_SERVICE_TYPE_ID = data.ID;
+                    var listHisSuimSety = new BackendAdapter(param).Get<List<HIS_SUIM_SETY_SUIN>>("api/HisSuimSetySuin/Get", ApiConsumers.MosConsumer, SetyFilter, null).ToList();
 
-                        if (listHisSuimSety != null && listHisSuimSety.Count > 0)
-                        {
-                            ProcessSelectChiSo(string.Join(",", listHisSuimSety.Select(o=>o.SUIM_INDEX_ID).ToList()), gridCheckChiSo);
-                        }
-                        else if(data.SUIM_INDEX_ID == null)
-                        {
-                            gridCheckChiSo.ClearSelection(cboChiSo.Properties.View);
-                            cboChiSo.EditValue = null;
-                        }
+                    if (listHisSuimSety != null && listHisSuimSety.Count > 0)
+                    {
+                        ProcessSelectChiSo(string.Join(",", listHisSuimSety.Select(o => o.SUIM_INDEX_ID).ToList()), gridCheckChiSo);
+                    }
+                    else if (data.SUIM_INDEX_ID == null)
+                    {
+                        gridCheckChiSo.ClearSelection(cboChiSo.Properties.View);
+                        cboChiSo.EditValue = null;
+                    }
                     //}
 
                     CheckPTTT(data);
@@ -2279,6 +2282,16 @@ namespace HIS.Desktop.Plugins.HisService
                     cboFILM_SIZE.EditValue = data.FILM_SIZE_ID;
                     cboSampleType.EditValue = data.SAMPLE_TYPE_CODE;
                     cboPetroleum.EditValue = data.PETROLEUM_CODE;
+                    //load phieu benh an
+                    //thinhdt2
+                    if (!string.IsNullOrEmpty(data.EMR_FORM_CODES))
+                    {
+                        var codes = data.EMR_FORM_CODES.Split(';');
+                        var dataEmr = this.listEmrForm.Where(s => codes.Contains(s.EMR_FORM_CODE)).ToList();
+                        GridCheckMarksSelection gridCheckPhieuBA = cboPhieuBA.Properties.Tag as GridCheckMarksSelection;
+                        gridCheckPhieuBA.ClearSelection(cboPhieuBA.Properties.View);
+                        gridCheckPhieuBA.SelectAll(dataEmr);
+                    }
                 }
             }
             catch (Exception ex)
@@ -2655,6 +2668,7 @@ namespace HIS.Desktop.Plugins.HisService
                 chkIsBlockDepartment.Checked = false;
                 chkAllowSimultaneity.Checked = false;
                 chkNotUseBHYT.Checked = false;
+                this.EMR_FORM_CODES = null;
             }
             catch (Exception ex)
             {
@@ -2903,7 +2917,7 @@ namespace HIS.Desktop.Plugins.HisService
 
                 currentDTO.RATION_SYMBOL = !String.IsNullOrEmpty(txtRatioSymbol.Text.Trim()) ? txtRatioSymbol.Text.Trim() : null;
                 currentDTO.TESTING_TECHNIQUE = !String.IsNullOrEmpty(txtTestingTechnique.Text.Trim()) ? txtTestingTechnique.Text.Trim() : null;
-
+                currentDTO.EMR_FORM_CODES = this.EMR_FORM_CODES;
                 if (chkIS_AUTO_EXPEND.Checked == true)
                 {
                     currentDTO.IS_AUTO_EXPEND = 1;
@@ -3576,7 +3590,7 @@ namespace HIS.Desktop.Plugins.HisService
                 {
                     chkIS_AUTO_EXPEND.Enabled = false;
                 }
-
+                LoadDataCboPhieuBA();
             }
             catch (Exception ex)
             {
@@ -7136,7 +7150,7 @@ namespace HIS.Desktop.Plugins.HisService
                 if (gridCheckMark == null) return;
                 foreach (HIS_SUIM_INDEX rv in gridCheckMark.Selection)
                 {
-                    if (sb.ToString().Length > 0) { sb.Append(", ");}
+                    if (sb.ToString().Length > 0) { sb.Append(", "); }
                     sb.Append(rv.SUIM_INDEX_NAME.ToString());
                     listHisSuimIndexChoose.Add(rv);
                 }
@@ -7146,6 +7160,115 @@ namespace HIS.Desktop.Plugins.HisService
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+        List<HIS_EMR_FORM> listEmrForm = new List<HIS_EMR_FORM>();
+        GridCheckMarksSelection selection = new GridCheckMarksSelection();
+        List<HIS_EMR_FORM> lstSelectedEmr = new List<HIS_EMR_FORM>();
+        public string EMR_FORM_CODES { get; set; }
+        private void LoadDataCboPhieuBA()
+        {
+            try
+            {
+                listEmrForm = BackendDataWorker.Get<HIS_EMR_FORM>();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("EMR_FORM_CODE", "Mã", 100, 1));
+                columnInfos.Add(new ColumnInfo("EMR_FORM_NAME", "Tên", 200, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("EMR_FORM_NAME", "ID", columnInfos, false, 300);
+                ControlEditorLoader.Load(cboPhieuBA, listEmrForm, controlEditorADO);
+                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cboPhieuBA.Properties);
+                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(Event_Check_PhieuBA);
+                cboPhieuBA.Properties.Tag = gridCheck;
+                cboPhieuBA.Properties.View.OptionsSelection.MultiSelect = true;
+                cboPhieuBA.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void Event_Check_PhieuBA(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    this.lstSelectedEmr.Clear();
+                    foreach (HIS_EMR_FORM er in (sender as GridCheckMarksSelection).Selection)
+                    {
+                        if (er != null)
+                        {
+                            if (sb.ToString().Length > 0) { sb.Append("; "); }
+                            sb.Append(er.EMR_FORM_NAME);
+                            lstSelectedEmr.Add(er);
+                        }
+                    }
+                    EMR_FORM_CODES = string.Join(";", lstSelectedEmr.Select(s => s.EMR_FORM_CODE).ToList());
+                    cboPhieuBA.EditValue = lstSelectedEmr;
+                }
+                this.cboPhieuBA.Text = sb.ToString();
+                
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        
+
+        private void cboPhieuBA_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)
+                {
+
+                    cboPhieuBA.ShowPopup();
+                }
+                else if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+
+                    cboPhieuBA.EditValue = null;
+                    this.EMR_FORM_CODES = null;
+                    GridCheckMarksSelection gridCheckMark = cboPhieuBA.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboPhieuBA.Properties.View);
+                    }
+                    this.cboPhieuBA.Focus();
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboPhieuBA_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = string.Join(";", lstSelectedEmr.Select(s => s.EMR_FORM_NAME).ToList());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboPhieuBA_Leave(object sender, EventArgs e)
+        {
+            btnAdd.Focus();
+        }
+
+        private void cboPhieuBA_Closed(object sender, ClosedEventArgs e)
+        {
+            btnAdd.Focus();
         }
     }
 }

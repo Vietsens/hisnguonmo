@@ -249,7 +249,35 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                             error += string.Format(Message.MessageImport.KhongHopLe, "Giới tính");
                         }
                     }
-
+                    if (!string.IsNullOrEmpty(item.EMR_FORM_CODES))
+                    {
+                        var codes = item.EMR_FORM_CODES.Split(',');
+                        if(codes.Count() > 10)
+                        {
+                            error += error += string.Format(Message.MessageImport.Maxlength, "Mã phiếu vỏ bệnh án");
+                        }
+                        var dataEmr = BackendDataWorker.Get<HIS_EMR_FORM>().Where(s => codes.Contains(s.EMR_FORM_CODE));
+                        if (dataEmr.Any())
+                        {
+                            string error_code = "";
+                            foreach(var _code in codes)
+                            {
+                                if (!dataEmr.Select(s => s.EMR_FORM_CODE).ToList().Contains(_code))
+                                {
+                                    error_code += _code+",";
+                                }
+                            }
+                            if (!string.IsNullOrEmpty(error_code))
+                            {
+                                error += string.Format(Message.MessageImport.KhongHopLe, "Mã phiếu vỏ bệnh án.("+error_code+")");
+                            }
+                            serAdo.EMR_FORM_CODES = string.Join(",", dataEmr.Select(s => s.EMR_FORM_CODE).ToList());
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Mã phiếu vỏ bệnh án.("+item.EMR_FORM_CODES+")");
+                        }
+                    }
                     if (!string.IsNullOrEmpty(item.SERVICE_TYPE_CODE))
                     {
                         if (item.SERVICE_TYPE_CODE.Length > 2)
