@@ -1755,6 +1755,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 }
                 medicineType.ALERT_MAX_IN_TREATMENT = this.UseInTreat;
                 if (chkBlockInTreat.Checked) medicineType.IS_BLOCK_MAX_IN_TREATMENT = 1;
+                else medicineType.IS_BLOCK_MAX_IN_TREATMENT = null;
                 if (spinNumOrder.EditValue != null)
                 {
                     medicineType.NUM_ORDER = Inventec.Common.TypeConvert.Parse.ToInt64((spinNumOrder.EditValue ?? "").ToString());
@@ -7727,13 +7728,17 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         {
             try
             {
-                if(Convert.ToInt64(spinUseInTreat.EditValue) < 0)
+                if(spinUseInTreat.EditValue == null || Convert.ToDecimal(spinUseInTreat.EditValue) == 0)
+                {
+                    this.UseInTreat = null;
+                }
+                if(Convert.ToDecimal(spinUseInTreat.EditValue) < 0)
                 {
                     dxErrorProvider1.SetError(spinUseInTreat, "Số lượng không hợp lệ",DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
                 }
                 else
                 {
-                    if (Convert.ToInt64(spinUseInTreat.EditValue) > 0) UseInTreat = Convert.ToInt64(spinUseInTreat.EditValue);
+                    if (Convert.ToDecimal(spinUseInTreat.EditValue) > 0) UseInTreat = Convert.ToDecimal(spinUseInTreat.EditValue);
                     dxErrorProvider1.SetError(spinUseInTreat, "", DevExpress.XtraEditors.DXErrorProvider.ErrorType.None);
                 }
             }
