@@ -817,7 +817,7 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                         item.ID = 0;
                     }
                 }
-
+                Inventec.Common.Logging.LogSystem.Debug("Data Import." + Inventec.Common.Logging.LogUtil.TraceData("serviceAdos", data));
                 CommonParam param = new CommonParam();
                 var rs = new BackendAdapter(param).Post<List<HIS_SERVICE>>("api/HisService/CreateList", ApiConsumers.MosConsumer, data, param);
                 if (rs != null)
