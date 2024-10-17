@@ -2286,11 +2286,17 @@ namespace HIS.Desktop.Plugins.HisService
                     //thinhdt2
                     if (!string.IsNullOrEmpty(data.EMR_FORM_CODES))
                     {
-                        var codes = data.EMR_FORM_CODES.Split(';');
+                        var codes = data.EMR_FORM_CODES.Split(',');
                         var dataEmr = this.listEmrForm.Where(s => codes.Contains(s.EMR_FORM_CODE)).ToList();
                         GridCheckMarksSelection gridCheckPhieuBA = cboPhieuBA.Properties.Tag as GridCheckMarksSelection;
                         gridCheckPhieuBA.ClearSelection(cboPhieuBA.Properties.View);
                         gridCheckPhieuBA.SelectAll(dataEmr);
+                    }
+                    else
+                    {
+                        GridCheckMarksSelection gridCheckPhieuBA = cboPhieuBA.Properties.Tag as GridCheckMarksSelection;
+                        gridCheckPhieuBA.ClearSelection(cboPhieuBA.Properties.View);
+                        this.EMR_FORM_CODES = null;
                     }
                 }
             }
