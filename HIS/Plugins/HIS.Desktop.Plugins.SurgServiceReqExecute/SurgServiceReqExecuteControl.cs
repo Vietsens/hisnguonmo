@@ -693,7 +693,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             try
             {
 
-                if (HisConfigCFG.IS_NOT_REQUIRED_PTTT_EXECUTE_ROLE != "1" && !CheckCountEkipUser() && !IsReadOnlyGridViewEkipUser)
+                if (HisConfigCFG.IS_NOT_REQUIRED_PTTT_EXECUTE_ROLE != "1" && sereServ.IS_SENT_EXT != 1 &&!CheckCountEkipUser() && !IsReadOnlyGridViewEkipUser)
                 {
                     MessageBox.Show(ResourceMessage.VuiLongNhapThongTinkipThucHien, ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
@@ -1235,7 +1235,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         {
             try
             {
-                if (HisConfigCFG.IS_NOT_REQUIRED_PTTT_EXECUTE_ROLE != "1" && !CheckCountEkipUser())
+                if (HisConfigCFG.IS_NOT_REQUIRED_PTTT_EXECUTE_ROLE != "1" && sereServ.IS_SENT_EXT != 1 && !CheckCountEkipUser())
                 {
                     MessageBox.Show(ResourceMessage.VuiLongNhapThongTinkipThucHien, ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
