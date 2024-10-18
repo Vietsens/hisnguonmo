@@ -561,6 +561,17 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                             Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot ngay sua KinhDoanh", ex);
                         }
                     }
+                    else if (e.Column.FieldName == "SoNgayDung")
+                    {
+                        try
+                        {
+                            e.Value = pData.IS_TREATMENT_DAY_COUNT == 1 ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot ngay sua IS_TREATMENT_DAY_COUNT_STR", ex);
+                        }
+                    }
                     else if (e.Column.FieldName == "BanBangGiaNhap")
                     {
                         try
@@ -1091,6 +1102,19 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                         {
                             error += string.Format(Message.MessageImport.KhongHopLe, "Thuốc kinh doanh");
                             mediAdo.BUSINESS_ERROR = 1;
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(item.IS_TREATMENT_DAY_COUNT_STR))
+                    {
+                        if (item.IS_TREATMENT_DAY_COUNT_STR.Trim().ToLower() == "x")
+                        {
+                            mediAdo.IS_TREATMENT_DAY_COUNT = 1;
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Số ngày dùng trong tờ điều trị");
+                            mediAdo.IS_TREATMENT_DAY_COUNT_ERROR = 1;
                         }
                     }
 
