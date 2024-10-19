@@ -101,6 +101,7 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
             this.gridColumn38 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn39 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Item_Check = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.gridColumn40 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Btn_ErrorLine = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.Btn_Delete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -117,7 +118,6 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.gridColumn40 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlService)).BeginInit();
@@ -655,6 +655,15 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
             this.Item_Check.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             this.Item_Check.ReadOnly = true;
             // 
+            // gridColumn40
+            // 
+            this.gridColumn40.Caption = "Mã phiếu vỏ BA";
+            this.gridColumn40.FieldName = "EMR_FORM_CODES";
+            this.gridColumn40.Name = "gridColumn40";
+            this.gridColumn40.Visible = true;
+            this.gridColumn40.VisibleIndex = 35;
+            this.gridColumn40.Width = 150;
+            // 
             // Btn_ErrorLine
             // 
             this.Btn_ErrorLine.AutoHeight = false;
@@ -747,6 +756,10 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem1});
@@ -775,8 +788,8 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1236, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1236, 29);
             // 
             // barDockControlBottom
             // 
@@ -798,14 +811,6 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(1236, 29);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 482);
-            // 
-            // gridColumn40
-            // 
-            this.gridColumn40.Caption = "Mã phiếu vỏ BA";
-            this.gridColumn40.FieldName = "EMR_FORM_CODES";
-            this.gridColumn40.Name = "gridColumn40";
-            this.gridColumn40.Visible = true;
-            this.gridColumn40.VisibleIndex = 35;
             // 
             // frmService
             // 

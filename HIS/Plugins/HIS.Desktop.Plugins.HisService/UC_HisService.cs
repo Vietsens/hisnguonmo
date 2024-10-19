@@ -7206,12 +7206,12 @@ namespace HIS.Desktop.Plugins.HisService
                     {
                         if (er != null)
                         {
-                            if (sb.ToString().Length > 0) { sb.Append("; "); }
+                            if (sb.ToString().Length > 0) { sb.Append(", "); }
                             sb.Append(er.EMR_FORM_NAME);
                             lstSelectedEmr.Add(er);
                         }
                     }
-                    EMR_FORM_CODES = string.Join(";", lstSelectedEmr.Select(s => s.EMR_FORM_CODE).ToList());
+                    EMR_FORM_CODES = string.Join(",", lstSelectedEmr.Select(s => s.EMR_FORM_CODE).ToList());
                     cboPhieuBA.EditValue = lstSelectedEmr;
                 }
                 this.cboPhieuBA.Text = sb.ToString();
@@ -7259,7 +7259,7 @@ namespace HIS.Desktop.Plugins.HisService
         {
             try
             {
-                e.DisplayText = string.Join(";", lstSelectedEmr.Select(s => s.EMR_FORM_NAME).ToList());
+                e.DisplayText = string.Join(",", lstSelectedEmr.Select(s => s.EMR_FORM_NAME).ToList());
             }
             catch (Exception ex)
             {
