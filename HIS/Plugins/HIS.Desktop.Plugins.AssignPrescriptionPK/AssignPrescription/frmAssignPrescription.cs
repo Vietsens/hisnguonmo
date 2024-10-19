@@ -144,8 +144,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         internal List<HIS_SERVICE_REQ_METY> serviceReqMetyInDay;
         internal List<V_HIS_SERVICE_REQ_METY> serviceReqMetyViewInDay;
         internal List<HIS_SERVICE_REQ_MATY> serviceReqMatyInDay;
+        internal List<HIS_SERVICE_REQ_METY> serviceReqMetyInBatch;
+        internal List<HIS_SERVICE_REQ_METY> serviceReqMetyInBatchWithMultilTreatment;
+        internal List<HIS_SERVICE_REQ_MATY> serviceReqMatyInBatch;
         internal List<MediMatyTypeADO> mediMatyTypeADOBKs;
         internal List<MediMatyTypeADO> mediMatyTypeADOs;
+        internal List<MediMatyTypeADO> mediMatyTypeADOsAlertInTreatment = new List<MediMatyTypeADO>();
+        internal List<MediMatyTypeADO> mediMatyTypeADOsBlockInTreatment = new List<MediMatyTypeADO>();
         List<MedicineMaterialTypeComboADO> currentMediMateTypeComboADOs;
         internal List<D_HIS_MEDI_STOCK_2> mediMatyTypeAvailables;
         internal MediMatyTypeADO currentMedicineTypeADOForEdit;
@@ -2010,6 +2015,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 }
                 if (GlobalStore.IsTreatmentIn && this.patientSelectProcessor != null && this.ucPatientSelect != null)
                 {
+                    if (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet && !CheckMaxInPrescriptionInBatchMultilPatientWhenSave(this.mediMatyTypeADOs))
+                    {
+                        return;
+                    }
                     var listPatientSelecteds = this.patientSelectProcessor.GetSelectedRows(this.ucPatientSelect);
                     if (listPatientSelecteds != null && listPatientSelecteds.Count > 1)
                     {
@@ -2664,6 +2673,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         {
             try
             {
+                if (sereServWithMultilTreatment != null && sereServWithMultilTreatment.Count > 0)
+                    return;
                 Inventec.Common.Logging.LogSystem.Debug("LoadDataSereServWithMutilTreatment.1");
 
                 Inventec.Common.Logging.LogSystem.Debug("LoadDataSereServWithMutilTreatment.2");
@@ -2906,7 +2917,9 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 Inventec.Common.Logging.LogSystem.Debug("btnAdd_TabMedicine_Click.4____valid=" + valid);
                 //valid = valid && CheckContraidication();
                 valid = valid && (selectedOpionGroup != 3 ? CheckMaxInPrescription(currentMedicineTypeADOForEdit, (decimal)this.GetValueSpinHasAround(this.spinAmount.Text)) : true);
-                valid = valid && (selectedOpionGroup != 3 ? CheckMaxInPrescriptionInDay(currentMedicineTypeADOForEdit, this.spinSoLuongNgay.Value != 0 ? (decimal)this.GetValueSpinHasAround(this.spinAmount.Text) / this.spinSoLuongNgay.Value : (decimal)this.GetValueSpinHasAround(this.spinAmount.Text)) : true);
+                var _amount = this.spinSoLuongNgay.Value != 0 ? (decimal)this.GetValueSpinHasAround(this.spinAmount.Text) / this.spinSoLuongNgay.Value : (decimal)this.GetValueSpinHasAround(this.spinAmount.Text);
+                valid = valid && (selectedOpionGroup != 3 ? CheckMaxInPrescriptionInDay(currentMedicineTypeADOForEdit, _amount) : true);
+                //valid = valid && (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) ? CheckMaxInPrescriptionInBatchWithMultilPatient(currentMedicineTypeADOForEdit, _amount) : CheckMaxInPrescriptionInBatch(currentMedicineTypeADOForEdit, _amount);
                 valid = valid && (selectedOpionGroup != 3 ? CheckOddPrescription(currentMedicineTypeADOForEdit, (decimal)this.GetValueSpinHasAround(this.spinAmount.Text)) : true);
                 Inventec.Common.Logging.LogSystem.Debug("btnAdd_TabMedicine_Click.5____valid=" + valid);
                 valid = valid && CheckGenderMediMaty(currentMedicineTypeADOForEdit);
@@ -5668,8 +5681,11 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                             {
                                 mediMatyTypeADO.PRES_AMOUNT = mediMatyTypeADO.AMOUNT;
                             }
+
+                            bool rsMaxPresInBatch = false;
                             if (e.Column.FieldName == "AMOUNT")
                             {
+                                IsCellChangeAmount = true;
                                 bool rsMaxPres = CheckMaxInPrescription(mediMatyTypeADO, mediMatyTypeADO.AMOUNT);
                                 bool rsMaxPresInDay = false;
                                 bool rsCheckOddPres = false;
@@ -5690,8 +5706,51 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                     }
                                 }
 
+                                if (mediMatyTypeADO.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
+                                {
+                                    if (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet)
+                                    {
+                                        rsMaxPresInBatch = CheckMaxInPrescriptionInBatchWithMultilPatient(mediMatyTypeADO, mediMatyTypeADO.UseDays != 0 ? mediMatyTypeADO.AMOUNT / mediMatyTypeADO.UseDays : mediMatyTypeADO.AMOUNT);
+
+                                    }
+                                    else
+                                    {
+                                        rsMaxPresInBatch = CheckMaxInPrescriptionInBatch(mediMatyTypeADO, mediMatyTypeADO.UseDays != 0 ? mediMatyTypeADO.AMOUNT / mediMatyTypeADO.UseDays : mediMatyTypeADO.AMOUNT);
+                                    }
+                                    if (rsMaxPresInBatch)
+                                    {
+                                        var ItemRemove = mediMatyTypeADOsAlertInTreatment.LastOrDefault(p => p.PrimaryKey == mediMatyTypeADO.PrimaryKey && string.IsNullOrEmpty(p.EXCEED_LIMIT_IN_BATCH_REASON));
+                                        if (ItemRemove != null)
+                                        {
+                                            RemoveItem(mediMatyTypeADO);
+                                            return;
+                                        }
+                                        else
+                                        {
+                                            var alert = this.mediMatyTypeADOsAlertInTreatment.LastOrDefault(o => o.PrimaryKey == mediMatyTypeADO.PrimaryKey);
+                                            var amountPres = (mediMatyTypeADO.NUMBER_PRESCIPTION_IN_TREATMENT ?? 0) + mediMatyTypeADO.AMOUNT + mediMatyTypeADOs.Where(o => o.ID == mediMatyTypeADO.ID && o.PrimaryKey != mediMatyTypeADO.PrimaryKey).Sum(o => o.UseDays != 0 ? o.AMOUNT / o.UseDays : o.AMOUNT);
+                                            mediMatyTypeADO.IsAlertInTreatPresciption = false;
+                                            mediMatyTypeADO.EXCEED_LIMIT_IN_BATCH_REASON = null;
+                                            if (alert != null)
+                                            {
+                                                if (amountPres > mediMatyTypeADO.ALERT_MAX_IN_TREATMENT && string.IsNullOrEmpty(alert.EXCEED_LIMIT_IN_BATCH_REASON))
+                                                    mediMatyTypeADOsAlertInTreatment.Remove(alert);
+                                                else
+                                                {
+                                                    mediMatyTypeADO.IsAlertInTreatPresciption = true;
+                                                    mediMatyTypeADO.EXCEED_LIMIT_IN_BATCH_REASON = alert.EXCEED_LIMIT_IN_BATCH_REASON;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        RemoveItem(mediMatyTypeADO);
+                                        return;
+                                    }
+                                }
                                 decimal oldAmount = Inventec.Common.TypeConvert.Parse.ToDecimal(view.ActiveEditor.OldEditValue.ToString());
-                                if (!rsMaxPres || !rsMaxPresInDay || !rsCheckOddPres || !WarningOddConvertWorker.CheckWarningOddConvertAmount(mediMatyTypeADO, mediMatyTypeADO.AMOUNT)
+                                if (!rsMaxPres || !rsMaxPresInDay || !rsCheckOddPres || !rsMaxPresInBatch || !WarningOddConvertWorker.CheckWarningOddConvertAmount(mediMatyTypeADO, mediMatyTypeADO.AMOUNT)
                                 || !WarningOddConvertWorker.CheckWarningOddConvertAmount(mediMatyTypeADO, (mediMatyTypeADO.AMOUNT ?? 0), null))
                                 {
                                     SetOldAmountMediMaty(oldAmount, mediMatyTypeADO.ID, mediMatyTypeADO.PrimaryKey);
@@ -5794,6 +5853,14 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                     }
                                     var primaryKeyOld = item.PrimaryKey;
                                     item.PrimaryKey = (mediMatyTypeADO.SERVICE_ID + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString());
+                                    if (rsMaxPresInBatch)
+                                    {
+                                        mediMatyTypeADOsAlertInTreatment.ForEach(o =>
+                                        {
+                                            if (o.PrimaryKey == primaryKeyOld)
+                                                o.PrimaryKey = item.PrimaryKey;
+                                        });
+                                    }
                                     foreach (var itemTakeBean in lstOutPatientPres)
                                     {
                                         if (itemTakeBean.PrimaryKey == primaryKeyOld)
@@ -5879,6 +5946,10 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                IsCellChangeAmount = false;
             }
         }
         private void gridViewMediMaty_CustomRowCellEdit(object sender, CustomRowCellEditEventArgs e)
@@ -6032,6 +6103,32 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     {
                         if (!String.IsNullOrEmpty(data.EXCEED_LIMIT_IN_DAY_REASON) || (data.ALERT_MAX_IN_DAY != null && !CheckMaxInPrescriptionInDayForMemoReason(data, data.AMOUNT)))
                             e.RepositoryItem = this.memoReasonMaxPrescription;
+                        else
+                            e.RepositoryItem = this.TextEditPatient_Type_Disable;
+                    }
+                    else if (e.Column.FieldName == "EXCEED_LIMIT_IN_BATCH_REASON")
+                    {
+                        if (data.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
+                        {
+                            if (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet)
+                            {
+                                if (data.ALERT_MAX_IN_TREATMENT.HasValue && data.IsAlertInTreatPresciption && ((mediMatyTypeADOsAlertInTreatment != null && mediMatyTypeADOsAlertInTreatment.Count > 0 && mediMatyTypeADOsAlertInTreatment.Exists(o => o.PrimaryKey == data.PrimaryKey)) || !String.IsNullOrEmpty(data.EXCEED_LIMIT_IN_BATCH_REASON)))
+                                {
+                                    e.RepositoryItem = this.repELInBatchCliEnable;
+                                }
+                                else
+                                    e.RepositoryItem = this.repELInBatchCliDisable;
+                            }
+                            else
+                            {
+                                if (!String.IsNullOrEmpty(data.EXCEED_LIMIT_IN_BATCH_REASON) && data.ALERT_MAX_IN_TREATMENT != null && data.IsAlertInTreatPresciption)
+                                {
+                                    e.RepositoryItem = this.memoReasonMaxPrescription;
+                                }
+                                else
+                                    e.RepositoryItem = this.TextEditPatient_Type_Disable;
+                            }
+                        }
                         else
                             e.RepositoryItem = this.TextEditPatient_Type_Disable;
                     }
@@ -6836,65 +6933,83 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 LogSystem.Warn(ex);
             }
         }
+        private void RemoveItem(MediMatyTypeADO mediMatyTypeADO)
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("gridViewServiceProcess_RowCellClick. REMOVE_SELECED_ROW");
+                WaitingManager.Show();
+                if (mediMatyTypeADO != null && TakeOrReleaseBeanWorker.ProcessDeleteRowMediMaty(this.intructionTimeSelecteds, mediMatyTypeADO))
+                {
+                    bool isReloadAvaible = (mediMatyTypeADO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC
+                            || mediMatyTypeADO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU
+                            || mediMatyTypeADO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD);
+                    if (this.gridViewServiceProcess.FocusedRowHandle == this.gridViewServiceProcess.DataRowCount - 1)
+                    {
+                        this.idRow = this.idRow - stepRow;
+                        if (this.idRow <= 0) this.idRow = 1;
+                    }
+                    this.gridViewServiceProcess.BeginUpdate();
+                    this.gridViewServiceProcess.DeleteRow(this.gridViewServiceProcess.FocusedRowHandle);
+                    this.gridViewServiceProcess.EndUpdate();
 
+                    this.mediMatyTypeADOs.Remove(mediMatyTypeADO);
+                    if (this.mediMatyTypeADOsAlertInTreatment != null && mediMatyTypeADOsAlertInTreatment.Count > 0 && mediMatyTypeADOsAlertInTreatment.Exists(o => o.PrimaryKey == mediMatyTypeADO.PrimaryKey))
+                        mediMatyTypeADOsAlertInTreatment = mediMatyTypeADOsAlertInTreatment.Where(o => o.PrimaryKey != mediMatyTypeADO.PrimaryKey).ToList();
+                    if (isReloadAvaible)
+                        this.ReloadDataAvaiableMediBeanInCombo();
+
+                    if (currentMedicineTypeADOForEdit != null &&
+                        mediMatyTypeADO.PrimaryKey == currentMedicineTypeADOForEdit.PrimaryKey)
+                    {
+                        this.actionBosung = GlobalVariables.ActionAdd;
+                        this.VisibleButton(this.actionBosung);
+                        this.ReSetDataInputAfterAdd__MedicinePage();
+                        txtMediMatyForPrescription.Text = "";
+                        currentMedicineTypeADOForEdit = null;
+                    }
+
+                    var check = this.mediMatyTypeADOs.Where(o => o.MIXED_INFUSION == mediMatyTypeADO.MIXED_INFUSION).ToList();
+                    if (check != null && check.Count() == 1)
+                    {
+                        this.mediMatyTypeADOs.FirstOrDefault(o => o.ID == check.FirstOrDefault().ID).MIXED_INFUSION = null;
+                        this.mediMatyTypeADOs.FirstOrDefault(o => o.ID == check.FirstOrDefault().ID).IS_MIXED_MAIN = null;
+                        this.mediMatyTypeADOs.FirstOrDefault(o => o.ID == check.FirstOrDefault().ID).TUTORIAL_INFUSION = null;
+                    }
+                    GetServiceTick(mediMatyTypeADO.SERVICE_ID, mediMatyTypeADO.IdRowPopupGrid, true);
+                    this.gridControlServiceProcess.RefreshDataSource();
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("Remove row in grid fail or Call release bean fail. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => mediMatyTypeADO), mediMatyTypeADO));
+                }
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
         private void gridViewServiceProcess_RowCellClick(object sender, RowCellClickEventArgs e)
         {
             try
             {
                 if (e.Column.FieldName == "REMOVE_SELECED_ROW")
                 {
-                    Inventec.Common.Logging.LogSystem.Debug("gridViewServiceProcess_RowCellClick. REMOVE_SELECED_ROW");
-                    var mediMatyTypeADO = (MediMatyTypeADO)this.gridViewServiceProcess.GetFocusedRow();
-                    WaitingManager.Show();
-                    if (mediMatyTypeADO != null && TakeOrReleaseBeanWorker.ProcessDeleteRowMediMaty(this.intructionTimeSelecteds, mediMatyTypeADO))
-                    {
-                        bool isReloadAvaible = (mediMatyTypeADO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC
-                                || mediMatyTypeADO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU
-                                || mediMatyTypeADO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD);
-                        if (this.gridViewServiceProcess.FocusedRowHandle == this.gridViewServiceProcess.DataRowCount - 1)
-                        {
-                            this.idRow = this.idRow - stepRow;
-                            if (this.idRow <= 0) this.idRow = 1;
-                        }
-                        this.gridViewServiceProcess.BeginUpdate();
-                        this.gridViewServiceProcess.DeleteRow(this.gridViewServiceProcess.FocusedRowHandle);
-                        this.gridViewServiceProcess.EndUpdate();
-
-                        this.mediMatyTypeADOs.Remove(mediMatyTypeADO);
-                        if (isReloadAvaible)
-                            this.ReloadDataAvaiableMediBeanInCombo();
-
-                        if (currentMedicineTypeADOForEdit != null &&
-                            mediMatyTypeADO.PrimaryKey == currentMedicineTypeADOForEdit.PrimaryKey)
-                        {
-                            this.actionBosung = GlobalVariables.ActionAdd;
-                            this.VisibleButton(this.actionBosung);
-                            this.ReSetDataInputAfterAdd__MedicinePage();
-                            txtMediMatyForPrescription.Text = "";
-                            currentMedicineTypeADOForEdit = null;
-                        }
-
-                        var check = this.mediMatyTypeADOs.Where(o => o.MIXED_INFUSION == mediMatyTypeADO.MIXED_INFUSION).ToList();
-                        if (check != null && check.Count() == 1)
-                        {
-                            this.mediMatyTypeADOs.FirstOrDefault(o => o.ID == check.FirstOrDefault().ID).MIXED_INFUSION = null;
-                            this.mediMatyTypeADOs.FirstOrDefault(o => o.ID == check.FirstOrDefault().ID).IS_MIXED_MAIN = null;
-                            this.mediMatyTypeADOs.FirstOrDefault(o => o.ID == check.FirstOrDefault().ID).TUTORIAL_INFUSION = null;
-                        }
-                        GetServiceTick(mediMatyTypeADO.SERVICE_ID, mediMatyTypeADO.IdRowPopupGrid, true);
-                        this.gridControlServiceProcess.RefreshDataSource();
-                    }
-                    else
-                    {
-                        Inventec.Common.Logging.LogSystem.Debug("Remove row in grid fail or Call release bean fail. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => mediMatyTypeADO), mediMatyTypeADO));
-                    }
-                    WaitingManager.Hide();
+                    RemoveItem((MediMatyTypeADO)this.gridViewServiceProcess.GetFocusedRow());
                 }
-                else if(e.Column.FieldName == "INFORMATION_MEDICINE")
+                else if (e.Column.FieldName == "INFORMATION_MEDICINE")
                 {
                     var data = (MediMatyTypeADO)this.gridViewServiceProcess.GetFocusedRow();
-                    if ((data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_DM || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_TUTUC))
-                        repInForMedicineEnable_ButtonClick(null,null);
+                    if (data.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
+                        repInForMedicineEnable_ButtonClick(null, null);
+                }
+                else if (e.Column.FieldName == "INFORMATION_MEDICINE")
+                {
+                    var data = (MediMatyTypeADO)this.gridViewServiceProcess.GetFocusedRow();
+                    if (data.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
+                        repELInBatchCliEnable_ButtonClick(null, null);
                 }
                 else
                 {
@@ -10521,6 +10636,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         }
 
         List<V_HIS_SERE_SERV_TEIN_1> SereServTeinData { get; set; }
+        public bool IsCellChangeAmount { get; private set; }
+
         private void LoadMLCT()
         {
             try
@@ -12003,7 +12120,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     if (moduleData != null && moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                     {
                         List<object> listArgs = new List<object>();
-                        listArgs.Add(new HIS.Desktop.ADO.ProductInfoADO() { MedicineTypeId = currentRowSereServADO.ID, ProductInfoOpen = 0});//TODO
+                        listArgs.Add(new HIS.Desktop.ADO.ProductInfoADO() { MedicineTypeId = currentRowSereServADO.ID, ProductInfoOpen = 0 });//TODO
                         listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
                         var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
                         if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
@@ -12017,6 +12134,51 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        private void repELInBatchCliEnable_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                var currentRowSereServADO = (MediMatyTypeADO)gridViewServiceProcess.GetFocusedRow();
+
+                if (currentRowSereServADO != null)
+                {
+                    List<MediMatyTypeADO> lst = new List<MediMatyTypeADO>();
+                    if (mediMatyTypeADOsAlertInTreatment != null && mediMatyTypeADOsAlertInTreatment.Count > 0 && mediMatyTypeADOsAlertInTreatment.Exists(o => o.PrimaryKey == currentRowSereServADO.PrimaryKey))
+                    {
+                        lst = mediMatyTypeADOsAlertInTreatment.Where(o => o.PrimaryKey == currentRowSereServADO.PrimaryKey).ToList();
+                    }
+                    else
+                    {
+                        if (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet)
+                        {
+                            var listPatientSelecteds = this.patientSelectProcessor.GetSelectedRows(this.ucPatientSelect);
+                            foreach (var item in listPatientSelecteds)
+                            {
+                                MediMatyTypeADO ado = currentRowSereServADO;
+                                ado.PATIENT_NAME_BY_TREATMENT_CODE = item.TDL_PATIENT_NAME + "_" + item.TREATMENT_CODE;
+                                ado.IsAlertInTreatPresciption = true;
+                                lst.Add(ado);
+                            }
+                        }
+                        else
+                        {
+                            currentRowSereServADO.IsAlertInTreatPresciption = true;
+                            currentRowSereServADO.PATIENT_NAME_BY_TREATMENT_CODE = currentTreatment.TDL_PATIENT_NAME + "_" + currentTreatment.TREATMENT_CODE;
+                            lst.Add(currentRowSereServADO);
+                        }
+
+                    }
+                    frmMutlilPatientReasonInBatch frm = new frmMutlilPatientReasonInBatch(lst, GetAlertListInTreatment);
+                    frm.ShowDialog();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         internal bool CheckValidMaterial(bool IsCheckList = false)
