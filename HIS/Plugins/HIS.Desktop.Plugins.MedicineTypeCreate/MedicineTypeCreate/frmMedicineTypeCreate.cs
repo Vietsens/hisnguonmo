@@ -217,7 +217,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 {
                     btnGiaTran.Enabled = false;
                 }
-
+                
                 if (this.currentMedicineTypeId != null && this.currentMedicineTypeId > 0 && this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
                 {
                     btnDieuChinhLieu.Enabled = true;
@@ -1204,6 +1204,10 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 //this.cboDosageForm.EditValue = hIS_MEDICINE_TYPE.DOSAGE_FORM;
                 this.cboHowToUse.EditValue = hIS_MEDICINE_TYPE.HTU_ID;
                 this.txtDistributedAmount.Text = hIS_MEDICINE_TYPE.DISTRIBUTED_AMOUNT;
+                spinUseInTreat.EditValue = hIS_MEDICINE_TYPE.ALERT_MAX_IN_TREATMENT;
+                this.UseInTreat = hIS_MEDICINE_TYPE.ALERT_MAX_IN_TREATMENT;
+                chkWarningInTreat.Checked = hIS_MEDICINE_TYPE.IS_BLOCK_MAX_IN_TREATMENT == 1 ? false : true;
+                chkBlockInTreat.Checked = hIS_MEDICINE_TYPE.IS_BLOCK_MAX_IN_TREATMENT != 1 ? false : true;
             }
             catch (Exception ex)
             {
@@ -1346,6 +1350,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     txtMedicineType.Enabled = false;
                     cboMedicineType.Enabled = false;
                 }
+                chkWarningInTreat.Checked = true;
+                spinUseInTreat.EditValue = null;
             }
             catch (Exception ex)
             {
@@ -1747,7 +1753,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     medicineType.HIS_SERVICE.SERVICE_TYPE_ID = currentVHisMedicineTypeDTODefault.SERVICE_TYPE_ID;
                     medicineType.VACCINE_TYPE_ID = null;
                 }
-
+                medicineType.ALERT_MAX_IN_TREATMENT = this.UseInTreat;
+                if (chkBlockInTreat.Checked) medicineType.IS_BLOCK_MAX_IN_TREATMENT = 1;
+                else medicineType.IS_BLOCK_MAX_IN_TREATMENT = null;
                 if (spinNumOrder.EditValue != null)
                 {
                     medicineType.NUM_ORDER = Inventec.Common.TypeConvert.Parse.ToInt64((spinNumOrder.EditValue ?? "").ToString());
@@ -3231,6 +3239,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     DevExpress.XtraEditors.XtraMessageBox.Show("Tổng độ dài của mã sơ chế và mã phức chế không được vượt quá 255 ký tự", "Thông báo", System.Windows.Forms.MessageBoxButtons.OK);
                     return;
                 }
+                if (dxErrorProvider1.HasErrors) return;
                 WaitingManager.Show();
                 MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE currentMedicineTypeDTO = new MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE();
 
@@ -3512,6 +3521,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 cboMedicineType.EditValue = null;
                 cboMedicineType.Enabled = false;
                 btnDieuChinhLieu.Enabled = false;
+                spinUseInTreat.EditValue = null;
+                this.UseInTreat = null;
+                chkWarningInTreat.Checked = true;
             }
             catch (Exception ex)
             {
@@ -7689,7 +7701,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         {
             try
             {
-                ProductInfoADO ado = new ProductInfoADO();
+                HIS.Desktop.ADO.ProductInfoADO ado = new ProductInfoADO();
                 ado.MedicineTypeId = this.currentMedicineTypeId??0;
                 ado.ProductInfoOpen = 1;
                 Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisProductInfo").FirstOrDefault();
@@ -7708,6 +7720,61 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
 
                 LogSystem.Warn(ex);
+            }
+        }
+        public decimal? UseInTreat { get; set; }
+        
+        private void spinUseInTreat_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if(spinUseInTreat.EditValue == null || Convert.ToDecimal(spinUseInTreat.EditValue) == 0)
+                {
+                    this.UseInTreat = null;
+                }
+                if(Convert.ToDecimal(spinUseInTreat.EditValue) < 0)
+                {
+                    dxErrorProvider1.SetError(spinUseInTreat, "Số lượng không hợp lệ",DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                }
+                else
+                {
+                    if (Convert.ToDecimal(spinUseInTreat.EditValue) > 0) UseInTreat = Convert.ToDecimal(spinUseInTreat.EditValue);
+                    dxErrorProvider1.SetError(spinUseInTreat, "", DevExpress.XtraEditors.DXErrorProvider.ErrorType.None);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkWarningInTreat_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                
+                chkBlockInTreat.Checked = !chkWarningInTreat.Checked;
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Error(ex);
+            }
+        }
+
+        private void chkBlockInTreat_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                
+                chkWarningInTreat.Checked = !chkBlockInTreat.Checked;
+                
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Error(ex);
             }
         }
     }

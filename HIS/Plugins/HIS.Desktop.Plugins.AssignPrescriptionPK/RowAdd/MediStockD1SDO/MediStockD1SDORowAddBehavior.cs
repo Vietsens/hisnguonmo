@@ -177,18 +177,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add.MediStockD1SDO
                         if (((!GlobalStore.IsTreatmentIn && ((frmAssignPrescription.serviceReqMain != null && frmAssignPrescription.serviceReqMain.IS_MAIN_EXAM == 1) || (frmAssignPrescription.serviceReqMain != null && frmAssignPrescription.serviceReqMain.IS_SUB_PRES != 1)) && (HisConfigCFG.IsUsingSubPrescriptionMechanism == "1")) || (!GlobalStore.IsTreatmentIn && HisConfigCFG.IsUsingSubPrescriptionMechanism != "1") || GlobalStore.IsCabinet) && medicineTypeSDO__Category__SameMediAcin == null)
                         {
                             item.PrimaryKey = (this.medicineTypeSDO.SERVICE_ID + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString());
-                            if (TakeOrReleaseBeanWorker.TakeForCreateBean(frmAssignPrescription.intructionTimeSelecteds, this.expMestId, item, false, Param,frmAssignPrescription.UseTimeSelecteds,frmAssignPrescription.lstOutPatientPres))
+                            if (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet ? frmAssignPrescription.CheckMaxInPrescriptionInBatchWithMultilPatient(item, item.AMOUNT) : frmAssignPrescription.CheckMaxInPrescriptionInBatch(item, item.AMOUNT))
                             {
-                                success = true;
-                                this.SaveDataAndRefesh(item);
-                                frmAssignPrescription.ReloadDataAvaiableMediBeanInCombo();
-                                LogSystem.Debug("SaveDataAndRefesh => 4");
-                            }
-                            else
-                            {
-                                //Release stent
-                                MessageManager.Show(Param, success);
-                                return success = false;
+                                if (!(GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet))
+                                    medicineTypeSDO.EXCEED_LIMIT_IN_BATCH_REASON = frmAssignPrescription.reasonMaxPrescriptionBatch;
+                                if (TakeOrReleaseBeanWorker.TakeForCreateBean(frmAssignPrescription.intructionTimeSelecteds, this.expMestId, item, false, Param, frmAssignPrescription.UseTimeSelecteds, frmAssignPrescription.lstOutPatientPres))
+                                {
+                                    success = true;
+                                    this.SaveDataAndRefesh(item);
+                                    frmAssignPrescription.ReloadDataAvaiableMediBeanInCombo();
+                                    LogSystem.Debug("SaveDataAndRefesh => 4");
+                                }
+                                else
+                                {
+                                    //Release stent
+                                    MessageManager.Show(Param, success);
+                                    return success = false;
+                                }
                             }
                         }
                         else
@@ -203,10 +208,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add.MediStockD1SDO
                             //        item.TotalPrice = (data_ServicePrice[0].PRICE * item.AMOUNT) ?? 0;
                             //    }
                             //}
-
-                            success = true;
-                            this.SaveDataAndRefesh(item);
-                            frmAssignPrescription.ReloadDataAvaiableMediBeanInCombo();
+                            if (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet ? frmAssignPrescription.CheckMaxInPrescriptionInBatchWithMultilPatient(item, item.AMOUNT) : frmAssignPrescription.CheckMaxInPrescriptionInBatch(item, item.AMOUNT))
+                            {
+                                if (!(GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet))
+                                    medicineTypeSDO.EXCEED_LIMIT_IN_BATCH_REASON = frmAssignPrescription.reasonMaxPrescriptionBatch;
+                                success = true;
+                                this.SaveDataAndRefesh(item);
+                                frmAssignPrescription.ReloadDataAvaiableMediBeanInCombo();
+                            }
                         }
                     }
                 }

@@ -597,6 +597,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 validFolow += "valid.22=" + valid + ";";
                 valid = valid && this.CheckMaxInPrescriptionInDayWhenSave(this.mediMatyTypeADOs);//TODO cần check với TH chọn nhiều BN kê
                 validFolow += "valid.23=" + valid + ";";
+                if (!(GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet))
+                    valid = valid && this.CheckMaxInPrescriptionInBatchWhenSave(this.mediMatyTypeADOs);
+                validFolow += "valid.23=" + valid + ";";
                 if (HisConfigCFG.IsCheckDepartmentInTimeWhenPresOrAssign && currentWorkPlace.RoomTypeId == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__BUONG)
                 {
                     valid = valid && CheckTimeInDepartment();

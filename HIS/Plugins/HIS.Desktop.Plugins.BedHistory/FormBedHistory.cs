@@ -885,12 +885,46 @@ namespace HIS.Desktop.Plugins.BedHistory
 
                         foreach (var itemADO in result)
                         {
-                            var dataByBedLogs_onStartTime = dataBedLogs.Where(p => p.BED_ID == itemADO.ID && p.START_TIME <= startTimeFilter && (!p.FINISH_TIME.HasValue || (p.FINISH_TIME.HasValue && p.FINISH_TIME.Value >= startTimeFilter))).ToList() ?? new List<HIS_BED_LOG>();
+                            
+                            //var dataByBedLogs_onStartTime = dataBedLogs.Where(p => p.BED_ID == itemADO.ID && p.START_TIME <= startTimeFilter && (!p.FINISH_TIME.HasValue || (p.FINISH_TIME.HasValue && p.FINISH_TIME.Value >= startTimeFilter))).ToList() ?? new List<HIS_BED_LOG>();
+                            //List<HIS_BED_LOG> dataByBedLogs_onFinishTime = new List<HIS_BED_LOG>();
+                            //if (finishTimeFilter != null)
+                            //    dataByBedLogs_onFinishTime = dataBedLogs.Where(p => p.BED_ID == itemADO.ID 
+                            //    && (p.START_TIME <= finishTimeFilter && (!p.FINISH_TIME.HasValue || (p.FINISH_TIME.HasValue && p.FINISH_TIME.Value >= finishTimeFilter)))
+                            //    ||(p.S)).ToList() ?? new List<HIS_BED_LOG>();
+                            //else
+                            //    dataByBedLogs_onFinishTime = dataBedLogs.Where(p => p.BED_ID == itemADO.ID && (!p.FINISH_TIME.HasValue || (p.FINISH_TIME.HasValue && p.FINISH_TIME.Value >= startTimeFilter))).ToList() ?? new List<HIS_BED_LOG>();
+                            
+                            //lọc thời gian mới
+                            // Lấy danh sách log theo startTimeFilter
+                            var dataByBedLogs_onStartTime = dataBedLogs
+                                .Where(p => p.BED_ID == itemADO.ID
+                                        && (p.START_TIME <= startTimeFilter
+                                            && (!p.FINISH_TIME.HasValue || p.FINISH_TIME.Value >= startTimeFilter)
+                                            || (p.START_TIME >= startTimeFilter && (!p.FINISH_TIME.HasValue || p.START_TIME <= finishTimeFilter))))
+                                .ToList() ?? new List<HIS_BED_LOG>();
+
                             List<HIS_BED_LOG> dataByBedLogs_onFinishTime = new List<HIS_BED_LOG>();
+
                             if (finishTimeFilter != null)
-                                dataByBedLogs_onFinishTime = dataBedLogs.Where(p => p.BED_ID == itemADO.ID && p.START_TIME <= finishTimeFilter && (!p.FINISH_TIME.HasValue || (p.FINISH_TIME.HasValue && p.FINISH_TIME.Value >= finishTimeFilter))).ToList() ?? new List<HIS_BED_LOG>();
+                            {
+                                // Nếu finishTimeFilter có giá trị, tìm các log có thời gian phù hợp trong khoảng từ startTime đến finishTime
+                                dataByBedLogs_onFinishTime = dataBedLogs
+                                    .Where(p => p.BED_ID == itemADO.ID
+                                            && (p.START_TIME <= finishTimeFilter
+                                                && (!p.FINISH_TIME.HasValue || p.FINISH_TIME.Value >= finishTimeFilter)
+                                                || (p.START_TIME >= startTimeFilter && (!p.FINISH_TIME.HasValue || p.START_TIME <= finishTimeFilter))))
+                                    .ToList() ?? new List<HIS_BED_LOG>();
+                            }
                             else
-                                dataByBedLogs_onFinishTime = dataBedLogs.Where(p => p.BED_ID == itemADO.ID && (!p.FINISH_TIME.HasValue || (p.FINISH_TIME.HasValue && p.FINISH_TIME.Value >= startTimeFilter))).ToList() ?? new List<HIS_BED_LOG>();
+                            {
+                                // Nếu finishTimeFilter không có giá trị, chỉ xét các log có finishTime >= startTimeFilter
+                                dataByBedLogs_onFinishTime = dataBedLogs
+                                    .Where(p => p.BED_ID == itemADO.ID
+                                            && (!p.FINISH_TIME.HasValue || p.FINISH_TIME.Value >= startTimeFilter))
+                                    .ToList() ?? new List<HIS_BED_LOG>();
+                            }
+
                             List<HIS_BED_LOG> dataByBedLogs = new List<HIS_BED_LOG>();
                             dataByBedLogs.AddRange(dataByBedLogs_onStartTime);
                             dataByBedLogs.AddRange(dataByBedLogs_onFinishTime);
@@ -903,6 +937,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                             {
                                 itemADO.BedLogFinishIds = dataByBedLogs_onFinishTime.Select(o => o.ID).ToList();
                             }
+                            
                             if (dataByBedLogs != null && dataByBedLogs.Count > 0)
                             {
                                 if (itemADO.MAX_CAPACITY.HasValue)
@@ -916,6 +951,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                                     itemADO.IsKey = 1;
                                 itemADO.BedLogAllIds = dataByBedLogs.Select(o => o.ID).ToList();
                                 itemADO.AMOUNT = dataByBedLogs.Count;
+                                
                                 itemADO.AMOUNT_STR = dataByBedLogs.Count + "/" + itemADO.MAX_CAPACITY;
                                 itemADO.TREATMENT_BED_ROOM_IDs = dataByBedLogs.Select(o => o.TREATMENT_BED_ROOM_ID).ToList();
                                 dicTreatmentBedRoom[itemADO.ID] = itemADO.TREATMENT_BED_ROOM_IDs;
@@ -1352,13 +1388,41 @@ namespace HIS.Desktop.Plugins.BedHistory
                         {
                             var adoStart = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.startTime);
                             var adoFinish = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.finishTime);
-                            if((adoStart >= exitsBed.START_TIME && adoStart <= exitsBed.FINISH_TIME) 
-                                || (adoFinish >= exitsBed.START_TIME && adoFinish <= exitsBed.FINISH_TIME)
-                                )
+                            //if((adoStart >= exitsBed.START_TIME && adoStart <= exitsBed.FINISH_TIME) 
+                            //    || (adoFinish >= exitsBed.START_TIME && adoFinish <= exitsBed.FINISH_TIME)
+                            //    )
+                            //{
+
+                            //}
+                            if (adoStart <= exitsBed.START_TIME)
                             {
-                                if(ado.IsChecked) return;
+                                // start time nhỏ hơn hoặc bằng thời gian bắt đầu của giường cũ
+                                if (adoFinish >= exitsBed.START_TIME || adoFinish >= exitsBed.FINISH_TIME)
+                                {
+                                    // Bao trọn hoặc chồng lên thời gian giường cũ
+                                    if (adoFinish >= exitsBed.FINISH_TIME)
+                                    {
+                                        // Nếu bao trọn cả khoảng thời gian của giường cũ
+                                        if (ado.IsChecked) return;
+                                    }
+                                    else
+                                    {
+                                        // Chỉ chồng lên thời gian bắt đầu
+                                        if (ado.IsChecked) return;
+                                    }
+                                }
                             }
-                            
+                            else
+                            {
+                                // start time lớn hơn thời gian bắt đầu của giường cũ
+                                if (adoStart <= exitsBed.FINISH_TIME)
+                                {
+                                    // Chồng lên thời gian kết thúc của giường cũ
+                                    if (ado.IsChecked) return;
+                                }
+                            }
+
+
                         }
                         if (!BreakServiceCondition)
                             CountTimeBed();
@@ -1584,7 +1648,45 @@ namespace HIS.Desktop.Plugins.BedHistory
                     {
                         B = A.Where(o => o.finishTime > ado.startTime).ToList();
                         if (B == null || B.Count() == 0) return;
-                        if (B.Exists(o => o.finishTime >= ado.finishTime || o.startTime <= ado.startTime)) isWarning = true;
+                        //if (B.Exists(o => o.finishTime >= ado.finishTime || o.startTime <= ado.startTime)) isWarning = true; logic check cu
+                        foreach(var _b in B)
+                        {
+                            var adoStart = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.startTime);
+                            var adoFinish = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.finishTime);
+                            //if((adoStart >= exitsBed.START_TIME && adoStart <= exitsBed.FINISH_TIME) 
+                            //    || (adoFinish >= exitsBed.START_TIME && adoFinish <= exitsBed.FINISH_TIME)
+                            //    )
+                            //{
+
+                            //}
+                            if (adoStart <= _b.START_TIME)
+                            {
+                                // start time nhỏ hơn hoặc bằng thời gian bắt đầu của giường cũ
+                                if (adoFinish >= _b.START_TIME || adoFinish >= _b.FINISH_TIME)
+                                {
+                                    // Bao trọn hoặc chồng lên thời gian giường cũ
+                                    if (adoFinish >= _b.FINISH_TIME)
+                                    {
+                                        // Nếu bao trọn cả khoảng thời gian của giường cũ
+                                        isWarning = true;
+                                    }
+                                    else
+                                    {
+                                        // Chỉ chồng lên thời gian bắt đầu
+                                        isWarning = true;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // start time lớn hơn thời gian bắt đầu của giường cũ
+                                if (adoStart <= _b.FINISH_TIME)
+                                {
+                                    // Chồng lên thời gian kết thúc của giường cũ
+                                    isWarning = true;
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -2378,9 +2480,10 @@ namespace HIS.Desktop.Plugins.BedHistory
                                 //{
                                 //    lstHisTreatmentBedRoom = lstHisTreatmentBedRoom.Where(o => o.TREATMENT_ID != _TreatmentBedRoom.TREATMENT_ID).ToList();
                                 //}
+
                                 if (lstHisTreatmentBedRoom != null && lstHisTreatmentBedRoom.Count > 0)
                                 {
-                                    lstHisTreatmentBedRoom = lstHisTreatmentBedRoom.Where(o => !bedLogChecks.Select(s => s.BED_ID).Contains(o.BED_ID ?? 0)).ToList();
+                                    lstHisTreatmentBedRoom = lstHisTreatmentBedRoom.Where(o => !bedLogChecks.Select(s => s.TREATMENT_ID).Contains(o.TREATMENT_ID)).ToList();
                                 }
                                 foreach (var item in lstHisTreatmentBedRoom)
                                 {
@@ -3122,7 +3225,7 @@ namespace HIS.Desktop.Plugins.BedHistory
 
                             if (lstHisTreatmentBedRoom != null && lstHisTreatmentBedRoom.Count > 0)
                             {
-                                lstHisTreatmentBedRoom = lstHisTreatmentBedRoom.Where(o => !bedLogChecks.Select(s=>s.BED_ID).Contains(o.BED_ID??0)).ToList();
+                                lstHisTreatmentBedRoom = lstHisTreatmentBedRoom.Where(o => !bedLogChecks.Select(s => s.TREATMENT_ID).Contains(o.TREATMENT_ID)).ToList();
                             }
                             foreach (var item in lstHisTreatmentBedRoom)
                             {

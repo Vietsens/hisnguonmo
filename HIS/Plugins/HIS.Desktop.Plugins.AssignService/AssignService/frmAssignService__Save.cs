@@ -2004,7 +2004,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => emrInputAdo), emrInputAdo));
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => emrFormsCodes), emrFormsCodes));
-                    processor.FormOpenEmr(EmrCoverTypeId_Send, emrInputAdo,string.Format(",", emrFormsCodes));
+                    processor.FormOpenEmr(EmrCoverTypeId_Send, emrInputAdo,string.Join(",", emrFormsCodes));
                 }
             }
             catch (Exception ex)

@@ -1169,7 +1169,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 serviceReqFilter.TREATMENT_ID = this.treatmentId;
                 serviceReqFilter.SERVICE_REQ_TYPE_IDs = new List<long> { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT };
 
-                serviceReqFilter.INTRUCTION_DATE__EQUAL = Inventec.Common.TypeConvert.Parse.ToInt64((InstructionTime.ToString().Substring(0, 8) + "000000"));
+                //serviceReqFilter.INTRUCTION_DATE__EQUAL = Inventec.Common.TypeConvert.Parse.ToInt64((InstructionTime.ToString().Substring(0, 8) + "000000"));
 
                 var serviceReqAllInDays = new BackendAdapter(param)
                       .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
@@ -1187,18 +1187,30 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                     HisServiceReqMetyFilter expMestMetyFilter = new HisServiceReqMetyFilter();
                     expMestMetyFilter.SERVICE_REQ_IDs = serviceReqAllInDayIds;
-                    this.serviceReqMetyInDay = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ_METY>>(RequestUriStore.HIS_SERVICE_REQ_METY__GET, ApiConsumers.MosConsumer, expMestMetyFilter, ProcessLostToken, param);
-
+                    this.serviceReqMetyInBatch = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ_METY>>(RequestUriStore.HIS_SERVICE_REQ_METY__GET, ApiConsumers.MosConsumer, expMestMetyFilter, ProcessLostToken, param);
 
                     HisServiceReqMatyFilter expMestMatyFilter = new HisServiceReqMatyFilter();
                     expMestMatyFilter.SERVICE_REQ_IDs = serviceReqAllInDayIds;
-                    this.serviceReqMatyInDay = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ_MATY>>(RequestUriStore.HIS_SERVICE_REQ_MATY__GET, ApiConsumers.MosConsumer, expMestMatyFilter, ProcessLostToken, param);
+                    this.serviceReqMatyInBatch = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ_MATY>>(RequestUriStore.HIS_SERVICE_REQ_MATY__GET, ApiConsumers.MosConsumer, expMestMatyFilter, ProcessLostToken, param);
+
+                    serviceReqAllInDays = serviceReqAllInDays.Where(o => o.INTRUCTION_DATE == Inventec.Common.TypeConvert.Parse.ToInt64((InstructionTime.ToString().Substring(0, 8) + "000000"))).ToList();
+                    if (serviceReqAllInDays != null && serviceReqAllInDays.Count > 0)
+                    {
+                        serviceReqMetyInDay = serviceReqMetyInBatch.Where(o => serviceReqAllInDays.Exists(p => p.ID == o.SERVICE_REQ_ID)).ToList();
+                        serviceReqMatyInDay = serviceReqMatyInBatch.Where(o => serviceReqAllInDays.Exists(p => p.ID == o.SERVICE_REQ_ID)).ToList();
+                    }
                 }
                 if (this.serviceReqMetyInDay == null)
                     this.serviceReqMetyInDay = new List<HIS_SERVICE_REQ_METY>();
 
                 if (this.serviceReqMatyInDay == null)
                     this.serviceReqMatyInDay = new List<HIS_SERVICE_REQ_MATY>();
+
+                if (this.serviceReqMetyInBatch == null)
+                    this.serviceReqMetyInBatch = new List<HIS_SERVICE_REQ_METY>();
+
+                if (this.serviceReqMatyInBatch == null)
+                    this.serviceReqMatyInBatch = new List<HIS_SERVICE_REQ_MATY>();
             }
             catch (Exception ex)
             {
@@ -1559,6 +1571,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 dMediStock1ADO.HEIN_SERVICE_BHYT_CODE = mety.HEIN_SERVICE_BHYT_CODE;
                                 dMediStock1ADO.HEIN_SERVICE_BHYT_NAME = mety.HEIN_SERVICE_BHYT_NAME;
                                 dMediStock1ADO.IS_BLOCK_MAX_IN_PRESCRIPTION = mety.IS_BLOCK_MAX_IN_PRESCRIPTION;
+                                dMediStock1ADO.IS_BLOCK_MAX_IN_TREATMENT = mety.IS_BLOCK_MAX_IN_TREATMENT;
                                 dMediStock1ADO.ALERT_MAX_IN_DAY = mety.ALERT_MAX_IN_DAY;
                                 dMediStock1ADO.IS_BLOCK_MAX_IN_DAY = mety.IS_BLOCK_MAX_IN_DAY;
                                 dMediStock1ADO.IS_SPLIT_COMPENSATION = mety.IS_SPLIT_COMPENSATION;
@@ -1753,6 +1766,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                     dMediStock1ADO.HEIN_SERVICE_BHYT_CODE = mety.HEIN_SERVICE_BHYT_CODE;
                                     dMediStock1ADO.HEIN_SERVICE_BHYT_NAME = mety.HEIN_SERVICE_BHYT_NAME;
                                     dMediStock1ADO.IS_BLOCK_MAX_IN_PRESCRIPTION = mety.IS_BLOCK_MAX_IN_PRESCRIPTION;
+                                    dMediStock1ADO.IS_BLOCK_MAX_IN_TREATMENT = mety.IS_BLOCK_MAX_IN_TREATMENT;
                                     dMediStock1ADO.ALERT_MAX_IN_DAY = mety.ALERT_MAX_IN_DAY;
                                     dMediStock1ADO.IS_BLOCK_MAX_IN_DAY = mety.IS_BLOCK_MAX_IN_DAY;
                                     dMediStock1ADO.IS_SPLIT_COMPENSATION = mety.IS_SPLIT_COMPENSATION;
@@ -1857,6 +1871,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         dMediStock1ADO.HEIN_SERVICE_BHYT_CODE = item.HEIN_SERVICE_BHYT_CODE;
                         dMediStock1ADO.HEIN_SERVICE_BHYT_NAME = item.HEIN_SERVICE_BHYT_NAME;
                         dMediStock1ADO.IS_BLOCK_MAX_IN_PRESCRIPTION = item.IS_BLOCK_MAX_IN_PRESCRIPTION;
+                        dMediStock1ADO.IS_BLOCK_MAX_IN_TREATMENT = item.IS_BLOCK_MAX_IN_TREATMENT;
                         dMediStock1ADO.ALERT_MAX_IN_DAY = item.ALERT_MAX_IN_DAY;
                         dMediStock1ADO.IS_BLOCK_MAX_IN_DAY = item.IS_BLOCK_MAX_IN_DAY;
                         dMediStock1ADO.IS_SPLIT_COMPENSATION = item.IS_SPLIT_COMPENSATION;

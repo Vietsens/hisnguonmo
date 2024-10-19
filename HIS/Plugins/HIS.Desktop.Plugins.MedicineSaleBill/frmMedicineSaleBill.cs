@@ -960,8 +960,11 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 if (mediStock.QR_CONFIG_JSON != null)
                 {
                     ItemConfig config = Newtonsoft.Json.JsonConvert.DeserializeObject<ItemConfig>(mediStock.QR_CONFIG_JSON);
+                    string key = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", config.BANK);
                     List<HIS_CONFIG> listConfigAll = BackendDataWorker.Get<HIS_CONFIG>();
-                    var configNow = listConfigAll.Where(o => o.VALUE == config.VALUE).FirstOrDefault();
+                    //var configNow = listConfigAll.Where(o => o.VALUE == config.VALUE || o.VALUE.Contains(config.VALUE)).FirstOrDefault();
+                    var configNow = listConfigAll.Where(o => o.KEY == key).FirstOrDefault();
+                    configNow.VALUE = config.VALUE;
                     List<object> listArgs = new List<object>();
                     TransReqQRADO adoqr = new TransReqQRADO();
                     adoqr.TreatmentId = transactionBillResult.TREATMENT_ID ?? 0;
