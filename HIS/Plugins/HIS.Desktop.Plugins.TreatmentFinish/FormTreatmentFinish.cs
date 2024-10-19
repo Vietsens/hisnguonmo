@@ -1602,8 +1602,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             {
                 if (dtEndTime.EditValue != null && dtTimeIn.EditValue != null)
                 {
-                    String enddatetime = Inventec.Common.TypeConvert.Parse.ToDateTime(dtEndTime.Text).ToString("yyyyMMddHHmm");
-                    long endTime = Inventec.Common.TypeConvert.Parse.ToInt64(enddatetime + "00");
+                    String enddatetime = Inventec.Common.TypeConvert.Parse.ToDateTime(dtEndTime.Text).ToString("yyyyMMddHHmmss");
+                    long endTime = Inventec.Common.TypeConvert.Parse.ToInt64(enddatetime);
 
                     String indatetime = Inventec.Common.TypeConvert.Parse.ToDateTime(dtTimeIn.Text).ToString("yyyyMMddHHmm");
                     long inTime = Inventec.Common.TypeConvert.Parse.ToInt64(indatetime + "00");
