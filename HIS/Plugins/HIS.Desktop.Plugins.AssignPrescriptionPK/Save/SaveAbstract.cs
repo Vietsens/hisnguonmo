@@ -208,7 +208,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
             {
                 this.IcdSubCode = subIcd.ICD_SUB_CODE;
                 this.IcdText = subIcd.ICD_TEXT;
-            } 
+            }
             if (frmAssignPrescription.ucIcdYhct != null)
             {
                 var icdTranditional = frmAssignPrescription.icdYhctProcessor.GetValue(frmAssignPrescription.ucIcdYhct);
@@ -676,6 +676,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     mety.Tutorial = item.TUTORIAL;
                     mety.ExceedLimitInPresReason = item.EXCEED_LIMIT_IN_PRES_REASON;
                     mety.ExceedLimitInDayReason = item.EXCEED_LIMIT_IN_DAY_REASON;
+                    if (item.ALERT_MAX_IN_TREATMENT.HasValue && item.IsAlertInTreatPresciption)
+                        mety.ExceedLimitInTreatmentReason = item.EXCEED_LIMIT_IN_BATCH_REASON;
+
                     mety.OddPresReason = item.ODD_PRES_REASON;
                     mety.UseTimeTo = item.UseTimeTo;
                     var sangTemp = frmAssignPrescription.GetValueSpinNew(item.Sang);
@@ -769,6 +772,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     orty.Tutorial = item.TUTORIAL;
                     orty.ExceedLimitInPresReason = item.EXCEED_LIMIT_IN_PRES_REASON;
                     orty.ExceedLimitInDayReason = item.EXCEED_LIMIT_IN_DAY_REASON;
+                    if (item.ALERT_MAX_IN_TREATMENT.HasValue && item.IsAlertInTreatPresciption) 
+                        orty.ExceedLimitInTreatmentReason = item.EXCEED_LIMIT_IN_BATCH_REASON;
+
                     orty.OddPresReason = item.ODD_PRES_REASON;
                     var sangTemp = frmAssignPrescription.GetValueSpinNew(item.Sang);
                     if (!String.IsNullOrEmpty(sangTemp))
@@ -917,6 +923,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     pres.TutorialInfusion = item.TUTORIAL_INFUSION;
                     pres.ExceedLimitInPresReason = item.EXCEED_LIMIT_IN_PRES_REASON;
                     pres.ExceedLimitInDayReason = item.EXCEED_LIMIT_IN_DAY_REASON;
+                    if (item.ALERT_MAX_IN_TREATMENT.HasValue && item.IsAlertInTreatPresciption)
+                        pres.ExceedLimitInTreatmentReason = item.EXCEED_LIMIT_IN_BATCH_REASON;
                     pres.OddPresReason = item.ODD_PRES_REASON;
 
                     if (this.ExpMestReasonId == null)
@@ -1079,7 +1087,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     pres.MediStockId = item.MEDI_STOCK_ID ?? 0;
                     pres.ExceedLimitInPresReason = item.EXCEED_LIMIT_IN_PRES_REASON;
                     pres.ExceedLimitInDayReason = item.EXCEED_LIMIT_IN_DAY_REASON;
-
                     if (item.EQUIPMENT_SET_ID.HasValue && item.EQUIPMENT_SET_ID.Value > 0)
                     {
                         pres.EquipmentSetId = item.EQUIPMENT_SET_ID ?? 0;
@@ -1243,6 +1250,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     pres.TutorialInfusion = item.TUTORIAL_INFUSION;
                     pres.ExceedLimitInPresReason = item.EXCEED_LIMIT_IN_PRES_REASON;
                     pres.ExceedLimitInDayReason = item.EXCEED_LIMIT_IN_DAY_REASON;
+                    if ((item.ALERT_MAX_IN_TREATMENT.HasValue && item.IsAlertInTreatPresciption) && frmAssignPrescription.mediMatyTypeADOsAlertInTreatment != null && frmAssignPrescription.mediMatyTypeADOsAlertInTreatment.Count > 0 && frmAssignPrescription.mediMatyTypeADOsAlertInTreatment.Exists(o => o.PrimaryKey == item.PrimaryKey && o.PATIENT_NAME_BY_TREATMENT_CODE.Split('_')[1] == TreatmentWithPatientTypeInfoSDO.TREATMENT_CODE))
+                    {
+                        pres.ExceedLimitInTreatmentReason = frmAssignPrescription.mediMatyTypeADOsAlertInTreatment.LastOrDefault(o => o.PrimaryKey == item.PrimaryKey && o.PATIENT_NAME_BY_TREATMENT_CODE.Split('_')[1] == TreatmentWithPatientTypeInfoSDO.TREATMENT_CODE).EXCEED_LIMIT_IN_BATCH_REASON;
+                    }
+
+
                     pres.OddPresReason = item.ODD_PRES_REASON;
 
                     if (this.ExpMestReasonId == null)
@@ -1392,6 +1405,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     mety.Price = item.PRICE ?? 0;
                     mety.ExceedLimitInPresReason = item.EXCEED_LIMIT_IN_PRES_REASON;
                     mety.ExceedLimitInDayReason = item.EXCEED_LIMIT_IN_DAY_REASON;
+                    if ((item.ALERT_MAX_IN_TREATMENT.HasValue && item.IsAlertInTreatPresciption) && frmAssignPrescription.mediMatyTypeADOsAlertInTreatment != null && frmAssignPrescription.mediMatyTypeADOsAlertInTreatment.Count > 0 && frmAssignPrescription.mediMatyTypeADOsAlertInTreatment.Exists(o => o.PrimaryKey == item.PrimaryKey && o.PATIENT_NAME_BY_TREATMENT_CODE.Split('_')[1] == TreatmentWithPatientTypeInfoSDO.TREATMENT_CODE))
+                    {
+                        mety.ExceedLimitInTreatmentReason = frmAssignPrescription.mediMatyTypeADOsAlertInTreatment.LastOrDefault(o => o.PrimaryKey == item.PrimaryKey && o.PATIENT_NAME_BY_TREATMENT_CODE.Split('_')[1] == TreatmentWithPatientTypeInfoSDO.TREATMENT_CODE).EXCEED_LIMIT_IN_BATCH_REASON;
+                    }
                     mety.OddPresReason = item.ODD_PRES_REASON;
                     var sangTemp = frmAssignPrescription.GetValueSpinNew(item.Sang);
                     if (!String.IsNullOrEmpty(sangTemp))
@@ -1461,6 +1478,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     orty.Tutorial = item.TUTORIAL;
                     orty.ExceedLimitInPresReason = item.EXCEED_LIMIT_IN_PRES_REASON;
                     orty.ExceedLimitInDayReason = item.EXCEED_LIMIT_IN_DAY_REASON;
+                    if ((item.ALERT_MAX_IN_TREATMENT.HasValue && item.IsAlertInTreatPresciption) && frmAssignPrescription.mediMatyTypeADOsAlertInTreatment != null && frmAssignPrescription.mediMatyTypeADOsAlertInTreatment.Count > 0 && frmAssignPrescription.mediMatyTypeADOsAlertInTreatment.Exists(o => o.PrimaryKey == item.PrimaryKey && o.PATIENT_NAME_BY_TREATMENT_CODE.Split('_')[1] == TreatmentWithPatientTypeInfoSDO.TREATMENT_CODE))
+                    {
+                        orty.ExceedLimitInTreatmentReason = frmAssignPrescription.mediMatyTypeADOsAlertInTreatment.LastOrDefault(o => o.PrimaryKey == item.PrimaryKey && o.PATIENT_NAME_BY_TREATMENT_CODE.Split('_')[1] == TreatmentWithPatientTypeInfoSDO.TREATMENT_CODE).EXCEED_LIMIT_IN_BATCH_REASON;
+                    }
                     orty.OddPresReason = item.ODD_PRES_REASON;
                     orty.UseTimeTo = item.UseTimeTo;
                     orty.Price = item.PRICE ?? 0;

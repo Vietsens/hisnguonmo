@@ -118,6 +118,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit
         public bool IsNotOutStock { get; set; }
         protected string ExceedLimitInPresReason { get; set; }
         protected string ExceedLimitInDayReason { get; set; }
+        protected string ExceedLimitInBatchReason { get; set; }
         protected string OddPresReason { get; set; }
         public OptionChonThuocThayThe ChonThuocThayThe { get; set; }
         public EnumOptionChonVatTuThayThe ChonVTThayThe { get; set; }
@@ -176,9 +177,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit
             this.DataRow = dataRow;
             this.ExceedLimitInPresReason = frmAssignPrescription.reasonMaxPrescription;
             this.ExceedLimitInDayReason = frmAssignPrescription.reasonMaxPrescriptionDay;
+            if (!(GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet))
+                this.ExceedLimitInBatchReason = frmAssignPrescription.reasonMaxPrescriptionBatch;
             this.OddPresReason = frmAssignPrescription.reasonOddPrescription;
 
-            if (HisConfigCFG.ManyDayPrescriptionOption == 2 && ((GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet)||frmAssignPrescription.VHistreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU))
+            if (HisConfigCFG.ManyDayPrescriptionOption == 2 && ((GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) || frmAssignPrescription.VHistreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU))
             {
                 this.IsMultiDateState = frmAssignPrescription.isMultiDateState;
                 if (frmAssignPrescription.UcDateGetValueForMedi() != null
@@ -264,7 +267,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit
                 medicineTypeSDO.IcdsWarning = this.frmAssignPrescription.icdsWarning;
                 medicineTypeSDO.EXCEED_LIMIT_IN_PRES_REASON = this.ExceedLimitInPresReason;
                 medicineTypeSDO.EXCEED_LIMIT_IN_DAY_REASON = this.ExceedLimitInDayReason;
+                medicineTypeSDO.EXCEED_LIMIT_IN_BATCH_REASON = this.ExceedLimitInBatchReason;
                 medicineTypeSDO.ODD_PRES_REASON = this.OddPresReason;
+                medicineTypeSDO.ALERT_MAX_IN_TREATMENT = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.ALERT_MAX_IN_TREATMENT : null;
+                medicineTypeSDO.IS_BLOCK_MAX_IN_TREATMENT = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.IS_BLOCK_MAX_IN_TREATMENT : null; 
+                medicineTypeSDO.NUMBER_EXCEED_IN_TREATMENT = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.NUMBER_EXCEED_IN_TREATMENT : null; 
+                medicineTypeSDO.NUMBER_PRESCIPTION_IN_TREATMENT = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.NUMBER_PRESCIPTION_IN_TREATMENT : null;
+                var amountPres = (medicineTypeSDO.NUMBER_PRESCIPTION_IN_TREATMENT ?? 0) + medicineTypeSDO.AMOUNT + frmAssignPrescription.mediMatyTypeADOs.Where(o => o.ID == medicineTypeSDO.ID && o.PrimaryKey != medicineTypeSDO.PrimaryKey).Sum(o => o.UseDays != 0 ? o.AMOUNT / o.UseDays : o.AMOUNT);
+                if (amountPres > medicineTypeSDO.ALERT_MAX_IN_TREATMENT)
+                    medicineTypeSDO.IsAlertInTreatPresciption = true;
             }
         }
 

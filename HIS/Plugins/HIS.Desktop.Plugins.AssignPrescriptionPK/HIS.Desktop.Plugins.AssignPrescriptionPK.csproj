@@ -559,6 +559,12 @@
     <Compile Include="MessageBoxForm\frmMessageBoxChooseThuocExceAmout.Designer.cs">
       <DependentUpon>frmMessageBoxChooseThuocExceAmout.cs</DependentUpon>
     </Compile>
+    <Compile Include="MessageBoxForm\frmMutlilPatientReasonInBatch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MessageBoxForm\frmMutlilPatientReasonInBatch.Designer.cs">
+      <DependentUpon>frmMutlilPatientReasonInBatch.cs</DependentUpon>
+    </Compile>
     <Compile Include="MessageBoxForm\frmOverReason.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -570,12 +576,6 @@
     </Compile>
     <Compile Include="MessageBoxForm\frmReasonOddPres.Designer.cs">
       <DependentUpon>frmReasonOddPres.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MessageBoxForm\frmReasonMaxPrescriptionInDay.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MessageBoxForm\frmReasonMaxPrescriptionInDay.Designer.cs">
-      <DependentUpon>frmReasonMaxPrescriptionInDay.cs</DependentUpon>
     </Compile>
     <Compile Include="MessageBoxForm\frmReasonMaxPrescription.cs">
       <SubType>Form</SubType>
@@ -854,14 +854,14 @@
     <EmbeddedResource Include="MessageBoxForm\frmMessageBoxChooseAcinBhyt.resx">
       <DependentUpon>frmMessageBoxChooseAcinBhyt.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MessageBoxForm\frmMutlilPatientReasonInBatch.resx">
+      <DependentUpon>frmMutlilPatientReasonInBatch.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MessageBoxForm\frmOverReason.resx">
       <DependentUpon>frmOverReason.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MessageBoxForm\frmReasonOddPres.resx">
       <DependentUpon>frmReasonOddPres.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MessageBoxForm\frmReasonMaxPrescriptionInDay.resx">
-      <DependentUpon>frmReasonMaxPrescriptionInDay.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MessageBoxForm\frmReasonMaxPrescription.resx">
       <DependentUpon>frmReasonMaxPrescription.cs</DependentUpon>

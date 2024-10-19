@@ -324,7 +324,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 this.PATIENT_TYPE_NAME = inputData.PATIENT_TYPE_NAME;
                 this.SereServParentId = inputData.SERE_SERV_PARENT_ID;
                 this.MIXED_INFUSION = inputData.MIXED_INFUSION;
-
+                this.EXCEED_LIMIT_IN_BATCH_REASON = inputData.EXCEED_LIMIT_IN_TREAT_REASON;
                 var mst = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ID == inputData.TDL_MEDI_STOCK_ID);
                 if (mst != null)
                 {
@@ -362,10 +362,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 {
                     this.ALERT_MAX_IN_PRESCRIPTION = mety.ALERT_MAX_IN_PRESCRIPTION;
                     this.ALERT_MAX_IN_DAY = mety.ALERT_MAX_IN_DAY;
+                    this.ALERT_MAX_IN_TREATMENT = mety.ALERT_MAX_IN_TREATMENT;
                     this.TDL_GENDER_ID = mety.TDL_GENDER_ID;
                     this.CONTRAINDICATION = mety.CONTRAINDICATION;
                     this.DESCRIPTION = mety.DESCRIPTION;
                     this.IS_BLOCK_MAX_IN_PRESCRIPTION = mety.IS_BLOCK_MAX_IN_PRESCRIPTION;
+                    this.IS_BLOCK_MAX_IN_TREATMENT = mety.IS_BLOCK_MAX_IN_TREATMENT;
                     this.IS_BLOCK_MAX_IN_DAY = mety.IS_BLOCK_MAX_IN_DAY;
                     this.IS_OXYGEN = mety.IS_OXYGEN;
                     this.IS_OUT_HOSPITAL = mety.IS_OUT_HOSPITAL;
@@ -525,16 +527,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 this.PATIENT_TYPE_NAME = inputData.PATIENT_TYPE_NAME;
                 this.SereServParentId = inputData.SERE_SERV_PARENT_ID;
                 this.MIXED_INFUSION = inputData.MIXED_INFUSION;
-
+                this.EXCEED_LIMIT_IN_BATCH_REASON = inputData.EXCEED_LIMIT_IN_TREAT_REASON;
                 var mety = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == inputData.MEDICINE_TYPE_ID);
                 if (mety != null)
                 {
                     this.ALERT_MAX_IN_PRESCRIPTION = mety.ALERT_MAX_IN_PRESCRIPTION;
+                    this.ALERT_MAX_IN_TREATMENT = mety.ALERT_MAX_IN_TREATMENT;
                     this.ALERT_MAX_IN_DAY = mety.ALERT_MAX_IN_DAY;
                     this.TDL_GENDER_ID = mety.TDL_GENDER_ID;
                     this.CONTRAINDICATION = mety.CONTRAINDICATION;
                     this.DESCRIPTION = mety.DESCRIPTION;
                     this.IS_BLOCK_MAX_IN_PRESCRIPTION = mety.IS_BLOCK_MAX_IN_PRESCRIPTION;
+                    this.IS_BLOCK_MAX_IN_TREATMENT = mety.IS_BLOCK_MAX_IN_TREATMENT;
                     this.IS_BLOCK_MAX_IN_DAY = mety.IS_BLOCK_MAX_IN_DAY;
                     this.IS_OXYGEN = mety.IS_OXYGEN;
                     this.IS_OUT_HOSPITAL = mety.IS_OUT_HOSPITAL;
@@ -1199,6 +1203,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 }
                 this.EXCEED_LIMIT_IN_PRES_REASON = inputData.EXCEED_LIMIT_IN_PRES_REASON;
                 this.EXCEED_LIMIT_IN_DAY_REASON = inputData.EXCEED_LIMIT_IN_DAY_REASON;
+                this.EXCEED_LIMIT_IN_BATCH_REASON = inputData.EXCEED_LIMIT_IN_TREAT_REASON;
                 this.ODD_PRES_REASON = inputData.ODD_PRES_REASON;
                 this.UseTimeTo = inputData.USE_TIME_TO;
                 this.TUTORIAL = inputData.TUTORIAL;
@@ -1339,6 +1344,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 this.HTU_ID = inputData.HTU_ID;
                 this.EXCEED_LIMIT_IN_PRES_REASON = inputData.EXCEED_LIMIT_IN_PRES_REASON;
                 this.EXCEED_LIMIT_IN_DAY_REASON = inputData.EXCEED_LIMIT_IN_DAY_REASON;
+                this.EXCEED_LIMIT_IN_BATCH_REASON = inputData.EXCEED_LIMIT_IN_TREAT_REASON;
                 this.ODD_PRES_REASON = inputData.ODD_PRES_REASON;
                 this.TUTORIAL = inputData.TUTORIAL;
                 this.AMOUNT = inputData.AMOUNT;
@@ -1734,6 +1740,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
         public bool IsNotOutStock { get; set; }
         public string EXCEED_LIMIT_IN_PRES_REASON { get; set; }
         public string EXCEED_LIMIT_IN_DAY_REASON { get; set; }
+        public string EXCEED_LIMIT_IN_BATCH_REASON { get; set; }
+        public string PATIENT_NAME_BY_TREATMENT_CODE { get; set; }
+        public bool IsAlertInTreatPresciption { get; set; }
+        public decimal? NUMBER_EXCEED_IN_TREATMENT { get; set; }
+        public decimal? NUMBER_PRESCIPTION_IN_TREATMENT { get; set; }
         public string ODD_PRES_REASON { get; set; }
         public List<string> IcdsWarning { get; set; }
         public bool IsWarned { get; set; }
