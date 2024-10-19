@@ -1437,6 +1437,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         {
             try
             {
+                //
                 if (isNotLoadWhileChangeControlStateInFirst)
                 {
                     return;
