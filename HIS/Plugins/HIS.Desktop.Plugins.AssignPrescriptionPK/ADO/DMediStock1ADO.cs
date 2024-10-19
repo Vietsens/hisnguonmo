@@ -53,6 +53,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
         public short? IS_BLOCK_MAX_IN_PRESCRIPTION { get; set; }
         public decimal? ALERT_MAX_IN_DAY { get; set; }
         public short? IS_BLOCK_MAX_IN_DAY { get; set; }
+        public short? IS_BLOCK_MAX_IN_TREATMENT { get; set; }
         public decimal? BREATH_SPEED { get; set; }
         public decimal? BREATH_TIME { get; set; }
         public short? IS_OXYGEN { get; set; }

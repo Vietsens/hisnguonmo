@@ -429,11 +429,11 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             {
                 if (data != null)
                 {
-                    //var Room = BackendDataWorker.Get<HIS_ROOM>().Where(o => o.ID == data.ROOM_ID).FirstOrDefault();
-                    CommonParam paramCommon = new CommonParam();
-                    MOS.Filter.HisPatientTypeFilter filter = new MOS.Filter.HisPatientTypeFilter();
-                    var resultData = new BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_ROOM>>("api/HisRoom/Get", ApiConsumers.MosConsumer, filter, paramCommon);
-                    var Room = resultData.Where(o => o.ID == data.ROOM_ID).FirstOrDefault();
+                    var Room = BackendDataWorker.Get<HIS_ROOM>().Where(o => o.ID == data.ROOM_ID).FirstOrDefault();
+                    //CommonParam paramCommon = new CommonParam();
+                    //MOS.Filter.HisPatientTypeFilter filter = new MOS.Filter.HisPatientTypeFilter();
+                    //var resultData = new BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_ROOM>>("api/HisRoom/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+                    //var Room = resultData.Where(o => o.ID == data.ROOM_ID).FirstOrDefault();
                     if (Room != null)
                     {
                         cboRooomTN.EditValue = Room.DEFAULT_CASHIER_ROOM_ID;
@@ -3026,18 +3026,32 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 if (!string.IsNullOrEmpty(txtTLQR.Text))
                 {
                     HIS.Desktop.Plugins.HisMediStock.ADO.HisMediStockADO.ItemConfig config = Newtonsoft.Json.JsonConvert.DeserializeObject<HIS.Desktop.Plugins.HisMediStock.ADO.HisMediStockADO.ItemConfig>(txtTLQR.Text);
-                    var cbocf = lstKey.FirstOrDefault(s => s.KEY == config.BANK);
-                    if (cbocf != null)
+                    if (config.BANK != null && config.VALUE != null)
                     {
-                        gridViewSetTTQR.SetRowCellValue(0, "Value", cbocf.KEY);
-                        gridViewSetTTQR.SetRowCellValue(1, "Value", cbocf.VALUE);
-                        if (!string.IsNullOrEmpty(cbocf.KEY))
+                        gridViewSetTTQR.SetRowCellValue(0, "Value", config.BANK);
+                        gridViewSetTTQR.SetRowCellValue(1, "Value", config.VALUE);
+                        if (!string.IsNullOrEmpty(config.BANK))
                         {
                             repositoryItemCboBank.Properties.Buttons[1].Visible = true;
                         }
+                        KEY = config.BANK;
+                        VALUE = config.VALUE;
                     }
-                    KEY = cbocf.KEY;
-                    VALUE = cbocf.VALUE;
+                    else if (config.BANK != null)
+                    {
+                        var cbocf = lstKey.FirstOrDefault(s => s.KEY == config.BANK);
+                        if (cbocf != null)
+                        {
+                            gridViewSetTTQR.SetRowCellValue(0, "Value", cbocf.KEY);
+                            gridViewSetTTQR.SetRowCellValue(1, "Value", cbocf.VALUE);
+                            if (!string.IsNullOrEmpty(cbocf.KEY))
+                            {
+                                repositoryItemCboBank.Properties.Buttons[1].Visible = true;
+                            }
+                        }
+                        KEY = cbocf.KEY;
+                        VALUE = cbocf.VALUE;
+                    }
                 }
 
                 gridViewSetTTQR.OptionsView.NewItemRowPosition = DevExpress.XtraGrid.Views.Grid.NewItemRowPosition.None;

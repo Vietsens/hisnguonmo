@@ -126,6 +126,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.ADO
         public int ACTIVE_INGR_BHYT_CODE_ERROR { get; set; }
         public int ACTIVE_INGR_BHYT_NAME_ERROR { get; set; }
         public int REGISTER_NUMBER_ERROR { get; set; }
+        public int IS_TREATMENT_DAY_COUNT_ERROR { get; set; }
 
         public int SOURCE_MEDICINE_ERROR { get; set; }
         public int QUALITY_STANDARDS_ERROR { get; set; }
@@ -157,5 +158,8 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.ADO
         public string ACTIVE_INGREDIENT_CODE_STR { get; set; }
 
         public int VOLUME_STR_ERROR { get; set; }
+
+        public string IS_TREATMENT_DAY_COUNT_STR { get; set; }
+        public short? IS_TREATMENT_DAY_COUNT { get; set; }
     }
 }

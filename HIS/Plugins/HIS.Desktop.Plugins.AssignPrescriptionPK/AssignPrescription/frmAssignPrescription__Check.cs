@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Xpo.DB;
 using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.ADO;
@@ -22,12 +23,15 @@ using HIS.Desktop.Plugins.AssignPrescriptionPK.Config;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.Resources;
 using Inventec.Common.Adapter;
+using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
@@ -35,8 +39,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
     public partial class frmAssignPrescription : HIS.Desktop.Utility.FormBase
     {
         public OptionChonThuocThayThe ChonThuocThayThe { get; set; }
+
         public string reasonMaxPrescription;
         public string reasonMaxPrescriptionDay;
+        public string reasonMaxPrescriptionBatch;
+        public bool isAddToListMediMate;
         public string reasonOddPrescription;
 
         private bool CheckExistMedicinePaymentLimit(string medicineTypeCode)
@@ -215,7 +222,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     if (mediMatyTypeADOs == null)
                         mediMatyTypeADOs = new List<MediMatyTypeADO>();
 
-                    amount = amountPrescribed + mediMatyTypeADOs.Where(o => o.ID == mediMaTy.ID && o.PrimaryKey != mediMaTy.PrimaryKey).Sum(o => o.UseDays != 0 ? o.AMOUNT/o.UseDays : o.AMOUNT)
+                    amount = amountPrescribed + mediMatyTypeADOs.Where(o => o.ID == mediMaTy.ID && o.PrimaryKey != mediMaTy.PrimaryKey).Sum(o => o.UseDays != 0 ? o.AMOUNT / o.UseDays : o.AMOUNT)
                         + _amount;
 
                     if (amount > mediMaTy.ALERT_MAX_IN_DAY.Value)
@@ -235,7 +242,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         {
                             notice = ResourceMessage.VatTuXKeQuaSoLuongChoPhepTrongNgayBanCoMuonBoSung;
                         }
-                        frmReasonMaxPrescriptionInDay FrmMessage = new frmReasonMaxPrescriptionInDay(String.Format(notice, mediMaTy.MEDICINE_TYPE_NAME, mediMaTy.ALERT_MAX_IN_DAY.Value, mediMaTy.SERVICE_UNIT_NAME), GetReasonMaxPrescriptionInDay, mediMaTy.EXCEED_LIMIT_IN_DAY_REASON);
+                        frmReasonMaxPrescription FrmMessage = new frmReasonMaxPrescription(String.Format(notice, mediMaTy.MEDICINE_TYPE_NAME, mediMaTy.ALERT_MAX_IN_DAY.Value, mediMaTy.SERVICE_UNIT_NAME), GetReasonMaxPrescriptionInDay, mediMaTy.EXCEED_LIMIT_IN_DAY_REASON);
                         FrmMessage.ShowDialog();
                         if (String.IsNullOrEmpty(this.reasonMaxPrescriptionDay))
                         {
@@ -247,6 +254,228 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 }
                 else
                     this.reasonMaxPrescriptionDay = null;
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+        internal bool CheckMaxInPrescriptionInBatch(MediMatyTypeADO mediMaTy, decimal? _amount)
+        {
+            reasonMaxPrescriptionBatch = null;
+            bool result = isAddToListMediMate = true;
+            try
+            {
+                decimal? amount = null;
+                decimal amountPrescribed = 0;
+                if (mediMaTy != null && mediMaTy.ALERT_MAX_IN_TREATMENT.HasValue && mediMaTy.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
+                {
+                    amountPrescribed = GetAmountPrescriptionInBatch(mediMaTy, currentTreatment.PATIENT_ID);
+                    List<MediMatyTypeADO> mediMatyTypeADOs = gridControlServiceProcess.DataSource as List<MediMatyTypeADO>;
+                    if (mediMatyTypeADOs == null)
+                        mediMatyTypeADOs = new List<MediMatyTypeADO>();
+
+                    amount = amountPrescribed + mediMatyTypeADOs.Where(o => o.ID == mediMaTy.ID && o.PrimaryKey != mediMaTy.PrimaryKey).Sum(o => o.UseDays != 0 ? o.AMOUNT / o.UseDays : o.AMOUNT)
+                        + _amount;
+
+                    if (amount > mediMaTy.ALERT_MAX_IN_TREATMENT.Value)
+                    {
+                        mediMaTy.NUMBER_PRESCIPTION_IN_TREATMENT = amountPrescribed;
+                        string notice = "";
+                        if (mediMaTy.IS_BLOCK_MAX_IN_TREATMENT == 1)
+                        {
+                            notice = "Thuốc {0} kê quá số lượng cho phép trong đợt điều trị ({1} {2})";
+                            MessageBox.Show(String.Format(notice, mediMaTy.MEDICINE_TYPE_NAME, amount - mediMaTy.ALERT_MAX_IN_TREATMENT.Value, mediMaTy.SERVICE_UNIT_NAME), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                            return false;
+                        }
+                        else if (string.IsNullOrEmpty(mediMaTy.EXCEED_LIMIT_IN_BATCH_REASON))
+                        {
+                            mediMaTy.IsAlertInTreatPresciption = true;
+                            frmMutlilPatientReasonInBatch frm = new frmMutlilPatientReasonInBatch(new List<MediMatyTypeADO>() { new MediMatyTypeADO() { MEDICINE_TYPE_NAME = mediMaTy.MEDICINE_TYPE_NAME, SERVICE_UNIT_NAME = mediMaTy.SERVICE_UNIT_NAME, PATIENT_NAME_BY_TREATMENT_CODE = string.Format("{0}_{1}", currentTreatment.TDL_PATIENT_NAME, currentTreatment.TREATMENT_CODE), ALERT_MAX_IN_TREATMENT = mediMaTy.ALERT_MAX_IN_TREATMENT.Value, PrimaryKey = mediMaTy.PrimaryKey, NUMBER_EXCEED_IN_TREATMENT = amount - mediMaTy.ALERT_MAX_IN_TREATMENT.Value,
+                                NUMBER_PRESCIPTION_IN_TREATMENT = mediMaTy.NUMBER_PRESCIPTION_IN_TREATMENT } }, GetAlertListInTreatment);
+                            frm.ShowDialog();
+                        }
+                        result = isAddToListMediMate;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        private void GetAlertListInTreatment(List<MediMatyTypeADO> list)
+        {
+            try
+            {
+                if (list == null || list.Count == 0)
+                {
+                    isAddToListMediMate = false;
+                    if (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet && IsCellChangeAmount)
+                    {
+                        mediMatyTypeADOsAlertInTreatment = mediMatyTypeADOsAlertInTreatment.Where(o => o.PrimaryKey != ((MediMatyTypeADO)this.gridViewServiceProcess.GetFocusedRow()).PrimaryKey).ToList();
+                    }
+                }
+                else
+                {
+                    isAddToListMediMate = true;
+                    mediMatyTypeADOsAlertInTreatment.AddRange(list);
+                    var groupPrimaryKey = mediMatyTypeADOsAlertInTreatment.GroupBy(o => new { o.PrimaryKey, o.PATIENT_NAME_BY_TREATMENT_CODE }).ToList();
+                    List<MediMatyTypeADO> lstTmp = new List<MediMatyTypeADO>();
+                    foreach (var item in groupPrimaryKey)
+                    {
+                        lstTmp.Add(item.LastOrDefault());
+                    }
+                    mediMatyTypeADOsAlertInTreatment = lstTmp;
+                    if (!(GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet))
+                    {
+                        reasonMaxPrescriptionBatch = list.FirstOrDefault().EXCEED_LIMIT_IN_BATCH_REASON;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private async Task LoadDataSereServWithMultilTreatment(List<long> treatmentIds)
+        {
+            try
+            {
+                if (treatmentIds != null && treatmentIds.Count > 0)
+                {
+                    CommonParam param = new CommonParam();
+                    List<long> setyAllowsIds = new List<long>();
+                    setyAllowsIds.Add(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT);
+                    setyAllowsIds.Add(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC);
+                    HisSereServFilter hisSereServFilter = new HisSereServFilter();
+                    hisSereServFilter.TREATMENT_IDs = treatmentIds;
+                    hisSereServFilter.TDL_SERVICE_TYPE_IDs = setyAllowsIds;
+                    this.sereServWithMultilTreatment = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>("api/HisSereServ/GetView", ApiConsumers.MosConsumerNoStore, hisSereServFilter, ProcessLostToken, param);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private async Task LoadDataServiceReqMetyWithMultilTreatment(List<long> treatmentIds)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
+                serviceReqFilter.TREATMENT_IDs = treatmentIds;
+                serviceReqFilter.SERVICE_REQ_TYPE_IDs = new List<long> { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT };
+                var serviceReqAllInDays = new BackendAdapter(param)
+                      .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
+
+                if (serviceReqAllInDays != null && serviceReqAllInDays.Count > 0)
+                {
+                    var serviceReqAllInDayIds = serviceReqAllInDays.Select(o => o.ID).ToList();
+                    param = new CommonParam();
+
+                    HisServiceReqMetyFilter expMestMetyFilter = new HisServiceReqMetyFilter();
+                    expMestMetyFilter.SERVICE_REQ_IDs = serviceReqAllInDayIds;
+                    this.serviceReqMetyInBatchWithMultilTreatment = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ_METY>>(RequestUriStore.HIS_SERVICE_REQ_METY__GET, ApiConsumers.MosConsumer, expMestMetyFilter, ProcessLostToken, param);
+                }
+                if (this.serviceReqMetyInBatchWithMultilTreatment == null)
+                    this.serviceReqMetyInBatchWithMultilTreatment = new List<HIS_SERVICE_REQ_METY>();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        internal bool CheckMaxInPrescriptionInBatchWithMultilPatient(MediMatyTypeADO mediMaTy, decimal? _amount)
+        {
+            bool result = true;
+            try
+            {
+                decimal? amount = null;
+                decimal amountPrescribed = 0;
+                if (mediMaTy != null && mediMaTy.ALERT_MAX_IN_TREATMENT.HasValue && mediMaTy.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
+                {
+                    if (GlobalStore.IsTreatmentIn && this.patientSelectProcessor != null && this.ucPatientSelect != null)
+                    {
+                        Dictionary<string, decimal?> DicExceedAmount = new Dictionary<string, decimal?>();
+                        List<string> treatments = new List<string>();
+                        List<V_HIS_TREATMENT_BED_ROOM> datas = new List<V_HIS_TREATMENT_BED_ROOM>();
+                        var listPatientSelecteds = this.patientSelectProcessor.GetSelectedRows(this.ucPatientSelect);
+                        if (listPatientSelecteds == null || listPatientSelecteds.Count == 0)
+                            listPatientSelecteds.Add(new V_HIS_TREATMENT_BED_ROOM() { TREATMENT_ID = currentTreatment.ID, TREATMENT_CODE = currentTreatment.TREATMENT_CODE, TDL_PATIENT_NAME = currentTreatment.TDL_PATIENT_NAME, PATIENT_ID = currentTreatment.PATIENT_ID });
+                        List<Task> tsks = new List<Task>();
+                        tsks.Add(LoadDataSereServWithMultilTreatment(listPatientSelecteds.Select(o => o.TREATMENT_ID).Distinct().ToList()));
+                        tsks.Add(LoadDataServiceReqMetyWithMultilTreatment(listPatientSelecteds.Select(o => o.TREATMENT_ID).Distinct().ToList()));
+                        Task.WaitAll(tsks.ToArray());
+                        var sereServTemp = sereServWithTreatment;
+                        var serviceReqMetyTemp = serviceReqMetyInBatch;
+                        foreach (var item in listPatientSelecteds)
+                        {
+                            serviceReqMetyInBatch = serviceReqMetyInBatchWithMultilTreatment.Where(o => o.TDL_TREATMENT_ID == item.TREATMENT_ID).ToList();
+                            sereServWithTreatment = sereServWithMultilTreatment.Where(o => o.TDL_TREATMENT_ID == item.TREATMENT_ID).ToList();
+                            amountPrescribed = GetAmountPrescriptionInBatch(mediMaTy, item.PATIENT_ID);
+                            List<MediMatyTypeADO> mediMatyTypeADOs = gridControlServiceProcess.DataSource as List<MediMatyTypeADO>;
+                            if (mediMatyTypeADOs == null)
+                                mediMatyTypeADOs = new List<MediMatyTypeADO>();
+
+                            amount = amountPrescribed + mediMatyTypeADOs.Where(o => o.ID == mediMaTy.ID && o.PrimaryKey != mediMaTy.PrimaryKey).Sum(o => o.UseDays != 0 ? o.AMOUNT / o.UseDays : o.AMOUNT)
+                                + _amount;
+
+                            if (amount > mediMaTy.ALERT_MAX_IN_TREATMENT.Value)
+                            {
+                                mediMaTy.NUMBER_PRESCIPTION_IN_TREATMENT = amountPrescribed;
+                                if (mediMaTy.IS_BLOCK_MAX_IN_TREATMENT == 1)
+                                {
+                                    treatments.Add(item.TREATMENT_CODE);
+                                }
+                                else
+                                {
+                                    if (!DicExceedAmount.ContainsKey(item.TREATMENT_CODE))
+                                        DicExceedAmount.Add(item.TREATMENT_CODE, amount);
+                                    datas.Add(item);
+                                }
+                            }
+                        }
+                        if (treatments != null && treatments.Count > 0)
+                        {
+                            MessageBox.Show(String.Format("Hồ sơ {0} kê thuốc {1} vượt quá số lượng cho phép trong đợt điều trị", string.Join(", ", treatments), mediMaTy.MEDICINE_TYPE_NAME), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                            return false;
+                        }
+                        else if (datas != null && datas.Count > 0)
+                        {
+                            List<MediMatyTypeADO> lstMedis = new List<MediMatyTypeADO>();
+                            foreach (var item in datas)
+                            {
+                                MediMatyTypeADO ado = new MediMatyTypeADO();
+                                ado.MEDICINE_TYPE_NAME = mediMaTy.MEDICINE_TYPE_NAME;
+                                ado.SERVICE_UNIT_NAME = mediMaTy.SERVICE_UNIT_NAME;
+                                ado.PATIENT_NAME_BY_TREATMENT_CODE = string.Format("{0}_{1}", item.TDL_PATIENT_NAME, item.TREATMENT_CODE);
+                                ado.ALERT_MAX_IN_TREATMENT = mediMaTy.ALERT_MAX_IN_TREATMENT.Value;
+                                ado.PrimaryKey = mediMaTy.PrimaryKey;
+                                ado.NUMBER_EXCEED_IN_TREATMENT = DicExceedAmount.ContainsKey(item.TREATMENT_CODE) ? DicExceedAmount[item.TREATMENT_CODE] - mediMaTy.ALERT_MAX_IN_TREATMENT : null;
+                                ado.NUMBER_PRESCIPTION_IN_TREATMENT = mediMaTy.NUMBER_PRESCIPTION_IN_TREATMENT;
+                                lstMedis.Add(ado);
+                            }
+                            mediMaTy.IsAlertInTreatPresciption = true;
+                            frmMutlilPatientReasonInBatch frm = new frmMutlilPatientReasonInBatch(lstMedis, GetAlertListInTreatment);
+                            frm.ShowDialog();
+                            result = isAddToListMediMate;
+                        }
+                        sereServWithTreatment = sereServTemp;
+                        serviceReqMetyInBatch = serviceReqMetyTemp;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -285,6 +514,141 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
             return result;
         }
+        private bool CheckMaxInPrescriptionInBratchForMemoReason(MediMatyTypeADO mediMaTy, decimal? _amount)
+        {
+            bool result = false;
+            try
+            {
+                decimal? amount = null;
+                decimal amountPrescribed = 0;
+                if (mediMaTy != null && mediMaTy.ALERT_MAX_IN_TREATMENT.HasValue && mediMaTy.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
+                {
+                    amountPrescribed = GetAmountPrescriptionInBatch(mediMaTy, currentTreatment.PATIENT_ID);
+                    List<MediMatyTypeADO> mediMatyTypeADOs = gridControlServiceProcess.DataSource as List<MediMatyTypeADO>;
+                    if (mediMatyTypeADOs == null)
+                        mediMatyTypeADOs = new List<MediMatyTypeADO>();
+
+                    amount = amountPrescribed + mediMatyTypeADOs.Where(o => o.ID == mediMaTy.ID && o.PrimaryKey != mediMaTy.PrimaryKey).Sum(o => o.AMOUNT)
+                        + _amount;
+
+                    if (amount > mediMaTy.ALERT_MAX_IN_TREATMENT.Value)
+                    {
+                        mediMaTy.NUMBER_PRESCIPTION_IN_TREATMENT = amountPrescribed;
+                        if (mediMaTy.IS_BLOCK_MAX_IN_TREATMENT != 1)
+                        {
+                            mediMaTy.IsAlertInTreatPresciption = true;
+                            mediMatyTypeADOsAlertInTreatment.Add(new MediMatyTypeADO()
+                            {
+                                MEDICINE_TYPE_NAME = mediMaTy.MEDICINE_TYPE_NAME,
+                                SERVICE_UNIT_NAME = mediMaTy.SERVICE_UNIT_NAME,
+                                PATIENT_NAME_BY_TREATMENT_CODE = string.Format("{0}_{1}", currentTreatment.TDL_PATIENT_NAME, currentTreatment.TREATMENT_CODE),
+                                ALERT_MAX_IN_TREATMENT = mediMaTy.ALERT_MAX_IN_TREATMENT.Value,
+                                PrimaryKey = mediMaTy.PrimaryKey,
+                                NUMBER_EXCEED_IN_TREATMENT = amount - mediMaTy.ALERT_MAX_IN_TREATMENT.Value,
+                                NUMBER_PRESCIPTION_IN_TREATMENT = mediMaTy.NUMBER_PRESCIPTION_IN_TREATMENT
+                            });
+                            var groupPrimaryKey = mediMatyTypeADOsAlertInTreatment.GroupBy(o => new { o.PrimaryKey, o.PATIENT_NAME_BY_TREATMENT_CODE }).ToList();
+                            List<MediMatyTypeADO> lstTmp = new List<MediMatyTypeADO>();
+                            foreach (var g in groupPrimaryKey)
+                            {
+                                lstTmp.Add(g.LastOrDefault());
+                            }
+                            mediMatyTypeADOsAlertInTreatment = lstTmp;
+
+                        }
+                        result = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+        private bool CheckMaxInPrescriptionInBratchForButtonReason(MediMatyTypeADO mediMaTy, decimal? _amount)
+        {
+            bool result = false;
+            try
+            {
+                decimal? amount = null;
+                decimal amountPrescribed = 0;
+                if (mediMaTy != null && mediMaTy.ALERT_MAX_IN_TREATMENT.HasValue && mediMaTy.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
+                {
+                    if (GlobalStore.IsTreatmentIn && this.patientSelectProcessor != null && this.ucPatientSelect != null)
+                    {
+                        List<string> treatments = new List<string>();
+                        List<V_HIS_TREATMENT_BED_ROOM> datas = new List<V_HIS_TREATMENT_BED_ROOM>();
+                        var listPatientSelecteds = this.patientSelectProcessor.GetSelectedRows(this.ucPatientSelect);
+                        var sereServTemp = sereServWithTreatment;
+                        var serviceReqMetyTemp = serviceReqMetyInBatch;
+
+                        foreach (var item in listPatientSelecteds)
+                        {
+                            serviceReqMetyInBatch = serviceReqMetyInBatchWithMultilTreatment.Where(o => o.TDL_TREATMENT_ID == item.TREATMENT_ID).ToList();
+                            sereServWithTreatment = sereServWithMultilTreatment.Where(o => o.TDL_TREATMENT_ID == item.TREATMENT_ID).ToList();
+                            amountPrescribed = GetAmountPrescriptionInBatch(mediMaTy, item.PATIENT_ID);
+                            List<MediMatyTypeADO> mediMatyTypeADOs = gridControlServiceProcess.DataSource as List<MediMatyTypeADO>;
+                            if (mediMatyTypeADOs == null)
+                                mediMatyTypeADOs = new List<MediMatyTypeADO>();
+
+                            amount = amountPrescribed + mediMatyTypeADOs.Where(o => o.ID == mediMaTy.ID && o.PrimaryKey != mediMaTy.PrimaryKey).Sum(o => o.AMOUNT)
+                                + _amount;
+
+                            if (amount > mediMaTy.ALERT_MAX_IN_TREATMENT.Value)
+                            {
+                                mediMaTy.NUMBER_PRESCIPTION_IN_TREATMENT = amountPrescribed;
+                                if (mediMaTy.IS_BLOCK_MAX_IN_TREATMENT != 1)
+                                {
+                                    mediMaTy.IsAlertInTreatPresciption = true;
+                                    mediMatyTypeADOsAlertInTreatment.Add(new MediMatyTypeADO()
+                                    {
+                                        MEDICINE_TYPE_NAME = mediMaTy.MEDICINE_TYPE_NAME,
+                                        SERVICE_UNIT_NAME = mediMaTy.SERVICE_UNIT_NAME,
+                                        PATIENT_NAME_BY_TREATMENT_CODE = string.Format("{0}_{1}", item.TDL_PATIENT_NAME, item.TREATMENT_CODE),
+                                        ALERT_MAX_IN_TREATMENT = mediMaTy.ALERT_MAX_IN_TREATMENT.Value,
+                                        PrimaryKey = mediMaTy.PrimaryKey,
+                                        NUMBER_EXCEED_IN_TREATMENT = amount - mediMaTy.ALERT_MAX_IN_TREATMENT.Value,
+                                        NUMBER_PRESCIPTION_IN_TREATMENT = mediMaTy.NUMBER_PRESCIPTION_IN_TREATMENT
+                                    });
+                                    var groupPrimaryKey = mediMatyTypeADOsAlertInTreatment.GroupBy(o => new { o.PrimaryKey, o.PATIENT_NAME_BY_TREATMENT_CODE }).ToList();
+                                    List<MediMatyTypeADO> lstTmp = new List<MediMatyTypeADO>();
+                                    foreach (var g in groupPrimaryKey)
+                                    {
+                                        lstTmp.Add(g.LastOrDefault());
+                                    }
+                                    mediMatyTypeADOsAlertInTreatment = lstTmp;
+                                }
+                                else
+                                {
+                                    mediMatyTypeADOsBlockInTreatment.Add(new MediMatyTypeADO()
+                                    {
+                                        MEDICINE_TYPE_NAME = mediMaTy.MEDICINE_TYPE_NAME,
+                                        SERVICE_UNIT_NAME = mediMaTy.SERVICE_UNIT_NAME,
+                                        PATIENT_NAME_BY_TREATMENT_CODE = string.Format("{0}_{1}", item.TDL_PATIENT_NAME, item.TREATMENT_CODE),
+                                        ALERT_MAX_IN_TREATMENT = mediMaTy.ALERT_MAX_IN_TREATMENT.Value,
+                                        PrimaryKey = mediMaTy.PrimaryKey,
+                                        NUMBER_EXCEED_IN_TREATMENT = amount - mediMaTy.ALERT_MAX_IN_TREATMENT.Value,
+                                        NUMBER_PRESCIPTION_IN_TREATMENT = mediMaTy.NUMBER_PRESCIPTION_IN_TREATMENT
+                                    });
+                                }
+                                result = true;
+                            }
+                           
+                        }
+                        sereServWithTreatment = sereServTemp;
+                        serviceReqMetyInBatch = serviceReqMetyTemp;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
         private bool CheckMaxInPrescriptionInDayWhenSave(List<MediMatyTypeADO> mediMatyTypeADOs)
         {
             bool result = true;
@@ -297,11 +661,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     var listmediMatyAlert = mediMatyTypeADOs.Where(o => o.ALERT_MAX_IN_DAY != null && (o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC || o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT));
                     if (listmediMatyAlert != null && listmediMatyAlert.Count() > 0)
                     {
-                        var listSereServ = this.sereServWithTreatment.Where(o => o.TDL_INTRUCTION_DATE.ToString().Substring(0, 8) == intructionTimeSelecteds.OrderByDescending(t => t).First().ToString().Substring(0, 8));
-                        if (assignPrescriptionEditADO != null && this.oldServiceReq != null && listSereServ != null)
-                        {
-                            listSereServ = listSereServ.Where(o => o.SERVICE_REQ_ID != this.oldServiceReq.ID).ToList();
-                        }
                         var mediMatyTypeGroup = listmediMatyAlert.GroupBy(o => new { o.SERVICE_ID }).ToList();
                         foreach (var item in mediMatyTypeGroup)
                         {
@@ -337,6 +696,146 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     {
                         result = false;
                         MessageBox.Show(String.Format(ResourceMessage.ThuocVatTuChuaNhapLyDoKeQuaSoLuongToiDaTrongNgay, String.Join(",", medicineTypeNames)), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+        private bool CheckMaxInPrescriptionInBatchWhenSave(List<MediMatyTypeADO> mediMatyTypeADOs)
+        {
+            bool result = true;
+            try
+            {
+                if (mediMatyTypeADOs != null && mediMatyTypeADOs.Count > 0)
+                {
+                    List<MediMatyTypeADO> bwMediMate = new List<MediMatyTypeADO>();
+                    var listmediMatyAlert = mediMatyTypeADOs.Where(o => o.ALERT_MAX_IN_TREATMENT != null && o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC);
+                    if (listmediMatyAlert != null && listmediMatyAlert.Count() > 0)
+                    {
+                        foreach (var data in listmediMatyAlert)
+                        {
+                            if (String.IsNullOrWhiteSpace(data.EXCEED_LIMIT_IN_BATCH_REASON) && CheckMaxInPrescriptionInBratchForMemoReason(data, data.AMOUNT))
+                                bwMediMate.Add(data);
+                        }
+                    }
+                    if (bwMediMate != null && bwMediMate.Count > 0)
+                    {
+                        var block = bwMediMate.Where(o => o.IS_BLOCK_MAX_IN_TREATMENT == 1).ToList();
+                        if (block != null && block.Count > 0)
+                        {
+                            List<string> mess = new List<string>();
+                            foreach (var item in block)
+                            {
+                                mess.Add(string.Format("- {0} kê quá số lượng cho phép trong đợt điều trị ({1} {2})", item.MEDICINE_TYPE_NAME, item.NUMBER_PRESCIPTION_IN_TREATMENT, item.SERVICE_UNIT_NAME));
+                            }
+                            MessageBox.Show(String.Format("Thuốc:\r\n {0}", String.Join("\r\n", mess)), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                            return false;
+                        }
+                        var warning = bwMediMate.Where(o => o.IS_BLOCK_MAX_IN_TREATMENT != 1).ToList();
+                        if (warning != null && warning.Count > 0)
+                        {
+                            MessageBox.Show(String.Format("Thuốc {0} chưa nhập lý do kê quá số lượng tối đa trong đợt điều trị.", String.Join(", ", warning.Select(o => o.MEDICINE_TYPE_NAME))), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                            return false;
+                        }
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+        private bool CheckMaxInPrescriptionInBatchMultilPatientWhenSave(List<MediMatyTypeADO> mediMatyTypeADOs)
+        {
+            bool result = true;
+            try
+            {
+                mediMatyTypeADOsBlockInTreatment = new List<MediMatyTypeADO>();
+                if (mediMatyTypeADOs != null && mediMatyTypeADOs.Count > 0)
+                {
+                    List<MediMatyTypeADO> bwMediMate = new List<MediMatyTypeADO>();
+                    var listmediMatyAlert = mediMatyTypeADOs.Where(o => o.ALERT_MAX_IN_TREATMENT != null && o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC);
+                    if (listmediMatyAlert != null && listmediMatyAlert.Count() > 0)
+                    {
+                        var listPatientSelecteds = this.patientSelectProcessor.GetSelectedRows(this.ucPatientSelect);
+                        List<Task> tsks = new List<Task>();
+                        tsks.Add(LoadDataSereServWithMultilTreatment(listPatientSelecteds.Select(o => o.TREATMENT_ID).Distinct().ToList()));
+                        tsks.Add(LoadDataServiceReqMetyWithMultilTreatment(listPatientSelecteds.Select(o => o.TREATMENT_ID).Distinct().ToList()));
+                        Task.WaitAll(tsks.ToArray());
+                        foreach (var data in listmediMatyAlert)
+                        {
+                            if ((mediMatyTypeADOsAlertInTreatment == null || mediMatyTypeADOsAlertInTreatment.Count == 0 || (mediMatyTypeADOsAlertInTreatment != null && mediMatyTypeADOsAlertInTreatment.Count > 0 && mediMatyTypeADOsAlertInTreatment.LastOrDefault(o => o.PrimaryKey == data.PrimaryKey && !string.IsNullOrEmpty(o.EXCEED_LIMIT_IN_BATCH_REASON)) == null)) && CheckMaxInPrescriptionInBratchForButtonReason(data, data.AMOUNT))
+                                bwMediMate.Add(data);
+                        }
+                    }
+                    if (bwMediMate != null && bwMediMate.Count > 0)
+                    {
+                        var block = bwMediMate.Where(o => o.IS_BLOCK_MAX_IN_TREATMENT == 1).ToList();
+                        if (block != null && block.Count > 0)
+                        {
+                            Dictionary<string, List<string>> dicMess = new Dictionary<string, List<string>>();
+                            //foreach (var item in block)
+                            //{
+                            //    foreach (var alert in mediMatyTypeADOsBlockInTreatment)
+                            //    {
+                            //        var ai = alert.PrimaryKey == item.PrimaryKey;
+                            //        if (ai)
+                            //        {
+                            //            if (!dicMess.ContainsKey(alert.PATIENT_NAME_BY_TREATMENT_CODE))
+                            //                dicMess[alert.PATIENT_NAME_BY_TREATMENT_CODE] = new List<string>();
+                            //            dicMess[alert.PATIENT_NAME_BY_TREATMENT_CODE].Add(string.Format("{0} kê quá số lượng cho phép trong đợt điều trị ({1} {2})", item.MEDICINE_TYPE_NAME, alert.NUMBER_EXCEED_IN_TREATMENT, item.SERVICE_UNIT_NAME));
+                            //        }
+                            //    }
+                            //}
+                            var groupByPatientName = mediMatyTypeADOsBlockInTreatment.GroupBy(o => o.PATIENT_NAME_BY_TREATMENT_CODE).ToList();
+                            List<string> lstPatient = new List<string>();
+                            foreach (var item in groupByPatientName)
+                            {
+                                lstPatient.Add(string.Format("{0} có {1} kê quá số lượng cho phép trong đợt điều trị.", item.Key.Split('_')[1] + " - " + item.Key.Split('_')[0], string.Join(", ", item.ToList().Select(o => o.MEDICINE_TYPE_NAME).ToList())));
+                            }
+                            //List<string> mess = new List<string>();
+                            //foreach (var item in dicMess)
+                            //{
+                            //    mess.Add(string.Format("{0} - {1}", item.Key.Split('_')[1], item.Key.Split('_')[0]));
+                            //    mess.Add(string.Join("\r\n", item.Value));
+                            //}
+                            MessageBox.Show(String.Format("Danh sách bệnh nhân:\r\n{0}", String.Join("\r\n", lstPatient)), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                            return false;
+                        }
+                        var warning = bwMediMate.Where(o => o.IS_BLOCK_MAX_IN_TREATMENT != 1).ToList();
+                        if (warning != null && warning.Count > 0)
+                        {
+                            MessageBox.Show(String.Format("Thuốc {0} chưa nhập lý do kê quá số lượng tối đa trong đợt điều trị.", String.Join(", ", warning.Select(o => o.MEDICINE_TYPE_NAME))), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                            return false;
+                            //frmMutlilPatientReasonInBatch frm = new frmMutlilPatientReasonInBatch(mediMatyTypeADOsAlertInTreatment.Where(o=> mediMatyTypeADOs.Exists(p=>p.PrimaryKey == o.PrimaryKey)).ToList(), GetAlertListInTreatment);
+                            //frm.ShowDialog();
+                            //result = isAddToListMediMate;
+                            //foreach (var item in this.mediMatyTypeADOs)
+                            //{
+                            //    var alert = this.mediMatyTypeADOsAlertInTreatment.LastOrDefault(o => o.PrimaryKey == item.PrimaryKey);
+                            //    if (alert == null || string.IsNullOrEmpty(alert.EXCEED_LIMIT_IN_BATCH_REASON))
+                            //    {
+                            //        RemoveItem(item);
+                            //    }
+                            //}
+                            //gridControlServiceProcess.RefreshDataSource();
+                            //if (this.mediMatyTypeADOs == null || this.mediMatyTypeADOs.Count == 0)
+                            //{
+                            //    mediMatyTypeADOsAlertInTreatment = new List<MediMatyTypeADO>();
+                            //    return false; 
+                            //}
+                        }
                     }
 
                 }
@@ -430,7 +929,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             }
                             amountPrescribed += item.AMOUNT / useDays;
                         }
-                    }    
+                    }
                 }
                 else if (mediMaTy.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT && this.serviceReqMatyInDay != null && this.serviceReqMatyInDay.Count > 0)
                 {
@@ -454,9 +953,93 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             }
                             amountPrescribed += item.AMOUNT / useDays;
                         }
-                    } 
+                    }
                 }
 
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return 0;
+            }
+            return amountPrescribed;
+        }
+        private decimal GetAmountPrescriptionInBatch(MediMatyTypeADO mediMaTy, long patientId)
+        {
+            decimal amountPrescribed = 0;
+            try
+            {
+                List<V_HIS_SERVICE_REQ_7> serviceReqPreExpmestAll = null;
+                bool IsCallApi = false;
+                if (this.sereServWithTreatment != null && this.sereServWithTreatment.Count > 0)
+                {
+                    var filter = currentPrescriptionFilter;
+                    filter.TDL_PATIENT_ID = patientId;
+                    serviceReqPreExpmestAll = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ_7>>("api/HisServiceReq/GetView7", ApiConsumers.MosConsumer, filter, null);
+                    IsCallApi = true;
+                    var listSereServ = this.sereServWithTreatment.Where(o => o.SERVICE_ID == mediMaTy.SERVICE_ID);
+                    if (this.oldServiceReq != null && listSereServ != null)
+                    {
+                        listSereServ = listSereServ.Where(o => o.SERVICE_REQ_ID != this.oldServiceReq.ID);
+                    }
+                    if (listSereServ != null)
+                    {
+                        foreach (var item in listSereServ)
+                        {
+                            int useDays = 1;
+                            if (serviceReqPreExpmestAll != null && serviceReqPreExpmestAll.Count > 0)
+                            {
+                                var sr = serviceReqPreExpmestAll.FirstOrDefault(o => o.ID == item.SERVICE_REQ_ID);
+                                if (sr != null)
+                                {
+                                    if (!sr.USE_TIME_TO.HasValue)
+                                        sr.USE_TIME_TO = Medicine(sr.ID).USE_TIME_TO;
+                                    if (sr.USE_TIME_TO.HasValue)
+                                    {
+                                        System.DateTime dtUseTimeTo = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(sr.USE_TIME_TO ?? 0).Value;
+                                        System.DateTime dtInstructionTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(sr.USE_TIME > 0 ? (sr.USE_TIME ?? 0) : (sr.INTRUCTION_TIME)).Value;
+                                        TimeSpan diff__Day = (dtUseTimeTo - dtInstructionTime);
+                                        useDays = diff__Day.Days + 1;
+                                    }
+                                }
+                            }
+                            amountPrescribed += item.AMOUNT / useDays;
+                        }
+                    }
+                }
+
+                if (mediMaTy.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC && this.serviceReqMetyInBatch != null && this.serviceReqMetyInBatch.Count > 0)
+                {
+                    if (!IsCallApi)
+                    {
+                        var filter = currentPrescriptionFilter;
+                        filter.TDL_PATIENT_ID = patientId;
+                        serviceReqPreExpmestAll = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ_7>>("api/HisServiceReq/GetView7", ApiConsumers.MosConsumer, filter, null);
+                    }
+                    var serviceReqMety = this.serviceReqMetyInBatch.Where(o => o.MEDICINE_TYPE_ID == mediMaTy.ID);
+                    if (this.oldServiceReq != null && serviceReqMety != null)
+                    {
+                        serviceReqMety = serviceReqMety.Where(o => o.SERVICE_REQ_ID != this.oldServiceReq.ID);
+                    }
+                    if (serviceReqMety != null)
+                    {
+                        foreach (var item in serviceReqMety)
+                        {
+                            var sr = serviceReqPreExpmestAll.FirstOrDefault(o => o.ID == item.SERVICE_REQ_ID);
+                            if (!sr.USE_TIME_TO.HasValue)
+                                sr.USE_TIME_TO = Mety(sr.ID).USE_TIME_TO;
+                            int useDays = 1;
+                            if (sr.USE_TIME_TO.HasValue)
+                            {
+                                System.DateTime dtUseTimeTo = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(sr.USE_TIME_TO ?? 0).Value;
+                                System.DateTime dtInstructionTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(sr.USE_TIME > 0 ? (sr.USE_TIME ?? 0) : (sr.INTRUCTION_TIME)).Value;
+                                TimeSpan diff__Day = (dtUseTimeTo - dtInstructionTime);
+                                useDays = diff__Day.Days + 1;
+                            }
+                            amountPrescribed += item.AMOUNT / useDays;
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -487,7 +1070,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private bool CheckOddPrescription(MediMatyTypeADO mediMaTy, decimal _amount) //check kê lẻ
         {
             bool result = true;

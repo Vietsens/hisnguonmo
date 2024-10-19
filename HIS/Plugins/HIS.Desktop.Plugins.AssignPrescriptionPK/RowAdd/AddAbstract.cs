@@ -193,6 +193,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add
             this.DataRow = dataRow;
             this.ExceedLimitInPresReason = frmAssignPrescription.reasonMaxPrescription;
             this.ExceedLimitInDayReason = frmAssignPrescription.reasonMaxPrescriptionDay;
+
             this.OddPresReason = frmAssignPrescription.reasonOddPrescription;
             if (HisConfigCFG.ManyDayPrescriptionOption == 2 && GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet)
             {
@@ -327,6 +328,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add
             medicineTypeSDO.IntructionTime = frmAssignPrescription.InstructionTime;
             medicineTypeSDO.IS_IDENTITY_MANAGEMENT = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.IS_IDENTITY_MANAGEMENT : null;
             medicineTypeSDO.IS_REUSABLE = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.IS_REUSABLE : null;
+            medicineTypeSDO.ALERT_MAX_IN_TREATMENT = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.ALERT_MAX_IN_TREATMENT : null;
+            medicineTypeSDO.IS_BLOCK_MAX_IN_TREATMENT = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.IS_BLOCK_MAX_IN_TREATMENT : null;
+            medicineTypeSDO.NUMBER_EXCEED_IN_TREATMENT = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.NUMBER_EXCEED_IN_TREATMENT : null;
+            medicineTypeSDO.NUMBER_PRESCIPTION_IN_TREATMENT = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.NUMBER_PRESCIPTION_IN_TREATMENT : null;
+            var amountPres = (medicineTypeSDO.NUMBER_PRESCIPTION_IN_TREATMENT ?? 0) + medicineTypeSDO.AMOUNT + frmAssignPrescription.mediMatyTypeADOs.Where(o => o.ID == medicineTypeSDO.ID && o.PrimaryKey != medicineTypeSDO.PrimaryKey).Sum(o => o.UseDays != 0 ? o.AMOUNT / o.UseDays : o.AMOUNT);
+            if (amountPres > medicineTypeSDO.ALERT_MAX_IN_TREATMENT)
+                medicineTypeSDO.IsAlertInTreatPresciption = true;
         }
 
         protected void SaveDataAndRefesh(MediMatyTypeADO mediMatyADO)
