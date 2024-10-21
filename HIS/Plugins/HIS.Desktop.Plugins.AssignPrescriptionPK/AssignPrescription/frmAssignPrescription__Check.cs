@@ -272,7 +272,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 decimal amountPrescribed = 0;
                 if (mediMaTy != null && mediMaTy.ALERT_MAX_IN_TREATMENT.HasValue && mediMaTy.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
                 {
-                    amountPrescribed = GetAmountPrescriptionInBatch(mediMaTy, currentTreatment.PATIENT_ID);
+                    amountPrescribed = GetAmountPrescriptionInBatch(mediMaTy, currentTreatment.PATIENT_ID) ?? 0;
                     List<MediMatyTypeADO> mediMatyTypeADOs = gridControlServiceProcess.DataSource as List<MediMatyTypeADO>;
                     if (mediMatyTypeADOs == null)
                         mediMatyTypeADOs = new List<MediMatyTypeADO>();
@@ -424,7 +424,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         {
                             serviceReqMetyInBatch = serviceReqMetyInBatchWithMultilTreatment.Where(o => o.TDL_TREATMENT_ID == item.TREATMENT_ID).ToList();
                             sereServWithTreatment = sereServWithMultilTreatment.Where(o => o.TDL_TREATMENT_ID == item.TREATMENT_ID).ToList();
-                            amountPrescribed = GetAmountPrescriptionInBatch(mediMaTy, item.PATIENT_ID);
+                            amountPrescribed = GetAmountPrescriptionInBatch(mediMaTy, item.PATIENT_ID) ?? 0;
                             List<MediMatyTypeADO> mediMatyTypeADOs = gridControlServiceProcess.DataSource as List<MediMatyTypeADO>;
                             if (mediMatyTypeADOs == null)
                                 mediMatyTypeADOs = new List<MediMatyTypeADO>();
@@ -523,7 +523,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 decimal amountPrescribed = 0;
                 if (mediMaTy != null && mediMaTy.ALERT_MAX_IN_TREATMENT.HasValue && mediMaTy.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
                 {
-                    amountPrescribed = GetAmountPrescriptionInBatch(mediMaTy, currentTreatment.PATIENT_ID);
+                    amountPrescribed = GetAmountPrescriptionInBatch(mediMaTy, currentTreatment.PATIENT_ID) ?? 0;
                     List<MediMatyTypeADO> mediMatyTypeADOs = gridControlServiceProcess.DataSource as List<MediMatyTypeADO>;
                     if (mediMatyTypeADOs == null)
                         mediMatyTypeADOs = new List<MediMatyTypeADO>();
@@ -588,7 +588,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         {
                             serviceReqMetyInBatch = serviceReqMetyInBatchWithMultilTreatment.Where(o => o.TDL_TREATMENT_ID == item.TREATMENT_ID).ToList();
                             sereServWithTreatment = sereServWithMultilTreatment.Where(o => o.TDL_TREATMENT_ID == item.TREATMENT_ID).ToList();
-                            amountPrescribed = GetAmountPrescriptionInBatch(mediMaTy, item.PATIENT_ID);
+                            amountPrescribed = GetAmountPrescriptionInBatch(mediMaTy, item.PATIENT_ID) ?? 0;
                             List<MediMatyTypeADO> mediMatyTypeADOs = gridControlServiceProcess.DataSource as List<MediMatyTypeADO>;
                             if (mediMatyTypeADOs == null)
                                 mediMatyTypeADOs = new List<MediMatyTypeADO>();
@@ -964,18 +964,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
             return amountPrescribed;
         }
-        private decimal GetAmountPrescriptionInBatch(MediMatyTypeADO mediMaTy, long patientId)
+        private decimal? GetAmountPrescriptionInBatch(MediMatyTypeADO mediMaTy, long patientId)
         {
-            decimal amountPrescribed = 0;
+            decimal? amountPrescribed = null;
             try
             {
-                List<V_HIS_SERVICE_REQ_7> serviceReqPreExpmestAll = null;
+                List<HIS_SERVICE_REQ> serviceReqPreExpmestAll = null;
                 bool IsCallApi = false;
                 if (this.sereServWithTreatment != null && this.sereServWithTreatment.Count > 0)
                 {
-                    var filter = currentPrescriptionFilter;
-                    filter.TDL_PATIENT_ID = patientId;
-                    serviceReqPreExpmestAll = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ_7>>("api/HisServiceReq/GetView7", ApiConsumers.MosConsumer, filter, null);
+                    if (!(GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet))
+                        serviceReqPreExpmestAll = this.serviceReqAllInDays;
+                    else
+                    {
+                        var filter = currentPrescriptionFilter;
+                        filter.TDL_PATIENT_ID = patientId;
+                        serviceReqPreExpmestAll = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, null);
+                    }
                     IsCallApi = true;
                     var listSereServ = this.sereServWithTreatment.Where(o => o.SERVICE_ID == mediMaTy.SERVICE_ID);
                     if (this.oldServiceReq != null && listSereServ != null)
@@ -984,6 +989,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     }
                     if (listSereServ != null)
                     {
+                        amountPrescribed = amountPrescribed ?? 0;
                         foreach (var item in listSereServ)
                         {
                             int useDays = 1;
@@ -1012,9 +1018,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 {
                     if (!IsCallApi)
                     {
-                        var filter = currentPrescriptionFilter;
-                        filter.TDL_PATIENT_ID = patientId;
-                        serviceReqPreExpmestAll = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ_7>>("api/HisServiceReq/GetView7", ApiConsumers.MosConsumer, filter, null);
+                        if (!(GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet))
+                            serviceReqPreExpmestAll = this.serviceReqAllInDays;
+                        else
+                        {
+                            var filter = currentPrescriptionFilter;
+                            filter.TDL_PATIENT_ID = patientId;
+                            serviceReqPreExpmestAll = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, null);
+                        }
                     }
                     var serviceReqMety = this.serviceReqMetyInBatch.Where(o => o.MEDICINE_TYPE_ID == mediMaTy.ID);
                     if (this.oldServiceReq != null && serviceReqMety != null)
@@ -1023,6 +1034,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     }
                     if (serviceReqMety != null)
                     {
+                        amountPrescribed = amountPrescribed ?? 0;
                         foreach (var item in serviceReqMety)
                         {
                             var sr = serviceReqPreExpmestAll.FirstOrDefault(o => o.ID == item.SERVICE_REQ_ID);
