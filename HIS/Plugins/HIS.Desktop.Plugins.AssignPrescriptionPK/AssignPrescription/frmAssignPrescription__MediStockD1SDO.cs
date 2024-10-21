@@ -1158,6 +1158,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         ///- Khi nhấn "Lưu", nếu tồn tại thuốc/vật tư (cả trong kho và tự mua), nếu có đánh dấu "Đã kê trong ngày" thì hiển thị thông báo "XXX đã kê trong ngày. Bạn có muốn tiếp tục"
         /// Trong đó, XXX là tên thuốc đã kê trong ngày.
         /// </summary>
+        List<HIS_SERVICE_REQ> serviceReqAllInDays = null;
         private async Task InitDataServiceReqAllInDay()
         {
             try
@@ -1171,7 +1172,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 //serviceReqFilter.INTRUCTION_DATE__EQUAL = Inventec.Common.TypeConvert.Parse.ToInt64((InstructionTime.ToString().Substring(0, 8) + "000000"));
 
-                var serviceReqAllInDays = new BackendAdapter(param)
+                serviceReqAllInDays = new BackendAdapter(param)
                       .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => InstructionTime), InstructionTime)

@@ -5729,17 +5729,24 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                         {
                                             var alert = this.mediMatyTypeADOsAlertInTreatment.LastOrDefault(o => o.PrimaryKey == mediMatyTypeADO.PrimaryKey);
                                             var amountPres = (mediMatyTypeADO.NUMBER_PRESCIPTION_IN_TREATMENT ?? 0) + mediMatyTypeADO.AMOUNT + mediMatyTypeADOs.Where(o => o.ID == mediMatyTypeADO.ID && o.PrimaryKey != mediMatyTypeADO.PrimaryKey).Sum(o => o.UseDays != 0 ? o.AMOUNT / o.UseDays : o.AMOUNT);
-                                            mediMatyTypeADO.IsAlertInTreatPresciption = false;
-                                            mediMatyTypeADO.EXCEED_LIMIT_IN_BATCH_REASON = null;
                                             if (alert != null)
                                             {
-                                                if (amountPres > mediMatyTypeADO.ALERT_MAX_IN_TREATMENT && string.IsNullOrEmpty(alert.EXCEED_LIMIT_IN_BATCH_REASON))
+                                                if ((amountPres > mediMatyTypeADO.ALERT_MAX_IN_TREATMENT && string.IsNullOrEmpty(alert.EXCEED_LIMIT_IN_BATCH_REASON)) || amountPres <= mediMatyTypeADO.ALERT_MAX_IN_TREATMENT)
+                                                {
                                                     mediMatyTypeADOsAlertInTreatment.Remove(alert);
+                                                    mediMatyTypeADO.IsAlertInTreatPresciption = false;
+                                                    mediMatyTypeADO.EXCEED_LIMIT_IN_BATCH_REASON = null;
+                                                }
                                                 else
                                                 {
                                                     mediMatyTypeADO.IsAlertInTreatPresciption = true;
                                                     mediMatyTypeADO.EXCEED_LIMIT_IN_BATCH_REASON = alert.EXCEED_LIMIT_IN_BATCH_REASON;
                                                 }
+                                            }
+                                            else
+                                            {
+                                                mediMatyTypeADO.IsAlertInTreatPresciption = false;
+                                                mediMatyTypeADO.EXCEED_LIMIT_IN_BATCH_REASON = null;
                                             }
                                         }
                                     }
@@ -6121,7 +6128,9 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                             }
                             else
                             {
-                                if (!String.IsNullOrEmpty(data.EXCEED_LIMIT_IN_BATCH_REASON) && data.ALERT_MAX_IN_TREATMENT != null && data.IsAlertInTreatPresciption)
+                                if (data.ALERT_MAX_IN_TREATMENT != null && data.NUMBER_PRESCIPTION_IN_TREATMENT == null)
+                                    data.NUMBER_PRESCIPTION_IN_TREATMENT = GetAmountPrescriptionInBatch(data, currentTreatment.PATIENT_ID) ?? 0;
+                                if (!String.IsNullOrEmpty(data.EXCEED_LIMIT_IN_BATCH_REASON) && data.ALERT_MAX_IN_TREATMENT != null && (data.NUMBER_PRESCIPTION_IN_TREATMENT > data.ALERT_MAX_IN_TREATMENT || data.AMOUNT > data.ALERT_MAX_IN_TREATMENT))
                                 {
                                     e.RepositoryItem = this.memoReasonMaxPrescription;
                                 }
