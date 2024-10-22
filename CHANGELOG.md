@@ -1,3 +1,9 @@
+### Release 2.333.0
+* Bổ sung tính năng mở phiếu trên vỏ bệnh án sau khi chỉ định dịch vụ
+* Bổ sung tính năng chặn số lượng thuốc tối đa trong 1 đợt điều trị
+* Sửa thông tin thời gian kết thúc trong XML 3, XML 4 phục vụ XML 130 và QĐ 4750/QĐ-BYT
+* Tích hợp xuất hóa đơn điện tử hệ thống MISA cho khu nhà thuốc.
+
 ### Release 2.332.0
 * Bổ sung thông tin sản phẩm chi tiết cho danh mục thuốc
 * Bổ sung hiển thị thông tin thầu cho lô thuốc/vật tư
