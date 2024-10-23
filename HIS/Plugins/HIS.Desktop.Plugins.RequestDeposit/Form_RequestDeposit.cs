@@ -505,8 +505,8 @@ namespace HIS.Desktop.Plugins.RequestDeposit
                 {
                     ConfigInfo _config = Newtonsoft.Json.JsonConvert.DeserializeObject<ConfigInfo>(currentRoom.FirstOrDefault().QR_CONFIG_JSON);
                     HIS_CONFIG _cf = new HIS_CONFIG();
-                    if(string.IsNullOrEmpty(_config.BANK)) MessageBox.Show(this, "Cấu hình thiếu thông tin ngân hàng.","Thông báo",MessageBoxButtons.OK);
-                    _cf.KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", _config.BANK);
+                    if(string.IsNullOrWhiteSpace(_config.BANK)) MessageBox.Show(this, "Cấu hình thiếu thông tin ngân hàng.","Thông báo",MessageBoxButtons.OK);
+                    _cf.KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", _config.BANK.Trim());
                     _cf.VALUE = _config.VALUE;
                     //co cau hinh QR o buong benh
                     List<object> listArgs = new List<object>();
