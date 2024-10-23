@@ -212,18 +212,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Run\frmAggregateExpMestPrintFilter__Dispose.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Run\frmAggregateExpMestPrintFilter__Plus_Print.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Run\frmAggregateExpMestPrintFilter__Plus_Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Run\frmAggregateExpMestPrintFilter.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Run\frmAggregateExpMestPrintFilter__Dispose.cs" />
+    <Compile Include="Run\frmAggregateExpMestPrintFilter__Plus_Print.cs" />
+    <Compile Include="Run\frmAggregateExpMestPrintFilter__Plus_Load.cs" />
+    <Compile Include="Run\frmAggregateExpMestPrintFilter.cs" />
     <Compile Include="Run\frmAggregateExpMestPrintFilter.designer.cs">
       <DependentUpon>frmAggregateExpMestPrintFilter.cs</DependentUpon>
     </Compile>

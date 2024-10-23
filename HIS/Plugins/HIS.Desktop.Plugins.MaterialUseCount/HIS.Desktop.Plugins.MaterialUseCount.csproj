@@ -147,9 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataADO.cs" />
-    <Compile Include="frmMaterialUseCount.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmMaterialUseCount.cs" />
     <Compile Include="frmMaterialUseCount.Designer.cs">
       <DependentUpon>frmMaterialUseCount.cs</DependentUpon>
     </Compile>

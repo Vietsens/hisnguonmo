@@ -190,9 +190,7 @@
     <Compile Include="Validation\HashtagValidationRule.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="TextLibraryProcessor.cs" />
-    <Compile Include="FormTextLibrary.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormTextLibrary.cs" />
     <Compile Include="FormTextLibrary.Designer.cs">
       <DependentUpon>FormTextLibrary.cs</DependentUpon>
     </Compile>

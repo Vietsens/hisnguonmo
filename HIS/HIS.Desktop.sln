@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.34902.97
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop", "HIS.Desktop\HIS.Desktop.csproj", "{8207ACB0-A325-42C6-97CB-FB54AE1AE6B8}"
 EndProject
@@ -1374,6 +1374,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventec.Desktop.Common.Message", "..\Common\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.csproj", "{2EF2CA8C-B308-4D64-86CD-86BA479C2664}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventec.Desktop.Common.LocalStorage.Location", "..\Common\Inventec.Desktop\Inventec.Desktop.Common.LocalStorage.Location\Inventec.Desktop.Common.LocalStorage.Location.csproj", "{4860BB27-10E2-4DD9-8CC9-B59C8C25C8F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.LocalStorage.ConfigCustomizaButton", "HIS.Desktop.LocalStorage.ConfigCustomizaButton\HIS.Desktop.LocalStorage.ConfigCustomizaButton.csproj", "{3F7E0C18-1178-49E3-9C55-375867FBB0E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -3913,6 +3915,10 @@ Global
 		{4860BB27-10E2-4DD9-8CC9-B59C8C25C8F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4860BB27-10E2-4DD9-8CC9-B59C8C25C8F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4860BB27-10E2-4DD9-8CC9-B59C8C25C8F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F7E0C18-1178-49E3-9C55-375867FBB0E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F7E0C18-1178-49E3-9C55-375867FBB0E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F7E0C18-1178-49E3-9C55-375867FBB0E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F7E0C18-1178-49E3-9C55-375867FBB0E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -4592,6 +4598,7 @@ Global
 		{A9E46128-5AF1-4BBD-B318-854517FC26AB} = {2226514F-7C2B-4550-A0DB-501300F014FD}
 		{2EF2CA8C-B308-4D64-86CD-86BA479C2664} = {2226514F-7C2B-4550-A0DB-501300F014FD}
 		{4860BB27-10E2-4DD9-8CC9-B59C8C25C8F3} = {2226514F-7C2B-4550-A0DB-501300F014FD}
+		{3F7E0C18-1178-49E3-9C55-375867FBB0E9} = {CD781BD7-B609-40A6-B54F-F70FF7A94E11}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B8CBF9E-8615-4AF0-9894-C15CB4B6FC6B}

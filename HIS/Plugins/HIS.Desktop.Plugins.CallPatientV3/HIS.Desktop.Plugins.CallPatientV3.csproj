@@ -146,24 +146,16 @@
     <Compile Include="CallPatientCLS\CallPatientV3Factory.cs" />
     <Compile Include="CallPatientCLS\ICallPatientV3.cs" />
     <Compile Include="ChooseRoomForWaitingScreenProcess.cs" />
-    <Compile Include="frmChooseRoomForWaitingScreen.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmChooseRoomForWaitingScreen.cs" />
     <Compile Include="frmChooseRoomForWaitingScreen.Designer.cs">
       <DependentUpon>frmChooseRoomForWaitingScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmChooseRoomForWaitingScreen__InitResource.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmWaitingScreenV3.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmChooseRoomForWaitingScreen__InitResource.cs" />
+    <Compile Include="frmWaitingScreenV3.cs" />
     <Compile Include="frmWaitingScreenV3.Designer.cs">
       <DependentUpon>frmWaitingScreenV3.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmWaitingScreenV3__InitResource.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmWaitingScreenV3__InitResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="roomWaitingScreenValidation.cs" />

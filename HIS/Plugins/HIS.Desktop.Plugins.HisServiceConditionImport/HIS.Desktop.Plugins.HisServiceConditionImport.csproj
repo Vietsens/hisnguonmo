@@ -141,9 +141,7 @@
     <Compile Include="ADO\ServiceConditionADO.cs" />
     <Compile Include="HisRequestUriStore.cs" />
     <Compile Include="HisServiceConditionImportProcessor.cs" />
-    <Compile Include="HisServiceConditionImport\frmHisServiceConditionImport.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="HisServiceConditionImport\frmHisServiceConditionImport.cs" />
     <Compile Include="HisServiceConditionImport\frmHisServiceConditionImport.Designer.cs">
       <DependentUpon>frmHisServiceConditionImport.cs</DependentUpon>
     </Compile>

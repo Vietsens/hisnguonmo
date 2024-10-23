@@ -129,9 +129,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmRegisterNumber.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmRegisterNumber.cs" />
     <Compile Include="frmRegisterNumber.Designer.cs">
       <DependentUpon>frmRegisterNumber.cs</DependentUpon>
     </Compile>

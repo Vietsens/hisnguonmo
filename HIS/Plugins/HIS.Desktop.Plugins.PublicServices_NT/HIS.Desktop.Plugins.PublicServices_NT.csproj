@@ -169,21 +169,13 @@
     <Compile Include="PublicServices_NT\PublicServices_NTBehavior.cs" />
     <Compile Include="PublicServices_NT\PublicServices_NTFactory.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="Run\frmPublicServices_NT__Pluss_Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Run\frmPublicServices_NT.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Run\frmPublicServices_NT__Pluss_Load.cs" />
+    <Compile Include="Run\frmPublicServices_NT.cs" />
     <Compile Include="Run\frmPublicServices_NT.Designer.cs">
       <DependentUpon>frmPublicServices_NT.cs</DependentUpon>
     </Compile>
-    <Compile Include="Run\frmPublicServices_NT__Dispose.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Run\frmPublicServices_NT__Pluss_Print.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Run\frmPublicServices_NT__Dispose.cs" />
+    <Compile Include="Run\frmPublicServices_NT__Pluss_Print.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />

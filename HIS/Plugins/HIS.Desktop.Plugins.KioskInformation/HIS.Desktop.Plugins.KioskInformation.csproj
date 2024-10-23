@@ -149,21 +149,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmGetInforationScreen.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmGetInforationScreen.cs" />
     <Compile Include="frmGetInforationScreen.Designer.cs">
       <DependentUpon>frmGetInforationScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmGreetingScreen.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmGreetingScreen.cs" />
     <Compile Include="frmGreetingScreen.Designer.cs">
       <DependentUpon>frmGreetingScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmSelectProfile.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmSelectProfile.cs" />
     <Compile Include="frmSelectProfile.Designer.cs">
       <DependentUpon>frmSelectProfile.cs</DependentUpon>
     </Compile>

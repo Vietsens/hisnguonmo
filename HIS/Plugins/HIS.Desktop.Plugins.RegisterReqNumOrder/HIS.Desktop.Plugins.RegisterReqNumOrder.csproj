@@ -152,16 +152,12 @@
     <Compile Include="CallPatient\CallPatientBehavior.cs" />
     <Compile Include="CallPatient\CallPatientFactory.cs" />
     <Compile Include="ChooseRoomForWaitingScreenProcess.cs" />
-    <Compile Include="frmChooseRoomForWaitingScreen.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmChooseRoomForWaitingScreen.cs" />
     <Compile Include="frmChooseRoomForWaitingScreen.Designer.cs">
       <DependentUpon>frmChooseRoomForWaitingScreen.cs</DependentUpon>
     </Compile>
     <Compile Include="CallPatient\ICallPatient.cs" />
-    <Compile Include="frmWaitingScreen.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmWaitingScreen.cs" />
     <Compile Include="frmWaitingScreen.Designer.cs">
       <DependentUpon>frmWaitingScreen.cs</DependentUpon>
     </Compile>

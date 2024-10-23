@@ -383,9 +383,7 @@
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="EmrDataStore.cs" />
-    <Compile Include="frmCauseOfDeath.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmCauseOfDeath.cs" />
     <Compile Include="frmCauseOfDeath.Designer.cs">
       <DependentUpon>frmCauseOfDeath.cs</DependentUpon>
     </Compile>
@@ -395,15 +393,11 @@
     <Compile Include="frmReasonOpenTreatment.Designer.cs">
       <DependentUpon>frmReasonOpenTreatment.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmServiceType.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmServiceType.cs" />
     <Compile Include="frmServiceType.Designer.cs">
       <DependentUpon>frmServiceType.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmTuberculosisTreatment.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmTuberculosisTreatment.cs" />
     <Compile Include="frmTuberculosisTreatment.Designer.cs">
       <DependentUpon>frmTuberculosisTreatment.cs</DependentUpon>
     </Compile>
@@ -411,12 +405,8 @@
     <Compile Include="Print.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="PopupMenuProcessor.cs" />
-    <Compile Include="Print\UCTreatmentList__Print.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Print\UCTreatmentList__Print__Init.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Print\UCTreatmentList__Print.cs" />
+    <Compile Include="Print\UCTreatmentList__Print__Init.cs" />
     <Compile Include="HisRequestUriStore.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="TreatmentListProcessor.cs" />
@@ -430,27 +420,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UCTreatmentList.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCTreatmentList.cs" />
     <Compile Include="UCTreatmentList.Designer.cs">
       <DependentUpon>UCTreatmentList.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCTreatmentList_Right_Click.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCTreatmentList__Dispose.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCTreatmentList__InitResource.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCTreatmentList__Item_Click.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCTreatmentList__Print___KSK.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCTreatmentList_Right_Click.cs" />
+    <Compile Include="UCTreatmentList__Dispose.cs" />
+    <Compile Include="UCTreatmentList__InitResource.cs" />
+    <Compile Include="UCTreatmentList__Item_Click.cs" />
+    <Compile Include="UCTreatmentList__Print___KSK.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmCauseOfDeath.resx">

@@ -84,9 +84,7 @@
     <Compile Include="CompareBhytInfo\CompareBhytInfoBehavior.cs" />
     <Compile Include="CompareBhytInfo\CompareBhytInfoFactory.cs" />
     <Compile Include="CompareBhytInfo\ICompareBhytInfo.cs" />
-    <Compile Include="FormCompareBhytInfo.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormCompareBhytInfo.cs" />
     <Compile Include="FormCompareBhytInfo.Designer.cs">
       <DependentUpon>FormCompareBhytInfo.cs</DependentUpon>
     </Compile>

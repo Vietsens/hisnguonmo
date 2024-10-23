@@ -175,18 +175,12 @@
     <Compile Include="PublicMedicineByPhased\IPublicMedicineByPhasedCreate.cs" />
     <Compile Include="PublicMedicineByPhased\PublicMedicineByPhasedBehavior.cs" />
     <Compile Include="PublicMedicineByPhased\PublicMedicineByPhasedFactory.cs" />
-    <Compile Include="Run\frmPublicMedicineByPhased.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Run\frmPublicMedicineByPhased.cs" />
     <Compile Include="Run\frmPublicMedicineByPhased.Designer.cs">
       <DependentUpon>frmPublicMedicineByPhased.cs</DependentUpon>
     </Compile>
-    <Compile Include="Run\frmPublicMedicineByPhased__Plus__Print.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Run\frmPublicMedicineByPhased__Plus__ Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Run\frmPublicMedicineByPhased__Plus__Print.cs" />
+    <Compile Include="Run\frmPublicMedicineByPhased__Plus__ Load.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />

@@ -253,21 +253,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="KeyboardWorker.cs" />
-    <Compile Include="MedicineTypeCreate\frmMedicineTypeCreate.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="MedicineTypeCreate\frmMedicineTypeCreate.cs" />
     <Compile Include="MedicineTypeCreate\frmMedicineTypeCreate.Designer.cs">
       <DependentUpon>frmMedicineTypeCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="MedicineTypeCreate\frmMedicineTypeCreate__InitResource.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MedicineTypeCreate\frmMedicineTypeUpdate_LoadComboControl.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MedicineTypeCreate\frmMedicineTypeUpdate_Validate.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="MedicineTypeCreate\frmMedicineTypeCreate__InitResource.cs" />
+    <Compile Include="MedicineTypeCreate\frmMedicineTypeUpdate_LoadComboControl.cs" />
+    <Compile Include="MedicineTypeCreate\frmMedicineTypeUpdate_Validate.cs" />
     <Compile Include="MedicineTypeCreate\IMedicineTypeCreate.cs" />
     <Compile Include="MedicineTypeCreate\MedicineTypeCreateBehavior.cs" />
     <Compile Include="MedicineTypeCreate\MedicineTypeCreateFactory.cs" />

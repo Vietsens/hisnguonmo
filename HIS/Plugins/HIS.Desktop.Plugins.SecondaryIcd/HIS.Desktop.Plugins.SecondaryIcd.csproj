@@ -170,9 +170,7 @@
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="SecondaryIcdProcessor.cs" />
     <Compile Include="SecondaryIcdUtil.cs" />
-    <Compile Include="SecondaryIcd\frmSecondaryIcd.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="SecondaryIcd\frmSecondaryIcd.cs" />
     <Compile Include="SecondaryIcd\frmSecondaryIcd.Designer.cs">
       <DependentUpon>frmSecondaryIcd.cs</DependentUpon>
     </Compile>

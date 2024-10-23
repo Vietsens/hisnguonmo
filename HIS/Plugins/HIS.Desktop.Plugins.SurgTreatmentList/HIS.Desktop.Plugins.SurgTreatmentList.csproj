@@ -128,15 +128,11 @@
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="SurgTreatmentListProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SurgTreatmentListUC.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="SurgTreatmentListUC.cs" />
     <Compile Include="SurgTreatmentListUC.Designer.cs">
       <DependentUpon>SurgTreatmentListUC.cs</DependentUpon>
     </Compile>
-    <Compile Include="SurgTreatmentListUC_Load.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="SurgTreatmentListUC_Load.cs" />
     <Compile Include="SurgTreatmentList\ISurgTreatmentList.cs" />
     <Compile Include="SurgTreatmentList\SurgTreatmentListBehavior.cs" />
     <Compile Include="SurgTreatmentList\SurgTreatmentListFactory.cs" />

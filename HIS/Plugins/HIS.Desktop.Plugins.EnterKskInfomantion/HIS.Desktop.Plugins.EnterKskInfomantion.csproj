@@ -199,30 +199,16 @@
     <Compile Include="EnterKskInfomantion\EnterKskInfomantionBehavior.cs" />
     <Compile Include="EnterKskInfomantion\EnterKskInfomantionFactory.cs" />
     <Compile Include="EnterKskInfomantion\IEnterKskInfomantion.cs" />
-    <Compile Include="frmEnterKskInfomantion.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmEnterKskInfomantion.cs" />
     <Compile Include="frmEnterKskInfomantion.Designer.cs">
       <DependentUpon>frmEnterKskInfomantion.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmEnterKskInfomantion.GridControl.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmEnterKskInfomantion.LoadControls.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmEnterKskInfomantion.PrintProcess.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmEnterKskInfomantion.Process.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmEnterKskInfomantion.SetResources.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmEnterKskInfomantion.Validation.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmEnterKskInfomantion.GridControl.cs" />
+    <Compile Include="frmEnterKskInfomantion.LoadControls.cs" />
+    <Compile Include="frmEnterKskInfomantion.PrintProcess.cs" />
+    <Compile Include="frmEnterKskInfomantion.Process.cs" />
+    <Compile Include="frmEnterKskInfomantion.SetResources.cs" />
+    <Compile Include="frmEnterKskInfomantion.Validation.cs" />
     <Compile Include="HisRequestUriStore.cs" />
     <Compile Include="PopupMenuProcessorCheck.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

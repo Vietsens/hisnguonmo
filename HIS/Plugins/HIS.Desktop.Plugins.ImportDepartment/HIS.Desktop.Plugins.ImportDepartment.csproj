@@ -117,12 +117,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\DepartmentADO.cs" />
-    <Compile Include="frmImportDepartment__Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmImportDepartment.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmImportDepartment__Load.cs" />
+    <Compile Include="frmImportDepartment.cs" />
     <Compile Include="frmImportDepartment.Designer.cs">
       <DependentUpon>frmImportDepartment.cs</DependentUpon>
     </Compile>

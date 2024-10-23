@@ -137,9 +137,7 @@
     <Compile Include="MedicineIsUsedPatient\MedicineIsUsedPatientBehavior.cs" />
     <Compile Include="MedicineIsUsedPatient\MedicineIsUsedPatientFactory.cs" />
     <Compile Include="MedicineIsUsedPatient\IMedicineIsUsedPatient.cs" />
-    <Compile Include="MedicineIsUsedPatient\frmMedicineIsUsedPatient.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="MedicineIsUsedPatient\frmMedicineIsUsedPatient.cs" />
     <Compile Include="MedicineIsUsedPatient\frmMedicineIsUsedPatient.Designer.cs">
       <DependentUpon>frmMedicineIsUsedPatient.cs</DependentUpon>
     </Compile>

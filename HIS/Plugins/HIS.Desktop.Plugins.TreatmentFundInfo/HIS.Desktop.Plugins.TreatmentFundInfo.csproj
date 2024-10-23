@@ -105,9 +105,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormTreatmentFundInfo.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormTreatmentFundInfo.cs" />
     <Compile Include="FormTreatmentFundInfo.Designer.cs">
       <DependentUpon>FormTreatmentFundInfo.cs</DependentUpon>
     </Compile>

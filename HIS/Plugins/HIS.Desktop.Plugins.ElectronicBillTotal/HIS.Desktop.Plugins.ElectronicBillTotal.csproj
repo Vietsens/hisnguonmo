@@ -128,9 +128,7 @@
     <Compile Include="ElectronicBillTotal\ElectronicBillTotalBehavior.cs" />
     <Compile Include="ElectronicBillTotal\ElectronicBillTotalFactory.cs" />
     <Compile Include="ElectronicBillTotal\IElectronicBillTotal.cs" />
-    <Compile Include="FormElectronicBillTotal.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormElectronicBillTotal.cs" />
     <Compile Include="FormElectronicBillTotal.Designer.cs">
       <DependentUpon>FormElectronicBillTotal.cs</DependentUpon>
     </Compile>

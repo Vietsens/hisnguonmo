@@ -188,7 +188,7 @@
     <Reference Include="NAudio">
       <HintPath>..\..\..\Lib\Inventec.Speech\NAudio.dll</HintPath>
     </Reference>
-	<Reference Include="Newtonsoft.Json">
+    <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\Lib\Library packages\Newtonsoft.Json.6.0.8\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SDA.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -337,7 +337,7 @@
       <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
       <Name>HIS.Desktop.LocalStorage.ConfigApplication</Name>
     </ProjectReference>
-	<ProjectReference Include="..\HIS.Desktop.LocalStorage.ConfigCustomizaButton\HIS.Desktop.LocalStorage.ConfigCustomizaButton.csproj">
+    <ProjectReference Include="..\HIS.Desktop.LocalStorage.ConfigCustomizaButton\HIS.Desktop.LocalStorage.ConfigCustomizaButton.csproj">
       <Project>{3f7e0c18-1178-49e3-9c55-375867fbb0e9}</Project>
       <Name>HIS.Desktop.LocalStorage.ConfigCustomizaButton</Name>
     </ProjectReference>

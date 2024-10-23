@@ -139,9 +139,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UC_ActiveIngredientAndConflict.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UC_ActiveIngredientAndConflict.cs" />
     <Compile Include="UC_ActiveIngredientAndConflict.Designer.cs">
       <DependentUpon>UC_ActiveIngredientAndConflict.cs</DependentUpon>
     </Compile>

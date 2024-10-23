@@ -154,15 +154,9 @@
     <Compile Include="AccidentHurtProcessor.cs" />
     <Compile Include="CboIcds.cs" />
     <Compile Include="ComboWithTextEditValidationRule.cs" />
-    <Compile Include="frmAccidentHurt_Validate.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmAccidentHurt___Pluss__LoadCbo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmAccidentHurt.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmAccidentHurt_Validate.cs" />
+    <Compile Include="frmAccidentHurt___Pluss__LoadCbo.cs" />
+    <Compile Include="frmAccidentHurt.cs" />
     <Compile Include="frmAccidentHurt.Designer.cs">
       <DependentUpon>frmAccidentHurt.cs</DependentUpon>
     </Compile>

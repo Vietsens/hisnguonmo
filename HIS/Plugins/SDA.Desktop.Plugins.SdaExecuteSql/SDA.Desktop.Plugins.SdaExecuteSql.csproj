@@ -123,9 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="SdaExecuteSql\frmSdaExecuteSql.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="SdaExecuteSql\frmSdaExecuteSql.cs" />
     <Compile Include="SdaExecuteSql\frmSdaExecuteSql.Designer.cs">
       <DependentUpon>frmSdaExecuteSql.cs</DependentUpon>
     </Compile>
@@ -140,15 +138,11 @@
     <Compile Include="UC\UCDateNoHour.Designer.cs">
       <DependentUpon>UCDateNoHour.cs</DependentUpon>
     </Compile>
-    <Compile Include="UC\UCDateTimeWithHour.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UC\UCDateTimeWithHour.cs" />
     <Compile Include="UC\UCDateTimeWithHour.Designer.cs">
       <DependentUpon>UCDateTimeWithHour.cs</DependentUpon>
     </Compile>
-    <Compile Include="UC\UCText.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UC\UCText.cs" />
     <Compile Include="UC\UCText.Designer.cs">
       <DependentUpon>UCText.cs</DependentUpon>
     </Compile>

@@ -140,9 +140,7 @@
     <Compile Include="EInvoiceCreate\EInvoiceCreateBehavior.cs" />
     <Compile Include="EInvoiceCreate\EInvoiceCreateFactory.cs" />
     <Compile Include="EInvoiceCreate\IEInvoiceCreate.cs" />
-    <Compile Include="FormEInvoiceCreate.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormEInvoiceCreate.cs" />
     <Compile Include="FormEInvoiceCreate.Designer.cs">
       <DependentUpon>FormEInvoiceCreate.cs</DependentUpon>
     </Compile>

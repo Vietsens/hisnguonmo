@@ -175,29 +175,17 @@
     <Compile Include="ImportExcel\frmExcelError.Designer.cs">
       <DependentUpon>frmExcelError.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCExpMestOtherExport___Load.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="FromExpMestOtherExport.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="UCExpMestOtherExport___Load.cs" />
+    <Compile Include="FromExpMestOtherExport.cs" />
     <Compile Include="FromExpMestOtherExport.Designer.cs">
       <DependentUpon>FromExpMestOtherExport.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCExpMestOtherExport_Update.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCExpMestOtherExport_Update.cs" />
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCExpMestOtherExport_Plus_Button.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCExpMestOtherExport_Plus_Control.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCExpMestOtherExport_Plus_TreeGrid.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCExpMestOtherExport_Plus_Button.cs" />
+    <Compile Include="UCExpMestOtherExport_Plus_Control.cs" />
+    <Compile Include="UCExpMestOtherExport_Plus_TreeGrid.cs" />
     <Compile Include="ExpMestOtherExportProcessor.cs" />
     <Compile Include="ExpMestOtherExport\ExpMestOtherExportBehavior.cs" />
     <Compile Include="ExpMestOtherExport\ExpMestOtherExportFactory.cs" />
@@ -209,9 +197,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="UCExpMestOtherExport.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCExpMestOtherExport.cs" />
     <Compile Include="UCExpMestOtherExport.Designer.cs">
       <DependentUpon>UCExpMestOtherExport.cs</DependentUpon>
     </Compile>

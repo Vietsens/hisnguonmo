@@ -132,9 +132,7 @@
     <Compile Include="Sda\SdaEventLogCreate.cs" />
     <Compile Include="UCCauseOfDeath\ADO\CauseOfDeathADO.cs" />
     <Compile Include="UCCauseOfDeath\ADO\EventsCausesDeathADO.cs" />
-    <Compile Include="frmInformationAllowGoHome.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmInformationAllowGoHome.cs" />
     <Compile Include="frmInformationAllowGoHome.Designer.cs">
       <DependentUpon>frmInformationAllowGoHome.cs</DependentUpon>
     </Compile>

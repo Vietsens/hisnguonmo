@@ -121,9 +121,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmTransactionBillInfoEdit.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmTransactionBillInfoEdit.cs" />
     <Compile Include="frmTransactionBillInfoEdit.Designer.cs">
       <DependentUpon>frmTransactionBillInfoEdit.cs</DependentUpon>
     </Compile>

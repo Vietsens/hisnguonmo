@@ -270,15 +270,11 @@
     <Compile Include="Base\ModuleLink.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Design\FilmValidationRule.cs" />
-    <Compile Include="Design\frmNumberFilmInput.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Design\frmNumberFilmInput.cs" />
     <Compile Include="Design\frmNumberFilmInput.Designer.cs">
       <DependentUpon>frmNumberFilmInput.cs</DependentUpon>
     </Compile>
-    <Compile Include="Design\frmNumberFilmInput__Dispose.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Design\frmNumberFilmInput__Dispose.cs" />
     <Compile Include="MachineValidationRule.cs" />
     <Compile Include="frmMachine.cs">
       <SubType>Form</SubType>
@@ -286,9 +282,7 @@
     <Compile Include="frmMachine.Designer.cs">
       <DependentUpon>frmMachine.cs</DependentUpon>
     </Compile>
-    <Compile Include="ImageCode\ImageCodeView.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ImageCode\ImageCodeView.cs" />
     <Compile Include="ImageCode\ImageCodeView.Designer.cs">
       <DependentUpon>ImageCodeView.cs</DependentUpon>
     </Compile>
@@ -314,49 +308,25 @@
     <Compile Include="ReqChangeService\FormKeThuoc.Designer.cs">
       <DependentUpon>FormKeThuoc.cs</DependentUpon>
     </Compile>
-    <Compile Include="ReqChangeService\SwapService.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ReqChangeService\SwapService.cs" />
     <Compile Include="ReqChangeService\SwapService.Designer.cs">
       <DependentUpon>SwapService.cs</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="UCExecuteRoom__Dispose.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCExecuteRoom___PACS_Process.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCExecuteRoom___ThreadLoad.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCExecuteRoom__Dispose.cs" />
+    <Compile Include="UCExecuteRoom___PACS_Process.cs" />
+    <Compile Include="UCExecuteRoom___ThreadLoad.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="SdaConfigKeys.cs" />
-    <Compile Include="UCExecuteRoom___InitLanguage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Print\UCExecuteRoom___Print.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCExecuteRoom___CallPatient.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCExecuteRoom___InitLanguage.cs" />
+    <Compile Include="Print\UCExecuteRoom___Print.cs" />
+    <Compile Include="UCExecuteRoom___CallPatient.cs" />
     <Compile Include="ExecuteRoomPopupMenuProcessor.cs" />
-    <Compile Include="UCExecuteRoom___Popup_Menu_Showing.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCExecuteRoom___Process.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCExecuteRoom___Shortcut.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TreeSereServ___Process.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCExecuteRoom___Load.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCExecuteRoom___Popup_Menu_Showing.cs" />
+    <Compile Include="UCExecuteRoom___Process.cs" />
+    <Compile Include="UCExecuteRoom___Shortcut.cs" />
+    <Compile Include="TreeSereServ___Process.cs" />
+    <Compile Include="UCExecuteRoom___Load.cs" />
     <Compile Include="ExecuteRoomProcessor.cs" />
     <Compile Include="Delegate\DelegateUC.cs" />
     <Compile Include="ExecuteRoom\ExecuteRoomBehavior.cs" />
@@ -364,9 +334,7 @@
     <Compile Include="ExecuteRoom\IExecuteRoom.cs" />
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UCExecuteRoom.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCExecuteRoom.cs" />
     <Compile Include="UCExecuteRoom.Designer.cs">
       <DependentUpon>UCExecuteRoom.cs</DependentUpon>
     </Compile>

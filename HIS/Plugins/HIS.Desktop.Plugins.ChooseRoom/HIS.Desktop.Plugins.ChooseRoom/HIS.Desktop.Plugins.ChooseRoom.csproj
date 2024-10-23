@@ -163,13 +163,9 @@
     </Compile>
     <Compile Include="ChooseRoom\DashboardBehavior.cs" />
     <Compile Include="ChooseRoom\DashboardFactory.cs" />
-    <Compile Include="ChooseRoom\frmChooseRoom__Dispose.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ChooseRoom\frmChooseRoom__Dispose.cs" />
     <Compile Include="ChooseRoom\IDashboard.cs" />
-    <Compile Include="ChooseRoom\frmChooseRoom.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ChooseRoom\frmChooseRoom.cs" />
     <Compile Include="ChooseRoom\frmChooseRoom.Designer.cs">
       <DependentUpon>frmChooseRoom.cs</DependentUpon>
     </Compile>

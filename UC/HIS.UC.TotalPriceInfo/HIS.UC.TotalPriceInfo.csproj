@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{49E97AC1-91F0-4361-96F2-208653F93F8B}</ProjectGuid>
+    <ProjectGuid>{E06A3EE2-AE91-4098-BA7D-37247E5CD46A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HIS.UC.TotalPriceInfo</RootNamespace>

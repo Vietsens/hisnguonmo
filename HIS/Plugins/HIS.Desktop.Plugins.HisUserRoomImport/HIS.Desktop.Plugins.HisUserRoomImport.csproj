@@ -150,9 +150,7 @@
   <ItemGroup>
     <Compile Include="ADO\UserRoomADO.cs" />
     <Compile Include="HisUserRoomImportProcessor.cs" />
-    <Compile Include="HisUserRoomImport\frmHisUserRoomImport.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="HisUserRoomImport\frmHisUserRoomImport.cs" />
     <Compile Include="HisUserRoomImport\frmHisUserRoomImport.Designer.cs">
       <DependentUpon>frmHisUserRoomImport.cs</DependentUpon>
     </Compile>

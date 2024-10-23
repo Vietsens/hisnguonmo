@@ -184,9 +184,7 @@
     <Compile Include="EmpUser\EmpUserFactory.cs" />
     <Compile Include="EmpUser\EmpUserProcessor.cs" />
     <Compile Include="EmpUser\IEmpUser.cs" />
-    <Compile Include="frmEmpUser.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmEmpUser.cs" />
     <Compile Include="frmEmpUser.Designer.cs">
       <DependentUpon>frmEmpUser.cs</DependentUpon>
     </Compile>

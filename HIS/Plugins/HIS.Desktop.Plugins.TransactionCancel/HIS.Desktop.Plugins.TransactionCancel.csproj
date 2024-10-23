@@ -167,9 +167,7 @@
     <Compile Include="Base\ResourceMessageLang.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Config\MappingErrorTHE.cs" />
-    <Compile Include="frmTransactionCancel.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmTransactionCancel.cs" />
     <Compile Include="frmTransactionCancel.Designer.cs">
       <DependentUpon>frmTransactionCancel.cs</DependentUpon>
     </Compile>

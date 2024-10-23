@@ -148,15 +148,11 @@
     <Compile Include="ADO\ServiceReqSDO.cs" />
     <Compile Include="MealRationDetail\MealRationDetailBehavior.cs" />
     <Compile Include="MealRationDetail\MealRationDetailFactory.cs" />
-    <Compile Include="MealRationDetail\frmMealRationDetail.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="MealRationDetail\frmMealRationDetail.cs" />
     <Compile Include="MealRationDetail\frmMealRationDetail.Designer.cs">
       <DependentUpon>frmMealRationDetail.cs</DependentUpon>
     </Compile>
-    <Compile Include="MealRationDetail\frmMealRationDetailPlus__InitResource.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="MealRationDetail\frmMealRationDetailPlus__InitResource.cs" />
     <Compile Include="MealRationDetail\IMealRationDetail.cs" />
     <Compile Include="AppConfigKeys.cs" />
     <Compile Include="MealRationDetailProcessor.cs" />

@@ -232,27 +232,13 @@
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="Config\HisExecuteRoleCFG.cs" />
     <Compile Include="PopupMenuProcessor.cs" />
-    <Compile Include="UCApprovalSurgery__Print.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCApprovalSurgery__ShortCut.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Validate\UCApprovalSurgery__Validate.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCApprovalSurgery__Check.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCApprovalSurgery__Processor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CreateCalendar\frmCreateCalendar__Validate.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CreateCalendar\frmCreateCalendar.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="UCApprovalSurgery__Print.cs" />
+    <Compile Include="UCApprovalSurgery__ShortCut.cs" />
+    <Compile Include="Validate\UCApprovalSurgery__Validate.cs" />
+    <Compile Include="UCApprovalSurgery__Check.cs" />
+    <Compile Include="UCApprovalSurgery__Processor.cs" />
+    <Compile Include="CreateCalendar\frmCreateCalendar__Validate.cs" />
+    <Compile Include="CreateCalendar\frmCreateCalendar.cs" />
     <Compile Include="CreateCalendar\frmCreateCalendar.Designer.cs">
       <DependentUpon>frmCreateCalendar.cs</DependentUpon>
     </Compile>
@@ -269,13 +255,9 @@
     <Compile Include="EkipTemp\frmEkipTemp__Validate.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UCApprovalSurgery__LoadCombo.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCApprovalSurgery__LoadCombo.cs" />
     <Compile Include="SdaConfigKeys.cs" />
-    <Compile Include="UCApprovalSurgery__Load.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCApprovalSurgery__Load.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -284,9 +266,7 @@
     <Compile Include="Delegate\DelegateUC.cs" />
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UCApprovalSurgery.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCApprovalSurgery.cs" />
     <Compile Include="UCApprovalSurgery.Designer.cs">
       <DependentUpon>UCApprovalSurgery.cs</DependentUpon>
     </Compile>
