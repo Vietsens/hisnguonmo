@@ -330,10 +330,17 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentServiceReq), currentServiceReq));
                 CommonParam param = new CommonParam();
+                Inventec.Common.Logging.LogSystem.Info("1. Begin api/HisBedLog/GetView ");
                 HisBedLogViewFilter blFilter = new HisBedLogViewFilter();
-                blFilter.TREATMENT_ID = ServiceReqConstruct.TREATMENT_ID;
+                if (currentServiceReq != null)
+                {
+                    blFilter.TREATMENT_ID = currentServiceReq.TREATMENT_ID;
+                }
                 lstBedLogData = new BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, blFilter, param);
+                Inventec.Common.Logging.LogSystem.Info("1. End api/HisBedLog/GetView ");
+
             }
             catch (Exception ex)
             {
@@ -346,9 +353,14 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             try
             {
                 CommonParam param = new CommonParam();
+                Inventec.Common.Logging.LogSystem.Info("1. Begin api/HisDhst/Get ");
                 HisDhstFilter dhFilter = new HisDhstFilter();
-                dhFilter.TREATMENT_ID = ServiceReqConstruct.TREATMENT_ID;
+                if (currentServiceReq != null)
+                {
+                    dhFilter.TREATMENT_ID = currentServiceReq.TREATMENT_ID;
+                }
                 lstDhstData = new BackendAdapter(param).Get<List<HIS_DHST>>("api/HisDhst/Get", ApiConsumer.ApiConsumers.MosConsumer, dhFilter, param);
+                Inventec.Common.Logging.LogSystem.Info("1. End api/HisDhst/Get ");
             }
             catch (Exception ex)
             {
@@ -3820,9 +3832,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 if (AppConfigKeys.IsSampleInfoOption == "1")
                 {
                     var datas = gridControlSereServ.DataSource as List<ADO.ServiceADO>;
-                    if (datas != null && datas.Count > 0 && datas.FirstOrDefault(o => o.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT) != null && (lstEkipUser == null || lstEkipUser.Count == 0 || (lstEkipUser != null && lstEkipUser.Count > 0 && lstEkipUser.Select(o => o.EXECUTE_ROLE_ID).Distinct().Count() < 2)))
+                    if (datas != null && datas.Count > 0 && datas.FirstOrDefault(o => o.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT) != null 
+                        && (lstEkipUser == null || lstEkipUser.Count == 0))
                     {
-                        DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.BatBuocChonKip,
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Bắt buộc phải có thông tin kíp thực hiện",
                           ResourceMessage.ThongBao,
                           MessageBoxButtons.OK);
                         return;
@@ -3830,9 +3843,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 }
                 else if (AppConfigKeys.IsSampleInfoOption == "2")
                 {
-                    if (lstEkipUser == null || lstEkipUser.Count == 0 || (lstEkipUser != null && lstEkipUser.Count > 0 && lstEkipUser.Select(o => o.EXECUTE_ROLE_ID).Distinct().Count() < 2))
+                    if (lstEkipUser == null || lstEkipUser.Count == 0)
                     {
-                        DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.BatBuocChonKip,
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Bắt buộc phải có thông tin kíp thực hiện",
                            ResourceMessage.ThongBao,
                            MessageBoxButtons.OK);
                         return;
