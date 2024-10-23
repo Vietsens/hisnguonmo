@@ -1816,7 +1816,7 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
 
         bool ValidTimeReturn()
         {
-            if (dtTimeReturn.DateTime != null && Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTimeReturn.DateTime) < this.currentServiceReq.INTRUCTION_TIME)
+            if ((AppConfigKeys.IsStartTimeMustBeGreaterThanInstructionTime == "1" || AppConfigKeys.IsStartTimeMustBeGreaterThanInstructionTime == "2") &&  dtTimeReturn.DateTime != null && Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTimeReturn.DateTime) < this.currentServiceReq.INTRUCTION_TIME)
             {
                 return false;
             }
