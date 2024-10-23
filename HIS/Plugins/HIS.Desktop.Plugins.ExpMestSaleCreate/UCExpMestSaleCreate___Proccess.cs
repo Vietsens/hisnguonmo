@@ -58,6 +58,9 @@ using WCF;
 using Newtonsoft.Json;
 using WCF.Client;
 using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.ADO;
+using IcdInputADO = HIS.UC.Icd.ADO.IcdInputADO;
+using MediMateTypeADO = HIS.Desktop.Plugins.ExpMestSaleCreate.ADO.MediMateTypeADO;
 
 namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 {
@@ -87,7 +90,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                             {
                                 Inventec.Common.Logging.LogSystem.Error("Release Material All False ____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => clientSessionKey), clientSessionKey));
                             }
-                        }                       
+                        }
                     }
                 }
                 this.clientSessionKey = Guid.NewGuid().ToString();
@@ -251,9 +254,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         Inventec.Common.Logging.LogSystem.Debug("Ket thuc goi api api/HisExpMest/SaleCreateListSdo hoac api/HisExpMest/SaleUpdateListSdo");
                         if (rs != null)
                         {
-
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
                             this.resultSDO = rs;
+
+                            if (btnQr.Visible && this.resultSDO.Transaction != null && this.resultSDO.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                                btnQr.Enabled = true;
                             if (resultSDO.ExpMestSdos != null && resultSDO.ExpMestSdos.Count > 0)
                             {
                                 InitMenuPrint(resultSDO.ExpMestSdos.FirstOrDefault().ExpMest);
@@ -266,11 +271,49 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                             if (chkCreateBill.Checked && this.resultSDO.Transaction != null)
                             {
                                 UpdateDictionaryNumOrderAccountBook(this.resultSDO.Transaction.ACCOUNT_BOOK_ID, this.resultSDO.Transaction.NUM_ORDER);
-                            }
-
-                            if (chkCreateBill.Checked && this.resultSDO.Transaction != null)
-                            {
                                 lblTransactionCode.Text = this.resultSDO.Transaction.TRANSACTION_CODE;
+                                if (this.resultSDO.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                                {
+                                    List<object> listArgs = new List<object>();
+                                    TransReqQRADO adoqr = new TransReqQRADO();
+                                    adoqr.TransReqId = CreateReqType.Transaction;
+                                    if (mediStock != null && !string.IsNullOrEmpty(mediStock.QR_CONFIG_JSON))
+                                    {
+                                        try
+                                        {
+                                            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<BankInfo>(mediStock.QR_CONFIG_JSON);
+                                            if (json != null)
+                                                adoqr.ConfigValue = new HIS_CONFIG() { VALUE = json.VALUE, KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", json.BANK) };
+
+                                            adoqr.TreatmentId = 0;
+                                            adoqr.Transaction = resultSDO.Transaction;
+                                            listArgs.Add(adoqr);
+                                            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Inventec.Common.Logging.LogSystem.Error(ex);
+                                            XtraMessageBox.Show("Định dạng Qr thiết lập trong kho phòng không hợp lệ");
+                                        }
+                                    }
+                                    else if (listConfig != null && listConfig.Count > 0)
+                                    {
+                                        if (listConfig.Count > 1)
+                                        {
+                                            XtraMessageBox.Show("Vui lòng sử dụng nút tạo QR để thực hiện thanh toán");
+                                        }
+                                        else
+                                        {
+                                            adoqr.ConfigValue = listConfig[0];
+
+                                            adoqr.TreatmentId = 0;
+                                            adoqr.Transaction = resultSDO.Transaction;
+                                            listArgs.Add(adoqr);
+                                            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                                        }
+                                    }
+
+                                }
                             }
                             if (resultSDO.ExpMestSdos != null && resultSDO.ExpMestSdos.Count > 0)
                             {
@@ -318,6 +361,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                             {
                                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListRs), ListRs));
                                 this.ListResultSDO = ListRs;
+                               
                                 foreach (var item in ListResultSDO)
                                 {
                                     if (item != null && item.ExpMestSdos != null && item.ExpMestSdos.Count > 0)
@@ -330,14 +374,60 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                                 this.SetLabelSave(GlobalDataStore.ModuleAction.EDIT);
                                 ReloadListDataDicBeforSave();
                                 FillDataToGridExpMest();
+                                bool IsShowMessQr = false;
                                 foreach (var item in ListResultSDO)
                                 {
-                                    this.resultSDO = item;
+                                    this.resultSDO = item; 
+                                    if (btnQr.Visible && this.resultSDO.Transaction != null && this.resultSDO.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                                        btnQr.Enabled = true;
                                     if (this.resultSDO != null)
                                     {
                                         if (chkCreateBill.Checked && this.resultSDO.Transaction != null)
                                         {
                                             UpdateDictionaryNumOrderAccountBook(this.resultSDO.Transaction.ACCOUNT_BOOK_ID, this.resultSDO.Transaction.NUM_ORDER);
+                                            if (this.resultSDO.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                                            {
+                                                List<object> listArgs = new List<object>();
+                                                TransReqQRADO adoqr = new TransReqQRADO();
+                                                adoqr.TransReqId = CreateReqType.Transaction;
+                                                if (mediStock != null && !string.IsNullOrEmpty(mediStock.QR_CONFIG_JSON))
+                                                {
+                                                    try
+                                                    {
+                                                        var json = Newtonsoft.Json.JsonConvert.DeserializeObject<BankInfo>(mediStock.QR_CONFIG_JSON);
+                                                        if (json != null)
+                                                            adoqr.ConfigValue = new HIS_CONFIG() { VALUE = json.VALUE, KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", json.BANK) };
+
+                                                        adoqr.TreatmentId = 0;
+                                                        adoqr.Transaction = resultSDO.Transaction;
+                                                        listArgs.Add(adoqr);
+                                                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                                                    }
+                                                    catch (Exception ex)
+                                                    {
+                                                        Inventec.Common.Logging.LogSystem.Error(ex);
+                                                        XtraMessageBox.Show("Định dạng Qr thiết lập trong kho phòng không hợp lệ");
+                                                    }
+                                                }
+                                                else if (listConfig != null && listConfig.Count > 0 && !IsShowMessQr)
+                                                {
+                                                    if (listConfig.Count > 1)
+                                                    {
+                                                        XtraMessageBox.Show("Vui lòng sử dụng nút tạo QR để thực hiện thanh toán");
+                                                        IsShowMessQr = true;
+                                                    }
+                                                    else
+                                                    {
+                                                        adoqr.ConfigValue = listConfig[0];
+
+                                                        adoqr.TreatmentId = 0;
+                                                        adoqr.Transaction = resultSDO.Transaction;
+                                                        listArgs.Add(adoqr);
+                                                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                                                    }
+                                                }
+
+                                            }
                                         }
 
                                         if (resultSDO.ExpMestSdos != null && resultSDO.ExpMestSdos.Count > 0)
@@ -748,7 +838,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 
                 HisExpMestSaleSDO ado = new HisExpMestSaleSDO();
                 var serviceReqCode = ((BindingList<MediMateTypeADO>)treeListMediMate.DataSource).ToList();
-                if (serviceReqCode!= null && serviceReqCode.Count > 0)
+                if (serviceReqCode != null && serviceReqCode.Count > 0)
                     ado.ClientSessionKey = serviceReqCode.FirstOrDefault().ClientSessionKey;
                 ado.MediStockId = this.mediStock.ID;
                 ado.PatientName = txtVirPatientName.Text;

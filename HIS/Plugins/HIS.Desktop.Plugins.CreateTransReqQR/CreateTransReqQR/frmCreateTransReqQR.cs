@@ -841,8 +841,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     tvf.TRANS_REQ_CODE__EXACT = currentTransReq.TRANS_REQ_CODE;
                     transactionPrint = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, tvf, null).FirstOrDefault();
 
-                    lblPatientName.Text = transactionPrint.BUYER_NAME;
-                    lblAddress.Text = transactionPrint.BUYER_ADDRESS;
+                    lblPatientName.Text = transactionPrint.BUYER_NAME ?? transactionPrint.TDL_PATIENT_NAME;
+                    lblAddress.Text = transactionPrint.BUYER_ADDRESS ?? transactionPrint.TDL_PATIENT_ADDRESS;
                 }
                 InitPopupMenuOther();
                 if (currentTransReq == null)

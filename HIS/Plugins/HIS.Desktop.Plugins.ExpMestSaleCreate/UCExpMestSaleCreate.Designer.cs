@@ -49,6 +49,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCExpMestSaleCreate));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -59,8 +60,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.chkEditUser = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.btnQr = new DevExpress.XtraEditors.DropDownButton();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.btnCtrlA = new DevExpress.XtraBars.BarButtonItem();
             this.btnCtrlI = new DevExpress.XtraBars.BarButtonItem();
@@ -74,6 +75,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.chkEditUser = new DevExpress.XtraEditors.CheckEdit();
             this.btnDonCu = new DevExpress.XtraEditors.SimpleButton();
             this.layoutControlIcd = new DevExpress.XtraLayout.LayoutControl();
             this.panelIcd = new System.Windows.Forms.Panel();
@@ -147,11 +149,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.chkPrintNow = new DevExpress.XtraEditors.CheckEdit();
             this.btnNewExpMest = new DevExpress.XtraEditors.SimpleButton();
             this.btnCancelExport = new DevExpress.XtraEditors.SimpleButton();
-            this.popupControlContainerMediMaty = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerMediMaty = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControlMediMaty = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.gridViewMediMaty = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.txtMediMatyForPrescription = new DevExpress.XtraEditors.ButtonEdit();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControlPopupUser = new DevExpress.XtraGrid.GridControl();
             this.gridViewPopupUser = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboAge = new DevExpress.XtraEditors.LookUpEdit();
@@ -203,7 +205,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.treeListColumn8 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.repositoryItemSpinEdit__Amount = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.repositoryItemBtnView = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
             this.cboGender = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtTreatmentCode = new DevExpress.XtraEditors.TextEdit();
@@ -264,12 +266,13 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem40 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem49 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider_Save = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxValidationProvider_Add = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.layoutControlItem50 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxValidationProvider_Save = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProvider_Add = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chkEditUser.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkEditUser.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlIcd)).BeginInit();
             this.layoutControlIcd.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).BeginInit();
@@ -423,12 +426,14 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem49)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem50)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider_Save)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider_Add)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.btnQr);
             this.layoutControl1.Controls.Add(this.chkEditUser);
             this.layoutControl1.Controls.Add(this.btnDonCu);
             this.layoutControl1.Controls.Add(this.layoutControlIcd);
@@ -493,17 +498,18 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // chkEditUser
+            // btnQr
             // 
-            this.chkEditUser.Location = new System.Drawing.Point(602, 78);
-            this.chkEditUser.MenuManager = this.barManager1;
-            this.chkEditUser.Name = "chkEditUser";
-            this.chkEditUser.Properties.Caption = "Sửa";
-            this.chkEditUser.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkEditUser.Size = new System.Drawing.Size(54, 19);
-            this.chkEditUser.StyleController = this.layoutControl1;
-            this.chkEditUser.TabIndex = 87;
-            this.chkEditUser.CheckedChanged += new System.EventHandler(this.chkEditUser_CheckedChanged);
+            this.btnQr.Enabled = false;
+            this.btnQr.Location = new System.Drawing.Point(1077, 617);
+            this.btnQr.MenuManager = this.barManager1;
+            this.btnQr.Name = "btnQr";
+            this.btnQr.Size = new System.Drawing.Size(41, 22);
+            this.btnQr.StyleController = this.layoutControl1;
+            this.btnQr.TabIndex = 88;
+            this.btnQr.Text = "QR";
+            this.btnQr.ToolTip = "Thanh toán bằng QR";
+            this.btnQr.Click += new System.EventHandler(this.btnQr_Click);
             // 
             // barManager1
             // 
@@ -634,6 +640,18 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.barDockControlRight.Location = new System.Drawing.Point(1320, 29);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 641);
             // 
+            // chkEditUser
+            // 
+            this.chkEditUser.Location = new System.Drawing.Point(602, 78);
+            this.chkEditUser.MenuManager = this.barManager1;
+            this.chkEditUser.Name = "chkEditUser";
+            this.chkEditUser.Properties.Caption = "Sửa";
+            this.chkEditUser.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.chkEditUser.Size = new System.Drawing.Size(54, 19);
+            this.chkEditUser.StyleController = this.layoutControl1;
+            this.chkEditUser.TabIndex = 87;
+            this.chkEditUser.CheckedChanged += new System.EventHandler(this.chkEditUser_CheckedChanged);
+            // 
             // btnDonCu
             // 
             this.btnDonCu.Location = new System.Drawing.Point(545, 2);
@@ -756,20 +774,20 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             // chkAutoShow
             // 
-            this.chkAutoShow.Location = new System.Drawing.Point(334, 617);
+            this.chkAutoShow.Location = new System.Drawing.Point(315, 617);
             this.chkAutoShow.MenuManager = this.barManager1;
             this.chkAutoShow.Name = "chkAutoShow";
             this.chkAutoShow.Properties.Caption = "";
-            this.chkAutoShow.Size = new System.Drawing.Size(79, 19);
+            this.chkAutoShow.Size = new System.Drawing.Size(66, 19);
             this.chkAutoShow.StyleController = this.layoutControl1;
             this.chkAutoShow.TabIndex = 77;
             this.chkAutoShow.CheckedChanged += new System.EventHandler(this.chkAutoShow_CheckedChanged);
             // 
             // btnDebt
             // 
-            this.btnDebt.Location = new System.Drawing.Point(1228, 617);
+            this.btnDebt.Location = new System.Drawing.Point(1242, 617);
             this.btnDebt.Name = "btnDebt";
-            this.btnDebt.Size = new System.Drawing.Size(90, 22);
+            this.btnDebt.Size = new System.Drawing.Size(76, 22);
             this.btnDebt.StyleController = this.layoutControl1;
             this.btnDebt.TabIndex = 76;
             this.btnDebt.Text = "Xác nhận nợ";
@@ -1571,20 +1589,20 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             // chkPrintNow
             // 
-            this.chkPrintNow.Location = new System.Drawing.Point(512, 617);
+            this.chkPrintNow.Location = new System.Drawing.Point(480, 617);
             this.chkPrintNow.MenuManager = this.barManager1;
             this.chkPrintNow.Name = "chkPrintNow";
             this.chkPrintNow.Properties.Caption = "";
-            this.chkPrintNow.Size = new System.Drawing.Size(21, 19);
+            this.chkPrintNow.Size = new System.Drawing.Size(34, 19);
             this.chkPrintNow.StyleController = this.layoutControl1;
             this.chkPrintNow.TabIndex = 73;
             this.chkPrintNow.CheckedChanged += new System.EventHandler(this.chkPrintNow_CheckedChanged);
             // 
             // btnNewExpMest
             // 
-            this.btnNewExpMest.Location = new System.Drawing.Point(922, 617);
+            this.btnNewExpMest.Location = new System.Drawing.Point(933, 617);
             this.btnNewExpMest.Name = "btnNewExpMest";
-            this.btnNewExpMest.Size = new System.Drawing.Size(114, 22);
+            this.btnNewExpMest.Size = new System.Drawing.Size(86, 22);
             this.btnNewExpMest.StyleController = this.layoutControl1;
             this.btnNewExpMest.TabIndex = 68;
             this.btnNewExpMest.Text = "Đơn mới (Ctrl D)";
@@ -1592,7 +1610,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             // btnCancelExport
             // 
-            this.btnCancelExport.Location = new System.Drawing.Point(537, 617);
+            this.btnCancelExport.Location = new System.Drawing.Point(518, 617);
             this.btnCancelExport.Name = "btnCancelExport";
             this.btnCancelExport.Size = new System.Drawing.Size(118, 22);
             this.btnCancelExport.StyleController = this.layoutControl1;
@@ -1825,9 +1843,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             // btnSaleBill
             // 
-            this.btnSaleBill.Location = new System.Drawing.Point(1081, 617);
+            this.btnSaleBill.Location = new System.Drawing.Point(1122, 617);
             this.btnSaleBill.Name = "btnSaleBill";
-            this.btnSaleBill.Size = new System.Drawing.Size(143, 22);
+            this.btnSaleBill.Size = new System.Drawing.Size(116, 22);
             this.btnSaleBill.StyleController = this.layoutControl1;
             this.btnSaleBill.TabIndex = 46;
             this.btnSaleBill.Text = "Xuất hóa đơn (Ctrl T)";
@@ -1968,7 +1986,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             // btnSavePrint
             // 
-            this.btnSavePrint.Location = new System.Drawing.Point(659, 617);
+            this.btnSavePrint.Location = new System.Drawing.Point(640, 617);
             this.btnSavePrint.Name = "btnSavePrint";
             this.btnSavePrint.Size = new System.Drawing.Size(90, 22);
             this.btnSavePrint.StyleController = this.layoutControl1;
@@ -1978,9 +1996,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             // ddBtnPrint
             // 
-            this.ddBtnPrint.Location = new System.Drawing.Point(1040, 617);
+            this.ddBtnPrint.Location = new System.Drawing.Point(1023, 617);
             this.ddBtnPrint.Name = "ddBtnPrint";
-            this.ddBtnPrint.Size = new System.Drawing.Size(37, 22);
+            this.ddBtnPrint.Size = new System.Drawing.Size(50, 22);
             this.ddBtnPrint.StyleController = this.layoutControl1;
             this.ddBtnPrint.TabIndex = 29;
             this.ddBtnPrint.Text = "In";
@@ -1988,9 +2006,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             // btnNew
             // 
-            this.btnNew.Location = new System.Drawing.Point(837, 617);
+            this.btnNew.Location = new System.Drawing.Point(817, 617);
             this.btnNew.Name = "btnNew";
-            this.btnNew.Size = new System.Drawing.Size(81, 22);
+            this.btnNew.Size = new System.Drawing.Size(112, 22);
             this.btnNew.StyleController = this.layoutControl1;
             this.btnNew.TabIndex = 28;
             this.btnNew.Text = "Mới (Ctrl N)";
@@ -1998,9 +2016,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(753, 617);
+            this.btnSave.Location = new System.Drawing.Point(734, 617);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(80, 22);
+            this.btnSave.Size = new System.Drawing.Size(79, 22);
             this.btnSave.StyleController = this.layoutControl1;
             this.btnSave.TabIndex = 27;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -2477,7 +2495,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem45,
             this.emptySpaceItem2,
             this.layoutControlItem40,
-            this.layoutControlItem49});
+            this.layoutControlItem49,
+            this.layoutControlItem50});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -2543,34 +2562,34 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // layoutControlItem23
             // 
             this.layoutControlItem23.Control = this.btnSave;
-            this.layoutControlItem23.Location = new System.Drawing.Point(751, 615);
+            this.layoutControlItem23.Location = new System.Drawing.Point(732, 615);
             this.layoutControlItem23.Name = "layoutControlItem23";
-            this.layoutControlItem23.Size = new System.Drawing.Size(84, 26);
+            this.layoutControlItem23.Size = new System.Drawing.Size(83, 26);
             this.layoutControlItem23.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem23.TextVisible = false;
             // 
             // layoutControlItem24
             // 
             this.layoutControlItem24.Control = this.btnNew;
-            this.layoutControlItem24.Location = new System.Drawing.Point(835, 615);
+            this.layoutControlItem24.Location = new System.Drawing.Point(815, 615);
             this.layoutControlItem24.Name = "layoutControlItem24";
-            this.layoutControlItem24.Size = new System.Drawing.Size(85, 26);
+            this.layoutControlItem24.Size = new System.Drawing.Size(116, 26);
             this.layoutControlItem24.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem24.TextVisible = false;
             // 
             // layoutControlItem25
             // 
             this.layoutControlItem25.Control = this.ddBtnPrint;
-            this.layoutControlItem25.Location = new System.Drawing.Point(1038, 615);
+            this.layoutControlItem25.Location = new System.Drawing.Point(1021, 615);
             this.layoutControlItem25.Name = "layoutControlItem25";
-            this.layoutControlItem25.Size = new System.Drawing.Size(41, 26);
+            this.layoutControlItem25.Size = new System.Drawing.Size(54, 26);
             this.layoutControlItem25.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem25.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btnSavePrint;
-            this.layoutControlItem4.Location = new System.Drawing.Point(657, 615);
+            this.layoutControlItem4.Location = new System.Drawing.Point(638, 615);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Size = new System.Drawing.Size(94, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
@@ -2620,9 +2639,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // layoutControlItem26
             // 
             this.layoutControlItem26.Control = this.btnSaleBill;
-            this.layoutControlItem26.Location = new System.Drawing.Point(1079, 615);
+            this.layoutControlItem26.Location = new System.Drawing.Point(1120, 615);
             this.layoutControlItem26.Name = "layoutControlItem26";
-            this.layoutControlItem26.Size = new System.Drawing.Size(147, 26);
+            this.layoutControlItem26.Size = new System.Drawing.Size(120, 26);
             this.layoutControlItem26.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem26.TextVisible = false;
             // 
@@ -2631,7 +2650,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 615);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(142, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(123, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem29
@@ -2801,9 +2820,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnNewExpMest;
-            this.layoutControlItem3.Location = new System.Drawing.Point(920, 615);
+            this.layoutControlItem3.Location = new System.Drawing.Point(931, 615);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(118, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(90, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -2934,9 +2953,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem2.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem2.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem2.Control = this.chkPrintNow;
-            this.layoutControlItem2.Location = new System.Drawing.Point(415, 615);
+            this.layoutControlItem2.Location = new System.Drawing.Point(383, 615);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(120, 26);
+            this.layoutControlItem2.Size = new System.Drawing.Size(133, 26);
             this.layoutControlItem2.Text = "Xem trước khi in:";
             this.layoutControlItem2.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem2.TextSize = new System.Drawing.Size(90, 20);
@@ -2945,16 +2964,16 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // layoutControlItem18
             // 
             this.layoutControlItem18.Control = this.btnDebt;
-            this.layoutControlItem18.Location = new System.Drawing.Point(1226, 615);
+            this.layoutControlItem18.Location = new System.Drawing.Point(1240, 615);
             this.layoutControlItem18.Name = "layoutControlItem18";
-            this.layoutControlItem18.Size = new System.Drawing.Size(94, 26);
+            this.layoutControlItem18.Size = new System.Drawing.Size(80, 26);
             this.layoutControlItem18.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem18.TextVisible = false;
             // 
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.btnCancelExport;
-            this.layoutControlItem1.Location = new System.Drawing.Point(535, 615);
+            this.layoutControlItem1.Location = new System.Drawing.Point(516, 615);
             this.layoutControlItem1.Name = "layoutControlItem1";
             this.layoutControlItem1.Size = new System.Drawing.Size(122, 26);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -2963,9 +2982,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // layoutControlItem31
             // 
             this.layoutControlItem31.Control = this.chkAutoShow;
-            this.layoutControlItem31.Location = new System.Drawing.Point(142, 615);
+            this.layoutControlItem31.Location = new System.Drawing.Point(123, 615);
             this.layoutControlItem31.Name = "layoutControlItem31";
-            this.layoutControlItem31.Size = new System.Drawing.Size(273, 26);
+            this.layoutControlItem31.Size = new System.Drawing.Size(260, 26);
             this.layoutControlItem31.Text = "Tự động hiển thị tồn kho các nhà thuốc";
             this.layoutControlItem31.TextSize = new System.Drawing.Size(187, 13);
             // 
@@ -3139,6 +3158,16 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem49.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem49.TextVisible = false;
             // 
+            // layoutControlItem50
+            // 
+            this.layoutControlItem50.Control = this.btnQr;
+            this.layoutControlItem50.Location = new System.Drawing.Point(1075, 615);
+            this.layoutControlItem50.Name = "layoutControlItem50";
+            this.layoutControlItem50.Size = new System.Drawing.Size(45, 26);
+            this.layoutControlItem50.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem50.TextVisible = false;
+            this.layoutControlItem50.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            // 
             // dxValidationProvider_Save
             // 
             this.dxValidationProvider_Save.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
@@ -3162,8 +3191,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.Leave += new System.EventHandler(this.UCExpMestSaleCreate_Leave);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chkEditUser.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkEditUser.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlIcd)).EndInit();
             this.layoutControlIcd.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).EndInit();
@@ -3317,6 +3346,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem49)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem50)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider_Save)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider_Add)).EndInit();
             this.ResumeLayout(false);
@@ -3534,5 +3564,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem48;
 		private DevExpress.XtraEditors.CheckEdit chkEditUser;
 		private DevExpress.XtraLayout.LayoutControlItem layoutControlItem49;
-	}
+        private DevExpress.XtraEditors.DropDownButton btnQr;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem50;
+    }
 }

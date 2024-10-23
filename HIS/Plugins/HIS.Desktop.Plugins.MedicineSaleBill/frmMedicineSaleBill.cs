@@ -964,7 +964,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     var configNow = listConfigAll.Where(o => o.VALUE == config.VALUE).FirstOrDefault();
                     List<object> listArgs = new List<object>();
                     TransReqQRADO adoqr = new TransReqQRADO();
-                    adoqr.TreatmentId = transactionBillResult.TREATMENT_ID ?? 0;
+                    adoqr.TreatmentId = 0;
                     adoqr.ConfigValue = configNow;
                     HIS_TRANSACTION tran = new HIS_TRANSACTION();
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
@@ -979,7 +979,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     selectedConfig = listConfig[0];
                     List<object> listArgs = new List<object>();
                     TransReqQRADO adoqr = new TransReqQRADO();
-                    adoqr.TreatmentId = transactionBillResult.TREATMENT_ID ?? 0;
+                    adoqr.TreatmentId = 0;
                     adoqr.ConfigValue = selectedConfig;
                     HIS_TRANSACTION tran = new HIS_TRANSACTION();
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
@@ -2580,7 +2580,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     var configNow = listConfigAll.Where(o => o.VALUE == config.VALUE).FirstOrDefault();
                     List<object> listArgs = new List<object>();
                     TransReqQRADO adoqr = new TransReqQRADO();
-                    adoqr.TreatmentId = transactionBillResult.TREATMENT_ID ?? 0;
+                    adoqr.TreatmentId = 0;
                     adoqr.ConfigValue = configNow;
                     HIS_TRANSACTION tran = new HIS_TRANSACTION();
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
@@ -2623,7 +2623,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                                     selectedConfig = item;
                                     List<object> listArgs = new List<object>();
                                     HIS.Desktop.ADO.TransReqQRADO adoqr = new TransReqQRADO();
-                                    adoqr.TreatmentId = transactionBillResult.TREATMENT_ID ?? 0;
+                                    adoqr.TreatmentId = 0;
                                     adoqr.ConfigValue = selectedConfig;
                                     adoqr.TransReqId = CreateReqType.Transaction;
                                     HIS_TRANSACTION tran = new HIS_TRANSACTION();
@@ -2645,7 +2645,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                             selectedConfig = listConfig[0];
                             List<object> listArgs = new List<object>();
                             TransReqQRADO adoqr = new TransReqQRADO();
-                            adoqr.TreatmentId = transactionBillResult.TREATMENT_ID ?? 0;
+                            adoqr.TreatmentId = 0;
                             adoqr.ConfigValue = selectedConfig;
                             HIS_TRANSACTION tran = new HIS_TRANSACTION();
                             Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);

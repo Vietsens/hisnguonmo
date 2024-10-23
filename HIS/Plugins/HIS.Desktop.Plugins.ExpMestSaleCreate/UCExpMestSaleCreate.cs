@@ -67,6 +67,9 @@ using HIS.UC.Icd;
 using HIS.UC.Icd.ADO;
 using System.Diagnostics;
 using WCF.Client;
+using DevExpress.XtraBars;
+using HIS.Desktop.ADO;
+using MediMateTypeADO = HIS.Desktop.Plugins.ExpMestSaleCreate.ADO.MediMateTypeADO;
 
 namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 {
@@ -80,7 +83,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         List<HIS_ICD> currentIcds;
         internal IcdProcessor icdProcessor;
         internal UserControl ucIcd;
-        private HIS_MEDI_STOCK mediStock { get; set; }
+        private V_HIS_MEDI_STOCK mediStock { get; set; }
         private MediMateTypeADO currentMediMate { get; set; }
         //private List<MediMateTypeADO> cloneCurrentMediMateList { get; set; }
         private MediMateTypeADO currentMediMateFocus { get; set; }
@@ -210,6 +213,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 txtPrescriptionCode.Focus();
 
                 spinBaseValue.EditValue = HisConfigCFG.IS_ROUND_PRICE_BASE;
+                CheckEnableBtnQR();
             }
             catch (Exception ex)
             {
@@ -615,7 +619,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                             totalPrice = totalPrice * (1 + spinProfit.Value / 100);
                         }
                     }
-                   
+
                     mediMate.IsCheckExpPrice = true;
                 }
                 else
@@ -3590,7 +3594,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                             //MessageManager.Show(param, result);
                             Inventec.Common.Logging.LogSystem.Debug("Goi api release list medicine bean that bai, url = " + RequestUriStore.HIS_MEDICINE_BEAN__RELEASEBEANALL + ". Du lieu dau vao____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => clientSessionKey), clientSessionKey) + ". Du lieu dau ra____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => param), param));
                         }
-                    }                 
+                    }
                 }
 
             }
@@ -3696,6 +3700,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         {
             try
             {
+                if (btnQr.Visible)
+                    btnQr.Enabled = false;
                 this.currentMediMateFocus = null;
                 this.moduleAction = GlobalDataStore.ModuleAction.ADD;
                 txtMediMatyForPrescription.Text = "";
@@ -7648,17 +7654,192 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             }
         }
 
-		private void chkEditUser_CheckedChanged(object sender, EventArgs e)
-		{
-			try
-			{
+        private void chkEditUser_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
                 txtLoginName.Enabled = chkEditUser.Checked;
                 txtPresUser.Enabled = chkEditUser.Checked;
-			}
-			catch (Exception ex)
-			{
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-		}
-	}
+        }
+        List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
+        private void CheckEnableBtnQR()
+        {
+            try
+            {
+                listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+
+                layoutControlItem50.Visibility = (listConfig != null && listConfig.Count > 0) || (mediStock != null && !string.IsNullOrEmpty(mediStock.QR_CONFIG_JSON)) ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                btnQr.Enabled = false;
+                InitMenuQr();
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+        private void InitMenuQr()
+        {
+            try
+            {
+                DXPopupMenu menu = new DXPopupMenu();
+                if (listConfig != null && listConfig.Count > 0)
+                {
+                    if (listConfig.Count > 1)
+                    {
+                        foreach (var item in listConfig)
+                        {
+                            string key = "";
+                            string value = item.KEY;
+                            int index = value.IndexOf("Info");
+                            if (index > 0)
+                            {
+                                var shotkey = value.Substring(0, index);
+                                string[] parts = shotkey.Split('.');
+                                if (parts.Length > 0)
+                                {
+                                    key = parts[parts.Length - 1];
+                                }
+                            }
+                            else
+                            {
+                                key = item.KEY;
+                            }
+                            DXMenuItem dxi = new DXMenuItem(key);
+                            dxi.Tag = item;
+                            dxi.Click += Dxi_Click;
+                            menu.Items.Add(dxi);
+                        }
+                    }
+                }
+                if(mediStock == null || string.IsNullOrEmpty(mediStock.QR_CONFIG_JSON))
+                    btnQr.DropDownControl = menu;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void Dxi_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DXMenuItem item = sender as DXMenuItem;
+                if (item.Tag is HIS_CONFIG)
+                {
+                    List<object> listArgs = new List<object>();
+                    TransReqQRADO adoqr = new TransReqQRADO();
+                    adoqr.TransReqId = CreateReqType.Transaction;
+                    adoqr.ConfigValue = item.Tag as HIS_CONFIG;
+
+                    if (!isTwoPatient && resultSDO != null && resultSDO.Transaction != null)
+                    {
+                        adoqr.TreatmentId = 0;
+                        adoqr.Transaction = resultSDO.Transaction;
+                        listArgs.Add(adoqr);
+                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                    }
+                    else if (isTwoPatient && ListResultSDO != null && ListResultSDO.Count > 0)
+                    {
+                        foreach (var sdo in ListResultSDO)
+                        {
+                            if (sdo.Transaction != null)
+                            {
+                                adoqr.TreatmentId = 0;
+                                adoqr.Transaction = sdo.Transaction;
+                                listArgs.Add(adoqr);
+                                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                            }
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void btnQr_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (mediStock != null && !string.IsNullOrEmpty(mediStock.QR_CONFIG_JSON))
+                {
+                    goto End;
+                }
+                else if (listConfig != null && listConfig.Count > 1)
+                {
+                    ddBtnPrint.ShowDropDown();
+                    return;
+                }
+                else
+                {
+                    goto End;
+                }
+            End:
+                List<object> listArgs = new List<object>();
+                TransReqQRADO adoqr = new TransReqQRADO();
+                adoqr.TransReqId = CreateReqType.Transaction;
+                if (mediStock != null && !string.IsNullOrEmpty(mediStock.QR_CONFIG_JSON))
+                {
+
+                    try
+                    {
+                        var json = Newtonsoft.Json.JsonConvert.DeserializeObject<BankInfo>(mediStock.QR_CONFIG_JSON);
+                        if(json != null)
+                            adoqr.ConfigValue = new HIS_CONFIG() { VALUE = json.VALUE, KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", json.BANK) };
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                        XtraMessageBox.Show("Định dạng Qr thiết lập trong kho phòng không hợp lệ");
+                        return;
+                    }
+
+                }
+                else
+                    adoqr.ConfigValue = listConfig[0];
+
+                if (!isTwoPatient && resultSDO != null && resultSDO.Transaction != null)
+                {
+                    adoqr.TreatmentId = mediStock != null && !string.IsNullOrEmpty(mediStock.QR_CONFIG_JSON) ? resultSDO.Transaction.TREATMENT_ID ?? 0 : 0;
+                    adoqr.Transaction = resultSDO.Transaction;
+                    listArgs.Add(adoqr);
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                }
+                else if (isTwoPatient && ListResultSDO != null && ListResultSDO.Count > 0)
+                {
+                    foreach (var sdo in ListResultSDO)
+                    {
+                        if (sdo.Transaction != null)
+                        {
+                            adoqr.TreatmentId = mediStock != null && !string.IsNullOrEmpty(mediStock.QR_CONFIG_JSON) ? resultSDO.Transaction.TREATMENT_ID ?? 0 : 0;
+                            adoqr.Transaction = sdo.Transaction;
+                            listArgs.Add(adoqr);
+                            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+    }
+    public class BankInfo
+    {
+        public BankInfo() { }
+        public string BANK { get; set; }
+        public string VALUE { get; set; }
+    }
 }
