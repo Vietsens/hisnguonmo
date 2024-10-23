@@ -33,10 +33,11 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
         List<HIS_EXECUTE_ROLE> listExecuteRole = new List<HIS_EXECUTE_ROLE>();
         List<HIS_SERVICE_TYPE> listServiceType = new List<HIS_SERVICE_TYPE>();
         List<HIS_PTTT_GROUP> listPtttGroup = new List<HIS_PTTT_GROUP>();
-        HIS_SURG_QUOTA currentSurgQuota = null;
+        V_HIS_SURG_QUOTA currentSurgQuota = null;
         List<HIS_SURG_QUOTA_DETAIL> listDetail = new List<HIS_SURG_QUOTA_DETAIL>();
-        List<HIS_SURG_QUOTA> listQuota = new List<HIS_SURG_QUOTA>();
+        List<V_HIS_SURG_QUOTA> listQuota = new List<V_HIS_SURG_QUOTA>();
         bool isSelectedNoActive = false;
+        private int oldDataCount = 0;
         public frmHisSurgQuota(Inventec.Desktop.Common.Modules.Module module)
         {
             this.currentModule = module;
@@ -118,6 +119,10 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
                 gridControlSurgQuotaDetail.DataSource = null;
                 dxErrorProvider1.ClearErrors();
                 this.currentSurgQuota = null;
+                if(this.listQuota != null)
+                {
+                    LoadAllDetail(this.listQuota.Select(s => s.ID).ToList());
+                }
 
             }
             catch (Exception ex)
@@ -255,12 +260,12 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
             {
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
-                Inventec.Core.ApiResultObject<List<MOS.EFMODEL.DataModels.HIS_SURG_QUOTA>> apiResult = null;
-                HisSurgQuotaFilter filter = new MOS.Filter.HisSurgQuotaFilter();
+                Inventec.Core.ApiResultObject<List<MOS.EFMODEL.DataModels.V_HIS_SURG_QUOTA>> apiResult = null;
+                HisSurgQuotaViewFilter filter = new MOS.Filter.HisSurgQuotaViewFilter();
 
                 UpdateFilter(ref filter);
                 gridControlSurgQuota.BeginUpdate();
-                apiResult = new BackendAdapter(param).GetRO<List<HIS_SURG_QUOTA>>("api/HisSurgQuota/Get", ApiConsumers.MosConsumer, filter, param);
+                apiResult = new BackendAdapter(param).GetRO<List<V_HIS_SURG_QUOTA>>("api/HisSurgQuota/GetView", ApiConsumers.MosConsumer, filter, param);
                 if (apiResult != null)
                 {
                     var data = apiResult.Data;
@@ -283,13 +288,13 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
             }
         }
 
-        private void UpdateFilter(ref HisSurgQuotaFilter filter)
+        private void UpdateFilter(ref HisSurgQuotaViewFilter filter)
         {
             try
             {
                 if (!string.IsNullOrEmpty(txtSearchValue.Text))
                 {
-                    filter.KEY_WORD = txtSearchValue.Text;
+                    filter.KEY_WORD = txtSearchValue.Text.Trim();
                 }
             }
             catch (Exception ex)
@@ -395,7 +400,7 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
             {
                 if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
                 {
-                    HIS_SURG_QUOTA pData = (HIS_SURG_QUOTA)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    V_HIS_SURG_QUOTA pData = (V_HIS_SURG_QUOTA)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
 
                     short status = Inventec.Common.TypeConvert.Parse.ToInt16((pData.IS_ACTIVE ?? -1).ToString());
                     if (e.Column.FieldName == "STT")
@@ -450,7 +455,7 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
                 if (e.RowHandle >= 0)
                 {
 
-                    HIS_SURG_QUOTA data = (HIS_SURG_QUOTA)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                    V_HIS_SURG_QUOTA data = (V_HIS_SURG_QUOTA)((IList)((BaseView)sender).DataSource)[e.RowHandle];
                     if (e.Column.FieldName == "LOCK")
                     {
                         e.RepositoryItem = (data.IS_ACTIVE == 0 ? btnLockE : btnUnlockE);
@@ -476,7 +481,7 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
             DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
             if (e.RowHandle >= 0)
             {
-                HIS_SURG_QUOTA data = (HIS_SURG_QUOTA)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                V_HIS_SURG_QUOTA data = (V_HIS_SURG_QUOTA)((IList)((BaseView)sender).DataSource)[e.RowHandle];
                 if (e.Column.FieldName == "IS_ACTIVE_STR")
                 {
                     if (data.IS_ACTIVE == 0)
@@ -492,10 +497,11 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
         {
             try
             {
-                var rowData = (HIS_SURG_QUOTA)gridViewSurgQuota.GetFocusedRow();
+                var rowData = (V_HIS_SURG_QUOTA)gridViewSurgQuota.GetFocusedRow();
                 if (rowData != null)
                 {
                     currentSurgQuota = rowData;
+                    FillDataToEditControl(rowData);
                     LoadDataToGridDetail(rowData.ID);
 
                     if (rowData.IS_ACTIVE == 1)
@@ -515,11 +521,30 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
                 LogSystem.Error(ex);
             }
         }
+
+        private void FillDataToEditControl(V_HIS_SURG_QUOTA rowData)
+        {
+            try
+            {
+                if(rowData != null)
+                {
+                    cboType.EditValue = rowData.SERVICE_TYPE_ID;
+                    cboGroupPttt.EditValue = rowData.PTTT_GROUP_ID;
+                    txtChuyenKhoa.Text = rowData.SPECIALITY_KEY;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Error(ex);
+            }
+        }
+
         private void btnLockE_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
             {
-                var rowData = (HIS_SURG_QUOTA)gridViewSurgQuota.GetFocusedRow();
+                var rowData = (V_HIS_SURG_QUOTA)gridViewSurgQuota.GetFocusedRow();
                 if (rowData != null)
                 {
 
@@ -538,7 +563,7 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
         {
             try
             {
-                var rowData = (HIS_SURG_QUOTA)gridViewSurgQuota.GetFocusedRow();
+                var rowData = (V_HIS_SURG_QUOTA)gridViewSurgQuota.GetFocusedRow();
                 if (rowData != null)
                 {
                     LogSystem.Debug("_________Goi api cap nhat du lieu(change lock). du lieu dau vao: " + LogUtil.TraceData("HIS_SURG_QUOTA", rowData));
@@ -562,7 +587,7 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
         {
             try
             {
-                var rowData = (HIS_SURG_QUOTA)gridViewSurgQuota.GetFocusedRow();
+                var rowData = (V_HIS_SURG_QUOTA)gridViewSurgQuota.GetFocusedRow();
                 if (rowData != null)
                 {
                     CommonParam param = new CommonParam();
@@ -597,7 +622,7 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
         {
             try
             {
-                var rowData = (HIS_SURG_QUOTA)gridViewSurgQuota.GetFocusedRow();
+                var rowData = (V_HIS_SURG_QUOTA)gridViewSurgQuota.GetFocusedRow();
                 if (rowData != null)
                 {
                     bool success = false;
@@ -677,6 +702,7 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
                         e.RepositoryItem = ((data.IS_ACTIVE == 0 || isSelectedNoActive) ? btnDeleteDetailD : btnDeleteDetail);
 
                     }
+                    
 
                 }
             }
@@ -694,6 +720,18 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
                 HIS_SURG_QUOTA_DETAIL rowData = (HIS_SURG_QUOTA_DETAIL)gridViewSurgQuotaDetail.GetFocusedRow();
                 if (rowData != null)
                 {
+                    if (dxErrorProvider2.HasErrors)
+                    {
+
+                        MessageBox.Show(this, "Đã tồn tại vai trò tương tự.", "Thông báo", MessageBoxButtons.OK);
+                        return;
+                    }
+                    if (dxErrorProvider3.HasErrors)
+                    {
+                        MessageBox.Show(this, "Số lượng không hợp lệ.", "Thông báo", MessageBoxButtons.OK);
+                        return;
+                    }
+                    
                     bool success = false;
                     LogSystem.Debug("_________Goi api cap nhat du lieu(Update). du lieu dau vao: " + LogUtil.TraceData("HIS_SURG_QUOTA_DETAIL", rowData));
                     var res = new BackendAdapter(param).Post<HIS_SURG_QUOTA_DETAIL>("api/HisSurgQuotaDetail/Update", ApiConsumers.MosConsumer, rowData, param);
@@ -743,6 +781,7 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
 
 
 
+
         private void gridSpinDM_EditValueChanged(object sender, EventArgs e)
         {
             try
@@ -750,22 +789,33 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
                 SpinEdit edit = sender as SpinEdit;
                 if (edit != null)
                 {
-                    if ((edit.EditValue ?? 0).ToString() != (edit.OldEditValue ?? 0).ToString())
+                    var data = (HIS_SURG_QUOTA_DETAIL)gridViewSurgQuotaDetail.GetFocusedRow();
+                    // Set the old value if not yet initialized
+                    if (edit.OldEditValue != null)
                     {
+                        oldDataCount = Convert.ToInt32(edit.OldEditValue);
+                    }
+
+                    // Check if the new value is different from the old value
+                    if ((edit.EditValue ?? 0).ToString() != oldDataCount.ToString())
+                    {
+                        DevExpress.XtraGrid.Views.Grid.GridView view = gridViewSurgQuotaDetail as DevExpress.XtraGrid.Views.Grid.GridView;
+                        
+
+                        // Check if the new value is invalid (negative)
                         if (Convert.ToInt64(edit.EditValue) < 0)
                         {
-                            dxErrorProvider1.SetError(edit, "Số lượng không hợp lệ.", ErrorType.Warning);
+                            dxErrorProvider3.SetError(edit, "Số lượng không hợp lệ.", ErrorType.Warning);
 
+                            // Revert to the old valid value
+                            data.QUOTA_COUNT = oldDataCount;
                         }
                         else
                         {
-                            dxErrorProvider1.SetError(edit, "", ErrorType.None);
-                            DevExpress.XtraGrid.Views.Grid.GridView view = gridViewSurgQuotaDetail as DevExpress.XtraGrid.Views.Grid.GridView;
-                            var data = (HIS_SURG_QUOTA_DETAIL)gridViewSurgQuotaDetail.GetFocusedRow();
+                            // Clear any error and update the data object with the new value
+                            dxErrorProvider3.SetError(edit, "", ErrorType.None);
                             data.QUOTA_COUNT = Convert.ToInt64(edit.EditValue);
                         }
-
-
                     }
                 }
             }
@@ -776,29 +826,11 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
         }
 
 
+
         private void grdCboVaitro_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
         {
 
-            try
-            {
-                LookUpEdit edit = sender as LookUpEdit;
-                if (edit == null) return;
-                if (edit.EditValue != null)
-                {
-                    if ((edit.EditValue ?? 0).ToString() != (edit.OldEditValue ?? 0).ToString())
-                    {
-                        DevExpress.XtraGrid.Views.Grid.GridView view = gridViewSurgQuotaDetail as DevExpress.XtraGrid.Views.Grid.GridView;
-                        var data = (HIS_SURG_QUOTA_DETAIL)gridViewSurgQuotaDetail.GetFocusedRow();
-                        data.EXECUTE_ROLE_ID = Convert.ToInt64(edit.EditValue);
-                        view.SetRowCellValue(view.FocusedRowHandle, view.Columns["EXECUTE_ROLE_NAME"], data.EXECUTE_ROLE_ID);
-                        edit.EditValue = data.EXECUTE_ROLE_ID;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Error(ex);
-            }
+            
         }
         #endregion
         private void txtVaitro_TextChanged(object sender, EventArgs e)
@@ -916,7 +948,8 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
                 HIS_SURG_QUOTA data = null;
                 if (this.currentSurgQuota != null)
                 {
-                    data = this.currentSurgQuota;
+                    data = new HIS_SURG_QUOTA();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SURG_QUOTA>(data, this.currentSurgQuota);
 
                 }
                 else
@@ -997,8 +1030,9 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
                     spinQuota.EditValue = null;
 
                 }
-                MessageManager.Show(this, param, success);
                 WaitingManager.Hide();
+                MessageManager.Show(this, param, success);
+                
             }
             catch (Exception ex)
             {
@@ -1062,7 +1096,38 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
 
         private void grdCboRole_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
         {
+            try
+            {
+                GridLookUpEdit edit = sender as GridLookUpEdit;
+                if (edit == null) return;
+                if (edit.EditValue != null)
+                {
 
+                    if ((edit.EditValue ?? 0).ToString() != (edit.OldEditValue ?? 0).ToString())
+                    {
+                        dxErrorProvider2.SetError(edit, "", ErrorType.None);
+                        var role = Convert.ToInt64(edit.EditValue);
+                        DevExpress.XtraGrid.Views.Grid.GridView view = gridViewSurgQuotaDetail as DevExpress.XtraGrid.Views.Grid.GridView;
+                        var rowData = (HIS_SURG_QUOTA_DETAIL)gridViewSurgQuotaDetail.GetFocusedRow();
+                        var exitRole = listDetail.FirstOrDefault(s => s.EXECUTE_ROLE_ID == role && s.SURG_QUOTA_ID == rowData.SURG_QUOTA_ID && s.ID != rowData.ID);
+                        if (exitRole != null)
+                        {
+                            rowData.EXECUTE_ROLE_ID = Convert.ToInt64(edit.OldEditValue);
+                            dxErrorProvider2.SetError(edit, "Đã tồn tại vai trò tương tự.", ErrorType.Warning);
+                            return;
+                        }
+                        
+
+                        rowData.EXECUTE_ROLE_ID = Convert.ToInt64(edit.EditValue);
+                        view.SetRowCellValue(view.FocusedRowHandle, view.Columns["EXECUTE_ROLE_NAME"], rowData.EXECUTE_ROLE_ID);
+                        edit.EditValue = rowData.EXECUTE_ROLE_ID;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
         }
 
         private void cboType_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
@@ -1110,6 +1175,59 @@ namespace HIS.Desktop.Plugins.HisSurgQuota
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+            }
+        }
+
+        private void txtSearchValue_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if(e.KeyCode == Keys.Enter)
+                {
+                    btnFind.PerformClick();
+                }
+                if(e.Control && e.KeyCode == Keys.F)
+                {
+                    btnFind.PerformClick();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Error(ex);
+            }
+        }
+        
+        private void gridViewSurgQuotaDetail_CellValueChanged(object sender, CellValueChangedEventArgs e)
+        {
+            try
+            {
+                // Check if the changed column is QUOTA_COUNT
+                if (e.Column.FieldName == "QUOTA_COUNT")
+                {
+                    DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                    decimal newQuotaCount = Convert.ToDecimal(view.GetRowCellValue(e.RowHandle, e.Column));
+
+                    // If the new value is negative, revert to the previous value
+                    if (newQuotaCount < 0)
+                    {
+                        // Display an error message
+                        dxErrorProvider3.SetError(view.GridControl, "Số lượng không hợp lệ", ErrorType.Warning);
+
+                        // Reset the QUOTA_COUNT to the previous value
+                        view.SetRowCellValue(e.RowHandle, e.Column, oldDataCount);
+                    }
+                    else
+                    {
+                        // Clear any existing error message
+                        dxErrorProvider3.SetError(view.GridControl, "");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                Inventec.Common.Logging.LogSession.Warn(ex);
             }
         }
     }
