@@ -200,7 +200,10 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             try
             {
 
-                var datass = BackendDataWorker.Get<HIS_ACCOUNT_BOOK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_FOR_DEPOSIT == 1 && o.IS_FOR_BILL == 1 && o.IS_NOT_GEN_TRANSACTION_ORDER != 1).ToList();
+                var datass = BackendDataWorker.Get<HIS_ACCOUNT_BOOK>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE 
+                    && o.IS_FOR_DEPOSIT == 1 
+                    && o.IS_NOT_GEN_TRANSACTION_ORDER != 1).ToList();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("ACCOUNT_BOOK_CODE", "", 50, 1));
                 columnInfos.Add(new ColumnInfo("ACCOUNT_BOOK_NAME", "", 150, 2));

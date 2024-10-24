@@ -387,6 +387,11 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 }
                 if (cboServiceCondition.EditValue != null)
                     departmentTranReceiveSDO.ServiceConditionId = PatyCondition.SERVICE_CONDITION_ID;
+                if(this.lciReasonNt.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
+                {
+                    departmentTranReceiveSDO.HospitalizeReasonCode = this.REASON_CODE;
+                    departmentTranReceiveSDO.HospitalizeReasonName = this.REASON_NAME;
+                }
             }
 
             catch (Exception ex)

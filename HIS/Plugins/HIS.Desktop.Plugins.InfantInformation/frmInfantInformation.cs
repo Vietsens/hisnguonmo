@@ -3310,6 +3310,8 @@ namespace HIS.Desktop.Plugins.InfantInformation
                         this.lciBirthHospital.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                         cboBirthHospital.EditValue = null;
                     }
+                    dxErrorProvider1.SetError(dtdInfantdate, "", ErrorType.None);
+                    dxErrorProvider1.SetError(txtInfantBorntime, "", ErrorType.None);
                 }
             }
             catch (Exception ex)
