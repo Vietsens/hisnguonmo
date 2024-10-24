@@ -59,6 +59,7 @@ using HIS.Desktop.Utilities.Extensions;
 using Inventec.Desktop.Common.LanguageManager;
 using MOS.SDO;
 using HIS.Desktop.ADO;
+using Newtonsoft.Json;
 
 namespace HIS.Desktop.Plugins.TransactionList
 {
@@ -2796,7 +2797,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                             else if (hi.Column.FieldName == "QR")
                             {
                                 if ((transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT || transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU) && transactionData.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && transactionData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
-                                    repQr_ButtonClick(null, null);
+                                    repQr_ButtonClick(transactionData);
                             }
                         }
                     }
@@ -3300,12 +3301,39 @@ namespace HIS.Desktop.Plugins.TransactionList
         }
 
         private HIS_CONFIG selectedConfig = new HIS_CONFIG();
-        private void repQr_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        private void repQr_ButtonClick(V_HIS_TRANSACTION data)
         {
             try
             {
-                this.transactionPrint = (V_HIS_TRANSACTION)gridViewTransaction.GetFocusedRow();
-                if (listConfig != null && listConfig.Count > 0)
+                //this.transactionPrint = (V_HIS_TRANSACTION)gridViewTransaction.GetFocusedRow();
+                transactionPrint = data;
+                V_HIS_ROOM v_HIS_ROOM = (
+            from o in BackendDataWorker.Get<V_HIS_ROOM>()
+            where o.ID == this.currentModule.RoomId
+            select o).FirstOrDefault<V_HIS_ROOM>();
+                if (v_HIS_ROOM != null && !string.IsNullOrEmpty(v_HIS_ROOM.QR_CONFIG_JSON))
+                {
+                    ItemConfig itemConfig = JsonConvert.DeserializeObject<ItemConfig>(v_HIS_ROOM.QR_CONFIG_JSON);
+                    string key = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", itemConfig.BANK);
+                    this.selectedConfig = (
+                        from o in this.listConfig
+                        where o.KEY == key
+                        select o).FirstOrDefault<HIS_CONFIG>();
+                    this.selectedConfig.VALUE = itemConfig.VALUE;
+                    List<object> listArgs = new List<object>();
+                    TransReqQRADO adoqr = new TransReqQRADO();
+                    adoqr.TreatmentId = this.transactionPrint.TREATMENT_ID ?? 0;
+                    adoqr.TransReqId = CreateReqType.Transaction;
+                    adoqr.ConfigValue = selectedConfig;
+                    HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionPrint);
+                    adoqr.Transaction = tran;
+                    listArgs.Add(adoqr);
+                    LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
+
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                }
+                else if (listConfig != null && listConfig.Count > 0)
                 {
                     if (listConfig.Count > 1)
                     {

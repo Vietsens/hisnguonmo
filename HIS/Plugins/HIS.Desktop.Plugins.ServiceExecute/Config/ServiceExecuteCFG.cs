@@ -60,5 +60,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         internal const string ViewPacsSecretKey = "MOS.VIEW_PACS_SECRET_KEY";
 
         internal const string PrescriptionTypeOption = "HIS.Desktop.Plugins.AssignPrescriptionPK.PrescriptionTypeOption";
+
     }
 }

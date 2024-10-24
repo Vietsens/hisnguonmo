@@ -47,4 +47,17 @@ namespace HIS.Desktop.Plugins.TransactionList.ADO
             }
         }
     }
+    public class ItemConfig
+    {
+        public string BANK
+        {
+            get;
+            set;
+        }
+        public string VALUE
+        {
+            get;
+            set;
+        }
+    }
 }
