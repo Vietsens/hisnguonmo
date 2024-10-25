@@ -140,6 +140,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
                 Inventec.Core.ApiResultObject<List<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>> apiResult = null;
                 apiResult = new BackendAdapter(paramCommon).GetRO<List<HIS_HOSPITALIZE_REASON>>("/api/HisHospitalizeReason/Get", ApiConsumers.MosConsumer, filter, paramCommon);
                 lstHopitalReason = apiResult.Data;
+
                 LoadComboEditor(cboHospitalizeReason, "HOSPITALIZE_REASON_CODE", "HOSPITALIZE_REASON_NAME", "HOSPITALIZE_REASON_NAME", lstHopitalReason);
                 if (TreatmentWithPaTyInfo != null)
                 {
@@ -1296,6 +1297,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
 
                 if (e.Button.Kind == ButtonPredefines.Combo)
                 {
+                    cboHospitalizeReason.Properties.DataSource = lstHopitalReason;
                     cboHospitalizeReason.ShowPopup();
                 }
             }
@@ -1306,33 +1308,18 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
         }
         private System.Windows.Forms.Timer _timer = new System.Windows.Forms.Timer();
         private int _delayTime = 1500;
+        bool firstStart = true;
         private void btnHospitalizeReason_TextChanged(object sender, EventArgs e)
         {
             try
             {
-                //string findReasonName = btnHospitalizeReason.Text;
-                //if (!string.IsNullOrEmpty(findReasonName))
-                //{
-                //    btnHospitalizeReason.Properties.Buttons[1].Visible = true;
-                //    var ketQua = lstHopitalReason.Where(i => i.HOSPITALIZE_REASON_NAME.Contains(findReasonName)).ToList();
-                //    lstHopitalReasonSave = ketQua;
-                //    if (ketQua == null || ketQua.Count() == 0)
-                //    {
-                //        cboHospitalizeReason.ClosePopup();
-                //    }
-                //    else
-                //    {
-                //        cboHospitalizeReason.Properties.DataSource = ketQua;
-                //        cboHospitalizeReason.ShowPopup();
-                //    }
-                //}
-                //else
-                //{
-                //    cboHospitalizeReason.Properties.DataSource = lstHopitalReason;
-                //}
-                //btnHospitalizeReason.Focus();
+                //nhập combobox tìm kiếm (_timer_Tick)
                 _timer.Stop();
-                _timer.Start();
+                if (firstStart == false)
+                {
+                    _timer.Start();
+                }
+                firstStart = true;
             }
             catch (Exception ex)
             {
