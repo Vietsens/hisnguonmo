@@ -7777,7 +7777,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 }
                 else if (listConfig != null && listConfig.Count > 1)
                 {
-                    ddBtnPrint.ShowDropDown();
+                    btnQr.ShowDropDown();
                     return;
                 }
                 else

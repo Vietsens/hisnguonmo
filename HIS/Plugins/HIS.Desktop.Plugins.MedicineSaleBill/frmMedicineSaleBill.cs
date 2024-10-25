@@ -244,7 +244,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             try
             {
                 listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(s.VALUE)).ToList();
-                if (listConfig.Count > 0 && listConfig != null || mediStock.QR_CONFIG_JSON != null) 
+                if (listConfig.Count > 0 && listConfig != null || mediStock.QR_CONFIG_JSON != null)
                 {
                     layoutbtnQRCe.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 }
@@ -252,7 +252,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 {
                     layoutbtnQRCe.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
-                    btnQR.Enabled = false;
+                btnQR.Enabled = false;
             }
             catch (Exception ex)
             {
@@ -957,25 +957,29 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         {
             try
             {
-                if (mediStock.QR_CONFIG_JSON != null)
+                if (mediStock != null && !string.IsNullOrEmpty(mediStock.QR_CONFIG_JSON))
                 {
                     ItemConfig config = Newtonsoft.Json.JsonConvert.DeserializeObject<ItemConfig>(mediStock.QR_CONFIG_JSON);
-                    List<HIS_CONFIG> listConfigAll = BackendDataWorker.Get<HIS_CONFIG>();
-                    var configNow = listConfigAll.Where(o => o.VALUE == config.VALUE).FirstOrDefault();
-                    List<object> listArgs = new List<object>();
-                    TransReqQRADO adoqr = new TransReqQRADO();
-                    adoqr.TreatmentId = 0;
-                    adoqr.ConfigValue = configNow;
-                    HIS_TRANSACTION tran = new HIS_TRANSACTION();
-                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
-                    adoqr.Transaction = tran;
-                    adoqr.TransReqId = CreateReqType.Transaction;
-                    listArgs.Add(adoqr);
-                    LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
-                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", roomId, roomTypeId, listArgs);
+                    if (config != null)
+                    {
+                        List<object> listArgs = new List<object>();
+                        TransReqQRADO adoqr = new TransReqQRADO();
+                        adoqr.TreatmentId = 0;
+                        adoqr.ConfigValue = new HIS_CONFIG() { KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", config.BANK), VALUE = config.VALUE };
+                        HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
+                        adoqr.Transaction = tran;
+                        adoqr.TransReqId = CreateReqType.Transaction;
+                        listArgs.Add(adoqr);
+                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", roomId, roomTypeId, listArgs);
+                    }
+                    else
+                    {
+                        XtraMessageBox.Show("Định dạng Qr thiết lập trong kho phòng không hợp lệ", "Thông báo");
+                    }
                 }
-                else if(listConfig!=null && listConfig.Count ==1)
-                { 
+                else if (listConfig != null && listConfig.Count == 1)
+                {
                     selectedConfig = listConfig[0];
                     List<object> listArgs = new List<object>();
                     TransReqQRADO adoqr = new TransReqQRADO();
@@ -1028,7 +1032,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
 
                 if (!string.IsNullOrEmpty(txtName.Text))
                 {
-                    data.HisTransaction.BUYER_NAME  = txtName.Text;
+                    data.HisTransaction.BUYER_NAME = txtName.Text;
                 }
 
                 if (cboPayFrom.EditValue != null)
@@ -2427,10 +2431,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 dataInput.NumOrder = transactionBillResult.NUM_ORDER;
                 dataInput.SymbolCode = transactionBillResult.SYMBOL_CODE;
                 dataInput.TemplateCode = transactionBillResult.TEMPLATE_CODE;
-                dataInput.TransactionTime = transactionBillResult.EINVOICE_TIME ??  transactionBillResult.TRANSACTION_TIME;
+                dataInput.TransactionTime = transactionBillResult.EINVOICE_TIME ?? transactionBillResult.TRANSACTION_TIME;
                 dataInput.EinvoiceTypeId = transactionBillResult.EINVOICE_TYPE_ID;
                 dataInput.ENumOrder = transactionBillResult.EINVOICE_NUM_ORDER;
-               
+
                 HIS_TRANSACTION tran = new HIS_TRANSACTION();
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
                 dataInput.Transaction = tran;
@@ -2573,90 +2577,94 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         {
             try
             {
-                if (mediStock.QR_CONFIG_JSON != null)
+                if (mediStock != null && !string.IsNullOrEmpty(mediStock.QR_CONFIG_JSON))
                 {
                     ItemConfig config = Newtonsoft.Json.JsonConvert.DeserializeObject<ItemConfig>(mediStock.QR_CONFIG_JSON);
-                    List<HIS_CONFIG> listConfigAll = BackendDataWorker.Get<HIS_CONFIG>();
-                    var configNow = listConfigAll.Where(o => o.VALUE == config.VALUE).FirstOrDefault();
-                    List<object> listArgs = new List<object>();
-                    TransReqQRADO adoqr = new TransReqQRADO();
-                    adoqr.TreatmentId = 0;
-                    adoqr.ConfigValue = configNow;
-                    HIS_TRANSACTION tran = new HIS_TRANSACTION();
-                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
-                    adoqr.Transaction = tran;
-                    adoqr.TransReqId = CreateReqType.Transaction;
-                    listArgs.Add(adoqr);
-                    LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
-                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", roomId, roomTypeId, listArgs);
+                    if (config != null)
+                    {
+                        List<object> listArgs = new List<object>();
+                        TransReqQRADO adoqr = new TransReqQRADO();
+                        adoqr.TreatmentId = 0;
+                        adoqr.ConfigValue = new HIS_CONFIG() { KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", config.BANK), VALUE = config.VALUE };
+                        HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
+                        adoqr.Transaction = tran;
+                        adoqr.TransReqId = CreateReqType.Transaction;
+                        listArgs.Add(adoqr);
+                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", roomId, roomTypeId, listArgs);
+                    }
+                    else
+                    {
+                        XtraMessageBox.Show("Định dạng Qr thiết lập trong kho phòng không hợp lệ", "Thông báo");
+                    }
                 }
                 else
                     if (listConfig != null)
+                {
+                    if (listConfig.Count > 1)
                     {
-                        if (listConfig.Count > 1)
+                        popupMenu1.ClearLinks();
+                        foreach (var item in listConfig)
                         {
-                            popupMenu1.ClearLinks();
-                            foreach (var item in listConfig)
+                            string key = "";
+                            string value = item.KEY;
+                            int index = value.IndexOf("Info");
+                            if (index > 0)
                             {
-                                string key = "";
-                                string value = item.KEY;
-                                int index = value.IndexOf("Info");
-                                if (index > 0)
+                                var shotkey = value.Substring(0, index);
+                                string[] parts = shotkey.Split('.');
+                                if (parts.Length > 0)
                                 {
-                                    var shotkey = value.Substring(0, index);
-                                    string[] parts = shotkey.Split('.');
-                                    if (parts.Length > 0)
-                                    {
-                                        key = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
-                                    }
+                                    key = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
                                 }
-                                else
-                                {
-                                    key = item.KEY;
-                                }
-
-
-                                BarButtonItem btnOption = new BarButtonItem(null, key);
-                                btnOption.ItemClick += (s, args) =>
-                                {
-
-                                    selectedConfig = item;
-                                    List<object> listArgs = new List<object>();
-                                    HIS.Desktop.ADO.TransReqQRADO adoqr = new TransReqQRADO();
-                                    adoqr.TreatmentId = 0;
-                                    adoqr.ConfigValue = selectedConfig;
-                                    adoqr.TransReqId = CreateReqType.Transaction;
-                                    HIS_TRANSACTION tran = new HIS_TRANSACTION();
-                                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
-                                    adoqr.Transaction = tran;
-                                    listArgs.Add(adoqr);
-                                    LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
-
-                                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", roomId, roomTypeId, listArgs);
-
-                                };
-                                popupMenu1.AddItem(btnOption);
                             }
-                            popupMenu1.Manager = barManager1;
-                            popupMenu1.ShowPopup(Control.MousePosition);
-                        }
-                        else
-                        {
-                            selectedConfig = listConfig[0];
-                            List<object> listArgs = new List<object>();
-                            TransReqQRADO adoqr = new TransReqQRADO();
-                            adoqr.TreatmentId = 0;
-                            adoqr.ConfigValue = selectedConfig;
-                            HIS_TRANSACTION tran = new HIS_TRANSACTION();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
-                            adoqr.Transaction = tran;
-                            adoqr.TransReqId = CreateReqType.Transaction;
-                            listArgs.Add(adoqr);
-                            LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
-                            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", roomId, roomTypeId, listArgs);
+                            else
+                            {
+                                key = item.KEY;
+                            }
 
+
+                            BarButtonItem btnOption = new BarButtonItem(null, key);
+                            btnOption.ItemClick += (s, args) =>
+                            {
+
+                                selectedConfig = item;
+                                List<object> listArgs = new List<object>();
+                                HIS.Desktop.ADO.TransReqQRADO adoqr = new TransReqQRADO();
+                                adoqr.TreatmentId = 0;
+                                adoqr.ConfigValue = selectedConfig;
+                                adoqr.TransReqId = CreateReqType.Transaction;
+                                HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
+                                adoqr.Transaction = tran;
+                                listArgs.Add(adoqr);
+                                LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
+
+                                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", roomId, roomTypeId, listArgs);
+
+                            };
+                            popupMenu1.AddItem(btnOption);
                         }
+                        popupMenu1.Manager = barManager1;
+                        popupMenu1.ShowPopup(Control.MousePosition);
                     }
+                    else
+                    {
+                        selectedConfig = listConfig[0];
+                        List<object> listArgs = new List<object>();
+                        TransReqQRADO adoqr = new TransReqQRADO();
+                        adoqr.TreatmentId = 0;
+                        adoqr.ConfigValue = selectedConfig;
+                        HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
+                        adoqr.Transaction = tran;
+                        adoqr.TransReqId = CreateReqType.Transaction;
+                        listArgs.Add(adoqr);
+                        LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
+                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", roomId, roomTypeId, listArgs);
+
+                    }
+                }
             }
             catch (Exception ex)
             {
