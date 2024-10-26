@@ -885,7 +885,7 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
             this.grdColVallue.Name = "grdColVallue";
             this.grdColVallue.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.grdColVallue.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
-            this.grdColVallue.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grdColVallue.UnboundType = DevExpress.Data.UnboundColumnType.Bound;
             this.grdColVallue.Visible = true;
             this.grdColVallue.VisibleIndex = 4;
             this.grdColVallue.Width = 101;
