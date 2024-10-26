@@ -1,3 +1,8 @@
+### Release 2.334.0
+* Bổ sung tính năng chặn ngày kết quả < thời gian y lệnh với y lệnh xét nghiệm
+* Bổ sung tính năng thiết lập QR thu tiền theo từng phòng(buồng bệnh, kho)
+* Bổ sung mở màn hình QR theo cấu hình phòng tại chức năng xuất bán 
+
 ### Release 2.333.0
 * Bổ sung tính năng mở phiếu trên vỏ bệnh án sau khi chỉ định dịch vụ
 * Bổ sung tính năng chặn số lượng thuốc tối đa trong 1 đợt điều trị
