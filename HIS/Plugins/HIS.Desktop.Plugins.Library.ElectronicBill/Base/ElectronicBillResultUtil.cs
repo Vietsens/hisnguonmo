@@ -17,6 +17,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -74,5 +75,52 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        #region file
+        public static string ProcessPdfFileResult(string base64string)
+        {
+            string result = "";
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(base64string))
+                {
+                    byte[] data = System.Convert.FromBase64String(base64string);
+                    result = ProcessPdfFileResult(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        public static string ProcessPdfFileResult(byte[] fileToBytes)
+        {
+            string result = "";
+            try
+            {
+                string tempFileName = Path.GetTempFileName();
+                tempFileName = tempFileName.Replace("tmp", "pdf");
+                try
+                {
+                    File.WriteAllBytes(tempFileName, fileToBytes);
+                    result = tempFileName;
+                }
+                catch (Exception ex)
+                {
+                    result = "";
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+        #endregion
     }
 }

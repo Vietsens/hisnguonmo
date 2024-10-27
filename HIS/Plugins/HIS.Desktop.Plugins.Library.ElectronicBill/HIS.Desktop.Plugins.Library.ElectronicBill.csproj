@@ -280,6 +280,10 @@
     <Compile Include="ProviderBehavior\SAFECERT\ApiConsumer.cs" />
     <Compile Include="ProviderBehavior\SAFECERT\SAFECERTBehavior.cs" />
     <Compile Include="ProviderBehavior\SAFECERT\UriStore.cs" />
+    <Compile Include="ProviderBehavior\SODR\Process\ApiConsumer.cs" />
+    <Compile Include="ProviderBehavior\SODR\Process\Data.cs" />
+    <Compile Include="ProviderBehavior\SODR\Process\SoftDreamsProcessor.cs" />
+    <Compile Include="ProviderBehavior\SODR\Process\UriStore.cs" />
     <Compile Include="ProviderBehavior\SODR\SODRBehavior.cs" />
     <Compile Include="ProviderBehavior\VIETTEL\VIETTELBehavior.cs" />
     <Compile Include="ProviderBehavior\VNPT\VNPTBehavior.cs" />
@@ -360,7 +364,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
     <EmbeddedResource Include="SignInvoice\FormSignInvoice.resx">
