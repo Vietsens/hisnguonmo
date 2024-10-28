@@ -34,6 +34,10 @@ namespace HIS.Desktop.ADO
         public V_HIS_DEPOSIT_REQ DepositReq { get; set; }
         public HIS_TRANSACTION Transaction { get; set; }
         public List<HIS_TRANSACTION> Transactions { get; set; }
+        /// <summary>
+        /// BIDV, VCB, Viettinbank, LPBank, PVCB
+        /// </summary>
+        public string BankName { get; set; }
     }
     public enum CreateReqType
     {
