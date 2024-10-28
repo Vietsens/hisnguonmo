@@ -33,6 +33,7 @@ namespace HIS.Desktop.ADO
         public RefeshReference DelegtePrint { get; set; }
         public V_HIS_DEPOSIT_REQ DepositReq { get; set; }
         public HIS_TRANSACTION Transaction { get; set; }
+        public List<HIS_TRANSACTION> Transactions { get; set; }
     }
     public enum CreateReqType
     {
