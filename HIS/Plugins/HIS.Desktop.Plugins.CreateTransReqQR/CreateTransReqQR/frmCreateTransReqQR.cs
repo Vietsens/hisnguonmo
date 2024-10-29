@@ -790,17 +790,38 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
 
                                 if (lstLoaiPhieu.FirstOrDefault(o => o.ID == "Mps000276").Check)
                                 {
-                                    HisSereServFilter ssfilter = new HisSereServFilter();
-                                    ssfilter.IDs = SereServIds;
-                                    var sereServs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>("/api/HisSereServ/Get", ApiConsumers.MosConsumer, ssfilter, null);
-
-                                    HisServiceReqViewFilter filter = new HisServiceReqViewFilter();
-                                    filter.IDs = sereServs.Select(o => o.SERVICE_REQ_ID ?? 0).Distinct().ToList();
-                                    var serviceReq = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>>("/api/HisServiceReq/GetView", ApiConsumers.MosConsumer, filter, null);
-                                    if (serviceReq != null && serviceReq.Count > 0)
+                                    List<HIS_SERE_SERV_BILL> hisSSBills = new List<HIS_SERE_SERV_BILL>();
+                                    List<HIS_SERE_SERV> sereServs = new List<HIS_SERE_SERV>();
+                                    if (inputTransReq.TransReqId == CreateReqType.Deposit || inputTransReq.TransReqId == CreateReqType.Transaction)
                                     {
-                                        HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor proc = new Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(serviceReq, currentModule.RoomId);
-                                        proc.Print("Mps000276", true);
+                                        HisSereServBillFilter ssBillFilter = new HisSereServBillFilter();
+                                        ssBillFilter.BILL_ID = this.transactionPrint.ID;
+                                        hisSSBills = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV_BILL>>("api/HisSereServBill/Get", ApiConsumers.MosConsumer, ssBillFilter, null);
+                                        if (hisSSBills == null || hisSSBills.Count <= 0)
+                                        {
+                                            return;
+                                        }
+                                        HisSereServFilter ssfilter = new HisSereServFilter();
+                                        ssfilter.IDs = hisSSBills.Select(o => o.SERE_SERV_ID).ToList();
+                                        sereServs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>("/api/HisSereServ/Get", ApiConsumers.MosConsumer, ssfilter, null);
+                                    }
+                                    else
+                                    {
+
+                                        HisSereServFilter ssfilter = new HisSereServFilter();
+                                        ssfilter.IDs = SereServIds;
+                                        sereServs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>("/api/HisSereServ/Get", ApiConsumers.MosConsumer, ssfilter, null);
+                                    }
+                                    if (sereServs != null && sereServs.Count > 0 && sereServs.Exists(o=>o.SERVICE_REQ_ID.HasValue))
+                                    {
+                                        HisServiceReqViewFilter filter = new HisServiceReqViewFilter();
+                                        filter.IDs = sereServs.Select(o => o.SERVICE_REQ_ID ?? 0).Distinct().ToList();
+                                        var serviceReq = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>>("/api/HisServiceReq/GetView", ApiConsumers.MosConsumer, filter, null);
+                                        if (serviceReq != null && serviceReq.Count > 0)
+                                        {
+                                            HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor proc = new Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(serviceReq, currentModule.RoomId);
+                                            proc.Print("Mps000276", true);
+                                        }
                                     }
                                 }
                             }
@@ -841,8 +862,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     tvf.TRANS_REQ_CODE__EXACT = currentTransReq.TRANS_REQ_CODE;
                     transactionPrint = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, tvf, null).FirstOrDefault();
 
-                    lblPatientName.Text = transactionPrint.BUYER_NAME;
-                    lblAddress.Text = transactionPrint.BUYER_ADDRESS;
+                    lblPatientName.Text = transactionPrint.BUYER_NAME ?? transactionPrint.TDL_PATIENT_NAME;
+                    lblAddress.Text = transactionPrint.BUYER_ADDRESS ?? transactionPrint.TDL_PATIENT_ADDRESS;
                 }
                 InitPopupMenuOther();
                 if (currentTransReq == null)

@@ -34,7 +34,9 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
         private const string CONFIG_KEY__HIS_SERVICE_REQ_SAMPLE_INFO_OPTION = "HIS.HIS_SERVICE_REQ.SAMPLE_INFO_OPTION";
         internal const string CONFIG_KEY__PATIENT_TYPE_CODE__BHYT = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT";
         internal const string CONFIG_KEY__PATIENT_TYPE_OPTION = "HIS.DESKTOP.HIS_MACHINE.MAX_SERVICE_PER_DAY.PATIENT_TYPE_OPTION";
-        internal const string CONFIG_KEY__IsMachineWarningOption = "HIS.DESKTOP.HIS_MACHINE.MAX_SERVICE_PER_DAY.WARNING_OPTION";
+        internal const string CONFIG_KEY__IsMachineWarningOption = "HIS.DESKTOP.HIS_MACHINE.MAX_SERVICE_PER_DAY.WARNING_OPTION"; 
+        internal const string CONFIG_KEY__IsStartTimeMustBeGreaterThanInstructionTime = "HIS.Desktop.Plugins.StartTimeMustBeGreaterThanInstructionTime";
+        internal static string IsStartTimeMustBeGreaterThanInstructionTime { get; set; }
         internal static bool Is_ALLOW_FINISH_WHEN_ACCOUNT_IS_DOCTOR { get; set; }
         internal static string ProcessTimeMustBeGreaterThanTotalProcessTime;
         internal static string HisServiceReqSampleInfoOption;
@@ -44,6 +46,7 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
         {
             try
             {
+                IsStartTimeMustBeGreaterThanInstructionTime = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__IsStartTimeMustBeGreaterThanInstructionTime);
                 ProcessTimeMustBeGreaterThanTotalProcessTime = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__ProcessTimeMustBeGreaterThanTotalProcessTime);
                 HisServiceReqSampleInfoOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__HIS_SERVICE_REQ_SAMPLE_INFO_OPTION);
                 Is_ALLOW_FINISH_WHEN_ACCOUNT_IS_DOCTOR = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(CONFIG_KEY__MOS__HIS_SERVICE_REQ__ALLOW_FINISH_WHEN_ACCOUNT_IS_DOCTOR) == 1;

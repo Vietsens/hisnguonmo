@@ -3832,9 +3832,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 if (AppConfigKeys.IsSampleInfoOption == "1")
                 {
                     var datas = gridControlSereServ.DataSource as List<ADO.ServiceADO>;
-                    if (datas != null && datas.Count > 0 && datas.FirstOrDefault(o => o.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT) != null && (lstEkipUser == null || lstEkipUser.Count == 0 || (lstEkipUser != null && lstEkipUser.Count > 0 && lstEkipUser.Select(o => o.EXECUTE_ROLE_ID).Distinct().Count() < 2)))
+                    if (datas != null && datas.Count > 0 && datas.FirstOrDefault(o => o.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT) != null 
+                        && (lstEkipUser == null || lstEkipUser.Count == 0))
                     {
-                        DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.BatBuocChonKip,
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Bắt buộc phải có thông tin kíp thực hiện",
                           ResourceMessage.ThongBao,
                           MessageBoxButtons.OK);
                         return;
@@ -3842,9 +3843,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 }
                 else if (AppConfigKeys.IsSampleInfoOption == "2")
                 {
-                    if (lstEkipUser == null || lstEkipUser.Count == 0 || (lstEkipUser != null && lstEkipUser.Count > 0 && lstEkipUser.Select(o => o.EXECUTE_ROLE_ID).Distinct().Count() < 2))
+                    if (lstEkipUser == null || lstEkipUser.Count == 0)
                     {
-                        DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.BatBuocChonKip,
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Bắt buộc phải có thông tin kíp thực hiện",
                            ResourceMessage.ThongBao,
                            MessageBoxButtons.OK);
                         return;
