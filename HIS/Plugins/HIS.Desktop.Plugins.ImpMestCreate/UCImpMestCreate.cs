@@ -166,6 +166,9 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         private List<V_HIS_MATERIAL_TYPE> listMaterialTypeTemp = new List<V_HIS_MATERIAL_TYPE>();
         private List<ACS_USER> lstAcsUser = new List<ACS_USER>();
         bool IsRequiedTemperature = false;
+        HIS_MEDICINE currentMedicine;
+        HIS_MATERIAL currentMaterial;
+        HIS_CONFIG configWarningDiff;
         System.Windows.Forms.Timer TimerFocusImpAmount = new System.Windows.Forms.Timer();
         private string IdentityMaterialOption { get; set; }
         public UCImpMestCreate(Inventec.Desktop.Common.Modules.Module module)
@@ -330,7 +333,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        
         private void CreateThreadLoadData()
         {
             Thread threadLoadMedicineType = new Thread(new ThreadStart(LoadMedicineType));
@@ -338,8 +341,10 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             Thread threadGetBids = new Thread(new ThreadStart(GetBid));
             Thread threadGetSupplier = new Thread(new ThreadStart(GetSupplier));
             Thread threadGetContract = new Thread(new ThreadStart(GetContract));
+            
             try
             {
+                
                 threadGetBids.Start();
                 threadGetSupplier.Start();
                 threadGetContract.Start();
@@ -895,7 +900,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                     medicineProcessor.ReloadBid(this.ucMedicineTypeTree, bid);
                     materialProcessor.ReloadBid(this.ucMaterialTypeTree, bid);
-                    if (currentBid.ID > 0)
+                    if (this.currentBid != null && currentBid.ID > 0)
                     {
                         materialProcessor.SetEditValueBid(this.ucMedicineTypeTree, currentBid.ID);
                         medicineProcessor.SetEditValueBid(this.ucMedicineTypeTree, currentBid.ID);
@@ -1981,8 +1986,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     MessageManager.Show(messageError);
                     return;
                 }
-                if (ShowMessValidPrice())
-                    return;
+                if (!ShowMessValidPrice()) return;
+                
                 if (ShowMessValidDocumentAndDate())
                     return;
 
@@ -2228,6 +2233,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 }
 
                 WaitingManager.Show();
+
                 this.currrentServiceAdo.TEMPERATURE = spnTemperature.EditValue != null ? (decimal?)spnTemperature.Value : null;
                 this.currrentServiceAdo.TDL_BID_NUM_ORDER = txtBidNumOrder.Text.Trim();
                 this.currrentServiceAdo.TDL_BID_PACKAGE_CODE = txtBid.Text.Trim();
@@ -2301,6 +2307,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 this.currrentServiceAdo.NATIONAL_NAME = this.txtNationalMainText.Text.Trim();
                 this.currrentServiceAdo.CONCENTRA = this.txtNognDoHL.Text;
                 this.currrentServiceAdo.REGISTER_NUMBER = this.txtSoDangKy.Text;
+
                 if (cboHangSX.EditValue != null)
                 {
                     this.currrentServiceAdo.MANUFACTURER_ID = (long)cboHangSX.EditValue;
@@ -2318,19 +2325,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 {
                     this.currrentServiceAdo.HisMedicine.AMOUNT = this.currrentServiceAdo.IMP_AMOUNT;
 
-                    //switch (tp)
-                    //{
-                    //	case 1:
-                    //		this.currrentServiceAdo.HisMedicine.IMP_PRICE = Math.Round(this.currrentServiceAdo.IMP_PRICE, (int)tp_);
-                    //		break;
-                    //	case 2:
-                    //		this.currrentServiceAdo.HisMedicine.IMP_PRICE = RoundDown(this.currrentServiceAdo.IMP_PRICE, tp_);
-                    //		break;
-                    //	case 3:
-                    //		this.currrentServiceAdo.HisMedicine.IMP_PRICE = RoundUp(this.currrentServiceAdo.IMP_PRICE, tp_);
-                    //		break;
-
-                    //}
+                    
                     this.currrentServiceAdo.HisMedicine.IMP_PRICE = this.currrentServiceAdo.IMP_PRICE;
                     this.currrentServiceAdo.HisMedicine.IMP_VAT_RATIO = this.currrentServiceAdo.IMP_VAT_RATIO;
                     this.currrentServiceAdo.HisMedicine.TAX_RATIO = this.currrentServiceAdo.TAX_RATIO;
@@ -2375,13 +2370,21 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     {
                         this.currrentServiceAdo.HisMedicine.IS_SALE_EQUAL_IMP_PRICE = null;
                     }
-
+                    // thinhdt
+                    //check warning
+                    // neu canh bao ma chon co -> thi them du lieu duoc nhap
+                    // neu chon khong thi map du lieu lo thuoc/vat tu lay ra duoc
+                        
+                    this.currrentServiceAdo.HisMedicine.MEDICINE_REGISTER_NUMBER = this.currrentServiceAdo.REGISTER_NUMBER;
+                    this.currrentServiceAdo.HisMedicine.HEIN_SERVICE_BHYT_NAME = this.currrentServiceAdo.heinServiceBhytName;
+                    this.currrentServiceAdo.HisMedicine.PACKING_TYPE_NAME = this.currrentServiceAdo.packingTypeName;
+                    
                     this.currrentServiceAdo.HisMedicine.NATIONAL_NAME = this.currrentServiceAdo.NATIONAL_NAME;
                     this.currrentServiceAdo.HisMedicine.CONCENTRA = this.currrentServiceAdo.CONCENTRA;
-                    this.currrentServiceAdo.HisMedicine.MEDICINE_REGISTER_NUMBER = this.currrentServiceAdo.REGISTER_NUMBER;
+                    
                     this.currrentServiceAdo.HisMedicine.MANUFACTURER_ID = this.currrentServiceAdo.MANUFACTURER_ID;
-                    this.currrentServiceAdo.HisMedicine.PACKING_TYPE_NAME = this.currrentServiceAdo.packingTypeName;
-                    this.currrentServiceAdo.HisMedicine.HEIN_SERVICE_BHYT_NAME = this.currrentServiceAdo.heinServiceBhytName;
+                    
+                    
                     this.currrentServiceAdo.HisMedicine.ACTIVE_INGR_BHYT_NAME = this.currrentServiceAdo.activeIngrBhytName;
                     this.currrentServiceAdo.HisMedicine.DOSAGE_FORM = this.currrentServiceAdo.dosageForm;
                     this.currrentServiceAdo.HisMedicine.MEDICINE_USE_FORM_ID = this.currrentServiceAdo.medicineUseFormId;
@@ -2535,10 +2538,14 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     {
                         this.currrentServiceAdo.HisMaterial.IS_SALE_EQUAL_IMP_PRICE = null;
                     }
-
+                    // thinhdt
+                    //check warning
+                    // neu canh bao ma chon co -> thi them du lieu duoc nhap
+                    // neu chon khong thi map du lieu lo thuoc/vat tu lay ra duoc
+                    this.currrentServiceAdo.HisMaterial.MATERIAL_REGISTER_NUMBER = this.currrentServiceAdo.REGISTER_NUMBER;
                     this.currrentServiceAdo.HisMaterial.NATIONAL_NAME = this.currrentServiceAdo.NATIONAL_NAME;
                     this.currrentServiceAdo.HisMaterial.CONCENTRA = this.currrentServiceAdo.CONCENTRA;
-                    this.currrentServiceAdo.HisMaterial.MATERIAL_REGISTER_NUMBER = this.currrentServiceAdo.REGISTER_NUMBER;
+                    
                     this.currrentServiceAdo.HisMaterial.MANUFACTURER_ID = this.currrentServiceAdo.MANUFACTURER_ID;
 
                     this.currrentServiceAdo.HisMaterial.BID_MATERIAL_TYPE_CODE = this.currrentServiceAdo.packingTypeName;
@@ -2874,7 +2881,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     InitMenuToButtonPrint(this.resultADO);
                     isSave = true;
                 }
-
+                BackendDataWorker.Reset<V_HIS_MATERIAL>();
+                BackendDataWorker.Reset<V_HIS_MEDICINE>();
                 MessageManager.Show(this.ParentForm, param, success);
                 HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
             }
