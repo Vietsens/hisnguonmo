@@ -89,6 +89,7 @@
     <Compile Include="CheckInfoBhytADO.cs" />
     <Compile Include="ContentSubclinicalADO.cs" />
     <Compile Include="AppointmentServiceADO.cs" />
+    <Compile Include="ProductInfoADO.cs" />
     <Compile Include="TransReqQRADO.cs" />
     <Compile Include="EmrDocumentInfoADO.cs" />
     <Compile Include="ExpMestSaleTranADO.cs" />
