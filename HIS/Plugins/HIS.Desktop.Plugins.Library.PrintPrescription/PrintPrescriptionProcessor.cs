@@ -414,11 +414,31 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
             }
             return result;
         }
+        class ConfigInfo
+        {
+            public string BANK { get; set; }
+            public string VALUE { get; set; }
+        }
         private void GetDataPrintQrCode(List<long> transReqId)
         {
             try
             {
-                lstConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+                var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(s => s.ID == this.currentModule.RoomId && !string.IsNullOrEmpty(s.QR_CONFIG_JSON)).FirstOrDefault();
+                if(currentRoom != null)
+                {
+                    if (this.lstConfig == null)
+                        lstConfig = new List<HIS_CONFIG>();
+                    lstConfig.Clear();
+                    ConfigInfo _config = Newtonsoft.Json.JsonConvert.DeserializeObject<ConfigInfo>(currentRoom.QR_CONFIG_JSON);
+                    HIS_CONFIG _cf = new HIS_CONFIG();
+                    if (string.IsNullOrWhiteSpace(_config.BANK))
+                        Inventec.Common.Logging.LogSystem.Warn("Cau hinh thieu thong tin ngan hang.roomID: (" + this.currentModule.RoomId + "). Cau hinh: " + currentRoom.QR_CONFIG_JSON);
+                    _cf.KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", _config.BANK.Trim());
+                    _cf.VALUE = _config.VALUE;
+                    lstConfig.Add(_cf);
+                }
+                else 
+                    lstConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
                 if (lstConfig != null && lstConfig.Count > 0 && transReqId != null && transReqId.Count > 0)
                 {
                     CommonParam param = new CommonParam();
