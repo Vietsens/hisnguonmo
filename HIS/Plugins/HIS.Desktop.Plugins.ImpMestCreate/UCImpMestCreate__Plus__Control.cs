@@ -231,7 +231,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     Inventec.Common.Logging.LogSystem.Debug("Danh sach lo vat tu: " + LogUtil.TraceData("currentMaterial", this.currentMaterial));
                     if (xtraTabControlMain.SelectedTabPage == xtraTabPageMedicine)
                     {
-                        if (this.configWarningDiff != null && this.currentMedicine != null &&  this.configWarningDiff.VALUE == "1")
+                        if (this.configWarningDiff != null && this.currentMedicine != null && this.configWarningDiff.VALUE == "1")
                         {
                             if (_giaLanTruoc > 0 && _giaLanTruoc != _giaSauVAT)
                             {
@@ -262,7 +262,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 if (DevExpress.XtraEditors.XtraMessageBox.Show(messShow, Base.ResourceMessageManager.TieuDeCuaSoThongBaoLaThongBao, System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
                                 {
                                     _result = true;
-                                    
+
                                 }
                                 else
                                 {
@@ -274,6 +274,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 error_warning = "";
                             }
                         }
+                        else _result = true;
 
                         
                     }
@@ -307,8 +308,9 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 error_warning = "";
                             }
                         }
+                        else _result = true;
 
-                        
+
                     }
 
                 }
