@@ -30,6 +30,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
     internal class HisConfigCFG
     {
         private const string IsNotBillString = "HIS.Desktop.Plugins.TransactionRepay.IsNotBill";
+        private const string SendToExtWhenStartOption = "HIS.Desktop.Plugins.ExecuteRoom.SendToExtWhenStartOption";
         private const string CONFIG_KEY__PATIENT_TYPE_CODE__BHYT = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT";
         private const string CONFIG_KEY__PATIENT_TYPE_CODE__VP = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.HOSPITAL_FEE";//Doi tuong VP
         private const string CONFIG_KEY__PATIENT_TYPE_CODE__KSK = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.KSK";//Doi tuong khám sức khỏe
@@ -64,6 +65,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         internal static long PatientTypeId__KSK;
         internal static string RequestLimitWarningOption;
         internal static string IsNotBillCFG;
+        internal static string SendToExtWhenStart;
         internal static string IsMachineWarningOption;
         internal static string IsSetPrimaryPatientType;
         internal static string ServiceHasPaymentLimitBHYT;
@@ -90,6 +92,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 IsUsingExecuteRoomPayment = GetValue(IS_USING_EXECUTE_ROOM_PAYMENT) == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CommonStringTrue;
                 AutoFinishAfterUnfinish = GetValue(AUTO_FINISH_AFTER_UNFINISH);
                 IsNotBillCFG = GetValue(IsNotBillString);
+                SendToExtWhenStart = GetValue(SendToExtWhenStartOption);
                 IsMachineWarningOption = GetValue(CONFIG_KEY__HIS_MACHINE_WARNING_MAX_SERVICE_PER_DAY);
                 PatientTypeCode__BHYT = GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__BHYT);
                 RequestLimitWarningOption = GetValue(CONFIG_KEY__REQUEST_LIMIT_WARNING_OPTION);
