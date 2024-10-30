@@ -131,14 +131,20 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     currentDhst = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_DHST>>("api/HisDhst/GetView", ApiConsumers.MosConsumer, filter, param);
 
                 }
-              
+                if (currentServiceReq != null && currentServiceReq.TREATMENT_ID != null)
+                {
+                    HisTreatmentView4Filter tFilter = new HisTreatmentView4Filter();
+                    tFilter.ID = currentServiceReq.TREATMENT_ID;
+                    treatments = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT_4>>("api/HisTreatment/GetView4", ApiConsumers.MosConsumer, tFilter, null);
+                }
+
                 WaitingManager.Hide();
                 MPS.Processor.Mps000315.PDO.Mps000315PDO rdo = new MPS.Processor.Mps000315.PDO.Mps000315PDO(
                     new List<HIS_KSK_GENERAL>() { currentKskGeneral },
                       new List<V_HIS_SERVICE_REQ>() { currentServiceReq },
                     currentDhst,
-                    HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList()
-
+                    HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(),
+                    treatments
                     );
 
                 PrintData(printTypeCode, fileName, rdo, ref result);
