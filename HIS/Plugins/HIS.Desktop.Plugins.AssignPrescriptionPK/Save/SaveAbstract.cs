@@ -145,6 +145,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
         protected string StoreCode { get; set; }
         protected long? ProgramId { get; set; }
         protected short? IsTemporaryPres { get; set; }
+        protected long? PrescriptionPhaseNum { get; set; }
         protected CommonParam Param { get; set; }
 
         protected SaveAbstract(CommonParam param,
@@ -230,6 +231,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
 
             if (frmAssignPrescription.chkTemporayPres.Checked)
                 this.IsTemporaryPres = 1;
+            if (frmAssignPrescription.spnPresPhaseNum.EditValue != null && frmAssignPrescription.spnPresPhaseNum.Value > 0)
+                this.PrescriptionPhaseNum = (long)frmAssignPrescription.spnPresPhaseNum.Value;
             if (frmAssignPrescription.treatmentFinishProcessor != null && frmAssignPrescription.ucTreatmentFinish != null)
             {
                 var treatDT = frmAssignPrescription.treatmentFinishProcessor.GetDataOutput(frmAssignPrescription.ucTreatmentFinish);
