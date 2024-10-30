@@ -451,6 +451,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                             ProductV2 item = new ProductV2
                             {
                                 No = (num.ToString() ?? ""),
+                                Feature = "HHDV",
                                 Code = current.ProdCode,
                                 Name = current.ProdName,
                                 Unit = current.ProdUnit,
@@ -478,6 +479,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                             ProductV2 item2 = new ProductV2
                             {
                                 No = (num.ToString() ?? ""),
+                                Feature = "HHDV",
                                 Code = current2.ProdCode,
                                 Name = current2.ProdName,
                                 Unit = current2.ProdUnit,
@@ -504,12 +506,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                             Unit = "",
                             Quantity = 0,
                             Price = 0,
-                            Total = 0,
+                            Total = this.ElectronicBillDataInput.Transaction.EXEMPTION ?? 0,// hiển thị tổng tiền trên mẫu
                             VATAmount = 0,
                             VATRate = 0f,
                             Amount = this.ElectronicBillDataInput.Transaction.EXEMPTION ?? 0,
                             Discount = 0,
-                            DiscountAmount = this.ElectronicBillDataInput.Transaction.EXEMPTION ?? 0
+                            DiscountAmount = 0
                         };
                         invoiceV.Products.Add(item3);
                     }
