@@ -138,8 +138,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                             serviceConfig = string.Format("{0}|{1}", ProviderType.CYBERBILL, cyberbill != null ? cyberbill.VALUE : "");
                             accountConfig = ConfigApplicationWorker.Get<string>(SdaConfigKey.ACCOUNT_CONFIG_KEY__CYBERBILL);
                             break;
-                        case 7:
-                            var sodr = BackendDataWorker.Get<HIS_EINVOICE_TYPE>().FirstOrDefault(o => o.ID == 7);
+                        case IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__SOFTDREAM:
+                            var sodr = BackendDataWorker.Get<HIS_EINVOICE_TYPE>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__SOFTDREAM);
                             serviceConfig = string.Format("{0}|{1}", ProviderType.SoftDream, sodr != null ? sodr.VALUE : "");
                             accountConfig = ConfigApplicationWorker.Get<string>(SdaConfigKey.ACCOUNT_CONFIG_KEY__SOFTDREAM);
                             break;
