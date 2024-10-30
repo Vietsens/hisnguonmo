@@ -111,6 +111,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save.Update
                 prescriptionSDO.Id = OldServiceReq.ID;
                 prescriptionSDO.TreatmentId = this.TreatmentId;
                 prescriptionSDO.ClientSessionKey = GlobalStore.ClientSessionKey;
+                prescriptionSDO.PrescriptionPhaseNum = (short?)this.PrescriptionPhaseNum;
                 if (this.ParentServiceReqId > 0)
                     prescriptionSDO.ParentServiceReqId = this.ParentServiceReqId;
 

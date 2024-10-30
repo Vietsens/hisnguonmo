@@ -2088,6 +2088,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.spinTocDoTruyen.EditValue = null;
                 this.chkHomePres.Checked = false;
                 this.chkTemporayPres.Checked = false;
+                this.spnPresPhaseNum.EditValue = null;
                 this.txtProvisionalDiagnosis.Text = this.provisionalDiagnosis;
                 this.txtPreviousUseDay.Text = "";
 

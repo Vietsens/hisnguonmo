@@ -11,6 +11,7 @@ namespace Inventec.Common.BankQrCode
         BIDV,
         VIETINBANK,
         PVCB,
-        LPBANK
+        LPBANK,
+        DYNAMIC
     }
 }

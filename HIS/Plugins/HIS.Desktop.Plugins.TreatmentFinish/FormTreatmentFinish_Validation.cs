@@ -35,56 +35,65 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
     {
         private void ValidateForm()
         {
-            ValidationTimeFinish();
-            if (lciOutPatientDateFrom.Enabled == true
-                && lciOutPatientDateTo.Enabled == true)
-            {
-                ValidationOutPatientDateFrom(ref dxValidationProvider);
-                ValidationOutPatientDateTo(ref dxValidationProvider);
-                ValidationOutPatientDateFrom(ref dxValidationProvider_ForOutPatientDateFromTo);
-                ValidationOutPatientDateTo(ref dxValidationProvider_ForOutPatientDateFromTo);
-            }
-            ValidationCboHeadLoginName(ref dxValidationProvider);
-            ValidationHeadLoginName(ref dxValidationProvider);
-            ValidationFinishType();
-            ValidationResult();
-            ValidationMaxLength(txtMethod, 3000);
-            ValidationMaxLength(txtAdvised, 500);
 
-            if (ConfigKey.PathologicalProcessOption == "1" && currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU)
+            try
             {
-                layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
-                ValidationMaxLengthAndRequire(txtDauHieuLamSang, 3000);
+                ValidationTimeFinish();
+                if (lciOutPatientDateFrom.Enabled == true
+                    && lciOutPatientDateTo.Enabled == true)
+                {
+                    ValidationOutPatientDateFrom(ref dxValidationProvider);
+                    ValidationOutPatientDateTo(ref dxValidationProvider);
+                    ValidationOutPatientDateFrom(ref dxValidationProvider_ForOutPatientDateFromTo);
+                    ValidationOutPatientDateTo(ref dxValidationProvider_ForOutPatientDateFromTo);
+                }
+                ValidationCboHeadLoginName(ref dxValidationProvider);
+                ValidationHeadLoginName(ref dxValidationProvider);
+                ValidationFinishType();
+                ValidationResult();
+                ValidationMaxLength(txtMethod, 3000);
+                ValidationMaxLength(txtAdvised, 500);
+
+                if (ConfigKey.PathologicalProcessOption == "1" && currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU)
+                {
+                    layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    ValidationMaxLengthAndRequire(txtDauHieuLamSang, 3000);
+                }
+                else if (ConfigKey.PathologicalProcessOption == "2" && (currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU || currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY))
+                {
+                    layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    ValidationMaxLengthAndRequire(txtDauHieuLamSang, 3000);
+                }
+                else
+                {
+                    ValidationMaxLength(txtDauHieuLamSang, 3000);
+                }
+                if ((Config.ConfigKey.SubclinicalResultOption == "2" && (currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU ||
+        currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY)) || (Config.ConfigKey.SubclinicalResultOption == "1" && (currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU ||
+        currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU)))
+                {
+                    lblKetQuaXetNghiem.Appearance.ForeColor = System.Drawing.Color.Maroon;
+                    ValidationMaxLengthAndRequire(txtKetQuaXetNghiem, 4000);
+                }
+                else
+                {
+                    ValidationMaxLength(txtKetQuaXetNghiem, 4000);
+                }
+                ValidationMaxLength(txtSurgery, 3000);
+                ValidationMaxLength(txtMaBHXH, 10, true);
+                ValidationComboProgram();
+                MOS.EFMODEL.DataModels.HIS_TREATMENT_END_TYPE data = this.hisTreatmentEndTypes.SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentEndType.EditValue ?? 0).ToString()));
+                if ((data != null && data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN) || (cboTreatmentEndType.EditValue != null && Int64.Parse(cboTreatmentEndType.EditValue.ToString()) == 2))
+                {
+                    layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    ValidateTextEdit(txtDauHieuLamSang);
+                }
             }
-            else if (ConfigKey.PathologicalProcessOption == "2" && (currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU || currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY))
+            catch (Exception ex)
             {
-                layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
-                ValidationMaxLengthAndRequire(txtDauHieuLamSang, 3000);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
-            else
-            {
-                ValidationMaxLength(txtDauHieuLamSang, 3000);
-            }
-            if ((Config.ConfigKey.SubclinicalResultOption == "2" && (currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU ||
-    currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY)) || (Config.ConfigKey.SubclinicalResultOption == "1" && (currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU ||
-    currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU)))
-            {
-                lblKetQuaXetNghiem.Appearance.ForeColor = System.Drawing.Color.Maroon;
-                ValidationMaxLengthAndRequire(txtKetQuaXetNghiem, 4000);
-            }
-            else 
-            {
-                ValidationMaxLength(txtKetQuaXetNghiem, 4000);
-            }
-            ValidationMaxLength(txtSurgery, 3000);
-            ValidationMaxLength(txtMaBHXH, 10, true);
-            ValidationComboProgram();
-            MOS.EFMODEL.DataModels.HIS_TREATMENT_END_TYPE data = this.hisTreatmentEndTypes.SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentEndType.EditValue ?? 0).ToString()));
-            if ((data != null && data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN) || (Int64.Parse(cboTreatmentEndType.EditValue.ToString()) == 2))
-            {
-                layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
-                ValidateTextEdit(txtDauHieuLamSang);
-            }
+
         }
 
         private void ValidateTextEdit(TextEdit txt)
