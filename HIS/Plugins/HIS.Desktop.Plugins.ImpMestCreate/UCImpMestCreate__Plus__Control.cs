@@ -273,6 +273,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 }
                                 error_warning = "";
                             }
+                            else _result = true;
                         }
                         else _result = true;
 
@@ -307,6 +308,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 }
                                 error_warning = "";
                             }
+                            else _result = true;
                         }
                         else _result = true;
 
