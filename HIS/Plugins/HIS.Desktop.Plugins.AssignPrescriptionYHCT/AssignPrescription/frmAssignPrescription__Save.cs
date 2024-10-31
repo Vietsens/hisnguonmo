@@ -669,7 +669,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 
                 if (this.TIME_TO != null && this.TIME_TO > 0)
                 {
-                    var exits = this.intructionTimeSelecteds.Where(s => s > this.TIME_TO);
+                    var exits = this.intructionTimeSelecteds.Where(s => Int64.Parse(s.ToString().Substring(0,8)) > Int64.Parse(this.TIME_TO.ToString().Substring(0,8)));
                     if (exits.Any())
                     {
                         valid = false;

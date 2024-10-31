@@ -1484,6 +1484,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem9.Size = new System.Drawing.Size(92, 26);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
+            //this.layoutControlItem9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // UCExportXml
             // 
