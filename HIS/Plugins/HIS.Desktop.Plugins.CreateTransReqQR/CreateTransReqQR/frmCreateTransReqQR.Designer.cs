@@ -48,7 +48,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmCreateTransReqQR));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.chkOtherScreen = new DevExpress.XtraEditors.CheckEdit();
+            this.cboPayForm = new DevExpress.XtraEditors.GridLookUpEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.PRINT = new DevExpress.XtraBars.BarButtonItem();
@@ -58,6 +58,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.chkOtherScreen = new DevExpress.XtraEditors.CheckEdit();
             this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -98,12 +100,16 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.timerInitForm = new System.Windows.Forms.Timer(this.components);
             this.timerReloadTransReq = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chkOtherScreen.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboPayForm.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkOtherScreen.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).BeginInit();
             this.popupControlContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
@@ -131,10 +137,13 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.cboPayForm);
             this.layoutControl1.Controls.Add(this.chkOtherScreen);
             this.layoutControl1.Controls.Add(this.popupControlContainer1);
             this.layoutControl1.Controls.Add(this.btnSetting);
@@ -156,22 +165,26 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             this.layoutControl1.Location = new System.Drawing.Point(0, 29);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1097, 517);
+            this.layoutControl1.Size = new System.Drawing.Size(1097, 548);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // chkOtherScreen
+            // cboPayForm
             // 
-            this.chkOtherScreen.Location = new System.Drawing.Point(994, 467);
-            this.chkOtherScreen.MenuManager = this.barManager1;
-            this.chkOtherScreen.Name = "chkOtherScreen";
-            this.chkOtherScreen.Properties.Caption = "Màn phụ";
-            this.chkOtherScreen.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkOtherScreen.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkOtherScreen.Size = new System.Drawing.Size(101, 19);
-            this.chkOtherScreen.StyleController = this.layoutControl1;
-            this.chkOtherScreen.TabIndex = 21;
-            this.chkOtherScreen.CheckedChanged += new System.EventHandler(this.chkOtherScreen_CheckedChanged);
+            this.cboPayForm.Location = new System.Drawing.Point(778, 474);
+            this.cboPayForm.MenuManager = this.barManager1;
+            this.cboPayForm.Name = "cboPayForm";
+            this.cboPayForm.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboPayForm.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboPayForm.Properties.NullText = "";
+            this.cboPayForm.Properties.View = this.gridView2;
+            this.cboPayForm.Size = new System.Drawing.Size(143, 20);
+            this.cboPayForm.StyleController = this.layoutControl1;
+            this.cboPayForm.TabIndex = 22;
+            this.cboPayForm.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboPayForm_ButtonClick);
+            this.cboPayForm.EditValueChanged += new System.EventHandler(this.cboPayForm_EditValueChanged);
             // 
             // barManager1
             // 
@@ -236,7 +249,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 546);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 577);
             this.barDockControlBottom.Size = new System.Drawing.Size(1097, 0);
             // 
             // barDockControlLeft
@@ -244,14 +257,34 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 517);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 548);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(1097, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 517);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 548);
+            // 
+            // gridView2
+            // 
+            this.gridView2.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView2.Name = "gridView2";
+            this.gridView2.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView2.OptionsView.ShowGroupPanel = false;
+            // 
+            // chkOtherScreen
+            // 
+            this.chkOtherScreen.Location = new System.Drawing.Point(994, 498);
+            this.chkOtherScreen.MenuManager = this.barManager1;
+            this.chkOtherScreen.Name = "chkOtherScreen";
+            this.chkOtherScreen.Properties.Caption = "Màn phụ";
+            this.chkOtherScreen.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.chkOtherScreen.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkOtherScreen.Size = new System.Drawing.Size(101, 19);
+            this.chkOtherScreen.StyleController = this.layoutControl1;
+            this.chkOtherScreen.TabIndex = 21;
+            this.chkOtherScreen.CheckedChanged += new System.EventHandler(this.chkOtherScreen_CheckedChanged);
             // 
             // popupControlContainer1
             // 
@@ -319,7 +352,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             // 
             this.btnSetting.Image = ((System.Drawing.Image)(resources.GetObject("btnSetting.Image")));
             this.btnSetting.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.btnSetting.Location = new System.Drawing.Point(854, 493);
+            this.btnSetting.Location = new System.Drawing.Point(854, 524);
             this.btnSetting.Name = "btnSetting";
             this.btnSetting.Size = new System.Drawing.Size(24, 22);
             this.btnSetting.StyleController = this.layoutControl1;
@@ -387,9 +420,9 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             // 
             // btnConnect
             // 
-            this.btnConnect.Location = new System.Drawing.Point(897, 467);
+            this.btnConnect.Location = new System.Drawing.Point(925, 498);
             this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(93, 22);
+            this.btnConnect.Size = new System.Drawing.Size(65, 22);
             this.btnConnect.StyleController = this.layoutControl1;
             this.btnConnect.TabIndex = 13;
             this.btnConnect.Text = "Kết nối";
@@ -397,7 +430,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             // 
             // cboCom
             // 
-            this.cboCom.Location = new System.Drawing.Point(778, 467);
+            this.cboCom.Location = new System.Drawing.Point(778, 498);
             this.cboCom.MenuManager = this.barManager1;
             this.cboCom.Name = "cboCom";
             this.cboCom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -405,7 +438,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboCom.Properties.NullText = "";
             this.cboCom.Properties.View = this.gridLookUpEdit1View;
-            this.cboCom.Size = new System.Drawing.Size(115, 20);
+            this.cboCom.Size = new System.Drawing.Size(143, 20);
             this.cboCom.StyleController = this.layoutControl1;
             this.cboCom.TabIndex = 12;
             this.cboCom.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboCom_ButtonClick);
@@ -421,7 +454,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             // 
             this.lblStt.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblStt.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblStt.Location = new System.Drawing.Point(778, 443);
+            this.lblStt.Location = new System.Drawing.Point(778, 450);
             this.lblStt.Name = "lblStt";
             this.lblStt.Size = new System.Drawing.Size(87, 20);
             this.lblStt.StyleController = this.layoutControl1;
@@ -430,7 +463,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             // 
             // btnCreate
             // 
-            this.btnCreate.Location = new System.Drawing.Point(999, 493);
+            this.btnCreate.Location = new System.Drawing.Point(999, 524);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(96, 22);
             this.btnCreate.StyleController = this.layoutControl1;
@@ -440,7 +473,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             // 
             // btnNew
             // 
-            this.btnNew.Location = new System.Drawing.Point(882, 493);
+            this.btnNew.Location = new System.Drawing.Point(882, 524);
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(113, 22);
             this.btnNew.StyleController = this.layoutControl1;
@@ -450,7 +483,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             // 
             // btnPrint
             // 
-            this.btnPrint.Location = new System.Drawing.Point(752, 493);
+            this.btnPrint.Location = new System.Drawing.Point(752, 524);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(98, 22);
             this.btnPrint.StyleController = this.layoutControl1;
@@ -464,7 +497,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             this.lblAmount.Appearance.ForeColor = System.Drawing.Color.Red;
             this.lblAmount.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lblAmount.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblAmount.Location = new System.Drawing.Point(954, 443);
+            this.lblAmount.Location = new System.Drawing.Point(954, 450);
             this.lblAmount.Name = "lblAmount";
             this.lblAmount.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
             this.lblAmount.Size = new System.Drawing.Size(141, 20);
@@ -479,7 +512,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             this.pbQr.Properties.Padding = new System.Windows.Forms.Padding(15);
             this.pbQr.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
             this.pbQr.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
-            this.pbQr.Size = new System.Drawing.Size(386, 325);
+            this.pbQr.Size = new System.Drawing.Size(386, 332);
             this.pbQr.StyleController = this.layoutControl1;
             this.pbQr.TabIndex = 5;
             this.pbQr.EditValueChanged += new System.EventHandler(this.pbQr_EditValueChanged);
@@ -488,7 +521,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             // 
             this.panelControlTreeSereServ.Location = new System.Drawing.Point(2, 2);
             this.panelControlTreeSereServ.Name = "panelControlTreeSereServ";
-            this.panelControlTreeSereServ.Size = new System.Drawing.Size(687, 513);
+            this.panelControlTreeSereServ.Size = new System.Drawing.Size(687, 544);
             this.panelControlTreeSereServ.TabIndex = 4;
             // 
             // layoutControlGroup1
@@ -512,10 +545,12 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             this.layoutControlItem12,
             this.layoutControlItem13,
             this.layoutControlItem14,
-            this.layoutControlItem15});
+            this.layoutControlItem15,
+            this.layoutControlItem16,
+            this.emptySpaceItem2});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1097, 517);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1097, 548);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -523,7 +558,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             this.layoutControlItem1.Control = this.panelControlTreeSereServ;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(691, 517);
+            this.layoutControlItem1.Size = new System.Drawing.Size(691, 548);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -533,7 +568,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             this.layoutControlItem2.Location = new System.Drawing.Point(691, 96);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Padding = new DevExpress.XtraLayout.Utils.Padding(10, 10, 10, 10);
-            this.layoutControlItem2.Size = new System.Drawing.Size(406, 345);
+            this.layoutControlItem2.Size = new System.Drawing.Size(406, 352);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -542,7 +577,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             this.layoutControlItem3.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem3.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem3.Control = this.lblAmount;
-            this.layoutControlItem3.Location = new System.Drawing.Point(867, 441);
+            this.layoutControlItem3.Location = new System.Drawing.Point(867, 448);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Size = new System.Drawing.Size(230, 24);
             this.layoutControlItem3.Text = "Số tiền:";
@@ -553,7 +588,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btnPrint;
-            this.layoutControlItem4.Location = new System.Drawing.Point(750, 491);
+            this.layoutControlItem4.Location = new System.Drawing.Point(750, 522);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Size = new System.Drawing.Size(102, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
@@ -562,7 +597,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.btnNew;
-            this.layoutControlItem5.Location = new System.Drawing.Point(880, 491);
+            this.layoutControlItem5.Location = new System.Drawing.Point(880, 522);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.Size = new System.Drawing.Size(117, 26);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
@@ -571,7 +606,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnCreate;
-            this.layoutControlItem6.Location = new System.Drawing.Point(997, 491);
+            this.layoutControlItem6.Location = new System.Drawing.Point(997, 522);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Size = new System.Drawing.Size(100, 26);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
@@ -580,7 +615,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(691, 491);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(691, 522);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(59, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -590,7 +625,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             this.layouc.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layouc.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layouc.Control = this.lblStt;
-            this.layouc.Location = new System.Drawing.Point(691, 441);
+            this.layouc.Location = new System.Drawing.Point(691, 448);
             this.layouc.Name = "layouc";
             this.layouc.Size = new System.Drawing.Size(176, 24);
             this.layouc.Text = "Trạng thái:";
@@ -603,9 +638,9 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             this.layoutControlItem8.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem8.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem8.Control = this.cboCom;
-            this.layoutControlItem8.Location = new System.Drawing.Point(691, 465);
+            this.layoutControlItem8.Location = new System.Drawing.Point(691, 496);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(204, 26);
+            this.layoutControlItem8.Size = new System.Drawing.Size(232, 26);
             this.layoutControlItem8.Text = "Màn hình QR:";
             this.layoutControlItem8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem8.TextSize = new System.Drawing.Size(80, 20);
@@ -614,9 +649,9 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnConnect;
-            this.layoutControlItem7.Location = new System.Drawing.Point(895, 465);
+            this.layoutControlItem7.Location = new System.Drawing.Point(923, 496);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(97, 26);
+            this.layoutControlItem7.Size = new System.Drawing.Size(69, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
@@ -688,7 +723,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             // layoutControlItem14
             // 
             this.layoutControlItem14.Control = this.btnSetting;
-            this.layoutControlItem14.Location = new System.Drawing.Point(852, 491);
+            this.layoutControlItem14.Location = new System.Drawing.Point(852, 522);
             this.layoutControlItem14.MaxSize = new System.Drawing.Size(28, 26);
             this.layoutControlItem14.MinSize = new System.Drawing.Size(28, 26);
             this.layoutControlItem14.Name = "layoutControlItem14";
@@ -700,11 +735,32 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.chkOtherScreen;
-            this.layoutControlItem15.Location = new System.Drawing.Point(992, 465);
+            this.layoutControlItem15.Location = new System.Drawing.Point(992, 496);
             this.layoutControlItem15.Name = "layoutControlItem15";
             this.layoutControlItem15.Size = new System.Drawing.Size(105, 26);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
+            // 
+            // layoutControlItem16
+            // 
+            this.layoutControlItem16.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem16.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem16.Control = this.cboPayForm;
+            this.layoutControlItem16.Location = new System.Drawing.Point(691, 472);
+            this.layoutControlItem16.Name = "layoutControlItem16";
+            this.layoutControlItem16.Size = new System.Drawing.Size(232, 24);
+            this.layoutControlItem16.Text = "Hình thức:";
+            this.layoutControlItem16.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem16.TextSize = new System.Drawing.Size(80, 20);
+            this.layoutControlItem16.TextToControlDistance = 5;
+            // 
+            // emptySpaceItem2
+            // 
+            this.emptySpaceItem2.AllowHotTrack = false;
+            this.emptySpaceItem2.Location = new System.Drawing.Point(923, 472);
+            this.emptySpaceItem2.Name = "emptySpaceItem2";
+            this.emptySpaceItem2.Size = new System.Drawing.Size(174, 24);
+            this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // timerReloadTransReq
             // 
@@ -715,7 +771,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1097, 546);
+            this.ClientSize = new System.Drawing.Size(1097, 577);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
@@ -734,8 +790,10 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chkOtherScreen.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboPayForm.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkOtherScreen.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).EndInit();
             this.popupControlContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
@@ -763,6 +821,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -823,5 +883,9 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit1;
         private DevExpress.XtraEditors.CheckEdit chkOtherScreen;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem15;
+        private DevExpress.XtraEditors.GridLookUpEdit cboPayForm;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem16;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
     }
 }
