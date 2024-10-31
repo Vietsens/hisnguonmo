@@ -274,14 +274,17 @@ namespace MPS.Processor.Mps000062.PDO
 
         public string MEDICINES_MERGE___DATA { get; set; } // thuốc pha truyền và thuốc không pha truyền
         public string MEDICINES_MERGE_DUTRU___DATA { get; set; } // thuốc dự trù pha truyền và thuốc dự trù không pha truyền
-
+        /// <summary>
+        /// Tổng hợp chi tiết của MEDICINES___DATA, MEDICINES_DuTru___DATA,  MEDICINES_THDT___DATA
+        /// </summary>
+        public string MEDICINES_MERGE_DETAIL___DATA { get; set; }
         public string SERVICE_CLS_DuTru___DATA { get; set; }
         public string SERVICE_CLS_DuTru_X01___DATA { get; set; }
         public string SERVICE_CLS_THDT___DATA { get; set; }
         public string SERVICE_CLS_THDT_X01___DATA { get; set; }
         public string TT_SERVICE_DuTru___DATA { get; set; } 
         public string TT_SERVICE_THDT___DATA { get; set; } 
-
+        public string SERVICE_REQ_ADVISE { get; set; }
         public string PARENT_ORGANIZATION_NAME { get; set; }
         public string ORGANIZATION_NAME { get; set; }
         public string DEPARTMENT_NAME { get; set; }
@@ -648,6 +651,9 @@ namespace MPS.Processor.Mps000062.PDO
         public long? NUM_ORDER_DOSAGE_FORM { get; set; }
         public string MEDICINE_GROUP_NAME { get; set; }
         public string DOSAGE_FORM_NAME { get; set; }
+        public string DATA_REPX { get; set; }
+        public long? ASSIGN_TIME_TO { get; set; }
+        public string ADVISE { get; set; }
         public ExpMestMetyReqADO() { }
         public ExpMestMetyReqADO(HIS_EXP_MEST_MEDICINE data)
         {
