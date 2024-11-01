@@ -3610,9 +3610,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             MemoryStream resultSync12 = null;
                             MemoryStream resultSyncTT = null;
                             string errorMess = "";
-                            Inventec.Common.Logging.LogSystem.Debug("__Cau hinh gui ,configSync khong gui : " + this.configSync.dontSend);
                             Inventec.Common.Logging.LogSystem.Debug("Dang xu ly gui  : " + treatment.TDL_PATIENT_NAME + " Ma dieu tri: " + treatment.TREATMENT_CODE);
-                            if (!this.configSync.dontSend)
+                            if (configSync != null && !this.configSync.dontSend)
                             {
 
                                 if (sendXml12)
@@ -3677,7 +3676,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => xmlResultSDO), xmlResultSDO));
                                                 var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info", ApiConsumers.MosConsumer, xmlResultSDO, paramUpdateXml130);
                                                 //luu file
-                                                if (!string.IsNullOrEmpty(configSync.folderPath))
+                                                if (configSync != null && !string.IsNullOrEmpty(configSync.folderPath))
                                                 {
 
                                                     string fullFileName = xmlProcessor.GetFileName();
@@ -3802,14 +3801,17 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => xmlResultSDO), xmlResultSDO));
                                     var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info", ApiConsumers.MosConsumer, xmlResultSDO, paramUpdateXml130);
                                     //luu file
-                                    string fullFileName = xmlProcessor.GetFileName();
-                                    string saveFilePathXml = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
-                                    FileStream file12 = new FileStream(saveFilePathXml, FileMode.Create, FileAccess.Write);
-                                    resultSync.WriteTo(file12);
-                                    file12.Close();
-                                    resultSync.Close();
-                                    success = true;
-                                    Inventec.Common.Logging.LogSystem.Debug("__Luu XMl vao client folder thanh cong. path: " + saveFilePathXml);
+                                    if (this.configSync != null && !string.IsNullOrEmpty(this.configSync.folderPath))
+                                    {
+                                        string fullFileName = xmlProcessor.GetFileName();
+                                        string saveFilePathXml = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
+                                        FileStream file12 = new FileStream(saveFilePathXml, FileMode.Create, FileAccess.Write);
+                                        resultSync.WriteTo(file12);
+                                        file12.Close();
+                                        resultSync.Close();
+                                        success = true;
+                                        Inventec.Common.Logging.LogSystem.Debug("__Luu XMl vao client folder thanh cong. path: " + saveFilePathXml);
+                                    }
                                 }
 
 

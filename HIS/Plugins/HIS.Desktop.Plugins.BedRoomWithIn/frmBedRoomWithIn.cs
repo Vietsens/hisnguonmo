@@ -2631,6 +2631,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             try
             {
                 delayTimerfoSearch.Stop();
+                if (isSelected) return;
                 if (!string.IsNullOrEmpty(txtReasonNt.Text))
                 {
                     var input = txtReasonNt.Text.Trim().ToLower(); // Chuyển input thành chữ thường
@@ -2676,7 +2677,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             }
         }
 
-
+        bool isSelected = false;
         private void cboReasonNt_EditValueChanged(object sender, EventArgs e)
         {
             try
@@ -2689,9 +2690,12 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                         txtReasonNt.Text = exits.HOSPITALIZE_REASON_NAME;
                         this.REASON_CODE = exits.HOSPITALIZE_REASON_CODE;
                         this.REASON_NAME = exits.HOSPITALIZE_REASON_NAME;
+                        isSelected = true;
                     }
                     cboReasonNt.Properties.DataSource = listReason;
                 }
+                else
+                    isSelected = false;
             }
             catch (Exception ex)
             {

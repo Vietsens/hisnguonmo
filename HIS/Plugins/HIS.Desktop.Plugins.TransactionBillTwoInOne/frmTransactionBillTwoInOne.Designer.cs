@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTransactionBillTwoInOne));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -59,23 +58,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnRCSave = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnRCNew = new DevExpress.XtraBars.BarButtonItem();
@@ -89,8 +72,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.btnQR = new DevExpress.XtraEditors.SimpleButton();
             this.cboPayForm = new DevExpress.XtraEditors.LookUpEdit();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
             this.layoutControl7 = new DevExpress.XtraLayout.LayoutControl();
             this.btnCancel = new DevExpress.XtraEditors.SimpleButton();
             this.btnOk = new DevExpress.XtraEditors.SimpleButton();
@@ -348,10 +332,12 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem52 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem53 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem57 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
-            this.timerInitForm = new System.Windows.Forms.Timer(this.components);
+            this.lciQR = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource();
+            this.bindingSource2 = new System.Windows.Forms.BindingSource();
+            this.timerInitForm = new System.Windows.Forms.Timer();
+            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -550,19 +536,17 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem52)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem53)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem57)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciQR)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).BeginInit();
             this.SuspendLayout();
             // 
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnRCSave,
@@ -642,8 +626,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1291, 29);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1291, 0);
             // 
             // barDockControlBottom
             // 
@@ -678,6 +662,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.btnQR);
             this.layoutControl1.Controls.Add(this.cboPayForm);
             this.layoutControl1.Controls.Add(this.popupControlContainer1);
             this.layoutControl1.Controls.Add(this.btnConfigPos);
@@ -719,6 +704,17 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControl1.Size = new System.Drawing.Size(1291, 660);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // btnQR
+            // 
+            this.btnQR.Enabled = false;
+            this.btnQR.Location = new System.Drawing.Point(525, 636);
+            this.btnQR.Name = "btnQR";
+            this.btnQR.Size = new System.Drawing.Size(32, 22);
+            this.btnQR.StyleController = this.layoutControl1;
+            this.btnQR.TabIndex = 74;
+            this.btnQR.Text = "QR";
+            this.btnQR.Click += new System.EventHandler(this.btnQR_Click);
             // 
             // cboPayForm
             // 
@@ -1292,9 +1288,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // 
             // BtnSaveAndSign
             // 
-            this.BtnSaveAndSign.Location = new System.Drawing.Point(525, 636);
+            this.BtnSaveAndSign.Location = new System.Drawing.Point(561, 636);
             this.BtnSaveAndSign.Name = "BtnSaveAndSign";
-            this.BtnSaveAndSign.Size = new System.Drawing.Size(109, 22);
+            this.BtnSaveAndSign.Size = new System.Drawing.Size(84, 22);
             this.BtnSaveAndSign.StyleController = this.layoutControl1;
             this.BtnSaveAndSign.TabIndex = 58;
             this.BtnSaveAndSign.Text = "Lưu ký (Ctrl A)";
@@ -3259,9 +3255,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // 
             // btnSavePrint
             // 
-            this.btnSavePrint.Location = new System.Drawing.Point(638, 636);
+            this.btnSavePrint.Location = new System.Drawing.Point(649, 636);
             this.btnSavePrint.Name = "btnSavePrint";
-            this.btnSavePrint.Size = new System.Drawing.Size(111, 22);
+            this.btnSavePrint.Size = new System.Drawing.Size(100, 22);
             this.btnSavePrint.StyleController = this.layoutControl1;
             this.btnSavePrint.TabIndex = 48;
             this.btnSavePrint.Text = "Lưu in (Ctrl Shift S)";
@@ -3495,8 +3491,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // repositoryItemBtnLock
             // 
             this.repositoryItemBtnLock.AutoHeight = false;
-            this.repositoryItemBtnLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.TransactionBillTwoInOne.Properties.Resources.Lock_Unlock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Xóa", null, null, true)});
             this.repositoryItemBtnLock.Name = "repositoryItemBtnLock";
             this.repositoryItemBtnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemBtnLock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnLock_ButtonClick);
@@ -3504,16 +3498,12 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // repositoryItemBtnLockDisable
             // 
             this.repositoryItemBtnLockDisable.AutoHeight = false;
-            this.repositoryItemBtnLockDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.TransactionBillTwoInOne.Properties.Resources.Lock_Unlock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Khóa", null, null, true)});
             this.repositoryItemBtnLockDisable.Name = "repositoryItemBtnLockDisable";
             this.repositoryItemBtnLockDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
             // repositoryItemBtnUnlock
             // 
             this.repositoryItemBtnUnlock.AutoHeight = false;
-            this.repositoryItemBtnUnlock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.TransactionBillTwoInOne.Properties.Resources.Lock_Lock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "Mở khóa", null, null, true)});
             this.repositoryItemBtnUnlock.Name = "repositoryItemBtnUnlock";
             this.repositoryItemBtnUnlock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemBtnUnlock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnUnlock_ButtonClick);
@@ -3521,8 +3511,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // repositoryItemBtnUnLockDisable
             // 
             this.repositoryItemBtnUnLockDisable.AutoHeight = false;
-            this.repositoryItemBtnUnLockDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.TransactionBillTwoInOne.Properties.Resources.Lock_Lock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "Mở khóa", null, null, true)});
             this.repositoryItemBtnUnLockDisable.Name = "repositoryItemBtnUnLockDisable";
             this.repositoryItemBtnUnLockDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -3616,7 +3604,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.lciTransactionTime,
             this.layoutControlItem52,
             this.layoutControlItem53,
-            this.layoutControlItem57});
+            this.layoutControlItem57,
+            this.lciQR});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 5, 0, 0);
@@ -3712,9 +3701,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.btnSavePrint;
-            this.layoutControlItem15.Location = new System.Drawing.Point(636, 634);
+            this.layoutControlItem15.Location = new System.Drawing.Point(647, 634);
             this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(115, 26);
+            this.layoutControlItem15.Size = new System.Drawing.Size(104, 26);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
             // 
@@ -3845,9 +3834,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // lcibtnSaveAndSign
             // 
             this.lcibtnSaveAndSign.Control = this.BtnSaveAndSign;
-            this.lcibtnSaveAndSign.Location = new System.Drawing.Point(523, 634);
+            this.lcibtnSaveAndSign.Location = new System.Drawing.Point(559, 634);
             this.lcibtnSaveAndSign.Name = "lcibtnSaveAndSign";
-            this.lcibtnSaveAndSign.Size = new System.Drawing.Size(113, 26);
+            this.lcibtnSaveAndSign.Size = new System.Drawing.Size(88, 26);
             this.lcibtnSaveAndSign.TextSize = new System.Drawing.Size(0, 0);
             this.lcibtnSaveAndSign.TextVisible = false;
             // 
@@ -3995,6 +3984,16 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem57.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem57.TextVisible = false;
             // 
+            // lciQR
+            // 
+            this.lciQR.Control = this.btnQR;
+            this.lciQR.Location = new System.Drawing.Point(523, 634);
+            this.lciQR.Name = "lciQR";
+            this.lciQR.OptionsToolTip.ToolTip = "Thanh toán bằng QR";
+            this.lciQR.Size = new System.Drawing.Size(36, 26);
+            this.lciQR.TextSize = new System.Drawing.Size(0, 0);
+            this.lciQR.TextVisible = false;
+            // 
             // dxValidationProvider1
             // 
             this.dxValidationProvider1.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
@@ -4002,6 +4001,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // timerInitForm
             // 
             this.timerInitForm.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // popupMenu1
+            // 
+            this.popupMenu1.Manager = this.barManager1;
+            this.popupMenu1.Name = "popupMenu1";
             // 
             // frmTransactionBillTwoInOne
             // 
@@ -4221,9 +4225,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem52)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem53)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem57)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciQR)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -4508,6 +4514,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem66;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem67;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem68;
-
+        private DevExpress.XtraEditors.SimpleButton btnQR;
+        private DevExpress.XtraLayout.LayoutControlItem lciQR;
+        private DevExpress.XtraBars.PopupMenu popupMenu1;
     }
 }

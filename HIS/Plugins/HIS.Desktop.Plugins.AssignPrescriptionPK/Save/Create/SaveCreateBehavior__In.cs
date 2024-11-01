@@ -44,6 +44,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save.Create
                 prescriptionSDO.PrescriptionTypeId = PrescriptionType.NEW;
                 prescriptionSDO.TreatmentId = this.TreatmentId;
                 prescriptionSDO.IsTemporaryPres = (short?)this.IsTemporaryPres;
+                prescriptionSDO.PrescriptionPhaseNum = (short?)this.PrescriptionPhaseNum;
                 this.ProcessPrescriptionUpdateSDO(prescriptionSDO);
                 this.ProcessPrescriptionUpdateSDOICD(prescriptionSDO);
                 this.ProcessPrescriptionSDOForSereServInKip(prescriptionSDO);

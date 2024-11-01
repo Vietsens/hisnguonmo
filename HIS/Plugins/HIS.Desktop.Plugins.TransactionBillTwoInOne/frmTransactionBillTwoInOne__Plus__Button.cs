@@ -532,6 +532,13 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         btnSave.Enabled = false;
                         btnSavePrint.Enabled = false;
                         ddBtnPrint.Enabled = true;
+                        var exits = rs.Where(s => s.PAY_FORM_ID == 8 && s.IS_ACTIVE == 0);
+                        if(exits != null)
+                        {
+                            this.listTranToQR = exits.ToList() ;
+                            btnQR.Enabled = true;
+                            CreateQR(exits.ToList(), false);
+                        }
                         //AddLastAccountToLocal();
                         bool resetReceipt = false;
                         bool resetInvoice = false;

@@ -27,6 +27,7 @@ using HIS.Desktop.Plugins.ImpMestCreate.ADO;
 using HIS.Desktop.Plugins.ImpMestCreate.Config;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
@@ -218,19 +219,100 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             bool _result = false;
             try
             {
+                //neu khogn bat cau hinh - > khong canh bao - > lay du lieu nhap
+                if (this.configWarningDiff != null && this.configWarningDiff.VALUE != "1") _result = true;
                 if (this.currrentServiceAdo != null && spinEditGiaNhapLanTruoc.EditValue != null && spinImpPriceVAT.EditValue != null)
                 {
                     decimal _giaLanTruoc = Math.Round(spinEditGiaNhapLanTruoc.Value, ConfigApplications.NumberSeperator, MidpointRounding.AwayFromZero);
                     decimal _giaSauVAT = Math.Round(spinImpPriceVAT.Value, ConfigApplications.NumberSeperator, MidpointRounding.AwayFromZero);
-                    if (_giaLanTruoc > 0 && _giaLanTruoc != _giaSauVAT)
+
+                    string error_warning = "";
+                    Inventec.Common.Logging.LogSystem.Debug("Danh sach lo thuoc: " + LogUtil.TraceData("currentMedicine", this.currentMedicine));
+                    Inventec.Common.Logging.LogSystem.Debug("Danh sach lo vat tu: " + LogUtil.TraceData("currentMaterial", this.currentMaterial));
+                    if (xtraTabControlMain.SelectedTabPage == xtraTabPageMedicine)
                     {
-                        string giaLanTruoc = Inventec.Common.Number.Convert.NumberToString(_giaLanTruoc, ConfigApplications.NumberSeperator);
-                        string messShow = string.Format("Thuốc {0} lần gần nhất nhập có giá sau VAT = {1} khác với giá nhập hiện tại. Bạn có muốn tiếp tục thêm?", this.currrentServiceAdo.MEDI_MATE_NAME, giaLanTruoc);
-                        if (DevExpress.XtraEditors.XtraMessageBox.Show(messShow, Base.ResourceMessageManager.TieuDeCuaSoThongBaoLaThongBao, System.Windows.Forms.MessageBoxButtons.YesNo) != System.Windows.Forms.DialogResult.Yes)
+                        if (this.configWarningDiff != null && this.currentMedicine != null && this.configWarningDiff.VALUE == "1")
                         {
-                            _result = true;
+                            if (_giaLanTruoc > 0 && _giaLanTruoc != _giaSauVAT)
+                            {
+                                error_warning += string.Format(" giá sau VAT = {0},", _giaLanTruoc);
+                                //string giaLanTruoc = Inventec.Common.Number.Convert.NumberToString(_giaLanTruoc, ConfigApplications.NumberSeperator);
+                                //string messShow = string.Format("Thuốc {0} lần gần nhất nhập có giá sau VAT = {1} khác với giá nhập hiện tại. Bạn có muốn tiếp tục thêm?", this.currrentServiceAdo.MEDI_MATE_NAME, giaLanTruoc);
+                                //if (DevExpress.XtraEditors.XtraMessageBox.Show(messShow, Base.ResourceMessageManager.TieuDeCuaSoThongBaoLaThongBao, System.Windows.Forms.MessageBoxButtons.YesNo) != System.Windows.Forms.DialogResult.Yes)
+                                //{
+                                //    _result = true;
+                                //}
+                            }
+                            if (txtSoDangKy.Text != this.currentMedicine.MEDICINE_REGISTER_NUMBER)
+                            {
+                                error_warning += string.Format(" số đăng ký là {0},", this.currentMedicine.MEDICINE_REGISTER_NUMBER);
+                            }
+                            if (txtPackingJoinBid.Text != this.currentMedicine.PACKING_TYPE_NAME)
+                            {
+                                error_warning += string.Format(" quy cách đóng gói là {0},", this.currentMedicine.PACKING_TYPE_NAME);
+                            }
+                            if (txtHeinServiceBidMateType.Text != this.currentMedicine.HEIN_SERVICE_BHYT_NAME)
+                            {
+                                error_warning += string.Format(" tên BHYT là {0},", this.currentMedicine.HEIN_SERVICE_BHYT_NAME);
+                            }
+                            if (!string.IsNullOrEmpty(error_warning))
+                            {
+                                if (error_warning.EndsWith(",")) error_warning = error_warning.Substring(0, error_warning.Length - 1);
+                                string messShow = string.Format("Thuốc {0} lần gần nhất nhập có{1} khác với hiện tại. Bạn có muốn tiếp tục thêm?", this.currrentServiceAdo.MEDI_MATE_NAME, error_warning);
+                                if (DevExpress.XtraEditors.XtraMessageBox.Show(messShow, Base.ResourceMessageManager.TieuDeCuaSoThongBaoLaThongBao, System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+                                {
+                                    _result = true;
+
+                                }
+                                else
+                                {
+                                    _result = false;
+                                    txtSoDangKy.Text = this.currentMedicine.MEDICINE_REGISTER_NUMBER;
+                                    txtPackingJoinBid.Text = this.currentMedicine.PACKING_TYPE_NAME;
+                                    txtHeinServiceBidMateType.Text = this.currentMedicine.HEIN_SERVICE_BHYT_NAME;
+                                }
+                                error_warning = "";
+                            }
                         }
+                        else _result = true;
+
+                        
                     }
+                    else if (xtraTabControlMain.SelectedTabPage == xtraTabPageMaterial)
+                    {
+                        if (this.configWarningDiff != null  && this.currentMaterial != null && this.configWarningDiff.VALUE == "1")
+                        {
+                            if (_giaLanTruoc > 0 && _giaLanTruoc != _giaSauVAT)
+                            {
+                                error_warning += string.Format(" giá sau VAT = {0},", _giaLanTruoc);
+                            }
+                            if (txtSoDangKy.Text != this.currentMaterial.MATERIAL_REGISTER_NUMBER)
+                            {
+                                error_warning += string.Format(" số đăng ký là {0},", this.currentMaterial.MATERIAL_REGISTER_NUMBER);
+                            }
+
+                            if (!string.IsNullOrEmpty(error_warning))
+                            {
+                                if (error_warning.EndsWith(",")) error_warning = error_warning.Substring(0, error_warning.Length - 1);
+                                string messShow = string.Format("Vật tư {0} lần gần nhất nhập có{1} khác với hiện tại. Bạn có muốn tiếp tục thêm?", this.currrentServiceAdo.MEDI_MATE_NAME, error_warning);
+                                if (DevExpress.XtraEditors.XtraMessageBox.Show(messShow, Base.ResourceMessageManager.TieuDeCuaSoThongBaoLaThongBao, System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+                                {
+                                    _result = true;
+                                   
+                                }
+                                else
+                                {
+                                    _result = false;
+                                    txtSoDangKy.Text = this.currentMaterial.MATERIAL_REGISTER_NUMBER;
+                                }
+                                error_warning = "";
+                            }
+                        }
+                        else _result = true;
+
+
+                    }
+
                 }
             }
             catch (Exception ex)
