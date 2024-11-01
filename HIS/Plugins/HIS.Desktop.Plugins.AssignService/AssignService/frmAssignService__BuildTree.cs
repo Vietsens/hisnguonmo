@@ -234,6 +234,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         item.TEST_SAMPLE_TYPE_ID = 0;
                         item.TEST_SAMPLE_TYPE_CODE = null;
                         item.TEST_SAMPLE_TYPE_NAME = null;
+                        item.SereServEkipADO = null;
                     }
                 }
                 else

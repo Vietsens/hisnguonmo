@@ -46,6 +46,7 @@ using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
+using MOS.TDO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -80,6 +81,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
         bool IsCheckNode { get; set; }
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        bool IsLoadFirst { get; set; }
         public frmCreateTransReqQR(Inventec.Desktop.Common.Modules.Module currentModule, TransReqQRADO ado) : base(currentModule)
         {
             InitializeComponent();
@@ -111,6 +113,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 LoadTreatment();
                 RegisterTimer(GetModuleLink(), "timerInitForm", timerInitForm.Interval, timerInitForm_Tick);
                 StartTimer(GetModuleLink(), "timerInitForm");
+                LoadPayForm();
             }
             catch (Exception ex)
             {
@@ -148,6 +151,41 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 ControlEditorLoader.Load(cboCom, comQRs, controlEditorADO);
                 cboCom.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
                 InitControlState();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void LoadPayForm()
+        {
+            try
+            {
+                IsLoadFirst = true;
+                if (inputTransReq.Transaction != null || (inputTransReq.Transactions != null && inputTransReq.Transactions.Count > 0))
+                {
+                    var datas = BackendDataWorker.Get<HIS_PAY_FORM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                    List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                    columnInfos.Add(new ColumnInfo("PAY_FORM_CODE", "Mã", 60, 1));
+                    columnInfos.Add(new ColumnInfo("PAY_FORM_NAME", "Tên", 120, 2));
+                    ControlEditorADO controlEditorADO = new ControlEditorADO("PAY_FORM_NAME", "ID", columnInfos, true, 180);
+                    controlEditorADO.ImmediatePopup = true;
+                    ControlEditorLoader.Load(cboPayForm, datas, controlEditorADO);
+                    cboPayForm.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
+                    cboPayForm.Properties.Buttons[1].Visible = false;
+                    if (inputTransReq.Transaction != null)
+                        cboPayForm.EditValue = inputTransReq.Transaction.PAY_FORM_ID;
+                    else
+                        cboPayForm.EditValue = inputTransReq.Transactions[0].PAY_FORM_ID;
+                    cboPayForm.Enabled = (cboPayForm.EditValue != null && Int64.Parse(cboPayForm.EditValue.ToString()) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR) || (currentTransReq == null || (currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)) ? true : false;
+
+                }
+                else
+                {
+                    layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    emptySpaceItem2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
+                IsLoadFirst = false;
             }
             catch (Exception ex)
             {
@@ -224,6 +262,36 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
         {
             try
             {
+                bool IsLoad = false;
+                if (inputTransReq.Transaction != null || (inputTransReq.Transactions != null && inputTransReq.Transactions.Count > 0))
+                {
+                    long typeId = 0;
+                    List<long> TransactionIds = new List<long>();
+                    bool IsSale = false;
+                    if (inputTransReq.Transaction != null)
+                    {
+                        typeId = inputTransReq.Transaction.TRANSACTION_TYPE_ID;
+                        TransactionIds.Add(inputTransReq.Transaction.ID);
+                        IsSale = inputTransReq.Transaction.SALE_TYPE_ID == 1;
+                    }
+                    else
+                    {
+                        typeId = inputTransReq.Transactions[0].TRANSACTION_TYPE_ID;
+                        TransactionIds.AddRange(inputTransReq.Transactions.Select(o => o.ID).ToList());
+                        IsSale = inputTransReq.Transactions[0].SALE_TYPE_ID == 1;
+                    }
+                    if (typeId == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU)
+                    {
+                        LoadSsDeposit(TransactionIds);
+                        IsLoad = true;
+                    }
+                    else if (typeId == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT && IsSale)
+                    {
+                        LoadSsBillGoods(TransactionIds);
+                        IsLoad = true;
+                    }
+                    this.ssTreeProcessor.Reload(this.ucSereServTree, this.sereServByTreatment);
+                }
                 if (inputTransReq.TransReqId == CreateReqType.Deposit || inputTransReq.TransReqId == CreateReqType.Transaction)
                 {
                     btnCreate_Click(null, null);
@@ -283,7 +351,6 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 List<V_HIS_SERE_SERV_5> sereServByTreatmentProcess = new List<V_HIS_SERE_SERV_5>();
 
                 this.FilterSereServDepositAndRepay(ref this.sereServByTreatment, sereServDeposits);
-
                 this.ssTreeProcessor.Reload(this.ucSereServTree, this.sereServByTreatment);
                 btnCreate_Click(null, null);
             }
@@ -291,6 +358,81 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void LoadSsBillGoods(List<long> transactionIds)
+        {
+            try
+            {
+                HisBillGoodsFilter billGoodsFilter = new HisBillGoodsFilter();
+                billGoodsFilter.BILL_IDs = transactionIds;
+                var billGoods = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_BILL_GOODS>>("api/HisBillGoods/Get", ApiConsumers.MosConsumer, billGoodsFilter, null);
+                if (billGoods != null && billGoods.Count > 0)
+                {
+                    this.sereServByTreatment = new List<V_HIS_SERE_SERV_5>();
+                    foreach (var item in billGoods)
+                    {
+                        V_HIS_SERE_SERV_5 sereServBill = new V_HIS_SERE_SERV_5();
+                        sereServBill.TDL_SERVICE_NAME = item.GOODS_NAME;
+                        sereServBill.AMOUNT = item.AMOUNT;
+                        sereServBill.VIR_PATIENT_PRICE = sereServBill.VIR_TOTAL_PATIENT_PRICE = item.AMOUNT * item.PRICE;
+                        sereServBill.DISCOUNT = item.DISCOUNT;
+                        sereServBill.VAT_RATIO = item.VAT_RATIO ?? 0;
+                        sereServBill.SERVICE_UNIT_NAME = item.GOODS_UNIT_NAME;
+                        sereServBill.VIR_PRICE = item.PRICE;
+                        if (item.MEDICINE_TYPE_ID.HasValue)
+                        {
+                            var medicine = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == item.MEDICINE_TYPE_ID.Value);
+                            if (medicine != null)
+                            {
+                                sereServBill.TDL_SERVICE_CODE = medicine.MEDICINE_TYPE_CODE;
+                                sereServBill.TDL_SERVICE_NAME = medicine.MEDICINE_TYPE_NAME;
+                                sereServBill.SERVICE_UNIT_NAME = medicine.SERVICE_UNIT_NAME;
+                            }
+                        }
+                        else if (item.MATERIAL_TYPE_ID.HasValue)
+                        {
+                            var material = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().FirstOrDefault(o => o.ID == item.MATERIAL_TYPE_ID.Value);
+                            if (material != null)
+                            {
+                                sereServBill.TDL_SERVICE_CODE = material.MATERIAL_TYPE_CODE;
+                                sereServBill.TDL_SERVICE_NAME = material.MATERIAL_TYPE_NAME;
+                                sereServBill.SERVICE_UNIT_NAME = material.SERVICE_UNIT_NAME;
+                            }
+                        }
+                        sereServByTreatment.Add(sereServBill);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void LoadSsDeposit(List<long> transactionIds)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisSereServDepositFilter dereDetailFiter = new MOS.Filter.HisSereServDepositFilter();
+                dereDetailFiter.DEPOSIT_IDs = transactionIds;
+                var dereDetails = new BackendAdapter(param).Get<List<HIS_SERE_SERV_DEPOSIT>>("api/HisSereServDeposit/Get", ApiConsumers.MosConsumer, dereDetailFiter, param);
+                if (dereDetails != null && dereDetails.Count > 0)
+                {
+                    var sereServIds = dereDetails.Select(o => o.SERE_SERV_ID).ToList();
+
+                    MOS.Filter.HisSereServView5Filter sereServFilter = new MOS.Filter.HisSereServView5Filter();
+                    sereServFilter.IDs = sereServIds;
+                    this.sereServByTreatment = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_5>>("api/HisSereServ/GetView5", ApiConsumers.MosConsumer, sereServFilter, param);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         List<MOS.EFMODEL.DataModels.HIS_SESE_DEPO_REPAY> GetSeSeDepoRePay(long treatmentId)
@@ -750,6 +892,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         lblStt.Text = currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__FINISHED ? "Thành công" : currentTransReq.TRANS_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST ? "Thất bại" : "Đang chờ";
                         if (currentTransReq.TRANS_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)
                         {
+                            cboPayForm.Enabled = false;
                             if (PosStatic.IsOpenPos())
                                 PosStatic.SendData(null);
                             timerReloadTransReq.Stop();
@@ -812,7 +955,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                                         ssfilter.IDs = SereServIds;
                                         sereServs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>("/api/HisSereServ/Get", ApiConsumers.MosConsumer, ssfilter, null);
                                     }
-                                    if (sereServs != null && sereServs.Count > 0 && sereServs.Exists(o=>o.SERVICE_REQ_ID.HasValue))
+                                    if (sereServs != null && sereServs.Count > 0 && sereServs.Exists(o => o.SERVICE_REQ_ID.HasValue))
                                     {
                                         HisServiceReqViewFilter filter = new HisServiceReqViewFilter();
                                         filter.IDs = sereServs.Select(o => o.SERVICE_REQ_ID ?? 0).Distinct().ToList();
@@ -854,6 +997,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 sdo.Amount = this.Amount;
                 sdo.DepositReqId = inputTransReq.DepositReq != null ? (long?)inputTransReq.DepositReq.ID : null;
                 sdo.TransactionId = inputTransReq.Transaction != null ? (long?)inputTransReq.Transaction.ID : null;
+                sdo.TransactionIds = inputTransReq.Transactions != null && inputTransReq.Transactions.Count > 0 ? inputTransReq.Transactions.Select(o => o.ID).Distinct().ToList() : null;
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
                 currentTransReq = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANS_REQ>("api/HisTransReq/CreateSDO", ApiConsumers.MosConsumer, sdo, param);
                 if (inputTransReq.TreatmentId <= 0)
@@ -888,31 +1032,64 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
 
         }
 
+        private void CallApiCancelTransReq()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                currentTransReq.TRANS_REQ_STT_ID = IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__CANCEL;
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentTransReq), currentTransReq));
+                currentTransReq = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANS_REQ>("api/HisTransReq/Update", ApiConsumers.MosConsumer, currentTransReq, param);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
         private void btnNew_Click(object sender, EventArgs e)
         {
 
             try
             {
                 timerReloadTransReq.Stop();
-                if (currentTransReq != null)
+                var lstCheckBank = new List<string>() { "MBB", "VCB" };
+                if (string.IsNullOrEmpty(inputTransReq.BankName) || !lstCheckBank.Contains(inputTransReq.BankName))
                 {
-                    IsCheckNode = false;
-                    CommonParam param = new CommonParam();
-                    currentTransReq.TRANS_REQ_STT_ID = IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__CANCEL;
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentTransReq), currentTransReq));
-                    currentTransReq = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANS_REQ>("api/HisTransReq/Update", ApiConsumers.MosConsumer, currentTransReq, param);
-                    InitPopupMenuOther();
                     if (currentTransReq != null)
                     {
-                        QrCodeProcessor.DicContentBank = new Dictionary<string, string>();
-                        pbQr.Image = null;
-                        IsCheckNode = true;
-                        btnCreate.Enabled = true;
-                        if (PosStatic.IsOpenPos())
-                            PosStatic.SendData(null);
-                    }
+                        {
+                            IsCheckNode = false;
+                            CallApiCancelTransReq();
+                        }
 
+                    }
                 }
+                else if (lstCheckBank.Contains(inputTransReq.BankName) && currentTransReq != null && lstCheckBank.Exists(o => inputTransReq.ConfigValue.KEY.Contains(o)))
+                {
+                    {
+                        IsCheckNode = false;
+                        CommonParam param = new CommonParam();
+                        MOS.TDO.QrPaymentCancelTDO tdo = new MOS.TDO.QrPaymentCancelTDO();
+                        tdo.Bank = inputTransReq.BankName;
+                        tdo.TransReqId = currentTransReq.ID;
+                        dynamic bank = new System.Dynamic.ExpandoObject();
+                        bank.BANK = tdo.Bank;
+                        bank.VALUE = inputTransReq.ConfigValue.VALUE;
+                        tdo.BankConfig = Newtonsoft.Json.JsonConvert.SerializeObject(bank);
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => tdo), tdo));
+                        var IsCancel = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>("api/HisTransReq/QrPaymentCancel", ApiConsumers.MosConsumer, tdo, param);
+                    }
+                }
+
+
+                QrCodeProcessor.DicContentBank = new Dictionary<string, string>();
+                pbQr.Image = null;
+                IsCheckNode = true;
+                btnCreate.Enabled = true;
+                if (PosStatic.IsOpenPos())
+                    PosStatic.SendData(null);
             }
             catch (Exception ex)
             {
@@ -2132,6 +2309,73 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 {
                     if (dlg != null)
                         dlg(new DataSubScreen() { image = pbQr.Image, amount = lblAmount.Text, status = lblStt.Text });
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void cboPayForm_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                    cboPayForm.EditValue = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void cboPayForm_EditValueChanged(object sender, EventArgs e)
+        {
+
+            try
+            {
+                if (IsLoadFirst)
+                    return;
+                if (cboPayForm.EditValue != null && cboPayForm.EditValue != cboPayForm.OldEditValue)
+                {
+                    if (XtraMessageBox.Show("Bạn muốn đổi hình thực của giao dịch? Khi bạn thay đổi thì giao dịch sẽ tự động mở khóa và Mã QR sẽ bị hủy.", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        CommonParam param = new CommonParam();
+                        MOS.SDO.TransactionChangePayFormSDO sdo = new MOS.SDO.TransactionChangePayFormSDO();
+                        if (inputTransReq.Transaction != null)
+                            sdo.TransactionIds = new List<long>() { inputTransReq.Transaction.ID };
+                        else if (inputTransReq.Transactions != null && inputTransReq.Transactions.Count > 0)
+                            sdo.TransactionIds = inputTransReq.Transactions.Select(o => o.ID).ToList();
+                        sdo.PayFormId = Int64.Parse(cboPayForm.EditValue.ToString());
+                        sdo.RequestRoomId = currentModule.RoomId;
+                        sdo.IsNeedUnlock = true;
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
+                        var TransactionIds = new Inventec.Common.Adapter.BackendAdapter(param).Post<List<long>>("api/HisTransaction/ChangePayForm", ApiConsumers.MosConsumer, sdo, param);
+
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => param), param));
+                        if (TransactionIds != null && TransactionIds.Count > 0)
+                        {
+                            if (PosStatic.IsOpenPos())
+                                PosStatic.SendData(null);
+                            btnNew.Enabled = btnCreate.Enabled = false;
+                            btnPrint.Enabled = true;
+                            cboPayForm.Enabled = false;
+                            CallApiCancelTransReq();
+                        }
+                        else
+                        {
+                            MessageManager.Show(this, param, false);
+                            cboPayForm.EditValue = cboPayForm.OldEditValue;
+                        }
+                    }
+                    else
+                    {
+                        cboPayForm.EditValue = cboPayForm.OldEditValue;
+                    }
                 }
             }
             catch (Exception ex)
