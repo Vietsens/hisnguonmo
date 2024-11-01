@@ -111,7 +111,6 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
         string doctorLoginname = "";
         string doctorUsername = "";
         const int MaxReq = 500;
-        private System.Windows.Forms.Timer delayTimerfoSearch;
         public frmBedRoomWithIn(Inventec.Desktop.Common.Modules.Module currentModule, MOS.EFMODEL.DataModels.V_HIS_DEPARTMENT_TRAN departmentTran)
             : base(currentModule)
         {
@@ -200,10 +199,6 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 Validation();
                 loadDoctor();
                 LoadDataReasonNt();
-
-                delayTimerfoSearch = new System.Windows.Forms.Timer();
-                delayTimerfoSearch.Interval = 1000; // 2000ms = 2s
-                delayTimerfoSearch.Tick += DelayTimer_Tick;
 
                 WaitingManager.Hide();
             }
@@ -882,7 +877,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 }
                 else if (!string.IsNullOrEmpty(this.TreatmentWithPaTyInfo.HOSPITALIZE_REASON_NAME))
                 {
-                    txtReasonNt.Text = this.TreatmentWithPaTyInfo.HOSPITALIZE_REASON_NAME;
+                    txtReasonNt.Text = this.REASON_NAME = this.TreatmentWithPaTyInfo.HOSPITALIZE_REASON_NAME;
                 }
                 dtLogTime.DateTime = DateTime.Now;
             }
@@ -1681,8 +1676,6 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
 
                         var checkBasePatientTypeId = checkpatientTypeAll.Where(t => t.PATIENT_TYPE_ID == item.BASE_PATIENT_TYPE_ID).ToList();
 
-                        Inventec.Common.Logging.LogSystem.Info("checkBasePatientTypeId: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkBasePatientTypeId), checkBasePatientTypeId));
-
                         var checkpatientTypeId = (checkBasePatientTypeId != null && checkBasePatientTypeId.Count > 0) ? checkBasePatientTypeId.Where(t => t.INHERIT_PATIENT_TYPE_IDS != null && ("," + t.INHERIT_PATIENT_TYPE_IDS + ",").Contains("," + item.ID + ",")).ToList() : null;
                         if (checkpatientTypeId != null && checkpatientTypeId.Count > 0)
                         {
@@ -2370,13 +2363,13 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             bool valid = true;
             try
             {
-                HisBedADO row = dataBedADOs.FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboBed.EditValue ?? "").ToString()));
+                HisBedADO row = (dataBedADOs ?? new List<HisBedADO>()).FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboBed.EditValue ?? "").ToString()));
                 if (row == null || (row != null && row.IS_BED_STRETCHER != 1))
                     return valid;
                 if (CboBedService.EditValue != null)
                 {
                     string sereServConditionStr = "";
-                    var service = VHisBedServiceTypes.FirstOrDefault(o=> o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((CboBedService.EditValue ?? "").ToString()));
+                    var service = (VHisBedServiceTypes ?? new List<V_HIS_SERVICE>()).FirstOrDefault(o=> o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((CboBedService.EditValue ?? "").ToString()));
                     var dataCondition = BranchDataWorker.ServicePatyWithListPatientType(service.ID, new List<long> { (long)cboPatientReceive.EditValue });
                     if (dataCondition != null && dataCondition.Count > 0 && lstConditionService != null && lstConditionService.Count > 0)
                     {
@@ -2597,24 +2590,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
 
         private void txtReasonNt_TextChanged(object sender, EventArgs e)
         {
-            try
-            {
-                try
-                {
-                    // Mỗi khi TextBox thay đổi, khởi động lại Timer
-                    delayTimerfoSearch.Stop();
-                    delayTimerfoSearch.Start();
-                }
 
-                catch (Exception ex)
-                {
-                    Inventec.Common.Logging.LogSystem.Error(ex);
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
         }
 
         private void cboReasonNt_Closed(object sender, ClosedEventArgs e)
@@ -2626,12 +2602,10 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
         {
             
         }
-        private void DelayTimer_Tick(object sender, EventArgs e)
+        private void SetReasonHos()
         {
             try
             {
-                delayTimerfoSearch.Stop();
-                if (isSelected) return;
                 if (!string.IsNullOrEmpty(txtReasonNt.Text))
                 {
                     var input = txtReasonNt.Text.Trim().ToLower(); // Chuyển input thành chữ thường
@@ -2660,7 +2634,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                     {
                         // Nếu không có kết quả phù hợp, giữ nguyên giá trị nhập vào
                         cboReasonNt.ClosePopup();
-                        this.REASON_NAME = input;
+                        this.REASON_NAME = txtReasonNt.Text.Trim();
                         this.REASON_CODE = null;
                     }
                 }
@@ -2707,6 +2681,20 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
         private void txtReasonNt_DoubleClick(object sender, EventArgs e)
         {
             cboReasonNt.ShowPopup();
+        }
+
+        private void txtReasonNt_Leave(object sender, EventArgs e)
+        {
+
+            try
+            {
+                SetReasonHos();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
     }
 }
