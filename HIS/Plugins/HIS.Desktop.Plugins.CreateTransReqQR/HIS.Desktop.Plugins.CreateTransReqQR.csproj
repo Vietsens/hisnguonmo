@@ -198,6 +198,18 @@
     <Reference Include="MPS.Processor.Mps000112.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000112.PDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000147.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000147.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000148.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000148.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000317.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000317.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000318.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000318.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.Processor.Mps000339.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000339.PDO.dll</HintPath>
     </Reference>

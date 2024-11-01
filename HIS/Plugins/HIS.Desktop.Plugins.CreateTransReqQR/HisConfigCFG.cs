@@ -41,14 +41,19 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR
 
         private const string CONFIG__ShowServiceByRoom = "HIS.Desktop.Plugins.CreateTransReqQR.ShowServiceByRoom";
         private const string CONFIG_KEY__ShowServiceBhyt = "HIS.Desktop.Plugins.CreateTransReqQR.ShowServiceBhyt";
+        private const string CONFIG_KEY__TransactionBillSelect = "HIS.Desktop.TransactionBillSelect";
+        private const string CONFIG_KEY__BILL_TWO_BOOK = "MOS.HIS_TRANSACTION.BILL_TWO_BOOK.OPTION";
 
+        internal static string TransactionBillSelect;
+        internal static string BillTwoOption;
         internal static bool ShowServiceBhyt;
         internal static string ShowServiceByRoomOption;
-
         internal static void LoadConfig()
         {
             try
             {
+                TransactionBillSelect = GetValue(CONFIG_KEY__TransactionBillSelect);
+                BillTwoOption = GetValue(CONFIG_KEY__BILL_TWO_BOOK);
                 ShowServiceBhyt = GetValue(CONFIG_KEY__ShowServiceBhyt) == "1";
                 ShowServiceByRoomOption = GetValue(CONFIG__ShowServiceByRoom);
                 PatientTypeCode__BHYT = GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__BHYT);
