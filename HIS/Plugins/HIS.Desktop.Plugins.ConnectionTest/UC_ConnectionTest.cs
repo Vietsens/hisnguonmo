@@ -1939,6 +1939,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             try
             {
+                CommonParam param = new CommonParam();
                 if (sample != null && (sample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM
                     || sample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI))
                 {
