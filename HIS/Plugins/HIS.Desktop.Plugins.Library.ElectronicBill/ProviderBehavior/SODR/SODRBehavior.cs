@@ -459,7 +459,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                                 Price = current.ProdPrice ?? 0,
                                 Total = current.Amount,
                                 VATAmount = decimal.Zero,
-                                VATRate = 0f,
+                                VATRate = -1f,
                                 Amount = current.Amount
                             };
                             invoiceV.Products.Add(item);
@@ -508,7 +508,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                             Price = 0,
                             Total = this.ElectronicBillDataInput.Transaction.EXEMPTION ?? 0,// hiển thị tổng tiền trên mẫu
                             VATAmount = 0,
-                            VATRate = 0f,
+                            VATRate = -1f,
                             Amount = this.ElectronicBillDataInput.Transaction.EXEMPTION ?? 0,
                             Discount = 0,
                             DiscountAmount = 0
