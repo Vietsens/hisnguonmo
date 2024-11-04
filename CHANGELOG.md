@@ -1,3 +1,11 @@
+### Release 2.335.0
+* Bổ sung tính năng Danh sách đặt lịch hẹn khám
+* Bổ sung tính năng xuất XML gộp
+* Bổ sung thông tin lý do vào nội trú khi tiếp nhận chuyển khoa, vào buồng, kết thúc điều trị
+* Bổ sung cảnh báo thông tin nhập thuốc, vật tư khác với lô trước đó
+* Bổ sung thanh toán QR tại chức năng thanh toán 2 sổ
+* Bổ sung tính năng sửa hình thức thanh toán giao dịch QR tại chức năng tạo QR.
+
 ### Release 2.334.0
 * Bổ sung tính năng chặn ngày kết quả < thời gian y lệnh với y lệnh xét nghiệm
 * Bổ sung tính năng thiết lập QR thu tiền theo từng phòng(buồng bệnh, kho)

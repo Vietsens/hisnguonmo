@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0C3E6F87-2903-4FB9-866F-4B1D2A96A294}</ProjectGuid>
+    <ProjectGuid>{7F8BDCE1-DD62-49EB-9399-22D1F4AECB0D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HIS.Desktop.Plugins.EnterKskInfomantionVer2</RootNamespace>
-    <AssemblyName>HIS.Desktop.Plugins.EnterKskInfomantionVer2</AssemblyName>
+    <RootNamespace>HIS.Desktop.Plugins.HisAppointmentList</RootNamespace>
+    <AssemblyName>HIS.Desktop.Plugins.HisAppointmentList</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -29,10 +31,11 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Accessibility" />
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Office.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
@@ -40,8 +43,21 @@
     <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
-      <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
+    <Reference Include="DevExpress.XtraNavBar.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraScheduler.v15.2.Reporting.Extensions, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraScheduler.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraScheduler.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="EMR.WCF.DCO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.SignLibrary\EMR.WCF.DCO.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.DelegateRegister">
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.UCPatientRaw\HIS.Desktop.DelegateRegister.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Library.CacheClient">
+      <HintPath>..\HIS.Desktop.Library.CacheClient\bin\Debug\HIS.Desktop.Library.CacheClient.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -53,46 +69,46 @@
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.DateTime">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.DateTime.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.FlexCelPrint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
+    <Reference Include="Inventec.Common.ExcelImport">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.ExcelImport\Inventec.Common.ExcelImport.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Logging.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.Number">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Number\Inventec.Common.Number.dll</HintPath>
+    <Reference Include="Inventec.Common.Mapper">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.Repository">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Repository.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.Resource, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Inventec.Common.Resource">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.RichEditor">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.RichEditor\Inventec.Common.RichEditor.dll</HintPath>
+    <Reference Include="Inventec.Common.SignFile">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.SignFile\Inventec.Common.SignFile.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.SignLibrary">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.TypeConvert, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Inventec.Common.TypeConvert">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.WebApiClient">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.WebApiClient.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Core.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Controls">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Controls\Inventec.Desktop.Common.Controls.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.LanguageManager">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.LibraryMessage">
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.LibraryMessage\Inventec.Desktop.Common.LibraryMessage.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.LocalStorage.Location">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.LocalStorage.Location\Inventec.Desktop.Common.LocalStorage.Location.dll</HintPath>
@@ -106,112 +122,108 @@
     <Reference Include="Inventec.Desktop.Core">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Desktop.Plugins.Updater">
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Plugins.Updater\Inventec.Desktop.Plugins.Updater.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Login">
+      <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Paging">
+      <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
+    </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
       <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
     </Reference>
+    <Reference Include="MOS.KskSignData">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.KskSignData.dll</HintPath>
+    </Reference>
     <Reference Include="MOS.SDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS">
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS\MPS.dll</HintPath>
-    </Reference>
-    <Reference Include="MPS.Processor.Mps000315.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000315.PDO\bin\Debug\MPS.Processor.Mps000315.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Library packages\Newtonsoft.Json.6.0.8\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000452.PDO">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000452.PDO.dll</HintPath>
+    <Reference Include="SDA.EFMODEL">
+      <HintPath>..\..\..\..\LIB\SDA\SDA.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000453.PDO">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000453.PDO.dll</HintPath>
+    <Reference Include="SDA.Filter">
+      <HintPath>..\..\..\..\LIB\SDA\SDA.Filter.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000454.PDO">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000454.PDO.dll</HintPath>
-    </Reference>
-    <Reference Include="MPS.Processor.Mps000455.PDO">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000455.PDO.dll</HintPath>
-    </Reference>
-    <Reference Include="MPS.Processor.Mps000464.PDO">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000464.PDO.dll</HintPath>
-    </Reference>
-    <Reference Include="MPS.ProcessorBase">
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
+    <Reference Include="SDA.SDO">
+      <HintPath>..\..\..\..\LIB\SDA\SDA.SDO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Linq" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Security" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="Telerik.WinControls">
-      <HintPath>..\..\..\..\..\LIBRARY\Telerik\Telerik.WinControls.dll</HintPath>
+    <Reference Include="VSK.EFMODEL">
+      <HintPath>..\..\..\..\LIB\VSK\VSK.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="Telerik.WinControls.UI">
-      <HintPath>..\..\..\..\..\LIBRARY\Telerik\Telerik.WinControls.UI.dll</HintPath>
+    <Reference Include="VSK.Filter">
+      <HintPath>..\..\..\..\LIB\VSK\VSK.Filter.dll</HintPath>
     </Reference>
-    <Reference Include="TelerikCommon">
-      <HintPath>..\..\..\..\..\LIBRARY\Telerik\TelerikCommon.dll</HintPath>
+    <Reference Include="VSK.SDO">
+      <HintPath>..\..\..\..\LIB\VSK\VSK.SDO.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ADO\DiseaseTypeADO.cs" />
-    <Compile Include="ADO\TypeADO.cs" />
-    <Compile Include="ADO\VaccineTypeADO.cs" />
-    <Compile Include="CallModule.cs" />
-    <Compile Include="EnterKskInfomantionVer2Processor.cs" />
-    <Compile Include="EnterKskInfomantionVer2\EnterKskInfomantionVer2Behavior.cs" />
-    <Compile Include="EnterKskInfomantionVer2\EnterKskInfomantionVer2Factory.cs" />
-    <Compile Include="EnterKskInfomantionVer2\IEnterKskInfomantionVer2.cs" />
+    <Compile Include="frmProcess.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProcess.Designer.cs">
+      <DependentUpon>frmProcess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HisAppointmentList\HisAppointmentListBehavior.cs" />
+    <Compile Include="HisAppointmentList\HisAppointmentListFactory.cs" />
+    <Compile Include="HisAppointmentList\IHisAppointmentList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="Run\frmEnterKskInfomantionVer2.cs">
-      <SubType>Form</SubType>
+    <Compile Include="UCHisAppointmentList.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Run\frmEnterKskInfomantionVer2.Designer.cs">
-      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+    <Compile Include="UCHisAppointmentList.Designer.cs">
+      <DependentUpon>UCHisAppointmentList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Run\frmEnterKskInfomantionVer2___DriverCar.cs">
-      <SubType>Form</SubType>
+    <Compile Include="UCHisAppointmentListProcessor.cs" />
+    <EmbeddedResource Include="frmProcess.resx">
+      <DependentUpon>frmProcess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Run\frmEnterKskInfomantionVer2___Genaral.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Run\frmEnterKskInfomantionVer2___KSKOther.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Run\frmEnterKskInfomantionVer2___OverEighteen.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Run\frmEnterKskInfomantionVer2___PeriodDriver.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Run\frmEnterKskInfomantionVer2___PrintMPS.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Run\frmEnterKskInfomantionVer2___Resource.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Run\frmEnterKskInfomantionVer2___UnderEight.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <EmbeddedResource Include="Resources\Lang.en.resx" />
+    <EmbeddedResource Include="Resources\Lang.vi.resx" />
+    <EmbeddedResource Include="UCHisAppointmentList.resx">
+      <DependentUpon>UCHisAppointmentList.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.Controls.ValidationRule\Inventec.Desktop.Common.Controls.ValidationRule.csproj">
+      <Project>{E9D332EB-750D-4BF1-A6F5-2454F7603FDB}</Project>
+      <Name>Inventec.Desktop.Common.Controls.ValidationRule</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
-      <Project>{808C25CD-0925-417F-BBF9-CAF9604DA879}</Project>
+      <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
@@ -225,6 +237,10 @@
     <ProjectReference Include="..\..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
       <Name>HIS.Desktop.Controls.Session</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.EventLog\HIS.Desktop.EventLog.csproj">
+      <Project>{306cbc95-d95a-48e1-941e-f3ecc0cbee34}</Project>
+      <Name>HIS.Desktop.EventLog</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
       <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
@@ -254,54 +270,17 @@
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
       <Name>HIS.Desktop.LocalStorage.Location</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
-      <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>
-      <Name>HIS.Desktop.ModuleExt</Name>
+    <ProjectReference Include="..\..\HIS.Desktop.Print\HIS.Desktop.Print.csproj">
+      <Project>{aeeca321-fd65-407a-8d70-ba5362883b87}</Project>
+      <Name>HIS.Desktop.Print</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
       <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
       <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
-      <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
-      <Name>HIS.Desktop.Library.CacheClient</Name>
-    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\licenses.licx" />
-    <EmbeddedResource Include="Resources\Lang.en.resx" />
-    <EmbeddedResource Include="Resources\Lang.vi.resx" />
-    <EmbeddedResource Include="Run\frmEnterKskInfomantionVer2.resx">
-      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>echo PREBUILDSTEP for $(ProjectName)
-
-echo Copying files from $(ProjectDir)bin\$(Configuration) to $(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies
-
-if not exist "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" mkdir "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies"
-
-xcopy "$(ProjectDir)bin\$(Configuration)\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" /i /d /y
-xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\Debug\Plugins\Module" /Y /I
-xcopy "$(ProjectDir)bin\$(Configuration)\vi\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\vi" /Y /I
-xcopy "$(ProjectDir)bin\$(Configuration)\en\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\en" /Y /I
-
-if errorlevel 1 goto BuildEventFailed
-
-if errorlevel 1 goto BuildEventFailed
-
-REM Exit properly because the build will not fail
-REM unless the final step exits with an error code
-
-goto BuildEventOK
-:BuildEventFailed
-echo PREBUILDSTEP for $(ProjectName) FAILED
-exit 1
-:BuildEventOK
-echo PREBUILDSTEP for $(ProjectName) COMPLETED OK</PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

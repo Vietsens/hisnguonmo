@@ -334,9 +334,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 CommonParam param = new CommonParam();
                 Inventec.Common.Logging.LogSystem.Info("1. Begin api/HisBedLog/GetView ");
                 HisBedLogViewFilter blFilter = new HisBedLogViewFilter();
-                if (currentServiceReq != null)
+                if (ServiceReqConstruct != null)
                 {
-                    blFilter.TREATMENT_ID = currentServiceReq.TREATMENT_ID;
+                    blFilter.TREATMENT_ID = ServiceReqConstruct.TREATMENT_ID;
                 }
                 lstBedLogData = new BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, blFilter, param);
                 Inventec.Common.Logging.LogSystem.Info("1. End api/HisBedLog/GetView ");
@@ -355,9 +355,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 CommonParam param = new CommonParam();
                 Inventec.Common.Logging.LogSystem.Info("1. Begin api/HisDhst/Get ");
                 HisDhstFilter dhFilter = new HisDhstFilter();
-                if (currentServiceReq != null)
+                if (ServiceReqConstruct != null)
                 {
-                    dhFilter.TREATMENT_ID = currentServiceReq.TREATMENT_ID;
+                    dhFilter.TREATMENT_ID = ServiceReqConstruct.TREATMENT_ID;
                 }
                 lstDhstData = new BackendAdapter(param).Get<List<HIS_DHST>>("api/HisDhst/Get", ApiConsumer.ApiConsumers.MosConsumer, dhFilter, param);
                 Inventec.Common.Logging.LogSystem.Info("1. End api/HisDhst/Get ");

@@ -351,6 +351,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             cboPhieuDieuTri.EditValue = Inventec.Common.TypeConvert.Parse.ToInt64(this.oldServiceReq.TRACKING_ID.Value.ToString());
                             cboPhieuDieuTri.Properties.Buttons[1].Visible = true;
                         }
+                        this.spnPresPhaseNum.EditValue = this.oldServiceReq.PRESCRIPTION_PHASE_NUM.HasValue ? (long?)this.oldServiceReq.PRESCRIPTION_PHASE_NUM : null;
                         this.chkTemporayPres.Checked = (this.oldServiceReq.IS_TEMPORARY_PRES == 1);
                         this.chkHomePres.Checked = (this.oldServiceReq.IS_HOME_PRES == 1);
                         this.chkPreKidneyShift.Checked = (this.oldServiceReq.IS_KIDNEY == 1);

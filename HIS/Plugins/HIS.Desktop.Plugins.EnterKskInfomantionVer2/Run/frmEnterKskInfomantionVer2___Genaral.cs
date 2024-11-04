@@ -141,6 +141,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         {
                             dteRecentWorkTwoTo.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentKskGeneral.RECENT_WORK_TWO_TO ?? 0) ?? DateTime.Now;
                         }
+
+                        if (this.currentKskGeneral.NOW_WORK_FROM != null && this.currentKskGeneral.NOW_WORK_FROM > 0)
+                        {
+                            this.dtpStart.DateTime = (Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.currentKskGeneral.NOW_WORK_FROM ?? 0) ?? DateTime.Now);
+                        }
+                        else
+                        {
+                            dtpStart.EditValue = null;
+                        }
                         
                         txtPathologicalHistory.Text = currentKskGeneral.PATHOLOGICAL_HISTORY;
                         cboDhstRank.EditValue = currentKskGeneral.DHST_RANK;
@@ -367,7 +376,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 
                 obj.HEALTH_EXAM_RANK_ID = cboHealthExamRank.EditValue != null ? Int64.Parse(cboHealthExamRank.EditValue.ToString()) : 0;
                 obj.DISEASES = txtDiseases.Text;
-
+                obj.NOW_WORK_FROM = ((this.dtpStart.EditValue != null) ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(new DateTime?(this.dtpStart.DateTime)) : null);
             }
             catch (Exception ex)
             {

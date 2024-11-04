@@ -63,6 +63,28 @@ namespace MPS.Processor.Mps000315.PDO
             }
         }
 
+        public Mps000315PDO(List<HIS_KSK_GENERAL> _KskGeneral,
+              List<V_HIS_SERVICE_REQ> _KSK_ServiceReqss,
+           List<V_HIS_DHST> _KSK_Dhsts,
+           List<HIS_HEALTH_EXAM_RANK> _KSK_HealthExamRank,
+           List<V_HIS_TREATMENT_4> _KSK_Treatmentss
+           )
+        {
+            try
+            {
+                this._KskGeneral = _KskGeneral;
+                this._KSK_ServiceReqs = _KSK_ServiceReqss;
+                this._KSK_Dhsts = _KSK_Dhsts;
+                this._KSK_HealthExamRank = _KSK_HealthExamRank;
+                this._KSK_Treatments = _KSK_Treatmentss;
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         public Mps000315PDO(
             List<V_HIS_TREATMENT_4> _KSK_Treatmentss,
             List<V_HIS_SERVICE_REQ> _KSK_ServiceReqss,

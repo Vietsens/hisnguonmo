@@ -50,6 +50,7 @@ using EMR.Filter;
 using EMR.EFMODEL.DataModels;
 using HIS.Desktop.LocalStorage.BackendData;
 using Inventec.Desktop.Common.LanguageManager;
+using System.Threading;
 
 namespace HIS.Desktop.Plugins.ExecuteRoom
 {
@@ -122,6 +123,46 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             }
         }
 
+        private void CreateThreadLoadDataDefault(L_HIS_SERVICE_REQ serviceReqInput)
+        {
+            Thread serviceReq = new Thread(() => SendServiceReq(serviceReqInput));
+            try
+            {
+                serviceReq.Start();
+                //serviceReq.Join();
+             
+            }
+            catch (Exception ex)
+            {
+                serviceReq.Abort();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void SendServiceReq(L_HIS_SERVICE_REQ serviceReqInput)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                bool success = false;
+                WaitingManager.Show();
+                if (serviceReqInput != null)
+                {
+                    success = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>("api/HisServiceReq/RequestOrder", ApiConsumers.MosConsumer, serviceReqInput.ID, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+                }
+                WaitingManager.Hide();
+                if (success == false)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceReqInput.ID), serviceReqInput.ID));
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => param), param));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void StartEvent(ref bool isStart, L_HIS_SERVICE_REQ serviceReqInput)
         {
             try
@@ -159,6 +200,42 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 .Post<MOS.EFMODEL.DataModels.L_HIS_SERVICE_REQ>(HisRequestUriStore.HIS_SERVICE_REQ_START, ApiConsumers.MosConsumer, serviceReqInput.ID, param);
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => param), param));
+                
+                switch (serviceReqInput.SERVICE_REQ_TYPE_ID)
+                       {
+                          case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH:
+                              {
+                                break;
+                              }
+                          case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT:
+                              {
+                                  break;
+                              }
+                          case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM:
+                              {
+                                  break;
+                              }
+                          case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT:
+                              {
+                                  break;
+                              }
+                          case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G:
+                              {
+                                  break;
+                              }
+                          case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__SA:
+                              {
+                                  break;
+                              }
+                          default:
+                              {
+                                  if (HisConfigCFG.SendToExtWhenStart != null)
+                                  {
+                                      CreateThreadLoadDataDefault(serviceReqInput);
+                                  }
+                                  break;
+                              }
+                       }
                 if (serviceReqResult == null)
                 {
                     bool IsShowMessErr = true;
