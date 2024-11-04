@@ -1481,7 +1481,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 					item.BedFinishTime = null;
 					item.BedId = null;
 					item.BedStartTime = null;
-				}
+                    item.SereServEkipADO = null;
+                }
 
 				var allDatas = this.ServiceIsleafADOs != null && this.ServiceIsleafADOs.Count > 0 ? this.ServiceIsleafADOs.AsQueryable() : null;
 				this.gridControlServiceProcess.DataSource = allDatas.ToList();
@@ -5721,6 +5722,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 					item.TEST_SAMPLE_TYPE_ID = 0;
 					item.TEST_SAMPLE_TYPE_CODE = null;
 					item.TEST_SAMPLE_TYPE_NAME = null;
+					item.SereServEkipADO = null;
 				}
 
 				this.isNotHandlerWhileChangeToggetSwith = true;
@@ -7982,7 +7984,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 							item.BedFinishTime = null;
 							item.BedId = null;
 							item.BedStartTime = null;
-						}
+                            item.SereServEkipADO = null;
+                        }
 					}
 				}
 			}
@@ -9472,17 +9475,97 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 		private HIS_CONFIG selectedConfig = new HIS_CONFIG();
 		private void btnQRPay_Click(object sender, EventArgs e)
 		{
-			try 
-			{
-				if (listConfig != null)
-				{
-					if (listConfig.Count > 1)
-					{
-						popupMenu1.ClearLinks();
-						foreach (var item in listConfig)
+			try
+            {
+				if (currentWorkingRoom != null && !string.IsNullOrEmpty(currentWorkingRoom.QR_CONFIG_JSON))
+                {
+                    List<object> listArgs = new List<object>();
+                    TransReqQRADO adoqr = new TransReqQRADO();
+                    try
+                    {
+                        var json = Newtonsoft.Json.JsonConvert.DeserializeObject<BankInfo>(currentWorkingRoom.QR_CONFIG_JSON);
+						if (json != null)
 						{
+							adoqr.ConfigValue = new HIS_CONFIG() { VALUE = json.VALUE, KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", json.BANK) };
+							adoqr.BankName = json.BANK;
+						}
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                        XtraMessageBox.Show("Định dạng Qr thiết lập trong kho phòng không hợp lệ");
+                        return;
+                    }
+                    adoqr.TreatmentId = this.treatmentId;
+                    adoqr.TransReqId = 0;
+                    adoqr.DelegtePrint = this.serviceReqComboResultSDO != null ? (HIS.Desktop.Common.RefeshReference)IN_QR : null;
+                    listArgs.Add(adoqr);
+                    LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
+
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                }
+				else
+				{
+					if (listConfig != null)
+					{
+						if (listConfig.Count > 1)
+						{
+							popupMenu1.ClearLinks();
+							foreach (var item in listConfig)
+							{
+								string key = "";
+								string value = item.KEY;
+								int index = value.IndexOf("Info");
+								if (index > 0)
+								{
+									var shotkey = value.Substring(0, index);
+									string[] parts = shotkey.Split('.');
+									if (parts.Length > 0)
+									{
+										key = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
+									}
+								}
+								else
+								{
+									key = item.KEY;
+								}
+
+
+								BarButtonItem btnOption = new BarButtonItem(null, key);
+								btnOption.ItemClick += (s, args) =>
+								{
+
+									selectedConfig = item;
+									List<object> listArgs = new List<object>();
+									TransReqQRADO adoqr = new TransReqQRADO();
+									adoqr.TreatmentId = this.treatmentId;
+									adoqr.ConfigValue = selectedConfig;
+									adoqr.TransReqId = 0;
+									adoqr.DelegtePrint = this.serviceReqComboResultSDO != null ? (HIS.Desktop.Common.RefeshReference)IN_QR : null;
+									adoqr.BankName = key;
+									listArgs.Add(adoqr);
+									LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
+
+									HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+								};
+								popupMenu1.AddItem(btnOption);
+							}
+
+							popupMenu1.ShowPopup(Control.MousePosition);
+						}
+						else
+						{
+							selectedConfig = listConfig[0];
+							List<object> listArgs = new List<object>();
+							TransReqQRADO adoqr = new TransReqQRADO();
+							adoqr.TreatmentId = this.treatmentId;
+							adoqr.ConfigValue = selectedConfig;
+							adoqr.TransReqId = 0;
+							adoqr.DelegtePrint = this.serviceReqComboResultSDO != null ? (HIS.Desktop.Common.RefeshReference)IN_QR : null;
+
 							string key = "";
-							string value = item.KEY;
+							string value = selectedConfig.KEY;
 							int index = value.IndexOf("Info");
 							if (index > 0)
 							{
@@ -9495,48 +9578,18 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 							}
 							else
 							{
-								key = item.KEY;
+								key = selectedConfig.KEY;
 							}
 
-						   
-							BarButtonItem btnOption = new BarButtonItem(null, key);
-							btnOption.ItemClick += (s, args) =>
-							{
+							adoqr.BankName = key;
+							listArgs.Add(adoqr);
+							LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
+							HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
 
-								selectedConfig = item;
-								List<object> listArgs = new List<object>();
-								TransReqQRADO adoqr = new TransReqQRADO();
-								adoqr.TreatmentId = this.treatmentId;
-								adoqr.ConfigValue = selectedConfig;
-								adoqr.TransReqId = 0;
-								adoqr.DelegtePrint = this.serviceReqComboResultSDO != null  ? (HIS.Desktop.Common.RefeshReference)IN_QR : null;
-								listArgs.Add(adoqr);
-								LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
-								
-								HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
 
-							};
-							popupMenu1.AddItem(btnOption);
 						}
 
-						popupMenu1.ShowPopup(Control.MousePosition);
 					}
-					else
-					{
-						selectedConfig = listConfig[0];
-						List<object> listArgs = new List<object>();
-						TransReqQRADO adoqr = new TransReqQRADO();
-						adoqr.TreatmentId = this.treatmentId;
-						adoqr.ConfigValue = selectedConfig;
-						adoqr.TransReqId = 0;
-						adoqr.DelegtePrint = this.serviceReqComboResultSDO != null ? (HIS.Desktop.Common.RefeshReference)IN_QR : null;
-						listArgs.Add(adoqr);
-						LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
-						HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
-
-						
-					}
-					
 				}
 			}
 			catch (Exception ex)
@@ -9621,10 +9674,29 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 					transReqLst = transReqLst.Where(o => o.TRANS_REQ_TYPE == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_TYPE.ID__BY_SERVICE).ToList();
 				if (transReqLst != null && transReqLst.Count > 0)
 					transReq = transReqLst.OrderByDescending(o => o.CREATE_TIME).ToList()[0];
+				List<HIS_CONFIG> configRooms = new List<HIS_CONFIG>();
+                if (currentWorkingRoom != null && !string.IsNullOrEmpty(currentWorkingRoom.QR_CONFIG_JSON))
+                {
+                    List<object> listArgs = new List<object>();
+                    TransReqQRADO adoqr = new TransReqQRADO();
+                    try
+                    {
+                        var json = Newtonsoft.Json.JsonConvert.DeserializeObject<BankInfo>(currentWorkingRoom.QR_CONFIG_JSON);
+                        if (json != null)
+                        {
+							configRooms.Add(new HIS_CONFIG() { VALUE = json.VALUE, KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", json.BANK) });
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                        XtraMessageBox.Show("Định dạng Qr thiết lập trong kho phòng không hợp lệ");
+                        return;
+                    }
+                }
+                MPS.Processor.Mps000498.PDO.Mps000498PDO pdo = new MPS.Processor.Mps000498.PDO.Mps000498PDO(treatment, transReq, configRooms != null && configRooms.Count > 0 ? configRooms : listConfig);
 
-				MPS.Processor.Mps000498.PDO.Mps000498PDO pdo = new MPS.Processor.Mps000498.PDO.Mps000498PDO(treatment, transReq, listConfig);
-
-
+				 
 				MPS.ProcessorBase.Core.PrintData printData = null;
 
 				string printerName = "";
@@ -9799,5 +9871,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         #endregion
 
         
+    }
+    public class BankInfo
+    {
+        public BankInfo() { }
+        public string BANK { get; set; }
+        public string VALUE { get; set; }
     }
 }

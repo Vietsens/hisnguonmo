@@ -46,8 +46,7 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
         private void InitializeComponent()
         {
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
-            this.txtKeyword = new DevExpress.XtraEditors.TextEdit();
+            this.txtRemedyCountHT = new DevExpress.XtraEditors.TextEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnRCSave = new DevExpress.XtraBars.BarButtonItem();
@@ -56,6 +55,9 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.txtRemedyCount = new DevExpress.XtraEditors.SpinEdit();
+            this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
+            this.txtKeyword = new DevExpress.XtraEditors.TextEdit();
             this.cboMediStock = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtDescription = new DevExpress.XtraEditors.TextEdit();
@@ -127,11 +129,16 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
             this.lciKeyword = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciSearch = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutRemedyCount = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutRemedyCountHT = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtRemedyCountHT.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtRemedyCount.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboMediStock.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).BeginInit();
@@ -172,11 +179,16 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
             ((System.ComponentModel.ISupportInitialize)(this.lciKeyword)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSearch)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutRemedyCount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutRemedyCountHT)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.txtRemedyCountHT);
+            this.layoutControl1.Controls.Add(this.txtRemedyCount);
             this.layoutControl1.Controls.Add(this.btnSearch);
             this.layoutControl1.Controls.Add(this.txtKeyword);
             this.layoutControl1.Controls.Add(this.cboMediStock);
@@ -196,29 +208,16 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // btnSearch
+            // txtRemedyCountHT
             // 
-            this.btnSearch.Location = new System.Drawing.Point(1014, 26);
-            this.btnSearch.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(84, 22);
-            this.btnSearch.StyleController = this.layoutControl1;
-            this.btnSearch.TabIndex = 14;
-            this.btnSearch.Text = "Tìm kiếm";
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
-            // txtKeyword
-            // 
-            this.txtKeyword.Location = new System.Drawing.Point(772, 26);
-            this.txtKeyword.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.txtKeyword.MenuManager = this.barManager1;
-            this.txtKeyword.Name = "txtKeyword";
-            this.txtKeyword.Properties.NullValuePrompt = "Nhập số seri vật tư cần tìm";
-            this.txtKeyword.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtKeyword.Size = new System.Drawing.Size(238, 20);
-            this.txtKeyword.StyleController = this.layoutControl1;
-            this.txtKeyword.TabIndex = 13;
-            this.txtKeyword.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtKeyword_PreviewKeyDown);
+            this.txtRemedyCountHT.Location = new System.Drawing.Point(852, 2);
+            this.txtRemedyCountHT.MenuManager = this.barManager1;
+            this.txtRemedyCountHT.Name = "txtRemedyCountHT";
+            this.txtRemedyCountHT.Properties.ReadOnly = true;
+            this.txtRemedyCountHT.Size = new System.Drawing.Size(158, 20);
+            this.txtRemedyCountHT.StyleController = this.layoutControl1;
+            this.txtRemedyCountHT.TabIndex = 16;
+            this.txtRemedyCountHT.ToolTip = "Số thang hiện có";
             // 
             // barManager1
             // 
@@ -289,6 +288,49 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(1100, 29);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 583);
+            // 
+            // txtRemedyCount
+            // 
+            this.txtRemedyCount.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.txtRemedyCount.Enabled = false;
+            this.txtRemedyCount.Location = new System.Drawing.Point(689, 2);
+            this.txtRemedyCount.MenuManager = this.barManager1;
+            this.txtRemedyCount.Name = "txtRemedyCount";
+            this.txtRemedyCount.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.txtRemedyCount.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.txtRemedyCount.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.txtRemedyCount.Size = new System.Drawing.Size(159, 20);
+            this.txtRemedyCount.StyleController = this.layoutControl1;
+            this.txtRemedyCount.TabIndex = 15;
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.Location = new System.Drawing.Point(1014, 26);
+            this.btnSearch.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(84, 22);
+            this.btnSearch.StyleController = this.layoutControl1;
+            this.btnSearch.TabIndex = 14;
+            this.btnSearch.Text = "Tìm kiếm";
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // txtKeyword
+            // 
+            this.txtKeyword.Location = new System.Drawing.Point(689, 26);
+            this.txtKeyword.Margin = new System.Windows.Forms.Padding(2);
+            this.txtKeyword.MenuManager = this.barManager1;
+            this.txtKeyword.Name = "txtKeyword";
+            this.txtKeyword.Properties.NullValuePrompt = "Nhập số seri vật tư cần tìm";
+            this.txtKeyword.Properties.NullValuePromptShowForEmptyValue = true;
+            this.txtKeyword.Size = new System.Drawing.Size(321, 20);
+            this.txtKeyword.StyleController = this.layoutControl1;
+            this.txtKeyword.TabIndex = 13;
+            this.txtKeyword.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtKeyword_PreviewKeyDown);
             // 
             // cboMediStock
             // 
@@ -1044,8 +1086,8 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
             // 
             // cboTracking
             // 
-            this.cboTracking.Location = new System.Drawing.Point(324, 2);
-            this.cboTracking.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cboTracking.Location = new System.Drawing.Point(355, 2);
+            this.cboTracking.Margin = new System.Windows.Forms.Padding(2);
             this.cboTracking.MenuManager = this.barManager1;
             this.cboTracking.Name = "cboTracking";
             this.cboTracking.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1057,7 +1099,7 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
             this.cboTracking.Properties.PopupSizeable = false;
             this.cboTracking.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboTracking.Properties.View = this.gridView1;
-            this.cboTracking.Size = new System.Drawing.Size(224, 20);
+            this.cboTracking.Size = new System.Drawing.Size(193, 20);
             this.cboTracking.StyleController = this.layoutControl1;
             this.cboTracking.TabIndex = 12;
             this.cboTracking.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboTracking_ButtonClick);
@@ -1087,7 +1129,10 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
             this.layoutControlItem5,
             this.lciKeyword,
             this.lciSearch,
-            this.emptySpaceItem3});
+            this.emptySpaceItem3,
+            this.layoutRemedyCount,
+            this.layoutRemedyCountHT,
+            this.emptySpaceItem4});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1179,7 +1224,7 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
             this.emptySpaceItem2.AllowHotTrack = false;
             this.emptySpaceItem2.Location = new System.Drawing.Point(550, 0);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(550, 24);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(51, 24);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem7
@@ -1197,12 +1242,14 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
             // 
             // lciTracking
             // 
+            this.lciTracking.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciTracking.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTracking.Control = this.cboTracking;
             this.lciTracking.Location = new System.Drawing.Point(267, 0);
             this.lciTracking.Name = "lciTracking";
             this.lciTracking.Size = new System.Drawing.Size(283, 24);
             this.lciTracking.Text = "Tờ điều trị:";
-            this.lciTracking.TextSize = new System.Drawing.Size(52, 13);
+            this.lciTracking.TextSize = new System.Drawing.Size(83, 13);
             // 
             // layoutControlItem5
             // 
@@ -1220,9 +1267,9 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
             // lciKeyword
             // 
             this.lciKeyword.Control = this.txtKeyword;
-            this.lciKeyword.Location = new System.Drawing.Point(755, 24);
+            this.lciKeyword.Location = new System.Drawing.Point(672, 24);
             this.lciKeyword.Name = "lciKeyword";
-            this.lciKeyword.Size = new System.Drawing.Size(257, 26);
+            this.lciKeyword.Size = new System.Drawing.Size(340, 26);
             this.lciKeyword.Text = " ";
             this.lciKeyword.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciKeyword.TextSize = new System.Drawing.Size(10, 16);
@@ -1245,8 +1292,38 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
             this.emptySpaceItem3.AllowHotTrack = false;
             this.emptySpaceItem3.Location = new System.Drawing.Point(550, 24);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(205, 26);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(122, 26);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutRemedyCount
+            // 
+            this.layoutRemedyCount.Control = this.txtRemedyCount;
+            this.layoutRemedyCount.Location = new System.Drawing.Point(601, 0);
+            this.layoutRemedyCount.Name = "layoutRemedyCount";
+            this.layoutRemedyCount.OptionsToolTip.ToolTip = "Số thang thu hồi";
+            this.layoutRemedyCount.Size = new System.Drawing.Size(249, 24);
+            this.layoutRemedyCount.Text = "Số thang thu hồi:";
+            this.layoutRemedyCount.TextSize = new System.Drawing.Size(83, 13);
+            this.layoutRemedyCount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            // 
+            // layoutRemedyCountHT
+            // 
+            this.layoutRemedyCountHT.Control = this.txtRemedyCountHT;
+            this.layoutRemedyCountHT.Location = new System.Drawing.Point(850, 0);
+            this.layoutRemedyCountHT.Name = "layoutRemedyCountHT";
+            this.layoutRemedyCountHT.OptionsToolTip.ToolTip = "Số thang hiện có";
+            this.layoutRemedyCountHT.Size = new System.Drawing.Size(162, 24);
+            this.layoutRemedyCountHT.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutRemedyCountHT.TextVisible = false;
+            this.layoutRemedyCountHT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            // 
+            // emptySpaceItem4
+            // 
+            this.emptySpaceItem4.AllowHotTrack = false;
+            this.emptySpaceItem4.Location = new System.Drawing.Point(1012, 0);
+            this.emptySpaceItem4.Name = "emptySpaceItem4";
+            this.emptySpaceItem4.Size = new System.Drawing.Size(88, 24);
+            this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
             // dxValidationProvider1
             // 
@@ -1273,8 +1350,10 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtRemedyCountHT.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtRemedyCount.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboMediStock.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).EndInit();
@@ -1315,6 +1394,9 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
             ((System.ComponentModel.ISupportInitialize)(this.lciKeyword)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSearch)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutRemedyCount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutRemedyCountHT)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1406,5 +1488,10 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
         private DevExpress.XtraLayout.LayoutControlItem lciSearch;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_ExpMestMaterial_SerialNumber;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
+        private DevExpress.XtraEditors.TextEdit txtRemedyCountHT;
+        private DevExpress.XtraEditors.SpinEdit txtRemedyCount;
+        private DevExpress.XtraLayout.LayoutControlItem layoutRemedyCount;
+        private DevExpress.XtraLayout.LayoutControlItem layoutRemedyCountHT;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem4;
     }
 }
