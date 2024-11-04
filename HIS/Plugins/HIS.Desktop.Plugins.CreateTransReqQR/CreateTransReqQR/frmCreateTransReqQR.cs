@@ -1089,6 +1089,11 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 currentTransReq.TRANS_REQ_STT_ID = IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__CANCEL;
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentTransReq), currentTransReq));
                 currentTransReq = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANS_REQ>("api/HisTransReq/Update", ApiConsumers.MosConsumer, currentTransReq, param);
+                if (currentTransReq != null)
+                {
+                    lblStt.Text = currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__FINISHED ? "Thành công" : currentTransReq.TRANS_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST ? "Thất bại" : "Đang chờ";
+                    pbQr.EditValue = global::HIS.Desktop.Plugins.CreateTransReqQR.Properties.Resources.delete;
+                }
             }
             catch (Exception ex)
             {
@@ -1203,6 +1208,13 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     {
                         HisTransactionViewFilter tvf = new HisTransactionViewFilter();
                         tvf.TRANS_REQ_CODE__EXACT = currentTransReq.TRANS_REQ_CODE;
+                        transactionPrintList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, tvf, null);
+                        transactionPrint = transactionPrintList[0];
+                    }
+                    else if (currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__CANCEL && (inputTransReq.TransReqId == CreateReqType.Deposit || inputTransReq.TransReqId == CreateReqType.Transaction) && (inputTransReq.Transaction != null || (inputTransReq.Transactions != null && inputTransReq.Transactions.Count > 0)))
+                    {
+                        HisTransactionViewFilter tvf = new HisTransactionViewFilter();
+                        tvf.IDs = inputTransReq.Transaction != null ? new List<long>() { inputTransReq.Transaction.ID } : (inputTransReq.Transactions != null && inputTransReq.Transactions.Count > 0 ? inputTransReq.Transactions.Select(o=>o.ID).ToList() : null);
                         transactionPrintList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, tvf, null);
                         transactionPrint = transactionPrintList[0];
                     }
@@ -1497,10 +1509,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
         {
             try
             {
-                HisTransactionViewFilter tvf = new HisTransactionViewFilter();
-                tvf.TRANS_REQ_CODE__EXACT = currentTransReq.TRANS_REQ_CODE;
-                var transactionPrintByReqs = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, tvf, null);
-                foreach (var item in transactionPrintByReqs)
+                foreach (var item in transactionPrintList)
                 {
                     if (!item.TREATMENT_ID.HasValue)
                     {
@@ -1548,7 +1557,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     var departmentTran = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<V_HIS_DEPARTMENT_TRAN>("api/HisDepartmentTran/GetLastByTreatmentId", ApiConsumers.MosConsumer, departLastFilter, null);
 
                     V_HIS_PATIENT patient = new V_HIS_PATIENT();
-                    if (transactionPrint.TDL_PATIENT_ID != null)
+                    if (item.TDL_PATIENT_ID != null)
                     {
                         HisPatientViewFilter patientFilter = new HisPatientViewFilter();
                         patientFilter.ID = item.TDL_PATIENT_ID;
@@ -1567,19 +1576,19 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         printerName = GlobalVariables.dicPrinter[printTypeCode];
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((transactionPrint != null ? transactionPrint.TDL_TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((item != null ? item.TDL_TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
 
                     // Lay thong tin cac dich vu da tam ung khong bi huy
                     List<HIS_SERE_SERV_DEPOSIT> listSereServDeposit = new List<HIS_SERE_SERV_DEPOSIT>();
                     CommonParam paramCommon = new CommonParam();
                     MOS.Filter.HisSereServDepositFilter sereServDepositFilter = new HisSereServDepositFilter();
-                    sereServDepositFilter.TDL_TREATMENT_ID = transactionPrint.TREATMENT_ID;
+                    sereServDepositFilter.TDL_TREATMENT_ID = item.TREATMENT_ID;
                     sereServDepositFilter.IS_CANCEL = false;
                     listSereServDeposit = new BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_DEPOSIT>>("api/HisSereServDeposit/Get", ApiConsumer.ApiConsumers.MosConsumer, sereServDepositFilter, paramCommon);
 
                     List<HIS_SESE_DEPO_REPAY> listSeseDepoRepay = new List<HIS_SESE_DEPO_REPAY>();
                     MOS.Filter.HisSeseDepoRepayFilter filterSeseDepoRepay = new MOS.Filter.HisSeseDepoRepayFilter();
-                    filterSeseDepoRepay.TDL_TREATMENT_ID = transactionPrint.TREATMENT_ID;
+                    filterSeseDepoRepay.TDL_TREATMENT_ID = item.TREATMENT_ID;
                     filterSeseDepoRepay.IS_CANCEL = false;
                     listSeseDepoRepay = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<HIS_SESE_DEPO_REPAY>>("api/HisSeseDepoRepay/Get", ApiConsumer.ApiConsumers.MosConsumer, filterSeseDepoRepay, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
 
@@ -1599,7 +1608,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         finalListSereServDeposit = listSereServDeposit;
                     }
 
-                    MPS.Processor.Mps000111.PDO.Mps000111PDO pdo = new MPS.Processor.Mps000111.PDO.Mps000111PDO(transactionPrint,
+                    MPS.Processor.Mps000111.PDO.Mps000111PDO pdo = new MPS.Processor.Mps000111.PDO.Mps000111PDO(item,
                         patient,
                         listBillFund,
                         listSereServ,
@@ -1653,10 +1662,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
         {
             try
             {
-                HisTransactionViewFilter tvf = new HisTransactionViewFilter();
-                tvf.TRANS_REQ_CODE__EXACT = currentTransReq.TRANS_REQ_CODE;
-                var transactionPrintByReqs = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, tvf, null);
-                foreach (var item in transactionPrintByReqs)
+                foreach (var item in transactionPrintList)
                 {
                     WaitingManager.Show();
 
@@ -1722,10 +1728,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
         {
             try
             {
-                HisTransactionViewFilter tvf = new HisTransactionViewFilter();
-                tvf.TRANS_REQ_CODE__EXACT = currentTransReq.TRANS_REQ_CODE;
-                var transactionPrintByReqs = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, tvf, null);
-                foreach (var item in transactionPrintByReqs)
+                foreach (var item in transactionPrintList)
                 {
                     if (item.IS_CANCEL == 1)
                     {
@@ -1837,10 +1840,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
 
             try
             {
-                HisTransactionViewFilter tvf = new HisTransactionViewFilter();
-                tvf.TRANS_REQ_CODE__EXACT = currentTransReq.TRANS_REQ_CODE;
-                var transactionPrintByReqs = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, tvf, null);
-                foreach (var item in transactionPrintByReqs)
+                foreach (var item in transactionPrintList)
                 {
 
                     Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((hisTreatmentView != null ? hisTreatmentView.TREATMENT_CODE : ""), printTypeCode, this.currentModule.RoomId);
@@ -2575,9 +2575,10 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                             if (PosStatic.IsOpenPos())
                                 PosStatic.SendData(null);
                             btnNew.Enabled = btnCreate.Enabled = false;
-                            btnPrint.Enabled = true;
+                            btnPrint.Enabled = true; 
                             cboPayForm.Enabled = false;
                             CallApiCancelTransReq();
+                            InitPopupMenuOther();
                         }
                         else
                         {
