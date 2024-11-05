@@ -73,4 +73,5 @@ namespace HIS.Desktop.DelegateRegister
     public delegate void DelegateSendIdData(long? PatientClassifyId);
     public delegate void DelegateEnableFindType(bool IsEnableCheckBox);
     public delegate void DelegateCheckExamOnline(bool IsChecked);
+    public delegate void DelegateCheckSS(bool isCheck);
 }

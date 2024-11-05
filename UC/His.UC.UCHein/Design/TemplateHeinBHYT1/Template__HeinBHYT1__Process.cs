@@ -27,6 +27,7 @@ using HIS.Desktop.Plugins.Library.CheckHeinGOV;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Core;
+using MOS.EFMODEL.DataModels;
 using MOS.LibraryHein.Bhyt;
 using MOS.SDO;
 using System;
@@ -257,7 +258,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                             this.InitDefaultRightRouteTypeAppointment(mediorg.MEDI_ORG_CODE);
                         }
                         //
-                        if(currentPatientSdo == null || (currentPatientSdo != null && string.IsNullOrEmpty(currentPatientSdo.AppointmentCode)))
+                        if (currentPatientSdo == null || (currentPatientSdo != null && string.IsNullOrEmpty(currentPatientSdo.AppointmentCode)))
                             this.InitDefaultValidRightRouteType(isFocus, mediorg.MEDI_ORG_CODE, liveArea);
                         if (this.currentPatientSdo != null
                             && !String.IsNullOrEmpty(this.currentPatientSdo.AppointmentCode)
@@ -299,6 +300,14 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                             this.AutoSelectEmergency(entity);
                         }
                     }
+                }
+
+                if (!this.isCallByRegistor && rdoRightRoute.Checked && this.cboDKKCBBD.EditValue != null && ((this.patientTypeAlterOld != null && this.patientTypeAlterOld.TREATMENT_ID > 0 && (string)this.cboDKKCBBD.EditValue != BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == His.UC.UCHein.HisTreatment.HisTreatmentGet.GetById(this.patientTypeAlterOld.TREATMENT_ID).BRANCH_ID).HEIN_MEDI_ORG_CODE) || (this.entity.HisTreatment != null && this.entity.HisTreatment.ID > 0 && (string)this.cboDKKCBBD.EditValue != BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == entity.HisTreatment.BRANCH_ID).HEIN_MEDI_ORG_CODE)) && this.cboNoiSong.EditValue == null)
+                    ValidRightRouteType();
+                else
+                {
+                    lblRightRouteType.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
+                    dxValidationProvider1.SetValidationRule(txtHeinRightRouteCode, null);
                 }
             }
             catch (Exception ex)
@@ -470,6 +479,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 patientTypeData.HEIN_MEDI_ORG_NAME = this.cboDKKCBBD.Text;
                 patientTypeData.LEVEL_CODE = this.HeinLevelCodeCurrent;
                 this.txtMucHuong.Text = new His.UC.UCHein.ControlProcess.ServiceRequestProcess().GetDefaultHeinRatio(patientTypeData, heincardNumber, treatmentTypeCode);
+                patientTypeData.IS_NEWBORN = chkBaby.Checked ? (short?)1 : null;
             }
             catch (Exception ex)
             {
@@ -857,6 +867,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         {
             try
             {
+                this.chkBaby.Checked = false;
+                this.chkBaby.Enabled = false;
                 this.cboSoThe.Visible = false;
                 this.chkTempQN.Checked = false;
                 this.cboSoThe.Properties.DataSource = null;

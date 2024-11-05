@@ -24,6 +24,7 @@ using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
@@ -40,6 +41,7 @@ using HIS.Desktop.Print;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.DocumentViewer;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using Inventec.Desktop.Common.Message;
@@ -71,7 +73,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         List<V_HIS_ACCOUNT_BOOK> ListAccountBook = new List<V_HIS_ACCOUNT_BOOK>();
         List<V_HIS_CASHIER_ROOM> cashierRoom = new List<V_HIS_CASHIER_ROOM>();
 
-        List<MediMateTypeADO> listMediMateAdo = new List<MediMateTypeADO>();
+        List<HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO> listMediMateAdo = new List<HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO>();
         List<V_HIS_EXP_MEST_MEDICINE> listExpMestMedicine;
         List<V_HIS_EXP_MEST_MATERIAL> listExpMestMaterial;
         long? expMestIdForEdit = null;
@@ -84,7 +86,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         string InvoiceTypeCreate;
         const string invoiceTypeCreate__CreateInvoiceVnpt = "1";
         const string invoiceTypeCreate__CreateInvoiceHIS = "2";
-
+        List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         bool isNotLoadWhileChangeControlStateInFirst;
@@ -206,6 +208,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     SetDefaultPayForm();
                     SetBuyerInfo();
                     LoadTreatmentFee();
+                    SetDefaultCreateQR();
                 }
 
                 if (expMestIdForEdit > 0 || (expMestIdForEdits != null && expMestIdForEdits.Count > 0))
@@ -236,7 +239,26 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        private void SetDefaultCreateQR()
+        {
+            try
+            {
+                listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(s.VALUE)).ToList();
+                if (listConfig.Count > 0 && listConfig != null || mediStock.QR_CONFIG_JSON != null)
+                {
+                    layoutbtnQRCe.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                }
+                else
+                {
+                    layoutbtnQRCe.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
+                btnQR.Enabled = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void LoadTreatmentFee()
         {
             try
@@ -790,12 +812,12 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     expMestMaterialFilter.EXP_MEST_IDs = this.ExpMests.Select(s => s.ID).ToList();
                     listExpMestMaterial = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_MATERIAL>>("api/HisExpMestMaterial/GetView", ApiConsumers.MosConsumer, expMestMaterialFilter, null);
 
-                    listMediMateAdo = new List<MediMateTypeADO>();
+                    listMediMateAdo = new List<HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO>();
 
                     var listExpMestMedicineGroup = listExpMestMedicine.GroupBy(o => new { o.EXP_MEST_ID, o.MEDICINE_ID, o.PRICE, o.VAT_RATIO });
                     foreach (var ExpMestMedicineGroup in listExpMestMedicineGroup)
                     {
-                        MediMateTypeADO MediMateTypeADO = new MediMateTypeADO(ExpMestMedicineGroup.ToList(), this.ExpMests.FirstOrDefault(o => o.ID == ExpMestMedicineGroup.Key.EXP_MEST_ID));
+                        HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO MediMateTypeADO = new HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO(ExpMestMedicineGroup.ToList(), this.ExpMests.FirstOrDefault(o => o.ID == ExpMestMedicineGroup.Key.EXP_MEST_ID));
                         if (MediMateTypeADO.EXP_AMOUNT > 0)
                             listMediMateAdo.Add(MediMateTypeADO);
                     }
@@ -803,7 +825,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     var listExpMestMaterialGroup = listExpMestMaterial.GroupBy(o => new { o.EXP_MEST_ID, o.MATERIAL_ID, o.PRICE, o.VAT_RATIO });
                     foreach (var ExpMestMedicineGroup in listExpMestMaterialGroup)
                     {
-                        MediMateTypeADO MediMateTypeADO = new MediMateTypeADO(ExpMestMedicineGroup.ToList(), this.ExpMests.FirstOrDefault(o => o.ID == ExpMestMedicineGroup.Key.EXP_MEST_ID));
+                        HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO MediMateTypeADO = new HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO(ExpMestMedicineGroup.ToList(), this.ExpMests.FirstOrDefault(o => o.ID == ExpMestMedicineGroup.Key.EXP_MEST_ID));
                         if (MediMateTypeADO.EXP_AMOUNT > 0)
                             listMediMateAdo.Add(MediMateTypeADO);
                     }
@@ -822,7 +844,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             }
         }
 
-        private void FillDataGridExpMestDetail(List<MediMateTypeADO> listMediMateAdo)
+        private void FillDataGridExpMestDetail(List<HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO> listMediMateAdo)
         {
             try
             {
@@ -846,7 +868,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             {
                 decimal totalPrice = 0;
                 decimal discount = 0;
-                List<MediMateTypeADO> selecteds = listMediMateAdo.Where(s => s.Check).ToList();
+                List<HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO> selecteds = listMediMateAdo.Where(s => s.Check).ToList();
                 if (selecteds.Count > 0)
                 {
                     totalPrice = selecteds.Sum(o => ((o.ADVISORY_TOTAL_PRICE ?? 0) - (o.DISCOUNT ?? 0)));
@@ -920,6 +942,57 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 if (!btnSave.Enabled || !dxValidationProviderEditorInfo.Validate())
                     return;
                 this.SaveProcess();
+                if (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 8)
+                {
+                    ShowModuleCreQr();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ShowModuleCreQr()
+        {
+            try
+            {
+                if (mediStock != null && !string.IsNullOrEmpty(mediStock.QR_CONFIG_JSON))
+                {
+                    ItemConfig config = Newtonsoft.Json.JsonConvert.DeserializeObject<ItemConfig>(mediStock.QR_CONFIG_JSON);
+                    if (config != null)
+                    {
+                        List<object> listArgs = new List<object>();
+                        TransReqQRADO adoqr = new TransReqQRADO();
+                        adoqr.TreatmentId = 0;
+                        adoqr.ConfigValue = new HIS_CONFIG() { KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", config.BANK), VALUE = config.VALUE };
+                        HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
+                        adoqr.Transaction = tran;
+                        adoqr.TransReqId = CreateReqType.Transaction;
+                        listArgs.Add(adoqr);
+                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", roomId, roomTypeId, listArgs);
+                    }
+                    else
+                    {
+                        XtraMessageBox.Show("Định dạng Qr thiết lập trong kho phòng không hợp lệ", "Thông báo");
+                    }
+                }
+                else if (listConfig != null && listConfig.Count == 1)
+                {
+                    selectedConfig = listConfig[0];
+                    List<object> listArgs = new List<object>();
+                    TransReqQRADO adoqr = new TransReqQRADO();
+                    adoqr.TreatmentId = 0;
+                    adoqr.ConfigValue = selectedConfig;
+                    HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
+                    adoqr.Transaction = tran;
+                    adoqr.TransReqId = CreateReqType.Transaction;
+                    listArgs.Add(adoqr);
+                    LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", roomId, roomTypeId, listArgs);
+                }
             }
             catch (Exception ex)
             {
@@ -932,7 +1005,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             bool result = false;
             try
             {
-                List<MediMateTypeADO> seleteds = this.listMediMateAdo.Where(o => o.Check).ToList();
+                List<HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO> seleteds = this.listMediMateAdo.Where(o => o.Check).ToList();
                 if (seleteds == null || seleteds.Count <= 0)
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show("Người dùng chưa chọn phiếu xuất", "Thông báo", DevExpress.Utils.DefaultBoolean.True);
@@ -959,7 +1032,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
 
                 if (!string.IsNullOrEmpty(txtName.Text))
                 {
-                    data.HisTransaction.BUYER_NAME  = txtName.Text;
+                    data.HisTransaction.BUYER_NAME = txtName.Text;
                 }
 
                 if (cboPayFrom.EditValue != null)
@@ -1064,6 +1137,11 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     btnSavePrint.Enabled = false;
                     BtnSaveSign.Enabled = false;
                     ddBtnPrint.Enabled = true;
+
+                    if (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 8)
+                    {
+                        btnQR.Enabled = true;
+                    }
                     if (delegateSelectData != null)
                     {
                         delegateSelectData(this.transactionBillResult);
@@ -1112,6 +1190,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                                 btnSavePrint.Enabled = false;
                                 BtnSaveSign.Enabled = false;
                                 ddBtnPrint.Enabled = true;
+                                btnQR.Enabled = true;
                                 if (delegateSelectData != null)
                                 {
                                     delegateSelectData(this.transactionBillResult);
@@ -1135,7 +1214,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             return result;
         }
 
-        private ElectronicBillResult TaoHoaDonDienTuBenThu3CungCap(HIS_TRANSACTION transaction, List<MediMateTypeADO> seleteds)
+        private ElectronicBillResult TaoHoaDonDienTuBenThu3CungCap(HIS_TRANSACTION transaction, List<HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO> seleteds)
         {
             ElectronicBillResult result = new ElectronicBillResult();
             try
@@ -1243,7 +1322,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 if (e.ListSourceRowIndex >= 0 && e.IsGetData && e.Column.UnboundType != DevExpress.Data.UnboundColumnType.Bound)
                 {
 
-                    var data = (MediMateTypeADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    var data = (HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     if (data != null)
                     {
                         if (e.Column.FieldName == "STT")
@@ -1769,7 +1848,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         {
             try
             {
-                this.listMediMateAdo = new List<MediMateTypeADO>();
+                this.listMediMateAdo = new List<HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO>();
                 this.listExpMestMedicine = null;
                 this.listExpMestMaterial = null;
                 this.expMestIdForEdit = null;
@@ -1971,6 +2050,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         this.onClickInPhieuXuatBan(null, null);
                     }
                 }
+                if (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 8)
+                {
+                    ShowModuleCreQr();
+                }
             }
             catch (Exception ex)
             {
@@ -2058,7 +2141,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
 
                 foreach (int rowhandler in selectedIndexs)
                 {
-                    MediMateTypeADO ado = (MediMateTypeADO)gridViewExpMestDetail.GetRow(rowhandler);
+                    HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO ado = (HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO)gridViewExpMestDetail.GetRow(rowhandler);
                     if (ado != null)
                     {
                         ado.Check = true;
@@ -2092,7 +2175,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         {
             try
             {
-                MediMateTypeADO row = (MediMateTypeADO)gridViewExpMestDetail.GetRow(e.RowHandle);
+                HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO row = (HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO)gridViewExpMestDetail.GetRow(e.RowHandle);
                 if (row != null)
                 {
                     if (e.RowHandle != gridViewExpMestDetail.FocusedRowHandle)
@@ -2321,6 +2404,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         this.onClickInHoaDonDienTu(null, null);
                     }
                 }
+                if (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 8)
+                {
+                    ShowModuleCreQr();
+                }
             }
             catch (Exception ex)
             {
@@ -2344,10 +2431,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 dataInput.NumOrder = transactionBillResult.NUM_ORDER;
                 dataInput.SymbolCode = transactionBillResult.SYMBOL_CODE;
                 dataInput.TemplateCode = transactionBillResult.TEMPLATE_CODE;
-                dataInput.TransactionTime = transactionBillResult.EINVOICE_TIME ??  transactionBillResult.TRANSACTION_TIME;
+                dataInput.TransactionTime = transactionBillResult.EINVOICE_TIME ?? transactionBillResult.TRANSACTION_TIME;
                 dataInput.EinvoiceTypeId = transactionBillResult.EINVOICE_TYPE_ID;
                 dataInput.ENumOrder = transactionBillResult.EINVOICE_NUM_ORDER;
-               
+
                 HIS_TRANSACTION tran = new HIS_TRANSACTION();
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
                 dataInput.Transaction = tran;
@@ -2483,6 +2570,105 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private HIS_CONFIG selectedConfig = new HIS_CONFIG();
+        private void btnQR_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (mediStock != null && !string.IsNullOrEmpty(mediStock.QR_CONFIG_JSON))
+                {
+                    ItemConfig config = Newtonsoft.Json.JsonConvert.DeserializeObject<ItemConfig>(mediStock.QR_CONFIG_JSON);
+                    if (config != null)
+                    {
+                        List<object> listArgs = new List<object>();
+                        TransReqQRADO adoqr = new TransReqQRADO();
+                        adoqr.TreatmentId = 0;
+                        adoqr.ConfigValue = new HIS_CONFIG() { KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", config.BANK), VALUE = config.VALUE };
+                        HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
+                        adoqr.Transaction = tran;
+                        adoqr.TransReqId = CreateReqType.Transaction;
+                        listArgs.Add(adoqr);
+                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", roomId, roomTypeId, listArgs);
+                    }
+                    else
+                    {
+                        XtraMessageBox.Show("Định dạng Qr thiết lập trong kho phòng không hợp lệ", "Thông báo");
+                    }
+                }
+                else
+                    if (listConfig != null)
+                {
+                    if (listConfig.Count > 1)
+                    {
+                        popupMenu1.ClearLinks();
+                        foreach (var item in listConfig)
+                        {
+                            string key = "";
+                            string value = item.KEY;
+                            int index = value.IndexOf("Info");
+                            if (index > 0)
+                            {
+                                var shotkey = value.Substring(0, index);
+                                string[] parts = shotkey.Split('.');
+                                if (parts.Length > 0)
+                                {
+                                    key = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
+                                }
+                            }
+                            else
+                            {
+                                key = item.KEY;
+                            }
+
+
+                            BarButtonItem btnOption = new BarButtonItem(null, key);
+                            btnOption.ItemClick += (s, args) =>
+                            {
+
+                                selectedConfig = item;
+                                List<object> listArgs = new List<object>();
+                                HIS.Desktop.ADO.TransReqQRADO adoqr = new TransReqQRADO();
+                                adoqr.TreatmentId = 0;
+                                adoqr.ConfigValue = selectedConfig;
+                                adoqr.TransReqId = CreateReqType.Transaction;
+                                HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
+                                adoqr.Transaction = tran;
+                                listArgs.Add(adoqr);
+                                LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
+
+                                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", roomId, roomTypeId, listArgs);
+
+                            };
+                            popupMenu1.AddItem(btnOption);
+                        }
+                        popupMenu1.Manager = barManager1;
+                        popupMenu1.ShowPopup(Control.MousePosition);
+                    }
+                    else
+                    {
+                        selectedConfig = listConfig[0];
+                        List<object> listArgs = new List<object>();
+                        TransReqQRADO adoqr = new TransReqQRADO();
+                        adoqr.TreatmentId = 0;
+                        adoqr.ConfigValue = selectedConfig;
+                        HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
+                        adoqr.Transaction = tran;
+                        adoqr.TransReqId = CreateReqType.Transaction;
+                        listArgs.Add(adoqr);
+                        LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
+                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", roomId, roomTypeId, listArgs);
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error("Loi khi thuc hien thanh toan QR tam thu: " + ex);
             }
         }
     }

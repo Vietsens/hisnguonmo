@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -17,6 +17,7 @@
  */
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.DXErrorProvider;
+using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -27,11 +28,13 @@ using HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.Resources;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save;
+using HIS.Desktop.Plugins.Library.CheckIcd;
 using HIS.Desktop.Utility;
 using HIS.UC.DateEditor;
 using HIS.UC.PatientSelect;
 using HIS.UC.PeriousExpMestList;
 using HIS.UC.SecondaryIcd;
+using HIS.UC.SecondaryIcd.ADO;
 using HIS.UC.TreatmentFinish;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
@@ -61,8 +64,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 int heightUCBottom = 0;
                 List<Action> methods = new List<Action>();
                 InitUcIcd();
+                InitUcIcdYHCT();
                 InitUcCauseIcd();
                 InitUcSecondaryIcd();
+                InitUcSecondaryIcdYHCT();
                 InitUcDate();
                 //methods.Add(this.InitUcIcd);
                 //methods.Add(this.InitUcCauseIcd);
@@ -259,8 +264,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 ado.Height = 24;
                 ado.Width = 364;
                 ado.IsVisibleMultiDate = (GlobalStore.IsTreatmentIn && (this.actionType != GlobalVariables.ActionEdit)
-                    && !GlobalStore.IsCabinet
-                    );
+                    && !GlobalStore.IsCabinet );
                 ado.IsValidate = true;
                 ado.LanguageInputADO = new UC.DateEditor.ADO.LanguageInputADO();
                 ado.LanguageInputADO.TruongDuLieuBatBuoc = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
@@ -360,10 +364,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 HIS.UC.Icd.ADO.IcdInitADO ado = new HIS.UC.Icd.ADO.IcdInitADO();
                 ado.DelegateNextFocus = NextForcusSubIcd;
                 ado.DelegateRequiredCause = DelegateRequiredCause;
+                ado.DelegateRefreshSubIcd = LoadSubIcd;
+                //ado.delegateCheckICD = CheckICDCode;
                 ado.Width = 330;
                 ado.Height = 24;
+                ado.hisTreatment = this.Histreatment;
                 ado.IsColor = (HisConfigCFG.ObligateIcd == GlobalVariables.CommonStringTrue);
-                ado.DataIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).OrderBy(o => o.ICD_CODE).ToList();
+                ado.DataIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_TRADITIONAL != 1).OrderBy(o => o.ICD_CODE).ToList();
                 ado.AutoCheckIcd = HisConfigCFG.AutoCheckIcd == GlobalVariables.CommonStringTrue;
                 this.ucIcd = (UserControl)this.icdProcessor.Run(ado);
 
@@ -378,7 +385,70 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void LoadSubIcd(string icdCodes, string icdNames)
+        {
+            try
+            {
+                SecondaryIcdDataADO data = new SecondaryIcdDataADO();
+                data.ICD_SUB_CODE = icdCodes;
+                data.ICD_TEXT = icdNames;
+                if (this.subIcdProcessor != null && this.ucSecondaryIcd != null)
+                {
+                    this.subIcdProcessor.SetAttachIcd(this.ucSecondaryIcd, data);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void LoadSubIcdYHCT(string icdCodes, string icdNames)
+        {
+            try
+            {
+                SecondaryIcdDataADO data = new SecondaryIcdDataADO();
+                data.ICD_SUB_CODE = icdCodes;
+                data.ICD_TEXT = icdNames;
+                if (this.subIcdProcessorYHCT != null && this.ucSecondaryIcdYHCT != null)
+                {
+                    this.subIcdProcessorYHCT.SetAttachIcd(this.ucSecondaryIcdYHCT, data);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        
+        private void InitUcIcdYHCT()
+        {
+            try
+            {
+                this.icdProcessorYHCT = new HIS.UC.Icd.IcdProcessor();
+                HIS.UC.Icd.ADO.IcdInitADO ado = new HIS.UC.Icd.ADO.IcdInitADO();
+                ado.DelegateNextFocus = NextForcusSubIcd;
+                //ado.DelegateRequiredCause = DelegateRequiredCause;
+                ado.DelegateRefreshSubIcd = LoadSubIcdYHCT;
+                ado.LblIcdMain = "CĐ YHCT:";
+                ado.ToolTipsIcdMain = "Chẩn đoán y học cổ truyền";
+                ado.Width = 220;
+                ado.Height = 30;
+                ado.hisTreatment = this.Histreatment;
+                ado.DataIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_TRADITIONAL == 1).OrderBy(o => o.ICD_CODE).ToList();
+                ado.AutoCheckIcd = HisConfigCFG.AutoCheckIcd == GlobalVariables.CommonStringTrue;
+                this.ucIcdYHCT = (UserControl)this.icdProcessorYHCT.Run(ado);
 
+                if (this.ucIcdYHCT != null)
+                {
+                    this.panelControlIcdYHCT.Controls.Add(this.ucIcdYHCT);
+                    this.ucIcdYHCT.Dock = DockStyle.Fill;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void DelegateRequiredCause(bool isRequired)
         {
             try
@@ -428,12 +498,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         {
             try
             {
-                this.subIcdProcessor = new SecondaryIcdProcessor(new CommonParam(), BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).OrderBy(o => o.ICD_CODE).ToList());
+                var dataICD = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_TRADITIONAL != 1).OrderBy(o => o.ICD_CODE).ToList();
+                this.subIcdProcessor = new SecondaryIcdProcessor(new CommonParam(), dataICD);
                 HIS.UC.SecondaryIcd.ADO.SecondaryIcdInitADO ado = new UC.SecondaryIcd.ADO.SecondaryIcdInitADO();
                 ado.DelegateNextFocus = NextForcusOut;
                 ado.DelegateGetIcdMain = GetIcdMainCode;
+                //ado.delegateCheckICD = CheckICDSecond;
                 ado.Width = 660;
                 ado.Height = 24;
+                ado.hisTreatment = this.Histreatment;
                 ado.TextLblIcd = Inventec.Common.Resource.Get.Value("frmAssignPrescription.lciIcdText.Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 ado.TextNullValue = Inventec.Common.Resource.Get.Value("frmAssignPrescription.txtIcdExtraNames.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 ado.limitDataSource = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;
@@ -450,7 +523,75 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+       
+        private void InitUcSecondaryIcdYHCT()
+        {
+            try
+            {
+                var dataICD = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_TRADITIONAL == 1).OrderBy(o => o.ICD_CODE).ToList();
+                this.subIcdProcessorYHCT = new SecondaryIcdProcessor(new CommonParam(), dataICD);
+                HIS.UC.SecondaryIcd.ADO.SecondaryIcdInitADO ado = new UC.SecondaryIcd.ADO.SecondaryIcdInitADO();
+                ado.DelegateNextFocus = NextForcusOut;
+                ado.DelegateGetIcdMain = GetIcdMainCodeYHCT;
+                ado.Width = 440;
+                ado.Height = 30;
+                ado.TextLblIcd = "CĐ YHCT Phụ:";
+                ado.TootiplciIcdSubCode = "Chẩn đoán y học cổ truyền phụ";
+                ado.hisTreatment = this.Histreatment;
+                //  ado.TextLblIcd = Inventec.Common.Resource.Get.Value("frmAssignPrescription.lciIcdText.Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                ado.TextNullValue = Inventec.Common.Resource.Get.Value("frmAssignPrescription.txtIcdExtraNames.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                ado.limitDataSource = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;
+                this.ucSecondaryIcdYHCT = (UserControl)this.subIcdProcessorYHCT.Run(ado);
 
+                if (this.ucSecondaryIcdYHCT != null)
+                {
+                    this.panelControlUcSubIcdYHCT.Controls.Add(this.ucSecondaryIcdYHCT);
+                    this.ucSecondaryIcdYHCT.Dock = DockStyle.Fill;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        //viec 178289 thinhdt1
+        private bool CheckICD(string icd_code,string icd_sub_code,ref string mess,ref string error_code)
+        {
+            bool valid = false;
+            
+            try
+            {
+                HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager mana = new CheckIcdManager(DlgIcdSubCode, this.Histreatment);
+                string messError = "";
+                if (!mana.ProcessCheckIcd(icd_code, icd_sub_code, ref messError,false,true))
+                {
+
+                    LogSystem.Debug("icd: " + icd_code + " va icd_phu: " + icd_sub_code + "co trung nhom ICD10");
+                    valid = true;
+                }
+                mess += messError;
+            }
+            catch (Exception ex)
+            {
+                valid = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return valid;
+        }
+        private void DlgIcdSubCode(string icdCodes, string icdNames)
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("DlgIcdSubCode.1");
+                
+                Inventec.Common.Logging.LogSystem.Debug("DlgIcdSubCode.2");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private string GetIcdMainCode()
         {
             string mainCode = "";
@@ -459,6 +600,26 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 if (this.icdProcessor != null && this.ucIcd != null)
                 {
                     var icdValue = this.icdProcessor.GetValue(this.ucIcd);
+                    if (icdValue != null && icdValue is UC.Icd.ADO.IcdInputADO)
+                    {
+                        mainCode = ((UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return mainCode;
+        }
+        private string GetIcdMainCodeYHCT()
+        {
+            string mainCode = "";
+            try
+            {
+                if (this.icdProcessorYHCT != null && this.ucIcdYHCT != null)
+                {
+                    var icdValue = this.icdProcessorYHCT.GetValue(this.ucIcdYHCT);
                     if (icdValue != null && icdValue is UC.Icd.ADO.IcdInputADO)
                     {
                         mainCode = ((UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;

@@ -164,6 +164,22 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             }
         }
 
+        private void LoadTraditionalSubIcdToControl(string icdCode, string icdName)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(icdCode))
+                {
+                    txtIcdSubCode.Text = icdCode;
+                    txtIcdText.Text = icdName;
+                }
+       
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void DataToComboChuanDoanTD(CustomGridLookUpEditWithFilterMultiColumn cbo, List<HIS_ICD> data)
         {
             try
@@ -353,7 +369,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                         icdSubCode = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
                     }
                 }
-                if (!checkIcdManager.ProcessCheckIcd(txtIcdCode.Text.Trim(), icdSubCode + ";" + icdSubCodeScreeen, ref messErr))
+                if (!checkIcdManager.ProcessCheckIcd(txtIcdCode.Text.Trim(), icdSubCode + ";" + icdSubCodeScreeen, ref messErr,false,false))
                 {
                     XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
                     if (Desktop.Plugins.Library.CheckIcd.CheckIcdManager.IcdCodeError.Equals(txtIcdCode.Text))

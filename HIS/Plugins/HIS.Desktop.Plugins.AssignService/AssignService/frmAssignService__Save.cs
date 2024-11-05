@@ -29,6 +29,8 @@ using HIS.Desktop.Plugins.AssignService.Resources;
 using HIS.Desktop.Plugins.Library.AlertWarningFee;
 using HIS.Desktop.Print;
 using HIS.Desktop.Utilities.Extensions;
+using HIS.UC.Icd.ADO;
+using HIS.UC.SecondaryIcd.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
 using Inventec.Common.SignLibrary.DTO;
@@ -61,7 +63,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     this.gridViewServiceProcess.UpdateCurrentRow();
 
                 bool isValid = true;
-              
+
                 List<SereServADO> serviceCheckeds__Send = this.ServiceIsleafADOs.FindAll(o => o.IsChecked);
                 if (serviceTypeIdRequired != null && serviceTypeIdRequired.Count > 0)
                 {
@@ -73,6 +75,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         return;
                     }
                 }
+                if (ucIcdYhct != null)
+                    isValid = isValid && (bool)icdYhctProcessor.ValidationIcd(ucIcdYhct);
+                if (ucSecondaryIcdYhct != null)
+                    isValid = isValid && subIcdYhctProcessor.GetValidate(ucSecondaryIcdYhct);
                 isValid = isValid && this.Valid(serviceCheckeds__Send);
                 isValid = isValid && this.CheckIcd(new List<V_HIS_TREATMENT_BED_ROOM> { new V_HIS_TREATMENT_BED_ROOM() { TREATMENT_ID = currentTreatment.ID, ICD_CODE = txtIcdCode.Text.Trim(), ICD_SUB_CODE = txtIcdSubCode.Text.Trim() } });
                 List<HIS_ICD_SERVICE> icdServicePhacDos = null;
@@ -161,6 +167,17 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Inventec.Common.Logging.LogSystem.Debug("Valid14__ValidFeeForExamTreatment:" + isValid);
                 isValid = isValid && CheckMaxAmount(serviceCheckeds__Send);
                 Inventec.Common.Logging.LogSystem.Debug("Valid15__CheckMaxAmount:" + isValid);
+                if (this.USE_TIME != null && this.USE_TIME.Count > 0)
+                {
+                    var exits = serviceCheckeds__Send.Where(s => s.SERVICE_TYPE_ID == 1 || s.SERVICE_TYPE_ID == 12);
+                    if (exits.Any())
+                    {
+                        MessageBox.Show(this, "Dịch vụ loại khám và dịch vụ loại khác không cho phép dự trù");
+                        isValid = false;
+                        return;
+                    }
+
+                }
                 if (HisConfigCFG.IsCheckDepartmentInTimeWhenPresOrAssign && this.currentWorkingRoom != null && currentWorkingRoom.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__BUONG)
                 {
                     isValid = isValid && CheckTimeInDepartment(this.intructionTimeSelecteds);
@@ -1623,6 +1640,20 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     serviceReqSDO.IcdSubCode = subIcd.ICD_SUB_CODE;
                     serviceReqSDO.IcdText = subIcd.ICD_TEXT;
                 }
+
+
+                var icdTranditional = this.icdYhctProcessor.GetValue(this.ucIcdYhct);
+                if (icdTranditional != null && icdTranditional is IcdInputADO)
+                {
+                    serviceReqSDO.TraditionalIcdCode = ((IcdInputADO)icdTranditional).ICD_CODE;
+                    serviceReqSDO.TraditionalIcdName = ((IcdInputADO)icdTranditional).ICD_NAME;
+                }
+                var subIcdTranditional = subIcdYhctProcessor.GetValue(ucSecondaryIcdYhct);
+                if (subIcdTranditional != null && subIcdTranditional is SecondaryIcdDataADO)
+                {
+                    serviceReqSDO.TraditionalIcdSubCode = ((SecondaryIcdDataADO)subIcdTranditional).ICD_SUB_CODE;
+                    serviceReqSDO.TraditionalIcdText = ((SecondaryIcdDataADO)subIcdTranditional).ICD_TEXT;
+                }
             }
             catch (Exception ex)
             {
@@ -1680,6 +1711,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 serviceReqSDO.InstructionTime = intructionTimeSelecteds.First();
                 serviceReqSDO.InstructionTimes = intructionTimeSelecteds;//TODO
 
+                serviceReqSDO.UseTimes = this.USE_TIME;
                 //Trường hợp chỉ định từ màn hình xử lý pttt, cập nhật dữ liệu cùng kíp, khác kíp tương ứng
                 long sereservid = this.GetSereServInKip();
                 if (sereservid > 0)
@@ -1829,26 +1861,26 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             var checkYCDV = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_1");
 
                             var checkQR = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_3");
-                            
+
                             if (checkHDBN != null)
                             {
-                                if(!isPrinted) InTamUng(isSaveAndShow, previewType);
+                                if (!isPrinted) InTamUng(isSaveAndShow, previewType);
                                 InPhieuHuoangDanBenhNhan(isSaveAndShow);
-                                
+
                             }
 
                             if (checkYCDV != null)
                             {
                                 if (!isPrinted) InTamUng(isSaveAndShow, previewType);
                                 InPhieuYeuCauDichVu(isSaveAndShow, previewType);
-                                
+
                             }
 
                             if (checkQR != null)
                             {
                                 if (!isPrinted) InTamUng(isSaveAndShow, previewType);
                                 InYeuCauThanhToanQR(isSaveAndPrint, isSign, isPrintPreview);
-                                
+
                             }
                         }
 
@@ -1898,6 +1930,90 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Inventec.Common.Logging.LogSystem.Fatal(ex);
             }
         }
+
+        private void ProcessOpenVoBenhAn(List<V_HIS_SERE_SERV> sereServs)
+        {
+            try
+            {
+                var emrFormsCodes = lstService.Where(o => sereServs.Exists(p => p.SERVICE_ID == o.ID) && !string.IsNullOrEmpty(o.EMR_FORM_CODES)).Select(o => o.EMR_FORM_CODES).ToList();
+                if (emrFormsCodes != null && emrFormsCodes.Count > 0 && serviceReqComboResultSDO != null)
+                {
+                    HIS.Desktop.Plugins.Library.FormMedicalRecord.Base.EmrInputADO emrInputAdo = new Library.FormMedicalRecord.Base.EmrInputADO();
+                    emrInputAdo.TreatmentId = serviceReqComboResultSDO.ServiceReqs.FirstOrDefault().TREATMENT_ID;
+                    emrInputAdo.PatientId = serviceReqComboResultSDO.ServiceReqs.FirstOrDefault().TDL_PATIENT_ID;
+                    emrInputAdo.roomId = this.currentModule.RoomId;
+                    if (currentTreatment.EMR_COVER_TYPE_ID != null)
+                    {
+                        emrInputAdo.EmrCoverTypeId = currentTreatment.EMR_COVER_TYPE_ID;
+                    }
+                    else
+                    {
+                        var data = BackendDataWorker.Get<HIS_EMR_COVER_CONFIG>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                            && o.ROOM_ID == this.currentModule.RoomId
+                        && o.TREATMENT_TYPE_ID == currentTreatment.TDL_TREATMENT_TYPE_ID
+                        ).ToList();
+                        if (data != null && data.Count > 0)
+                        {
+                            if (data.Count == 1)
+                            {
+                                emrInputAdo.EmrCoverTypeId = data.FirstOrDefault().EMR_COVER_TYPE_ID;
+
+                            }
+                            else
+                            {
+                                emrInputAdo.lstEmrCoverTypeId = new List<long>();
+                                emrInputAdo.lstEmrCoverTypeId = data.Select(o => o.EMR_COVER_TYPE_ID).ToList();
+                            }
+                        }
+                        else
+                        {
+                            var DepartmentID = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == this.currentModule.RoomId).DepartmentId;
+
+                            var DataConfig = BackendDataWorker.Get<HIS_EMR_COVER_CONFIG>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                        && o.DEPARTMENT_ID == DepartmentID && o.TREATMENT_TYPE_ID == currentTreatment.TDL_TREATMENT_TYPE_ID).ToList();
+
+                            if (DataConfig != null && DataConfig.Count > 0)
+                            {
+                                if (DataConfig.Count == 1)
+                                {
+                                    emrInputAdo.EmrCoverTypeId = DataConfig.FirstOrDefault().EMR_COVER_TYPE_ID;
+                                }
+                                else
+                                {
+                                    emrInputAdo.lstEmrCoverTypeId = new List<long>();
+                                    emrInputAdo.lstEmrCoverTypeId = DataConfig.Select(o => o.EMR_COVER_TYPE_ID).ToList();
+                                }
+                            }
+                        }
+                    }
+
+                    HIS.Desktop.Plugins.Library.FormMedicalRecord.MediRecordMenuPopupProcessor processor = new Library.FormMedicalRecord.MediRecordMenuPopupProcessor();
+
+                    long EmrCoverTypeId_ = emrInputAdo.EmrCoverTypeId ?? 0;
+                    long EmrCoverTypeId_Send;
+
+                    if (EmrCoverTypeId_ <= 0)
+                    {
+                        EmrCoverTypeId_Send = 0;
+                    }
+                    else
+                    {
+                        EmrCoverTypeId_Send = EmrCoverTypeId_;
+                    }
+
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => emrInputAdo), emrInputAdo));
+
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => emrFormsCodes), emrFormsCodes));
+                    processor.FormOpenEmr(EmrCoverTypeId_Send, emrInputAdo,string.Join(",", emrFormsCodes));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
         private void CallTransReqCreateByService()
         {
             try

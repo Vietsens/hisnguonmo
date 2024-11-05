@@ -84,6 +84,9 @@ namespace MPS.Processor.Mps000085
                     {
                         ImpMestMedicineADO ado = new ImpMestMedicineADO();
                         Inventec.Common.Mapper.DataObjectMapper.Map<ImpMestMedicineADO>(ado, item);
+                        ado.BATCH_REGISTER_NUMBER = item.MEDICINE_REGISTER_NUMBER;
+                        ado.BATCH_MANUFACTURER_CODE = item.MEDICINE_MANUFACTURER_CODE;
+                        ado.BATCH_MANUFACTURER_NAME = item.MEDICINE_MANUFACTURER_NAME;
                         if (rdo._Medicines != null && rdo._Medicines.Count > 0)
                         {
                             ado.TDL_BID_GROUP_CODE = rdo._Medicines.FirstOrDefault(o => o.ID == item.MEDICINE_ID).TDL_BID_GROUP_CODE;
@@ -122,6 +125,9 @@ namespace MPS.Processor.Mps000085
                     {
                         ImpMestMaterialADO ado = new ImpMestMaterialADO();
                         Inventec.Common.Mapper.DataObjectMapper.Map<ImpMestMaterialADO>(ado, item);
+                        ado.BATCH_REGISTER_NUMBER = item.MATERIAL_REGISTER_NUMBER;
+                        ado.BATCH_MANUFACTURER_CODE = item.MATERIAL_MANUFACTURER_CODE;
+                        ado.BATCH_MANUFACTURER_NAME = item.MATERIAL_MANUFACTURER_NAME;
                         if (rdo._Materials != null && rdo._Materials.Count > 0)
                         {
                             ado.TDL_BID_GROUP_CODE = rdo._Materials.FirstOrDefault(o => o.ID == item.MATERIAL_ID).TDL_BID_GROUP_CODE;

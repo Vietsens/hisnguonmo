@@ -666,16 +666,18 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         dicParam.Add("REQUEST_ROOM_CODE", reqRoom.ROOM_CODE);
                         dicParam.Add("REQUEST_ROOM_NAME", reqRoom.ROOM_NAME);
                     }
-                    HisBedLogViewFilter blFilter = new HisBedLogViewFilter();
-                    blFilter.TREATMENT_ID = currentServiceReq.TREATMENT_ID;
-                    var bedLogData = new BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, blFilter, param);
-                    if (bedLogData != null && bedLogData.Count > 0)
+
+                    if (lstBedLogData != null && lstBedLogData.Count > 0)
                     {
-                        bedLogData = bedLogData.Where(o => o.START_TIME < currentServiceReq.INTRUCTION_TIME && (o.FINISH_TIME > currentServiceReq.INTRUCTION_TIME || o.FINISH_TIME == null)).OrderByDescending(o => o.FINISH_TIME).ToList();
+                        var bedLogData = lstBedLogData.Where(o => o.TREATMENT_ID == currentServiceReq.TREATMENT_ID).ToList();
                         if (bedLogData != null && bedLogData.Count > 0)
                         {
-                            dicParam.Add("BED_NAME", bedLogData.First().BED_NAME);
-                            dicParam.Add("BED_CODE", bedLogData.First().BED_CODE);
+                            bedLogData = bedLogData.Where(o => o.START_TIME < currentServiceReq.INTRUCTION_TIME && (o.FINISH_TIME > currentServiceReq.INTRUCTION_TIME || o.FINISH_TIME == null)).OrderByDescending(o => o.FINISH_TIME).ToList();
+                            if (bedLogData != null && bedLogData.Count > 0)
+                            {
+                                dicParam.Add("BED_NAME", bedLogData.First().BED_NAME);
+                                dicParam.Add("BED_CODE", bedLogData.First().BED_CODE);
+                            }
                         }
                     }
                 }
@@ -741,18 +743,18 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 AddKeyIntoDictionaryPrint<MOS.EFMODEL.DataModels.HIS_SERE_SERV>(this.sereServ, this.dicParam, false);
                 AddKeyIntoDictionaryPrint<HIS_SERE_SERV_EXT>(this.sereServExt, this.dicParam, true);
 
-                HisDhstFilter dhFilter = new HisDhstFilter();
-                dhFilter.TREATMENT_ID = currentServiceReq.TREATMENT_ID;
-                var dhstData = new BackendAdapter(param).Get<List<HIS_DHST>>("api/HisDhst/Get", ApiConsumer.ApiConsumers.MosConsumer, dhFilter, param);
-                if (dhstData != null && dhstData.Count > 0)
+                if (lstDhstData != null && lstDhstData.Count > 0)
                 {
-                    dhstData = dhstData.Where(o => o.EXECUTE_TIME < currentServiceReq.INTRUCTION_TIME).OrderByDescending(o => o.EXECUTE_TIME).ToList();
+                    var dhstData = lstDhstData.Where(o => o.TREATMENT_ID == currentServiceReq.TREATMENT_ID).ToList();
                     if (dhstData != null && dhstData.Count > 0)
                     {
-                        AddKeyIntoDictionaryPrint<MOS.EFMODEL.DataModels.HIS_DHST>(dhstData.First(), this.dicParam, false);
+                        dhstData = dhstData.Where(o => o.EXECUTE_TIME < currentServiceReq.INTRUCTION_TIME).OrderByDescending(o => o.EXECUTE_TIME).ToList();
+                        if (dhstData != null && dhstData.Count > 0)
+                        {
+                            AddKeyIntoDictionaryPrint<MOS.EFMODEL.DataModels.HIS_DHST>(dhstData.First(), this.dicParam, false);
+                        }
                     }
                 }
-
                 dicParam[ServiceExecuteCFG.SingleKeyAllInOne] = "";
                 if (CheckAllInOne.Checked && this.sereServ != null)
                 {

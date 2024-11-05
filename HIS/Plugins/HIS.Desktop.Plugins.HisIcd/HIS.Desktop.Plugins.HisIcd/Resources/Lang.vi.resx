@@ -117,68 +117,144 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="frmHisIcd.layoutControl4.Text" xml:space="preserve">
-    <value>layoutControl4</value>
+  <data name="frmAttachIcd.bar2.Text" xml:space="preserve">
+    <value>Main menu</value>
   </data>
-  <data name="frmHisIcd.layoutControl7.Text" xml:space="preserve">
-    <value>layoutControl7</value>
+  <data name="frmAttachIcd.bbtnChoose.Caption" xml:space="preserve">
+    <value>Chọn (Ctrl S)</value>
+  </data>
+  <data name="frmAttachIcd.bbtnClose.Caption" xml:space="preserve">
+    <value>Đóng (Esc)</value>
+  </data>
+  <data name="frmAttachIcd.btnChoose.Text" xml:space="preserve">
+    <value>Chọn (Ctrl S)</value>
+  </data>
+  <data name="frmAttachIcd.grdColCode.Caption" xml:space="preserve">
+    <value>Mã bệnh</value>
+  </data>
+  <data name="frmAttachIcd.grdColName.Caption" xml:space="preserve">
+    <value>Tên bệnh</value>
+  </data>
+  <data name="frmAttachIcd.gridColumn1.Caption" xml:space="preserve">
+    <value>gridColumn1</value>
+  </data>
+  <data name="frmAttachIcd.gridViewSecondaryDisease.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm...</value>
+  </data>
+  <data name="frmAttachIcd.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmAttachIcd.Text" xml:space="preserve">
+    <value>Tìm chọn bệnh</value>
+  </data>
+  <data name="frmAttachIcd.txtIcdCodes.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Danh sách mã bệnh</value>
+  </data>
+  <data name="frmAttachIcd.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="frmHisIcd.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmHisIcd.bbtnAdd.Caption" xml:space="preserve">
+    <value>Thêm (Ctrl N)</value>
+  </data>
+  <data name="frmHisIcd.bbtnEdit.Caption" xml:space="preserve">
+    <value>Sửa (Ctrl S)</value>
+  </data>
+  <data name="frmHisIcd.bbtnFocusDefault.Caption" xml:space="preserve">
+    <value>F2</value>
+  </data>
+  <data name="frmHisIcd.bbtnReset.Caption" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="frmHisIcd.bbtnSearch.Caption" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="frmHisIcd.btnAdd.Text" xml:space="preserve">
+    <value>Thêm (Ctrl N)</value>
+  </data>
+  <data name="frmHisIcd.btnEdit.Text" xml:space="preserve">
+    <value>Sửa (Ctrl S)</value>
+  </data>
+  <data name="frmHisIcd.btnImport.Text" xml:space="preserve">
+    <value>Nhập khẩu</value>
+  </data>
+  <data name="frmHisIcd.btnRefresh.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
   </data>
   <data name="frmHisIcd.btnSearch.Text" xml:space="preserve">
     <value>Tìm (Ctrl F)</value>
   </data>
-  <data name="frmHisIcd.STT.Caption" xml:space="preserve">
-    <value>STT</value>
+  <data name="frmHisIcd.chkChanDieuTri.Properties.Caption" xml:space="preserve">
+    <value>Chặn điều trị</value>
   </data>
-  <data name="frmHisIcd.gridColumn1.Caption" xml:space="preserve">
-    <value>Khóa</value>
+  <data name="frmHisIcd.chkChanDieuTri.ToolTip" xml:space="preserve">
+    <value>Chặn không cho phép điều trị bệnh nhân nếu chẩn đoán có nhập mã bệnh này</value>
   </data>
-  <data name="frmHisIcd.gridColumnEdit.Caption" xml:space="preserve">
-    <value>Xóa</value>
+  <data name="frmHisIcd.chkIsCause.Properties.Caption" xml:space="preserve">
+    <value>Là nguyên nhân gây bệnh</value>
   </data>
-  <data name="frmHisIcd.gridColumnEdit.ToolTip" xml:space="preserve">
-    <value>Xóa</value>
+  <data name="frmHisIcd.chkIsCause.Text" xml:space="preserve">
+    <value>Là nguyên nhân gây bệnh</value>
   </data>
-  <data name="frmHisIcd.grdColIcdCode.Caption" xml:space="preserve">
-    <value>Mã</value>
+  <data name="frmHisIcd.chkIsCause.ToolTip" xml:space="preserve">
+    <value>Là nguyên nhân gây bệnh</value>
   </data>
-  <data name="frmHisIcd.grdColIcdCode.ToolTip" xml:space="preserve">
-    <value>Mã</value>
+  <data name="frmHisIcd.chkIsCovid.Properties.Caption" xml:space="preserve">
+    <value>COVID-19</value>
   </data>
-  <data name="frmHisIcd.grdColIcdName.Caption" xml:space="preserve">
-    <value>Tên</value>
+  <data name="frmHisIcd.chkIsCovid.ToolTip" xml:space="preserve">
+    <value>Là mã bệnh điều trị bệnh COVID-19</value>
   </data>
-  <data name="frmHisIcd.grdColIcdName.ToolTip" xml:space="preserve">
-    <value>Tên</value>
-  </data>
-  <data name="frmHisIcd.grdColIcdNameEn.Caption" xml:space="preserve">
-    <value>Tên tiếng anh</value>
-  </data>
-  <data name="frmHisIcd.grdColIcdNameEn.ToolTip" xml:space="preserve">
-    <value>Tên tiếng anh</value>
-  </data>
-  <data name="frmHisIcd.grdColIcdNameCommon.Caption" xml:space="preserve">
-    <value>Tên thường gọi</value>
-  </data>
-  <data name="frmHisIcd.grdColIcdNameCommon.ToolTip" xml:space="preserve">
-    <value>Tên thường gọi</value>
-  </data>
-  <data name="frmHisIcd.grdColIcdGroupId.Caption" xml:space="preserve">
-    <value>Nhóm</value>
-  </data>
-  <data name="frmHisIcd.grdColIcdGroupId.ToolTip" xml:space="preserve">
-    <value>Nhóm</value>
-  </data>
-  <data name="frmHisIcd.grdColIsHeinNds.Caption" xml:space="preserve">
+  <data name="frmHisIcd.chkIsHeinNds.Properties.Caption" xml:space="preserve">
     <value>Ngoài định suất</value>
   </data>
-  <data name="frmHisIcd.grdColIsHeinNds.ToolTip" xml:space="preserve">
-    <value>Ngoài định suất</value>
+  <data name="frmHisIcd.chkIsLatentTuberculosis.Properties.Caption" xml:space="preserve">
+    <value>Bệnh lao tiềm ẩn</value>
   </data>
-  <data name="frmHisIcd.gridColumn2.Caption" xml:space="preserve">
-    <value>Trạng thái</value>
+  <data name="frmHisIcd.chkIsLatentTuberculosis.Text" xml:space="preserve">
+    <value>Bệnh lao tiềm ẩn</value>
   </data>
-  <data name="frmHisIcd.gridColumn2.ToolTip" xml:space="preserve">
-    <value>Trạng thái</value>
+  <data name="frmHisIcd.chkIsLatentTuberculosis.ToolTip" xml:space="preserve">
+    <value>Trong trường hợp được check chọn, phần mềm sẽ thay đổi nội dung XML1 theo công văn 1393 của BHXH
+hướng dẫn nhằm đẩy dữ liệu XML đối với các hồ sơ bệnh nhân có chẩn đoán chính tương ứng</value>
+  </data>
+  <data name="frmHisIcd.chkIsRequireCause.Properties.Caption" xml:space="preserve">
+    <value>Bắt buộc nhập nguyên nhân ngoài</value>
+  </data>
+  <data name="frmHisIcd.chkIsRequireCause.Text" xml:space="preserve">
+    <value>Bắt buộc nhập nguyên nhân ngoài</value>
+  </data>
+  <data name="frmHisIcd.chkIsRequireCause.ToolTip" xml:space="preserve">
+    <value>Bắt buộc nhập nguyên nhân ngoài</value>
+  </data>
+  <data name="frmHisIcd.chkIsSubcode.Properties.Caption" xml:space="preserve">
+    <value>Bệnh phụ</value>
+  </data>
+  <data name="frmHisIcd.chkIsSword.Properties.Caption" xml:space="preserve">
+    <value>Mã kiếm (†)</value>
+  </data>
+  <data name="frmHisIcd.chkNotUseHein.Properties.Caption" xml:space="preserve">
+    <value>Không sử dụng cho đối tượng BHYT</value>
+  </data>
+  <data name="frmHisIcd.chkNotUseHein.ToolTip" xml:space="preserve">
+    <value>Mã bệnh này không được BHYT chi trả chi phí KCB. Nếu bệnh nhân BHYT có mã bệnh chính là bệnh này thì sẽ chặn khi kết thúc điều trị và xuất XML.</value>
+  </data>
+  <data name="frmHisIcd.chkYhct.Properties.Caption" xml:space="preserve">
+    <value>YHCT</value>
+  </data>
+  <data name="frmHisIcd.chkYhct.Text" xml:space="preserve">
+    <value>YHCT</value>
+  </data>
+  <data name="frmHisIcd.chkYhct.ToolTip" xml:space="preserve">
+    <value>Y học cổ truyền</value>
+  </data>
+  <data name="frmHisIcd.dnNavigation.Text" xml:space="preserve">
+    <value>dataNavigator1</value>
+  </data>
+  <data name="frmHisIcd.emptySpaceItem2.Text" xml:space="preserve">
+    <value>tuổi</value>
   </data>
   <data name="frmHisIcd.grdColCreateTime.Caption" xml:space="preserve">
     <value>Thời gian tạo</value>
@@ -192,11 +268,53 @@
   <data name="frmHisIcd.grdColCreator.ToolTip" xml:space="preserve">
     <value>Người tạo</value>
   </data>
-  <data name="frmHisIcd.grdColModifyTime.Caption" xml:space="preserve">
-    <value>Thời gian sửa</value>
+  <data name="frmHisIcd.grdColIcdCode.Caption" xml:space="preserve">
+    <value>Mã</value>
   </data>
-  <data name="frmHisIcd.grdColModifyTime.ToolTip" xml:space="preserve">
-    <value>Thời gian sửa</value>
+  <data name="frmHisIcd.grdColIcdCode.ToolTip" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="frmHisIcd.grdColIcdGroupId.Caption" xml:space="preserve">
+    <value>Nhóm</value>
+  </data>
+  <data name="frmHisIcd.grdColIcdGroupId.ToolTip" xml:space="preserve">
+    <value>Nhóm</value>
+  </data>
+  <data name="frmHisIcd.grdColIcdName.Caption" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="frmHisIcd.grdColIcdName.ToolTip" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="frmHisIcd.grdColIcdNameCommon.Caption" xml:space="preserve">
+    <value>Tên thường gọi</value>
+  </data>
+  <data name="frmHisIcd.grdColIcdNameCommon.ToolTip" xml:space="preserve">
+    <value>Tên thường gọi</value>
+  </data>
+  <data name="frmHisIcd.grdColIcdNameEn.Caption" xml:space="preserve">
+    <value>Tên tiếng anh</value>
+  </data>
+  <data name="frmHisIcd.grdColIcdNameEn.ToolTip" xml:space="preserve">
+    <value>Tên tiếng anh</value>
+  </data>
+  <data name="frmHisIcd.grdColIsCause.Caption" xml:space="preserve">
+    <value>Là nguyên nhân gây bệnh</value>
+  </data>
+  <data name="frmHisIcd.grdColIsCause.ToolTip" xml:space="preserve">
+    <value>Là nguyên nhân gây bệnh</value>
+  </data>
+  <data name="frmHisIcd.grdColIsHeinNds.Caption" xml:space="preserve">
+    <value>Ngoài định suất</value>
+  </data>
+  <data name="frmHisIcd.grdColIsHeinNds.ToolTip" xml:space="preserve">
+    <value>Ngoài định suất</value>
+  </data>
+  <data name="frmHisIcd.grdColIsRequireCause.Caption" xml:space="preserve">
+    <value>Bắt buộc nhập nguyên nhân ngoài</value>
+  </data>
+  <data name="frmHisIcd.grdColIsRequireCause.ToolTip" xml:space="preserve">
+    <value>Bắt buộc nhập nguyên nhân ngoài</value>
   </data>
   <data name="frmHisIcd.grdColModifier.Caption" xml:space="preserve">
     <value>Người sửa</value>
@@ -204,86 +322,145 @@
   <data name="frmHisIcd.grdColModifier.ToolTip" xml:space="preserve">
     <value>Người sửa</value>
   </data>
-  <data name="frmHisIcd.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
-    <value>Từ khóa tìm kiếm</value>
+  <data name="frmHisIcd.grdColModifyTime.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
   </data>
-  <data name="frmHisIcd.lcEditorInfo.Text" xml:space="preserve">
-    <value>layoutControl5</value>
+  <data name="frmHisIcd.grdColModifyTime.ToolTip" xml:space="preserve">
+    <value>Thời gian sửa</value>
   </data>
-  <data name="frmHisIcd.btnRefresh.Text" xml:space="preserve">
-    <value>Làm lại (Ctrl R)</value>
+  <data name="frmHisIcd.gridColumn1.Caption" xml:space="preserve">
+    <value>Khóa</value>
   </data>
-  <data name="frmHisIcd.btnAdd.Text" xml:space="preserve">
-    <value>Thêm (Ctrl N)</value>
+  <data name="frmHisIcd.gridColumn2.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
   </data>
-  <data name="frmHisIcd.btnEdit.Text" xml:space="preserve">
-    <value>Sửa (Ctrl S)</value>
+  <data name="frmHisIcd.gridColumn2.ToolTip" xml:space="preserve">
+    <value>Trạng thái</value>
   </data>
-  <data name="frmHisIcd.lkIcdGroupId.Properties.NullText" xml:space="preserve">
-    <value />
+  <data name="frmHisIcd.gridColumn3.Caption" xml:space="preserve">
+    <value>YHCT</value>
   </data>
-  <data name="frmHisIcd.dnNavigation.Text" xml:space="preserve">
-    <value>dataNavigator1</value>
+  <data name="frmHisIcd.gridColumn3.ToolTip" xml:space="preserve">
+    <value>Y học cổ truyền</value>
   </data>
-  <data name="frmHisIcd.chkIsHeinNds.Properties.Caption" xml:space="preserve">
-    <value />
+  <data name="frmHisIcd.gridColumn4.Caption" xml:space="preserve">
+    <value>Chặn điều trị</value>
   </data>
-  <data name="frmHisIcd.lciIcdCode.Text" xml:space="preserve">
-    <value>Mã:</value>
+  <data name="frmHisIcd.gridColumn5.Caption" xml:space="preserve">
+    <value>Không sử dụng cho đối tượng BHYT</value>
   </data>
-  <data name="frmHisIcd.lciIcdName.Text" xml:space="preserve">
-    <value>Tên:</value>
+  <data name="frmHisIcd.gridColumn5.ToolTip" xml:space="preserve">
+    <value>Không sử dụng cho đối tượng BHYT</value>
   </data>
-  <data name="frmHisIcd.lciIcdNameEn.Text" xml:space="preserve">
-    <value>Tên tiếng anh:</value>
+  <data name="frmHisIcd.gridColumn6.Caption" xml:space="preserve">
+    <value>Mã kiếm</value>
   </data>
-  <data name="frmHisIcd.lciIcdNameCommon.Text" xml:space="preserve">
-    <value>Tên thường gọi:</value>
+  <data name="frmHisIcd.gridColumn7.Caption" xml:space="preserve">
+    <value>Mã bệnh phụ</value>
   </data>
-  <data name="frmHisIcd.lciIcdGroupId.Text" xml:space="preserve">
-    <value>Nhóm:</value>
+  <data name="frmHisIcd.gridColumn8.Caption" xml:space="preserve">
+    <value>COVID-19</value>
   </data>
-  <data name="frmHisIcd.lciIsHeinNds.Text" xml:space="preserve">
-    <value>Ngoài định suất</value>
+  <data name="frmHisIcd.gridColumnEdit.Caption" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="frmHisIcd.gridColumnEdit.ToolTip" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="frmHisIcd.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmHisIcd.layoutControl7.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="frmHisIcd.layoutControlItem12.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Là nguyên nhân gây bệnh</value>
+  </data>
+  <data name="frmHisIcd.layoutControlItem12.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisIcd.layoutControlItem13.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bắt buộc nhập nguyên nhân ngoài:</value>
+  </data>
+  <data name="frmHisIcd.layoutControlItem13.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisIcd.layoutControlItem14.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chặn không cho phép điều trị bệnh nhân nếu chẩn đoán có nhập mã bệnh này</value>
+  </data>
+  <data name="frmHisIcd.layoutControlItem14.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisIcd.layoutControlItem15.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisIcd.layoutControlItem16.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisIcd.layoutControlItem17.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisIcd.layoutControlItem19.Text" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="frmHisIcd.layoutControlItem20.Text" xml:space="preserve">
+    <value>đến</value>
+  </data>
+  <data name="frmHisIcd.layoutControlItem22.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisIcd.layoutControlItem23.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="frmHisIcd.layoutControlItem24.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisIcd.layoutControlItem25.Text" xml:space="preserve">
+    <value> </value>
   </data>
   <data name="frmHisIcd.layoutControlItem6.Text" xml:space="preserve">
     <value>Sửa (Ctrl S)</value>
   </data>
-  <data name="frmHisIcd.bar1.Text" xml:space="preserve">
-    <value>Tools</value>
+  <data name="frmHisIcd.lcEditorInfo.Text" xml:space="preserve">
+    <value>layoutControl5</value>
   </data>
-  <data name="frmHisIcd.bbtnSearch.Caption" xml:space="preserve">
-    <value>Tìm (Ctrl F)</value>
+  <data name="frmHisIcd.lciAttachIcd.Text" xml:space="preserve">
+    <value>ICD đi kèm:</value>
   </data>
-  <data name="frmHisIcd.bbtnEdit.Caption" xml:space="preserve">
-    <value>Sửa (Ctrl S)</value>
+  <data name="frmHisIcd.lciIcdCode.Text" xml:space="preserve">
+    <value>Mã:</value>
   </data>
-  <data name="frmHisIcd.bbtnAdd.Caption" xml:space="preserve">
-    <value>Thêm (Ctrl N)</value>
+  <data name="frmHisIcd.lciIcdGroupId.Text" xml:space="preserve">
+    <value>Nhóm:</value>
   </data>
-  <data name="frmHisIcd.bbtnReset.Caption" xml:space="preserve">
-    <value>Làm lại (Ctrl R)</value>
+  <data name="frmHisIcd.lciIcdName.Text" xml:space="preserve">
+    <value>Tên:</value>
   </data>
-  <data name="frmHisIcd.bbtnFocusDefault.Caption" xml:space="preserve">
-    <value>F2</value>
+  <data name="frmHisIcd.lciIcdNameCommon.Text" xml:space="preserve">
+    <value>Tên thường gọi:</value>
+  </data>
+  <data name="frmHisIcd.lciIcdNameEn.Text" xml:space="preserve">
+    <value>Tên tiếng anh:</value>
+  </data>
+  <data name="frmHisIcd.lciIsHeinNds.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmHisIcd.simpleButton1.Text" xml:space="preserve">
+    <value>Cập nhập cache toàn bộ máy trạm</value>
+  </data>
+  <data name="frmHisIcd.simpleButton2.Text" xml:space="preserve">
+    <value>Cập nhập cache máy của tôi</value>
+  </data>
+  <data name="frmHisIcd.STT.Caption" xml:space="preserve">
+    <value>STT</value>
   </data>
   <data name="frmHisIcd.Text" xml:space="preserve">
     <value>Danh mục</value>
   </data>
-  <data name="frmHisIcd.chkIsCause.Text" xml:space="preserve">
-    <value>Là nguyên nhân gây bệnh</value>
+  <data name="frmHisIcd.txtAttachIcd.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Nhấn F1 để chọn bệnh</value>
   </data>
-  <data name="frmHisIcd.chkIsRequireCause.Text" xml:space="preserve">
-    <value>Bắt buộc nhập nguyên nhân ngoài</value>
-  </data>
-  <data name="frmHisIcd.chkYhct.Text" xml:space="preserve">
-    <value>YHCT</value>
-  </data>
-  <data name="frmHisIcd.chkIsLatentTuberculosis.Text" xml:space="preserve">
-    <value>Bệnh lao tiềm ẩn</value>
-  </data>
-  <data name="frmHisIcd.chkIsLatentTuberculosis.ToolTip" xml:space="preserve">
-    <value>Trong trường hợp được check chọn, phần mềm sẽ thay đổi nội dung XML1 theo công văn 1393 của BHXH
-hướng dẫn nhằm đẩy dữ liệu XML đối với các hồ sơ bệnh nhân có chẩn đoán chính tương ứng</value>
+  <data name="frmHisIcd.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
   </data>
 </root>

@@ -53,10 +53,11 @@ using WCF;
 using WCF.Client;
 using HIS.Desktop.Utility;
 using Inventec.Desktop.Common.LanguageManager;
+using HIS.Desktop.ADO;
 
 namespace HIS.Desktop.Plugins.DepositService.DepositService
 {
-    public partial class frmDepositService : HIS.Desktop.Utility.FormBase
+    public partial class frmDepositService :HIS.Desktop.Utility.FormBase
     {
         #region Declaration
         MOS.EFMODEL.DataModels.V_HIS_TREATMENT_FEE hisTreatment { get; set; }
@@ -189,6 +190,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
                 positionHandle = -1;
+                btnQR.Enabled = false;
                 if (!CheckInputData())
                 {
                     Inventec.Common.Logging.LogSystem.Debug("Du lieu truyen vao khong hop le____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisDepositSDO), hisDepositSDO));
@@ -219,6 +221,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 timerInitForm.Enabled = true;
                 StartTimer(GetModuleLink(), "timerInitForm");
                 Inventec.Common.Logging.LogSystem.Debug("frmDepositService_Load. 4");
+                btnQR.Click += new EventHandler(btnQR_Click);
             }
             catch (Exception ex)
             {
@@ -2187,7 +2190,9 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                         FillDataToControl(this.hisDeposit);
                         RefreshDataAfterSave();
                         EnableButton(false);
-
+                        if(hisDeposit.PAY_FORM_ID == 8)btnQR.Enabled = true;
+                        loadConfig();
+                        if (hisDeposit.PAY_FORM_ID == 8 && hisDeposit.IS_ACTIVE == 0) CreateQR(hisDeposit, false);
                         V_HIS_ACCOUNT_BOOK accountBookDefault = null;
                         //chọn mặc định sổ nếu có sổ tương ứng
                         if (GlobalVariables.LastAccountBook != null && GlobalVariables.LastAccountBook.Count > 0)
@@ -2260,7 +2265,105 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 Inventec.Common.Logging.LogSystem.Fatal(ex);
             }
         }
+        List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
+        HIS_CONFIG selectedConfig = new HIS_CONFIG();
+        private void loadConfig()
+        {
+            try
+            {
+                listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+                if (listConfig == null || listConfig.Count == 0) btnQR.Enabled = false;
+            }
+            catch (Exception ex)
+            {
 
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void CreateQR(V_HIS_TRANSACTION data, bool click)
+        {
+            try
+            {
+                if (listConfig != null)
+                {
+                    if (listConfig.Count > 1)
+                    {
+                        if (!click)
+                        {
+                            MessageBox.Show(this, "Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo", MessageBoxButtons.OK);
+                            return;
+                        }
+                        popupMenu1.ClearLinks();
+                        foreach (var item in listConfig)
+                        {
+                            string key = "";
+                            string value = item.KEY;
+                            int index = value.IndexOf("Info");
+                            if (index > 0)
+                            {
+                                var shotkey = value.Substring(0, index);
+                                string[] parts = shotkey.Split('.');
+                                if (parts.Length > 0)
+                                {
+                                    key = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
+                                }
+                            }
+                            else
+                            {
+                                key = item.KEY;
+                            }
+
+
+                            BarButtonItem btnOption = new BarButtonItem(null, key);
+                            btnOption.ItemClick += (s, args) =>
+                            {
+
+                                selectedConfig = item;
+                                List<object> listArgs = new List<object>();
+                                TransReqQRADO adoqr = new TransReqQRADO();
+                                adoqr.TreatmentId = this.hisTreatment.ID;
+                                adoqr.ConfigValue = selectedConfig;
+                                adoqr.TransReqId = CreateReqType.Transaction;
+                                HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, data);
+                                adoqr.Transaction = tran;
+                                listArgs.Add(adoqr);
+                                Inventec.Common.Logging.LogSystem.Debug("Goi den module CreateTransReqQR. TreatmentID:" + adoqr.TreatmentId + " config: " + adoqr.ConfigValue.KEY + " tran_id: " + adoqr.Transaction.ID);
+                                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.moduleData.RoomId, this.moduleData.RoomTypeId, listArgs);
+
+                            };
+                            popupMenu1.AddItem(btnOption);
+                        }
+                        popupMenu1.Manager = barManager1;
+                        popupMenu1.ShowPopup(Control.MousePosition);
+                    }
+                    else
+                    {
+                        selectedConfig = listConfig[0];
+                        List<object> listArgs = new List<object>();
+                        TransReqQRADO adoqr = new TransReqQRADO();
+                        adoqr.TreatmentId = this.hisTreatment.ID;
+                        adoqr.ConfigValue = selectedConfig;
+                        adoqr.TransReqId = CreateReqType.Transaction;
+                        HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, data);
+                        adoqr.Transaction = tran;
+                        listArgs.Add(adoqr);
+                        Inventec.Common.Logging.LogSystem.Debug("Goi den module CreateTransReqQR. TreatmentID:" + adoqr.TreatmentId + " config: " + adoqr.ConfigValue.KEY + " tran_id: " + adoqr.Transaction.ID);
+                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.moduleData.RoomId, this.moduleData.RoomTypeId, listArgs);
+
+
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         public bool OpenAppPOS()
         {
             try
@@ -3345,6 +3448,18 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void btnQR_Click (object sender, EventArgs e)
+        {
+            try
+            {
+                if (hisDeposit != null && hisDeposit.PAY_FORM_ID == 8 && hisDeposit.IS_ACTIVE == 0) CreateQR(hisDeposit, true);
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }

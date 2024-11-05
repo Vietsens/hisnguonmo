@@ -17,6 +17,7 @@
  */
 using AutoMapper;
 using DevExpress.Utils.Menu;
+using DevExpress.Utils.MVVM.Services;
 using DevExpress.XtraEditors;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
@@ -74,6 +75,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
         bool isPrintNow = false;
         bool isnotPrintMPS000111 = false;
         byte[] byteData { get; set; }
+        public HisTransactionBillResultSDO TransactionBillResultSDO { get; private set; }
+
         bool CreatAgain = false;
         WcfClient cll;
 
@@ -121,6 +124,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 this.positionHandleControl = -1;
                 if (!btnSaveAndSign.Enabled)
                     return;
+                if (cboPayForm.EditValue != null && Int64.Parse(cboPayForm.EditValue.ToString()) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && MessageBox.Show("Thanh toán QR chưa thể tự động tạo hóa đơn điện tử bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                    return;    
                 SetEnableButtonSave(false);
                 if (HisConfigCFG.AutoCreateDepositTransaction && decimal.Parse(lblReceiveAmount.Text) > 0 && cboDepositBook.Enabled && cboDepositBook.EditValue == null)
                 {
@@ -254,6 +259,24 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     if (showResult)
                         MessageManager.Show(this, param, success);
 
+
+                    if (cboPayForm.EditValue != null && Int64.Parse(cboPayForm.EditValue.ToString()) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                    {
+                        btnQr.Enabled = true;
+                        if (TransactionBillResultSDO.TransactionRepay != null && TransactionBillResultSDO.TransactionRepay.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && TransactionBillResultSDO.TransactionRepay.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                            TransactionQr = TransactionBillResultSDO.TransactionRepay;
+                        if (TransactionBillResultSDO.TransactionDeposit != null && TransactionBillResultSDO.TransactionDeposit.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && TransactionBillResultSDO.TransactionDeposit.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                            TransactionQr = TransactionBillResultSDO.TransactionDeposit;
+                        if (TransactionBillResultSDO.TransactionBill != null && TransactionBillResultSDO.TransactionBill.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && TransactionBillResultSDO.TransactionBill.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                            TransactionQr = TransactionBillResultSDO.TransactionBill;
+                        if(listConfig != null)
+                        {
+                            if (listConfig.Count > 1)
+                                XtraMessageBox.Show("Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo");
+                            else
+                                btnQr_Click(null, null);
+                        }
+                    }
                     if (success == true && chkAutoClose.CheckState == CheckState.Checked)
                     {
                         if (!chkPrintBKBHNT.Checked)
@@ -358,6 +381,24 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     }
                     this.hienHoaDonNhap = false;
                     this.onClickPhieuThuThanhToan();
+
+                    if (cboPayForm.EditValue != null && Int64.Parse(cboPayForm.EditValue.ToString()) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                    {
+                        btnQr.Enabled = true;
+                        if (TransactionBillResultSDO.TransactionRepay != null && TransactionBillResultSDO.TransactionRepay.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && TransactionBillResultSDO.TransactionRepay.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                            TransactionQr = TransactionBillResultSDO.TransactionRepay;
+                        if (TransactionBillResultSDO.TransactionDeposit != null && TransactionBillResultSDO.TransactionDeposit.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && TransactionBillResultSDO.TransactionDeposit.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                            TransactionQr = TransactionBillResultSDO.TransactionDeposit;
+                        if (TransactionBillResultSDO.TransactionBill != null && TransactionBillResultSDO.TransactionBill.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && TransactionBillResultSDO.TransactionBill.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                            TransactionQr = TransactionBillResultSDO.TransactionBill;
+                        if (listConfig != null)
+                        {
+                            if (listConfig.Count > 1)
+                                XtraMessageBox.Show("Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo");
+                            else
+                                btnQr_Click(null, null);
+                        }
+                    }
                     if (chkAutoClose.CheckState == CheckState.Checked)
                     {
                         if (!chkPrintBKBHNT.Checked)
@@ -654,6 +695,24 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     }
                     this.hienHoaDonNhap = false;
                     Inventec.Common.Logging.LogSystem.Debug("stopSave bill");
+
+                    if (cboPayForm.EditValue != null && Int64.Parse(cboPayForm.EditValue.ToString()) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                    {
+                        btnQr.Enabled = true;
+                        if (TransactionBillResultSDO.TransactionRepay != null && TransactionBillResultSDO.TransactionRepay.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && TransactionBillResultSDO.TransactionRepay.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                            TransactionQr = TransactionBillResultSDO.TransactionRepay;
+                        if (TransactionBillResultSDO.TransactionDeposit != null && TransactionBillResultSDO.TransactionDeposit.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && TransactionBillResultSDO.TransactionDeposit.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                            TransactionQr = TransactionBillResultSDO.TransactionDeposit;
+                        if (TransactionBillResultSDO.TransactionBill != null && TransactionBillResultSDO.TransactionBill.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && TransactionBillResultSDO.TransactionBill.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                            TransactionQr = TransactionBillResultSDO.TransactionBill;
+                        if (listConfig != null)
+                        {
+                            if (listConfig.Count > 1)
+                                XtraMessageBox.Show("Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo");
+                            else
+                                btnQr_Click(null, null);
+                        }
+                    }
                     MessageManager.Show(this, param, success);
                     if (chkAutoClose.CheckState == CheckState.Checked)
                     {
@@ -810,6 +869,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
             bool? success = false;
             try
             {
+                TransactionBillResultSDO = null;
+                TransactionQr = null;
                 long payFormId = 0;
                 CARD.WCF.DCO.WcfSaleDCO saleDCO = null;
                 CARD.WCF.DCO.WcfRefundDCO refundDCO = null;
@@ -1334,6 +1395,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     if (rs != null)
                     {
                         Inventec.Common.Logging.LogSystem.Debug("HisTransaction/CreateBill rs != null");
+                        TransactionBillResultSDO = rs;
                         success = true;
                         AddLastAccountToLocal();
                         this.resultTranBill = rs.TransactionBill;

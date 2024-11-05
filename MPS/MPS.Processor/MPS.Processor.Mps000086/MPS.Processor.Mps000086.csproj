@@ -127,6 +127,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
+      <Project>{D1E5461B-8A8E-46F7-9AEE-5C1B327E5F2B}</Project>
+      <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
+      <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
+      <Name>HIS.Desktop.LocalStorage.LocalData</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MPS.Processor.Mps000086.PDO\MPS.Processor.Mps000086.PDO.csproj">
       <Project>{ce8f145a-84c8-465a-949b-34c5d2605f5b}</Project>
       <Name>MPS.Processor.Mps000086.PDO</Name>

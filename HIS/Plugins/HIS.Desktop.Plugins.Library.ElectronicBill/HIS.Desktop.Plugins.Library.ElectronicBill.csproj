@@ -88,8 +88,9 @@
     <Reference Include="Inventec.Common.ElectronicBill">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.ElectronicBill\Inventec.Common.ElectronicBill.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.ElectronicBill.Misa">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.ElectronicBill.Misa\Inventec.Common.ElectronicBill.Misa.dll</HintPath>
+    <Reference Include="Inventec.Common.ElectronicBill.Misa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Common\Inventec.Common\Inventec.Common.ElectronicBill\Inventec.Common.ElectronicBill.Misa\bin\Debug\Inventec.Common.ElectronicBill.Misa.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.ElectronicBillMoit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -279,6 +280,10 @@
     <Compile Include="ProviderBehavior\SAFECERT\ApiConsumer.cs" />
     <Compile Include="ProviderBehavior\SAFECERT\SAFECERTBehavior.cs" />
     <Compile Include="ProviderBehavior\SAFECERT\UriStore.cs" />
+    <Compile Include="ProviderBehavior\SODR\Process\ApiConsumer.cs" />
+    <Compile Include="ProviderBehavior\SODR\Process\Data.cs" />
+    <Compile Include="ProviderBehavior\SODR\Process\SoftDreamsProcessor.cs" />
+    <Compile Include="ProviderBehavior\SODR\Process\UriStore.cs" />
     <Compile Include="ProviderBehavior\SODR\SODRBehavior.cs" />
     <Compile Include="ProviderBehavior\VIETTEL\VIETTELBehavior.cs" />
     <Compile Include="ProviderBehavior\VNPT\VNPTBehavior.cs" />

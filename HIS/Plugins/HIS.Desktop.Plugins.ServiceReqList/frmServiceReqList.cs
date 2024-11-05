@@ -3202,7 +3202,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                             dataserviceReqSelect.EXE_SERVICE_MODULE_ID != IMSys.DbConfig.HIS_RS.HIS_EXE_SERVICE_MODULE.ID__XN &&
                             dataserviceReqSelect.EXE_SERVICE_MODULE_ID != IMSys.DbConfig.HIS_RS.HIS_EXE_SERVICE_MODULE.ID__XULYXN &&
                             dataserviceReqSelect.EXE_SERVICE_MODULE_ID != IMSys.DbConfig.HIS_RS.HIS_EXE_SERVICE_MODULE.ID__PHCN &&
-                            dataserviceReqSelect.EXE_SERVICE_MODULE_ID != IMSys.DbConfig.HIS_RS.HIS_EXE_SERVICE_MODULE.ID__XULYDV) ||
+                            dataserviceReqSelect.EXE_SERVICE_MODULE_ID != IMSys.DbConfig.HIS_RS.HIS_EXE_SERVICE_MODULE.ID__XULYDV &&
+                               dataserviceReqSelect.EXE_SERVICE_MODULE_ID != IMSys.DbConfig.HIS_RS.HIS_EXE_SERVICE_MODULE.ID__PTTT) ||
                             (HisConfigCFG.ShowResultWhenReqComplete == "1" && dataserviceReqSelect.SERVICE_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT) || (HisConfigCFG.ShowResultWhenReqComplete == "2" && dataserviceReqSelect.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN && dataserviceReqSelect.SERVICE_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT))
                         {
 
@@ -3963,7 +3964,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         }
                         else if (data.EXE_SERVICE_MODULE_ID == IMSys.DbConfig.HIS_RS.HIS_EXE_SERVICE_MODULE.ID__XULYXN ||
                             data.EXE_SERVICE_MODULE_ID == IMSys.DbConfig.HIS_RS.HIS_EXE_SERVICE_MODULE.ID__PHCN ||
-                            data.EXE_SERVICE_MODULE_ID == IMSys.DbConfig.HIS_RS.HIS_EXE_SERVICE_MODULE.ID__XULYDV)
+                            data.EXE_SERVICE_MODULE_ID == IMSys.DbConfig.HIS_RS.HIS_EXE_SERVICE_MODULE.ID__XULYDV ||
+                            (data.EXE_SERVICE_MODULE_ID == IMSys.DbConfig.HIS_RS.HIS_EXE_SERVICE_MODULE.ID__PTTT && sereServRow.IS_SENT_EXT == 1))
                         {
                             sendObj.Add(sereServRow.ID);
                             CallModule("HIS.Desktop.Plugins.ServiceReqResultView", sendObj);

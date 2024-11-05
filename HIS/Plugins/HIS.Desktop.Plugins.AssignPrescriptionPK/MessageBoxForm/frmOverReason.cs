@@ -103,8 +103,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
                 InitComboReason();
                 if (IsAssignPres)
                 {
-                    lblTitle.Text = "MLCT của bệnh nhân là {0},\r\n{1}.\r\nVượt liều {2}\r\nBạn có muốn {3} không?\r\nTrong trường hợp chọn \"Có\", vui lòng nhập lý do.\r\n";
-                    lblTitle.Text = string.Format(lblTitle.Text, MLCT, Ms.WARNING_CONTENT, Data.AMOUNT -  (Ms.AMOUNT_INDAY_FROM ?? 0) + AmountInDay, content);
+                    lblTitle.Text = "Thuốc {4}\r\nMLCT của bệnh nhân là {0}\r\n{1}.\r\n{2}Bạn có muốn {3} không?\r\nTrong trường hợp chọn \"Có\", vui lòng nhập lý do.\r\n";
+                    lblTitle.Text = string.Format(lblTitle.Text, Math.Round(MLCT, 4), Ms.WARNING_CONTENT, (Ms.AMOUNT_INDAY_FROM ?? 0) == 0 ? "" : string.Format("Vượt liều {0}\r\n", Math.Round((Data.AMOUNT ?? 0) - (Ms.AMOUNT_INDAY_FROM ?? 0) * (Data.UseDays ?? 1) + AmountInDay, 2)), content, Data.MEDICINE_TYPE_NAME);
                     if ((Ms.AMOUNT_INDAY_FROM ?? 0) <= 0)
                         pbImage.Image = global::HIS.Desktop.Plugins.AssignPrescriptionPK.Properties.Resources.block;
                     else
@@ -212,7 +212,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
             try
             {
                 positionHandleControl = -1;
-
+                dxValidationProvider1.SetValidationRule(memReason, null);
+                dxValidationProvider1.SetValidationRule(cboReason, null);
                 if ((cboReason.EditValue == null || cboReason.EditValue == "") && string.IsNullOrEmpty(memReason.Text.Trim()))
                 {
                     ValidationGridLookupControl(cboReason, dxValidationProvider1);

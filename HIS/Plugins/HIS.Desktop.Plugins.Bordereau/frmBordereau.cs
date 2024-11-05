@@ -55,6 +55,7 @@ using HIS.Desktop.ApiConsumer;
 using Inventec.Common.Controls.EditorLoader;
 using HIS.Desktop.Plugins.Bordereau.ChooseCondition;
 using DevExpress.Utils;
+using HIS.Desktop.ADO;
 
 namespace HIS.Desktop.Plugins.Bordereau
 {
@@ -138,6 +139,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                 LoadFromSdaConfig();
                 VisableColumnInGrid();
                 InitControlState();
+                LoadCurrentTreatmentData();
                 this.Icon = Icon.ExtractAssociatedIcon(System.IO.Path.Combine(Inventec.Desktop.Common.LocalStorage.Location.ApplicationStoreLocation.ApplicationDirectory, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]));
 
                 this.gridControlBordereau.ToolTipController = this.toolTipController1;
@@ -172,6 +174,30 @@ namespace HIS.Desktop.Plugins.Bordereau
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadPicUpdateQR()
+        {
+            try
+            {
+                decimal totalDepositPrice = 0;
+                if (lblTotalDepositPrice != null && !string.IsNullOrEmpty(lblTotalDepositPrice.Text))
+                {
+                     totalDepositPrice = Decimal.Parse(lblTotalDepositPrice.Text);
+                }
+                if (currentTreatment.IS_ACTIVE == 0 && totalDepositPrice > 0)
+                {
+                    picUpdateQR.Enabled = true;
+                }
+                else
+                {
+                    picUpdateQR.Enabled = false;
+                }
+            }
+             catch (Exception ex)
+            {
                 LogSystem.Warn(ex);
             }
         }
@@ -2886,6 +2912,34 @@ namespace HIS.Desktop.Plugins.Bordereau
                 {
                     Inventec.Common.Logging.LogSystem.Warn(ex);
                 }
+            }
+        }
+
+        private void picUpdateQR_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                TransReqCreateSDO adoqr = new TransReqCreateSDO();
+                adoqr.TreatmentId = currentTreatment.ID;
+                adoqr.TransReqType = 3;
+                adoqr.RequestRoomId = currentModule.RoomId;
+
+                HIS_TRANS_REQ rs = new BackendAdapter(param).Post<HIS_TRANS_REQ>("api/HisTransReq/CreateSDO", ApiConsumers.MosConsumer, adoqr, param);
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
+                if (rs != null)
+                {
+                    MessageManager.Show(this, param, true);
+                    //lblTotalDepositPrice.Text = 
+                }
+                else
+                {
+                    MessageManager.Show(this, param, false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }

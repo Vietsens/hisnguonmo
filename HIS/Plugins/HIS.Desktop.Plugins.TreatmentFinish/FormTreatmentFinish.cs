@@ -170,7 +170,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         public List<MOS.EFMODEL.DataModels.HIS_BRANCH> hisBranchs;
         public List<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE> hisTreatmentTypes;
         HIS_PATIENT currentPatient;
-        
+
 
         bool isFinished = false;
         #endregion
@@ -294,6 +294,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 HIS.Desktop.Plugins.Library.RegisterConfig.BHXHLoginCFG.LoadConfig();
                 Inventec.Common.Logging.LogSystem.Error("TreatmentFinish 1");
                 LoadDataFromRam();
+                InitComboHisHospitalizeReason();
                 Config.ConfigKey.GetConfigKey();
                 ProcessCheckMaterialInvoice();
                 Inventec.Common.Logging.LogSystem.Error("CreateThreadGetData 2");
@@ -316,7 +317,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 TaskLoadBedLog();
                 TaskLoadServiceReqSA();
                 EnableControlByTreatment();
-               
+
 
                 LoadClinicalNote();
                 LoadSurgery();
@@ -334,7 +335,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 //
                 chkOutHopitalCondition.MaximumSize = new System.Drawing.Size(txtDaysBedTreatment.Width, 0);
                 ChkExpXml4210.MaximumSize = new System.Drawing.Size(txtDaysBedTreatment.Width, 0);
-                
+
                 time.Start();
             }
             catch (Exception ex)
@@ -879,7 +880,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     else if (ConfigKey.SetDefaultTreatmentEndType == "2")
                     {
                         var heinRightRouteData = MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteStore.GetByCode(this.patientTypeAlter.RIGHT_ROUTE_CODE);
-                        if (!string.IsNullOrWhiteSpace(this.currentHisTreatment.TRANSFER_IN_MEDI_ORG_CODE) 
+                        if (!string.IsNullOrWhiteSpace(this.currentHisTreatment.TRANSFER_IN_MEDI_ORG_CODE)
                             && heinRightRouteData != null && heinRightRouteData.HeinRightRouteName == "Đúng tuyến")
                         {
                             cboTreatmentEndType.EditValue = LstHisTreatmentEndType != null ? LstHisTreatmentEndType.FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN).ID : 0;
@@ -1029,7 +1030,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 HisEmployeeFilter emFilter = new HisEmployeeFilter();
                 emFilter.LOGINNAME__EXACT = login_name;
                 var rs = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EMPLOYEE>>("/api/HisEmployee/GetView", ApiConsumers.MosConsumer, emFilter, new CommonParam());
-                if(rs!= null)
+                if (rs != null)
                 {
                     if (rs.First().IS_NEED_SIGN_INSTEAD == 1) isSign = true;
                 }
@@ -1344,7 +1345,22 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     {
                         ProcessDataForTreatmentFinishSDO(data);
                     }
-
+                    if (!string.IsNullOrEmpty(data.HOSPITALIZE_REASON_CODE))
+                    {
+                        var lst = cboHosReason.Properties.DataSource as List<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>;
+                        if (lst != null && lst.Count > 0 && lst.FirstOrDefault(o => o.HOSPITALIZE_REASON_CODE == data.HOSPITALIZE_REASON_CODE) != null)
+                        {
+                            cboHosReason.EditValue = lst.FirstOrDefault(o => o.HOSPITALIZE_REASON_CODE == data.HOSPITALIZE_REASON_CODE).ID;
+                        }
+                        else
+                        {
+                            txtHosReasonNt.Text = data.HOSPITALIZE_REASON_NAME;
+                        }
+                    }
+                    else
+                    {
+                        txtHosReasonNt.Text = data.HOSPITALIZE_REASON_NAME;
+                    }
                     LoadSoNgayDieuTri();
                     FillDataToControlsForm();
                 }
@@ -1602,8 +1618,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             {
                 if (dtEndTime.EditValue != null && dtTimeIn.EditValue != null)
                 {
-                    String enddatetime = Inventec.Common.TypeConvert.Parse.ToDateTime(dtEndTime.Text).ToString("yyyyMMddHHmm");
-                    long endTime = Inventec.Common.TypeConvert.Parse.ToInt64(enddatetime + "00");
+                    String enddatetime = Inventec.Common.TypeConvert.Parse.ToDateTime(dtEndTime.Text).ToString("yyyyMMddHHmmss");
+                    long endTime = Inventec.Common.TypeConvert.Parse.ToInt64(enddatetime);
 
                     String indatetime = Inventec.Common.TypeConvert.Parse.ToDateTime(dtTimeIn.Text).ToString("yyyyMMddHHmm");
                     long inTime = Inventec.Common.TypeConvert.Parse.ToInt64(indatetime + "00");
@@ -2371,7 +2387,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             bool isValid = true;
             try
             {
-                if ((string.IsNullOrEmpty(txtEndDeptSubsHead.Text.Trim()) || cboEndDeptSubsHead.EditValue == null)&&this.layoutControlItem46.AppearanceItemCaption.ForeColor == Color.Brown)
+                if ((string.IsNullOrEmpty(txtEndDeptSubsHead.Text.Trim()) || cboEndDeptSubsHead.EditValue == null) && this.layoutControlItem46.AppearanceItemCaption.ForeColor == Color.Brown)
                 {
                     dxErrorProvider1.SetError(txtEndDeptSubsHead, ResourceMessage.TruongDuLieuBatBuoc, ErrorType.Warning);
                     isValid = false;
@@ -2397,7 +2413,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 if (!btnSave.Enabled) return;
                 bool success = false;
                 this.positionHandle = -1;
-                if (Int64.Parse(cboTreatmentEndType.EditValue.ToString()) == 2)
+                if (cboTreatmentEndType.EditValue != null && Int64.Parse(cboTreatmentEndType.EditValue.ToString()) == 2)
                 {
                     layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
                     ValidateTextEdit(txtDauHieuLamSang);
@@ -2481,7 +2497,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                             icdSubCode = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
                         }
                     }
-                    if (!check.ProcessCheckIcd(icdCode, icdSubCode, ref message, true))
+                    if (!check.ProcessCheckIcd(icdCode, icdSubCode, ref message, true, true))
                     {
                         if (CheckIcdWhenSave == "1" && !String.IsNullOrEmpty(message))
                         {
@@ -5543,6 +5559,171 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             catch (Exception ex)
             {
                 LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtHosReasonNt_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboHosReason.EditValue = null;
+                    txtHosReasonNt.Text = null;
+                }
+                else if (e.Button.Kind == ButtonPredefines.Combo)
+                {
+                    cboHosReason.ShowPopup();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtHosReasonNt_DoubleClick(object sender, EventArgs e)
+        {
+            try
+            {
+                cboHosReason.ShowPopup();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboHosReason_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboHosReason.Text = null;
+                    cboHosReason.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboHosReason_EditValueChanged(object sender, EventArgs e)
+        {
+
+            try
+            {
+                if (cboHosReason.EditValue != null)
+                {
+                    txtHosReasonNt.Text = (cboHosReason.Properties.DataSource as List<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>).FirstOrDefault(o => o.ID == Int64.Parse(cboHosReason.EditValue.ToString())).HOSPITALIZE_REASON_NAME;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void InitComboHisHospitalizeReason()
+        {
+            try
+            {
+                List<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON> datas = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                InitComboHisHospitalizeReason(datas); 
+                cboHosReason.EditValue = null;
+                dxValidationProvider.SetValidationRule(txtHosReasonNt, null);
+                if (currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
+                {
+                    lciHosReason.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    ValidateComboHosspitalizeReason();
+                }
+                else
+                {
+                    lciHosReason.Text = " ";
+                    panel1.Controls.Clear();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void InitComboHisHospitalizeReason(List<HIS_HOSPITALIZE_REASON> data)
+        {
+            try
+            {
+                try
+                {
+                    cboHosReason.Properties.DataSource = data;
+                    cboHosReason.Properties.DisplayMember = "HOSPITALIZE_REASON_NAME";
+                    cboHosReason.Properties.ValueMember = "ID";
+
+                    cboHosReason.Properties.View.OptionsView.GroupDrawMode = DevExpress.XtraGrid.Views.Grid.GroupDrawMode.Office;
+                    cboHosReason.Properties.View.OptionsView.HeaderFilterButtonShowMode = DevExpress.XtraEditors.Controls.FilterButtonShowMode.SmartTag;
+                    cboHosReason.Properties.View.OptionsView.ShowAutoFilterRow = true;
+                    cboHosReason.Properties.View.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
+                    cboHosReason.Properties.View.OptionsView.ShowDetailButtons = false;
+                    cboHosReason.Properties.View.OptionsView.ShowGroupPanel = false;
+                    cboHosReason.Properties.View.OptionsView.ShowIndicator = false;
+                    cboHosReason.Properties.View.RowCellClick += View_RowCellClick;
+
+
+                    DevExpress.XtraGrid.Columns.GridColumn column = cboHosReason.Properties.View.Columns.AddField("HOSPITALIZE_REASON_CODE");
+                    column.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+                    column.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
+                    column.VisibleIndex = 1;
+                    column.Width = 150;
+                    column.Caption = "Mã";
+
+                    DevExpress.XtraGrid.Columns.GridColumn column1 = cboHosReason.Properties.View.Columns.AddField("HOSPITALIZE_REASON_NAME");
+                    column1.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+                    column1.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
+                    column1.VisibleIndex = 2;
+                    column1.Width = 250;
+                    column1.Caption = "Tên";
+                    cboHosReason.Properties.View.OptionsView.ShowColumnHeaders = true;
+                    cboHosReason.Properties.View.OptionsSelection.MultiSelect = true;
+                    cboHosReason.Properties.ImmediatePopup = true;
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void View_RowCellClick(object sender, DevExpress.XtraGrid.Views.Grid.RowCellClickEventArgs e)
+        {
+            try
+            {
+                cboHosReason.EditValue = ((HIS_HOSPITALIZE_REASON)cboHosReason.Properties.View.GetFocusedRow()).ID;
+                cboHosReason.ClosePopup();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+        private void ValidateComboHosspitalizeReason()
+        {
+            try
+            {
+                ControlEditValidationRule validRule = new ControlEditValidationRule();
+                validRule.editor = this.txtHosReasonNt;
+                validRule.ErrorText = "Trường dữ liệu bắt buộc";
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProvider.SetValidationRule(this.txtHosReasonNt, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }

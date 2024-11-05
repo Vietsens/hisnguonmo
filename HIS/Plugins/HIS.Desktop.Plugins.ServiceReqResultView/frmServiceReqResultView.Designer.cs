@@ -45,20 +45,20 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnDropDownPrint = new DevExpress.XtraEditors.DropDownButton();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.btnOpenWeb = new DevExpress.XtraEditors.SimpleButton();
             this.chkAutoOpenWeb = new DevExpress.XtraEditors.CheckEdit();
             this.xtraTab = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabHis = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
+            this.lblSizeFilm = new DevExpress.XtraEditors.LabelControl();
+            this.lblNumFilm = new DevExpress.XtraEditors.LabelControl();
+            this.txtDesciptions = new DevExpress.XtraEditors.MemoEdit();
             this.lblEndTime = new DevExpress.XtraEditors.LabelControl();
             this.lblStartTime = new DevExpress.XtraEditors.LabelControl();
             this.xtraTabControl_TabHIS = new DevExpress.XtraTab.XtraTabControl();
@@ -80,6 +80,9 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraTabPacs = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.txtUrl = new DevExpress.XtraEditors.TextEdit();
@@ -98,6 +101,12 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciDropDownPrint = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.txtPtv = new DevExpress.XtraEditors.LabelControl();
+            this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
@@ -107,6 +116,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.xtraTabHis.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDesciptions.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl_TabHIS)).BeginInit();
             this.xtraTabControl_TabHIS.SuspendLayout();
             this.xtraTabPage_TabDocument.SuspendLayout();
@@ -127,6 +137,9 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
             this.xtraTabPacs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
@@ -142,6 +155,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDropDownPrint)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -176,10 +190,6 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem1});
@@ -203,34 +213,6 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.barButtonItem1.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P));
             this.barButtonItem1.Name = "barButtonItem1";
             this.barButtonItem1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem_Print_ItemClick);
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1100, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 661);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1100, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 632);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1100, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 632);
             // 
             // btnOpenWeb
             // 
@@ -273,6 +255,10 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             // 
             // layoutControl3
             // 
+            this.layoutControl3.Controls.Add(this.txtPtv);
+            this.layoutControl3.Controls.Add(this.lblSizeFilm);
+            this.layoutControl3.Controls.Add(this.lblNumFilm);
+            this.layoutControl3.Controls.Add(this.txtDesciptions);
             this.layoutControl3.Controls.Add(this.lblEndTime);
             this.layoutControl3.Controls.Add(this.lblStartTime);
             this.layoutControl3.Controls.Add(this.xtraTabControl_TabHIS);
@@ -287,12 +273,44 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.layoutControl3.TabIndex = 0;
             this.layoutControl3.Text = "layoutControl3";
             // 
+            // lblSizeFilm
+            // 
+            this.lblSizeFilm.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblSizeFilm.Location = new System.Drawing.Point(988, 456);
+            this.lblSizeFilm.MinimumSize = new System.Drawing.Size(100, 0);
+            this.lblSizeFilm.Name = "lblSizeFilm";
+            this.lblSizeFilm.Size = new System.Drawing.Size(100, 20);
+            this.lblSizeFilm.StyleController = this.layoutControl3;
+            this.lblSizeFilm.TabIndex = 12;
+            // 
+            // lblNumFilm
+            // 
+            this.lblNumFilm.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblNumFilm.Location = new System.Drawing.Point(789, 456);
+            this.lblNumFilm.MinimumSize = new System.Drawing.Size(100, 0);
+            this.lblNumFilm.Name = "lblNumFilm";
+            this.lblNumFilm.Size = new System.Drawing.Size(100, 20);
+            this.lblNumFilm.StyleController = this.layoutControl3;
+            this.lblNumFilm.TabIndex = 11;
+            // 
+            // txtDesciptions
+            // 
+            this.txtDesciptions.Location = new System.Drawing.Point(97, 504);
+            this.txtDesciptions.MenuManager = this.barManager1;
+            this.txtDesciptions.Name = "txtDesciptions";
+            this.txtDesciptions.Properties.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(247)))));
+            this.txtDesciptions.Properties.Appearance.Options.UseBackColor = true;
+            this.txtDesciptions.Size = new System.Drawing.Size(991, 29);
+            this.txtDesciptions.StyleController = this.layoutControl3;
+            this.txtDesciptions.TabIndex = 10;
+            this.txtDesciptions.TabStop = false;
+            // 
             // lblEndTime
             // 
             this.lblEndTime.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblEndTime.Location = new System.Drawing.Point(400, 456);
+            this.lblEndTime.Location = new System.Drawing.Point(377, 456);
             this.lblEndTime.Name = "lblEndTime";
-            this.lblEndTime.Size = new System.Drawing.Size(688, 20);
+            this.lblEndTime.Size = new System.Drawing.Size(313, 20);
             this.lblEndTime.StyleController = this.layoutControl3;
             this.lblEndTime.TabIndex = 9;
             // 
@@ -301,7 +319,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.lblStartTime.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblStartTime.Location = new System.Drawing.Point(97, 456);
             this.lblStartTime.Name = "lblStartTime";
-            this.lblStartTime.Size = new System.Drawing.Size(204, 20);
+            this.lblStartTime.Size = new System.Drawing.Size(181, 20);
             this.lblStartTime.StyleController = this.layoutControl3;
             this.lblStartTime.TabIndex = 8;
             // 
@@ -418,20 +436,20 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             // 
             // txtConclude
             // 
-            this.txtConclude.Location = new System.Drawing.Point(97, 480);
+            this.txtConclude.Location = new System.Drawing.Point(97, 537);
             this.txtConclude.Name = "txtConclude";
             this.txtConclude.Properties.ReadOnly = true;
-            this.txtConclude.Size = new System.Drawing.Size(446, 92);
+            this.txtConclude.Size = new System.Drawing.Size(446, 35);
             this.txtConclude.StyleController = this.layoutControl3;
             this.txtConclude.TabIndex = 5;
             this.txtConclude.TabStop = false;
             // 
             // txtNote
             // 
-            this.txtNote.Location = new System.Drawing.Point(642, 480);
+            this.txtNote.Location = new System.Drawing.Point(642, 537);
             this.txtNote.Name = "txtNote";
             this.txtNote.Properties.ReadOnly = true;
-            this.txtNote.Size = new System.Drawing.Size(446, 92);
+            this.txtNote.Size = new System.Drawing.Size(446, 35);
             this.txtNote.StyleController = this.layoutControl3;
             this.txtNote.TabIndex = 6;
             this.txtNote.TabStop = false;
@@ -445,7 +463,11 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.layoutControlItem3,
             this.layoutControlItem11,
             this.layoutControlItem13,
-            this.layoutControlItem14});
+            this.layoutControlItem14,
+            this.layoutControlItem4,
+            this.layoutControlItem15,
+            this.layoutControlItem16,
+            this.layoutControlItem17});
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "Root";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -457,9 +479,9 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.layoutControlItem2.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem2.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem2.Control = this.txtConclude;
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 478);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 535);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(545, 96);
+            this.layoutControlItem2.Size = new System.Drawing.Size(545, 39);
             this.layoutControlItem2.Text = "Kết luận:";
             this.layoutControlItem2.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem2.TextSize = new System.Drawing.Size(90, 20);
@@ -470,11 +492,11 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.layoutControlItem3.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem3.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem3.Control = this.txtNote;
-            this.layoutControlItem3.Location = new System.Drawing.Point(545, 478);
+            this.layoutControlItem3.Location = new System.Drawing.Point(545, 535);
             this.layoutControlItem3.MaxSize = new System.Drawing.Size(0, 120);
             this.layoutControlItem3.MinSize = new System.Drawing.Size(109, 24);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(545, 96);
+            this.layoutControlItem3.Size = new System.Drawing.Size(545, 39);
             this.layoutControlItem3.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem3.Text = "Ghi chú:";
             this.layoutControlItem3.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -497,7 +519,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.layoutControlItem13.Control = this.lblStartTime;
             this.layoutControlItem13.Location = new System.Drawing.Point(0, 454);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(303, 24);
+            this.layoutControlItem13.Size = new System.Drawing.Size(280, 24);
             this.layoutControlItem13.Text = "TG bắt đầu:";
             this.layoutControlItem13.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem13.TextSize = new System.Drawing.Size(90, 20);
@@ -508,13 +530,52 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.layoutControlItem14.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem14.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem14.Control = this.lblEndTime;
-            this.layoutControlItem14.Location = new System.Drawing.Point(303, 454);
+            this.layoutControlItem14.Location = new System.Drawing.Point(280, 454);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(787, 24);
+            this.layoutControlItem14.Size = new System.Drawing.Size(412, 24);
             this.layoutControlItem14.Text = "TG kết thúc:";
             this.layoutControlItem14.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem14.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem14.TextToControlDistance = 5;
+            // 
+            // layoutControlItem4
+            // 
+            this.layoutControlItem4.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem4.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem4.Control = this.txtDesciptions;
+            this.layoutControlItem4.Location = new System.Drawing.Point(0, 502);
+            this.layoutControlItem4.Name = "layoutControlItem4";
+            this.layoutControlItem4.Size = new System.Drawing.Size(1090, 33);
+            this.layoutControlItem4.Text = "Mô tả:";
+            this.layoutControlItem4.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem4.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem4.TextToControlDistance = 5;
+            // 
+            // layoutControlItem15
+            // 
+            this.layoutControlItem15.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem15.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem15.Control = this.lblNumFilm;
+            this.layoutControlItem15.Location = new System.Drawing.Point(692, 454);
+            this.layoutControlItem15.Name = "layoutControlItem15";
+            this.layoutControlItem15.Size = new System.Drawing.Size(199, 24);
+            this.layoutControlItem15.Text = "Số film:";
+            this.layoutControlItem15.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem15.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem15.TextToControlDistance = 5;
+            // 
+            // layoutControlItem16
+            // 
+            this.layoutControlItem16.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem16.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem16.Control = this.lblSizeFilm;
+            this.layoutControlItem16.Location = new System.Drawing.Point(891, 454);
+            this.layoutControlItem16.Name = "layoutControlItem16";
+            this.layoutControlItem16.Size = new System.Drawing.Size(199, 24);
+            this.layoutControlItem16.Text = "Cỡ film:";
+            this.layoutControlItem16.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem16.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem16.TextToControlDistance = 5;
             // 
             // xtraTabPacs
             // 
@@ -694,6 +755,58 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.lciDropDownPrint.TextSize = new System.Drawing.Size(0, 0);
             this.lciDropDownPrint.TextVisible = false;
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1100, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 661);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1100, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 632);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1100, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 632);
+            // 
+            // txtPtv
+            // 
+            this.txtPtv.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.txtPtv.Location = new System.Drawing.Point(97, 480);
+            this.txtPtv.MinimumSize = new System.Drawing.Size(100, 0);
+            this.txtPtv.Name = "txtPtv";
+            this.txtPtv.Size = new System.Drawing.Size(991, 20);
+            this.txtPtv.StyleController = this.layoutControl3;
+            this.txtPtv.TabIndex = 13;
+            // 
+            // layoutControlItem17
+            // 
+            this.layoutControlItem17.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem17.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem17.Control = this.txtPtv;
+            this.layoutControlItem17.Location = new System.Drawing.Point(0, 478);
+            this.layoutControlItem17.Name = "layoutControlItem17";
+            this.layoutControlItem17.OptionsToolTip.ToolTip = "Người đọc kết quả";
+            this.layoutControlItem17.Size = new System.Drawing.Size(1090, 24);
+            this.layoutControlItem17.Text = "Người đọc KQ:";
+            this.layoutControlItem17.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem17.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem17.TextToControlDistance = 5;
+            // 
             // frmServiceReqResultView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -722,6 +835,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.xtraTabHis.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtDesciptions.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl_TabHIS)).EndInit();
             this.xtraTabControl_TabHIS.ResumeLayout(false);
             this.xtraTabPage_TabDocument.ResumeLayout(false);
@@ -742,6 +856,9 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
             this.xtraTabPacs.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
@@ -757,6 +874,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDropDownPrint)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -817,5 +935,13 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem14;
         private DevExpress.XtraEditors.DropDownButton btnDropDownPrint;
         private DevExpress.XtraLayout.LayoutControlItem lciDropDownPrint;
+        private DevExpress.XtraEditors.MemoEdit txtDesciptions;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
+        private DevExpress.XtraEditors.LabelControl lblNumFilm;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem15;
+        private DevExpress.XtraEditors.LabelControl lblSizeFilm;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem16;
+        private DevExpress.XtraEditors.LabelControl txtPtv;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem17;
     }
 }

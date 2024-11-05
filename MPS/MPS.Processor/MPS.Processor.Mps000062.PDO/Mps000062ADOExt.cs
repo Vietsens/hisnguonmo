@@ -231,6 +231,7 @@ namespace MPS.Processor.Mps000062.PDO
 
         public string MEDICINES_TAY___DATA { get; set; } //thuốc tây y
         public string MEDICINES_DONG___DATA { get; set; } //thuốc đông y
+        public string MEDICINES_DONG_DETAIL___DATA { get; set; } //Chi tiết thuốc đông y
 
         public string MEDICINES_NO_CONCENTRA__DATA { get; set; } //Bỏ hàm lượng khỏi tên thuốc 
         public string MEDI_DUTRU_NO_CONCENTRA { get; set; } //Bỏ hàm lượng khỏi tên thuốc đối với thuốc dự trù
@@ -240,7 +241,9 @@ namespace MPS.Processor.Mps000062.PDO
         public string IMP_MEST_MATERIAL___DATA { get; set; }
         public string TT_SERVICE___DATA { get; set; }
         public string SERVICE_CLS___DATA { get; set; }
+        public string SERVICE_CLS_X01___DATA { get; set; }
         public string SERVICE_CLS_BOLD___DATA { get; set; }
+        public string SERVICE_CLS_BOLD_X01___DATA { get; set; }
         /// <summary>
         /// 6. Thuốc Hoàn trả
         ///- Thêm tiêu đề “Thuốc hoàn trả”
@@ -271,7 +274,17 @@ namespace MPS.Processor.Mps000062.PDO
 
         public string MEDICINES_MERGE___DATA { get; set; } // thuốc pha truyền và thuốc không pha truyền
         public string MEDICINES_MERGE_DUTRU___DATA { get; set; } // thuốc dự trù pha truyền và thuốc dự trù không pha truyền
-
+        /// <summary>
+        /// Tổng hợp chi tiết của MEDICINES___DATA, MEDICINES_DuTru___DATA,  MEDICINES_THDT___DATA
+        /// </summary>
+        public string MEDICINES_MERGE_DETAIL___DATA { get; set; }
+        public string SERVICE_CLS_DuTru___DATA { get; set; }
+        public string SERVICE_CLS_DuTru_X01___DATA { get; set; }
+        public string SERVICE_CLS_THDT___DATA { get; set; }
+        public string SERVICE_CLS_THDT_X01___DATA { get; set; }
+        public string TT_SERVICE_DuTru___DATA { get; set; } 
+        public string TT_SERVICE_THDT___DATA { get; set; } 
+        public string SERVICE_REQ_ADVISE { get; set; }
         public string PARENT_ORGANIZATION_NAME { get; set; }
         public string ORGANIZATION_NAME { get; set; }
         public string DEPARTMENT_NAME { get; set; }
@@ -638,6 +651,9 @@ namespace MPS.Processor.Mps000062.PDO
         public long? NUM_ORDER_DOSAGE_FORM { get; set; }
         public string MEDICINE_GROUP_NAME { get; set; }
         public string DOSAGE_FORM_NAME { get; set; }
+        public string DATA_REPX { get; set; }
+        public long? ASSIGN_TIME_TO { get; set; }
+        public string ADVISE { get; set; }
         public ExpMestMetyReqADO() { }
         public ExpMestMetyReqADO(HIS_EXP_MEST_MEDICINE data)
         {
@@ -802,7 +818,7 @@ namespace MPS.Processor.Mps000062.PDO
         public long? REQ_BLOOD_ABO_ID { get; set; }
         public long? REQ_BLOOD_RH_ID { get; set; }
         public long? REQ_BLOOD_TYPE_ID { get; set; }
-
+        public long? USE_TIME { get; set; }
 
         public ServiceCLS() { }
 

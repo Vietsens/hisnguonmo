@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +41,7 @@ namespace Inventec.Common.ElectronicBill.Misa.Base
 
         public T CreateRequest<T>(string requestUri, object sendData)
         {
+            System.Net.ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             string authInfo = GetAuthInfo();
             using (var client = new HttpClient())
             {

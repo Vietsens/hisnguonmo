@@ -172,6 +172,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000069.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000069.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.Processor.Mps000229.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000229.PDO.dll</HintPath>
     </Reference>
@@ -279,10 +282,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS.Processor\MPS.Processor.Mps000069.PDO\MPS.Processor.Mps000069.PDO.csproj">
-      <Project>{b0febae1-90f9-4d86-8927-99b4fe99c92b}</Project>
-      <Name>MPS.Processor.Mps000069.PDO</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>

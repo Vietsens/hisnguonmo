@@ -647,7 +647,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 cboUserGCS.EditValue = cboUser.LOGINNAME;
                 txtUserGCS.Text = cboUser.LOGINNAME;
                 //var cboDirectorUser = BackendDataWorker.Get<HIS_BRANCH>().Where(e => e.DIRECTOR_USERNAME != null && e.DIRECTOR_LOGINNAME != null).FirstOrDefault();
-                cboDirectorUsername.EditValue = hisBranch.DIRECTOR_USERNAME;
+                cboDirectorUsername.EditValue = hisBranch.DIRECTOR_LOGINNAME;
                 txtDirectorLoginname.Text = hisBranch.DIRECTOR_LOGINNAME;
                 chkInfantcheck.CheckState = CheckState.Unchecked;
                 chkIsBacterialContamination.CheckState = CheckState.Unchecked;
@@ -3310,6 +3310,8 @@ namespace HIS.Desktop.Plugins.InfantInformation
                         this.lciBirthHospital.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                         cboBirthHospital.EditValue = null;
                     }
+                    dxErrorProvider1.SetError(dtdInfantdate, "", ErrorType.None);
+                    dxErrorProvider1.SetError(txtInfantBorntime, "", ErrorType.None);
                 }
             }
             catch (Exception ex)
@@ -4154,17 +4156,13 @@ namespace HIS.Desktop.Plugins.InfantInformation
 
         private void cboDirectorUsername_Closed(object sender, ClosedEventArgs e)
         {
-             cboDirectorUsername.Properties.DataSource = null;
-             var data = BackendDataWorker.Get<HIS_BRANCH>();
-             data = data.Where(o => o.IS_ACTIVE == 1 && o.BRANCH_NAME == hisBranch.BRANCH_NAME).ToList();
-             cboDirectorUsername.Properties.DataSource = data;
             try
             {
                 if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
                 {
                     if (cboDirectorUsername.EditValue != null)
                     {
-                        txtDirectorLoginname.Text = hisBranch.DIRECTOR_LOGINNAME;
+                        txtDirectorLoginname.Text = (cboDirectorUsername.Properties.DataSource as List<V_HIS_EMPLOYEE>).FirstOrDefault(o => o.LOGINNAME == cboDirectorUsername.EditValue.ToString()).LOGINNAME;
                         txtCMT.Focus();
                         txtCMT.SelectAll();
                     }
@@ -4182,16 +4180,6 @@ namespace HIS.Desktop.Plugins.InfantInformation
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    if (cboDirectorUsername.EditValue != null)
-                    {
-                       // var dataDirectorUser = BackendDataWorker.Get<HIS_BABY>();
-                        var data = listHisBaby.FirstOrDefault(o => o.DIRECTOR_LOGINNAME == cboDirectorUsername.EditValue.ToString());
-                        if (data != null)
-                        {
-                            txtDirectorLoginname.Text = data.DIRECTOR_USERNAME;
-                         
-                        }
-                    }
                     txtCMT.Focus();
                     txtCMT.SelectAll();
                 }
@@ -4351,8 +4339,26 @@ namespace HIS.Desktop.Plugins.InfantInformation
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    txtCMT.Focus();
-                    txtCMT.SelectAll();
+                    if (!string.IsNullOrEmpty(txtDirectorLoginname.Text.Trim()))
+                    {
+                        var employee = (cboDirectorUsername.Properties.DataSource as List<V_HIS_EMPLOYEE>).FirstOrDefault(o => o.LOGINNAME == txtDirectorLoginname.Text.Trim());
+                        if (employee != null)
+                        {
+                            cboDirectorUsername.EditValue = employee.LOGINNAME;
+                            txtCMT.Focus();
+                            txtCMT.SelectAll();
+                        }
+                        else
+                        {
+                            cboDirectorUsername.Focus();
+                            cboDirectorUsername.ShowPopup();
+                        }
+                    }
+                    else
+                    {
+                        cboDirectorUsername.Focus();
+                        cboDirectorUsername.ShowPopup();
+                    }
                 }
             }
             catch (Exception ex)

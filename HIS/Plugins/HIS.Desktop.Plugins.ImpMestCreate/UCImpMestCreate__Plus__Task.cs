@@ -101,7 +101,63 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 				Inventec.Common.Logging.LogSystem.Error(ex);
 			}
 		}
+		private void GetMedicine(long mediId)
+        {
+            try
+            {
+				// thread load lo thuoc
+				CommonParam param = new CommonParam();
+				HisMedicineFilter filter = new HisMedicineFilter();
+				filter.MEDICINE_TYPE_ID = mediId;
+				filter.ORDER_FIELD = "IMP_TIME";
+				filter.ORDER_DIRECTION = "DESC";
+				var rs = new BackendAdapter(param).Get<List<HIS_MEDICINE>>("api/HisMedicine/Get", ApiConsumers.MosConsumer,filter, param);
 
+
+
+				//var rs = BackendDataWorker.Get<V_HIS_MEDICINE>().Where(s => s.MEDICINE_TYPE_ID == mediId).OrderByDescending(o => o.IMP_TIME).FirstOrDefault();
+				if (rs != null)
+				{
+
+					rs = rs.OrderByDescending(s => s.IMP_TIME).ToList();
+
+					this.currentMedicine = rs.FirstOrDefault();				
+				}
+				else this.currentMedicine = null;
+				Inventec.Common.Logging.LogSystem.Debug("Loai thuoc ID: " + mediId + " co danh  sach lo thuoc la: " + rs);
+			}
+            catch (Exception ex)
+            {
+
+				Inventec.Common.Logging.LogSystem.Error(ex);
+			}
+        }
+		private void GetMaterial(long mediId)
+        {
+            try
+            {
+				// thread load lo thuoc
+				CommonParam param = new CommonParam();
+				HisMaterialFilter filter = new HisMaterialFilter();
+				filter.MATERIAL_TYPE_ID = mediId;
+				filter.ORDER_FIELD = "IMP_TIME";
+				filter.ORDER_DIRECTION = "DESC";
+				var rs  = new BackendAdapter(param).Get<List<HIS_MATERIAL>>("api/HisMaterial/Get", ApiConsumers.MosConsumer, filter, param);
+				//var rs = BackendDataWorker.Get<V_HIS_MATERIAL>().Where(s => s.MATERIAL_TYPE_ID == mediId).OrderByDescending(o => o.IMP_TIME).FirstOrDefault();
+				if (rs != null)
+                {
+					rs = rs.OrderByDescending(s => s.IMP_TIME).ToList();
+					this.currentMaterial = rs.FirstOrDefault();
+				}
+				else this.currentMaterial = null;
+				Inventec.Common.Logging.LogSystem.Debug("Loai vat tu ID: " + mediId + " co danh  sach lo vat tu la: " + rs);
+			}
+            catch (Exception ex)
+            {
+
+				Inventec.Common.Logging.LogSystem.Error(ex);
+			}
+        }
 		private void GetContract()
 		{
 			try

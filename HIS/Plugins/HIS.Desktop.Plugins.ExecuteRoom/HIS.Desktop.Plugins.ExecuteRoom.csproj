@@ -92,6 +92,9 @@
     <Reference Include="HIS.Desktop.Plugins.Library.OtherTreatmentHistory">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.OtherTreatmentHistory\HIS.Desktop.Plugins.Library.OtherTreatmentHistory.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.TreeSereServ7V2">
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.UC.TreeSereServ7V2.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.ViewEmrDocument, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.ViewEmrDocument\HIS.UC.ViewEmrDocument.dll</HintPath>
@@ -241,15 +244,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
     </Reference>
-    <Reference Include="PAC.EFMODEL">
-      <HintPath>..\..\..\..\LIB\PAC\PAC.EFMODEL.dll</HintPath>
-    </Reference>
-    <Reference Include="PAC.Filter">
-      <HintPath>..\..\..\..\LIB\PAC\PAC.Filter.dll</HintPath>
-    </Reference>
-    <Reference Include="PAC.SDO">
-      <HintPath>..\..\..\..\LIB\PAC\PAC.SDO.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -388,10 +382,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.TreeSereServ7V2\HIS.UC.TreeSereServ7V2.csproj">
-      <Project>{d3cb8f25-0cda-46ba-a971-75966bafe106}</Project>
-      <Name>HIS.UC.TreeSereServ7V2</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>

@@ -64,6 +64,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Inventec.Common.Controls.EditorLoader;
+using HIS.Desktop.LocalStorage.HisConfig;
+using DevExpress.XtraBars.Controls;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 {
@@ -152,11 +154,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         List<MOS.EFMODEL.DataModels.V_HIS_MATERIAL_BEAN_1> listMaterialBeanForEdits = new List<V_HIS_MATERIAL_BEAN_1>();
         CommonParam paramCommon;
         internal IcdProcessor icdProcessor;
+        internal IcdProcessor icdProcessorYHCT;
         internal UserControl ucIcd;
+        internal UserControl ucIcdYHCT;
         internal IcdProcessor icdCauseProcessor;
         internal UserControl ucIcdCause;
         internal SecondaryIcdProcessor subIcdProcessor;
+        internal SecondaryIcdProcessor subIcdProcessorYHCT;
         internal UserControl ucSecondaryIcd;
+        internal UserControl ucSecondaryIcdYHCT;
         internal UCDateProcessor ucDateProcessor;
         internal UserControl ucDate;
         internal PeriousExpMestListProcessor periousExpMestListProcessor;
@@ -189,7 +195,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         List<V_HIS_EXP_MEST_MATERIAL> expMestMaterialEditPrints { get; set; }
         List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_METY> serviceReqMetys { get; set; }
         List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_MATY> serviceReqMatys { get; set; }
-
+        
         public List<V_HIS_EXP_MEST_MEDICINE> LstExpMestMedicine { get; set; }
 
         public long prescriptionTypeId { get; set; }
@@ -210,6 +216,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         internal List<HIS_EXP_MEST_REASON> lstExpMestReasons;
         bool MediStockNull = false;
+        public long? TIME_TO { get; set; }
+        public List<long> USE_TIME { get; set; }
+        public bool IsManyDay { get; set; }
+        public long Assign_time { get; set; }
         #endregion
 
         #region Construct
@@ -500,7 +510,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 Task.Run(() => this.LoadAllergenic(currentTreatmentWithPatientType.PATIENT_ID));
                 LogSystem.Debug("Loaded end");
                 this.AddBarManager(this.barManager1);
-                 
+
+                this.layoutControlItemDutru.Visibility = (GlobalStore.IsTreatmentIn 
+                    && !GlobalStore.IsCabinet) ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                //panelControl2.Enabled = !this.isMultiDateState;
+                this.layoutControlItemTimeTo.Visibility = (GlobalStore.IsTreatmentIn
+                    && !GlobalStore.IsCabinet) ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
                 this.isNotLoadWhileChangeInstructionTimeInFirst = false;
                 
                 WaitingManager.Hide();
@@ -1164,6 +1180,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 this.isMultiDateState = this.ucDateProcessor.GetChkMultiDateState(this.ucDate);
 
                 ChangeIntructionTime(time);
+                
             }
             catch (Exception ex)
             {
@@ -1177,6 +1194,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             {
                 this.intructionTimeSelecteds = this.ucDateProcessor.GetValue(this.ucDate);
                 this.isMultiDateState = this.ucDateProcessor.GetChkMultiDateState(this.ucDate);
+                panelControl2.Enabled = !isMultiDateState;
+                if (!panelControl2.Enabled)
+                {
+                    this.USE_TIME.Clear();
+                    txtDuTruTime.Text = "";
+                }
                 this.InstructionTime = (intructionTimeSelecteds != null && intructionTimeSelecteds.Count > 0) ? intructionTimeSelecteds.OrderByDescending(o => o).First() : 0;
                 //long instructionTime = intructionTimeSelecteds.OrderByDescending(o => o).First();
                 this.currentTreatmentWithPatientType = this.LoadDataToCurrentTreatmentData(treatmentId, this.InstructionTime);
@@ -2121,11 +2144,105 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     if (cboPhieuDieuTri.EditValue != null)
                     {
                         cboPhieuDieuTri.Properties.Buttons[1].Visible = true;
+                        LoadICDFromTracking();
                     }
                 }
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadICDFromTracking()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisTrackingFilter filter = new HisTrackingFilter();
+                filter.TREATMENT_ID = this.treatmentId;
+                List<HIS_TRACKING> trackings = new BackendAdapter(param)
+                    .Get<List<MOS.EFMODEL.DataModels.HIS_TRACKING>>("api/HisTracking/Get", ApiConsumers.MosConsumer, filter, param);
+                if(trackings != null)
+                {
+                    var currentTracking = trackings.FirstOrDefault(s => s.ID == Convert.ToInt64(cboPhieuDieuTri.EditValue));
+                    if(currentTracking != null)
+                    {
+                        if ((string.IsNullOrEmpty(HisConfigs.Get<string>("HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION")) || (HisConfigs.Get<string>("HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION") != "1") ) 
+                            && (!string.IsNullOrEmpty(HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd")) || (HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd") == "1")))
+                        {
+                            LogSystem.Debug("cau hinh :  HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION khong duoc bat va cau hinh HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd duoc bat. -> load icd yhct");
+                            if(!string.IsNullOrEmpty(currentTracking.TRADITIONAL_ICD_CODE))
+                                LoadICDFoUC("", "", "", "", currentTracking.TRADITIONAL_ICD_CODE, currentTracking.TRADITIONAL_ICD_NAME, currentTracking.TRADITIONAL_ICD_SUB_CODE, currentTracking.TRADITIONAL_ICD_TEXT);
+                        }
+                        else
+                        {
+                            LogSystem.Debug("KHONG LOAD ICD KHI TO DIEU TRI THAY DOI.(Dieu kien : SERVICE_REQ_ICD_OPTION  <> 1 va UpdateTreatmentIcd  == 1)");
+                            LogSystem.Debug("cau hinh  HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION ): " + HisConfigs.Get<string>("HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION")
+                                + " ,cau hinh HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd : "+ HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd"));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadICDFoUC(string iCD_CODE, string iCD_NAME, string iCD_SUB_CODE, string iCD_TEXT,
+            string tRADITIONAL_ICD_CODE, string tRADITIONAL_ICD_NAME,string tRADITIONAL_ICD_SUB_CODE, string tRADITIONAL_ICD_TEXT)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(iCD_CODE))
+                {
+                    HIS.UC.Icd.ADO.IcdInputADO icd = new UC.Icd.ADO.IcdInputADO();
+                    icd.ICD_CODE = iCD_CODE;
+                    icd.ICD_NAME = iCD_NAME;
+                    if(ucIcd != null)
+                    {
+                        icdProcessor.Reload(ucIcd, icd);
+                    }
+                }
+                
+                if (!string.IsNullOrEmpty(iCD_SUB_CODE))
+                {
+                    HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subICD = new SecondaryIcdDataADO();
+                    subICD.ICD_SUB_CODE = iCD_SUB_CODE;
+                    subICD.ICD_TEXT = iCD_TEXT;
+                    if(ucSecondaryIcd != null)
+                    {
+                        subIcdProcessor.Reload(ucSecondaryIcd, subICD);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(tRADITIONAL_ICD_CODE))
+                {
+                    HIS.UC.Icd.ADO.IcdInputADO icd = new UC.Icd.ADO.IcdInputADO();
+                    icd.ICD_CODE = tRADITIONAL_ICD_CODE;
+                    icd.ICD_NAME = tRADITIONAL_ICD_NAME;
+                    if (ucIcdYHCT != null)
+                    {
+                        icdProcessorYHCT.Reload(ucIcdYHCT, icd);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(tRADITIONAL_ICD_SUB_CODE))
+                {
+                    HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subICD = new SecondaryIcdDataADO();
+                    subICD.ICD_SUB_CODE = tRADITIONAL_ICD_SUB_CODE;
+                    subICD.ICD_TEXT = tRADITIONAL_ICD_TEXT;
+                    if (ucSecondaryIcdYHCT != null)
+                    {
+                        subIcdProcessorYHCT.Reload(ucSecondaryIcdYHCT, subICD);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -2976,6 +3093,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     {
                         e.RepositoryItem = this.repositoryItemChkOutKtcFee_Enable_TabMedicine;
                     }
+                    else if (e.Column.FieldName == "INFORMATION_MEDICINE")
+                    {
+                        if ((data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_DM || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_TUTUC))
+                            e.RepositoryItem = this.repInForMedicineEnable;
+                        else
+                            e.RepositoryItem = this.repInForMedicineDisable;
+                    }
                 }
             }
             catch (Exception ex)
@@ -3809,6 +3933,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
         }
 
+        
+
         private void repositoryItemCustomGridLookUpReasion_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             try
@@ -3839,6 +3965,389 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);                
             }
         }
+        #region chidinh den
+        private void txtTimeTo_EditValueChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void cboTimeTo_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboTimeTo.EditValue != null)
+                {
+                    // Chuyển đổi giá trị từ ComboBox thành DateTime
+                    DateTime selectedDate;
+                    bool isValidDate = DateTime.TryParse(cboTimeTo.EditValue.ToString(), out selectedDate);
+
+                    if (isValidDate)
+                    {
+                        // Định dạng ngày/thời gian thành dd/MM/yyyy hh:mm và gán vào TextEdit
+                        txtTimeTo.Text = selectedDate.ToString("dd/MM/yyyy");
+                    }
+                    
+                    this.TIME_TO = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(selectedDate);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtTimeTo_Validated(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(txtTimeTo.Text))
+                {
+                    string input = txtTimeTo.Text.Trim();
+                    DateTime enteredDate;
+                    if (input.Length == 8 && long.TryParse(input, out _))
+                    {
+                        string formattedDate = input.Insert(2, "/").Insert(5, "/");
+
+                        bool isValidDate = DateTime.TryParseExact(formattedDate, "dd/MM/yyyy",
+                                                                  System.Globalization.CultureInfo.InvariantCulture,
+                                                                  System.Globalization.DateTimeStyles.None,
+                                                                  out enteredDate);
+
+                        if (isValidDate)
+                        {
+                            txtTimeTo.Text = enteredDate.ToString("dd/MM/yyyy");
+                        }
+                        
+                    }
+                    else
+                    {
+                        // Nếu nhập đúng định dạng, chỉ cần chuyển đổi
+                        bool isValidDate = DateTime.TryParse(input, out enteredDate);
+
+                        if (isValidDate)
+                        {
+                            txtTimeTo.Text = enteredDate.ToString("dd/MM/yyyy");
+                        }
+                        
+                    }
+                    this.TIME_TO = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(enteredDate);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        
+
+        private void txtTimeTo_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if(e.Button.Kind == ButtonPredefines.Combo)
+                {
+                    cboTimeTo.ShowPopup();
+                }
+                if(e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    txtTimeTo.Text = "";
+                    cboTimeTo.EditValue = null;
+                    this.TIME_TO = null;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        #endregion
+
+        #region dutru
+        private List<DateTime> selectedDates = new List<DateTime>(); 
+
+        private void txtDuTruTime_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                selectedDates.Clear();
+                if (IsManyDay)
+                {
+                    Point txtDuTruTimeLocationOnScreen = txtDuTruTime.PointToScreen(new Point(0, txtDuTruTime.Height));
+                    popupControlContainer1.ShowPopup(txtDuTruTimeLocationOnScreen);
+                    foreach (var date in selectedDates)
+                    {
+                        calendarControlDutru.DateTime = date;
+                    }
+                }
+                else
+                {
+                    cboDuTruTime.ShowPopup();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void cboDuTruTime_Closed(object sender, ClosedEventArgs e)
+        {
+            
+        }
+
+        private void btnSave_duTru_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                PopupContainerBarControl control = popupControlContainer1.Parent as PopupContainerBarControl;
+                control.ClosePopup();
+                setDefaultDutruTime();
+                if (calendarControlDutru.SelectedRanges.Count == 0)
+                {
+                    
+                    return;
+                }
+                foreach (DateRange item in calendarControlDutru.SelectedRanges)
+                {
+                    if (item != null)
+                    {
+                        var dt = item.StartDate;
+                        while (dt.Date < item.EndDate.Date)
+                        {
+
+                            if(!selectedDates.Contains(dt)) selectedDates.Add(dt);
+                            dt = dt.AddDays(1);
+                        }
+                    }
+
+                }
+                UpdateSelectedDatesText();
+                
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void setDefaultDutruTime()
+        {
+            try
+            {
+                txtDuTruTime.Text = "";
+                if(selectedDates != null)selectedDates.Clear();
+                if (this.USE_TIME != null) this.USE_TIME.Clear();
+                if (ucDate != null && ucDateProcessor != null)
+                {
+                    HIS.UC.DateEditor.ADO.DateInputADO ado = new UC.DateEditor.ADO.DateInputADO();
+                    ado.IsDutruTime = false;
+                    ucDateProcessor.Reload(ucDate, ado);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void calendarControlDutru_DateTimeChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                
+                
+                
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtDuTruTime_Validated(object sender, EventArgs e)
+        {
+            try
+            {
+
+                if (!string.IsNullOrEmpty(txtDuTruTime.Text))
+                {
+                    if (this.USE_TIME != null) this.USE_TIME.Clear();
+                    if (this.selectedDates != null) this.selectedDates.Clear();
+                    if (IsManyDay)
+                    {
+                        var date = txtDuTruTime.Text.Trim().Split(';');
+                        foreach (var _date in date)
+                        {
+                            DateTime selectedDate;
+                            bool isValidDate = DateTime.TryParse(_date.ToString(), out selectedDate);
+                            if (isValidDate && !selectedDates.Contains(selectedDate)) selectedDates.Add(selectedDate);
+                        }
+                    }
+                    else
+                    {
+                        if(cboDuTruTime.DateTime != null && cboDuTruTime.DateTime != DateTime.MaxValue && cboDuTruTime.DateTime != DateTime.MinValue)
+                        {
+                            DateTime selectedDate = cboDuTruTime.DateTime;
+                            if (!selectedDates.Contains(selectedDate)) selectedDates.Add(selectedDate);
+                            txtDuTruTime.Text = selectedDate.ToString("dd/MM/yyyy");
+                        }
+                        else
+                        {
+                            txtDuTruTime.Text = "";
+                        }
+                            
+                    }
+
+                    if (!string.IsNullOrEmpty(txtDuTruTime.Text)) UpdateSelectedDatesText();
+                }
+                else
+                {
+                    setDefaultDutruTime();
+
+
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtDuTruTime_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                //if (string.IsNullOrEmpty(txtDuTruTime.Text))
+                //{
+                //    HIS.UC.DateEditor.ADO.DateInputADO ado = new UC.DateEditor.ADO.DateInputADO();
+                //    ado.IsDutruTime = false;
+                //    ucDateProcessor.Reload(ucDate, ado);
+                //}
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboDuTruTime_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboDuTruTime.DateTime != null && cboDuTruTime.DateTime != DateTime.MaxValue && cboDuTruTime.DateTime != DateTime.MinValue)
+                {
+                    if (this.USE_TIME != null) this.USE_TIME.Clear();
+                    DateTime selectedDate = cboDuTruTime.DateTime;
+                    if (!selectedDates.Contains(selectedDate))
+                    {
+
+                        selectedDates.Add(selectedDate);
+
+                    }
+                    txtDuTruTime.Text = selectedDate.ToString("dd/MM/yyyy");
+                    
+
+                    UpdateSelectedDatesText();
+
+                }
+                else
+                {
+                    setDefaultDutruTime();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repInForMedicineEnable_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+
+            try
+            {
+                var currentRowSereServADO = (MediMatyTypeADO)gridViewServiceProcess.GetFocusedRow();
+
+                if (currentRowSereServADO != null)
+                {
+                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisProductInfo").FirstOrDefault();
+                    if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.HisProductInfo");
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    {
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add(new ProductInfoADO() { MedicineTypeId  = currentRowSereServADO.ID , ProductInfoOpen = 0});//TODO
+                        listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
+                        var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+
+                        ((Form)extenceInstance).ShowDialog();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+
+        // Hàm cập nhật TextEdit với chuỗi ngày đã chọn
+        private void UpdateSelectedDatesText()
+        {
+            try
+            {
+                
+                selectedDates = selectedDates.Distinct().ToList();
+                if (IsManyDay)
+                {
+                    txtDuTruTime.Text = string.Join(";", selectedDates.Select(d => d.ToString("dd/MM")).ToArray());
+                }
+                else
+                {
+                    txtDuTruTime.Text = selectedDates.FirstOrDefault().ToString("dd/MM/yyyy");
+                }
+                if (this.USE_TIME == null) this.USE_TIME = new List<long>();
+                this.USE_TIME.Clear();
+                selectedDates.ForEach(date =>
+                {
+                    try
+                    {
+                        var date_number = Convert.ToInt64(date.ToString("yyyyMMdd") + "000000");
+                        if (date_number > 0)
+                        {
+                            if(!this.USE_TIME.Contains(date_number))
+                                this.USE_TIME.Add(date_number);
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                        throw new Exception("Loi khi convert date");
+                    }
+                });
+                if (!string.IsNullOrEmpty(txtDuTruTime.Text))
+                {
+                    if (ucDate != null && ucDateProcessor != null)
+                    {
+                        HIS.UC.DateEditor.ADO.DateInputADO ado = new UC.DateEditor.ADO.DateInputADO();
+                        ado.IsDutruTime = true;
+                        ucDateProcessor.Reload(ucDate, ado);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        #endregion
 
     }
 }

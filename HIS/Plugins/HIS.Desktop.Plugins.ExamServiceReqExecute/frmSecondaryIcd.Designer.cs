@@ -59,6 +59,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.grdColCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciGridControl = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -185,7 +186,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.gridViewSecondaryDisease.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumn1,
             this.grdColCode,
-            this.grdColName});
+            this.grdColName,
+            this.gridColumn2});
             this.gridViewSecondaryDisease.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
             this.gridViewSecondaryDisease.GridControl = this.gridControlSecondaryDisease;
             this.gridViewSecondaryDisease.Name = "gridViewSecondaryDisease";
@@ -211,7 +213,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.gridColumn1.Name = "gridColumn1";
             this.gridColumn1.Visible = true;
             this.gridColumn1.VisibleIndex = 0;
-            this.gridColumn1.Width = 23;
+            this.gridColumn1.Width = 21;
             // 
             // repositoryItemCheckEdit1
             // 
@@ -228,7 +230,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.grdColCode.OptionsColumn.ReadOnly = true;
             this.grdColCode.Visible = true;
             this.grdColCode.VisibleIndex = 1;
-            this.grdColCode.Width = 100;
+            this.grdColCode.Width = 92;
             // 
             // grdColName
             // 
@@ -239,7 +241,17 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.grdColName.OptionsColumn.ReadOnly = true;
             this.grdColName.Visible = true;
             this.grdColName.VisibleIndex = 2;
-            this.grdColName.Width = 759;
+            this.grdColName.Width = 638;
+            // 
+            // gridColumn2
+            // 
+            this.gridColumn2.Caption = "Nhóm bệnh";
+            this.gridColumn2.FieldName = "ICD_GROUP_NAME";
+            this.gridColumn2.Name = "gridColumn2";
+            this.gridColumn2.OptionsColumn.AllowEdit = false;
+            this.gridColumn2.Visible = true;
+            this.gridColumn2.VisibleIndex = 3;
+            this.gridColumn2.Width = 131;
             // 
             // layoutControlGroup1
             // 
@@ -477,5 +489,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
         private Inventec.UC.Paging.UcPaging ucPaging1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
     }
 }

@@ -218,7 +218,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
 
                 if (txtDirectorLoginname.Text != null && txtDirectorLoginname.Text != "")
                 {
-                    currentDTO.DirectorLoginname = txtDirectorLoginname.Text;
+                    currentDTO.DirectorLoginname = txtDirectorLoginname.Text.Trim();
                 }
                 else
                 {
@@ -226,7 +226,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 }
                 if (cboDirectorUsername.EditValue != null && cboDirectorUsername.EditValue.ToString() != "")
                 {
-                    currentDTO.DirectorUsername = cboDirectorUsername.EditValue.ToString();
+                    currentDTO.DirectorUsername = (cboDirectorUsername.Properties.DataSource as List<V_HIS_EMPLOYEE>).FirstOrDefault(o=>o.LOGINNAME ==  cboDirectorUsername.EditValue.ToString()).TDL_USERNAME;
                 }
                 else
                 {

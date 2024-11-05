@@ -45,15 +45,15 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject49 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject50 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject51 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject52 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmHisImportEmpUser));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject53 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject54 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject55 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject56 = new DevExpress.Utils.SerializableAppearanceObject();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.bbtnLuu = new DevExpress.XtraBars.BarButtonItem();
@@ -82,6 +82,19 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.grdAccountNumber = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdBank = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdDepartment = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.btnLoi = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.ckbIsNurse = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.btnShowLineError = new DevExpress.XtraEditors.SimpleButton();
@@ -95,6 +108,10 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.ckbSCLINICAL = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.ckbSIMULTANEITY = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.ckbSCHEDULE = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.ckbINSTEAD = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -110,6 +127,10 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ckbSCLINICAL)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ckbSIMULTANEITY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ckbSCHEDULE)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ckbINSTEAD)).BeginInit();
             this.SuspendLayout();
             // 
             // barManager1
@@ -147,33 +168,29 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.barDockControlTop.Size = new System.Drawing.Size(1676, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 22);
+            this.barDockControlTop.Size = new System.Drawing.Size(1257, 0);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 518);
-            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1676, 0);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 421);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1257, 0);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 489);
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 22);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 399);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1676, 29);
-            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 489);
+            this.barDockControlRight.Location = new System.Drawing.Point(1257, 22);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 399);
             // 
             // layoutControl1
             // 
@@ -184,20 +201,18 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.layoutControl1.Controls.Add(this.btnChooseFile);
             this.layoutControl1.Controls.Add(this.btnDownLoadFile);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl1.Location = new System.Drawing.Point(0, 29);
-            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.layoutControl1.Location = new System.Drawing.Point(0, 22);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1676, 489);
+            this.layoutControl1.Size = new System.Drawing.Size(1257, 399);
             this.layoutControl1.TabIndex = 4;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(554, 3);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSave.Location = new System.Drawing.Point(415, 2);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(194, 27);
+            this.btnSave.Size = new System.Drawing.Size(146, 22);
             this.btnSave.StyleController = this.layoutControl1;
             this.btnSave.TabIndex = 9;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -205,25 +220,26 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(754, 3);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(565, 2);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(919, 27);
+            this.label1.Size = new System.Drawing.Size(690, 22);
             this.label1.TabIndex = 8;
             // 
             // gridControl1
             // 
-            this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.gridControl1.Location = new System.Drawing.Point(3, 36);
+            this.gridControl1.Location = new System.Drawing.Point(2, 28);
             this.gridControl1.MainView = this.gridView1;
-            this.gridControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.gridControl1.MenuManager = this.barManager1;
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.btnDelete,
             this.btnLoi,
-            this.ckbIsNurse});
-            this.gridControl1.Size = new System.Drawing.Size(1670, 450);
+            this.ckbIsNurse,
+            this.ckbSCLINICAL,
+            this.ckbSIMULTANEITY,
+            this.ckbSCHEDULE,
+            this.ckbINSTEAD});
+            this.gridControl1.Size = new System.Drawing.Size(1253, 369);
             this.gridControl1.TabIndex = 7;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -245,7 +261,20 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.grdMaxBHYT,
             this.grdAccountNumber,
             this.grdBank,
-            this.grdDepartment});
+            this.grdDepartment,
+            this.gridColumn1,
+            this.gridColumn2,
+            this.gridColumn3,
+            this.gridColumn4,
+            this.gridColumn5,
+            this.gridColumn6,
+            this.gridColumn7,
+            this.gridColumn8,
+            this.gridColumn9,
+            this.gridColumn10,
+            this.gridColumn11,
+            this.gridColumn12,
+            this.gridColumn13});
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
             this.gridView1.OptionsView.ColumnAutoWidth = false;
@@ -297,7 +326,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             // 
             this.btnDelete.AutoHeight = false;
             this.btnDelete.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Xóa ", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject49, serializableAppearanceObject50, serializableAppearanceObject51, serializableAppearanceObject52, "Xóa ", null, null, true)});
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnDelete.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnDelete_ButtonClick);
@@ -448,11 +477,123 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.grdDepartment.VisibleIndex = 14;
             this.grdDepartment.Width = 59;
             // 
+            // gridColumn1
+            // 
+            this.gridColumn1.Caption = "Số CMT/CCCD/HC";
+            this.gridColumn1.FieldName = "IDENTIFICATION_NUMBER";
+            this.gridColumn1.Name = "gridColumn1";
+            this.gridColumn1.Visible = true;
+            this.gridColumn1.VisibleIndex = 15;
+            // 
+            // gridColumn2
+            // 
+            this.gridColumn2.Caption = "Số BHXH";
+            this.gridColumn2.FieldName = "SOCIAL_INSURANCE_NUMBER";
+            this.gridColumn2.Name = "gridColumn2";
+            this.gridColumn2.Visible = true;
+            this.gridColumn2.VisibleIndex = 16;
+            // 
+            // gridColumn3
+            // 
+            this.gridColumn3.Caption = "Ngày sinh";
+            this.gridColumn3.FieldName = "DOB_STR";
+            this.gridColumn3.Name = "gridColumn3";
+            this.gridColumn3.Visible = true;
+            this.gridColumn3.VisibleIndex = 17;
+            // 
+            // gridColumn4
+            // 
+            this.gridColumn4.Caption = "Chức danh ";
+            this.gridColumn4.FieldName = "TITLE";
+            this.gridColumn4.Name = "gridColumn4";
+            this.gridColumn4.Visible = true;
+            this.gridColumn4.VisibleIndex = 18;
+            // 
+            // gridColumn5
+            // 
+            this.gridColumn5.Caption = "Tên đăng nhập ERX";
+            this.gridColumn5.FieldName = "ERX_LOGINNAME";
+            this.gridColumn5.Name = "gridColumn5";
+            this.gridColumn5.Visible = true;
+            this.gridColumn5.VisibleIndex = 19;
+            // 
+            // gridColumn6
+            // 
+            this.gridColumn6.Caption = "Mật khẩu ERX";
+            this.gridColumn6.FieldName = "ERX_PASSWORD";
+            this.gridColumn6.Name = "gridColumn6";
+            this.gridColumn6.Visible = true;
+            this.gridColumn6.VisibleIndex = 20;
+            // 
+            // gridColumn7
+            // 
+            this.gridColumn7.Caption = "Ngày cấp CCHN";
+            this.gridColumn7.FieldName = "DIPLOMA_DATE_STR";
+            this.gridColumn7.Name = "gridColumn7";
+            this.gridColumn7.Visible = true;
+            this.gridColumn7.VisibleIndex = 21;
+            // 
+            // gridColumn8
+            // 
+            this.gridColumn8.Caption = "Nơi cấp CCHN";
+            this.gridColumn8.FieldName = "DIPLOMA_PLACE";
+            this.gridColumn8.Name = "gridColumn8";
+            this.gridColumn8.Visible = true;
+            this.gridColumn8.VisibleIndex = 22;
+            // 
+            // gridColumn9
+            // 
+            this.gridColumn9.Caption = "Số BN xử lý tối đa trong ngày";
+            this.gridColumn9.FieldName = "MAX_SERVICE_REQ_PER_DAY_STR";
+            this.gridColumn9.Name = "gridColumn9";
+            this.gridColumn9.Visible = true;
+            this.gridColumn9.VisibleIndex = 23;
+            // 
+            // gridColumn10
+            // 
+            this.gridColumn10.Caption = "Sửa KQ CLS";
+            this.gridColumn10.ColumnEdit = this.ckbSCLINICAL;
+            this.gridColumn10.FieldName = "KQCLS";
+            this.gridColumn10.Name = "gridColumn10";
+            this.gridColumn10.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn10.Visible = true;
+            this.gridColumn10.VisibleIndex = 24;
+            // 
+            // gridColumn11
+            // 
+            this.gridColumn11.Caption = "Chặn thực hiện CLS cùng lúc";
+            this.gridColumn11.ColumnEdit = this.ckbSIMULTANEITY;
+            this.gridColumn11.FieldName = "ChanCLS";
+            this.gridColumn11.Name = "gridColumn11";
+            this.gridColumn11.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn11.Visible = true;
+            this.gridColumn11.VisibleIndex = 25;
+            // 
+            // gridColumn12
+            // 
+            this.gridColumn12.Caption = "Giới hạn thời gian làm việc";
+            this.gridColumn12.ColumnEdit = this.ckbSCHEDULE;
+            this.gridColumn12.FieldName = "GioiHanTime";
+            this.gridColumn12.Name = "gridColumn12";
+            this.gridColumn12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn12.Visible = true;
+            this.gridColumn12.VisibleIndex = 26;
+            // 
+            // gridColumn13
+            // 
+            this.gridColumn13.Caption = "Cần ký thay";
+            this.gridColumn13.ColumnEdit = this.ckbINSTEAD;
+            this.gridColumn13.FieldName = "CanKyThay";
+            this.gridColumn13.Name = "gridColumn13";
+            this.gridColumn13.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn13.Visible = true;
+            this.gridColumn13.VisibleIndex = 27;
+            // 
             // btnLoi
             // 
             this.btnLoi.AutoHeight = false;
             this.btnLoi.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnLoi.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Hiển thị lỗi", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnLoi.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject53, serializableAppearanceObject54, serializableAppearanceObject55, serializableAppearanceObject56, "Hiển thị lỗi", null, null, true)});
             this.btnLoi.Name = "btnLoi";
             this.btnLoi.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnLoi.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnLoi_ButtonClick);
@@ -467,10 +608,9 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             // 
             // btnShowLineError
             // 
-            this.btnShowLineError.Location = new System.Drawing.Point(374, 3);
-            this.btnShowLineError.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnShowLineError.Location = new System.Drawing.Point(280, 2);
             this.btnShowLineError.Name = "btnShowLineError";
-            this.btnShowLineError.Size = new System.Drawing.Size(174, 27);
+            this.btnShowLineError.Size = new System.Drawing.Size(131, 22);
             this.btnShowLineError.StyleController = this.layoutControl1;
             this.btnShowLineError.TabIndex = 6;
             this.btnShowLineError.Text = "Dòng lỗi ";
@@ -478,10 +618,9 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             // 
             // btnChooseFile
             // 
-            this.btnChooseFile.Location = new System.Drawing.Point(194, 3);
-            this.btnChooseFile.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnChooseFile.Location = new System.Drawing.Point(145, 2);
             this.btnChooseFile.Name = "btnChooseFile";
-            this.btnChooseFile.Size = new System.Drawing.Size(174, 27);
+            this.btnChooseFile.Size = new System.Drawing.Size(131, 22);
             this.btnChooseFile.StyleController = this.layoutControl1;
             this.btnChooseFile.TabIndex = 5;
             this.btnChooseFile.Text = "Import";
@@ -489,10 +628,9 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             // 
             // btnDownLoadFile
             // 
-            this.btnDownLoadFile.Location = new System.Drawing.Point(3, 3);
-            this.btnDownLoadFile.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnDownLoadFile.Location = new System.Drawing.Point(2, 2);
             this.btnDownLoadFile.Name = "btnDownLoadFile";
-            this.btnDownLoadFile.Size = new System.Drawing.Size(185, 27);
+            this.btnDownLoadFile.Size = new System.Drawing.Size(139, 22);
             this.btnDownLoadFile.StyleController = this.layoutControl1;
             this.btnDownLoadFile.TabIndex = 4;
             this.btnDownLoadFile.Text = "Tải file mẫu";
@@ -512,7 +650,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1676, 489);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1257, 399);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -520,66 +658,93 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.layoutControlItem1.Control = this.btnDownLoadFile;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(191, 33);
+            this.layoutControlItem1.Size = new System.Drawing.Size(143, 26);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.btnChooseFile;
-            this.layoutControlItem2.Location = new System.Drawing.Point(191, 0);
+            this.layoutControlItem2.Location = new System.Drawing.Point(143, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(180, 33);
+            this.layoutControlItem2.Size = new System.Drawing.Size(135, 26);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnShowLineError;
-            this.layoutControlItem3.Location = new System.Drawing.Point(371, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(278, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(180, 33);
+            this.layoutControlItem3.Size = new System.Drawing.Size(135, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.gridControl1;
-            this.layoutControlItem4.Location = new System.Drawing.Point(0, 33);
+            this.layoutControlItem4.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(1676, 456);
+            this.layoutControlItem4.Size = new System.Drawing.Size(1257, 373);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.label1;
-            this.layoutControlItem5.Location = new System.Drawing.Point(751, 0);
+            this.layoutControlItem5.Location = new System.Drawing.Point(563, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(925, 33);
+            this.layoutControlItem5.Size = new System.Drawing.Size(694, 26);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnSave;
-            this.layoutControlItem6.Location = new System.Drawing.Point(551, 0);
+            this.layoutControlItem6.Location = new System.Drawing.Point(413, 0);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(200, 33);
+            this.layoutControlItem6.Size = new System.Drawing.Size(150, 26);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
+            // ckbSCLINICAL
+            // 
+            this.ckbSCLINICAL.AutoHeight = false;
+            this.ckbSCLINICAL.Name = "ckbSCLINICAL";
+            this.ckbSCLINICAL.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.ckbSCLINICAL.ReadOnly = true;
+            // 
+            // ckbSIMULTANEITY
+            // 
+            this.ckbSIMULTANEITY.AutoHeight = false;
+            this.ckbSIMULTANEITY.Name = "ckbSIMULTANEITY";
+            this.ckbSIMULTANEITY.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.ckbSIMULTANEITY.ReadOnly = true;
+            // 
+            // ckbSCHEDULE
+            // 
+            this.ckbSCHEDULE.AutoHeight = false;
+            this.ckbSCHEDULE.Name = "ckbSCHEDULE";
+            this.ckbSCHEDULE.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.ckbSCHEDULE.ReadOnly = true;
+            // 
+            // ckbINSTEAD
+            // 
+            this.ckbINSTEAD.AutoHeight = false;
+            this.ckbINSTEAD.Name = "ckbINSTEAD";
+            this.ckbINSTEAD.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.ckbINSTEAD.ReadOnly = true;
+            // 
             // frmHisImportEmpUser
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1676, 518);
+            this.ClientSize = new System.Drawing.Size(1257, 421);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmHisImportEmpUser";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Nhập khẩu tài khoản + nhân viên";
@@ -604,6 +769,10 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ckbSCLINICAL)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ckbSIMULTANEITY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ckbSCHEDULE)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ckbINSTEAD)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -652,5 +821,22 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
         private DevExpress.XtraGrid.Columns.GridColumn grdAccountNumber;
         private DevExpress.XtraGrid.Columns.GridColumn grdBank;
         private DevExpress.XtraGrid.Columns.GridColumn grdDepartment;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn4;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn5;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn6;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn8;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn9;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn10;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn11;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit ckbSCLINICAL;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit ckbSIMULTANEITY;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit ckbSCHEDULE;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit ckbINSTEAD;
     }
 }

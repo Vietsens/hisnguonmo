@@ -32,10 +32,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Xml;
 
 namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
 {
@@ -1122,17 +1119,17 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                         var sumData = listItem.Where(o => o.itemCode.Equals("TONG")).ToList();
                         if (sumData != null && sumData.Count > 0)
                         {
-                            amount = sumData.Sum(s => s.itemTotalAmountWithTax ?? 0);
-                            amountWithoutTax = sumData.Sum(s => s.itemTotalAmountWithoutTax ?? 0);
+                            amount = Math.Round(sumData.Sum(s => s.itemTotalAmountWithTax ?? 0), 0);
+                            amountWithoutTax = Math.Round(sumData.Sum(s => s.itemTotalAmountWithoutTax ?? 0), 0);
                         }
                     }
                     else
                     {
-                        amount = listItem.Sum(s => s.itemTotalAmountWithTax ?? 0);
-                        amountWithoutTax = listItem.Sum(s => s.itemTotalAmountWithoutTax ?? 0);
+                        amount = Math.Round(listItem.Where(s => s.selection == 1).Sum(s => s.itemTotalAmountWithTax ?? 0), 0);
+                        amountWithoutTax = Math.Round(listItem.Where(s => s.selection == 1).Sum(s => s.itemTotalAmountWithoutTax ?? 0), 0);
                     }
 
-                    result.discountAmount = listItem.Sum(s => s.discount ?? 0); ;
+                    result.discountAmount = Math.Round(listItem.Sum(s => s.discount ?? 0) + (this.ElectronicBillDataInput.Transaction != null ? this.ElectronicBillDataInput.Transaction.EXEMPTION ?? 0 : 0), 0);
                     result.sumOfTotalLineAmountWithoutTax = amountWithoutTax;
                     result.totalAmountWithoutTax = amountWithoutTax;
                     result.totalAmountWithTax = amount;
@@ -1143,8 +1140,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                     }
                     else
                     {
-                        result.totalTaxAmount = listItem.Sum(s => s.taxAmount ?? 0);
+                        result.totalTaxAmount = Math.Round(listItem.Sum(s => s.taxAmount ?? 0), 0);
                     }
+                    result.totalAmountAfterDiscount = Math.Round(amountWithoutTax - result.discountAmount, 0);
                     //result.settlementDiscountAmount = 0;
                 }
             }
@@ -1313,6 +1311,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             {
                 ItemInfo product = new ItemInfo();
                 product.lineNumber = i;
+
                 product.itemCode = item.ProdCode;
                 product.itemName = item.ProdName;
                 product.quantity = item.ProdQuantity;
@@ -1338,12 +1337,23 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                     product.taxPercentage = -2;
                     product.taxAmount = 0;
                 }
-
                 result.Add(product);
                 i++;
             }
-
-            if (this.TempType == TemplateEnum.TYPE.Template3)
+            if (this.ElectronicBillDataInput.Transaction != null && this.ElectronicBillDataInput.Transaction.EXEMPTION != null && this.ElectronicBillDataInput.Transaction.EXEMPTION > 0 && this.TempType != TemplateEnum.TYPE.Template10)
+            {
+                ItemInfo product = new ItemInfo();
+                product.lineNumber = i;
+                product.selection = 3; //Chiết khấu
+                product.itemCode = "Chiet_Khau";
+                product.itemName = "Miễn giảm";
+                product.itemTotalAmountWithoutTax = this.ElectronicBillDataInput.Transaction.EXEMPTION;
+                product.itemTotalAmountAfterDiscount = this.ElectronicBillDataInput.Transaction.EXEMPTION;
+                product.itemTotalAmountWithTax = this.ElectronicBillDataInput.Transaction.EXEMPTION;
+                result.Add(product);
+                i++;
+            }
+            if ((this.ElectronicBillDataInput.Transaction == null || this.ElectronicBillDataInput.Transaction.EXEMPTION == null) && this.TempType == TemplateEnum.TYPE.Template3)
             {
                 decimal billFund = 0;
                 if (!ElectronicBillDataInput.IsTransactionList)//ko phải xuất hóa đơn từ danh sách giao dịch
@@ -1410,6 +1420,19 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                 i++;
             }
 
+            if (this.ElectronicBillDataInput.Transaction != null && this.ElectronicBillDataInput.Transaction.EXEMPTION != null && this.ElectronicBillDataInput.Transaction.EXEMPTION > 0 && this.TempType != TemplateEnum.TYPE.Template10)
+            {
+                ItemInfo product = new ItemInfo();
+                product.lineNumber = i;
+                product.selection = 3; //Chiết khấu
+                product.itemCode = "Chiet_Khau";
+                product.itemName = "Miễn giảm";
+                product.itemTotalAmountWithoutTax = this.ElectronicBillDataInput.Transaction.EXEMPTION;
+                product.itemTotalAmountAfterDiscount = this.ElectronicBillDataInput.Transaction.EXEMPTION;
+                product.itemTotalAmountWithTax = this.ElectronicBillDataInput.Transaction.EXEMPTION;
+                result.Add(product);
+                i++;
+            }
             return result;
         }
 

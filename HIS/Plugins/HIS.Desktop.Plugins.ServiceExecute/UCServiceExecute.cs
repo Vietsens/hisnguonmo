@@ -185,6 +185,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         public bool IsPin { get; private set; }
         public bool IsLoadFromPin { get; private set; }
         List<HisEkipUserADO> ekipUserAdos { get; set; }
+        List<V_HIS_BED_LOG> lstBedLogData { get; set; }
+        List<HIS_DHST> lstDhstData { get; set; }
         #endregion
 
         #region Construct
@@ -323,6 +325,48 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void GetDataDefaultHisBedLog()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentServiceReq), currentServiceReq));
+                CommonParam param = new CommonParam();
+                Inventec.Common.Logging.LogSystem.Info("1. Begin api/HisBedLog/GetView ");
+                HisBedLogViewFilter blFilter = new HisBedLogViewFilter();
+                if (ServiceReqConstruct != null)
+                {
+                    blFilter.TREATMENT_ID = ServiceReqConstruct.TREATMENT_ID;
+                }
+                lstBedLogData = new BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, blFilter, param);
+                Inventec.Common.Logging.LogSystem.Info("1. End api/HisBedLog/GetView ");
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void GetDataDefaultHisDHST()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                Inventec.Common.Logging.LogSystem.Info("1. Begin api/HisDhst/Get ");
+                HisDhstFilter dhFilter = new HisDhstFilter();
+                if (ServiceReqConstruct != null)
+                {
+                    dhFilter.TREATMENT_ID = ServiceReqConstruct.TREATMENT_ID;
+                }
+                lstDhstData = new BackendAdapter(param).Get<List<HIS_DHST>>("api/HisDhst/Get", ApiConsumer.ApiConsumers.MosConsumer, dhFilter, param);
+                Inventec.Common.Logging.LogSystem.Info("1. End api/HisDhst/Get ");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private async Task LoadSuim(bool IsReloadCallApi = false)
         {
 
@@ -401,7 +445,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             {
                 lstService = BackendDataWorker.Get<V_HIS_SERVICE>().ToList();
                 lstDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1).ToList();
-                lstExecuteRole = BackendDataWorker.Get<HIS_EXECUTE_ROLE>().Where(o => o.IS_ACTIVE == 1 && o.IS_DISABLE_IN_EKIP != 1).ToList().ToList();
+                lstExecuteRole = BackendDataWorker.Get<HIS_EXECUTE_ROLE>().Where(o => o.IS_ACTIVE == 1 && o.IS_DISABLE_IN_EKIP != 1).ToList().ToList();  
             }
             catch (Exception ex)
             {
@@ -994,17 +1038,22 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             Thread listTemplate = new Thread(ProcessLoadListTemplate);
             Thread dataFillTemplate = new Thread(ProcessDataForTemplate);
             Thread treatment = new Thread(LoadTreatmentWithPaty);
+            Thread hisBedLog  = new Thread(GetDataDefaultHisBedLog);
+            Thread hisDHST = new Thread(GetDataDefaultHisDHST);
             try
             {
                 serviceReq.Start();
                 listTemplate.Start();
                 dataFillTemplate.Start();
                 treatment.Start();
+                hisBedLog.Start();
+                hisDHST.Start();
 
                 serviceReq.Join();
                 listTemplate.Join();
                 dataFillTemplate.Join();
                 treatment.Join();
+                //hisbebDHST.Join();
             }
             catch (Exception ex)
             {
@@ -1012,6 +1061,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 listTemplate.Abort();
                 dataFillTemplate.Abort();
                 treatment.Abort();
+                hisBedLog.Abort();
+                hisDHST.Abort();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -3781,9 +3832,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 if (AppConfigKeys.IsSampleInfoOption == "1")
                 {
                     var datas = gridControlSereServ.DataSource as List<ADO.ServiceADO>;
-                    if (datas != null && datas.Count > 0 && datas.FirstOrDefault(o => o.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT) != null && (lstEkipUser == null || lstEkipUser.Count == 0 || (lstEkipUser != null && lstEkipUser.Count > 0 && lstEkipUser.Select(o => o.EXECUTE_ROLE_ID).Distinct().Count() < 2)))
+                    if (datas != null && datas.Count > 0 && datas.FirstOrDefault(o => o.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT) != null 
+                        && (lstEkipUser == null || lstEkipUser.Count == 0))
                     {
-                        DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.BatBuocChonKip,
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Bắt buộc phải có thông tin kíp thực hiện",
                           ResourceMessage.ThongBao,
                           MessageBoxButtons.OK);
                         return;
@@ -3791,9 +3843,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 }
                 else if (AppConfigKeys.IsSampleInfoOption == "2")
                 {
-                    if (lstEkipUser == null || lstEkipUser.Count == 0 || (lstEkipUser != null && lstEkipUser.Count > 0 && lstEkipUser.Select(o => o.EXECUTE_ROLE_ID).Distinct().Count() < 2))
+                    if (lstEkipUser == null || lstEkipUser.Count == 0)
                     {
-                        DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.BatBuocChonKip,
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Bắt buộc phải có thông tin kíp thực hiện",
                            ResourceMessage.ThongBao,
                            MessageBoxButtons.OK);
                         return;
@@ -3900,7 +3952,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                 List<string> lstLoginValid = new List<string>();
                 List<MOS.EFMODEL.DataModels.HIS_EKIP_USER> ekipUsers = new List<MOS.EFMODEL.DataModels.HIS_EKIP_USER>();
-                //List<MOS.EFMODEL.DataModels.HIS_EKIP_USER> newEkipUsers = new List<MOS.EFMODEL.DataModels.HIS_EKIP_USER>();
                 var dataGrid = gridViewEkip.DataSource as List<HisEkipUserADO>;
                 if (dataGrid != null && dataGrid.Count() > 0)
                     foreach (var item in dataGrid)
@@ -3932,24 +3983,14 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         {
                             lstLoginValid.Add(acc);
                         }
-                        //else
-                        //{
-                        //    lstLoginValid.Add(login);
-                        //}
+                      
                     }
                     if (lstLoginValid.Count ==0 )
                     {
                         lstLoginValid.Add(login);
                     }   
                     inputSDO.Loginnames = lstLoginValid;
-                    //if (lstLogin != null && lstLogin.Count() > 0)
-                    //{
-                    //    inputSDO.Loginnames = lstLogin;
-                    //}
-                    //else
-                    //{
-                    //    inputSDO.Loginnames = dsLogin;
-                    //}
+                   
                     string message = "";
                     CommonParam paramCheckEx = new CommonParam();
                     bool suscess = new BackendAdapter(paramCheckEx).Post<bool>("api/HisSereServ/CheckExecuteTimes", ApiConsumers.MosConsumer, inputSDO, paramCheckEx);
@@ -3968,38 +4009,30 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                  if (HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption)
                 {
-                    //List<HIS_EKIP_USER> kipUsers = new List<HIS_EKIP_USER>();
                     HisSurgServiceReqUpdateListSDO  InputSDO= new HisSurgServiceReqUpdateListSDO ();  
                     List<SurgUpdateSDO> surgUpdateSDOs = new List<SurgUpdateSDO>();
                     SurgUpdateSDO surgUpdate = new SurgUpdateSDO();
                      surgUpdate.SereServId = sereServ.ID;
-                     //AutoMapper.Mapper.CreateMap<V_HIS_EKIP_USER, HIS_EKIP_USER>();
-                     //if (dicEkipUser.ContainsKey(sereServ.ID))
-                     //{
                      if (ekipUsers.Count > 0 && ekipUsers != null)
                      {
-                         //foreach (var i in ekipUsers)
-                         //{
-                         //    if (string.IsNullOrEmpty(i.LOGINNAME))
-                         //    {
-                         //        i.LOGINNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                         //    }
-                         //}
-
                          surgUpdate.EkipUsers = ekipUsers;
                      }
                      else
                      {
-                         var resuilt = BackendDataWorker.Get<HIS_EKIP_USER>().Where(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()).FirstOrDefault();
-                         List<HIS_EKIP_USER> userList = new List<HIS_EKIP_USER> { resuilt };
-                         surgUpdate.EkipUsers = userList;
+                         surgUpdate.EkipUsers = null;
+                         // lấy kíp theo tài khoản đăng nhập (bỏ do pmem chạy chậm)
+                         //var resuilt = BackendDataWorker.Get<HIS_EKIP_USER>().Where(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()).FirstOrDefault();
+                         //if (resuilt != null)
+                         //{
+                         //    List<HIS_EKIP_USER> userList = new List<HIS_EKIP_USER> { resuilt };
+                         //    surgUpdate.EkipUsers = userList;
+                         //}
+                         //else
+                         //{
+                         //    surgUpdate.EkipUsers = null;
+                         //}
                      }
                     
-                     //foreach (string login in lstLoginValid)
-                     //{
-                     //    kipUsers.Add(new HIS_EKIP_USER { LOGINNAME = login });
-                     //}
-                     //surgUpdate.EkipUsers = kipUsers;//AutoMapper.Mapper.Map<List<HIS_EKIP_USER>>(lstLoginValid);
                      if (sereServExt != null)
                      {
                          surgUpdate.SereServExt = sereServExt;
@@ -6902,41 +6935,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 if (view.FocusedColumn.FieldName == "LOGINNAME" && view.ActiveEditor is GridLookUpEdit)
                 {
                     GridLookUpEdit editor = view.ActiveEditor as GridLookUpEdit;
-                    List<string> loginNames = new List<string>();
-                    if (data != null && data.EXECUTE_ROLE_ID > 0)
-                    {
-                        if (data.LOGINNAME != null)
-                            editor.EditValue = data.LOGINNAME;
-                        var executeRoleUserTemps = executeRoleUsers != null ? executeRoleUsers.Where(o => o.EXECUTE_ROLE_ID == data.EXECUTE_ROLE_ID).ToList() : null;
-                        if (executeRoleUserTemps != null && executeRoleUserTemps.Count > 0)
-                        {
-                            loginNames = executeRoleUserTemps.Select(o => o.LOGINNAME).Distinct().ToList();
-                        }
-                    }
-
-                    //ComboAcsUser(editor, loginNames);
-
-                    //SetDepartment(data);
-                    //gridViewEkip.RefreshData();
-
-                    if (data != null && data.DEPARTMENT_ID > 0)
-                    {
-                        if (data.LOGINNAME != null)
-                            editor.EditValue = data.LOGINNAME;
-                        var depaloginNames = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => o.DEPARTMENT_ID == data.DEPARTMENT_ID || o.DEPARTMENT_ID == null).Select(i => i.LOGINNAME).ToList();
-                        if (depaloginNames != null && depaloginNames.Count > 0)
-                        {
-                            if (loginNames.Count > 0)
-                            {
-                                loginNames = loginNames.Where(o => depaloginNames.Contains(o)).ToList();
-                            }
-                            else
-                            {
-                                loginNames = depaloginNames;
-                            }
-                        }
-                    }
-                    ComboAcsUser(editor, loginNames);
+                    LoadUser(data, editor);
                 }
             }
             catch (Exception ex)
@@ -6944,7 +6943,96 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void LoadUser(HisEkipUserADO data, GridLookUpEdit editor)
+        {
+            try
+            {
+                List<string> loginNames = new List<string>();
+                if (data != null && data.EXECUTE_ROLE_ID > 0)
+                {
+                    
+                    var executeRoleUserTemps = executeRoleUsers != null ? executeRoleUsers.Where(o => o.EXECUTE_ROLE_ID == data.EXECUTE_ROLE_ID).ToList() : null;
+                    if (executeRoleUserTemps != null && executeRoleUserTemps.Count > 0)
+                    {
+                        loginNames = executeRoleUserTemps.Select(o => o.LOGINNAME).Distinct().ToList();
+                    }
+                    if (data.LOGINNAME != null)
+                    {
+                        if (key == "1")
+                        {
+                            if (loginNames.Contains(data.LOGINNAME))
+                            {
+                                editor.EditValue = data.LOGINNAME;
+                            }
+                            else
+                            {
+                                editor.EditValue = null;
+                                data.LOGINNAME = null;
+                            }
+                        }
+                        else
+                        {
+                            editor.EditValue = data.LOGINNAME;
+                        }
 
+
+
+                        //editor.Text = loginNames.Contains(data.LOGINNAME) ? data.LOGINNAME : null;
+                    }
+                }
+
+                //ComboAcsUser(editor, loginNames);
+
+                //SetDepartment(data);
+                //gridViewEkip.RefreshData();
+
+                if (data != null && data.DEPARTMENT_ID > 0)
+                {
+                    
+                    var depaloginNames = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => o.DEPARTMENT_ID == data.DEPARTMENT_ID || o.DEPARTMENT_ID == null).Select(i => i.LOGINNAME).ToList();
+                    if (depaloginNames != null && depaloginNames.Count > 0)
+                    {
+                        if (loginNames.Count > 0)
+                        {
+                            loginNames = loginNames.Where(o => depaloginNames.Contains(o)).ToList();
+                        }
+                        else
+                        {
+                            loginNames = depaloginNames;
+                        }
+                    }
+                    if (data.LOGINNAME != null)
+                    {
+                        if (key == "1")
+                        {
+                            if (loginNames.Contains(data.LOGINNAME))
+                            {
+                                editor.EditValue = data.LOGINNAME;
+                            }
+                            else
+                            {
+                                editor.EditValue = null;
+                                data.LOGINNAME = null;
+                            }
+                        }
+                        else
+                        {
+                            editor.EditValue = data.LOGINNAME;
+                        }
+
+
+
+                        //editor.Text = loginNames.Contains(data.LOGINNAME) ? data.LOGINNAME : null;
+                    }
+                }
+                ComboAcsUser(editor, loginNames);
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void repositoryItemBtnAddEkip_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
@@ -7624,6 +7712,43 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        private void repositoryItemCboPosition_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                LookUpEdit edit = sender as LookUpEdit;
+                if (edit == null) return;
+                if (edit.EditValue != null)
+                {
+                    if ((edit.EditValue ?? 0).ToString() != (edit.OldEditValue ?? 0).ToString())
+                    {
+                        DevExpress.XtraGrid.Views.Grid.GridView view = gridViewEkip as DevExpress.XtraGrid.Views.Grid.GridView;
+                        var data = (HisEkipUserADO)gridViewEkip.GetFocusedRow();
+                        data.EXECUTE_ROLE_ID = Convert.ToInt64(edit.EditValue);
+                        GridLookUpEdit editor = view.ActiveEditor as GridLookUpEdit;
+                        if (editor != null)
+                        {
+                            LoadUser(data, editor);
+                        }
+                        else
+                        {
+                            GridLookUpEdit newEditor = new GridLookUpEdit();
+                            LoadUser(data, newEditor);
+                        }
+                        if(data.LOGINNAME == null && (key == "1"))
+                        {
+                            view.SetRowCellValue(view.FocusedRowHandle, view.Columns["LOGINNAME"], null);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void xtraTabControl1_CustomHeaderButtonClick(object sender, DevExpress.XtraTab.ViewInfo.CustomHeaderButtonEventArgs e)

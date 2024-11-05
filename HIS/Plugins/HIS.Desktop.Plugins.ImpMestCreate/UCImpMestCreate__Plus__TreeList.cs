@@ -38,6 +38,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -362,17 +363,29 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        private CancellationTokenSource cancellationTokenSource;
         private void medicineTypeTree_Click(UC.MedicineType.ADO.MedicineTypeADO data)
         {
             try
             {
                 Inventec.Common.Logging.LogSystem.Debug("medicineTypeTree_Click()-Start");
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("data", data));
+                Thread threadLoadMedicine = null;
+                if (this.configWarningDiff == null)
+                {
+                    configWarningDiff = new HIS_CONFIG();
+                    configWarningDiff.VALUE = HisConfigs.Get<string>("HIS.Desktop.Plugins.ImpMestCreate.IsWarningDifferenceLastImp");
+
+                }
+                if (configWarningDiff != null && configWarningDiff.VALUE == "1")
+                {
+                    threadLoadMedicine = new Thread(() => GetMedicine(data.ID));
+                    
+                }
                 if (btnCancel1.Enabled == true)
                 {
                     SetEnableButton(false);
-                    ResetValueControlDetail();
+                    ResetValueControlDetail();  
                     SetFocuTreeMediMate();
                     SetEnableButton(false);
                 }
@@ -397,6 +410,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                 if (data != null)
                 {
+                    if(threadLoadMedicine != null)threadLoadMedicine.Start();
                     if (data.IS_SALE_EQUAL_IMP_PRICE == 1)
                     {
                         chkImprice.Checked = true;
@@ -778,6 +792,18 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         {
             try
             {
+                Thread threadLoadMaterial = null;
+                if (this.configWarningDiff == null)
+                {
+                    configWarningDiff = new HIS_CONFIG();
+                    configWarningDiff.VALUE = HisConfigs.Get<string>("HIS.Desktop.Plugins.ImpMestCreate.IsWarningDifferenceLastImp");// BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "HIS.Desktop.Plugins.ImpMestCreate.IsWarningDifferenceLastImp").FirstOrDefault();
+
+                }
+                if (configWarningDiff != null && configWarningDiff.VALUE == "1")
+                {
+                    threadLoadMaterial = new Thread(() => GetMaterial(data.ID));
+
+                }
                 if (btnCancel1.Enabled == true)
                 {
                     SetEnableButton(false);
@@ -805,6 +831,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 this.currrentServiceAdo = null;
                 if (data != null)
                 {
+                    if(threadLoadMaterial != null ) threadLoadMaterial.Start();
                     if (data.IS_SALE_EQUAL_IMP_PRICE == 1)
                     {
                         chkImprice.Checked = true;

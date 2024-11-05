@@ -44,6 +44,7 @@ namespace HIS.UC.Icd
 {
     public partial class UCIcd : UserControl
     {
+        //
         private IcdInitADO InitAdo { get; set; }
         private int positionHandle = -1;
         private List<HIS_ICD> dataIcds;
@@ -52,10 +53,12 @@ namespace HIS.UC.Icd
         private DelegateRefeshIcd refeshIcd;
         private DelegatNextFocus nextFocus;
         private DelegateRefreshSubIcd refreshSubIcd;
+        private DelegateCheckICD checkICD;
         DevExpress.XtraGrid.Columns.GridColumn aColumnCode;
         string _TextIcdName = "";
         bool IsObligatoryTranferMediOrg = false;
         long autoCheckIcd;
+        bool IsYhct = false;
 
         HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager checkIcd;
         public UCIcd()
@@ -82,6 +85,10 @@ namespace HIS.UC.Icd
             {
                 refeshIcd = data.DelegateRefeshIcd;
             }
+            if(data.delegateCheckICD != null)
+            {
+                this.checkICD = data.delegateCheckICD;
+            }
             if (data.DelegateRequiredCause != null)
             {
                 requiredCause = data.DelegateRequiredCause;
@@ -89,6 +96,10 @@ namespace HIS.UC.Icd
             if (data.DelegateRefreshSubIcd != null)
             {
                 refreshSubIcd = data.DelegateRefreshSubIcd;
+            }
+            if(data.IsYHCT != null)
+            {
+                IsYhct = data.IsYHCT?? false;
             }
             if (data.DataIcds != null && data.DataIcds.Count > 0)
             {
@@ -130,7 +141,6 @@ namespace HIS.UC.Icd
                 this.layoutControlItem3.AppearanceItemCaption.Font = new Font(this.lciIcdText.AppearanceItemCaption.Font.FontFamily, data.SizeText);
                 this.lciIcdText.Size = new Size(321, 40);
             }
-
             this.chkEditIcd.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_ICD__LCI_CHECK_EDIT_ICD", Resources.ResourceMessage.languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
             if (!String.IsNullOrEmpty(data.LblIcdMain))
             {
@@ -402,7 +412,7 @@ namespace HIS.UC.Icd
                         showCbo = false;
                         txtIcdCode.Text = result.First().ICD_CODE;
                         string message = null;
-                        if (checkIcd != null && !checkIcd.ProcessCheckIcd(txtIcdCode.Text, null, ref message))
+                        if (!IsYhct && checkIcd != null && !checkIcd.ProcessCheckIcd(txtIcdCode.Text, null, ref message,false))
                         {
                             if (!String.IsNullOrEmpty(message))
                             {
@@ -434,6 +444,11 @@ namespace HIS.UC.Icd
                         {
                             Inventec.Common.Logging.LogSystem.Debug("this.refeshIcd.execute");
                             this.refeshIcd(result.First());
+                        }
+                        if(this.checkICD != null)
+                        {
+                            Inventec.Common.Logging.LogSystem.Debug("this.check icd");
+                            checkICD();
                         }
                     }
                 }
@@ -477,6 +492,11 @@ namespace HIS.UC.Icd
                         this.ChangecboChanDoanTD_V2_GanICDNAME(this._TextIcdName);
                     else
                         SendKeys.Send("{TAB}");
+                    if (this.checkICD != null)
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("this.check icd");
+                        checkICD();
+                    }
                 }
 
             }
@@ -496,7 +516,7 @@ namespace HIS.UC.Icd
                 {
                     txtIcdCode.Text = icd.ICD_CODE;
                     string message = null;
-                    if (checkIcd != null && !checkIcd.ProcessCheckIcd(icd.ICD_CODE, null, ref message))
+                    if (checkIcd != null && !checkIcd.ProcessCheckIcd(icd.ICD_CODE, null, ref message,false))
                     {
                         if (!String.IsNullOrEmpty(message))
                         {
@@ -723,6 +743,13 @@ namespace HIS.UC.Icd
                     chkEditIcd.Checked = (this.autoCheckIcd != 2);
                     txtIcdMainText.Text = this.InitAdo.IcdInput.ICD_NAME;
                 }
+                else
+                {
+                    txtIcdCode.Text = null;
+                    cboIcds.EditValue = null;
+                    txtIcdMainText.Text = null;
+                    chkEditIcd.Checked = false;
+                }
             }
             catch (Exception ex)
             {
@@ -851,7 +878,7 @@ namespace HIS.UC.Icd
                 var search = ((DevExpress.XtraEditors.TextEdit)sender).Text;
                 if (!String.IsNullOrEmpty(search))
                 {
-                    var listData = dataIcds.Where(o => o.ICD_CODE.Contains(search)).ToList();
+                    var listData = dataIcds.Where(o => o.ICD_CODE.Equals(search)).ToList();
                     var result = listData != null ? (listData.Count > 1 ? listData.Where(o => o.ICD_CODE == search).ToList() : listData) : null;
                     if (result == null || result.Count <= 0)
                     {
@@ -861,6 +888,7 @@ namespace HIS.UC.Icd
                     {
                         txtIcdCode.ErrorText = "";
                         dxValidationProvider1.RemoveControlError(txtIcdCode);
+                        dxValidationProvider2.RemoveControlError(txtIcdCode);
                         //ValidationICD(10, 500, true);
                     }
                 }

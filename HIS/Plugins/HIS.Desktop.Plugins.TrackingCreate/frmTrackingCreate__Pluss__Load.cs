@@ -322,7 +322,17 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                                     var ServiceReq = rsServiceReq.FirstOrDefault(o => o.ID == itemSSChild.SERVICE_REQ_ID);
                                     if (ServiceReq != null &&
                                         (ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT
-                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT) &&
+                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT
+                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN 
+                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA 
+                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TT 
+                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TDCN
+                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G
+                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__NS
+                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__SA
+                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__PT
+                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL
+                                        ) &&
                                         ServiceReq.USE_TIME != null &&
                                         ServiceReq.USE_TIME > ServiceReq.INTRUCTION_DATE)
                                     {
@@ -333,7 +343,15 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                                             ssServiceReqUseTime.LEVER = 3;
                                             ssServiceReqUseTime.CONCRETE_ID__IN_SETY = CONCRETE_ID__IN_SETY_USE_TIME;
                                             ssServiceReqUseTime.PARENT_ID__IN_SETY = ssServiceType.CONCRETE_ID__IN_SETY;
-                                            ssServiceReqUseTime.SERVICE_REQ_CODE = ssServiceType.SERVICE_REQ_CODE + " dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(ServiceReq.USE_TIME.Value);
+                                            ssServiceReqUseTime.SERVICE_REQ_CODE = (ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN
+                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA
+                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TT
+                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TDCN
+                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G
+                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__NS
+                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__SA
+                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__PT
+                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL) ? "Dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(ServiceReq.USE_TIME.Value) : ssServiceType.SERVICE_REQ_CODE + " dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(ServiceReq.USE_TIME.Value);
                                             ssServiceReqUseTime.TDL_SERVICE_TYPE_ID = itemSSChild.TDL_SERVICE_TYPE_ID;
                                             ssServiceReqUseTime.IsMedicinePreventive = true;
                                             SereServADOs.Add(ssServiceReqUseTime);
@@ -628,7 +646,15 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rsServiceReqTab2.Count), rsServiceReqTab2.Count));
                 if (rsServiceReqTab2 != null && rsServiceReqTab2.Count > 0)
                 {
-                    rsServiceReqTab2 = rsServiceReqTab2.Where(o => (o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT || o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT) && o.USE_TIME > o.INTRUCTION_DATE).ToList();
+                    rsServiceReqTab2 = rsServiceReqTab2.Where(o => (o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT || o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT || o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN
+                                        || o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA
+                                        || o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TT
+                                        || o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TDCN
+                                        || o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G
+                                        || o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__NS
+                                        || o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__SA
+                                        || o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__PT
+                                        || o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL) && o.USE_TIME > o.INTRUCTION_DATE).ToList();
                     if (rsServiceReqTab2 != null && rsServiceReqTab2.Count > 0)
                     {
                         if (this.currentTracking != null)

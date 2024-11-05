@@ -61,7 +61,7 @@ namespace HIS.Desktop.Plugins.HisIcd
         PagingGrid pagingGrid;
         int ActionType = -1;
         int positionHandle = -1;
-        MOS.EFMODEL.DataModels.HIS_ICD currentData;
+        MOS.EFMODEL.DataModels.V_HIS_ICD currentData;
         List<string> arrControlEnableNotChange = new List<string>();
         Dictionary<string, int> dicOrderTabIndexControl = new Dictionary<string, int>();
         Inventec.Desktop.Common.Modules.Module moduleData;
@@ -336,7 +336,7 @@ namespace HIS.Desktop.Plugins.HisIcd
                 startPage = ((CommonParam)param).Start ?? 0;
                 int limit = ((CommonParam)param).Limit ?? 0;
                 CommonParam paramCommon = new CommonParam(startPage, limit);
-                Inventec.Core.ApiResultObject<List<MOS.EFMODEL.DataModels.HIS_ICD>> apiResult = null;
+                Inventec.Core.ApiResultObject<List<MOS.EFMODEL.DataModels.V_HIS_ICD>> apiResult = null;
                 HisIcdFilter filter = new HisIcdFilter();
                 SetFilterNavBar(ref filter);
 
@@ -344,10 +344,10 @@ namespace HIS.Desktop.Plugins.HisIcd
                 filter.ORDER_FIELD = "MODIFY_TIME";
                 //dnNavigation.DataSource = null;
                 gridviewFormList.BeginUpdate();
-                apiResult = new BackendAdapter(paramCommon).GetRO<List<MOS.EFMODEL.DataModels.HIS_ICD>>(HisRequestUriStore.MOSHIS_ICD_GET, ApiConsumers.MosConsumer, filter, paramCommon);
+                apiResult = new BackendAdapter(paramCommon).GetRO<List<MOS.EFMODEL.DataModels.V_HIS_ICD>>(HisRequestUriStore.MOSHIS_ICD_GETVIEW, ApiConsumers.MosConsumer, filter, paramCommon);
                 if (apiResult != null)
                 {
-                    var data = (List<MOS.EFMODEL.DataModels.HIS_ICD>)apiResult.Data;
+                    var data = (List<MOS.EFMODEL.DataModels.V_HIS_ICD>)apiResult.Data;
                     if (data != null)
                     {
                         //dnNavigation.DataSource = data;
@@ -392,7 +392,7 @@ namespace HIS.Desktop.Plugins.HisIcd
                 {
                     gridviewFormList.Focus();
                     gridviewFormList.FocusedRowHandle = 0;
-                    var rowData = (MOS.EFMODEL.DataModels.HIS_ICD)gridviewFormList.GetFocusedRow();
+                    var rowData = (MOS.EFMODEL.DataModels.V_HIS_ICD)gridviewFormList.GetFocusedRow();
                     if (rowData != null)
                     {
                         ChangedDataRow(rowData);
@@ -417,7 +417,7 @@ namespace HIS.Desktop.Plugins.HisIcd
                 {
                     gridviewFormList.Focus();
                     gridviewFormList.FocusedRowHandle = 0;
-                    var rowData = (MOS.EFMODEL.DataModels.HIS_ICD)gridviewFormList.GetFocusedRow();
+                    var rowData = (MOS.EFMODEL.DataModels.V_HIS_ICD)gridviewFormList.GetFocusedRow();
                     if (rowData != null)
                     {
                         ChangedDataRow(rowData);
@@ -436,7 +436,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             {
                 if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
                 {
-                    MOS.EFMODEL.DataModels.HIS_ICD pData = (MOS.EFMODEL.DataModels.HIS_ICD)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    MOS.EFMODEL.DataModels.V_HIS_ICD pData = (MOS.EFMODEL.DataModels.V_HIS_ICD)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
                     short status = Inventec.Common.TypeConvert.Parse.ToInt16((pData.IS_ACTIVE ?? -1).ToString());
                     if (e.Column.FieldName == "STT")
@@ -612,7 +612,7 @@ namespace HIS.Desktop.Plugins.HisIcd
                 if (e.RowHandle >= 0)
                 {
 
-                    HIS_ICD data = (HIS_ICD)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                    V_HIS_ICD data = (V_HIS_ICD)((IList)((BaseView)sender).DataSource)[e.RowHandle];
                     if (e.Column.FieldName == "IS_LOCK")
                     {
                         e.RepositoryItem = (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? unLock : Lock);
@@ -637,7 +637,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
             if (e.RowHandle >= 0)
             {
-                HIS_ICD data = (HIS_ICD)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                V_HIS_ICD data = (V_HIS_ICD)((IList)((BaseView)sender).DataSource)[e.RowHandle];
                 if (e.Column.FieldName == "IS_ACTIVE_STR")
                 {
                     if (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
@@ -653,7 +653,7 @@ namespace HIS.Desktop.Plugins.HisIcd
         {
             try
             {
-                var rowData = (MOS.EFMODEL.DataModels.HIS_ICD)gridviewFormList.GetFocusedRow();
+                var rowData = (MOS.EFMODEL.DataModels.V_HIS_ICD)gridviewFormList.GetFocusedRow();
                 if (rowData != null)
                 {
                     currentData = rowData;
@@ -673,7 +673,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    var rowData = (MOS.EFMODEL.DataModels.HIS_ICD)gridviewFormList.GetFocusedRow();
+                    var rowData = (MOS.EFMODEL.DataModels.V_HIS_ICD)gridviewFormList.GetFocusedRow();
                     if (rowData != null)
                     {
                         ChangedDataRow(rowData);
@@ -687,7 +687,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             }
         }
 
-        private void ChangedDataRow(MOS.EFMODEL.DataModels.HIS_ICD data)
+        private void ChangedDataRow(MOS.EFMODEL.DataModels.V_HIS_ICD data)
         {
             try
             {
@@ -710,7 +710,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             }
         }
 
-        private void FillDataToEditorControl(MOS.EFMODEL.DataModels.HIS_ICD data)
+        private void FillDataToEditorControl(MOS.EFMODEL.DataModels.V_HIS_ICD data)
         {
             try
             {
@@ -878,7 +878,7 @@ namespace HIS.Desktop.Plugins.HisIcd
                     if (success)
                     {
                         FillDataToGridControl();
-                        currentData = ((List<HIS_ICD>)gridControlFormList.DataSource).FirstOrDefault();
+                        currentData = ((List<V_HIS_ICD>)gridControlFormList.DataSource).FirstOrDefault();
                     }
                     MessageManager.Show(this, param, success);
                 }
@@ -1312,8 +1312,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             //bool notHandler = false;
             try
             {
-
-                HIS_ICD data = (HIS_ICD)gridviewFormList.GetFocusedRow();
+                V_HIS_ICD data = (V_HIS_ICD)gridviewFormList.GetFocusedRow();
                 if (MessageBox.Show(LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonBoKhoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     HIS_ICD data1 = new HIS_ICD();
@@ -1341,8 +1340,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             //bool notHandler = false;
             try
             {
-
-                HIS_ICD data = (HIS_ICD)gridviewFormList.GetFocusedRow();
+                V_HIS_ICD data = (V_HIS_ICD)gridviewFormList.GetFocusedRow();
                 if (MessageBox.Show(LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonKhoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     HIS_ICD data1 = new HIS_ICD();
@@ -1922,6 +1920,15 @@ namespace HIS.Desktop.Plugins.HisIcd
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void lkIcdGroupId_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Plus)
+            {
+                List<object> listArgs = new List<object>();
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.HisIcdGroup", this.moduleData.RoomId, this.moduleData.RoomTypeId, listArgs);
             }
         }
     }

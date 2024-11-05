@@ -156,10 +156,24 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 dataInitUCHeniInfo.dlgCheckExamHistory = this.CheckHeinCardByServerBhxh;
                 dataInitUCHeniInfo.dlgProcessFillDataCareerUnder6AgeByHeinCardNumber = null;// this.FillDataCareerUnder6AgeByHeinCardNumberUCHeinInfo;
                 dataInitUCHeniInfo.UpdateTranPatiDataByPatientOld = UpdateTranPatiDataByPatientOld;
+                dataInitUCHeniInfo.dlgCheckSS = UpdateCheckSS;
                 this.ucHeinInfo1.InitInputData(dataInitUCHeniInfo);
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        
+        private void UpdateCheckSS(bool isCheck)
+        {
+            try
+            {
+                this.isCheckSS = isCheck;
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }

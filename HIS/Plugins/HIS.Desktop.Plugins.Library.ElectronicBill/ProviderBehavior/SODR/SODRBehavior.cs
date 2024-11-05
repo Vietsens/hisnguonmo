@@ -18,14 +18,18 @@
 using HIS.Desktop.Plugins.Library.ElectronicBill.Base;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Config;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Data;
+using HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR.Process;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Template;
 using Inventec.Common.EBillSoftDreams.Model;
 using Inventec.Common.EBillSoftDreams.ModelXml;
+using Inventec.Common.Logging;
+using Inventec.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
 {
@@ -35,13 +39,17 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
         string accountConfig { get; set; }
         ElectronicBillDataInput ElectronicBillDataInput { get; set; }
         TemplateEnum.TYPE TempType { get; set; }
+        private SoftDreamsProcessor processV2 { get; set; }
 
-        public SODRBehavior(ElectronicBillDataInput _electronicBillDataInput, string _serviceConfig, string _accountConfig)
+        private bool IsV2 { get; set; }
+
+        public SODRBehavior(ElectronicBillDataInput _electronicBillDataInput, string _serviceConfig, string _accountConfig, bool isV2 = false)
             : base()
         {
             this.serviceConfig = _serviceConfig;
             this.ElectronicBillDataInput = _electronicBillDataInput;
             this.accountConfig = _accountConfig;
+            this.IsV2 = isV2;
         }
 
         ElectronicBillResult IRun.Run(ElectronicBillType.ENUM _electronicBillTypeEnum, TemplateEnum.TYPE _tempType)
@@ -70,20 +78,48 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                     login.User = accountConfigArr[0].Trim();
                     login.Pass = accountConfigArr[1].Trim();
 
-                    switch (_electronicBillTypeEnum)
+                    if (this.IsV2)
                     {
-                        case ElectronicBillType.ENUM.CREATE_INVOICE:
-                            ProcessCreateInvoice(login, ref result);
-                            break;
-                        case ElectronicBillType.ENUM.GET_INVOICE_LINK:
-                            //ProcessGetInvoice(login, ref result);
-                            break;
-                        case ElectronicBillType.ENUM.DELETE_INVOICE:
-                        case ElectronicBillType.ENUM.CANCEL_INVOICE:
-                            //ProcessCancelInvoice(login, ref result);
-                            break;
-                        default:
-                            break;
+                        this.processV2 = new SoftDreamsProcessor(serviceUrl, accountConfigArr[0].Trim(), accountConfigArr[1].Trim());
+                        if (processV2 != null)
+                        {
+                            switch (_electronicBillTypeEnum)
+                            {
+                                case ElectronicBillType.ENUM.CREATE_INVOICE:
+                                    result = this.ProcessCreateInvoiceV2();
+                                    break;
+                                case ElectronicBillType.ENUM.GET_INVOICE_LINK:
+                                    result = this.ProcessGetInvoiceV2();
+                                    break;
+                                case ElectronicBillType.ENUM.DELETE_INVOICE:
+                                case ElectronicBillType.ENUM.CANCEL_INVOICE:
+                                    result = this.ProcessCancelInvoiceV2();
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            result.InvoiceSys = ProviderType.SoftDream;
+                            ElectronicBillResultUtil.Set(ref result, false, "Lỗi khởi tạo");
+                        }
+                    }
+                    else
+                    {
+                        switch (_electronicBillTypeEnum)
+                        {
+                            case ElectronicBillType.ENUM.CREATE_INVOICE:
+                                ProcessCreateInvoice(login, ref result);
+                                break;
+                            case ElectronicBillType.ENUM.GET_INVOICE_LINK:
+                                //ProcessGetInvoice(login, ref result);
+                                break;
+                            case ElectronicBillType.ENUM.DELETE_INVOICE:
+                            case ElectronicBillType.ENUM.CANCEL_INVOICE:
+                                //ProcessCancelInvoice(login, ref result);
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
             }
@@ -116,6 +152,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
             return result;
         }
 
+        #region MyRegion v1
         private void ProcessCreateInvoice(Inventec.Common.EBillSoftDreams.DataInitApi login, ref ElectronicBillResult result)
         {
             try
@@ -329,5 +366,225 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
             }
             return result;
         }
+        #endregion
+
+        #region MyRegion v2
+        private ElectronicBillResult ProcessCreateInvoiceV2()
+        {
+            ElectronicBillResult electronicBillResult = new ElectronicBillResult
+            {
+                InvoiceSys = ProviderType.SoftDream
+            };
+            try
+            {
+                string text = this.ElectronicBillDataInput.TemplateCode + this.ElectronicBillDataInput.SymbolCode;
+                IssueCreateV2 invoice = this.GetInvoiceDetailV2();
+                ResultDataV2 response = this.processV2.CreateInvoice(invoice);
+                if (response != null && response.InvoiceResult != null && response.InvoiceResult.Count == 1)
+                {
+                    electronicBillResult.Success = true;
+                    electronicBillResult.InvoiceCode = response.InvoiceResult.First().Ikey;
+                    electronicBillResult.InvoiceNumOrder = response.InvoiceResult.First().No;
+                }
+                else
+                {
+                    LogSystem.Error("Tao va phat hanh hoa don that bai. " + LogUtil.TraceData(LogUtil.GetMemberName<ResultDataV2>(() => response), response) + LogUtil.TraceData(LogUtil.GetMemberName<IssueCreateV2>(() => invoice), invoice));
+                    ElectronicBillResultUtil.Set(ref electronicBillResult, false, "Tạo và phát hành hóa thất bại");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+                ElectronicBillResultUtil.Set(ref electronicBillResult, false, ex.Message);
+            }
+            return electronicBillResult;
+        }
+
+        private IssueCreateV2 GetInvoiceDetailV2()
+        {
+            IssueCreateV2 issueCreateV = new IssueCreateV2();
+            try
+            {
+                bool flag = this.ElectronicBillDataInput != null;
+                if (flag)
+                {
+                    issueCreateV.Pattern = this.ElectronicBillDataInput.TemplateCode + this.ElectronicBillDataInput.SymbolCode;
+                    issueCreateV.Invoices = new List<InvoiceV2>();
+                    InvoiceV2 invoiceV = new InvoiceV2();
+                    InvoiceInfo.InvoiceInfoADO data = InvoiceInfo.InvoiceInfoProcessor.GetData(this.ElectronicBillDataInput, this.TempType != TemplateEnum.TYPE.Template10);
+                    invoiceV.CusAddress = data.BuyerAddress;
+                    invoiceV.CusBankName = "";
+                    invoiceV.CusBankNo = data.BuyerAccountNumber;
+                    invoiceV.CusPhone = data.BuyerPhone;
+                    invoiceV.CusName = (data.BuyerName ?? data.BuyerOrganization);
+                    invoiceV.CusTaxCode = data.BuyerTaxCode;
+                    invoiceV.Email = data.BuyerEmail;
+                    invoiceV.PaymentMethod = this.ElectronicBillDataInput.PaymentMethod;
+                    if (ElectronicBillDataInput.Transaction != null && !String.IsNullOrEmpty(ElectronicBillDataInput.Transaction.TRANSACTION_CODE))
+                    {
+                        invoiceV.Ikey = ElectronicBillDataInput.Transaction.TRANSACTION_CODE;
+                    }
+                    else if (ElectronicBillDataInput.ListTransaction != null && ElectronicBillDataInput.ListTransaction.Count > 0)
+                    {
+                        invoiceV.Ikey = ElectronicBillDataInput.ListTransaction.Select(s => s.TRANSACTION_CODE).OrderBy(o => o).FirstOrDefault();
+                    }
+
+                    invoiceV.Products = new List<ProductV2>();
+                    IRunTemplate runTemplate = TemplateFactory.MakeIRun(this.TempType, this.ElectronicBillDataInput);
+                    var obj = runTemplate.Run();
+                    int num = 1;
+
+                    if (obj == null)
+                    {
+                        throw new Exception("Không có thông tin chi tiết dịch vụ.");
+                    }
+
+                    if (this.TempType > TemplateEnum.TYPE.TemplateNhaThuoc)
+                    {
+                        List<ProductBase> list = (List<ProductBase>)obj;
+                        if (list == null || list.Count == 0)
+                        {
+                            throw new Exception("Không có thông tin chi tiết dịch vụ.");
+                        }
+                        foreach (ProductBase current in list)
+                        {
+                            ProductV2 item = new ProductV2
+                            {
+                                No = (num.ToString() ?? ""),
+                                Feature = "HHDV",
+                                Code = current.ProdCode,
+                                Name = current.ProdName,
+                                Unit = current.ProdUnit,
+                                Quantity = current.ProdQuantity ?? 0,
+                                Price = current.ProdPrice ?? 0,
+                                Total = current.Amount,
+                                VATAmount = decimal.Zero,
+                                VATRate = -1f,
+                                Amount = current.Amount
+                            };
+                            invoiceV.Products.Add(item);
+                            num++;
+                        }
+                    }
+                    else
+                    {
+                        List<ProductBasePlus> list2 = (List<ProductBasePlus>)obj;
+                        if (list2 == null || list2.Count == 0)
+                        {
+                            throw new Exception("Không có thông tin chi tiết dịch vụ.");
+                        }
+
+                        foreach (ProductBasePlus current2 in list2)
+                        {
+                            ProductV2 item2 = new ProductV2
+                            {
+                                No = (num.ToString() ?? ""),
+                                Feature = "HHDV",
+                                Code = current2.ProdCode,
+                                Name = current2.ProdName,
+                                Unit = current2.ProdUnit,
+                                Quantity = current2.ProdQuantity ?? 0,
+                                Price = current2.ProdPrice ?? 0,
+                                Total = current2.AmountWithoutTax ?? 0,
+                                VATAmount = current2.TaxAmount ?? 0,
+                                VATRate = (float)current2.TaxConvert,
+                                Amount = current2.Amount
+                            };
+                            invoiceV.Products.Add(item2);
+                            num++;
+                        }
+                    }
+
+                    if (this.ElectronicBillDataInput.Transaction != null && this.ElectronicBillDataInput.Transaction.EXEMPTION > 0 && this.TempType != TemplateEnum.TYPE.Template10)
+                    {
+                        ProductV2 item3 = new ProductV2
+                        {
+                            No = (num.ToString() ?? ""),
+                            Feature = "CK",
+                            Code = "",
+                            Name = "Chiết khấu",
+                            Unit = "",
+                            Quantity = 0,
+                            Price = 0,
+                            Total = this.ElectronicBillDataInput.Transaction.EXEMPTION ?? 0,// hiển thị tổng tiền trên mẫu
+                            VATAmount = 0,
+                            VATRate = -1f,
+                            Amount = this.ElectronicBillDataInput.Transaction.EXEMPTION ?? 0,
+                            Discount = 0,
+                            DiscountAmount = 0
+                        };
+                        invoiceV.Products.Add(item3);
+                    }
+
+                    issueCreateV.Invoices.Add(invoiceV);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+            return issueCreateV;
+        }
+
+        private ElectronicBillResult ProcessCancelInvoiceV2()
+        {
+            ElectronicBillResult electronicBillResult = new ElectronicBillResult
+            {
+                InvoiceSys = ProviderType.SoftDream
+            };
+            try
+            {
+                string pattern = this.ElectronicBillDataInput.TemplateCode + this.ElectronicBillDataInput.SymbolCode;
+                bool response = this.processV2.DeleteInvoice(pattern, this.ElectronicBillDataInput.InvoiceCode);
+                bool response2 = response;
+                if (response2)
+                {
+                    electronicBillResult.Success = true;
+                }
+                else
+                {
+                    LogSystem.Error("Huy hoa don that bai. " + LogUtil.TraceData(LogUtil.GetMemberName<bool>(() => response), response) + LogUtil.TraceData(LogUtil.GetMemberName<ElectronicBillDataInput>(() => this.ElectronicBillDataInput), this.ElectronicBillDataInput));
+                    ElectronicBillResultUtil.Set(ref electronicBillResult, false, "Hủy hóa đơn thất bại");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+                ElectronicBillResultUtil.Set(ref electronicBillResult, false, ex.Message);
+            }
+            return electronicBillResult;
+        }
+
+        private ElectronicBillResult ProcessGetInvoiceV2()
+        {
+            ElectronicBillResult electronicBillResult = new ElectronicBillResult
+            {
+                InvoiceSys = ProviderType.SoftDream
+            };
+            try
+            {
+                string pattern = this.ElectronicBillDataInput.TemplateCode + this.ElectronicBillDataInput.SymbolCode;
+                string response = this.processV2.GetInvoice(pattern, this.ElectronicBillDataInput.InvoiceCode);
+                bool flag = !string.IsNullOrWhiteSpace(response);
+                if (flag)
+                {
+                    string text = ElectronicBillResultUtil.ProcessPdfFileResult(response);
+                    electronicBillResult.Success = true;
+                    electronicBillResult.InvoiceLink = text;
+                }
+                else
+                {
+                    LogSystem.Error("lay file chuyen doi that bai. " + LogUtil.TraceData(LogUtil.GetMemberName<string>(() => response), response) + LogUtil.TraceData(LogUtil.GetMemberName<ElectronicBillDataInput>(() => this.ElectronicBillDataInput), this.ElectronicBillDataInput));
+                    ElectronicBillResultUtil.Set(ref electronicBillResult, false, "Lấy file chuyển đổi thất bại");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+                ElectronicBillResultUtil.Set(ref electronicBillResult, false, ex.Message);
+            }
+            return electronicBillResult;
+        }
+        #endregion
     }
 }

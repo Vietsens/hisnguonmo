@@ -286,12 +286,38 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        class ConfigInfo
+        {
+            public string BANK { get; set; }
+            public string VALUE { get; set; }
+        }
         private void GetDataPrintQrCode()
         {
             try
             {
                 CommonParam param = new CommonParam();
-                lstConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+                
+                var currentRoom = BackendDataWorker.Get<HIS_ROOM>().Where(s => s.ID == this.roomId && !string.IsNullOrEmpty(s.QR_CONFIG_JSON)).FirstOrDefault();
+                if (currentRoom != null)
+                {
+                    if (this.lstConfig == null)
+                        lstConfig = new List<HIS_CONFIG>();
+                    lstConfig.Clear();
+                    ConfigInfo _config = Newtonsoft.Json.JsonConvert.DeserializeObject<ConfigInfo>(currentRoom.QR_CONFIG_JSON);
+                    HIS_CONFIG _cf = new HIS_CONFIG();
+                    if (string.IsNullOrWhiteSpace(_config.BANK))
+                        Inventec.Common.Logging.LogSystem.Warn("Cau hinh thieu thong tin ngan hang.roomID: ("+roomId+"). Cau hinh: "+currentRoom.QR_CONFIG_JSON);
+                    _cf.KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", _config.BANK.Trim());
+                    _cf.VALUE = _config.VALUE;
+                    lstConfig.Add(_cf);
+                }
+                else
+                {
+
+                    //neu cau hinh phong lam viec k co QR
+                    lstConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+                    
+                }
                 if (lstConfig != null && lstConfig.Count > 0 && this.Treatment != null)
                 {
                     HisTransReqFilter filter = new HisTransReqFilter();

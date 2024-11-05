@@ -24,8 +24,10 @@ using His.UC.UCHein.ControlProcess;
 using His.UC.UCHein.Design.TemplateHeinBHYT1.ValidationRule;
 using His.UC.UCHein.HisPatient;
 using His.UC.UCHein.Utils;
+using HIS.Desktop.LocalStorage.BackendData;
 using Inventec.Common.Logging;
 using Inventec.Common.QrCodeBHYT;
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -1421,6 +1423,14 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                                     || MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.COMMUNE == this.HeinLevelCodeCurrent);
                     this.SetEnableControlHein(rightRoute ? RightRouterFactory.RIGHT_ROUTER : RightRouterFactory.WRONG_ROUTER__CHOICE_RIGHT, true);
                 }
+
+                if (!this.isCallByRegistor && rdoRightRoute.Checked && this.cboDKKCBBD.EditValue != null && ((this.patientTypeAlterOld != null && this.patientTypeAlterOld.TREATMENT_ID > 0 && (string)this.cboDKKCBBD.EditValue != BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == His.UC.UCHein.HisTreatment.HisTreatmentGet.GetById(this.patientTypeAlterOld.TREATMENT_ID).BRANCH_ID).HEIN_MEDI_ORG_CODE) || (this.entity.HisTreatment != null && this.entity.HisTreatment.ID > 0 && (string)this.cboDKKCBBD.EditValue != BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == entity.HisTreatment.BRANCH_ID).HEIN_MEDI_ORG_CODE)) && this.cboNoiSong.EditValue == null)
+                    ValidRightRouteType();
+                else
+                {
+                    lblRightRouteType.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
+                    dxValidationProvider1.SetValidationRule(txtHeinRightRouteCode, null);
+                }
             }
             catch (Exception ex)
             {
@@ -2043,7 +2053,13 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.dxValidationProvider1.SetValidationRule(this.txtHeinRightRouteCode, null);
                     this.lblRightRouteType.AppearanceItemCaption.ForeColor = Color.Black;
                 }
-
+                if (!this.isCallByRegistor && rdoRightRoute.Checked && this.cboDKKCBBD.EditValue != null && ((this.patientTypeAlterOld != null && this.patientTypeAlterOld.TREATMENT_ID > 0 && (string)this.cboDKKCBBD.EditValue != BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == His.UC.UCHein.HisTreatment.HisTreatmentGet.GetById(this.patientTypeAlterOld.TREATMENT_ID).BRANCH_ID).HEIN_MEDI_ORG_CODE) || (this.entity.HisTreatment != null && this.entity.HisTreatment.ID > 0 && (string)this.cboDKKCBBD.EditValue != BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == entity.HisTreatment.BRANCH_ID).HEIN_MEDI_ORG_CODE)) && this.cboNoiSong.EditValue == null)
+                    ValidRightRouteType();
+                else
+                {
+                    lblRightRouteType.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
+                    dxValidationProvider1.SetValidationRule(txtHeinRightRouteCode, null);
+                }
                 ResetValidationRightRoute_Present();
             }
             catch (Exception ex)

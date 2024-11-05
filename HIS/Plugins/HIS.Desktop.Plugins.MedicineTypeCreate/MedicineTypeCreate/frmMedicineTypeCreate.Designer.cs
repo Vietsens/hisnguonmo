@@ -81,6 +81,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMedicineTypeCreate));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -225,7 +226,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject178 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject179 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject180 = new DevExpress.Utils.SerializableAppearanceObject();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMedicineTypeCreate));
             this.dxValidationMedicineType = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
@@ -443,7 +443,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.layoutControl7 = new DevExpress.XtraLayout.LayoutControl();
-            this.txtBhytWhiteListCodes = new DevExpress.XtraEditors.TextEdit();
+            this.chkBlockInTreat = new DevExpress.XtraEditors.CheckEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
@@ -452,6 +452,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.barDockControl10 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl11 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl12 = new DevExpress.XtraBars.BarDockControl();
+            this.chkWarningInTreat = new DevExpress.XtraEditors.CheckEdit();
+            this.spinUseInTreat = new DevExpress.XtraEditors.SpinEdit();
+            this.txtBhytWhiteListCodes = new DevExpress.XtraEditors.TextEdit();
             this.btnContentWarning = new DevExpress.XtraEditors.SimpleButton();
             this.txtContentWarning = new DevExpress.XtraEditors.TextEdit();
             this.rdoBlock1 = new DevExpress.XtraEditors.CheckEdit();
@@ -545,12 +548,16 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem400 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem403 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem405 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem408 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem409 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem410 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem39 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem40 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.layoutControl6 = new DevExpress.XtraLayout.LayoutControl();
+            this.btnEditInfo = new DevExpress.XtraEditors.CheckButton();
             this.spinVolume = new DevExpress.XtraEditors.SpinEdit();
             this.txtATCGroup_Name = new DevExpress.XtraEditors.TextEdit();
             this.txtATCGroup_Code = new DevExpress.XtraEditors.TextEdit();
@@ -707,6 +714,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lcATCGroup = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem406 = new DevExpress.XtraLayout.LayoutControlItem();
             this.txtVolume = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem28 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem407 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem35 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.cboMedicineType = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -1594,8 +1604,11 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl7)).BeginInit();
             this.layoutControl7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtBhytWhiteListCodes.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkBlockInTreat.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkWarningInTreat.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinUseInTreat.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtBhytWhiteListCodes.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtContentWarning.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdoBlock1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdoWarning1.Properties)).BeginInit();
@@ -1686,6 +1699,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem400)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem403)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem405)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem408)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem409)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem410)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).BeginInit();
@@ -1844,6 +1860,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.lcATCGroup)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem406)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtVolume)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem28)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem407)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem35)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboMedicineType.Properties)).BeginInit();
@@ -5333,6 +5352,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // layoutControl7
             // 
+            this.layoutControl7.Controls.Add(this.chkBlockInTreat);
+            this.layoutControl7.Controls.Add(this.chkWarningInTreat);
+            this.layoutControl7.Controls.Add(this.spinUseInTreat);
             this.layoutControl7.Controls.Add(this.txtBhytWhiteListCodes);
             this.layoutControl7.Controls.Add(this.btnContentWarning);
             this.layoutControl7.Controls.Add(this.txtContentWarning);
@@ -5386,15 +5408,18 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControl7.TabIndex = 45;
             this.layoutControl7.Text = "layoutControl7";
             // 
-            // txtBhytWhiteListCodes
+            // chkBlockInTreat
             // 
-            this.txtBhytWhiteListCodes.Enabled = false;
-            this.txtBhytWhiteListCodes.Location = new System.Drawing.Point(122, 243);
-            this.txtBhytWhiteListCodes.MenuManager = this.barManager1;
-            this.txtBhytWhiteListCodes.Name = "txtBhytWhiteListCodes";
-            this.txtBhytWhiteListCodes.Size = new System.Drawing.Size(407, 20);
-            this.txtBhytWhiteListCodes.StyleController = this.layoutControl7;
-            this.txtBhytWhiteListCodes.TabIndex = 114;
+            this.chkBlockInTreat.Location = new System.Drawing.Point(443, 135);
+            this.chkBlockInTreat.MenuManager = this.barManager1;
+            this.chkBlockInTreat.Name = "chkBlockInTreat";
+            this.chkBlockInTreat.Properties.Caption = "";
+            this.chkBlockInTreat.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
+            this.chkBlockInTreat.Properties.FullFocusRect = true;
+            this.chkBlockInTreat.Size = new System.Drawing.Size(86, 19);
+            this.chkBlockInTreat.StyleController = this.layoutControl7;
+            this.chkBlockInTreat.TabIndex = 117;
+            this.chkBlockInTreat.CheckedChanged += new System.EventHandler(this.chkBlockInTreat_CheckedChanged);
             // 
             // barManager1
             // 
@@ -5466,11 +5491,52 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.barDockControl12.Location = new System.Drawing.Point(1076, 29);
             this.barDockControl12.Size = new System.Drawing.Size(0, 661);
             // 
+            // chkWarningInTreat
+            // 
+            this.chkWarningInTreat.Location = new System.Drawing.Point(339, 135);
+            this.chkWarningInTreat.MenuManager = this.barManager1;
+            this.chkWarningInTreat.Name = "chkWarningInTreat";
+            this.chkWarningInTreat.Properties.Caption = "";
+            this.chkWarningInTreat.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
+            this.chkWarningInTreat.Properties.FullFocusRect = true;
+            this.chkWarningInTreat.Size = new System.Drawing.Size(55, 19);
+            this.chkWarningInTreat.StyleController = this.layoutControl7;
+            this.chkWarningInTreat.TabIndex = 116;
+            this.chkWarningInTreat.CheckedChanged += new System.EventHandler(this.chkWarningInTreat_CheckedChanged);
+            // 
+            // spinUseInTreat
+            // 
+            this.spinUseInTreat.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.spinUseInTreat.Location = new System.Drawing.Point(122, 135);
+            this.spinUseInTreat.MenuManager = this.barManager1;
+            this.spinUseInTreat.Name = "spinUseInTreat";
+            this.spinUseInTreat.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.spinUseInTreat.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spinUseInTreat.Size = new System.Drawing.Size(131, 20);
+            this.spinUseInTreat.StyleController = this.layoutControl7;
+            this.spinUseInTreat.TabIndex = 115;
+            this.spinUseInTreat.EditValueChanged += new System.EventHandler(this.spinUseInTreat_EditValueChanged);
+            // 
+            // txtBhytWhiteListCodes
+            // 
+            this.txtBhytWhiteListCodes.Enabled = false;
+            this.txtBhytWhiteListCodes.Location = new System.Drawing.Point(122, 207);
+            this.txtBhytWhiteListCodes.MenuManager = this.barManager1;
+            this.txtBhytWhiteListCodes.Name = "txtBhytWhiteListCodes";
+            this.txtBhytWhiteListCodes.Size = new System.Drawing.Size(407, 20);
+            this.txtBhytWhiteListCodes.StyleController = this.layoutControl7;
+            this.txtBhytWhiteListCodes.TabIndex = 114;
+            // 
             // btnContentWarning
             // 
             this.btnContentWarning.Appearance.Options.UseTextOptions = true;
             this.btnContentWarning.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
-            this.btnContentWarning.Location = new System.Drawing.Point(507, 290);
+            this.btnContentWarning.Location = new System.Drawing.Point(507, 254);
             this.btnContentWarning.Name = "btnContentWarning";
             this.btnContentWarning.Size = new System.Drawing.Size(22, 22);
             this.btnContentWarning.StyleController = this.layoutControl7;
@@ -5481,7 +5547,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // txtContentWarning
             // 
             this.txtContentWarning.EditValue = "";
-            this.txtContentWarning.Location = new System.Drawing.Point(207, 290);
+            this.txtContentWarning.Location = new System.Drawing.Point(207, 254);
             this.txtContentWarning.MenuManager = this.barManager1;
             this.txtContentWarning.Name = "txtContentWarning";
             this.txtContentWarning.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -5496,7 +5562,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // rdoBlock1
             // 
-            this.rdoBlock1.Location = new System.Drawing.Point(443, 171);
+            this.rdoBlock1.Location = new System.Drawing.Point(443, 111);
             this.rdoBlock1.Margin = new System.Windows.Forms.Padding(2);
             this.rdoBlock1.MenuManager = this.barManager1;
             this.rdoBlock1.Name = "rdoBlock1";
@@ -5511,7 +5577,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // rdoWarning1
             // 
-            this.rdoWarning1.Location = new System.Drawing.Point(339, 171);
+            this.rdoWarning1.Location = new System.Drawing.Point(339, 111);
             this.rdoWarning1.Margin = new System.Windows.Forms.Padding(2);
             this.rdoWarning1.MenuManager = this.barManager1;
             this.rdoWarning1.Name = "rdoWarning1";
@@ -5531,7 +5597,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             0,
             0,
             0});
-            this.spinUseInDay.Location = new System.Drawing.Point(122, 171);
+            this.spinUseInDay.Location = new System.Drawing.Point(122, 111);
             this.spinUseInDay.Margin = new System.Windows.Forms.Padding(2);
             this.spinUseInDay.MenuManager = this.barManager1;
             this.spinUseInDay.Name = "spinUseInDay";
@@ -5552,7 +5618,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkIS_DRUG_STORE
             // 
-            this.chkIS_DRUG_STORE.Location = new System.Drawing.Point(501, 408);
+            this.chkIS_DRUG_STORE.Location = new System.Drawing.Point(501, 372);
             this.chkIS_DRUG_STORE.MenuManager = this.barManager1;
             this.chkIS_DRUG_STORE.Name = "chkIS_DRUG_STORE";
             this.chkIS_DRUG_STORE.Properties.Caption = " ";
@@ -5564,7 +5630,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // txtOTHER_PAY_SOURCE
             // 
-            this.txtOTHER_PAY_SOURCE.Location = new System.Drawing.Point(377, 219);
+            this.txtOTHER_PAY_SOURCE.Location = new System.Drawing.Point(377, 183);
             this.txtOTHER_PAY_SOURCE.MenuManager = this.barManager1;
             this.txtOTHER_PAY_SOURCE.Name = "txtOTHER_PAY_SOURCE";
             this.txtOTHER_PAY_SOURCE.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
@@ -5575,7 +5641,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // cboOTHER_PAY_SOURCE
             // 
-            this.cboOTHER_PAY_SOURCE.Location = new System.Drawing.Point(122, 219);
+            this.cboOTHER_PAY_SOURCE.Location = new System.Drawing.Point(122, 183);
             this.cboOTHER_PAY_SOURCE.MenuManager = this.barManager1;
             this.cboOTHER_PAY_SOURCE.Name = "cboOTHER_PAY_SOURCE";
             this.cboOTHER_PAY_SOURCE.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -5600,7 +5666,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkIsNotTreatmentDayCount
             // 
-            this.chkIsNotTreatmentDayCount.Location = new System.Drawing.Point(501, 385);
+            this.chkIsNotTreatmentDayCount.Location = new System.Drawing.Point(501, 349);
             this.chkIsNotTreatmentDayCount.MenuManager = this.barManager1;
             this.chkIsNotTreatmentDayCount.Name = "chkIsNotTreatmentDayCount";
             this.chkIsNotTreatmentDayCount.Properties.Caption = "";
@@ -5615,7 +5681,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkIsOutHospital
             // 
-            this.chkIsOutHospital.Location = new System.Drawing.Point(119, 385);
+            this.chkIsOutHospital.Location = new System.Drawing.Point(119, 349);
             this.chkIsOutHospital.MenuManager = this.barManager1;
             this.chkIsOutHospital.Name = "chkIsOutHospital";
             this.chkIsOutHospital.Properties.Caption = "";
@@ -5627,7 +5693,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chKNgoaiDRG
             // 
-            this.chKNgoaiDRG.Location = new System.Drawing.Point(312, 385);
+            this.chKNgoaiDRG.Location = new System.Drawing.Point(312, 349);
             this.chKNgoaiDRG.MenuManager = this.barManager1;
             this.chKNgoaiDRG.Name = "chKNgoaiDRG";
             this.chKNgoaiDRG.Properties.Caption = "";
@@ -5640,7 +5706,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // rdoBlock
             // 
-            this.rdoBlock.Location = new System.Drawing.Point(443, 147);
+            this.rdoBlock.Location = new System.Drawing.Point(443, 87);
             this.rdoBlock.Name = "rdoBlock";
             this.rdoBlock.Properties.Caption = "";
             this.rdoBlock.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
@@ -5653,7 +5719,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // rdoWarning
             // 
-            this.rdoWarning.Location = new System.Drawing.Point(339, 147);
+            this.rdoWarning.Location = new System.Drawing.Point(339, 87);
             this.rdoWarning.Name = "rdoWarning";
             this.rdoWarning.Properties.Caption = "";
             this.rdoWarning.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
@@ -5667,7 +5733,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // cboBlockDepartment
             // 
             this.cboBlockDepartment.EditValue = "";
-            this.cboBlockDepartment.Location = new System.Drawing.Point(122, 195);
+            this.cboBlockDepartment.Location = new System.Drawing.Point(122, 159);
             this.cboBlockDepartment.Name = "cboBlockDepartment";
             this.cboBlockDepartment.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -5689,7 +5755,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkIsNoHeinLimitForSpecial
             // 
-            this.chkIsNoHeinLimitForSpecial.Location = new System.Drawing.Point(118, 52);
+            this.chkIsNoHeinLimitForSpecial.Location = new System.Drawing.Point(118, -8);
             this.chkIsNoHeinLimitForSpecial.Name = "chkIsNoHeinLimitForSpecial";
             this.chkIsNoHeinLimitForSpecial.Properties.Caption = "";
             this.chkIsNoHeinLimitForSpecial.Properties.FullFocusRect = true;
@@ -5701,7 +5767,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // btnGiaTran
             // 
-            this.btnGiaTran.Location = new System.Drawing.Point(443, 26);
+            this.btnGiaTran.Location = new System.Drawing.Point(443, -34);
             this.btnGiaTran.Name = "btnGiaTran";
             this.btnGiaTran.Size = new System.Drawing.Size(86, 22);
             this.btnGiaTran.StyleController = this.layoutControl7;
@@ -5711,7 +5777,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // ChkIsSpecificHeinPrice
             // 
-            this.ChkIsSpecificHeinPrice.Location = new System.Drawing.Point(374, 26);
+            this.ChkIsSpecificHeinPrice.Location = new System.Drawing.Point(374, -34);
             this.ChkIsSpecificHeinPrice.Name = "ChkIsSpecificHeinPrice";
             this.ChkIsSpecificHeinPrice.Properties.Caption = "";
             this.ChkIsSpecificHeinPrice.Properties.FullFocusRect = true;
@@ -5725,7 +5791,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // ckhIsRaw
             // 
-            this.ckhIsRaw.Location = new System.Drawing.Point(501, 339);
+            this.ckhIsRaw.Location = new System.Drawing.Point(501, 303);
             this.ckhIsRaw.Name = "ckhIsRaw";
             this.ckhIsRaw.Properties.Caption = "";
             this.ckhIsRaw.Properties.FullFocusRect = true;
@@ -5738,7 +5804,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkIsBusiness
             // 
-            this.chkIsBusiness.Location = new System.Drawing.Point(312, 408);
+            this.chkIsBusiness.Location = new System.Drawing.Point(312, 372);
             this.chkIsBusiness.Name = "chkIsBusiness";
             this.chkIsBusiness.Properties.Caption = "";
             this.chkIsBusiness.Properties.FullFocusRect = true;
@@ -5754,7 +5820,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkIsOtherSourcePaid
             // 
-            this.chkIsOtherSourcePaid.Location = new System.Drawing.Point(312, 362);
+            this.chkIsOtherSourcePaid.Location = new System.Drawing.Point(312, 326);
             this.chkIsOtherSourcePaid.Name = "chkIsOtherSourcePaid";
             this.chkIsOtherSourcePaid.Properties.Caption = "";
             this.chkIsOtherSourcePaid.Properties.FullFocusRect = true;
@@ -5766,7 +5832,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkIsKedney
             // 
-            this.chkIsKedney.Location = new System.Drawing.Point(312, 339);
+            this.chkIsKedney.Location = new System.Drawing.Point(312, 303);
             this.chkIsKedney.Name = "chkIsKedney";
             this.chkIsKedney.Properties.Caption = "";
             this.chkIsKedney.Properties.FullFocusRect = true;
@@ -5778,7 +5844,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkIsAllowExportOdd
             // 
-            this.chkIsAllowExportOdd.Location = new System.Drawing.Point(117, 313);
+            this.chkIsAllowExportOdd.Location = new System.Drawing.Point(117, 277);
             this.chkIsAllowExportOdd.Name = "chkIsAllowExportOdd";
             this.chkIsAllowExportOdd.Properties.Caption = "";
             this.chkIsAllowExportOdd.Properties.FullFocusRect = true;
@@ -5790,7 +5856,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkIsExpend
             // 
-            this.chkIsExpend.Location = new System.Drawing.Point(117, 362);
+            this.chkIsExpend.Location = new System.Drawing.Point(117, 326);
             this.chkIsExpend.Name = "chkIsExpend";
             this.chkIsExpend.Properties.Caption = "";
             this.chkIsExpend.Properties.FullFocusRect = true;
@@ -5802,7 +5868,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkIsMustPrepare
             // 
-            this.chkIsMustPrepare.Location = new System.Drawing.Point(117, 339);
+            this.chkIsMustPrepare.Location = new System.Drawing.Point(117, 303);
             this.chkIsMustPrepare.Name = "chkIsMustPrepare";
             this.chkIsMustPrepare.Properties.Caption = "";
             this.chkIsMustPrepare.Properties.FullFocusRect = true;
@@ -5814,7 +5880,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkIsAllowOdd
             // 
-            this.chkIsAllowOdd.Location = new System.Drawing.Point(117, 290);
+            this.chkIsAllowOdd.Location = new System.Drawing.Point(117, 254);
             this.chkIsAllowOdd.Name = "chkIsAllowOdd";
             this.chkIsAllowOdd.Properties.Caption = "";
             this.chkIsAllowOdd.Properties.FullFocusRect = true;
@@ -5827,7 +5893,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkIsExprireDate
             // 
-            this.chkIsExprireDate.Location = new System.Drawing.Point(507, 267);
+            this.chkIsExprireDate.Location = new System.Drawing.Point(507, 231);
             this.chkIsExprireDate.Name = "chkIsExprireDate";
             this.chkIsExprireDate.Properties.Caption = "";
             this.chkIsExprireDate.Properties.FullFocusRect = true;
@@ -5840,7 +5906,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkCPNG
             // 
-            this.chkCPNG.Location = new System.Drawing.Point(312, 267);
+            this.chkCPNG.Location = new System.Drawing.Point(312, 231);
             this.chkCPNG.Name = "chkCPNG";
             this.chkCPNG.Properties.Caption = "";
             this.chkCPNG.Properties.FullFocusRect = true;
@@ -5852,7 +5918,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkIsStopImp
             // 
-            this.chkIsStopImp.Location = new System.Drawing.Point(117, 267);
+            this.chkIsStopImp.Location = new System.Drawing.Point(117, 231);
             this.chkIsStopImp.Name = "chkIsStopImp";
             this.chkIsStopImp.Properties.Caption = "";
             this.chkIsStopImp.Properties.FullFocusRect = true;
@@ -5865,7 +5931,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // labelControl5
             // 
             this.labelControl5.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl5.Location = new System.Drawing.Point(455, 99);
+            this.labelControl5.Location = new System.Drawing.Point(455, 39);
             this.labelControl5.Name = "labelControl5";
             this.labelControl5.Size = new System.Drawing.Size(74, 13);
             this.labelControl5.StyleController = this.layoutControl7;
@@ -5875,7 +5941,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // labelControl1
             // 
             this.labelControl1.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl1.Location = new System.Drawing.Point(216, 99);
+            this.labelControl1.Location = new System.Drawing.Point(216, 39);
             this.labelControl1.Name = "labelControl1";
             this.labelControl1.Size = new System.Drawing.Size(54, 13);
             this.labelControl1.StyleController = this.layoutControl7;
@@ -5884,7 +5950,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // txtHeinLimitRatioOld
             // 
-            this.txtHeinLimitRatioOld.Location = new System.Drawing.Point(377, 2);
+            this.txtHeinLimitRatioOld.Location = new System.Drawing.Point(377, -58);
             this.txtHeinLimitRatioOld.Name = "txtHeinLimitRatioOld";
             this.txtHeinLimitRatioOld.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.txtHeinLimitRatioOld.Properties.Mask.EditMask = "[0-9]+([.][0-9]{1,4})?";
@@ -5896,7 +5962,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // txtHeinLimitRatio
             // 
-            this.txtHeinLimitRatio.Location = new System.Drawing.Point(122, 2);
+            this.txtHeinLimitRatio.Location = new System.Drawing.Point(122, -58);
             this.txtHeinLimitRatio.Name = "txtHeinLimitRatio";
             this.txtHeinLimitRatio.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.txtHeinLimitRatio.Properties.Mask.EditMask = "[0-9]+([.][0-9]{1,4})?";
@@ -5908,7 +5974,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // cboGender
             // 
-            this.cboGender.Location = new System.Drawing.Point(122, 75);
+            this.cboGender.Location = new System.Drawing.Point(122, 15);
             this.cboGender.Name = "cboGender";
             this.cboGender.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboGender.Properties.AutoComplete = false;
@@ -5934,7 +6000,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // cboRank
             // 
-            this.cboRank.Location = new System.Drawing.Point(377, 75);
+            this.cboRank.Location = new System.Drawing.Point(377, 15);
             this.cboRank.Name = "cboRank";
             this.cboRank.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -5964,7 +6030,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             0,
             0,
             0});
-            this.spinAgeFrom.Location = new System.Drawing.Point(122, 99);
+            this.spinAgeFrom.Location = new System.Drawing.Point(122, 39);
             this.spinAgeFrom.Name = "spinAgeFrom";
             this.spinAgeFrom.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinAgeFrom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -5988,7 +6054,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             0,
             0,
             0});
-            this.spinAgeTo.Location = new System.Drawing.Point(394, 99);
+            this.spinAgeTo.Location = new System.Drawing.Point(394, 39);
             this.spinAgeTo.Name = "spinAgeTo";
             this.spinAgeTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -6011,7 +6077,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             0,
             0,
             0});
-            this.spinUseOnDay.Location = new System.Drawing.Point(122, 147);
+            this.spinUseOnDay.Location = new System.Drawing.Point(122, 87);
             this.spinUseOnDay.Name = "spinUseOnDay";
             this.spinUseOnDay.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinUseOnDay.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -6035,7 +6101,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             0,
             0,
             0});
-            this.spinAlertExpiredDate.Location = new System.Drawing.Point(122, 123);
+            this.spinAlertExpiredDate.Location = new System.Drawing.Point(122, 63);
             this.spinAlertExpiredDate.Name = "spinAlertExpiredDate";
             this.spinAlertExpiredDate.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinAlertExpiredDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -6059,7 +6125,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             0,
             0,
             0});
-            this.spinAlertMinInStock.Location = new System.Drawing.Point(377, 123);
+            this.spinAlertMinInStock.Location = new System.Drawing.Point(377, 63);
             this.spinAlertMinInStock.Name = "spinAlertMinInStock";
             this.spinAlertMinInStock.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinAlertMinInStock.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -6079,7 +6145,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // dtHeinLimitPriceIntrTime
             // 
             this.dtHeinLimitPriceIntrTime.EditValue = null;
-            this.dtHeinLimitPriceIntrTime.Location = new System.Drawing.Point(122, 26);
+            this.dtHeinLimitPriceIntrTime.Location = new System.Drawing.Point(122, -34);
             this.dtHeinLimitPriceIntrTime.Name = "dtHeinLimitPriceIntrTime";
             this.dtHeinLimitPriceIntrTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -6097,7 +6163,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkIsTreatmentDayCount
             // 
-            this.chkIsTreatmentDayCount.Location = new System.Drawing.Point(501, 362);
+            this.chkIsTreatmentDayCount.Location = new System.Drawing.Point(501, 326);
             this.chkIsTreatmentDayCount.Name = "chkIsTreatmentDayCount";
             this.chkIsTreatmentDayCount.Properties.Caption = "";
             this.chkIsTreatmentDayCount.Properties.FullFocusRect = true;
@@ -6111,7 +6177,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkAllowMissingInfoPkg
             // 
-            this.chkAllowMissingInfoPkg.Location = new System.Drawing.Point(497, 316);
+            this.chkAllowMissingInfoPkg.Location = new System.Drawing.Point(497, 280);
             this.chkAllowMissingInfoPkg.Name = "chkAllowMissingInfoPkg";
             this.chkAllowMissingInfoPkg.Properties.Caption = "";
             this.chkAllowMissingInfoPkg.Properties.FullFocusRect = true;
@@ -6125,7 +6191,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkIsSplitCompensation
             // 
-            this.chkIsSplitCompensation.Location = new System.Drawing.Point(312, 316);
+            this.chkIsSplitCompensation.Location = new System.Drawing.Point(312, 280);
             this.chkIsSplitCompensation.Name = "chkIsSplitCompensation";
             this.chkIsSplitCompensation.Properties.Caption = "";
             this.chkIsSplitCompensation.Properties.FullFocusRect = true;
@@ -6184,10 +6250,13 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.emptySpaceItem4,
             this.layoutControlItem400,
             this.layoutControlItem403,
-            this.layoutControlItem405});
-            this.layoutControlGroup6.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem405,
+            this.layoutControlItem408,
+            this.layoutControlItem409,
+            this.layoutControlItem410});
+            this.layoutControlGroup6.Location = new System.Drawing.Point(0, -60);
             this.layoutControlGroup6.Name = "Root";
-            this.layoutControlGroup6.Size = new System.Drawing.Size(531, 429);
+            this.layoutControlGroup6.Size = new System.Drawing.Size(531, 453);
             this.layoutControlGroup6.TextVisible = false;
             // 
             // lcHeinLimitRatio
@@ -6312,7 +6381,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lcIsAllowOdd.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcIsAllowOdd.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcIsAllowOdd.Control = this.chkIsAllowOdd;
-            this.lcIsAllowOdd.Location = new System.Drawing.Point(0, 288);
+            this.lcIsAllowOdd.Location = new System.Drawing.Point(0, 312);
             this.lcIsAllowOdd.Name = "lcIsAllowOdd";
             this.lcIsAllowOdd.Size = new System.Drawing.Size(205, 23);
             this.lcIsAllowOdd.Text = "Cho kê lẻ:";
@@ -6325,7 +6394,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lcsOtherSourcePaid.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcsOtherSourcePaid.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcsOtherSourcePaid.Control = this.chkIsOtherSourcePaid;
-            this.lcsOtherSourcePaid.Location = new System.Drawing.Point(205, 360);
+            this.lcsOtherSourcePaid.Location = new System.Drawing.Point(205, 384);
             this.lcsOtherSourcePaid.Name = "lcsOtherSourcePaid";
             this.lcsOtherSourcePaid.OptionsToolTip.ToolTip = "Có nguồn chi trả khác";
             this.lcsOtherSourcePaid.Size = new System.Drawing.Size(134, 23);
@@ -6411,7 +6480,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lciIsTreatmentCount.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciIsTreatmentCount.Control = this.chkIsTreatmentDayCount;
             this.lciIsTreatmentCount.CustomizationFormText = "Kinh doanh:";
-            this.lciIsTreatmentCount.Location = new System.Drawing.Point(339, 360);
+            this.lciIsTreatmentCount.Location = new System.Drawing.Point(339, 384);
             this.lciIsTreatmentCount.Name = "lciIsTreatmentCount";
             this.lciIsTreatmentCount.OptionsToolTip.ToolTip = "Có đếm số ngày sử dụng thuốc để hiển thị trong tờ điều trị";
             this.lciIsTreatmentCount.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -2, 2, 2);
@@ -6426,7 +6495,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lciBlockDepartment.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciBlockDepartment.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciBlockDepartment.Control = this.cboBlockDepartment;
-            this.lciBlockDepartment.Location = new System.Drawing.Point(0, 193);
+            this.lciBlockDepartment.Location = new System.Drawing.Point(0, 217);
             this.lciBlockDepartment.Name = "lciBlockDepartment";
             this.lciBlockDepartment.Size = new System.Drawing.Size(531, 24);
             this.lciBlockDepartment.Text = "Chặn xuất cho khoa:";
@@ -6465,7 +6534,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lcIsKedney.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcIsKedney.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcIsKedney.Control = this.chkIsKedney;
-            this.lcIsKedney.Location = new System.Drawing.Point(205, 337);
+            this.lcIsKedney.Location = new System.Drawing.Point(205, 361);
             this.lcIsKedney.Name = "lcIsKedney";
             this.lcIsKedney.Size = new System.Drawing.Size(134, 23);
             this.lcIsKedney.Text = "Chạy thận:";
@@ -6478,7 +6547,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lcIsRaw.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcIsRaw.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcIsRaw.Control = this.ckhIsRaw;
-            this.lcIsRaw.Location = new System.Drawing.Point(339, 337);
+            this.lcIsRaw.Location = new System.Drawing.Point(339, 361);
             this.lcIsRaw.Name = "lcIsRaw";
             this.lcIsRaw.OptionsToolTip.ToolTip = "Nguyên liệu bào chế";
             this.lcIsRaw.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -2, 2, 2);
@@ -6494,7 +6563,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lcTachPhanBu.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcTachPhanBu.Control = this.chkIsSplitCompensation;
             this.lcTachPhanBu.CustomizationFormText = "Tách phần bù:";
-            this.lcTachPhanBu.Location = new System.Drawing.Point(205, 314);
+            this.lcTachPhanBu.Location = new System.Drawing.Point(205, 338);
             this.lcTachPhanBu.Name = "lcTachPhanBu";
             this.lcTachPhanBu.OptionsToolTip.ToolTip = "Tách phần bù làm tròn khi kê đơn nội trú không vào tờ điều trị";
             this.lcTachPhanBu.Size = new System.Drawing.Size(134, 23);
@@ -6508,7 +6577,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lciIsNotTreatmentDayCount.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciIsNotTreatmentDayCount.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciIsNotTreatmentDayCount.Control = this.chkIsNotTreatmentDayCount;
-            this.lciIsNotTreatmentDayCount.Location = new System.Drawing.Point(339, 383);
+            this.lciIsNotTreatmentDayCount.Location = new System.Drawing.Point(339, 407);
             this.lciIsNotTreatmentDayCount.Name = "lciIsNotTreatmentDayCount";
             this.lciIsNotTreatmentDayCount.OptionsToolTip.ToolTip = "Không đếm số ngày dùng trong tờ điều trị";
             this.lciIsNotTreatmentDayCount.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -2, 2, 2);
@@ -6523,7 +6592,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lcIsBusiness.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcIsBusiness.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcIsBusiness.Control = this.chkIsBusiness;
-            this.lcIsBusiness.Location = new System.Drawing.Point(205, 406);
+            this.lcIsBusiness.Location = new System.Drawing.Point(205, 430);
             this.lcIsBusiness.Name = "lcIsBusiness";
             this.lcIsBusiness.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -1, 2, 2);
             this.lcIsBusiness.Size = new System.Drawing.Size(134, 23);
@@ -6537,7 +6606,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem395.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem395.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem395.Control = this.cboOTHER_PAY_SOURCE;
-            this.layoutControlItem395.Location = new System.Drawing.Point(0, 217);
+            this.layoutControlItem395.Location = new System.Drawing.Point(0, 241);
             this.layoutControlItem395.Name = "layoutControlItem395";
             this.layoutControlItem395.OptionsToolTip.ToolTip = "Nguồn chi trả khác trong trường hợp sử dụng dịch vụ này";
             this.layoutControlItem395.Size = new System.Drawing.Size(255, 24);
@@ -6551,7 +6620,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem396.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem396.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem396.Control = this.txtOTHER_PAY_SOURCE;
-            this.layoutControlItem396.Location = new System.Drawing.Point(255, 217);
+            this.layoutControlItem396.Location = new System.Drawing.Point(255, 241);
             this.layoutControlItem396.Name = "layoutControlItem396";
             this.layoutControlItem396.OptionsToolTip.ToolTip = "Nhập mã ICD ngăn cách bởi dấu phẩy của các bệnh mà nguồn chi trả khác chấp nhận h" +
     "ỗ trợ. Nếu không nhập mã bệnh nào được hiểu là nguồn chấp nhận chi trả cho mọi t" +
@@ -6568,7 +6637,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lcIsExpend1.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcIsExpend1.Control = this.chkAllowMissingInfoPkg;
             this.lcIsExpend1.CustomizationFormText = "Tự động hao phí:";
-            this.lcIsExpend1.Location = new System.Drawing.Point(339, 314);
+            this.lcIsExpend1.Location = new System.Drawing.Point(339, 338);
             this.lcIsExpend1.MaxSize = new System.Drawing.Size(0, 23);
             this.lcIsExpend1.MinSize = new System.Drawing.Size(100, 23);
             this.lcIsExpend1.Name = "lcIsExpend1";
@@ -6586,7 +6655,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem393.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem393.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem393.Control = this.chKNgoaiDRG;
-            this.layoutControlItem393.Location = new System.Drawing.Point(205, 383);
+            this.layoutControlItem393.Location = new System.Drawing.Point(205, 407);
             this.layoutControlItem393.Name = "layoutControlItem393";
             this.layoutControlItem393.OptionsToolTip.ToolTip = "Ngoài danh mục DRG do Bộ Y Tế ban hành";
             this.layoutControlItem393.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -1, 2, 2);
@@ -6601,7 +6670,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem398.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem398.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem398.Control = this.chkIS_DRUG_STORE;
-            this.layoutControlItem398.Location = new System.Drawing.Point(339, 406);
+            this.layoutControlItem398.Location = new System.Drawing.Point(339, 430);
             this.layoutControlItem398.Name = "layoutControlItem398";
             this.layoutControlItem398.OptionsToolTip.ToolTip = "Thuốc sử dụng tại kho có tích “Là quầy thuốc”";
             this.layoutControlItem398.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -2, 2, 2);
@@ -6656,7 +6725,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lcIsStopImp.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcIsStopImp.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcIsStopImp.Control = this.chkIsStopImp;
-            this.lcIsStopImp.Location = new System.Drawing.Point(0, 265);
+            this.lcIsStopImp.Location = new System.Drawing.Point(0, 289);
             this.lcIsStopImp.Name = "lcIsStopImp";
             this.lcIsStopImp.Size = new System.Drawing.Size(205, 23);
             this.lcIsStopImp.Text = "Dừng nhập:";
@@ -6669,7 +6738,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lcCPNG.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcCPNG.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcCPNG.Control = this.chkCPNG;
-            this.lcCPNG.Location = new System.Drawing.Point(205, 265);
+            this.lcCPNG.Location = new System.Drawing.Point(205, 289);
             this.lcCPNG.Name = "lcCPNG";
             this.lcCPNG.Size = new System.Drawing.Size(140, 23);
             this.lcCPNG.Text = "Chi phí ngoài gói:";
@@ -6682,7 +6751,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lcIsExprireDate.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcIsExprireDate.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcIsExprireDate.Control = this.chkIsExprireDate;
-            this.lcIsExprireDate.Location = new System.Drawing.Point(345, 265);
+            this.lcIsExprireDate.Location = new System.Drawing.Point(345, 289);
             this.lcIsExprireDate.Name = "lcIsExprireDate";
             this.lcIsExprireDate.OptionsToolTip.ToolTip = "Phải nhập hạn sử dụng";
             this.lcIsExprireDate.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -2, 2, 2);
@@ -6697,7 +6766,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lcIsAllowExportOdd.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcIsAllowExportOdd.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcIsAllowExportOdd.Control = this.chkIsAllowExportOdd;
-            this.lcIsAllowExportOdd.Location = new System.Drawing.Point(0, 311);
+            this.lcIsAllowExportOdd.Location = new System.Drawing.Point(0, 335);
             this.lcIsAllowExportOdd.MinSize = new System.Drawing.Size(140, 23);
             this.lcIsAllowExportOdd.Name = "lcIsAllowExportOdd";
             this.lcIsAllowExportOdd.Size = new System.Drawing.Size(205, 26);
@@ -6712,7 +6781,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lcIsMustPrepare.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcIsMustPrepare.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcIsMustPrepare.Control = this.chkIsMustPrepare;
-            this.lcIsMustPrepare.Location = new System.Drawing.Point(0, 337);
+            this.lcIsMustPrepare.Location = new System.Drawing.Point(0, 361);
             this.lcIsMustPrepare.Name = "lcIsMustPrepare";
             this.lcIsMustPrepare.Size = new System.Drawing.Size(205, 23);
             this.lcIsMustPrepare.Text = "Phải dự trù:";
@@ -6725,7 +6794,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lcIsExpend.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcIsExpend.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcIsExpend.Control = this.chkIsExpend;
-            this.lcIsExpend.Location = new System.Drawing.Point(0, 360);
+            this.lcIsExpend.Location = new System.Drawing.Point(0, 384);
             this.lcIsExpend.Name = "lcIsExpend";
             this.lcIsExpend.Size = new System.Drawing.Size(205, 23);
             this.lcIsExpend.Text = "Tự động hao phí:";
@@ -6738,7 +6807,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem394.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem394.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem394.Control = this.chkIsOutHospital;
-            this.layoutControlItem394.Location = new System.Drawing.Point(0, 383);
+            this.layoutControlItem394.Location = new System.Drawing.Point(0, 407);
             this.layoutControlItem394.Name = "layoutControlItem394";
             this.layoutControlItem394.OptionsToolTip.ToolTip = "Thuốc không nằm trong danh mục thuốc của nhà thuốc hay kho dược. Chỉ khai báo nhằ" +
     "m hỗ trợ bác sỹ kê thuốc mua ngoài";
@@ -6751,7 +6820,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // emptySpaceItem4
             // 
             this.emptySpaceItem4.AllowHotTrack = false;
-            this.emptySpaceItem4.Location = new System.Drawing.Point(0, 406);
+            this.emptySpaceItem4.Location = new System.Drawing.Point(0, 430);
             this.emptySpaceItem4.Name = "emptySpaceItem4";
             this.emptySpaceItem4.Size = new System.Drawing.Size(205, 23);
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
@@ -6759,7 +6828,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // layoutControlItem400
             // 
             this.layoutControlItem400.Control = this.txtContentWarning;
-            this.layoutControlItem400.Location = new System.Drawing.Point(205, 288);
+            this.layoutControlItem400.Location = new System.Drawing.Point(205, 312);
             this.layoutControlItem400.Name = "layoutControlItem400";
             this.layoutControlItem400.Size = new System.Drawing.Size(300, 26);
             this.layoutControlItem400.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -6770,7 +6839,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // layoutControlItem403
             // 
             this.layoutControlItem403.Control = this.btnContentWarning;
-            this.layoutControlItem403.Location = new System.Drawing.Point(505, 288);
+            this.layoutControlItem403.Location = new System.Drawing.Point(505, 312);
             this.layoutControlItem403.Name = "layoutControlItem403";
             this.layoutControlItem403.Size = new System.Drawing.Size(26, 26);
             this.layoutControlItem403.TextSize = new System.Drawing.Size(0, 0);
@@ -6781,7 +6850,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem405.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem405.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem405.Control = this.txtBhytWhiteListCodes;
-            this.layoutControlItem405.Location = new System.Drawing.Point(0, 241);
+            this.layoutControlItem405.Location = new System.Drawing.Point(0, 265);
             this.layoutControlItem405.Name = "layoutControlItem405";
             this.layoutControlItem405.OptionsToolTip.ToolTip = "Khai báo các đầu mã thẻ ngăn cách nhau bằng dấu phẩy. Nếu không khai báo được hiể" +
     "u là áp dụng cho tất cả đầu mã thẻ";
@@ -6790,6 +6859,52 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem405.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem405.TextSize = new System.Drawing.Size(115, 20);
             this.layoutControlItem405.TextToControlDistance = 5;
+            // 
+            // layoutControlItem408
+            // 
+            this.layoutControlItem408.AppearanceItemCaption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(31)))), ((int)(((byte)(53)))));
+            this.layoutControlItem408.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutControlItem408.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem408.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem408.Control = this.spinUseInTreat;
+            this.layoutControlItem408.Location = new System.Drawing.Point(0, 193);
+            this.layoutControlItem408.Name = "layoutControlItem408";
+            this.layoutControlItem408.OptionsToolTip.ToolTip = "Số lượng tối đa/đợt điều trị";
+            this.layoutControlItem408.Size = new System.Drawing.Size(255, 24);
+            this.layoutControlItem408.Text = "SL tối đa/đợt điều trị:";
+            this.layoutControlItem408.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem408.TextSize = new System.Drawing.Size(115, 20);
+            this.layoutControlItem408.TextToControlDistance = 5;
+            // 
+            // layoutControlItem409
+            // 
+            this.layoutControlItem409.AppearanceItemCaption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(31)))), ((int)(((byte)(53)))));
+            this.layoutControlItem409.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutControlItem409.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem409.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem409.Control = this.chkWarningInTreat;
+            this.layoutControlItem409.Location = new System.Drawing.Point(255, 193);
+            this.layoutControlItem409.Name = "layoutControlItem409";
+            this.layoutControlItem409.Size = new System.Drawing.Size(141, 24);
+            this.layoutControlItem409.Text = "Cảnh báo:";
+            this.layoutControlItem409.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem409.TextSize = new System.Drawing.Size(77, 20);
+            this.layoutControlItem409.TextToControlDistance = 5;
+            // 
+            // layoutControlItem410
+            // 
+            this.layoutControlItem410.AppearanceItemCaption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(31)))), ((int)(((byte)(53)))));
+            this.layoutControlItem410.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutControlItem410.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem410.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem410.Control = this.chkBlockInTreat;
+            this.layoutControlItem410.Location = new System.Drawing.Point(396, 193);
+            this.layoutControlItem410.Name = "layoutControlItem410";
+            this.layoutControlItem410.Size = new System.Drawing.Size(135, 24);
+            this.layoutControlItem410.Text = "Chặn:";
+            this.layoutControlItem410.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem410.TextSize = new System.Drawing.Size(40, 20);
+            this.layoutControlItem410.TextToControlDistance = 5;
             // 
             // layoutControlGroup2
             // 
@@ -6844,6 +6959,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // layoutControl6
             // 
+            this.layoutControl6.Controls.Add(this.btnEditInfo);
             this.layoutControl6.Controls.Add(this.spinVolume);
             this.layoutControl6.Controls.Add(this.txtATCGroup_Name);
             this.layoutControl6.Controls.Add(this.txtATCGroup_Code);
@@ -6921,6 +7037,16 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControl6.TabIndex = 0;
             this.layoutControl6.Text = "layoutControl6";
             // 
+            // btnEditInfo
+            // 
+            this.btnEditInfo.Image = ((System.Drawing.Image)(resources.GetObject("btnEditInfo.Image")));
+            this.btnEditInfo.Location = new System.Drawing.Point(99, 636);
+            this.btnEditInfo.Name = "btnEditInfo";
+            this.btnEditInfo.Size = new System.Drawing.Size(24, 22);
+            this.btnEditInfo.StyleController = this.layoutControl6;
+            this.btnEditInfo.TabIndex = 87;
+            this.btnEditInfo.Click += new System.EventHandler(this.btnEditInfo_Click);
+            // 
             // spinVolume
             // 
             this.spinVolume.EditValue = new decimal(new int[] {
@@ -6967,7 +7093,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkOriginal
             // 
-            this.chkOriginal.Location = new System.Drawing.Point(359, 682);
+            this.chkOriginal.Location = new System.Drawing.Point(359, 708);
             this.chkOriginal.MenuManager = this.barManager1;
             this.chkOriginal.Name = "chkOriginal";
             this.chkOriginal.Properties.Caption = "";
@@ -6981,7 +7107,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkBiologic
             // 
-            this.chkBiologic.Location = new System.Drawing.Point(454, 659);
+            this.chkBiologic.Location = new System.Drawing.Point(454, 685);
             this.chkBiologic.Margin = new System.Windows.Forms.Padding(2);
             this.chkBiologic.MenuManager = this.barManager1;
             this.chkBiologic.Name = "chkBiologic";
@@ -6994,7 +7120,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkGenneric
             // 
-            this.chkGenneric.Location = new System.Drawing.Point(454, 636);
+            this.chkGenneric.Location = new System.Drawing.Point(454, 662);
             this.chkGenneric.Margin = new System.Windows.Forms.Padding(2);
             this.chkGenneric.MenuManager = this.barManager1;
             this.chkGenneric.Name = "chkGenneric";
@@ -7154,7 +7280,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkGayTe
             // 
-            this.chkGayTe.Location = new System.Drawing.Point(214, 682);
+            this.chkGayTe.Location = new System.Drawing.Point(214, 708);
             this.chkGayTe.MenuManager = this.barManager1;
             this.chkGayTe.Name = "chkGayTe";
             this.chkGayTe.Properties.Caption = "";
@@ -7378,7 +7504,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // checkIsOxygen
             // 
-            this.checkIsOxygen.Location = new System.Drawing.Point(99, 682);
+            this.checkIsOxygen.Location = new System.Drawing.Point(99, 708);
             this.checkIsOxygen.Name = "checkIsOxygen";
             this.checkIsOxygen.Properties.Caption = "";
             this.checkIsOxygen.Properties.FullFocusRect = true;
@@ -7470,7 +7596,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkISTCMR
             // 
-            this.chkISTCMR.Location = new System.Drawing.Point(359, 659);
+            this.chkISTCMR.Location = new System.Drawing.Point(359, 685);
             this.chkISTCMR.Name = "chkISTCMR";
             this.chkISTCMR.Properties.Caption = "";
             this.chkISTCMR.Properties.FullFocusRect = true;
@@ -7483,7 +7609,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkIsVitaminA
             // 
-            this.chkIsVitaminA.Location = new System.Drawing.Point(214, 659);
+            this.chkIsVitaminA.Location = new System.Drawing.Point(214, 685);
             this.chkIsVitaminA.Name = "chkIsVitaminA";
             this.chkIsVitaminA.Properties.Caption = "";
             this.chkIsVitaminA.Properties.FullFocusRect = true;
@@ -7495,7 +7621,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkIsVaccine
             // 
-            this.chkIsVaccine.Location = new System.Drawing.Point(99, 659);
+            this.chkIsVaccine.Location = new System.Drawing.Point(99, 685);
             this.chkIsVaccine.Name = "chkIsVaccine";
             this.chkIsVaccine.Properties.Caption = "";
             this.chkIsVaccine.Properties.FullFocusRect = true;
@@ -7507,7 +7633,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkIsStarMark
             // 
-            this.chkIsStarMark.Location = new System.Drawing.Point(359, 636);
+            this.chkIsStarMark.Location = new System.Drawing.Point(359, 662);
             this.chkIsStarMark.Name = "chkIsStarMark";
             this.chkIsStarMark.Properties.Caption = "";
             this.chkIsStarMark.Properties.FullFocusRect = true;
@@ -7520,7 +7646,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // chkFood
             // 
-            this.chkFood.Location = new System.Drawing.Point(214, 636);
+            this.chkFood.Location = new System.Drawing.Point(214, 662);
             this.chkFood.Name = "chkFood";
             this.chkFood.Properties.Caption = "";
             this.chkFood.Properties.FullFocusRect = true;
@@ -7532,7 +7658,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // ckhHoachat
             // 
-            this.ckhHoachat.Location = new System.Drawing.Point(99, 636);
+            this.ckhHoachat.Location = new System.Drawing.Point(99, 662);
             this.ckhHoachat.Name = "ckhHoachat";
             this.ckhHoachat.Properties.Caption = "";
             this.ckhHoachat.Properties.FullFocusRect = true;
@@ -7979,10 +8105,13 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.emptySpaceItem11,
             this.lcATCGroup,
             this.layoutControlItem406,
-            this.txtVolume});
+            this.txtVolume,
+            this.emptySpaceItem28,
+            this.layoutControlItem407,
+            this.emptySpaceItem35});
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
-            this.layoutControlGroup3.Size = new System.Drawing.Size(483, 704);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(483, 730);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // lciMedicineTypeCode
@@ -8264,7 +8393,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem33.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem33.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem33.Control = this.ckhHoachat;
-            this.layoutControlItem33.Location = new System.Drawing.Point(0, 634);
+            this.layoutControlItem33.Location = new System.Drawing.Point(0, 660);
             this.layoutControlItem33.Name = "layoutControlItem33";
             this.layoutControlItem33.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -1, 2, 2);
             this.layoutControlItem33.Size = new System.Drawing.Size(117, 23);
@@ -8278,7 +8407,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lkIsFood.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lkIsFood.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lkIsFood.Control = this.chkFood;
-            this.lkIsFood.Location = new System.Drawing.Point(117, 634);
+            this.lkIsFood.Location = new System.Drawing.Point(117, 660);
             this.lkIsFood.Name = "lkIsFood";
             this.lkIsFood.OptionsToolTip.ToolTip = "Thực phẩm chức năng";
             this.lkIsFood.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -1, 2, 2);
@@ -8293,7 +8422,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lciChkIsStarMark.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciChkIsStarMark.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciChkIsStarMark.Control = this.chkIsStarMark;
-            this.lciChkIsStarMark.Location = new System.Drawing.Point(232, 634);
+            this.lciChkIsStarMark.Location = new System.Drawing.Point(232, 660);
             this.lciChkIsStarMark.Name = "lciChkIsStarMark";
             this.lciChkIsStarMark.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -1, 2, 2);
             this.lciChkIsStarMark.Size = new System.Drawing.Size(145, 23);
@@ -8307,7 +8436,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem30.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem30.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem30.Control = this.chkIsVaccine;
-            this.layoutControlItem30.Location = new System.Drawing.Point(0, 657);
+            this.layoutControlItem30.Location = new System.Drawing.Point(0, 683);
             this.layoutControlItem30.Name = "layoutControlItem30";
             this.layoutControlItem30.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -1, 2, 2);
             this.layoutControlItem30.Size = new System.Drawing.Size(117, 23);
@@ -8321,7 +8450,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem31.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem31.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem31.Control = this.chkIsVitaminA;
-            this.layoutControlItem31.Location = new System.Drawing.Point(117, 657);
+            this.layoutControlItem31.Location = new System.Drawing.Point(117, 683);
             this.layoutControlItem31.Name = "layoutControlItem31";
             this.layoutControlItem31.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -1, 2, 2);
             this.layoutControlItem31.Size = new System.Drawing.Size(115, 23);
@@ -8335,7 +8464,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem38.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem38.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem38.Control = this.chkISTCMR;
-            this.layoutControlItem38.Location = new System.Drawing.Point(232, 657);
+            this.layoutControlItem38.Location = new System.Drawing.Point(232, 683);
             this.layoutControlItem38.Name = "layoutControlItem38";
             this.layoutControlItem38.OptionsToolTip.ToolTip = "Tiêm chủng mở rộng";
             this.layoutControlItem38.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -1, 2, 2);
@@ -8458,7 +8587,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lciIsOxygen.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciIsOxygen.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciIsOxygen.Control = this.checkIsOxygen;
-            this.lciIsOxygen.Location = new System.Drawing.Point(0, 680);
+            this.lciIsOxygen.Location = new System.Drawing.Point(0, 706);
             this.lciIsOxygen.Name = "lciIsOxygen";
             this.lciIsOxygen.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -1, 2, 2);
             this.lciIsOxygen.Size = new System.Drawing.Size(117, 24);
@@ -8498,7 +8627,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // emptySpaceItem34
             // 
             this.emptySpaceItem34.AllowHotTrack = false;
-            this.emptySpaceItem34.Location = new System.Drawing.Point(377, 680);
+            this.emptySpaceItem34.Location = new System.Drawing.Point(377, 706);
             this.emptySpaceItem34.Name = "emptySpaceItem34";
             this.emptySpaceItem34.Size = new System.Drawing.Size(95, 24);
             this.emptySpaceItem34.TextSize = new System.Drawing.Size(0, 0);
@@ -8613,7 +8742,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lciGayTe.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciGayTe.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciGayTe.Control = this.chkGayTe;
-            this.lciGayTe.Location = new System.Drawing.Point(117, 680);
+            this.lciGayTe.Location = new System.Drawing.Point(117, 706);
             this.lciGayTe.Name = "lciGayTe";
             this.lciGayTe.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -1, 2, 2);
             this.lciGayTe.Size = new System.Drawing.Size(115, 24);
@@ -8829,7 +8958,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lciGenneric.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciGenneric.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciGenneric.Control = this.chkGenneric;
-            this.lciGenneric.Location = new System.Drawing.Point(377, 634);
+            this.lciGenneric.Location = new System.Drawing.Point(377, 660);
             this.lciGenneric.Name = "lciGenneric";
             this.lciGenneric.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -1, 2, 2);
             this.lciGenneric.Size = new System.Drawing.Size(95, 23);
@@ -8843,7 +8972,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lciBiologic.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciBiologic.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciBiologic.Control = this.chkBiologic;
-            this.lciBiologic.Location = new System.Drawing.Point(377, 657);
+            this.lciBiologic.Location = new System.Drawing.Point(377, 683);
             this.lciBiologic.Name = "lciBiologic";
             this.lciBiologic.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -1, 2, 2);
             this.lciBiologic.Size = new System.Drawing.Size(95, 23);
@@ -8857,7 +8986,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.lciOriginal.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciOriginal.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciOriginal.Control = this.chkOriginal;
-            this.lciOriginal.Location = new System.Drawing.Point(232, 680);
+            this.lciOriginal.Location = new System.Drawing.Point(232, 706);
             this.lciOriginal.Name = "lciOriginal";
             this.lciOriginal.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -1, 2, 2);
             this.lciOriginal.Size = new System.Drawing.Size(145, 24);
@@ -8869,7 +8998,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // emptySpaceItem5
             // 
             this.emptySpaceItem5.AllowHotTrack = false;
-            this.emptySpaceItem5.Location = new System.Drawing.Point(472, 634);
+            this.emptySpaceItem5.Location = new System.Drawing.Point(472, 660);
             this.emptySpaceItem5.Name = "emptySpaceItem5";
             this.emptySpaceItem5.Size = new System.Drawing.Size(11, 23);
             this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
@@ -8877,7 +9006,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // emptySpaceItem6
             // 
             this.emptySpaceItem6.AllowHotTrack = false;
-            this.emptySpaceItem6.Location = new System.Drawing.Point(472, 657);
+            this.emptySpaceItem6.Location = new System.Drawing.Point(472, 683);
             this.emptySpaceItem6.Name = "emptySpaceItem6";
             this.emptySpaceItem6.Size = new System.Drawing.Size(11, 23);
             this.emptySpaceItem6.TextSize = new System.Drawing.Size(0, 0);
@@ -8885,7 +9014,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // emptySpaceItem11
             // 
             this.emptySpaceItem11.AllowHotTrack = false;
-            this.emptySpaceItem11.Location = new System.Drawing.Point(472, 680);
+            this.emptySpaceItem11.Location = new System.Drawing.Point(472, 706);
             this.emptySpaceItem11.Name = "emptySpaceItem11";
             this.emptySpaceItem11.Size = new System.Drawing.Size(11, 24);
             this.emptySpaceItem11.TextSize = new System.Drawing.Size(0, 0);
@@ -8927,6 +9056,36 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.txtVolume.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.txtVolume.TextSize = new System.Drawing.Size(94, 13);
             this.txtVolume.TextToControlDistance = 5;
+            // 
+            // emptySpaceItem28
+            // 
+            this.emptySpaceItem28.AllowHotTrack = false;
+            this.emptySpaceItem28.Location = new System.Drawing.Point(233, 634);
+            this.emptySpaceItem28.Name = "emptySpaceItem28";
+            this.emptySpaceItem28.Size = new System.Drawing.Size(250, 26);
+            this.emptySpaceItem28.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutControlItem407
+            // 
+            this.layoutControlItem407.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem407.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem407.Control = this.btnEditInfo;
+            this.layoutControlItem407.Location = new System.Drawing.Point(0, 634);
+            this.layoutControlItem407.Name = "layoutControlItem407";
+            this.layoutControlItem407.OptionsToolTip.ToolTip = "Sửa thông tin sản phẩm";
+            this.layoutControlItem407.Size = new System.Drawing.Size(125, 26);
+            this.layoutControlItem407.Text = "Thông tin SP:";
+            this.layoutControlItem407.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem407.TextSize = new System.Drawing.Size(92, 20);
+            this.layoutControlItem407.TextToControlDistance = 5;
+            // 
+            // emptySpaceItem35
+            // 
+            this.emptySpaceItem35.AllowHotTrack = false;
+            this.emptySpaceItem35.Location = new System.Drawing.Point(125, 634);
+            this.emptySpaceItem35.Name = "emptySpaceItem35";
+            this.emptySpaceItem35.Size = new System.Drawing.Size(108, 26);
+            this.emptySpaceItem35.TextSize = new System.Drawing.Size(0, 0);
             // 
             // Root
             // 
@@ -17764,8 +17923,11 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl7)).EndInit();
             this.layoutControl7.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.txtBhytWhiteListCodes.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkBlockInTreat.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkWarningInTreat.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinUseInTreat.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtBhytWhiteListCodes.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtContentWarning.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdoBlock1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdoWarning1.Properties)).EndInit();
@@ -17856,6 +18018,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem400)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem403)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem405)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem408)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem409)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem410)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).EndInit();
@@ -18014,6 +18179,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.lcATCGroup)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem406)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtVolume)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem28)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem407)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem35)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboMedicineType.Properties)).EndInit();
@@ -19841,5 +20009,15 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem405;
         private DevExpress.XtraEditors.SpinEdit spinVolume;
         private DevExpress.XtraLayout.LayoutControlItem txtVolume;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem28;
+        private DevExpress.XtraEditors.CheckButton btnEditInfo;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem407;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem35;
+        private DevExpress.XtraEditors.CheckEdit chkBlockInTreat;
+        private DevExpress.XtraEditors.CheckEdit chkWarningInTreat;
+        private DevExpress.XtraEditors.SpinEdit spinUseInTreat;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem408;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem409;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem410;
     }
 }

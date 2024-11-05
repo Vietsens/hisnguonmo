@@ -232,10 +232,13 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                     if (treatmentBedRooms != null && treatmentBedRooms.Count() > 0)
                     {
-                        MOS.Filter.HisBedLogViewFilter bedLogFilter = new HisBedLogViewFilter();
-                        bedLogFilter.TREATMENT_BED_ROOM_IDs = treatmentBedRooms.Select(o => o.ID).Distinct().ToList();
-                        var begLogs = new BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, bedLogFilter, null);
-                        hisBedLog = begLogs.OrderByDescending(o => o.START_TIME).FirstOrDefault();
+                        var lstTreID = treatmentBedRooms.Select(o => o.ID).Distinct().ToList();
+                        if (lstBedLogData != null && lstBedLogData.Count > 0)
+                        {
+                            var begLogs = lstBedLogData.Where(bedLog => lstTreID.Contains(bedLog.TREATMENT_BED_ROOM_ID)).ToList();
+                            hisBedLog = begLogs.OrderByDescending(o => o.START_TIME).FirstOrDefault();
+                        }
+                       
                     }
 
                     WaitingManager.Hide();

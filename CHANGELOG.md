@@ -1,3 +1,53 @@
+### Release 2.335.0
+* Bổ sung tính năng Danh sách đặt lịch hẹn khám
+* Bổ sung tính năng xuất XML gộp
+* Bổ sung thông tin lý do vào nội trú khi tiếp nhận chuyển khoa, vào buồng, kết thúc điều trị
+* Bổ sung cảnh báo thông tin nhập thuốc, vật tư khác với lô trước đó
+* Bổ sung thanh toán QR tại chức năng thanh toán 2 sổ
+* Bổ sung tính năng sửa hình thức thanh toán giao dịch QR tại chức năng tạo QR.
+
+### Release 2.334.0
+* Bổ sung tính năng chặn ngày kết quả < thời gian y lệnh với y lệnh xét nghiệm
+* Bổ sung tính năng thiết lập QR thu tiền theo từng phòng(buồng bệnh, kho)
+* Bổ sung mở màn hình QR theo cấu hình phòng tại chức năng xuất bán 
+
+### Release 2.333.0
+* Bổ sung tính năng mở phiếu trên vỏ bệnh án sau khi chỉ định dịch vụ
+* Bổ sung tính năng chặn số lượng thuốc tối đa trong 1 đợt điều trị
+* Sửa thông tin thời gian kết thúc trong XML 3, XML 4 phục vụ XML 130 và QĐ 4750/QĐ-BYT
+* Tích hợp xuất hóa đơn điện tử hệ thống MISA cho khu nhà thuốc.
+
+### Release 2.332.0
+* Bổ sung thông tin sản phẩm chi tiết cho danh mục thuốc
+* Bổ sung hiển thị thông tin thầu cho lô thuốc/vật tư
+* Tích hợp thanh toán QR cho hệ thống PVComBank
+* Bổ sung thông tin trên phiếu xuất thuốc
+* Bổ sung thông tin số film, cỡ film kết nối hệ thống PACS
+* Điều chỉnh thông tin chiết khấu trong hóa đơn điện tử VIETTEL
+
+### Release 2.331.0
+* Sửa thông tin hướng dẫn sử dụng đơn y học cổ truyền trên tờ điều trị
+* Bổ sung thông tin dự trù dịch vụ kỹ thuật trên tờ điều trị
+* Sửa cảnh báo ICD cùng nhóm
+* Bổ sung thanh toán QR cho khách vãng lai tại nhà thuốc
+
+### Release 2.330.0
+* Bổ sung thông tin trong XML phục vụ XML 130 và QĐ 4750/QĐ-BYT 
+* Điều chỉnh cảnh báo mức lọc cầu thận theo ngày
+* Bổ sung phân phòng xử lý theo thiết lập phòng xử lý - đối tượng thanh toán
+* Bổ sung bắt buộc thiết lập tài khoản - vai trò thực hiện phục vụ nhập kíp
+
+### Release 2.329.0
+* Sửa thông báo trên hệ thống ký số
+* Sửa lỗi chức năng báo động đỏ gây treo hệ thống
+* Bổ sung quét QR thanh toán tại các chức năng thu tiền(xuất bán, tạm ứng, thanh toán, ...)
+* Sửa chức năng cảnh báo giường trùng thời gian với hồ sơ khác
+
+### Release 2.328.0
+* Tích hợp thanh toán QR LPBank
+* Bổ sung tính năng chặn khi chỉ định DVKT, đơn thuốc cùng thời gian với thực hiện cận lâm sàng và ngược lại
+* Cho phép in phiếu yêu cầu tạm ứng, Hiển thị thêm màn hình thanh toán QR
+
 ### Release 2.327.0
 * Sắp xếp thuốc trên tờ điều trị theo quy định mới
 * Không cho phép xóa chẩn đoán

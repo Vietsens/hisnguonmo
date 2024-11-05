@@ -220,6 +220,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         {
             try
             {
+                if (!this.IsTempQN)
+                    this.lblHeincardNumber.Size = new Size(this.lciTempQN.Size.Width + this.lblHeincardNumber.Size.Width - this.layoutControlItem1.Size.Width, this.lblHeincardNumber.Size.Height);
                 this.lciTempQN.Visibility = this.IsTempQN ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
 
             }
@@ -1905,6 +1907,21 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void chkBaby_CheckedChanged(object sender, EventArgs e)
+        {
+
+            try
+            {
+                if (chkBaby.Checked)
+                    rdoRightRoute.Checked = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
     }
 

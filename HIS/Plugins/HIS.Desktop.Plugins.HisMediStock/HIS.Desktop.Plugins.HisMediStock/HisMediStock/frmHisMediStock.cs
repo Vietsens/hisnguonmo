@@ -55,6 +55,11 @@ using HIS.Desktop.Utilities.Extensions;
 using System.Text;
 using DevExpress.XtraEditors.Repository;
 using HIS.Desktop.Plugins.HisMediStock.Validation;
+using Newtonsoft.Json;
+using DevExpress.XtraBars.Controls;
+using DevExpress.XtraGrid;
+using System.Data;
+using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
 {
@@ -88,6 +93,12 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
         List<HIS_EXP_MEST_TYPE> ExpMestTypeExpSelecteds;
         List<HIS_PATIENT_CLASSIFY> ListHisPatientClassify;
         bool isEnableShowDrugStore;
+        List<HIS_CONFIG> lstKey = new List<HIS_CONFIG>();
+        List<HIS_CONFIG> lstValueQR = new List<HIS_CONFIG>();
+        List<HIS_CONFIG> lstConfig = new List<HIS_CONFIG>();
+        List<HIS.Desktop.Plugins.HisMediStock.ADO.HisMediStockADO.ItemConfig> itemsToAdd;
+        HIS_CONFIG config = null;
+        List<V_HIS_CASHIER_ROOM> cashierRoom = new List<V_HIS_CASHIER_ROOM>();
         #endregion
 
         #region Construct
@@ -418,10 +429,24 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             {
                 if (data != null)
                 {
+                    var Room = BackendDataWorker.Get<HIS_ROOM>().Where(o => o.ID == data.ROOM_ID).FirstOrDefault();
+                    //CommonParam paramCommon = new CommonParam();
+                    //MOS.Filter.HisPatientTypeFilter filter = new MOS.Filter.HisPatientTypeFilter();
+                    //var resultData = new BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_ROOM>>("api/HisRoom/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+                    //var Room = resultData.Where(o => o.ID == data.ROOM_ID).FirstOrDefault();
+                    if (Room != null)
+                    {
+                        cboRooomTN.EditValue = Room.DEFAULT_CASHIER_ROOM_ID;
+                        if (cboRooomTN.EditValue != null)
+                        {
+                            cboRooomTN.Properties.Buttons[0].Visible = true;
+                        }
+                    }
                     txtMediStockCode.Text = data.MEDI_STOCK_CODE;
                     txtMediStockName.Text = data.MEDI_STOCK_NAME;
                     txtHeadCode.Text = data.BHYT_HEAD_CODE;
                     txtNotHeadCode.Text = data.NOT_IN_BHYT_HEAD_CODE;
+                    txtTLQR.Text = data.QR_CONFIG_JSON;
                     cboDepartMentName.EditValue = data.DEPARTMENT_ID;
                     cboParent.EditValue = data.PARENT_ID;
                     chkIsAllowImpSupplier.Checked = (data.IS_ALLOW_IMP_SUPPLIER == 1 ? true : false);
@@ -607,6 +632,8 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 txtMediStockName.Text = "";
                 txtHeadCode.Text = "";
                 txtNotHeadCode.Text = "";
+                txtTLQR.Text = "";
+                cboRooomTN.EditValue = null;
                 cboDepartMentName.EditValue = null;
                 cboParent.EditValue = null;
                 GridCheckMarksSelection gridCheckMark = cboExpMestTypeApprove.Properties.Tag as GridCheckMarksSelection;
@@ -665,6 +692,8 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 chkIsShowDrugStore.CheckState = CheckState.Unchecked;
                 chkIsExpend.CheckState = CheckState.Unchecked;
                 chkIsShowAnticipate.CheckState = CheckState.Unchecked;
+                txtTLQR.Properties.Buttons[0].Visible = false;
+                cboRooomTN.Properties.Buttons[1].Visible = false;
             }
             catch (Exception ex)
             {
@@ -871,6 +900,7 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                         .Post<HisMediStockSDO>("api/HisMediStock/Update", ApiConsumers.MosConsumer, mediStockSDO, param);
                     }
                 }
+                LogSystem.Error("Đầu vào api/HisMediStock: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => mediStockSDO), mediStockSDO));
                 if (mediStockResultSDO != null)
                 {
                     success = true;
@@ -981,6 +1011,14 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             try
             {
                 //if (cboParent.EditValue != null) Parent = Inventec.Common.TypeConvert.Parse.ToInt64((cboParent.EditValue ?? "0").ToString());
+                if (!string.IsNullOrEmpty(txtTLQR.Text))
+                {
+                    Parent.QR_CONFIG_JSON = txtTLQR.Text.Trim();
+                }
+                if (cboRooomTN.EditValue != null)
+                {
+                    Parent.DEFAULT_CASHIER_ROOM_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboRooomTN.EditValue.ToString());
+                }
                 if (cboDepartMentName.EditValue != null)
                     Parent.DEPARTMENT_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboDepartMentName.EditValue.ToString());
             }
@@ -1106,6 +1144,8 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 //Fill data into datasource combo
                 FillDataToControlsForm();
 
+                //LOAD phòng tn
+                LoadDataToComboCashierRoom();
                 //Load ngon ngu label control
                 SetCaptionByLanguageKey();
 
@@ -1135,6 +1175,8 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 chkIsAutoCreateChmsImp.CheckState = CheckState.Checked;
                 LoadDataToComboPhanLoaiBenhNhan();
                 InitPhanLoaiBenhNhan();
+                txtTLQR.Properties.Buttons[0].Visible = false;
+                cboRooomTN.Properties.Buttons[1].Visible = false;
             }
             catch (Exception ex)
             {
@@ -1442,6 +1484,57 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
         }
         #endregion
 
+        private void LoadDataToComboCashierRoom()
+        {
+            try
+            {
+                //long branchId;
+                //branchId = HIS.Desktop.LocalStorage.Branch.BranchWorker.GetBranchId(); // WorkPlace.WorkPlaceSDO.FirstOrDefault().BranchId;
+                //var userRoomIds = BackendDataWorker.Get<V_HIS_USER_ROOM>().Where(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()
+                //    && o.BRANCH_ID == branchId && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__TN).Select(s => s.ROOM_ID).ToList();
+                //LoadDataCashierRoom();
+                CommonParam paramCommon = new CommonParam();
+                MOS.Filter.HisPatientTypeFilter filter = new MOS.Filter.HisPatientTypeFilter();
+                var result = new BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.V_HIS_CASHIER_ROOM>>("api/HisCashierRoom/GetView", ApiConsumer.ApiConsumers.MosConsumer, filter, paramCommon);
+
+                cashierRoom = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_CASHIER_ROOM>();
+                cashierRoom = cashierRoom.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("CASHIER_ROOM_NAME", "", 300, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("CASHIER_ROOM_NAME", "ID", columnInfos, false, 350);
+                ControlEditorLoader.Load(cboRooomTN, cashierRoom, controlEditorADO);
+
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadDataCashierRoom()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Info("async Task LoadHisCashierRoom => 1");
+
+                CommonParam paramCommon = new CommonParam();
+                MOS.Filter.HisPatientTypeFilter filter = new MOS.Filter.HisPatientTypeFilter();
+                var result =  new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.HIS_CASHIER_ROOM>>("api/HisCashierRoom/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+
+                if (result != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_CASHIER_ROOM), result, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+
+                var result1 =  new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.V_HIS_CASHIER_ROOM>>("api/HisCashierRoom/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
+
+                if (result1 != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.V_HIS_CASHIER_ROOM), result1, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+
+                Inventec.Common.Logging.LogSystem.Info("async Task LoadHisCashierRoom => 2");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void LoadDataToComboPhanLoaiBenhNhan()
         {
             try
@@ -2840,6 +2933,301 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        public void setInfoQR(string value)
+        {
+            try
+            {
+                txtTLQR.Text = value;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void btnEditTTQR_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //frmSetTTQR mediStock = new frmSetTTQR(setInfoQR);
+                //mediStock.ShowDialog();
+
+                Rectangle buttonPosition = new Rectangle(btnSave.Bounds.X, btnSave.Bounds.Y, btnSave.Bounds.Width, btnSave.Bounds.Height);
+                popupControlContainerTLQR.ShowPopup(new Point(buttonPosition.X + 480, buttonPosition.Bottom + btnSave.Bounds.Height + 400));
+                GetConFig();
+                FillDataToGrid();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+           
+        }
+        private void GetConFig()
+        {
+            try
+            {
+                lstKey.Clear();
+                lstValueQR.Clear();
+                CommonParam param = new CommonParam();
+                lstConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+                if (lstConfig != null && lstConfig.Count > 0)
+                {
+                    int count = 0;
+                    foreach (var item in lstConfig)
+                    {
+                        HIS_CONFIG cf = new HIS_CONFIG();
+                        cf.ID = count++;
+
+
+                        string value = item.KEY;
+                        int index = value.IndexOf("Info");
+                        if (index > 0)
+                        {
+                            var shotkey = value.Substring(0, index);
+                            string[] parts = shotkey.Split('.');
+                            if (parts.Length > 0)
+                            {
+                                cf.KEY = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
+                            }
+                        }
+                        cf.VALUE = item.VALUE;
+                        lstKey.Add(cf);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void FillDataToGrid()
+        {
+            try
+            {
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("KEY", "", 150, 1));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("KEY", "KEY", columnInfos, false, 250);
+                controlEditorADO.ImmediatePopup = true;
+                ControlEditorLoader.Load(repositoryItemCboBank, lstKey, controlEditorADO);
+
+                DataTable table = new DataTable();
+                table.Columns.Add("Name", typeof(string));
+                table.Columns.Add("Value", typeof(object));
+
+                // Thêm dữ liệu cho 2 dòng "Ngân hàng" và "Cấu hình"
+                table.Rows.Add("Ngân hàng", null);
+                table.Rows.Add("Giá trị cấu hình", "");
+
+                gridControlSetTTQR.DataSource = table;
+
+                if (!string.IsNullOrEmpty(txtTLQR.Text))
+                {
+                    HIS.Desktop.Plugins.HisMediStock.ADO.HisMediStockADO.ItemConfig config = Newtonsoft.Json.JsonConvert.DeserializeObject<HIS.Desktop.Plugins.HisMediStock.ADO.HisMediStockADO.ItemConfig>(txtTLQR.Text);
+                    if (config.BANK != null && config.VALUE != null)
+                    {
+                        gridViewSetTTQR.SetRowCellValue(0, "Value", config.BANK);
+                        gridViewSetTTQR.SetRowCellValue(1, "Value", config.VALUE);
+                        if (!string.IsNullOrEmpty(config.BANK))
+                        {
+                            repositoryItemCboBank.Properties.Buttons[1].Visible = true;
+                        }
+                        KEY = config.BANK;
+                        VALUE = config.VALUE;
+                    }
+                    else if (config.BANK != null)
+                    {
+                        var cbocf = lstKey.FirstOrDefault(s => s.KEY == config.BANK);
+                        if (cbocf != null)
+                        {
+                            gridViewSetTTQR.SetRowCellValue(0, "Value", cbocf.KEY);
+                            gridViewSetTTQR.SetRowCellValue(1, "Value", cbocf.VALUE);
+                            if (!string.IsNullOrEmpty(cbocf.KEY))
+                            {
+                                repositoryItemCboBank.Properties.Buttons[1].Visible = true;
+                            }
+                        }
+                        KEY = cbocf.KEY;
+                        VALUE = cbocf.VALUE;
+                    }
+                }
+
+                gridViewSetTTQR.OptionsView.NewItemRowPosition = DevExpress.XtraGrid.Views.Grid.NewItemRowPosition.None;
+                gridViewSetTTQR.OptionsBehavior.Editable = true;
+               
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        public string KEY { get; set; }
+        public string VALUE { get; set; }
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(this.KEY))
+                {
+                    var dataRow = gridViewSetTTQR.GetDataRow(1);
+                    var result = new
+                    {
+                        BANK = this.KEY,
+                        VALUE = dataRow[1]
+                    };
+
+                    string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                    txtTLQR.Text = jsonString.ToString();
+                }
+                PopupContainerBarControl control = popupControlContainerTLQR.Parent as PopupContainerBarControl;
+                control.ClosePopup();
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void gridViewSetTTQR_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
+        {
+            try
+            {
+                try
+                {
+                    if (e.RowHandle == 0 && e.Column.FieldName == "Value")
+                    {
+                        e.RepositoryItem = repositoryItemCboBank;
+                    }
+                    if (e.RowHandle == 1 && e.Column.FieldName == "Value")
+                    {
+                        e.RepositoryItem = txtConfigValue;
+                    }
+
+                }
+                catch (Exception ex)
+                {
+
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void repositoryItemCboBank_Closed_1(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                GridLookUpEdit grid = gridViewSetTTQR.ActiveEditor as GridLookUpEdit;
+
+                if (grid != null)
+                {
+                    var selectedBank = grid.EditValue.ToString();
+                    KEY = selectedBank;
+                    if (!string.IsNullOrEmpty(selectedBank))
+                    {
+                        repositoryItemCboBank.Properties.Buttons[1].Visible = true;
+                        // Tìm cấu hình tương ứng trong listConfig
+                        var config = lstKey.FirstOrDefault(c => c.KEY.Contains(selectedBank));
+
+                        if (config != null)
+                        {
+                            // Cập nhật giá trị cấu hình vào ô "Cấu hình"
+                            gridViewSetTTQR.SetRowCellValue(1, "Value", config.VALUE);
+                            VALUE = config.VALUE;
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repositoryItemCboBank_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    repositoryItemCboBank.Properties.Buttons[1].Visible = false;
+                    gridViewSetTTQR.SetRowCellValue(0, "Value", "");
+                    gridViewSetTTQR.SetRowCellValue(1, "Value", "");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtTLQR_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    txtTLQR.Properties.Buttons[0].Visible = false;
+                    txtTLQR.Text = null;
+                }
+            }
+             catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtTLQR_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(txtTLQR.Text))
+                    txtTLQR.Properties.Buttons[0].Visible = true;
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboRooomTN_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                 if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboRooomTN.Properties.Buttons[1].Visible = false;
+                    cboRooomTN.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboRooomTN_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboRooomTN.EditValue != null)
+                    cboRooomTN.Properties.Buttons[1].Visible = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

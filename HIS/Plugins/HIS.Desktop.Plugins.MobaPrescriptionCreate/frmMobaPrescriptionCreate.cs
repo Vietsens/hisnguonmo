@@ -61,6 +61,7 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
     {
         long expMestId;
         V_HIS_EXP_MEST hisExpMest = null;
+        HIS_SERVICE_REQ hisServiceReq = null;
         Inventec.Desktop.Common.Modules.Module currentModule = null;
 
         List<VHisExpMestMedicineADO> listExpMestMedicineADO = new List<VHisExpMestMedicineADO>();
@@ -111,6 +112,8 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
                 WaitingManager.Show();
                 LoadKeyFrmLanguage();
                 LoadExpMest();
+                LoadServiceReq();
+                LoadRemedyCount();
                 LoadComboboxMediStock();
                 LoadComboboxTracking();
                 LoadExpMestMedicine();
@@ -135,6 +138,34 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadRemedyCount()
+        {
+            try
+            {
+                //ToolTip toolTip1 = new ToolTip();
+                //toolTip1.SetToolTip(txtRemedyCountHT, "Số thang hiện có");
+                //toolTip1.AutoPopDelay = 5000; // Tooltip ẩn sau 5 giây
+                //toolTip1.InitialDelay = 500;  // Tooltip hiện sau 0.5 giây
+
+                if (hisServiceReq != null && hisServiceReq.PRESCRIPTION_TYPE_ID == 2)
+                {
+                    layoutRemedyCount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    layoutRemedyCountHT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    txtRemedyCountHT.Text = hisServiceReq.REMEDY_COUNT.ToString()??""; 
+                    if (hisServiceReq.REMEDY_COUNT > 0)
+                    {
+                        txtRemedyCount.Enabled = true;
+                        txtRemedyCount.EditValue = null;
+                        txtRemedyCount.Properties.MaxValue = (decimal)hisServiceReq.REMEDY_COUNT;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -307,6 +338,27 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
                 if (hisExpMests != null && hisExpMests.Count == 1)
                 {
                     hisExpMest = hisExpMests.First();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadServiceReq()
+        {
+            try
+            {
+                HisServiceReqFilter ServiceReqFilter = new HisServiceReqFilter();
+                if(hisExpMest != null)
+                {
+                    ServiceReqFilter.ID = hisExpMest.SERVICE_REQ_ID;
+                }
+                var rs = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GET, ApiConsumers.MosConsumer, ServiceReqFilter, null);
+                if (rs != null && rs.Count == 1)
+                {
+                    hisServiceReq = rs.First();
                 }
             }
             catch (Exception ex)
@@ -507,11 +559,12 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        int selectRow;
         private void gridViewExpMestMedicine_SelectionChanged(object sender, DevExpress.Data.SelectionChangedEventArgs e)
         {
             try
             {
+                selectRow = gridViewExpMestMedicine.DataRowCount;
                 for (int i = 0; i < gridViewExpMestMedicine.DataRowCount; i++)
                 {
                     var data = (VHisExpMestMedicineADO)gridViewExpMestMedicine.GetRow(i);
@@ -701,6 +754,77 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
                         }
                     }
                 }
+                int remedyCount;
+                int remedyCountHT;
+
+                //List<int> selectRows = new List<int>();
+                VHisExpMestMedicineADO dataExpMestMedicine = null;
+                for (int i = 0; i < gridViewExpMestMaterial.RowCount; i++)
+                {
+                    dataExpMestMedicine = (VHisExpMestMedicineADO)gridViewExpMestMedicine.GetRow(i);
+                    //if (dataExpMestMedicine != null)
+                    //{
+                    //    selectRows.Add(i);
+                    //}
+                }
+
+                if (hisServiceReq != null && hisServiceReq.PRESCRIPTION_TYPE_ID == 2)
+                {
+                    if (!string.IsNullOrEmpty(txtRemedyCount.Text) && (int.TryParse(txtRemedyCount.Text, out remedyCount)) && (int.TryParse(txtRemedyCountHT.Text, out remedyCountHT)))
+                    {
+                        if (dataExpMestMedicine != null && remedyCount != 0 && remedyCount == hisServiceReq.REMEDY_COUNT && dataExpMestMedicine.CAN_MOBA_AMOUNT != dataExpMestMedicine.MOBA_AMOUNT)
+                        {
+                            MessageBox.Show("Số lượng thang khả dụng bằng 0, cần thu hồi toàn bộ thuốc");
+                            return;
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(txtRemedyCount.Text) && (int.TryParse(txtRemedyCount.Text, out remedyCount)))
+                    {
+                        if (remedyCount == 0 && selectRow > 0)
+                        {
+                            if (MessageBox.Show("Số lượng thuốc đã thay đổi, có muốn thu hồi số thang không?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                            {
+                                txtRemedyCount.Focus();
+                                return;
+                            }
+                        }
+                    }
+                    else if (string.IsNullOrEmpty(txtRemedyCount.Text) && selectRow > 0)
+                    {
+                        if (MessageBox.Show("Số lượng thuốc đã thay đổi, có muốn thu hồi số thang không?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        {
+                            txtRemedyCount.Focus();
+                            return;
+                        }
+                    }
+
+                    //if(hisServiceReq != null && hisServiceReq.)
+                    bool showMess = false;
+                    if (listExpMestMedicineADO != null && selectRow == listExpMestMedicineADO.Count())
+                    {
+                        foreach (var i in listExpMestMedicineADO)
+                        {
+                            if (i.MOBA_AMOUNT == i.CAN_MOBA_AMOUNT)
+                            {
+                                showMess = true;
+                            }
+                            else
+                            {
+                                showMess = false;
+                                break;
+                            }
+                        }
+                        if (showMess == true && hisServiceReq != null && hisServiceReq.REMEDY_COUNT != null && !string.IsNullOrEmpty(txtRemedyCount.Text) && long.Parse(txtRemedyCount.Text) < hisServiceReq.REMEDY_COUNT)
+                        {
+                            if (MessageBox.Show("Thuốc đã thu hồi toàn bộ, cần thu hồi toàn bộ số thang", "Cảnh báo", MessageBoxButtons.OK) == DialogResult.OK)
+                            {
+                                return;
+                            }
+                            
+                        }
+                    }
+                }
 
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
@@ -742,6 +866,14 @@ namespace HIS.Desktop.Plugins.MobaPrescriptionCreate
                 data.MobaPresMaterials = new List<HisMobaPresMaterialSDO>();
                 data.ExpMestId = this.expMestId;
                 data.Description = this.txtDescription.Text;
+                if (!string.IsNullOrEmpty(txtRemedyCount.Text))
+                {
+                    data.RemedyCount = long.Parse(txtRemedyCount.Text);
+                }
+                else
+                {
+                    data.RemedyCount = null;
+                }
                 Inventec.Common.Logging.LogSystem.Error(cboMediStock.EditValue + "__________" + this.hisExpMest.MEDI_STOCK_ID);
                 if (cboMediStock.EditValue != null && cboMediStock.EditValue != "")
                 {

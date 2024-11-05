@@ -63,6 +63,30 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 this.ucDateProcessor.Reload(this.ucDate, dateInputADO);
                 this.intructionTimeSelecteds = this.ucDateProcessor.GetValue(this.ucDate);
                 this.isMultiDateState = false;
+                if(string.IsNullOrEmpty(HisConfigs.Get<string>("HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION")) && !string.IsNullOrEmpty(HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd")))
+                {
+                    LogSystem.Debug("cau hinh :  HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION khong duoc bat va cau hinh HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd duoc bat. -> load icd yhct");
+                    if(tracking.TRADITIONAL_ICD_CODE != null)
+                    {
+                        HIS.UC.Icd.ADO.IcdInputADO ado = new UC.Icd.ADO.IcdInputADO();
+                        ado.ICD_CODE = tracking.TRADITIONAL_ICD_CODE;
+                        ado.ICD_NAME = tracking.TRADITIONAL_ICD_NAME;
+                        if (ucIcdYHCT != null)
+                        {
+                            icdProcessorYHCT.Reload(ucIcdYHCT, ado);
+                        }
+                    }
+                    if(tracking.TRADITIONAL_ICD_SUB_CODE != null)
+                    {
+                        HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO ado = new UC.SecondaryIcd.ADO.SecondaryIcdDataADO();
+                        ado.ICD_SUB_CODE = tracking.TRADITIONAL_ICD_SUB_CODE;
+                        ado.ICD_TEXT = tracking.TRADITIONAL_ICD_TEXT;
+                        if (ucSecondaryIcdYHCT != null)
+                        {
+                            subIcdProcessorYHCT.Reload(ucSecondaryIcdYHCT, ado);
+                        }
+                    }
+                }
 
                 Inventec.Common.Logging.LogSystem.Debug("ProcessAfterChangeTrackingTime.2");
                 if (this.actionType == GlobalVariables.ActionView)
@@ -1365,6 +1389,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 spinSoNgay.EditValue = 1;
                 repositoryItemChkIsExpend__MedicinePage_Disable.ReadOnly = true;
                 repositoryItemChkIsExpend__MedicinePage_Disable.Enabled = false;
+                txtDuTruTime.Text = "";
+                cboDuTruTime.EditValue = null;
+                txtTimeTo.Text = "";
+
+                this.IsManyDay = true;
             }
             catch (Exception ex)
             {
@@ -2716,6 +2745,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 
                 if (this.currentSereServInEkip != null)
                     result = this.currentSereServInEkip.ID;
+
+                LogSystem.Debug("__________currentSereServ " + currentSereServ + " __________currentSereServInEkip: " + currentSereServInEkip);
             }
             catch (Exception ex)
             {

@@ -87,6 +87,7 @@ using DevExpress.XtraPrinting;
 using MOS.TDO;
 using System.Threading;
 using EMR.SDO;
+using Inventec.Desktop.CustomControl.CustomGrid;
 
 namespace HIS.Desktop.Plugins.ConnectionTest
 {
@@ -123,7 +124,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         internal List<TestLisResultADO> lstCheckPrint = new List<TestLisResultADO>();
         internal List<TestLisResultADO> listCheckPrint = new List<TestLisResultADO>();
         internal List<LIS_MACHINE> _Machines { get; set; }
-        HideCheckBoxHelper hideCheckBoxHelper__Service;
+        Inventec.Desktop.CustomControl.CustomGrid.HideCheckBoxHelper hideCheckBoxHelper__Service;
         BindingList<TestLisResultADO> records;
         public PRINT_OPTION PrintOption { get; set; }
         List<ACS.EFMODEL.DataModels.ACS_CONTROL> controlAcs = new List<ACS.EFMODEL.DataModels.ACS_CONTROL>();
@@ -173,6 +174,12 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         DateTime currentTimerLM;
         TimerSDO timeSync { get; set; }
         bool IsLoadGridSampleAfterSave;
+
+        List<HIS_DEPARTMENT> lstDepart;
+        List<HIS_DEPARTMENT> _StatusSelecteds;
+        List<V_HIS_ROOM> _StatusSelectedRooms;
+        List<long> lstIDDepart = new List<long>();
+        List<long> lstIDRoom = new List<long>();
         #endregion
 
         #region Contructor
@@ -215,6 +222,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 }
                 LoadDataToCombo();
                 CreateThreadGetService();
+                LoadDefaulRoom();
+                LoadDataToDepartRoom();
                 InitCboStt();
                 VisibleColumnSample();
                 this.testIndexRangeAll = BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>();
@@ -263,6 +272,60 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void LoadDataToDepartRoom()
+        {
+            try
+            {
+                InitCheck(cboDepart, SelectionGrid__Status);
+                InitCombo(cboDepart, lstDepart, "DEPARTMENT_NAME", "DEPARTMENT_CODE", "Khoa");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitCombo(GridLookUpEdit cbo, object data, string DisplayValue, string ValueMember, string title)
+        {
+            try
+            {
+                cbo.Properties.DataSource = data;
+                cbo.Properties.DisplayMember = DisplayValue;
+                cbo.Properties.ValueMember = ValueMember;
+
+                DevExpress.XtraGrid.Columns.GridColumn col2 = cbo.Properties.View.Columns.AddField(DisplayValue);
+                col2.VisibleIndex = 1;
+                col2.Width = 220;
+                col2.Caption = title;
+                cbo.Properties.PopupFormWidth = 250;
+                cbo.Properties.View.OptionsView.ShowColumnHeaders = true;
+                cbo.Properties.View.OptionsSelection.MultiSelect = true;
+
+                GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    //gridCheckMark.SelectAll(cbo.Properties.DataSource);
+                    gridCheckMark.ClearSelection(cbo.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+        private void loadDepartment()
+        {
+            try
+            {
+                lstDepart = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o=>o.IS_ACTIVE ==1).ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void GetTimeSystem()
         {
             try
@@ -290,7 +353,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         DateKQ.DateTime = currentTimer;
                     }
-                }
+                } 
                 DateKQ.ToolTip = ConvertStringTime(DateKQ);
             }
             catch (Exception ex)
@@ -345,7 +408,12 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             try
             {
                 System.Threading.Thread thread = new System.Threading.Thread(ThreadGetService);
+                System.Threading.Thread loadDepart = new System.Threading.Thread(loadDepartment);
+
                 thread.Start();
+                loadDepart.Start();
+
+                loadDepart.Join();
             }
             catch (Exception ex)
             {
@@ -684,9 +752,28 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             try
             {
+                if (e.Column.FieldName == "KET_QUA" || e.Column.FieldName == "DUYET" || e.Column.FieldName == "UPDATE_BARCODE_TIME" || e.Column.FieldName == "NUM_ORDER" || e.Column.FieldName == "REJECT" || e.Column.FieldName == "APPROVE_SAMPLE" || e.Column.FieldName == "APPROVE_RESULT" || e.Column.FieldName == "PRINT_BARCODE")
+                {
+                    ClickColumnItem();
+                    return;
+                }
+                RowClick();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void RowClick()
+        {
+
+            try
+            {
                 WaitingManager.Show();
                 rowSample = null;
                 rowSample = (LisSampleADO)gridViewSample.GetFocusedRow();
+
                 LoadLisResult(rowSample);
                 LoadDataToGridTestResult2();
                 SetDataToCommon(rowSample);
@@ -710,13 +797,154 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 dxValidationProviderEditorInfo.RemoveControlError(DateLM);
                 ValidationSampleTime(rowSample.INTRUCTION_TIME ?? 0);
                 CheckConfigSignWarningOption(rowSample);
+
                 WaitingManager.Hide();
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
+
+        }
+
+        private void ClickColumnItem()
+        {
+            try
+            {
+                rowSample = null;
+                rowSample = (LisSampleADO)gridViewSample.GetFocusedRow();
+                var columnFocus = gridViewSample.FocusedColumn;
+                var sampleStt = rowSample.SAMPLE_STT_ID;
+                if (columnFocus.FieldName == "KET_QUA")
+                {
+                    if (LisConfigCFG.MUST_APPROVE_RESULT == "1")
+                    {
+                        if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ)// if (sampleStt == 1 || sampleStt == 2)
+                        {
+                            TraKetQuaE_Click(null, null);
+                        }
+                        else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ)
+                        {
+                            if (((controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == ControlCode.BtnHuyTraKQ) != null) || IsLoginameAddmin))
+                            {
+                                HuyTraKQE_Click(null, null);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM
+                           || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ
+                            || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ
+                            || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN)// if (sampleStt == 1 || sampleStt == 2)
+                        {
+                            TraKetQuaE_Click(null, null);
+                        }
+                        else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ
+                            && ((controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == ControlCode.BtnHuyTraKQ) != null) || IsLoginameAddmin))
+                        {
+                            HuyTraKQE_Click(null, null);
+                        }
+                    }
+                }
+                else if (columnFocus.FieldName == "DUYET")
+                {
+                    bool alowUnsample = controlAcs.Exists(o => o.CONTROL_CODE == BtnHuyDuyet);
+                    if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM
+                        || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI)
+                    {
+                        DuyetE_Click(null, null);
+                    }
+                    else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM
+                        || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN)
+                    {
+                        if (alowUnsample)
+                            HuyDuyetE_Click(null, null);
+                    }
+                    else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ)
+                    {
+                    }
+                    else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ)
+                    {
+                        if (LisConfigCFG.MUST_APPROVE_RESULT == "1" || !alowUnsample)
+                        {
+                        }
+                        else
+                        {
+                            HuyDuyetE_Click(null, null);
+                        }
+                    }
+                    else
+                    {
+                        if (alowUnsample)
+                        {
+                            HuyDuyetE_Click(null, null);
+                        }
+                    }
+                }
+                else if (columnFocus.FieldName == "UPDATE_BARCODE_TIME")
+                {
+                    if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM
+                            || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM
+                            || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN
+                            || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI)
+                    {
+                        repositoryItemBtnUpdateBarcodeTime_Enable_ButtonClick(null, null);
+                    }
+                }
+                else if (columnFocus.FieldName == "NUM_ORDER")
+                {
+                    if (rowSample != null && rowSample.NUM_ORDER.HasValue)
+                    {
+
+                    }
+                    else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM)
+                    {
+                        repositoryItemBtnUpdateNumOrder_ButtonClick(null, null);
+                    }
+                }
+                else if (columnFocus.FieldName == "REJECT")
+                {
+                    if ((rowSample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM
+                           || rowSample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN))
+                    {
+                        repositoryTuChoiMauE_ButtonClick(null, null);
+                    }
+                }
+                else if (columnFocus.FieldName == "APPROVE_SAMPLE")
+                {
+                    if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM)
+                    {
+                        repositoryChapNhanMauE_ButtonClick(null, null);
+                    }
+                    else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN)
+                    {
+                        repositoryHuyChapNhan_ButtonClick(null, null);
+                    }
+                }
+                else if (columnFocus.FieldName == "APPROVE_RESULT")
+                {
+                    if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ
+                            || sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN)
+                    {
+                        repositoryDuyetKetQuaE_ButtonClick(null, null);
+                    }
+                    else if (sampleStt == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ)
+                    {
+                        repositoryHuyDuyetKetQuaE_ButtonClick(null, null);
+                    }
+                }
+                else if (columnFocus.FieldName == "PRINT_BARCODE")
+                {
+                    InBarcode_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         private void CheckConfigSignWarningOption(LisSampleADO row)
@@ -1204,7 +1432,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     if (dataSource.Count == 1)
                     {
                         gridViewSample.FocusedRowHandle = 0;
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick();
                     }
                     else if (rowSample != null)
                     {
@@ -1469,6 +1697,18 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     lisSampleFilter.EMR_RESULT_DOCUMENT_STT_ID = 4;
                 }
 
+                if (!string.IsNullOrEmpty(cboDepart.Text))
+                {
+                    var lstSelectDepartCode = _StatusSelecteds.Select(o => o.DEPARTMENT_CODE).ToList();
+                    lisSampleFilter.REQUEST_DEPARTMENT_CODEs = lstSelectDepartCode;
+                }
+
+                if (!string.IsNullOrEmpty(cboRoom.Text))
+                {
+                    var lstSelectRoomCode = _StatusSelectedRooms.Select(o => o.ROOM_CODE).ToList();
+                    lisSampleFilter.REQUEST_ROOM_CODEs = lstSelectRoomCode;
+                }
+
 
                 var apiResult = new ApiResultObject<List<V_LIS_SAMPLE>>();
 
@@ -1620,6 +1860,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 dtBarcodeTimeTo.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Inventec.Common.DateTime.Get.EndDay() ?? 0);
                 gridControlSample.DataSource = null;
                 treeListSereServTein.DataSource = null;
+                cboRoom.Properties.Buttons[1].Visible = false;
+                cboDepart.Properties.Buttons[1].Visible = false;
             }
             catch (Exception ex)
             {
@@ -1697,6 +1939,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             try
             {
+                CommonParam param = new CommonParam();
                 if (sample != null && (sample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM
                     || sample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI))
                 {
@@ -1726,7 +1969,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     }
                     else
                     {
-                        CommonParam param = new CommonParam();
+                        //CommonParam param = new CommonParam();
                         bool result = false;
                         WaitingManager.Show();
                         LisSampleSampleSDO sdo = new LisSampleSampleSDO();
@@ -1802,7 +2045,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             gridControlSample.RefreshDataSource();
                             gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle - 1;
                             gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle + 1;
-                            gridViewSample_RowCellClick(null, null);
                         }
                     }, room.ROOM_CODE);
                     frm.ShowDialog();
@@ -2679,7 +2921,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 btnInTachTheoNhom.Enabled = true;
                 btnKhongThucHien.Enabled = true;
 
-                this.hideCheckBoxHelper__Service = new HideCheckBoxHelper(this.treeListSereServTein);
+                this.hideCheckBoxHelper__Service = new Inventec.Desktop.CustomControl.CustomGrid.HideCheckBoxHelper(this.treeListSereServTein);
             }
             catch (Exception ex)
             {
@@ -4802,7 +5044,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         {
                             success = true;
                             FillDataToGridControl();
-                            gridViewSample_RowCellClick(null, null);
+                            if (lstSampleAll.Count > 1)
+                                RowClick();
 
                             string testIndexStr = "";
                             foreach (var item in dataChilds)
@@ -5288,7 +5531,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     if (result != null)
                     {
                         success = true;
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick();
                     }
                     WaitingManager.Hide();
                     #region Show message
@@ -5343,7 +5586,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     if (result)
                     {
                         success = true;
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick();
                     }
                     WaitingManager.Hide();
                     #region Show message
@@ -5389,7 +5632,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     if (result)
                     {
                         success = true;
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick();
                     }
                     WaitingManager.Hide();
                     #region Show message
@@ -5426,7 +5669,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     if (result)
                     {
                         success = true;
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick();
                     }
                     WaitingManager.Hide();
                     #region Show message
@@ -5463,7 +5706,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     if (result)
                     {
                         success = true;
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick();
                     }
                     WaitingManager.Hide();
                     #region Show message
@@ -5520,7 +5763,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (rs != null && rs.Count > 0)
                             {
                                 success = true;
-                                gridViewSample_RowCellClick(null, null);
+                                RowClick();
                             }
                             treeListSereServTein.RefreshDataSource();
                             WaitingManager.Hide();
@@ -5653,7 +5896,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             gridControlSample.RefreshDataSource();
                             gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle - 1;
                             gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle + 1;
-                            gridViewSample_RowCellClick(null, null);
                         }
                     }, row);
                     frm.ShowDialog();
@@ -5689,7 +5931,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         gridControlSample.RefreshDataSource();
                         gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle - 1;
                         gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle + 1;
-                        gridViewSample_RowCellClick(null, null);
                     }
                     MessageManager.Show(this.ParentForm, param, success);
                     WaitingManager.Hide();
@@ -5767,7 +6008,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                                 gridControlSample.RefreshDataSource();
                                 gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle - 1;
                                 gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle + 1;
-                                gridViewSample_RowCellClick(null, null);
                                 result = true;
                             }
                         }, (IsShow) => IsShowMessage = IsShow);
@@ -5791,7 +6031,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle - 1;
                             gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle + 1;
                             result = true;
-                            gridViewSample_RowCellClick(null, null);
                         }
                         WaitingManager.Hide();
                     }
@@ -6316,7 +6555,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     if (result)
                     {
                         success = true;
-                        gridViewSample_RowCellClick(null, null);
+                        RowClick();
                     }
                     WaitingManager.Hide();
                     #region Show message
@@ -9083,7 +9322,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         gridControlSample.RefreshDataSource();
                         gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle - 1;
                         gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle + 1;
-                        gridViewSample_RowCellClick(null, null);
                         success = true;
                     }
                     WaitingManager.Hide();
@@ -9318,5 +9556,289 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void cboDepart_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)
+                {
+                    cboDepart.ShowPopup();
+                }
+                else if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    cboDepart.Properties.Buttons[1].Visible = false;
+                    cboDepart.EditValue = null;
+                    GridCheckMarksSelection gridCheckMark = cboDepart.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboDepart.Properties.View);
+                    }
+                    this.cboDepart.Focus();
+                    cboDepart.Refresh();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void InitCheck(GridLookUpEdit cbo, GridCheckMarksSelection.SelectionChangedEventHandler eventSelect)
+        {
+            try
+            {
+                cbo.Properties.View.Columns.Clear();
+                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cbo.Properties);
+                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(eventSelect);
+                cbo.Properties.Tag = gridCheck;
+                cbo.Properties.View.OptionsSelection.CheckBoxSelectorColumnWidth = 30;
+                cbo.Properties.View.OptionsSelection.MultiSelect = true;
+                cbo.Properties.View.OptionsView.GroupDrawMode = DevExpress.XtraGrid.Views.Grid.GroupDrawMode.Office;
+                cbo.Properties.View.OptionsView.HeaderFilterButtonShowMode = DevExpress.XtraEditors.Controls.FilterButtonShowMode.SmartTag;
+                cbo.Properties.View.OptionsView.ShowAutoFilterRow = true;
+                cbo.Properties.View.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
+                GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cbo.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboDepart_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                //cboDepart.Properties.View.OptionsView.Reset();
+                //LoadDataToDepartRoom();
+                cboDepart.Properties.View.ClearColumnsFilter();
+
+                if (_StatusSelecteds != null && _StatusSelecteds.Count > 0)
+                   {
+                      cboDepart.Properties.Buttons[1].Visible = true;
+                   }
+                   else
+                   {
+                      cboDepart.Properties.Buttons[1].Visible = false;
+                   }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void SelectionGrid__Status(object sender, EventArgs e)
+        {
+            try
+            {
+                _StatusSelecteds = new List<HIS_DEPARTMENT>();
+                lstIDDepart.Clear();
+                foreach (HIS_DEPARTMENT rv in (sender as GridCheckMarksSelection).Selection)
+                {
+                    if (rv != null)
+                    {
+                        lstIDDepart.Add(rv.ID);
+                        _StatusSelecteds.Add(rv);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SelectionGrid__StatusRoom(object sender, EventArgs e)
+        {
+            try
+            {
+                _StatusSelectedRooms = new List<V_HIS_ROOM>();
+                foreach (V_HIS_ROOM rv in (sender as GridCheckMarksSelection).Selection)
+                {
+                    if (rv != null)
+                        _StatusSelectedRooms.Add(rv);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboRoom_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)
+                {
+                    cboRoom.ShowPopup();
+                }
+                else if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+
+                    cboRoom.EditValue = null;
+                    GridCheckMarksSelection gridCheckMark = cboRoom.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboRoom.Properties.View);
+                    }
+                    this.cboRoom.Focus();
+                    cboRoom.Text = "";
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboDepart_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = "";
+                string statusName = "";
+                if (_StatusSelecteds != null && _StatusSelecteds.Count > 0)
+                {
+                    foreach (var item in _StatusSelecteds)
+                    {
+                        statusName += item.DEPARTMENT_NAME + ", ";
+                    }
+                }
+              
+                e.DisplayText = statusName;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+
+        private void cboDepart_Validated(object sender, EventArgs e)
+        {
+            try
+            {
+                LoadDefaulRoom();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadDefaulRoom()
+        {
+            try
+            {
+                List<V_HIS_ROOM> lstRoom;
+                if (lstIDDepart != null && lstIDDepart.Count > 0)
+                {
+                    lstRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.IS_ACTIVE == 1 && (o.ROOM_TYPE_ID == 1 || o.ROOM_TYPE_ID == 3 || o.ROOM_TYPE_ID == 4) && lstIDDepart.Contains(o.DEPARTMENT_ID)).ToList();
+                }
+                else
+                {
+                    lstRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.IS_ACTIVE == 1 && (o.ROOM_TYPE_ID == 1 || o.ROOM_TYPE_ID == 3 || o.ROOM_TYPE_ID == 4)).ToList();
+                }
+                InitCheck(cboRoom, SelectionGrid__StatusRoom);
+                InitCombo(cboRoom, lstRoom, "ROOM_NAME", "ROOM_CODE", "Phòng");
+                
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboRoom_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = "";
+                string statusName = "";
+                if (_StatusSelectedRooms != null && _StatusSelectedRooms.Count > 0)
+                {
+                    foreach (var item in _StatusSelectedRooms)
+                    {
+                        statusName += item.ROOM_NAME + ", ";
+                    }
+                }
+               
+                e.DisplayText = statusName;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboRoom_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                //LoadDefaulRoom();
+               
+                cboRoom.Properties.View.ClearColumnsFilter();
+               if (_StatusSelectedRooms != null && _StatusSelectedRooms.Count > 0)
+                {
+                    cboRoom.Properties.Buttons[1].Visible = true;
+                }
+                else
+                {
+                    cboRoom.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboDepart_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(cboDepart.Text))
+                {
+                    cboDepart.Properties.Buttons[1].Visible = true;
+                }
+                else
+                {
+                    cboDepart.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboRoom_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(cboRoom.Text))
+                {
+                    cboRoom.Properties.Buttons[1].Visible = true;
+                }
+                else
+                {
+                    cboRoom.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
     }
 }

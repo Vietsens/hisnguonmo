@@ -113,6 +113,7 @@ namespace HIS.UC.ExamTreatmentFinish
         {
             try
             {
+                List<IcdADO> listICD = new List<IcdADO>();
                 gridControlSecondaryDisease.DataSource = null;
                 start = ((CommonParam)param).Start ?? 0;
                 limit = ((CommonParam)param).Limit ?? 0;
@@ -126,13 +127,16 @@ namespace HIS.UC.ExamTreatmentFinish
                         || o.ICD_CODE.ToLower().Contains(keyword)
                         );
                 }
-                query = query.OrderByDescending(o => o.IsChecked).ThenBy(o => o.ICD_CODE);
-                dataTotal = query.Count();
-                var result = query.Skip(start).Take(limit).ToList();
+                listICD.AddRange(query);
+                listICD = listICD.OrderByDescending(o => o.IsChecked).ThenBy(o => o.ICD_CODE).ToList();
+                dataTotal = listICD.Count();
+                var result = listICD.Skip(start).Take(limit).ToList();
                 rowCount = (result == null ? 0 : result.Count);
                 gridControlSecondaryDisease.BeginUpdate();
                 gridControlSecondaryDisease.DataSource = result;
                 gridControlSecondaryDisease.EndUpdate();
+
+
             }
             catch (Exception ex)
             {

@@ -73,6 +73,7 @@ namespace MPS.Processor.Mps000215
         public string MEDICINE_PARENT_CODE { get; set; }
         public long? MEDICINE_PARENT_ID { get; set; }
         public string MEDICINE_PARENT_NAME { get; set; }
+        public string SCIENTIFIC_NAME { get; set; }
 
         public Mps000215ADO(V_HIS_EXP_MEST expMest, List<HIS_EXP_MEST_METY_REQ> req, List<V_HIS_MEDICINE_TYPE> _medicineTypes, List<V_HIS_EXP_MEST_MEDICINE> medicines, bool isReplace, bool IsGroup = false)
         {
@@ -105,6 +106,7 @@ namespace MPS.Processor.Mps000215
                     this.MEDICINE_PARENT_ID = data.PARENT_ID;
                     this.MEDICINE_PARENT_CODE = data.PARENT_CODE;
                     this.MEDICINE_PARENT_NAME = data.PARENT_NAME;
+                    this.SCIENTIFIC_NAME = data.SCIENTIFIC_NAME;
                 }
 
                 if (expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE || expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
@@ -162,6 +164,7 @@ namespace MPS.Processor.Mps000215
                     this.MEDICINE_PARENT_ID = replace.PARENT_ID;
                     this.MEDICINE_PARENT_CODE = replace.PARENT_CODE;
                     this.MEDICINE_PARENT_NAME = replace.PARENT_NAME;
+                    this.SCIENTIFIC_NAME = replace.SCIENTIFIC_NAME;
                 }
                 var data = _medicineTypes.FirstOrDefault(p => p.ID == req.First().MEDICINE_TYPE_ID);
                 if (data != null)
@@ -171,6 +174,7 @@ namespace MPS.Processor.Mps000215
                     this.MEDICINE_PARENT_ID = data.PARENT_ID;
                     this.MEDICINE_PARENT_CODE = data.PARENT_CODE;
                     this.MEDICINE_PARENT_NAME = data.PARENT_NAME;
+                    this.SCIENTIFIC_NAME = data.SCIENTIFIC_NAME;
 
                 }
                 if (expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE || expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)

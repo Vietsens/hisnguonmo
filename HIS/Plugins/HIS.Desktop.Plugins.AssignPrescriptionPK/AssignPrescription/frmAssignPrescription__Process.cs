@@ -626,6 +626,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
                 Inventec.Common.Logging.LogSystem.Debug("RefeshResourceGridMedicine.1");
                 this.ProcessMediStock(this.mediMatyTypeADOs);
+                this.ProcessAddListMaxInTreat(this.mediMatyTypeADOs);
                 this.gridControlServiceProcess.DataSource = null;
                 this.gridControlServiceProcess.DataSource = this.mediMatyTypeADOs.OrderBy(o => o.NUM_ORDER).ToList();
                 Inventec.Common.Logging.LogSystem.Debug("RefeshResourceGridMedicine.2");
@@ -634,6 +635,35 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        private void ProcessAddListMaxInTreat(List<MediMatyTypeADO> mediMatyTypeADOs)
+        {
+
+            try
+            {
+                foreach (var item in mediMatyTypeADOs)
+                {
+                    if(item.ALERT_MAX_IN_TREATMENT != null && !string.IsNullOrEmpty(item.EXCEED_LIMIT_IN_BATCH_REASON))
+                    {
+                        item.IsAlertInTreatPresciption = true;
+                        var alert = mediMatyTypeADOsAlertInTreatment.LastOrDefault(o => o.PrimaryKey == item.PrimaryKey);
+                        if(alert == null)
+                        {
+                            mediMatyTypeADOsAlertInTreatment.Add(item);
+                        }
+                        else
+                        {
+                            mediMatyTypeADOsAlertInTreatment.Remove(alert);//Xóa thông tin cũ
+                            mediMatyTypeADOsAlertInTreatment.Add(item);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         private List<MediMatyTypeADO> ProcessMergeDuplicateRowForListProcessingForShow()
@@ -2058,6 +2088,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.spinTocDoTruyen.EditValue = null;
                 this.chkHomePres.Checked = false;
                 this.chkTemporayPres.Checked = false;
+                this.spnPresPhaseNum.EditValue = null;
                 this.txtProvisionalDiagnosis.Text = this.provisionalDiagnosis;
                 this.txtPreviousUseDay.Text = "";
 
@@ -3413,7 +3444,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                         + Inventec.Common.Logging.LogUtil.TraceData("ExpMestID", item.ID)
                                         + Inventec.Common.Logging.LogUtil.TraceData("SERVICE_ID", item.SERVICE_ID));
                                 }
-                            }                           
+                            }
+                            if (mediMatyTypeADOAdd.ALERT_MAX_IN_TREATMENT.HasValue && !string.IsNullOrEmpty(mediMatyTypeADOAdd.EXCEED_LIMIT_IN_BATCH_REASON))
+                            {
+                                mediMatyTypeADOAdd.IsAlertInTreatPresciption = true;
+                                mediMatyTypeADOAdd.PATIENT_NAME_BY_TREATMENT_CODE = currentTreatment.TDL_PATIENT_NAME + "_" + currentTreatment.TREATMENT_CODE;
+                                mediMatyTypeADOsAlertInTreatment.Add(mediMatyTypeADOAdd);
+                            }
                             mediMatyTypeADOAdds.Add(mediMatyTypeADOAdd);
                         }
                     }
@@ -3719,8 +3756,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     var q1 = (from m in lstExpMestMety
                               select new MediMatyTypeADO(m, isEdit)).ToList();
                     if (q1 != null && q1.Count > 0)
+                    {
                         this.mediMatyTypeADOs.AddRange(q1);
 
+                        if (q1.Exists(o=>o.ALERT_MAX_IN_TREATMENT.HasValue && !string.IsNullOrEmpty(o.EXCEED_LIMIT_IN_BATCH_REASON)))
+                        {
+                            foreach (var mediMatyTypeADOAdd in q1.Where(o => o.ALERT_MAX_IN_TREATMENT.HasValue && !string.IsNullOrEmpty(o.EXCEED_LIMIT_IN_BATCH_REASON)))
+                            {
+                                mediMatyTypeADOAdd.IsAlertInTreatPresciption = true;
+                                mediMatyTypeADOAdd.PATIENT_NAME_BY_TREATMENT_CODE = currentTreatment.TDL_PATIENT_NAME + "_" + currentTreatment.TREATMENT_CODE;
+                                mediMatyTypeADOsAlertInTreatment.Add(mediMatyTypeADOAdd);
+                            }
+                        }
+                    }
                     if (this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0)
                     {
                         foreach (var item in this.mediMatyTypeADOs)
@@ -3986,6 +4034,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     }
                     this.mediMatyTypeADOs.ForEach(o => o.EXCEED_LIMIT_IN_PRES_REASON = null);
                     this.mediMatyTypeADOs.ForEach(o => o.EXCEED_LIMIT_IN_DAY_REASON = null);
+                    this.mediMatyTypeADOs.ForEach(o => o.EXCEED_LIMIT_IN_BATCH_REASON = null);
                     this.mediMatyTypeADOs.ForEach(o => o.ODD_PRES_REASON = null);
                 }
                 //Check trong kho

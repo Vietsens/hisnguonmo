@@ -53,6 +53,9 @@ using System.Windows.Forms;
 using WCF.Client;
 using WCF;
 using System.Diagnostics;
+using HIS.Desktop.ADO;
+using DevExpress.XtraBars;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 {
@@ -352,6 +355,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 timerInitForm.Interval = 100;
                 timerInitForm.Enabled = true;
                 timerInitForm.Start();
+                loadConfig();
                 Inventec.Common.Logging.LogSystem.Debug("frmTransactionBillTwoInOne_Load. 4");
             }
             catch (Exception ex)
@@ -2654,5 +2658,147 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             }
         }
 
+        private void btnQR_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.listTranToQR != null) CreateQR(this.listTranToQR, true);
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
+        HIS_CONFIG selectedConfig = new HIS_CONFIG();
+        List<V_HIS_TRANSACTION> listTranToQR;
+        class ConfigInfo
+        {
+            public string BANK { get; set; }
+            public string VALUE { get; set; }
+        }
+        private void loadConfig()
+        {
+            try
+            {
+                listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+                if (listConfig == null || listConfig.Count == 0) lciQR.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                else lciQR.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void CreateQR(List<V_HIS_TRANSACTION> data, bool click)
+        {
+            try
+            {
+                var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(s => s.ID == this.currentModule.RoomId && !string.IsNullOrEmpty(s.QR_CONFIG_JSON));
+                if (currentRoom != null && currentRoom.Count() > 0)
+                {
+                    ConfigInfo _config = Newtonsoft.Json.JsonConvert.DeserializeObject<ConfigInfo>(currentRoom.FirstOrDefault().QR_CONFIG_JSON);
+                    HIS_CONFIG _cf = new HIS_CONFIG();
+                    if (string.IsNullOrWhiteSpace(_config.BANK)) MessageBox.Show(this, "Cấu hình thiếu thông tin ngân hàng.", "Thông báo", MessageBoxButtons.OK);
+                    _cf.KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", _config.BANK.Trim());
+                    _cf.VALUE = _config.VALUE;
+                    //co cau hinh QR o buong benh
+                    List<object> listArgs = new List<object>();
+                    TransReqQRADO adoqr = new TransReqQRADO();
+                    adoqr.TreatmentId = this.treatment.ID;
+                    adoqr.ConfigValue = _cf;
+                    adoqr.TransReqId = CreateReqType.Transaction;
+                    AutoMapper.Mapper.CreateMap<V_HIS_TRANSACTION, HIS_TRANSACTION>();
+                    List<HIS_TRANSACTION> lstTran = AutoMapper.Mapper.Map<List<V_HIS_TRANSACTION>, List<HIS_TRANSACTION>>(data);
+                    adoqr.Transactions = lstTran;
+                    listArgs.Add(adoqr);
+                    LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + LogUtil.TraceData("listArgs", listArgs));
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+                }
+                else
+                {
+                    if (listConfig != null)
+                    {
+                        if (listConfig.Count > 1)
+                        {
+                            if (!click)
+                            {
+                                MessageBox.Show(this, "Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo", MessageBoxButtons.OK);
+                                return;
+                            }
+                            popupMenu1.ClearLinks();
+                            foreach (var item in listConfig)
+                            {
+                                string key = "";
+                                string value = item.KEY;
+                                int index = value.IndexOf("Info");
+                                if (index > 0)
+                                {
+                                    var shotkey = value.Substring(0, index);
+                                    string[] parts = shotkey.Split('.');
+                                    if (parts.Length > 0)
+                                    {
+                                        key = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
+                                    }
+                                }
+                                else
+                                {
+                                    key = item.KEY;
+                                }
+                                BarButtonItem btnOption = new BarButtonItem(null, key);
+                                btnOption.ItemClick += (s, args) =>
+                                {
+
+                                    selectedConfig = item;
+                                    List<object> listArgs = new List<object>();
+                                    TransReqQRADO adoqr = new TransReqQRADO();
+                                    adoqr.TreatmentId = this.treatment.ID;
+                                    adoqr.ConfigValue = selectedConfig;
+                                    adoqr.TransReqId = CreateReqType.Transaction;
+                                    AutoMapper.Mapper.CreateMap<V_HIS_TRANSACTION, HIS_TRANSACTION>();
+                                    List<HIS_TRANSACTION> lstTran = AutoMapper.Mapper.Map<List<V_HIS_TRANSACTION>, List<HIS_TRANSACTION>>(data);
+                                    adoqr.Transactions = lstTran;
+                                    listArgs.Add(adoqr);
+                                    LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + LogUtil.TraceData("listArgs", listArgs));
+                                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+                                };
+                                popupMenu1.AddItem(btnOption);
+                            }
+                            popupMenu1.Manager = barManager1;
+                            popupMenu1.ShowPopup(Control.MousePosition);
+                        }
+                        else
+                        {
+                            selectedConfig = listConfig[0];
+                            List<object> listArgs = new List<object>();
+                            TransReqQRADO adoqr = new TransReqQRADO();
+                            adoqr.TreatmentId = this.treatment.ID;
+                            adoqr.ConfigValue = selectedConfig;
+                            adoqr.TransReqId = CreateReqType.Transaction;
+                            AutoMapper.Mapper.CreateMap<V_HIS_TRANSACTION, HIS_TRANSACTION>();
+                            List<HIS_TRANSACTION> lstTran = AutoMapper.Mapper.Map<List<V_HIS_TRANSACTION>, List<HIS_TRANSACTION>>(data);
+                            adoqr.Transactions = lstTran;
+                            listArgs.Add(adoqr);
+                            LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + LogUtil.TraceData("listArgs", listArgs));
+                            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+
+                        }
+
+                    }
+                }
+                
+
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }

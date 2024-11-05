@@ -29,5 +29,6 @@ namespace HIS.UC.DateEditor.ADO
         public List<DateTime?> Dates { get; set; }
         public DateTime Time { get; set; }
         public bool? IsVisibleMultiDate { get; set; }
+        public bool? IsDutruTime { get; set; }
     }
 }

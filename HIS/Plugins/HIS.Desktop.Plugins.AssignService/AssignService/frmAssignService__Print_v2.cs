@@ -290,6 +290,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                     if (this.serviceReqComboResultSDO.SereServs != null)
                     {
+                        ProcessOpenVoBenhAn(serviceReqComboResultSDO.SereServs);
                         Inventec.Common.Logging.LogSystem.Debug("PRINT NOW serviceReqComboResultSDO.SereServs: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.serviceReqComboResultSDO.SereServs), this.serviceReqComboResultSDO.SereServs));
                     }
                 }

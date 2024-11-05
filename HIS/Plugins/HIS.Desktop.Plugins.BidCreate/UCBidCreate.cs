@@ -492,6 +492,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 cboBidForm.EditValue = null;
                 txtBidNumber.Text = "";
                 txtBidYear.Text = "";
+                txtBidApThauCode.Text = "";
                 dtFromTime.EditValue = null;
                 dtToTime.EditValue = null;
                 txtNationalMainText.Visible = false;

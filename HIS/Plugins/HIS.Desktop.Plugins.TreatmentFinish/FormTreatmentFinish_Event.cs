@@ -583,6 +583,25 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     hisTreatmentFinishSDO.HospSubsDirectorLoginname = null;
                     hisTreatmentFinishSDO.HospSubsDirectorUsername = null;
                 }
+                if (cboHosReason.EditValue != null)
+                {
+                    var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.ID == Int64.Parse(cboHosReason.EditValue.ToString()));
+                    if (data != null && data.HOSPITALIZE_REASON_NAME == txtHosReasonNt.Text.Trim())
+                    {
+                        hisTreatmentFinishSDO.HospitalizeReasonCode = data.HOSPITALIZE_REASON_CODE;
+                        hisTreatmentFinishSDO.HospitalizeReasonName = data.HOSPITALIZE_REASON_NAME;
+                    }
+                    else
+                    {
+                        hisTreatmentFinishSDO.HospitalizeReasonCode = null;
+                        hisTreatmentFinishSDO.HospitalizeReasonName = txtHosReasonNt.Text.Trim();
+                    }
+                }
+                else
+                {
+                    hisTreatmentFinishSDO.HospitalizeReasonCode = null;
+                    hisTreatmentFinishSDO.HospitalizeReasonName = txtHosReasonNt.Text.Trim();
+                }
             }
             catch (Exception ex)
             {

@@ -76,7 +76,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                             gridControlProcess.EndUpdate();
 
                             var bid = ImpMestListProcessor.First();
-
+                            txtBidApThauCode.Text = bid.BID_APTHAU_CODE;
                             txtBidName.Text = bid.BID_NAME;
                             txtBidNumber.Text = bid.BID_NUMBER;
                             txtBID.Text = bid.BID_EXTRA_CODE;

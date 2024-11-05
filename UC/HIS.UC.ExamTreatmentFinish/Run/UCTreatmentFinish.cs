@@ -159,6 +159,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
 
 
                 LoadTraditionalIcdToControl(this.ExamTreatmentFinishInitADO.TraditionalIcdCode, this.ExamTreatmentFinishInitADO.TraditionalIcdName);
+                LoadTraditionalSubIcdToControl(this.ExamTreatmentFinishInitADO.TraditionalIcdSubCode, this.ExamTreatmentFinishInitADO.TraditionalIcdText);
                 //LoadDataToIcdSub(this.ExamTreatmentFinishInitADO.IcdSubCode, this.ExamTreatmentFinishInitADO.IcdText);
                 if (this.ExamTreatmentFinishInitADO != null)
                 {
@@ -1436,6 +1437,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         {
             try
             {
+                //
                 if (isNotLoadWhileChangeControlStateInFirst)
                 {
                     return;
@@ -1976,7 +1978,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                         if (!string.IsNullOrEmpty(item))
                         {
                             string messErr = null;
-                            if (!checkIcdManager.ProcessCheckIcd(null, item, ref messErr))
+                            if (!checkIcdManager.ProcessCheckIcd(null, item, ref messErr,false,false))
                             {
                                 XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
                                 lstIcdCodeErrr.Add(item);

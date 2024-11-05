@@ -1033,7 +1033,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
         List<HIS_MEDICINE> _Medicines = null;
         List<HIS_MATERIAL> _Materials = null;
         List<HIS_BLOOD> _Bloods = null;
-
+        List<V_HIS_MEDICINE_PATY> _Medicines_PATY = new List<V_HIS_MEDICINE_PATY>();
+        List<V_HIS_MATERIAL_PATY> _Materials_PATY = new List<V_HIS_MATERIAL_PATY>();
         private void InPhieuXuatChuyenKho_(HisExpMestResultSDO resultSdo, bool result, string printTypeCode, string fileName)
         {
             try
@@ -1106,6 +1107,29 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                             MOS.Filter.HisMedicineFilter medicineFilter = new HisMedicineFilter();
                             medicineFilter.IDs = _MedicineIds;
                             this._Medicines = new BackendAdapter(param).Get<List<HIS_MEDICINE>>("api/HisMedicine/Get", ApiConsumers.MosConsumer, medicineFilter, param);
+                            //var his_medipaty = BackendDataWorker.Get<V_HIS_MEDICINE_PATY>().ToList();
+                            if (_Medicines != null && _Medicines.Count > 0)
+                            {
+                                var lstID = _Medicines.Select(o => o.ID).Distinct().ToList();
+                                MOS.Filter.HisMedicinePatyViewFilter medicinepatyFilter = new HisMedicinePatyViewFilter();
+                                if (lstID != null)
+                                {
+                                    medicinepatyFilter.MEDICINE_IDs = lstID;
+                                }
+                                var his_medipaty = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_PATY>>("api/HisMedicinePaty/GetView", ApiConsumers.MosConsumer, medicinepatyFilter, param);
+
+                                foreach (var item in _Medicines)
+                                {
+                                    if (item.IS_SALE_EQUAL_IMP_PRICE != 1)
+                                    {
+                                        var data = his_medipaty.Where(o => o.MEDICINE_ID == item.ID).ToList();
+                                        if (data != null && data.Count > 0)
+                                        {
+                                            _Medicines_PATY.AddRange(data);
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                         MOS.Filter.HisExpMestMaterialViewFilter matyFilter = new HisExpMestMaterialViewFilter();
@@ -1117,6 +1141,29 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                             MOS.Filter.HisMaterialFilter materialFilter = new HisMaterialFilter();
                             materialFilter.IDs = _MaterialIds;
                             this._Materials = new BackendAdapter(param).Get<List<HIS_MATERIAL>>("api/HisMaterial/Get", ApiConsumers.MosConsumer, materialFilter, param);
+                           // var his_matepaty = BackendDataWorker.Get<V_HIS_MATERIAL_PATY>().ToList();
+                            if (_Materials != null && _Materials.Count > 0)
+                            {
+                                var lstID = _Materials.Select(o => o.ID).Distinct().ToList();
+                                MOS.Filter.HisMaterialPatyViewFilter matepatyFilter = new HisMaterialPatyViewFilter();
+                                if (lstID != null)
+                                {
+                                    matepatyFilter.MATERIAL_IDs = lstID;
+                                }
+                                var his_matepaty = new BackendAdapter(param).Get<List<V_HIS_MATERIAL_PATY>>("api/HisMaterialPaty/GetView", ApiConsumers.MosConsumer, matepatyFilter, param);
+
+                                foreach (var item in _Materials)
+                                {
+                                    if (item.IS_SALE_EQUAL_IMP_PRICE != 1)
+                                    {
+                                        var data = his_matepaty.Where(o => o.MATERIAL_ID == item.ID).ToList();
+                                        if (data != null && data.Count > 0)
+                                        {
+                                            _Materials_PATY.AddRange(data);
+                                        }
+                                    }
+                                }
+                            }
                         }
 
 
@@ -1144,6 +1191,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                         resultSdo.ExpBltyReqs = new BackendAdapter(param).Get<List<HIS_EXP_MEST_BLTY_REQ>>("api/HisExpMestBltyReq/Get", ApiConsumers.MosConsumer, bltyReqFilter, param);
 
                     }
+                    
                 }
 
                 long configKeyMert = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(AppConfigKeys.HIS_DESKTOP_MPS_AGGR_EXP_MEST_MEDICINE_MERGER_DATA));
@@ -1319,6 +1367,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                  BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
                  null,
                  null,
+                 null,
+                 null,
                  keyNameAggr,
                  configKeyMert,
                  keyPhieuTra,
@@ -1326,7 +1376,10 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                  this._Materials,
                  this._Bloods,
                  keyOrder,
-                                  BackendDataWorker.Get<HIS_MEDICINE_USE_FORM>()
+                 BackendDataWorker.Get<HIS_MEDICINE_USE_FORM>(),
+                  _Medicines_PATY,
+                  _Materials_PATY,
+                  lstConfig
                        );
                         MPS.ProcessorBase.Core.PrintData PrintData = null;
                         if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
@@ -1395,6 +1448,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                  BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
                  BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                  BackendDataWorker.Get<V_HIS_BLOOD_TYPE>(),
+                 null,
+                 null,
                  keyNameAggrHc,
                  configKeyMert,
                  keyPhieuTra,
@@ -1402,7 +1457,10 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                  this._Materials,
                  this._Bloods,
                  keyOrder,
-                                  BackendDataWorker.Get<HIS_MEDICINE_USE_FORM>()
+                 BackendDataWorker.Get<HIS_MEDICINE_USE_FORM>(),
+                 _Medicines_PATY,
+                 _Materials_PATY,
+                  lstConfig
                          );
                             MPS.ProcessorBase.Core.PrintData PrintData = null;
                             if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
@@ -1451,6 +1509,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                  BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
                  BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                  BackendDataWorker.Get<V_HIS_BLOOD_TYPE>(),
+                 null,
+                 null,
                  keyNameAggr,
                  configKeyMert,
                  keyPhieuTra,
@@ -1458,7 +1518,10 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                  this._Materials,
                  this._Bloods,
                  keyOrder,
-                                  BackendDataWorker.Get<HIS_MEDICINE_USE_FORM>()
+                 BackendDataWorker.Get<HIS_MEDICINE_USE_FORM>(),
+                 _Medicines_PATY,
+                 _Materials_PATY,
+                 lstConfig
                          );
                             MPS.ProcessorBase.Core.PrintData PrintData = null;
                             if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
@@ -2556,11 +2619,11 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             {
 
                 long configKeyMert = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.DESKTOP.MPS.AGGR_EXP_MEST_MEDICINE.MERGER_DATA"));
-                if (this.resultSdo.ExpBltyReqs == null)
+                if (this.resultSdo != null && this.resultSdo.ExpBltyReqs == null)
                 {
                     this.resultSdo.ExpBltyReqs = this.resultSdo_1.ExpBltyReqs;
                 }
-                if (this.resultSdo.ExpBltyReqs != null)
+                if (this.resultSdo != null && this.resultSdo.ExpBltyReqs != null)
                 {
                     WaitingManager.Show();
                     string keyAddictive = "";// "THUỐC THƯỜNG";

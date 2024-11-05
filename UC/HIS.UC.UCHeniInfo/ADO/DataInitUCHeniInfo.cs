@@ -46,5 +46,6 @@ namespace HIS.UC.UCHeniInfo.Data
         public CheckExamHistoryByHeinCardNumber dlgCheckExamHistory { get; set; }
         public GetIsChild dlgGetIsChild { get; set; }
         public DelegateValidationUserControl dlgValidationControl { get; set; }
+        public DelegateCheckSS dlgCheckSS { get; set; }
     }
 }

@@ -47,7 +47,6 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCExamTreatmentFinish));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -179,8 +178,8 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControlItem32 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem26 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem33 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.timer1 = new System.Windows.Forms.Timer();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlSubIcd)).BeginInit();
@@ -1258,11 +1257,11 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dtEndTime.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtEndTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dtEndTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
             this.dtEndTime.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.dtEndTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dtEndTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
             this.dtEndTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.dtEndTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
+            this.dtEndTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
             this.dtEndTime.Size = new System.Drawing.Size(242, 20);
             this.dtEndTime.StyleController = this.layoutControl1;
             this.dtEndTime.TabIndex = 5;

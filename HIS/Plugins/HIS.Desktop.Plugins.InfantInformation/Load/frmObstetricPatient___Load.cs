@@ -100,14 +100,18 @@ namespace HIS.Desktop.Plugins.InfantInformation
             
             try
             {
-                var data = BackendDataWorker.Get<HIS_BRANCH>();
-                data = data.Where(o => o.IS_ACTIVE == 1 && o.BRANCH_NAME == hisBranch.BRANCH_NAME ).ToList();
+                var data = BackendDataWorker.Get<V_HIS_EMPLOYEE>();
+                data = data.Where(o => o.IS_ACTIVE == 1).ToList();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("DIRECTOR_LOGINNAME", "", 100, 1));
-                columnInfos.Add(new ColumnInfo("DIRECTOR_USERNAME", "", 100, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("DIRECTOR_USERNAME", "DIRECTOR_LOGINNAME", columnInfos, false, 200);
+                columnInfos.Add(new ColumnInfo("LOGINNAME", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("TDL_USERNAME", "", 100, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("TDL_USERNAME", "LOGINNAME", columnInfos, false, 200);
                 ControlEditorLoader.Load(cboDirectorUsername, data, controlEditorADO);
-
+                cboDirectorUsername.Properties.ImmediatePopup = true;
+                if(data.Exists(o=>o.LOGINNAME == hisBranch.DIRECTOR_LOGINNAME))
+                {
+                    cboDirectorUsername.EditValue = hisBranch.DIRECTOR_LOGINNAME;
+                }
             }
             catch (Exception ex)
             {
@@ -399,16 +403,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     if (!String.IsNullOrEmpty(data.DIRECTOR_LOGINNAME))
                     {
                         txtDirectorLoginname.Text = data.DIRECTOR_LOGINNAME;
-                    }
-                    else
-                    {
-                        txtDirectorLoginname.Text = "";
-                    }
-                    if (!String.IsNullOrEmpty(data.DIRECTOR_USERNAME))
-                    {
-                        //cboUserGCS.EditValue = data.ISSUER_LOGINNAME;
-                        txtDirectorLoginname.Text = data.DIRECTOR_LOGINNAME;
-                        cboDirectorUsername.EditValue = data.DIRECTOR_USERNAME;
+                        cboDirectorUsername.EditValue = data.DIRECTOR_LOGINNAME;
                     }
                     else
                     {

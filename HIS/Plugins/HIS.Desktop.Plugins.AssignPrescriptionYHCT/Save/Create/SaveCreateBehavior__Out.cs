@@ -107,7 +107,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save.Create
                     prescriptionSDO.ParentServiceReqId = this.ParentServiceReqId;
                 prescriptionSDO.InstructionTime = this.InstructionTimes.OrderByDescending(o => o).First();
                 prescriptionSDO.UseTime = this.InstructionTimes.OrderByDescending(o => o).First();
-
+                prescriptionSDO.UseTimes = this.USE_TIMES;
+                
                 //Set numofday của đươn ngoài kho
                 //Kiem tra khong có đơn trong kho thì set numofday cho đơn ngoài kho
                 if ((prescriptionSDO.Medicines == null || prescriptionSDO.Medicines.Count == 0)
@@ -149,6 +150,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save.Create
                 prescriptionSDO.IcdCauseCode = this.IcdCauseCode;
                 prescriptionSDO.IcdText = this.IcdText;
                 prescriptionSDO.IcdSubCode = this.IcdSubCode;
+                prescriptionSDO.TraditionalIcdCode = this.IcdCodeYHCT;
+                prescriptionSDO.TraditionalIcdName = this.IcdNameYHCT;
+                prescriptionSDO.TraditionalIcdSubCode = this.IcdSubCodeYHCT;
+                prescriptionSDO.TraditionalIcdText = this.IcdTextYHCT;
+
             }
             catch (Exception ex)
             {
@@ -216,6 +222,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save.Create
                     prescriptionSDO.TreatmentFinishSDO.IcdName = this.IcdName;
                     prescriptionSDO.TreatmentFinishSDO.IcdSubCode = this.IcdSubCode;
                     prescriptionSDO.TreatmentFinishSDO.IcdText = this.IcdText;
+                    //yhct
+                    prescriptionSDO.TreatmentFinishSDO.TraditionalIcdCode = this.IcdCodeYHCT;
+                    prescriptionSDO.TreatmentFinishSDO.TraditionalIcdName = this.IcdNameYHCT;
+                    prescriptionSDO.TreatmentFinishSDO.TraditionalIcdSubCode = this.IcdSubCodeYHCT;
+                    prescriptionSDO.TreatmentFinishSDO.TraditionalIcdText = this.IcdTextYHCT;
                     prescriptionSDO.TreatmentFinishSDO.TreatmentId = this.TreatmentId;
                     prescriptionSDO.TreatmentFinishSDO.TreatmentEndTypeId = this.TreatmentEndTypeId;
                     prescriptionSDO.TreatmentFinishSDO.AppointmentTime = this.AppointmentTime;

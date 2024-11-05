@@ -95,6 +95,10 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                                                             IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN,
                                                             IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT,
                                                             IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN};
+        List<long> listTreatmentType = new List<long>() { IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU,
+                                                                IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU,
+                                                                IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY,
+                                                                IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__TYTXA};
         private string commonString__true = "1";
         HIS_DEPARTMENT currentDepartment = new HIS_DEPARTMENT();
         HisTreatmentWithPatientTypeInfoSDO TreatmentWithPaTyInfo;
@@ -107,7 +111,6 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
         string doctorLoginname = "";
         string doctorUsername = "";
         const int MaxReq = 500;
-
         public frmBedRoomWithIn(Inventec.Desktop.Common.Modules.Module currentModule, MOS.EFMODEL.DataModels.V_HIS_DEPARTMENT_TRAN departmentTran)
             : base(currentModule)
         {
@@ -195,6 +198,8 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 this.SpNamGhep.EditValue = null;
                 Validation();
                 loadDoctor();
+                LoadDataReasonNt();
+
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -203,6 +208,30 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void LoadDataReasonNt()
+        {
+            try
+            {
+                
+                if (listTreatmentType.Contains(Convert.ToInt64(cboTreatmentType.EditValue)))
+                {
+                    this.lciReasonNt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    LoadDataToCboReasonNt();
+                }
+                else
+                {
+                    this.lciReasonNt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         private void Validation()
         {
             try
@@ -218,6 +247,8 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 ValidationSingleControl(dtLogTime, dxValidationProvider2);
                 lciTime.AppearanceItemCaption.ForeColor = Color.Maroon;
                 ValidateGridLookupWithTextEdit(cboTreatmentType, txtTreatmentTypeCode, dxValidationProvider2);
+                
+                ValidationSingleControl(txtReasonNt, dxValidationProvider2);
                 layoutControlItem2.AppearanceItemCaption.ForeColor = Color.Maroon;
                 if (Config.IsRequiredChooseRoom == "1")
                 {
@@ -831,6 +862,22 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 if (ucSecondaryIcdYhct != null)
                 {
                     subIcdYhctProcessor.Reload(ucSecondaryIcdYhct, subIcdYhct);
+                }
+                //load thong tin vao nt
+                if (!string.IsNullOrEmpty(this.TreatmentWithPaTyInfo.HOSPITALIZE_REASON_CODE) && !string.IsNullOrEmpty(this.TreatmentWithPaTyInfo.HOSPITALIZE_REASON_NAME))
+                {
+                    
+                    var isExitsReason = this.listReason.FirstOrDefault(s => s.HOSPITALIZE_REASON_CODE == this.TreatmentWithPaTyInfo.HOSPITALIZE_REASON_CODE);
+                    if(isExitsReason != null)
+                    {
+                        cboReasonNt.EditValue = isExitsReason.ID;
+                        this.REASON_CODE = isExitsReason.HOSPITALIZE_REASON_CODE;
+                        this.REASON_NAME = isExitsReason.HOSPITALIZE_REASON_NAME;
+                    }
+                }
+                else if (!string.IsNullOrEmpty(this.TreatmentWithPaTyInfo.HOSPITALIZE_REASON_NAME))
+                {
+                    txtReasonNt.Text = this.REASON_NAME = this.TreatmentWithPaTyInfo.HOSPITALIZE_REASON_NAME;
                 }
                 dtLogTime.DateTime = DateTime.Now;
             }
@@ -1629,8 +1676,6 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
 
                         var checkBasePatientTypeId = checkpatientTypeAll.Where(t => t.PATIENT_TYPE_ID == item.BASE_PATIENT_TYPE_ID).ToList();
 
-                        Inventec.Common.Logging.LogSystem.Info("checkBasePatientTypeId: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkBasePatientTypeId), checkBasePatientTypeId));
-
                         var checkpatientTypeId = (checkBasePatientTypeId != null && checkBasePatientTypeId.Count > 0) ? checkBasePatientTypeId.Where(t => t.INHERIT_PATIENT_TYPE_IDS != null && ("," + t.INHERIT_PATIENT_TYPE_IDS + ",").Contains("," + item.ID + ",")).ToList() : null;
                         if (checkpatientTypeId != null && checkpatientTypeId.Count > 0)
                         {
@@ -2093,6 +2138,19 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
 
                     HIS_DEPARTMENT _department = BackendDataWorker.Get<HIS_DEPARTMENT>().FirstOrDefault(p => p.ID == _departmentId);
                     LoadDataToComboBedRoom(cboBedRoom, dataHisBedRoomV1ADOs);
+
+                    if (listTreatmentType.Contains(Convert.ToInt64(cboTreatmentType.EditValue)))
+                    {
+
+                        this.lciReasonNt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                        if(this.listReason.Count == 0)
+                            LoadDataToCboReasonNt();
+                    }
+                    else
+                    {
+                        this.lciReasonNt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                    }
                 }
             }
             catch (Exception ex)
@@ -2305,13 +2363,13 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             bool valid = true;
             try
             {
-                HisBedADO row = dataBedADOs.FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboBed.EditValue ?? "").ToString()));
+                HisBedADO row = (dataBedADOs ?? new List<HisBedADO>()).FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboBed.EditValue ?? "").ToString()));
                 if (row == null || (row != null && row.IS_BED_STRETCHER != 1))
                     return valid;
                 if (CboBedService.EditValue != null)
                 {
                     string sereServConditionStr = "";
-                    var service = VHisBedServiceTypes.FirstOrDefault(o=> o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((CboBedService.EditValue ?? "").ToString()));
+                    var service = (VHisBedServiceTypes ?? new List<V_HIS_SERVICE>()).FirstOrDefault(o=> o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((CboBedService.EditValue ?? "").ToString()));
                     var dataCondition = BranchDataWorker.ServicePatyWithListPatientType(service.ID, new List<long> { (long)cboPatientReceive.EditValue });
                     if (dataCondition != null && dataCondition.Count > 0 && lstConditionService != null && lstConditionService.Count > 0)
                     {
@@ -2480,9 +2538,163 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 throw;
             }
         }
+
+
         #endregion
+        public string REASON_CODE { get; set; }
+        public string REASON_NAME { get; set; }
+        public List<HIS_HOSPITALIZE_REASON> listReason = new List<HIS_HOSPITALIZE_REASON>();
+        private void txtReasonNt_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if(e.Button.Kind == ButtonPredefines.Combo)
+                {
+                    cboReasonNt.ShowPopup();
+                }
+                else if(e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboReasonNt.EditValue = null;
+                    txtReasonNt.Text = null;
+                    REASON_CODE = REASON_NAME = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void LoadDataToCboReasonNt()
+        {
+            try
+            {
+                var data = BackendDataWorker.Get<HIS_HOSPITALIZE_REASON>();
+                if(data != null)
+                {
+                    data = data.Where(s => s.IS_ACTIVE == 1).ToList();
+                    listReason = data.ToList();
+                    List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                    columnInfos.Add(new ColumnInfo("HOSPITALIZE_REASON_CODE", "Mã", 80, 1));
+                    columnInfos.Add(new ColumnInfo("HOSPITALIZE_REASON_NAME", "Tên", 190, 2));
+                    ControlEditorADO controlEditorADO = new ControlEditorADO("HOSPITALIZE_REASON_NAME", "ID", columnInfos, false, 300);
+                    ControlEditorLoader.Load(cboReasonNt, data, controlEditorADO);
+                }
+            }
+            
+            catch (Exception ex)
+            {
 
-        
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
+        private void txtReasonNt_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cboReasonNt_Closed(object sender, ClosedEventArgs e)
+        {
+            
+        }
+
+        private void txtReasonNt_Validated(object sender, EventArgs e)
+        {
+            
+        }
+        private void SetReasonHos()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(txtReasonNt.Text))
+                {
+                    var input = txtReasonNt.Text.Trim().ToLower(); // Chuyển input thành chữ thường
+
+                    var validReasons = listReason
+                        .Where(s => s.HOSPITALIZE_REASON_CODE.ToLower().Contains(input)  // Kiểm tra chuỗi con trong mã
+                                 || s.HOSPITALIZE_REASON_NAME.ToLower().Contains(input)) // Kiểm tra chuỗi con trong tên
+                        .ToList();
+
+                    if (validReasons.Count >= 1)
+                    {
+                        cboReasonNt.Properties.DataSource = validReasons;
+
+                        cboReasonNt.Properties.DisplayMember = "HOSPITALIZE_REASON_NAME";
+                        cboReasonNt.Properties.ValueMember = "ID";
+
+                        cboReasonNt.ShowPopup();
+                    }
+                    else if (validReasons.Count == 1) // Nếu chỉ có một kết quả
+                    {
+                        cboReasonNt.ClosePopup();
+                        this.REASON_NAME = validReasons[0].HOSPITALIZE_REASON_NAME;
+                        this.REASON_CODE = validReasons[0].HOSPITALIZE_REASON_CODE;
+                    }
+                    else
+                    {
+                        // Nếu không có kết quả phù hợp, giữ nguyên giá trị nhập vào
+                        cboReasonNt.ClosePopup();
+                        this.REASON_NAME = txtReasonNt.Text.Trim();
+                        this.REASON_CODE = null;
+                    }
+                }
+                else
+                {
+                    // Nếu input rỗng, hiển thị lại toàn bộ danh sách
+                    cboReasonNt.Properties.DataSource = listReason;
+                    cboReasonNt.ClosePopup();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        bool isSelected = false;
+        private void cboReasonNt_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboReasonNt.EditValue != null)
+                {
+                    var exits = listReason.FirstOrDefault(s => s.ID == Convert.ToInt64(cboReasonNt.EditValue));
+                    if (exits != null)
+                    {
+                        txtReasonNt.Text = exits.HOSPITALIZE_REASON_NAME;
+                        this.REASON_CODE = exits.HOSPITALIZE_REASON_CODE;
+                        this.REASON_NAME = exits.HOSPITALIZE_REASON_NAME;
+                        isSelected = true;
+                    }
+                    cboReasonNt.Properties.DataSource = listReason;
+                }
+                else
+                    isSelected = false;
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtReasonNt_DoubleClick(object sender, EventArgs e)
+        {
+            cboReasonNt.ShowPopup();
+        }
+
+        private void txtReasonNt_Leave(object sender, EventArgs e)
+        {
+
+            try
+            {
+                SetReasonHos();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
     }
 }

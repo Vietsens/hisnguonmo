@@ -119,10 +119,8 @@
   </resheader>
   <data name="InvoiceBook_GiaTriLonHonKhong" xml:space="preserve">
     <value>Value must be greater than 0</value>
-    <comment>Giá trị phải lớn hơn 0</comment>
   </data>
   <data name="Plugin_ChooseRoom__DuLieuPhongDangChonThuocNhieuChiNhanh" xml:space="preserve">
     <value>Data is not selected accommodations in many branches, please check back</value>
-    <comment>Dữ liệu phòng được chọn không được thuộc nhiều chi nhánh, vui lòng kiểm tra lại</comment>
   </data>
 </root>

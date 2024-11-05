@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save.Create
 {
@@ -50,6 +51,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save.Create
                 prescriptionSDO.PrescriptionTypeId = PrescriptionType.TRADITIONAL;
                 prescriptionSDO.TreatmentId = this.TreatmentId;
 
+                
+                
+                prescriptionSDO.UseTimes = this.USE_TIMES;
                 this.ProcessPrescriptionUpdateSDO(prescriptionSDO);
                 this.ProcessPrescriptionUpdateSDOICD(prescriptionSDO);
                 this.ProcessPrescriptionSDOForSereServInKip(prescriptionSDO);
@@ -88,6 +92,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save.Create
                 if (this.ParentServiceReqId > 0)
                     prescriptionSDO.ParentServiceReqId = this.ParentServiceReqId;
                 prescriptionSDO.InstructionTimes = this.InstructionTimes;
+                prescriptionSDO.AssignTimeTo = this.TIME_TO;
                 if (frmAssignPrescription.lciPhieuDieuTri.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always
                     && frmAssignPrescription.cboPhieuDieuTri.EditValue!=null)
                 {
@@ -110,6 +115,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save.Create
                 prescriptionSDO.IcdCauseCode = this.IcdCauseCode;
                 prescriptionSDO.IcdText = this.IcdText;
                 prescriptionSDO.IcdSubCode = this.IcdSubCode;
+                prescriptionSDO.TraditionalIcdCode = this.IcdCodeYHCT;
+                prescriptionSDO.TraditionalIcdName = this.IcdNameYHCT;
+                prescriptionSDO.TraditionalIcdSubCode = this.IcdSubCodeYHCT;
+                prescriptionSDO.TraditionalIcdText = this.IcdTextYHCT;
             }
             catch (Exception ex)
             {

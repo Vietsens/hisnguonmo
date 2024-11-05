@@ -75,7 +75,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
         string moduleLink = "HIS.Desktop.Plugins.ExpMestViewDetail";
         List<V_EMR_DOCUMENT> emrDocuments { get; set; }
         public bool IsReasonRequired { get; private set; }
-
+        public List<HIS_CONFIG> lstConfig;
         RefeshReference refreshData = null;
         #endregion
 
@@ -144,11 +144,24 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 SetIcon();
                 CalculateTotalPrice();
                 VisibleColumnPreAmount();
+                GetListKey();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void GetListKey()
+        {
+            try
+            {
+                  lstConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE")).ToList();
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }

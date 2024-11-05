@@ -83,8 +83,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add.MedicineTypeOther
                     SetValidAssianInDayError();
 
                     this.medicineTypeSDO.PrimaryKey = (this.medicineTypeSDO.SERVICE_ID + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString());
-                    this.SaveDataAndRefesh(this.medicineTypeSDO);
-                    success = true;
+                    if (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet ? frmAssignPrescription.CheckMaxInPrescriptionInBatchWithMultilPatient(medicineTypeSDO, medicineTypeSDO.AMOUNT) : frmAssignPrescription.CheckMaxInPrescriptionInBatch(medicineTypeSDO, medicineTypeSDO.AMOUNT))
+                    {
+                        if (!(GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet))
+                            medicineTypeSDO.EXCEED_LIMIT_IN_BATCH_REASON = frmAssignPrescription.reasonMaxPrescriptionBatch;
+                        this.SaveDataAndRefesh(this.medicineTypeSDO);
+                        success = true;
+                    }
                 }
                 else
                 {

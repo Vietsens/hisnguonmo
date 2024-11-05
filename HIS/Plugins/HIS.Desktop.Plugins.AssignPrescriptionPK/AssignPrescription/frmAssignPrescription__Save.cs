@@ -35,6 +35,7 @@ using HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt;
 using HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt.Base;
 using HIS.Desktop.Plugins.Library.PrintTreatmentFinish;
 using HIS.Desktop.Utility;
+using HIS.UC.Icd.ADO;
 using HIS.UC.MenuPrint.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
@@ -358,7 +359,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 if (HisConfigCFG.CheckIcdWhenSave == "1" || HisConfigCFG.CheckIcdWhenSave == "2")
                 {
                     InitCheckIcdManager();
-                    if (!checkIcdManager.ProcessCheckIcd(txtIcdCode.Text.Trim(), txtIcdSubCode.Text.Trim(), ref messErr, HisConfigCFG.CheckIcdWhenSave == "1" || HisConfigCFG.CheckIcdWhenSave == "2"))
+                    if (!checkIcdManager.ProcessCheckIcd(txtIcdCode.Text.Trim(), txtIcdSubCode.Text.Trim(), ref messErr, HisConfigCFG.CheckIcdWhenSave == "1" || HisConfigCFG.CheckIcdWhenSave == "2", true))
                     {
                         if (HisConfigCFG.CheckIcdWhenSave == "1")
                         {
@@ -431,6 +432,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 //this.mediMatyTypeADOs = this.gridViewServiceProcess.DataSource as List<MediMatyTypeADO>;
                 valid = this.dxValidationProviderControl.Validate() && valid;
+                if (ucIcdYhct != null)
+                    valid = valid && (bool)icdYhctProcessor.ValidationIcd(ucIcdYhct);
+                if (ucSecondaryIcdYhct != null)
+                    valid = valid && subIcdYhctProcessor.GetValidate(ucSecondaryIcdYhct);
                 Inventec.Common.Logging.LogSystem.Info("frmAssignPrescription.ProcessSaveData.2");
                 bool isHasUcTreatmentFinish = ((!GlobalStore.IsTreatmentIn) && this.treatmentFinishProcessor != null && this.ucTreatmentFinish != null);
                 var treatUC = isHasUcTreatmentFinish ? treatmentFinishProcessor.GetDataOutput(this.ucTreatmentFinish) : null;
@@ -591,6 +596,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 valid = valid && this.CheckMaxInPrescriptionWhenSave(this.mediMatyTypeADOs);//TODO cần check với TH chọn nhiều BN kê
                 validFolow += "valid.22=" + valid + ";";
                 valid = valid && this.CheckMaxInPrescriptionInDayWhenSave(this.mediMatyTypeADOs);//TODO cần check với TH chọn nhiều BN kê
+                validFolow += "valid.23=" + valid + ";";
+                if (!(GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet))
+                    valid = valid && this.CheckMaxInPrescriptionInBatchWhenSave(this.mediMatyTypeADOs);
                 validFolow += "valid.23=" + valid + ";";
                 if (HisConfigCFG.IsCheckDepartmentInTimeWhenPresOrAssign && currentWorkPlace.RoomTypeId == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__BUONG)
                 {

@@ -32,7 +32,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
 
         private const string CONFIG_KEY__IsloadIcdFromExamServiceExecute = "HIS.Desktop.Plugins.IsloadIcdFromExamServiceExecute";
         internal static bool IsloadIcdFromExamServiceExecute;
-
+        private const string CONFIG_KEY__ICD_GENERA_KEY = "HIS.Desktop.Plugins.AutoCheckIcd";
         // tự động tắt màn hình xử lý khám sau khi kết thúc
         private const string CONFIG_KEY_AutoExitAfterFinish = "HIS.Desktop.Plugins.ExamServiceReqExecute.AutoExitAfterFinish";
         internal static bool IsAutoExitAfterFinish;
@@ -98,6 +98,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         internal static bool IsRequiredTemperatureOption;
         internal static bool RequiredAddressOption;
         internal static string RequiredTreatmentMethodOption;
+        internal static string AutoCheckIcd;
         internal static void LoadConfig()
         {
             try
@@ -127,6 +128,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 terminalSystemAddress = GetValue(TERMINAL_SYTEM_ADDRESS);
                 terminalSystemSecureKey = GetValue(TERMINAL_SYTEM_SECURE_KEY);
                 RequiredTreatmentMethodOption = GetValue(CONFIG_KEY__IS_REQUIRED_TREATMENT_METHOD_OPTION);
+                AutoCheckIcd = GetValue(CONFIG_KEY__ICD_GENERA_KEY);
             }
             catch (Exception ex)
             {

@@ -138,6 +138,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                             serviceConfig = string.Format("{0}|{1}", ProviderType.CYBERBILL, cyberbill != null ? cyberbill.VALUE : "");
                             accountConfig = ConfigApplicationWorker.Get<string>(SdaConfigKey.ACCOUNT_CONFIG_KEY__CYBERBILL);
                             break;
+                        case IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__SOFTDREAM:
+                            var sodr = BackendDataWorker.Get<HIS_EINVOICE_TYPE>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__SOFTDREAM);
+                            serviceConfig = string.Format("{0}|{1}", ProviderType.SoftDream, sodr != null ? sodr.VALUE : "");
+                            accountConfig = ConfigApplicationWorker.Get<string>(SdaConfigKey.ACCOUNT_CONFIG_KEY__SOFTDREAM);
+                            break;
                         default:
                             break;
                     }
@@ -168,7 +173,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                             iRun = new ProviderBehavior.MOIT.VOITBehavior(this.ElectronicBillDataInput, serviceConfig, accountConfig);
                             break;
                         case ProviderType.SoftDream:
-                            iRun = new ProviderBehavior.SODR.SODRBehavior(this.ElectronicBillDataInput, serviceConfig, accountConfig);
+                            iRun = new ProviderBehavior.SODR.SODRBehavior(this.ElectronicBillDataInput, serviceConfig, accountConfig, ElectronicBillDataInput.EinvoiceTypeId.HasValue);
                             break;
                         case ProviderType.MISA:
                             iRun = new ProviderBehavior.MISA.MISABehavior(this.ElectronicBillDataInput, serviceConfig, accountConfig);

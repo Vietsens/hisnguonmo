@@ -146,6 +146,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     }
                     this.intructionTimeSelecteds = this.intructionTimeSelected.Select(o => Inventec.Common.TypeConvert.Parse.ToInt64(o.Value.ToString("yyyyMMdd") + timeSelested.ToString("HHmm") + "00")).OrderByDescending(o => o).ToList();
                     this.InstructionTime = intructionTimeSelecteds.First();
+                    this.LoadMLCT();
                 }
             }
             catch (Exception ex)
@@ -268,6 +269,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.timeSelested = today.Add(timeIntruction.TimeSpan);
                 this.intructionTimeSelecteds = this.intructionTimeSelected.Select(o => Inventec.Common.TypeConvert.Parse.ToInt64(o.Value.ToString("yyyyMMdd") + timeSelested.ToString("HHmm") + "00")).OrderByDescending(o => o).ToList();
                 this.InstructionTime = intructionTimeSelecteds.First();
+                this.LoadMLCT();
                 GetListEMMedicineAcinInteractive();
                 this.chkMultiIntructionTime.Checked = false;
 

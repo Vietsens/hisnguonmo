@@ -46,6 +46,7 @@ using System.Windows.Forms;
 using HIS.Desktop.LibraryMessage;
 using HIS.UC.Icd.ADO;
 using HIS.UC.SecondaryIcd.ADO;
+using HIS.Desktop.LocalStorage.HisConfig;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 {
@@ -496,7 +497,70 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
             
         }
+        private bool CheckICDPreSave()
+        {
+            bool valid = true;
+            try
+            {
 
+                var icdValue = (IcdInputADO)this.icdProcessor.GetValue(this.ucIcd);
+                var icdValueSecond = (SecondaryIcdDataADO)this.subIcdProcessor.GetValue(this.ucSecondaryIcd);
+                var icdYHCT = (IcdInputADO)this.icdProcessorYHCT.GetValue(this.ucIcdYHCT);
+                var icdSecondYHCT = (SecondaryIcdDataADO)subIcdProcessorYHCT.GetValue(this.ucSecondaryIcdYHCT);
+                var config = HisConfigs.Get<string>("HIS.Desktop.Plugins.CheckIcdWhenSave");
+                if (this.icdProcessor != null && this.ucIcd != null || (this.subIcdProcessor != null && this.ucSecondaryIcd != null))
+                {
+                    
+                    
+
+                    //if ( !(bool)icdProcessor.ValidationIcd(ucIcd) || !(bool)icdProcessorYHCT.ValidationIcd(ucIcdYHCT) || !subIcdProcessor.GetValidate(this.ucSecondaryIcd) || !subIcdProcessorYHCT.GetValidate(ucSecondaryIcdYHCT)) return false;
+                    string mess = "";
+                    var mainCode = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
+                    var mainCodeSecond = ((SecondaryIcdDataADO)icdValueSecond).ICD_SUB_CODE;
+                    List<string> listicd = new List<string>();
+                    string icd_code_error = "";
+                    if (!string.IsNullOrEmpty(mainCode) || !string.IsNullOrEmpty(mainCodeSecond))
+                    {
+                        List<string> listSubCode = new List<string>();
+
+                        if (!string.IsNullOrEmpty(mainCodeSecond))
+                        {
+                            listSubCode = mainCodeSecond.Split(';').ToList();
+                        }
+                        if (CheckICD(mainCode, mainCodeSecond, ref mess, ref icd_code_error))
+                        {
+                            var param_error = icd_code_error.Split(';').ToList();
+                            if (!string.IsNullOrEmpty(mess))
+                            {
+                               
+                                if(config == "1")
+                                {
+                                    if (MessageBox.Show(this, mess, "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                                    {
+                                        valid = true;
+                                    }
+                                    else valid = false;
+                                }
+                                else if (config == "2")
+                                {
+                                    MessageBox.Show(this, mess, "Thông báo", MessageBoxButtons.OK);
+
+                                    valid = false;
+                                }
+                                
+                            }
+                        }
+                    }
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return valid;
+        }
         private void ProcessSaveData(bool isSaveAndPrint)
         {
             try
@@ -508,6 +572,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 List<string> paramMessageErrorOther = new List<string>();
                 List<string> paramMessageErrorEmpty = new List<string>();
 
+                
+
                 valid = (bool)this.icdProcessor.ValidationIcdWithMessage(this.ucIcd, paramMessageErrorEmpty, paramMessageErrorOther) && valid;
                 valid = (bool)this.icdCauseProcessor.ValidationIcdWithMessage(this.ucIcdCause, paramMessageErrorEmpty, paramMessageErrorOther) && valid;
                 valid = (bool)this.subIcdProcessor.GetValidateWithMessage(this.ucSecondaryIcd, paramMessageErrorEmpty, paramMessageErrorOther) && valid;
@@ -515,7 +581,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 valid = this.dxValidationProviderControl.Validate() && valid;
                 valid = valid && CheckReasonRequied(); //kiểm tra bắt buộc nhập lý do xuất
                 valid = valid && CheckPayICD(); //kiểm tra đối tượng thanh toán theo chẩn đoán
-               
+                
+                
+                valid = valid &&CheckICDPreSave() ;
                 if (valid)
                 {
                     foreach (var item in this.mediMatyTypeADOs)
@@ -576,6 +644,42 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 valid = valid && this.ProcessValidMedicineTypeAge();
                 valid = valid && this.ValidSereServWithOtherPaySource(this.mediMatyTypeADOs);
                 valid = valid && this.CheckOverlapWarningOption();
+                bool isValid = true;
+                //kiem tra thoi gian du tru va thoi gian y lenh
+                if (this.USE_TIME != null && this.USE_TIME.Count > 0)
+                {
+                    foreach (var time in this.USE_TIME)
+                    {
+                        var exits = this.intructionTimeSelecteds
+
+                                     .Where(s => s > time);
+
+                        if (exits.Any())
+                        {
+                            isValid = false;
+                            break;
+                        }
+                    }
+                }
+                if (!isValid)
+                {
+                    MessageBox.Show(this, "Ngày dự trù không được nhỏ hơn thời gian chỉ định", "Thông Báo");
+                    return;
+                }
+
+                if (this.TIME_TO != null && this.TIME_TO > 0)
+                {
+                    var exits = this.intructionTimeSelecteds.Where(s => Int64.Parse(s.ToString().Substring(0,8)) > Int64.Parse(this.TIME_TO.ToString().Substring(0,8)));
+                    if (exits.Any())
+                    {
+                        valid = false;
+                        MessageBox.Show(this, "Ngày Chỉ định đến không được nhỏ hơn thời gian chỉ định", "Thông Báo");
+                        return;
+                        
+                    }
+                }
+                valid = valid && isValid;
+
                 if (valid)
                     ProcessUpdateTutorialForSave();
 
@@ -593,6 +697,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     this.gridViewServiceProcess.UpdateCurrentRow();
 
                 paramCommon = new CommonParam();
+                
                 this.mediMatyTypeADOs = this.gridViewServiceProcess.DataSource as List<MediMatyTypeADO>;
                 msgTuVong = "";
 
@@ -633,7 +738,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     if (!string.IsNullOrEmpty(msgTuVong)) paramCommon.Messages.Add(msgTuVong);
                 }
 
-
+                LogSystem.Debug("Du lieu luu, delegate lai chuc nang. " + LogUtil.TraceData("rsData", rsData));
                 success = ((GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) ?
                     ProcessAfterSaveForIn(isave, isSaveAndPrint, (InPatientPresResultSDO)rsData)
                     : ProcessAfterSaveForOut(isave, isSaveAndPrint, (OutPatientPresResultSDO)rsData));

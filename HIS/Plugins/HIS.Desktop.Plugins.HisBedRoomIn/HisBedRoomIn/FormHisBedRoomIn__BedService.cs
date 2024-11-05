@@ -95,6 +95,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
         {
             try
             {
+                cboEditor.Properties.View.Columns.Clear();
                 cboEditor.Properties.DataSource = data;
                 cboEditor.Properties.DisplayMember = valueName;
                 cboEditor.Properties.ValueMember = valueId;
@@ -103,19 +104,25 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
                 cboEditor.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
                 cboEditor.Properties.ImmediatePopup = true;
                 cboEditor.ForceInitialize();
-                cboEditor.Properties.View.Columns.Clear();
+
+                cboEditor.Properties.View.OptionsView.GroupDrawMode = DevExpress.XtraGrid.Views.Grid.GroupDrawMode.Office;
+                cboEditor.Properties.View.OptionsView.HeaderFilterButtonShowMode = DevExpress.XtraEditors.Controls.FilterButtonShowMode.SmartTag;
+                cboEditor.Properties.View.OptionsView.ShowAutoFilterRow = true;
+                cboEditor.Properties.View.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
 
                 DevExpress.XtraGrid.Columns.GridColumn aColumnCode = cboEditor.Properties.View.Columns.AddField(valueCode);
                 aColumnCode.Caption = "Mã";
                 aColumnCode.Visible = true;
                 aColumnCode.VisibleIndex = 1;
                 aColumnCode.Width = 50;
+                aColumnCode.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
 
                 DevExpress.XtraGrid.Columns.GridColumn aColumnName = cboEditor.Properties.View.Columns.AddField(valueName);
                 aColumnName.Caption = "Tên";
                 aColumnName.Visible = true;
                 aColumnName.VisibleIndex = 2;
                 aColumnName.Width = 100;
+                aColumnName.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
             }
             catch (Exception ex)
             {

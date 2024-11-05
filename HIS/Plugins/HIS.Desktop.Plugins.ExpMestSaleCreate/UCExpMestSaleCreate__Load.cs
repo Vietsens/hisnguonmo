@@ -62,10 +62,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             try
             {
                 CommonParam param = new CommonParam();
-                HisMediStockFilter filter = new HisMediStockFilter();
-                filter.ROOM_ID = this.roomId;
-                this.mediStock = new BackendAdapter(param)
-                    .Get<List<MOS.EFMODEL.DataModels.HIS_MEDI_STOCK>>("api/HisMediStock/Get", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
+                this.mediStock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ROOM_ID == this.roomId);
                 if (this.mediStock == null)
                     throw new Exception("mediStock is null");
             }
@@ -946,6 +943,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         {
             try
             {
+                if (btnQr.Visible)
+                    btnQr.Enabled = false;
                 this.currentMediMateFocus = null;
                 cboPatientType.EditValue = null;
                 if (this.patientTypeConfig != null)
@@ -1072,7 +1071,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        
+
         private void TakeBeanMedicineAll(Dictionary<long, MediMateTypeADO> dic, string ssKey = null)
         {
             try
@@ -1095,11 +1094,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                             takeBeanSDO.TypeId = medicine.MEDI_MATE_TYPE_ID;
                             takeBeanSDOs.Add(takeBeanSDO);
                         }
-                        Inventec.Common.Logging.LogSystem.Debug("INPUT___TakeMedicineBeanListResultSDO"+Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => takeBeanSDOs), takeBeanSDOs));
-                       List<TakeMedicineBeanListResultSDO> takeMedicines = new BackendAdapter(param)
-                    .Post<List<TakeMedicineBeanListResultSDO>>(RequestUriStore.HIS_MEDICINE_BEAN__TAKEBEANLIST, ApiConsumers.MosConsumer, takeBeanSDOs, param);
-                       Inventec.Common.Logging.LogSystem.Debug("OUTPUT___TakeMedicineBeanListResultSDO" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => takeMedicines), takeMedicines));
-                       
+                        Inventec.Common.Logging.LogSystem.Debug("INPUT___TakeMedicineBeanListResultSDO" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => takeBeanSDOs), takeBeanSDOs));
+                        List<TakeMedicineBeanListResultSDO> takeMedicines = new BackendAdapter(param)
+                     .Post<List<TakeMedicineBeanListResultSDO>>(RequestUriStore.HIS_MEDICINE_BEAN__TAKEBEANLIST, ApiConsumers.MosConsumer, takeBeanSDOs, param);
+                        Inventec.Common.Logging.LogSystem.Debug("OUTPUT___TakeMedicineBeanListResultSDO" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => takeMedicines), takeMedicines));
+
                         if (takeMedicines == null || takeMedicines.Count == 0)
                         {
                             param.Messages[0] = "(Thuốc) " + param.Messages[0];
@@ -1183,7 +1182,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                             takeBeanSDOs.Add(takeBeanSDO);
                         }
                         Inventec.Common.Logging.LogSystem.Debug("INPUT___TakeMaterialBeanListResultSDO" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => takeBeanSDOs), takeBeanSDOs));
-                  
+
                         List<TakeMaterialBeanListResultSDO> takeMaterials = new BackendAdapter(param)
                     .Post<List<TakeMaterialBeanListResultSDO>>(RequestUriStore.HIS_MATERIAL_BEAN__TAKEBEANLIST, ApiConsumers.MosConsumer, takeBeanSDOs, param);
                         Inventec.Common.Logging.LogSystem.Debug("OUTPUT___TakeMaterialBeanListResultSDO" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => takeMaterials), takeMaterials));

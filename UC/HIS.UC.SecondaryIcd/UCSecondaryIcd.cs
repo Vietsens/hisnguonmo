@@ -46,9 +46,11 @@ namespace HIS.UC.SecondaryIcd
         DelegateGetIcdMain GetIcdMain { get; set; }
 
         private List<HIS_ICD> ListHisIcds { get; set; }
+        private List<V_HIS_ICD> ListViewHisIcds { get; set; }
         private HIS_TREATMENT treatment;
         HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager checkIcd;
         private frmSecondaryIcd FormSecondaryIcd { get; set; }
+        DelegateCheckICD checkICD { get; set; }
 
         #region ctor
         public UCSecondaryIcd()
@@ -76,6 +78,10 @@ namespace HIS.UC.SecondaryIcd
                     }
                     this.DelegateNextFocus = data.DelegateNextFocus;
                     this.GetIcdMain = data.DelegateGetIcdMain;
+                    if (data.delegateCheckICD != null)
+                    {
+                        this.checkICD = data.delegateCheckICD;
+                    }
                     if (data != null && !String.IsNullOrEmpty(data.TextLblIcd))
                     {
                         this.lciIcdSubCode.Text = data.TextLblIcd;
@@ -94,26 +100,48 @@ namespace HIS.UC.SecondaryIcd
                         this.limit = data.limitDataSource;
                     }
 
-                    ListHisIcds = data.HisIcds.Where(p => p.IS_ACTIVE == 1).ToList();;
-                    List<HIS_ICD> icdIsTraditionals = (ListHisIcds != null && ListHisIcds.Count > 0) ? ListHisIcds.Where(o =>  o.IS_TRADITIONAL == Constant.IS_TRUE).ToList() : null;
-                    List<HIS_ICD> icdNotIsTraditionals = (data.HisIcds != null && data.HisIcds.Count > 0) ? data.HisIcds.Where(o => o.IS_TRADITIONAL == null || o.IS_TRADITIONAL == Constant.IS_FALSE).ToList() : null;
-                    if (icdIsTraditionals != null && icdIsTraditionals.Count > 0 && icdNotIsTraditionals != null && icdNotIsTraditionals.Count > 0)
+                    if (data.HisIcds != null && data.HisIcds.Count > 0)
                     {
-                        ListHisIcds = icdNotIsTraditionals;
+                        ListHisIcds = data.HisIcds.Where(p => p.IS_ACTIVE == 1).ToList(); ;
+                        List<HIS_ICD> icdIsTraditionals = (ListHisIcds != null && ListHisIcds.Count > 0) ? ListHisIcds.Where(o => o.IS_TRADITIONAL == Constant.IS_TRUE).ToList() : null;
+                        List<HIS_ICD> icdNotIsTraditionals = (data.HisIcds != null && data.HisIcds.Count > 0) ? data.HisIcds.Where(o => o.IS_TRADITIONAL == null || o.IS_TRADITIONAL == Constant.IS_FALSE).ToList() : null;
+                        if (icdIsTraditionals != null && icdIsTraditionals.Count > 0 && icdNotIsTraditionals != null && icdNotIsTraditionals.Count > 0)
+                        {
+                            ListHisIcds = icdNotIsTraditionals;
+                        }
+                        if (icdIsTraditionals != null && icdIsTraditionals.Count > 0 && icdIsTraditionals.Count == ListHisIcds.Count)
+                        {
+                            ListHisIcds = icdIsTraditionals;
+                        }
+                        if (icdNotIsTraditionals != null && icdNotIsTraditionals.Count > 0 && icdNotIsTraditionals.Count == ListHisIcds.Count)
+                        {
+                            ListHisIcds = icdNotIsTraditionals;
+                        }
                     }
-                    if (icdIsTraditionals != null && icdIsTraditionals.Count > 0 && icdIsTraditionals.Count == ListHisIcds.Count)
+                    if (data.ViewHisIcds != null && data.ViewHisIcds.Count > 0)
                     {
-                        ListHisIcds = icdIsTraditionals;
-                    }
-                    if (icdNotIsTraditionals != null && icdNotIsTraditionals.Count > 0 && icdNotIsTraditionals.Count == ListHisIcds.Count)
-                    {
-                        ListHisIcds = icdNotIsTraditionals;
+                        ListViewHisIcds = data.ViewHisIcds.Where(p => p.IS_ACTIVE == 1).ToList(); ;
+                        List<V_HIS_ICD> icdIsTraditionalsV = (ListViewHisIcds != null && ListViewHisIcds.Count > 0) ? ListViewHisIcds.Where(o => o.IS_TRADITIONAL == Constant.IS_TRUE).ToList() : null;
+                        List<V_HIS_ICD> icdNotIsTraditionalsV = (data.ViewHisIcds != null && data.ViewHisIcds.Count > 0) ? data.ViewHisIcds.Where(o => o.IS_TRADITIONAL == null || o.IS_TRADITIONAL == Constant.IS_FALSE).ToList() : null;
+                        if (icdIsTraditionalsV != null && icdIsTraditionalsV.Count > 0 && icdNotIsTraditionalsV != null && icdNotIsTraditionalsV.Count > 0)
+                        {
+                            ListViewHisIcds = icdNotIsTraditionalsV;
+                        }
+                        if (icdIsTraditionalsV != null && icdIsTraditionalsV.Count > 0 && icdIsTraditionalsV.Count == ListViewHisIcds.Count)
+                        {
+                            ListViewHisIcds = icdIsTraditionalsV;
+                        }
+                        if (icdNotIsTraditionalsV != null && icdNotIsTraditionalsV.Count > 0 && icdNotIsTraditionalsV.Count == ListViewHisIcds.Count)
+                        {
+                            ListViewHisIcds = icdNotIsTraditionalsV;
+                        }
                     }
                     if (data.hisTreatment != null)
                     {
                         treatment = data.hisTreatment;
                         checkIcd = new CheckIcdManager(null, treatment);
                     }
+
                 }
             }
             catch (Exception ex)
@@ -353,7 +381,14 @@ namespace HIS.UC.SecondaryIcd
             try
             {
                 WaitingManager.Show();
-                this.FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, limit, this.ListHisIcds, this.treatment);
+                if (this.ListViewHisIcds != null && this.ListViewHisIcds.Count > 0)
+                {
+                    this.FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, limit, this.ListViewHisIcds, this.treatment);
+                }
+                else
+                {
+                    this.FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, limit, this.ListHisIcds, this.treatment);
+                }
                 WaitingManager.Hide();
                 this.FormSecondaryIcd.ShowDialog();
             }
@@ -377,6 +412,7 @@ namespace HIS.UC.SecondaryIcd
                         return;
                     }
                     DelegateNextFocus();
+                    if (checkICD != null) checkICD();
                 }
             }
             catch (Exception ex)
@@ -392,9 +428,17 @@ namespace HIS.UC.SecondaryIcd
                 if (e.KeyCode == Keys.F1)
                 {
                     WaitingManager.Show();
-                    FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, limit, this.ListHisIcds, this.treatment);
+                    if (this.ListViewHisIcds != null && this.ListViewHisIcds.Count > 0)
+                    {
+                        this.FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, limit, this.ListViewHisIcds, this.treatment);
+                    }
+                    else
+                    {
+                        this.FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, limit, this.ListHisIcds, this.treatment);
+                    }
                     WaitingManager.Hide();
                     FormSecondaryIcd.ShowDialog();
+
                 }
             }
             catch (Exception ex)
@@ -414,6 +458,7 @@ namespace HIS.UC.SecondaryIcd
                     {
                         DelegateNextFocus();
                     }
+                    if (checkICD != null) checkICD();
                 }
             }
             catch (Exception ex)
@@ -430,7 +475,14 @@ namespace HIS.UC.SecondaryIcd
                 if (e.KeyCode == Keys.F1)
                 {
                     WaitingManager.Show();
-                    FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, limit, this.ListHisIcds, this.treatment);
+                    if (this.ListViewHisIcds != null && this.ListViewHisIcds.Count > 0)
+                    {
+                        this.FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, limit, this.ListViewHisIcds, this.treatment);
+                    }
+                    else
+                    {
+                        this.FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, limit, this.ListHisIcds, this.treatment);
+                    }
                     WaitingManager.Hide();
                     FormSecondaryIcd.ShowDialog();
                 }
@@ -448,6 +500,8 @@ namespace HIS.UC.SecondaryIcd
             {
                 txtIcdSubCode.Text = icdCode;
                 txtIcdText.Text = icdName;
+                if (checkICD != null) checkICD();
+
             }
             catch (Exception ex)
             {
@@ -500,11 +554,26 @@ namespace HIS.UC.SecondaryIcd
                                 && !newIcdNames.Contains(IcdUtil.AddSeperateToKey(item))
                                 )
                             {
-                                var checkInList = ListHisIcds.Where(o =>
-                                    IcdUtil.AddSeperateToKey(item).Equals(IcdUtil.AddSeperateToKey(o.ICD_NAME))).FirstOrDefault();
-                                if (checkInList == null || checkInList.ID == 0)
+                                HIS_ICD checkInList = null;
+
+                                if (ListHisIcds != null && ListHisIcds.Count > 0)
                                 {
-                                    result += item + IcdUtil.seperator;
+                                    checkInList = ListHisIcds.Where(o =>
+                                    IcdUtil.AddSeperateToKey(item).Equals(IcdUtil.AddSeperateToKey(o.ICD_NAME))).FirstOrDefault();
+
+                                    if (checkInList == null || checkInList.ID == 0)
+                                    {
+                                        result += item + IcdUtil.seperator;
+                                    }
+                                }
+                                else
+                                {
+                                    var ViewicdByCode = ListViewHisIcds.Where(o =>
+                                    IcdUtil.AddSeperateToKey(item).Equals(IcdUtil.AddSeperateToKey(o.ICD_NAME))).FirstOrDefault();
+                                    if (ViewicdByCode == null || ViewicdByCode.ID == 0)
+                                    {
+                                        result += item + IcdUtil.seperator;
+                                    }
                                 }
                             }
                         }
@@ -545,35 +614,51 @@ namespace HIS.UC.SecondaryIcd
                     List<string> arrWrongCodes = new List<string>();
                     List<string> lstIcdSubName = new List<string>();
                     List<string> lstIcdCodes = new List<string>();
+
+
+
+                    // check icd moi
                     string[] arrIcdExtraCodes = this.txtIcdSubCode.Text.Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
                     if (arrIcdExtraCodes != null && arrIcdExtraCodes.Count() > 0)
                     {
-                        foreach (var itemCode in arrIcdExtraCodes)
+                        //check icd moi
+                        string messErr = null;
+                        string erorr_code = null;
+                        if (checkIcd != null)
                         {
-                            var icdByCode = ListHisIcds.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.Trim().ToLower());
-                            if (icdByCode != null && icdByCode.ID > 0)
+                            if (!checkIcd.ProcessCheckIcd(null, string.Join(";", arrIcdExtraCodes), ref messErr,false))
                             {
-                                string messErr = null;
-                                if (checkIcd != null && !checkIcd.ProcessCheckIcd(null, icdByCode.ICD_CODE, ref messErr))
+                                if (!string.IsNullOrEmpty(messErr))
                                 {
+                                    this.txtIcdSubCode.Text = string.Join(";", arrIcdExtraCodes);
                                     XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
-                                    continue;
                                 }
-                                strIcdNames += (IcdUtil.seperator + icdByCode.ICD_NAME);
-                                lstIcdCodes.Add(icdByCode.ICD_CODE);
-                                lstIcdSubName.Add(icdByCode.ICD_NAME);
-                            }
-                            else
-                            {
-                                arrWrongCodes.Add(itemCode.Trim());
-                                strWrongIcdCodes += (IcdUtil.seperator + itemCode.Trim());
+                                
+
                             }
                         }
-                        strIcdNames += IcdUtil.seperator;
-                        if (lstIcdCodes != null && lstIcdCodes.Count > 0)
+                        List<HIS_ICD> icdByCode = null;
+
+                        if (ListHisIcds != null && ListHisIcds.Count > 0)
+                            icdByCode = ListHisIcds.Where(o => arrIcdExtraCodes.Contains(o.ICD_CODE)).ToList();
+                        else
                         {
-                            this.txtIcdSubCode.Text = String.Join(";", lstIcdCodes);
-                            this.txtIcdText.Text = String.Join(";", lstIcdSubName);
+                            var ViewicdByCode = ListViewHisIcds.Where(o => arrIcdExtraCodes.Contains(o.ICD_CODE)).ToList();
+                            ViewicdByCode.ForEach(o =>
+                            {
+                                HIS_ICD _icd = new HIS_ICD();
+                                _icd.ID = o.ID;
+                                _icd.ICD_CODE = o.ICD_CODE;
+                                _icd.ICD_NAME = o.ICD_NAME;
+                                icdByCode.Add(_icd);
+                            });
+
+                        }
+                        icdByCode = icdByCode.OrderBy(o => Array.IndexOf(arrIcdExtraCodes, o.ICD_CODE)).ToList();
+                        if (icdByCode != null && icdByCode.Count > 0)
+                        {
+                            this.txtIcdSubCode.Text = String.Join(";", icdByCode.Select(s=>s.ICD_CODE).ToList());
+                            this.txtIcdText.Text = String.Join(";", icdByCode.Select(s => s.ICD_NAME).ToList());
                         }
                         else
                         {

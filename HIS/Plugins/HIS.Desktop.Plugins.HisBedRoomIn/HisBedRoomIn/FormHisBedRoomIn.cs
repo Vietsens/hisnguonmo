@@ -69,6 +69,8 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
         List<V_HIS_ROOM> listRoom = new List<V_HIS_ROOM>();
         private List<HisBedADO> dataBedADOs;
         private Common.RefeshReference RefreshRef;
+        List<HIS_HOSPITALIZE_REASON> lstHopitalReason;
+        List<HIS_HOSPITALIZE_REASON> lstHopitalReasonSave;
         #endregion
 
         #region Contructor
@@ -107,6 +109,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
                 ProcessThreadLoadData();
                 LoadDefautForm();
                 InitDataCboPatientType();
+                InitHospitalizeReason();
                 ValidateForm();
                 if (WorkPlace.GetWorkPlace(currentModule).DepartmentId != null)
                 {
@@ -121,6 +124,33 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitHospitalizeReason()
+        {
+            try
+            {
+                CommonParam paramCommon = new CommonParam();
+                MOS.Filter.HisHospitalizeReasonFilter filter = new MOS.Filter.HisHospitalizeReasonFilter();
+                filter.IS_ACTIVE = 1;
+                filter.ORDER_DIRECTION = "DESC";
+                filter.ORDER_FIELD = "MODIFY_TIME";
+                Inventec.Core.ApiResultObject<List<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>> apiResult = null;
+                apiResult = new BackendAdapter(paramCommon).GetRO<List<HIS_HOSPITALIZE_REASON>>("/api/HisHospitalizeReason/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+                lstHopitalReason = apiResult.Data;
+
+                LoadComboEditor(cboHospitalizeReason, "HOSPITALIZE_REASON_CODE", "HOSPITALIZE_REASON_NAME", "HOSPITALIZE_REASON_NAME", lstHopitalReason);
+                if (TreatmentWithPaTyInfo != null)
+                {
+                    btnHospitalizeReason.Text = TreatmentWithPaTyInfo.HOSPITALIZE_REASON_NAME;
+                }
+                _timer.Interval = _delayTime;
+                _timer.Tick += new EventHandler(_timer_Tick);
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -251,6 +281,16 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
                     treatmentBR.BED_ID = null;
                 }
                 treatmentBR.IsAutoRemove = this.chkAutoOutBed.Checked;
+                if (lstHopitalReasonSave != null && lstHopitalReasonSave.Count() == 1)
+                {
+                    treatmentBR.HospitalizeReasonCode = lstHopitalReasonSave.FirstOrDefault().HOSPITALIZE_REASON_CODE;
+                    treatmentBR.HospitalizeReasonName = lstHopitalReasonSave.FirstOrDefault().HOSPITALIZE_REASON_NAME;
+                }
+                else
+                {
+                    treatmentBR.HospitalizeReasonCode = null;
+                    treatmentBR.HospitalizeReasonName = btnHospitalizeReason.Text;
+                }
             }
             catch (Exception ex)
             {
@@ -292,7 +332,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
 
                     return;
                 }
-
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("HisTreatmentBedRoomSDO", treatmentBR));
                 var rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HisTreatmentBedRoomSDO>("api/HisTreatmentBedRoom/CreateSdo", ApiConsumers.MosConsumer, treatmentBR, null);
 
                 if (rs != null)
@@ -710,6 +750,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
                 ValidationSingleControl(dtLogTime, dxValidationProvider1);
                 ValidateLookupWithTextEdit(cboBedRoom, txtBedRoomCode, dxValidationProvider1);
                 ValidateLookupWithTextEdit(cboDepartment, txtDepartmentCode, dxValidationProvider1);
+                ValidationSingleControl(btnHospitalizeReason, dxValidationProvider1);
             }
             catch (Exception ex)
             {
@@ -1243,6 +1284,93 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void btnHospitalizeReason_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    btnHospitalizeReason.EditValue = null;
+                    btnHospitalizeReason.Properties.Buttons[1].Visible = false;
+                }
+
+                if (e.Button.Kind == ButtonPredefines.Combo)
+                {
+                    cboHospitalizeReason.Properties.DataSource = lstHopitalReason;
+                    cboHospitalizeReason.ShowPopup();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private System.Windows.Forms.Timer _timer = new System.Windows.Forms.Timer();
+        private int _delayTime = 1500;
+        bool firstStart = true;
+        private void btnHospitalizeReason_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                //nhập combobox tìm kiếm (_timer_Tick)
+                _timer.Stop();
+                if (firstStart == false)
+                {
+                    _timer.Start();
+                }
+                firstStart = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void _timer_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                string findReasonName = btnHospitalizeReason.Text;
+                if (!string.IsNullOrEmpty(findReasonName))
+                {
+                    btnHospitalizeReason.Properties.Buttons[1].Visible = true;
+                    var ketQua = lstHopitalReason.Where(i => i.HOSPITALIZE_REASON_NAME.Contains(findReasonName) || i.HOSPITALIZE_REASON_CODE.Contains(findReasonName)).ToList();
+                    lstHopitalReasonSave = ketQua;
+                    if (ketQua == null || ketQua.Count() == 0)
+                    {
+                        cboHospitalizeReason.ClosePopup();
+                    }
+                    else
+                    {
+                        cboHospitalizeReason.Properties.DataSource = ketQua;
+                        cboHospitalizeReason.ShowPopup();
+                    }
+                }
+                else
+                {
+                    cboHospitalizeReason.Properties.DataSource = lstHopitalReason;
+                }
+                _timer.Stop();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboHospitalizeReason_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                btnHospitalizeReason.Text = cboHospitalizeReason.EditValue.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
     }
 }
 

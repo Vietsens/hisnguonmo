@@ -186,6 +186,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Debug("3. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentMediStock.Count), currentMediStock.Count));
 
                 LoadIcdToControl(this.oldServiceReq.ICD_CODE, this.oldServiceReq.ICD_NAME);
+                LoadIcdTranditionalToControl(this.oldServiceReq.TRADITIONAL_ICD_CODE, this.oldServiceReq.TRADITIONAL_ICD_NAME);
+                LoadIcdSubTranditionalToControl(this.oldServiceReq.TRADITIONAL_ICD_SUB_CODE, this.oldServiceReq.TRADITIONAL_ICD_TEXT);
                 LoadIcdCauseToControl(this.oldServiceReq.ICD_CAUSE_CODE, this.oldServiceReq.ICD_CAUSE_NAME);
                 var icdCaus = this.currentIcds.FirstOrDefault(o => o.ICD_CODE == this.oldServiceReq.ICD_CODE);
                 if (icdCaus != null)
@@ -342,12 +344,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         this.SetTotalPrice__TrongDon();
                         this.idRow = (int)((this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0) ? (this.mediMatyTypeADOs.Max(o => o.NUM_ORDER ?? 0) + stepRow) : 0 + stepRow);
                         this.InstructionTime = this.oldServiceReq.INTRUCTION_TIME;
+                        this.LoadMLCT();
                         this.EnableCheckTemporaryPres();
                         if (this.oldServiceReq.TRACKING_ID.HasValue)
                         {
                             cboPhieuDieuTri.EditValue = Inventec.Common.TypeConvert.Parse.ToInt64(this.oldServiceReq.TRACKING_ID.Value.ToString());
                             cboPhieuDieuTri.Properties.Buttons[1].Visible = true;
                         }
+                        this.spnPresPhaseNum.EditValue = this.oldServiceReq.PRESCRIPTION_PHASE_NUM.HasValue ? (long?)this.oldServiceReq.PRESCRIPTION_PHASE_NUM : null;
                         this.chkTemporayPres.Checked = (this.oldServiceReq.IS_TEMPORARY_PRES == 1);
                         this.chkHomePres.Checked = (this.oldServiceReq.IS_HOME_PRES == 1);
                         this.chkPreKidneyShift.Checked = (this.oldServiceReq.IS_KIDNEY == 1);

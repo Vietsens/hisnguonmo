@@ -37,8 +37,9 @@ namespace HIS.UC.SecondaryIcd.ADO
         public string TootiplciIcdSubCode { get; set; }
         public DelegateNextFocus DelegateNextFocus { get; set; }
         public DelegateGetIcdMain DelegateGetIcdMain { get; set; }
-
+        public DelegateCheckICD delegateCheckICD { get; set; }
         public List<HIS_ICD> HisIcds { get; set; }
+        public List<V_HIS_ICD> ViewHisIcds { get; set; }
         public HIS_TREATMENT hisTreatment { get; set; }
     }
 }
