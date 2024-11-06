@@ -192,6 +192,7 @@
     <EmbeddedResource Include="FormTreatmentIcdEdit.resx">
       <DependentUpon>FormTreatmentIcdEdit.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -1358,6 +1358,10 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
         {
             try
             {
+                string codeCheckCD = "";
+                string nameCheckCD = "";
+                string codeCheckCDYHCT = "";
+
                 btnSave.Focus();
                 validationControl();
                 CommonParam param = new CommonParam();
@@ -1386,6 +1390,8 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     {
                         data.IcdCode = ((IcdInputADO)icdValue).ICD_CODE;
                         data.IcdName = ((IcdInputADO)icdValue).ICD_NAME;
+                        codeCheckCD  = ((IcdInputADO)icdValue).ICD_CODE;
+                        nameCheckCD = ((IcdInputADO)icdValue).ICD_NAME;
                     }
                 }
 
@@ -1396,7 +1402,42 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     {
                         data.IcdSubCode = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
                         data.IcdText = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
+                        codeCheckCD += ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
+                        nameCheckCD += ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
                     }
+                }
+
+                if (ucSecondaryIcdYhct != null)
+                {
+                    var subIcdYHCT = subIcdYhctProcessor.GetValue(ucSecondaryIcdYhct);
+                    if (subIcdYHCT != null && subIcdYHCT is SecondaryIcdProcessor)
+                    {
+                        codeCheckCDYHCT = ((SecondaryIcdDataADO)subIcdYHCT).ICD_SUB_CODE;
+                    }
+                }
+                if (ucIcdYhct != null)
+                {
+                    var IcdYHCT = icdYhctProcessor.GetValue(ucIcdYhct);
+                    if (IcdYHCT != null && IcdYHCT is IcdProcessor)
+                    {
+                        codeCheckCDYHCT += ((IcdInputADO)IcdYHCT).ICD_CODE;
+                    }
+                }
+
+                if (codeCheckCD.Length > 100)
+                {
+                    XtraMessageBox.Show("Mã chẩn đoán phụ nhập quá 100 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (nameCheckCD.Length > 1500)
+                {
+                    XtraMessageBox.Show("Tên chẩn đoán phụ nhập quá 1500 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (codeCheckCDYHCT.Length > 255)
+                {
+                    XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
 
                 if (this.ucIcdCause != null)
