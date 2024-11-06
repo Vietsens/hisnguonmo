@@ -182,7 +182,9 @@
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Lang.vi.resx" />
+    <EmbeddedResource Include="Resources\Lang.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Message.Lang.en.resx" />
     <EmbeddedResource Include="Resources\Message.Lang.vi.resx" />
   </ItemGroup>
