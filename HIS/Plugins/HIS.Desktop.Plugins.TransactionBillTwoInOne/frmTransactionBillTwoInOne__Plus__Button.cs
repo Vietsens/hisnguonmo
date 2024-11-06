@@ -535,7 +535,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         var exits = rs.Where(s => s.PAY_FORM_ID == 8 && s.IS_ACTIVE == 0);
                         if(isLuuKy)
                         {
-                            if (isCreateQRContinue)
+                            if (isCreateQRContinue && (long)cboPayForm.EditValue == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
                             {
 
                                 this.listTranToQR = exits.ToList();
