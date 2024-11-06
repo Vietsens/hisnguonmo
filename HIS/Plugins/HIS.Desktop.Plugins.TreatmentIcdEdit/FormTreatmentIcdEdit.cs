@@ -1380,7 +1380,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 positionHandleTime = -1;
                 if (!dxValidationProviderTime.Validate()) return;
 
-                WaitingManager.Show();
+                //WaitingManager.Show();
                 HisTreatmentCommonInfoUpdateSDO data = new HisTreatmentCommonInfoUpdateSDO();
                 data.Id = currentVHisTreatment.ID;
                 if (ucIcd != null)
@@ -1410,7 +1410,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 if (ucSecondaryIcdYhct != null)
                 {
                     var subIcdYHCT = subIcdYhctProcessor.GetValue(ucSecondaryIcdYhct);
-                    if (subIcdYHCT != null && subIcdYHCT is SecondaryIcdProcessor)
+                    if (subIcdYHCT != null && subIcdYHCT is SecondaryIcdDataADO)
                     {
                         codeCheckCDYHCT = ((SecondaryIcdDataADO)subIcdYHCT).ICD_SUB_CODE;
                     }
@@ -1418,23 +1418,23 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 if (ucIcdYhct != null)
                 {
                     var IcdYHCT = icdYhctProcessor.GetValue(ucIcdYhct);
-                    if (IcdYHCT != null && IcdYHCT is IcdProcessor)
+                    if (IcdYHCT != null && IcdYHCT is IcdInputADO)
                     {
                         codeCheckCDYHCT += ((IcdInputADO)IcdYHCT).ICD_CODE;
                     }
                 }
-
-                if (codeCheckCD.Length > 100)
+                if (Inventec.Common.String.CountVi.Count(codeCheckCD) > 100)
                 {
                     XtraMessageBox.Show("Mã chẩn đoán phụ nhập quá 100 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                if (nameCheckCD.Length > 1500)
+
+                if (Inventec.Common.String.CountVi.Count(nameCheckCD) > 1500)
                 {
                     XtraMessageBox.Show("Tên chẩn đoán phụ nhập quá 1500 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                if (codeCheckCDYHCT.Length > 255)
+                if (Inventec.Common.String.CountVi.Count(codeCheckCDYHCT) > 255)
                 {
                     XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -1619,7 +1619,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 }
                 if ((currentVHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || currentVHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU || currentVHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY) && currentVHisTreatment.IN_CODE != null && dtClinicalInTime.EditValue == null)
                 {
-                    WaitingManager.Hide();
+                    //WaitingManager.Hide();
                     if (DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.NgayVaoKhongDuocDeTrong, ResourceMessage.ThongBao, System.Windows.Forms.MessageBoxButtons.OK) == System.Windows.Forms.DialogResult.OK)
                         return;
                 }
