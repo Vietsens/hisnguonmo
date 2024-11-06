@@ -480,6 +480,10 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 patientTypeData.LEVEL_CODE = this.HeinLevelCodeCurrent;
                 this.txtMucHuong.Text = new His.UC.UCHein.ControlProcess.ServiceRequestProcess().GetDefaultHeinRatio(patientTypeData, heincardNumber, treatmentTypeCode);
                 patientTypeData.IS_NEWBORN = chkBaby.Checked ? (short?)1 : null;
+                patientTypeData.HAS_ABSENT_LETTER = chkHasAbsentLetter.Checked ? (short?)1 : null;
+                patientTypeData.HAS_WORKING_LETTER = chkHasWorkingLetter.Checked ? (short?)1 : null;
+                patientTypeData.IS_TT46 = chkTt46.Checked ? (short?)1 : null;
+                patientTypeData.TT46_NOTE = txtTt46.Text.Trim();
             }
             catch (Exception ex)
             {
@@ -867,6 +871,10 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         {
             try
             {
+                this.chkTt46.Checked = false;
+                this.txtTt46.Enabled = false;
+                this.chkHasAbsentLetter.Checked = false;
+                this.chkHasWorkingLetter.Checked = false;
                 this.chkBaby.Checked = false;
                 this.chkBaby.Enabled = false;
                 this.cboSoThe.Visible = false;

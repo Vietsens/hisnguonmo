@@ -78,6 +78,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 chkBaby.Enabled = this.entity.IsChild;
                 if (!chkBaby.Enabled)
                     this.chkBaby.Checked = false;
+                chkTt46.Checked = false;
+                txtTt46.Enabled = false;
             }
             catch (Exception ex)
             {
@@ -249,6 +251,10 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 this.chkPaid6Month.Checked = (patientTypeAlter.PAID_6_MONTH == MOS.LibraryHein.Bhyt.HeinPaid6Month.HeinPaid6MonthCode.TRUE);
                 if(chkBaby.Enabled)
                     this.chkBaby.Checked = (patientTypeAlter.IS_NEWBORN == 1);
+                this.chkHasWorkingLetter.Checked = patientTypeAlter.HAS_WORKING_LETTER == 1;
+                this.chkHasAbsentLetter.Checked = patientTypeAlter.HAS_ABSENT_LETTER == 1;
+                this.chkTt46.Checked = patientTypeAlter.IS_TT46 == 1;
+                this.txtTt46.Text = patientTypeAlter.TT46_NOTE;
                 IsAutoCheck = false;
                 this.txtAddress.Text = patientTypeAlter.ADDRESS;
                 this.txtHNCode.Text = patientTypeAlter.HNCODE;
