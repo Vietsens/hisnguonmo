@@ -58,7 +58,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.WaitingScreen
 
                     if (Module != null)
                     {
-                        result = new frmWaitingScreen(Module);
+                        result = new frmWaiting2(Module);
                         
                     }
                 }
