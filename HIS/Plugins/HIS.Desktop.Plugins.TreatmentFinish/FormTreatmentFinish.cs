@@ -2429,6 +2429,24 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 IsContinue = IsContinue && CheckBedLog(true);
                 if (!IsContinue)
                     return;
+
+                GetValueUC();
+                if (Inventec.Common.String.CountVi.Count(codeCheckCD) > 100)
+                {
+                    XtraMessageBox.Show("Mã chẩn đoán phụ nhập quá 100 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (Inventec.Common.String.CountVi.Count(nameCheckCD) > 1500)
+                {
+                    XtraMessageBox.Show("Tên chẩn đoán phụ nhập quá 1500 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (Inventec.Common.String.CountVi.Count(codeCheckCDYHCT) > 255)
+                {
+                    XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 List<WarningADO> warningADONew = new List<WarningADO>();
                 if ((ConfigKey.MustChooseSeviceExamOption == "1" || ConfigKey.MustChooseSeviceExamOption == "2") && !this.CheckMustChooseSeviceExamOption()) return;
                 if (!this.CheckAssignServiceBed_ForSave(ValidationDataType.PopupMessage, ref warningADONew))
@@ -2903,7 +2921,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 if (ucSecondaryIcdYhct != null)
                 {
                     var subIcdYHCT = subIcdYhctProcessor.GetValue(ucSecondaryIcdYhct);
-                    if (subIcdYHCT != null && subIcdYHCT is SecondaryIcdProcessor)
+                    if (subIcdYHCT != null && subIcdYHCT is SecondaryIcdDataADO)
                     {
                         codeCheckCDYHCT = ((SecondaryIcdDataADO)subIcdYHCT).ICD_SUB_CODE;
                     }
@@ -2911,7 +2929,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 if (ucIcdYhct != null)
                 {
                     var IcdYHCT = icdYhctProcessor.GetValue(ucIcdYhct);
-                    if (IcdYHCT != null && IcdYHCT is IcdProcessor)
+                    if (IcdYHCT != null && IcdYHCT is IcdInputADO)
                     {
                         codeCheckCDYHCT += ((IcdInputADO)IcdYHCT).ICD_CODE;
                     }
@@ -2936,17 +2954,17 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 valid = dxValidationProvider.Validate() && valid;
                 if (!valid) return;
                 GetValueUC();
-                if (codeCheckCD.Length > 100)
+                if (Inventec.Common.String.CountVi.Count(codeCheckCD) > 100)
                 {
                     XtraMessageBox.Show("Mã chẩn đoán phụ nhập quá 100 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                if (nameCheckCD.Length > 1500)
+                if (Inventec.Common.String.CountVi.Count(nameCheckCD) > 1500)
                 {
                     XtraMessageBox.Show("Tên chẩn đoán phụ nhập quá 1500 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                if (codeCheckCDYHCT.Length > 255)
+                if (Inventec.Common.String.CountVi.Count(codeCheckCDYHCT) > 255)
                 {
                     XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -4873,6 +4891,23 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
                 if (!this.CheckUnassignTrackingServiceReq_ForSave(ValidationDataType.GetListMessage, ref this.warningADOs))
                 {
+                    return;
+                }
+
+                GetValueUC();
+                if (Inventec.Common.String.CountVi.Count(codeCheckCD) > 100)
+                {
+                    XtraMessageBox.Show("Mã chẩn đoán phụ nhập quá 100 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (Inventec.Common.String.CountVi.Count(nameCheckCD) > 1500)
+                {
+                    XtraMessageBox.Show("Tên chẩn đoán phụ nhập quá 1500 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (Inventec.Common.String.CountVi.Count(codeCheckCDYHCT) > 255)
+                {
+                    XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
