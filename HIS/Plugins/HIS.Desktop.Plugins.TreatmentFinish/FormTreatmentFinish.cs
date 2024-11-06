@@ -2871,6 +2871,58 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         {
             LogTheadInSessionInfo(saveTemp, "btnSaveTemp_Click");
         }
+
+        string codeCheckCD;
+        string nameCheckCD;
+        string codeCheckCDYHCT;
+        private void GetValueUC()
+        {
+            try 
+	        {
+                codeCheckCD = "";
+                nameCheckCD = "";
+                codeCheckCDYHCT = "";
+                if (ucSecondaryIcd != null)
+                {
+                    var subIcd = subIcdProcessor.GetValue(ucSecondaryIcd);
+                    if (subIcd != null && subIcd is SecondaryIcdDataADO)
+                    {
+                        codeCheckCD = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
+                        nameCheckCD = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
+                    }
+                }
+                if (ucIcd != null)
+                {
+                    var icdValue = icdProcessor.GetValue(ucIcd);
+                    if (icdValue is IcdInputADO)
+                    {
+                        codeCheckCD += ((IcdInputADO)icdValue).ICD_CODE;
+                        nameCheckCD += ((IcdInputADO)icdValue).ICD_NAME;
+                    }
+                }
+                if (ucSecondaryIcdYhct != null)
+                {
+                    var subIcdYHCT = subIcdYhctProcessor.GetValue(ucSecondaryIcdYhct);
+                    if (subIcdYHCT != null && subIcdYHCT is SecondaryIcdProcessor)
+                    {
+                        codeCheckCDYHCT = ((SecondaryIcdDataADO)subIcdYHCT).ICD_SUB_CODE;
+                    }
+                }
+                if (ucIcdYhct != null)
+                {
+                    var IcdYHCT = icdYhctProcessor.GetValue(ucIcdYhct);
+                    if (IcdYHCT != null && IcdYHCT is IcdProcessor)
+                    {
+                        codeCheckCDYHCT += ((IcdInputADO)IcdYHCT).ICD_CODE;
+                    }
+                }
+	        }
+	        catch (Exception)
+	        {
+		
+		        throw;
+	        }
+        }
         private async void saveTemp()
         {
             try
@@ -2883,6 +2935,22 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 valid = this.IsValiICDCause();
                 valid = dxValidationProvider.Validate() && valid;
                 if (!valid) return;
+                GetValueUC();
+                if (codeCheckCD.Length > 100)
+                {
+                    XtraMessageBox.Show("Mã chẩn đoán phụ nhập quá 100 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (nameCheckCD.Length > 1500)
+                {
+                    XtraMessageBox.Show("Tên chẩn đoán phụ nhập quá 1500 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (codeCheckCDYHCT.Length > 255)
+                {
+                    XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager check = new Desktop.Plugins.Library.CheckIcd.CheckIcdManager(null, currentHisTreatment);
                 string message = null;
                 if (CheckIcdWhenSave == "1" || CheckIcdWhenSave == "2")
