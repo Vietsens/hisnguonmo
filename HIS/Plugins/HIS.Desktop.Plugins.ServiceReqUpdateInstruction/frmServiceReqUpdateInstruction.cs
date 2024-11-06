@@ -1100,17 +1100,17 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     }
                 }
 
-                if (codeCheckCD.Length > 100)
+                if (Inventec.Common.String.CountVi.Count(codeCheckCD) > 100)
                 {
                     XtraMessageBox.Show("Mã chẩn đoán phụ nhập quá 100 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                if (nameCheckCD.Length > 1500)
+                if (Inventec.Common.String.CountVi.Count(nameCheckCD) > 1500)
                 {
                     XtraMessageBox.Show("Tên chẩn đoán phụ nhập quá 1500 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                if (codeCheckCDYHCT.Length > 255)
+                if (Inventec.Common.String.CountVi.Count(codeCheckCDYHCT) > 255)
                 {
                     XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
