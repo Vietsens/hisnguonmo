@@ -166,6 +166,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 isValid = isValid && ValidFeeForExamTreatment();
                 Inventec.Common.Logging.LogSystem.Debug("Valid14__ValidFeeForExamTreatment:" + isValid);
                 isValid = isValid && CheckMaxAmount(serviceCheckeds__Send);
+                isValid = isValid && ValidICD();
                 Inventec.Common.Logging.LogSystem.Debug("Valid15__CheckMaxAmount:" + isValid);
                 if (this.USE_TIME != null && this.USE_TIME.Count > 0)
                 {

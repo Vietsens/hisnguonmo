@@ -3141,6 +3141,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (!CheckExamServiceFinish())
                     return;
                 GetUcIcdYHCT();
+                if (!ValidIcd()) return;
                 HisServiceReqExamUpdateSDO hisServiceReqSDO = new HisServiceReqExamUpdateSDO();
 
                 ProcessExamServiceReqDTO(ref hisServiceReqSDO);

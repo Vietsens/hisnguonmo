@@ -5281,6 +5281,65 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 				Inventec.Common.Logging.LogSystem.Error(ex);
 			}
 		}
+		private bool ValidICD()
+        {
+			bool isValid = true;
+            try
+            {
+				int icd_code = txtIcdCode.Text.Length;
+				int icd_name = Inventec.Common.String.CountVi.Count(cboIcds.Text) ?? 0;
+				int icd_sub_code = txtIcdSubCode.Text.Length;
+				int icd_text = Inventec.Common.String.CountVi.Count(txtIcdText.Text) ?? 0;
+				int icd_yhct_len = 0;
+				int icd_yhct_sub_len = 0;
+				if(this.ucIcdYhct != null)
+                {
+					var icdValue = this.icdYhctProcessor.GetValue(ucIcdYhct);
+					if(icdValue != null && icdValue is HIS.UC.Icd.ADO.IcdInputADO)
+                    {
+						var rs = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
+						if (rs != null) icd_yhct_len = rs.ToString().Length;
+					}
+
+				}
+				if (this.ucSecondaryIcdYhct != null)
+				{
+					var subIcd = this.subIcdYhctProcessor.GetValue(ucSecondaryIcdYhct);
+					if (subIcd != null)//&& subIcd is SecondaryIcdDataADO
+					{
+						var rs = ((HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
+						if (rs != null) icd_yhct_sub_len = rs.ToString().Length;
+					}
+				}
+
+				string errror_string = "";
+				if (icd_code + icd_sub_code > 100)
+				{
+					errror_string = "Mã chẩn đoán phụ nhập quá 100 ký tự";
+				}
+				else if (icd_name + icd_text > 1500)
+				{
+					errror_string = "Tên chẩn đoán phụ nhập quá 1500 ký tự";
+				}
+				else if (icd_yhct_len + icd_yhct_sub_len > 255)
+				{
+					errror_string = "Mã chẩn đoán YHCT phụ nhập quá 255 ký tự";
+				}
+				if (!string.IsNullOrEmpty(errror_string))
+				{
+					MessageBox.Show(this, errror_string, "Thông báo", MessageBoxButtons.OK);
+					isValid = false;
+				}
+
+
+			}
+            catch (Exception ex)
+            {
+				isValid = false;
+				Inventec.Common.Logging.LogSystem.Error(ex);
+			}
+			return isValid;
+		}
 		private bool CheckIcd(List<V_HIS_TREATMENT_BED_ROOM> lst)
 		{
 			bool valid = true;
@@ -5358,6 +5417,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 						}
 						isValid = isValid && this.Valid(serviceCheckeds__Send);
 						isValid = isValid && this.CheckIcd(lstPatientSelect);
+						isValid = isValid && this.ValidICD();
+
 						if (!ValidForSaveGridPatientSelect(lstPatientSelect))
 						{
 							string message = "Các bệnh nhân sau có mã ICD không hợp lệ";

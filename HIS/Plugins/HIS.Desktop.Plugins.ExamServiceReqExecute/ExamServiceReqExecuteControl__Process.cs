@@ -529,6 +529,43 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
             return valid;
         }
+        private bool ValidIcd()
+        {
+            bool valid = true;
+            try
+            {
+                int icd_code = txtIcdCode.Text.Length;
+                int icd_name = Inventec.Common.String.CountVi.Count(cboIcds.Text)??0;
+                int icd_code_sub = txtIcdSubCode.Text.Length;
+                int icd_text = Inventec.Common.String.CountVi.Count(txtIcdText.Text) ?? 0;
+
+                string errror_string = "";
+                if(icd_code + icd_code_sub > 100)
+                {
+                    errror_string = "Mã chẩn đoán phụ nhập quá 100 ký tự";
+                }
+                else if(icd_name + icd_text > 1500)
+                {
+                    errror_string = "Tên chẩn đoán phụ nhập quá 1500 ký tự";
+                }
+                else if(this.IcdCodeYHCT.Length + this.IcdSubCodeYHCT.Length > 255)
+                {
+                    errror_string = "Mã chẩn đoán YHCT phụ nhập quá 255 ký tự";
+                }
+                if (!string.IsNullOrEmpty(errror_string))
+                {
+                    MessageBox.Show(this, errror_string, "Thông báo", MessageBoxButtons.OK);
+                    valid = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                valid = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return valid;
+        }
         private bool ValidAddress()
         {
             bool valid = true;
