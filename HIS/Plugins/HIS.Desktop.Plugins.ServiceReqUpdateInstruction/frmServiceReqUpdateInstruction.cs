@@ -1061,6 +1061,61 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     return;
                 }
 
+                string codeCheckCD = "";
+                string nameCheckCD = "";
+                string codeCheckCDYHCT = "";
+
+                if (ucSecondaryIcd != null)
+                {
+                    var subIcd = subIcdProcessor.GetValue(ucSecondaryIcd);
+                    if (subIcd != null && subIcd is SecondaryIcdDataADO)
+                    {
+                        codeCheckCD = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
+                        nameCheckCD = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
+                    }
+                }
+                if (ucIcd != null)
+                {
+                    var icdValue = icdProcessor.GetValue(ucIcd);
+                    if (icdValue is IcdInputADO)
+                    {
+                        codeCheckCD += ((IcdInputADO)icdValue).ICD_CODE;
+                        nameCheckCD += ((IcdInputADO)icdValue).ICD_NAME;
+                    }
+                }
+                if (ucSecondaryIcdYHCT != null)
+                {
+                    var subIcdYHCT = subIcdProcessorYHCT.GetValue(ucSecondaryIcdYHCT);
+                    if (subIcdYHCT != null && subIcdYHCT is SecondaryIcdDataADO)
+                    {
+                        codeCheckCDYHCT = ((SecondaryIcdDataADO)subIcdYHCT).ICD_SUB_CODE;
+                    }
+                }
+                if (ucIcdYHCT != null)
+                {
+                    var IcdYHCT = icdProcessorYHCT.GetValue(ucIcdYHCT);
+                    if (IcdYHCT != null && IcdYHCT is IcdInputADO)
+                    {
+                        codeCheckCDYHCT += ((IcdInputADO)IcdYHCT).ICD_CODE;
+                    }
+                }
+
+                if (Inventec.Common.String.CountVi.Count(codeCheckCD) > 100)
+                {
+                    XtraMessageBox.Show("Mã chẩn đoán phụ nhập quá 100 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (Inventec.Common.String.CountVi.Count(nameCheckCD) > 1500)
+                {
+                    XtraMessageBox.Show("Tên chẩn đoán phụ nhập quá 1500 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (Inventec.Common.String.CountVi.Count(codeCheckCDYHCT) > 255)
+                {
+                    XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 this.positionHandleControl = -1;
                 bool vali = true;
                 CommonParam param = new CommonParam();

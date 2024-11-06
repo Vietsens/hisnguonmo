@@ -1358,6 +1358,10 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
         {
             try
             {
+                string codeCheckCD = "";
+                string nameCheckCD = "";
+                string codeCheckCDYHCT = "";
+
                 btnSave.Focus();
                 validationControl();
                 CommonParam param = new CommonParam();
@@ -1376,7 +1380,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 positionHandleTime = -1;
                 if (!dxValidationProviderTime.Validate()) return;
 
-                WaitingManager.Show();
+                //WaitingManager.Show();
                 HisTreatmentCommonInfoUpdateSDO data = new HisTreatmentCommonInfoUpdateSDO();
                 data.Id = currentVHisTreatment.ID;
                 if (ucIcd != null)
@@ -1386,6 +1390,8 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     {
                         data.IcdCode = ((IcdInputADO)icdValue).ICD_CODE;
                         data.IcdName = ((IcdInputADO)icdValue).ICD_NAME;
+                        codeCheckCD  = ((IcdInputADO)icdValue).ICD_CODE;
+                        nameCheckCD = ((IcdInputADO)icdValue).ICD_NAME;
                     }
                 }
 
@@ -1396,7 +1402,42 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     {
                         data.IcdSubCode = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
                         data.IcdText = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
+                        codeCheckCD += ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
+                        nameCheckCD += ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
                     }
+                }
+
+                if (ucSecondaryIcdYhct != null)
+                {
+                    var subIcdYHCT = subIcdYhctProcessor.GetValue(ucSecondaryIcdYhct);
+                    if (subIcdYHCT != null && subIcdYHCT is SecondaryIcdDataADO)
+                    {
+                        codeCheckCDYHCT = ((SecondaryIcdDataADO)subIcdYHCT).ICD_SUB_CODE;
+                    }
+                }
+                if (ucIcdYhct != null)
+                {
+                    var IcdYHCT = icdYhctProcessor.GetValue(ucIcdYhct);
+                    if (IcdYHCT != null && IcdYHCT is IcdInputADO)
+                    {
+                        codeCheckCDYHCT += ((IcdInputADO)IcdYHCT).ICD_CODE;
+                    }
+                }
+                if (Inventec.Common.String.CountVi.Count(codeCheckCD) > 100)
+                {
+                    XtraMessageBox.Show("Mã chẩn đoán phụ nhập quá 100 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (Inventec.Common.String.CountVi.Count(nameCheckCD) > 1500)
+                {
+                    XtraMessageBox.Show("Tên chẩn đoán phụ nhập quá 1500 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (Inventec.Common.String.CountVi.Count(codeCheckCDYHCT) > 255)
+                {
+                    XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
 
                 if (this.ucIcdCause != null)
@@ -1578,7 +1619,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 }
                 if ((currentVHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || currentVHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU || currentVHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY) && currentVHisTreatment.IN_CODE != null && dtClinicalInTime.EditValue == null)
                 {
-                    WaitingManager.Hide();
+                    //WaitingManager.Hide();
                     if (DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.NgayVaoKhongDuocDeTrong, ResourceMessage.ThongBao, System.Windows.Forms.MessageBoxButtons.OK) == System.Windows.Forms.DialogResult.OK)
                         return;
                 }
