@@ -138,6 +138,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 LogSystem.Debug("employee: " + LogUtil.TraceData("employee", employee));
                 if (!string.IsNullOrEmpty(connect_infor))
                 {
+                    connectInfors = connect_infor.Split('|').ToList();
                     api = connectInfors.Count > 0 ? connectInfors[0] : string.Empty;
 
                     nameCb = connectInfors.Count > 1 && !string.IsNullOrEmpty(connectInfors[1]) ? connectInfors[1] : employee.TDL_USERNAME;
