@@ -666,7 +666,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
         {
             try
             {
-                btnSave.Focus();
+                //btnSave.Focus();
+                mmNOTE.Focus();
             }
             catch (Exception ex)
             {
