@@ -4718,6 +4718,7 @@ namespace MPS.Processor.Mps000062
 
                             string fmrData = String.Format("<table><tr><td style =\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0}</td></span><td style =\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{1}</td></tr></table>", s3, s2);
                             item.MEDICINES___DATA += fmrData;
+                            s3 = string.Concat("- ") + s3;
                             string dataRepx = fmrData;
                             if ((medi.REMEDY_COUNT ?? 0) <= 0)
                             {
@@ -4959,6 +4960,7 @@ namespace MPS.Processor.Mps000062
                                     }
                                     string frmData = String.Format("<table><tr><td style =\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0}</td></span><td style =\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{1}</td></tr></table>", s1, s2);
                                     item.MEDICINES_DuTru___DATA += frmData;
+                                    s1 = string.Concat("- ") + s1;
                                     string dataRepx = frmData;
                                     item.MEDI_DUTRU_NO_CONCENTRA += String.Format("<table><tr><td style =\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0}</td></span><td style =\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{1}</td></tr></table>", S1_NoConcentra, s2);
                                     if ((medi.REMEDY_COUNT ?? 0) <= 0)
@@ -5311,6 +5313,7 @@ namespace MPS.Processor.Mps000062
                                     }
                                     string fmrData = String.Format("<table><tr><td style =\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0}</td></span><td style =\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{1}</td></tr></table>", s1, s2);
                                     item.MEDICINES_THDT___DATA += fmrData;
+                                    s1 = string.Concat("- ") + s1;
                                     string dataRepx = fmrData;
                                     item.MEDI_THDT_NO_CONCENTRA += String.Format("<table><tr><td style =\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0}</td></span><td style =\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{1}</td></tr></table>", S1_NoConcentra, s2);
 
@@ -6297,7 +6300,7 @@ namespace MPS.Processor.Mps000062
                         item.MEDICINES_MERGE_DETAIL___DATA = "";
                         foreach (var ml in groupByMedicineLine)
                         {
-                            item.MEDICINES_MERGE_DETAIL___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("" + ml.Key.MEDICINE_LINE_NAME, FontStyle.Bold);
+                            item.MEDICINES_MERGE_DETAIL___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("- " + ml.Key.MEDICINE_LINE_NAME, FontStyle.Bold);
                             item.MEDICINES_MERGE_DETAIL___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                             var groupByRemedy = ml.GroupBy(o => o.TDL_SERVICE_REQ_ID).ToList();
                             foreach (var re in groupByRemedy)

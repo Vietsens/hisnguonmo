@@ -232,6 +232,10 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 else
                     patientProfileSDO.HisPatientTypeAlter.IS_NO_CHECK_EXPIRE = null;
                 patientProfileSDO.HisPatientTypeAlter.IS_NEWBORN = chkBaby.Checked ? (short?)1 : null;
+                patientProfileSDO.HisPatientTypeAlter.HAS_WORKING_LETTER = chkHasWorkingLetter.Checked ? (short?)1 : null;
+                patientProfileSDO.HisPatientTypeAlter.HAS_ABSENT_LETTER = chkHasAbsentLetter.Checked ? (short?)1 : null;
+                patientProfileSDO.HisPatientTypeAlter.IS_TT46 = chkTt46.Checked ? (short?)1 : null;
+                patientProfileSDO.HisPatientTypeAlter.TT46_NOTE = txtTt46.Text.Trim();
             }
             catch (Exception ex)
             {

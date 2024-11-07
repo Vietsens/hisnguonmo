@@ -37,6 +37,7 @@ using HIS.Desktop.Plugins.Library.PrintTreatmentFinish;
 using HIS.Desktop.Utility;
 using HIS.UC.Icd.ADO;
 using HIS.UC.MenuPrint.ADO;
+using HIS.UC.SecondaryIcd.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
 using Inventec.Common.ThreadCustom;
@@ -48,9 +49,11 @@ using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 {
@@ -436,6 +439,59 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     valid = valid && (bool)icdYhctProcessor.ValidationIcd(ucIcdYhct);
                 if (ucSecondaryIcdYhct != null)
                     valid = valid && subIcdYhctProcessor.GetValidate(ucSecondaryIcdYhct);
+                string codeIcd = "";
+                string nameIcd = "";
+                var icdValue = UcIcdGetValue() as UC.Icd.ADO.IcdInputADO;
+                if (icdValue != null)
+                {
+                    codeIcd = icdValue.ICD_CODE;
+                    nameIcd = icdValue.ICD_NAME;
+                }
+
+                var subIcd = UcSecondaryIcdGetValue() as SecondaryIcdDataADO;
+                if (subIcd != null)
+                {
+                    codeIcd += subIcd.ICD_SUB_CODE;
+                    nameIcd += subIcd.ICD_TEXT;
+                }
+                if (!string.IsNullOrEmpty(codeIcd) && codeIcd.Length > 100)
+                {
+                    IsValidForSave = false;
+                    XtraMessageBox.Show(string.Format("Mã chẩn đoán phụ nhập quá {0} ký tự", 100));
+                    return;
+                }
+
+                if (!string.IsNullOrEmpty(nameIcd) && Encoding.UTF8.GetByteCount(nameIcd) > 1500)
+                {
+                    IsValidForSave = false;
+                    XtraMessageBox.Show(string.Format("Tên chẩn đoán phụ nhập quá {0} ký tự", 1500));
+                    return;
+                }
+
+                string codeIcdYhct = "";
+                if (ucIcdYhct != null)
+                {
+                    var icdTranditional = icdYhctProcessor.GetValue(ucIcdYhct);
+                    if (icdTranditional != null && icdTranditional is UC.Icd.ADO.IcdInputADO)
+                    {
+                        codeIcdYhct = ((UC.Icd.ADO.IcdInputADO)icdTranditional).ICD_CODE;
+                    }
+                }
+                if (ucSecondaryIcdYhct != null)
+                {
+                    var subIcdTranditional = subIcdYhctProcessor.GetValue(ucSecondaryIcdYhct);
+                    if (subIcdTranditional != null && subIcdTranditional is SecondaryIcdDataADO)
+                    {
+                        codeIcdYhct += ((SecondaryIcdDataADO)subIcdTranditional).ICD_SUB_CODE;
+                    }
+                }
+                if (!string.IsNullOrEmpty(codeIcdYhct) && codeIcdYhct.Length > 255)
+                {
+                    IsValidForSave = false;
+                    XtraMessageBox.Show(string.Format("Mã chẩn đoán YHCT phụ nhập quá {0} ký tự", 255));
+                    return;
+                }
+
                 Inventec.Common.Logging.LogSystem.Info("frmAssignPrescription.ProcessSaveData.2");
                 bool isHasUcTreatmentFinish = ((!GlobalStore.IsTreatmentIn) && this.treatmentFinishProcessor != null && this.ucTreatmentFinish != null);
                 var treatUC = isHasUcTreatmentFinish ? treatmentFinishProcessor.GetDataOutput(this.ucTreatmentFinish) : null;
