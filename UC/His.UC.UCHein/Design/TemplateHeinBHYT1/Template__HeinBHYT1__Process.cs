@@ -302,13 +302,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     }
                 }
 
-                if (!this.isCallByRegistor && rdoRightRoute.Checked && this.cboDKKCBBD.EditValue != null && ((this.patientTypeAlterOld != null && this.patientTypeAlterOld.TREATMENT_ID > 0 && (string)this.cboDKKCBBD.EditValue != BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == His.UC.UCHein.HisTreatment.HisTreatmentGet.GetById(this.patientTypeAlterOld.TREATMENT_ID).BRANCH_ID).HEIN_MEDI_ORG_CODE) || (this.entity.HisTreatment != null && this.entity.HisTreatment.ID > 0 && (string)this.cboDKKCBBD.EditValue != BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == entity.HisTreatment.BRANCH_ID).HEIN_MEDI_ORG_CODE)) && this.cboNoiSong.EditValue == null)
-                    ValidRightRouteType();
-                else
-                {
-                    lblRightRouteType.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
-                    dxValidationProvider1.SetValidationRule(txtHeinRightRouteCode, null);
-                }
+                ValidateRightRouteType();
             }
             catch (Exception ex)
             {
@@ -717,8 +711,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 else
                 {
                     Inventec.Common.Logging.LogSystem.Debug("HasChangeValidRightRouteType.2");
-                    this.dxValidationProvider1.SetValidationRule(this.txtHeinRightRouteCode, null);
-                    this.lblRightRouteType.AppearanceItemCaption.ForeColor = Color.Black;
+                    ValidateRightRouteType();
                 }
             }
             catch (Exception ex)

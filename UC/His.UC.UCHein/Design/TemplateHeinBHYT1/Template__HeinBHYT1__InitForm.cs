@@ -249,7 +249,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 IsAutoCheck = true;
                 this.chkJoin5Year.Checked = (patientTypeAlter.JOIN_5_YEAR == MOS.LibraryHein.Bhyt.HeinJoin5Year.HeinJoin5YearCode.TRUE);
                 this.chkPaid6Month.Checked = (patientTypeAlter.PAID_6_MONTH == MOS.LibraryHein.Bhyt.HeinPaid6Month.HeinPaid6MonthCode.TRUE);
-                if(chkBaby.Enabled)
+                if(chkBaby.Enabled) 
                     this.chkBaby.Checked = (patientTypeAlter.IS_NEWBORN == 1);
                 this.chkHasWorkingLetter.Checked = patientTypeAlter.HAS_WORKING_LETTER == 1;
                 this.chkHasAbsentLetter.Checked = patientTypeAlter.HAS_ABSENT_LETTER == 1;
@@ -337,6 +337,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 if (this.entity.IsChild)
                     this.SetEnableControlHein(RightRouterFactory.WRONG_ROUTER, isFocus);
                 this.VisibleButtonDeleteHeinRightRoute();
+                this.ValidateRightRouteType();
             }
             catch (Exception ex)
             {

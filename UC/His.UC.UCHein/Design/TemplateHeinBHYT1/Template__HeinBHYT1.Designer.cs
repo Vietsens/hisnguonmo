@@ -1387,8 +1387,6 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             // 
             // lblRightRouteType
             // 
-            this.lblRightRouteType.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
-            this.lblRightRouteType.AppearanceItemCaption.Options.UseForeColor = true;
             this.lblRightRouteType.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lblRightRouteType.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lblRightRouteType.Control = this.txtHeinRightRouteCode;

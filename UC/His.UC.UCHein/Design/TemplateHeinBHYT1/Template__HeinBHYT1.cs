@@ -1937,6 +1937,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     txtTt46.Text = null;
                     txtTt46.Enabled = false;
                 }
+                if (rdoRightRoute.Checked)
+                    ValidateRightRouteType();
             }
             catch (Exception ex)
             {
@@ -1951,6 +1953,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             {
                 if(chkHasWorkingLetter.Checked)
                     rdoRightRoute.Checked = true;
+                if (rdoRightRoute.Checked)
+                    ValidateRightRouteType();
             }
             catch (Exception ex)
             {
@@ -1965,6 +1969,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             {
                 if (chkHasAbsentLetter.Checked)
                     rdoRightRoute.Checked = true;
+                if (rdoRightRoute.Checked)
+                    ValidateRightRouteType();
             }
             catch (Exception ex)
             {
