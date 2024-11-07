@@ -374,17 +374,39 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                         {
                             var loginName = login_names.Split(',').ToList();
                             var username = user_names.Split(',').ToList();
-                            string ptv = "";
+                            string ktv = "";
                             for(int i = 0; i < loginName.Count; i++)
                             {
-                                ptv += "" + loginName[i] + "-" + username[i];
-                                ptv += ";";
+                                ktv += "" + loginName[i] + "-" + username[i];
+                                ktv += ";";
                             }
-                            if (ptv.EndsWith(";"))
+                            if (ktv.EndsWith(";"))
                             {
-                                ptv = ptv.TrimEnd(';');
+                                ktv = ktv.TrimEnd(';');
                             }
-                            txtPtv.Text = ptv;
+                            txtktv.Text = ktv;
+                        }
+
+                        if (currentServiceReq != null)
+                        {
+                            var login_extnames = currentServiceReq.EXECUTE_LOGINNAME;
+                            var user_extnames = currentServiceReq.EXECUTE_USERNAME;
+                            if (!string.IsNullOrEmpty(login_extnames) && !string.IsNullOrEmpty(user_extnames))
+                            {
+                                var loginNameExt = login_extnames.Split(',').ToList();
+                                var usernameExt = user_extnames.Split(',').ToList();
+                                string ptv = "";
+                                for (int i = 0; i < loginNameExt.Count; i++)
+                                {
+                                    ptv += "" + loginNameExt[i] + "-" + usernameExt[i];
+                                    ptv += ";";
+                                }
+                                if (ptv.EndsWith(";"))
+                                {
+                                    ptv = ptv.TrimEnd(';');
+                                }
+                                txtPtv.Text = ptv;
+                            }
                         }
                     }
                     else
