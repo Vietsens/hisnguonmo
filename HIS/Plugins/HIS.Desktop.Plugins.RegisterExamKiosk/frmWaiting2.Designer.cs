@@ -30,14 +30,12 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            this.timerLabel = new System.Windows.Forms.Timer(this.components);
+            this.timerWallPaper = new System.Windows.Forms.Timer(this.components);
+            this.timerCheckFocus = new System.Windows.Forms.Timer(this.components);
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
-            this.pictureEdit1 = new DevExpress.XtraEditors.PictureEdit();
-            this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
-            this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
-            this.panelControl = new DevExpress.XtraEditors.PanelControl();
-            this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panelControlInput = new DevExpress.XtraEditors.PanelControl();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.pbCamera = new System.Windows.Forms.PictureBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -65,124 +63,68 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             this.label1 = new System.Windows.Forms.Label();
             this.btnConfirm = new DevExpress.XtraEditors.SimpleButton();
             this.pbImage = new System.Windows.Forms.PictureBox();
-            this.txtNumberInput = new DevExpress.XtraEditors.TextEdit();
             this.label2 = new DevExpress.XtraEditors.LabelControl();
             this.lblMessage = new DevExpress.XtraEditors.LabelControl();
-            this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.timerLabel = new System.Windows.Forms.Timer(this.components);
-            this.timerWallPaper = new System.Windows.Forms.Timer(this.components);
-            this.timerCheckFocus = new System.Windows.Forms.Timer(this.components);
+            this.txtNumberInput = new Inventec.CustomControls.PNTextEdit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
-            this.panelControl2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
-            this.layoutControl2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl)).BeginInit();
-            this.panelControl.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
-            this.panelControl1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControlInput)).BeginInit();
+            this.panelControlInput.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCamera)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbCccdImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbImage)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtNumberInput.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             this.SuspendLayout();
             // 
+            // timerCheckFocus
+            // 
+            this.timerCheckFocus.Interval = 2000;
+            // 
             // layoutControl1
             // 
-            this.layoutControl1.Controls.Add(this.panelControl2);
-            this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.layoutControl1.Location = new System.Drawing.Point(835, 0);
+            this.layoutControl1.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.layoutControl1.Controls.Add(this.panel2);
+            this.layoutControl1.Controls.Add(this.panel1);
+            this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(525, 701);
-            this.layoutControl1.TabIndex = 0;
+            this.layoutControl1.Size = new System.Drawing.Size(1370, 701);
+            this.layoutControl1.TabIndex = 4;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // panelControl2
+            // panel2
             // 
-            this.panelControl2.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.panelControl2.Controls.Add(this.pictureEdit1);
-            this.panelControl2.Location = new System.Drawing.Point(0, 0);
-            this.panelControl2.Name = "panelControl2";
-            this.panelControl2.Size = new System.Drawing.Size(525, 701);
-            this.panelControl2.TabIndex = 4;
+            this.panel2.Controls.Add(this.panelControlInput);
+            this.panel2.Location = new System.Drawing.Point(2, 2);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(865, 697);
+            this.panel2.TabIndex = 5;
+            this.panel2.Resize += new System.EventHandler(this.panelControl_Resize);
             // 
-            // pictureEdit1
+            // panelControlInput
             // 
-            this.pictureEdit1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureEdit1.Location = new System.Drawing.Point(0, 0);
-            this.pictureEdit1.Name = "pictureEdit1";
-            this.pictureEdit1.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
-            this.pictureEdit1.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
-            this.pictureEdit1.Size = new System.Drawing.Size(525, 701);
-            this.pictureEdit1.TabIndex = 0;
-            // 
-            // layoutControlGroup1
-            // 
-            this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
-            this.layoutControlGroup1.GroupBordersVisible = false;
-            this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutControlItem1});
-            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlGroup1.Name = "layoutControlGroup1";
-            this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(525, 701);
-            this.layoutControlGroup1.TextVisible = false;
-            // 
-            // layoutControlItem1
-            // 
-            this.layoutControlItem1.Control = this.panelControl2;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem1.Size = new System.Drawing.Size(525, 701);
-            this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem1.TextVisible = false;
-            // 
-            // layoutControl2
-            // 
-            this.layoutControl2.Controls.Add(this.panelControl);
-            this.layoutControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl2.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl2.Name = "layoutControl2";
-            this.layoutControl2.Root = this.layoutControlGroup2;
-            this.layoutControl2.Size = new System.Drawing.Size(835, 701);
-            this.layoutControl2.TabIndex = 1;
-            this.layoutControl2.Text = "layoutControl2";
-            // 
-            // panelControl
-            // 
-            this.panelControl.Appearance.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.panelControl.Appearance.Options.UseBackColor = true;
-            this.panelControl.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.panelControl.Controls.Add(this.panelControl1);
-            this.panelControl.Location = new System.Drawing.Point(2, 2);
-            this.panelControl.Name = "panelControl";
-            this.panelControl.Size = new System.Drawing.Size(831, 697);
-            this.panelControl.TabIndex = 4;
-            this.panelControl.Resize += new System.EventHandler(this.panelControl_Resize);
-            // 
-            // panelControl1
-            // 
-            this.panelControl1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.panelControl1.Controls.Add(this.groupBox1);
-            this.panelControl1.Controls.Add(this.btnConfirm);
-            this.panelControl1.Controls.Add(this.pbImage);
-            this.panelControl1.Controls.Add(this.txtNumberInput);
-            this.panelControl1.Controls.Add(this.label2);
-            this.panelControl1.Controls.Add(this.lblMessage);
-            this.panelControl1.Location = new System.Drawing.Point(10, 10);
-            this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(821, 677);
-            this.panelControl1.TabIndex = 9;
+            this.panelControlInput.Appearance.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.panelControlInput.Appearance.Options.UseBackColor = true;
+            this.panelControlInput.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.panelControlInput.Controls.Add(this.txtNumberInput);
+            this.panelControlInput.Controls.Add(this.groupBox1);
+            this.panelControlInput.Controls.Add(this.btnConfirm);
+            this.panelControlInput.Controls.Add(this.pbImage);
+            this.panelControlInput.Controls.Add(this.label2);
+            this.panelControlInput.Controls.Add(this.lblMessage);
+            this.panelControlInput.Location = new System.Drawing.Point(0, 2);
+            this.panelControlInput.Name = "panelControlInput";
+            this.panelControlInput.Size = new System.Drawing.Size(946, 697);
+            this.panelControlInput.TabIndex = 12;
             // 
             // groupBox1
             // 
@@ -211,7 +153,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(75, 576);
+            this.groupBox1.Location = new System.Drawing.Point(27, 544);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(820, 495);
             this.groupBox1.TabIndex = 9;
@@ -497,23 +439,30 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             this.btnConfirm.Appearance.BackColor = System.Drawing.Color.White;
             this.btnConfirm.Appearance.BackColor2 = System.Drawing.Color.White;
             this.btnConfirm.Appearance.BorderColor = System.Drawing.Color.White;
-            this.btnConfirm.Appearance.Font = new System.Drawing.Font("Arial", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnConfirm.Appearance.Font = new System.Drawing.Font("Arial", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnConfirm.Appearance.ForeColor = System.Drawing.Color.DeepSkyBlue;
             this.btnConfirm.Appearance.Options.UseBackColor = true;
             this.btnConfirm.Appearance.Options.UseBorderColor = true;
             this.btnConfirm.Appearance.Options.UseFont = true;
             this.btnConfirm.Appearance.Options.UseForeColor = true;
+            this.btnConfirm.AppearanceHovered.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnConfirm.AppearanceHovered.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnConfirm.AppearanceHovered.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.btnConfirm.AppearanceHovered.Options.UseBackColor = true;
+            this.btnConfirm.AppearanceHovered.Options.UseFont = true;
+            this.btnConfirm.AppearanceHovered.Options.UseForeColor = true;
             this.btnConfirm.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.btnConfirm.Location = new System.Drawing.Point(490, 332);
+            this.btnConfirm.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnConfirm.Location = new System.Drawing.Point(590, 332);
             this.btnConfirm.Name = "btnConfirm";
-            this.btnConfirm.Size = new System.Drawing.Size(208, 59);
+            this.btnConfirm.Size = new System.Drawing.Size(240, 66);
             this.btnConfirm.TabIndex = 9;
             this.btnConfirm.Text = "Đăng ký khám";
             this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
             // 
             // pbImage
             // 
-            this.pbImage.Location = new System.Drawing.Point(592, 33);
+            this.pbImage.Location = new System.Drawing.Point(530, 32);
             this.pbImage.Name = "pbImage";
             this.pbImage.Size = new System.Drawing.Size(151, 62);
             this.pbImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -521,72 +470,93 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             this.pbImage.TabStop = false;
             this.pbImage.Visible = false;
             // 
-            // txtNumberInput
-            // 
-            this.txtNumberInput.EditValue = "";
-            this.txtNumberInput.Location = new System.Drawing.Point(5, 332);
-            this.txtNumberInput.Margin = new System.Windows.Forms.Padding(20, 5, 5, 5);
-            this.txtNumberInput.Name = "txtNumberInput";
-            this.txtNumberInput.Properties.Appearance.Font = new System.Drawing.Font("Arial", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNumberInput.Properties.Appearance.Options.UseFont = true;
-            this.txtNumberInput.Properties.AutoHeight = false;
-            this.txtNumberInput.Properties.NullText = "Nhập số";
-            this.txtNumberInput.Properties.NullValuePrompt = "Nhập số";
-            this.txtNumberInput.Size = new System.Drawing.Size(480, 59);
-            this.txtNumberInput.TabIndex = 3;
-            this.txtNumberInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNumberInput_KeyPress);
-            // 
             // label2
             // 
-            this.label2.Appearance.Font = new System.Drawing.Font("Arial", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Appearance.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Appearance.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(5, 278);
+            this.label2.Location = new System.Drawing.Point(10, 278);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(709, 32);
+            this.label2.Size = new System.Drawing.Size(837, 38);
             this.label2.TabIndex = 2;
             this.label2.Text = "Xin mời quẹt thẻ hoặc nhập CCCD, CMND, mã bệnh nhân";
             // 
             // lblMessage
             // 
-            this.lblMessage.Appearance.Font = new System.Drawing.Font("Arial", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMessage.Appearance.Font = new System.Drawing.Font("Arial", 35.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMessage.Appearance.ForeColor = System.Drawing.Color.White;
-            this.lblMessage.Location = new System.Drawing.Point(12, 111);
+            this.lblMessage.Location = new System.Drawing.Point(4, 111);
             this.lblMessage.Name = "lblMessage";
-            this.lblMessage.Size = new System.Drawing.Size(767, 46);
+            this.lblMessage.Size = new System.Drawing.Size(928, 55);
             this.lblMessage.TabIndex = 1;
             this.lblMessage.Text = "Hệ thống đăng ký khám bệnh thông minh";
             // 
-            // layoutControlGroup2
+            // panel1
             // 
-            this.layoutControlGroup2.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
-            this.layoutControlGroup2.GroupBordersVisible = false;
-            this.layoutControlGroup2.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.panel1.Location = new System.Drawing.Point(869, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(501, 701);
+            this.panel1.TabIndex = 4;
+            // 
+            // layoutControlGroup1
+            // 
+            this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.layoutControlGroup1.GroupBordersVisible = false;
+            this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlItem1,
             this.layoutControlItem2});
-            this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlGroup2.Name = "layoutControlGroup2";
-            this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(835, 701);
-            this.layoutControlGroup2.TextVisible = false;
+            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroup1.Name = "layoutControlGroup1";
+            this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1370, 701);
+            this.layoutControlGroup1.TextVisible = false;
+            // 
+            // layoutControlItem1
+            // 
+            this.layoutControlItem1.Control = this.panel1;
+            this.layoutControlItem1.Location = new System.Drawing.Point(869, 0);
+            this.layoutControlItem1.Name = "layoutControlItem1";
+            this.layoutControlItem1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlItem1.Size = new System.Drawing.Size(501, 701);
+            this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
-            this.layoutControlItem2.Control = this.panelControl;
+            this.layoutControlItem2.Control = this.panel2;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(835, 701);
+            this.layoutControlItem2.Size = new System.Drawing.Size(869, 701);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
-            // timerCheckFocus
+            // txtNumberInput
             // 
-            this.timerCheckFocus.Interval = 2000;
+            this.txtNumberInput.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.txtNumberInput.BackColor = System.Drawing.Color.White;
+            this.txtNumberInput.BackgroundColor = System.Drawing.Color.White;
+            this.txtNumberInput.BorderColor = System.Drawing.Color.White;
+            this.txtNumberInput.BorderRadius = 20;
+            this.txtNumberInput.BorderSize = 1;
+            this.txtNumberInput.EditMaskPn = "";
+            this.txtNumberInput.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.txtNumberInput.Location = new System.Drawing.Point(4, 332);
+            this.txtNumberInput.MaskTypes = DevExpress.XtraEditors.Mask.MaskType.None;
+            this.txtNumberInput.MaxLengthTexts = 200;
+            this.txtNumberInput.Name = "txtNumberInput";
+            this.txtNumberInput.Padding = new System.Windows.Forms.Padding(15);
+            this.txtNumberInput.Size = new System.Drawing.Size(568, 66);
+            this.txtNumberInput.TabIndex = 10;
+            this.txtNumberInput.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.txtNumberInput.TextHintNull = "Nhập số";
+            this.txtNumberInput.Texts = "";
+            this.txtNumberInput.Visible = false;
+            this.txtNumberInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNumberInput_KeyPress);
             // 
             // frmWaiting2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1360, 701);
-            this.Controls.Add(this.layoutControl2);
+            this.ClientSize = new System.Drawing.Size(1370, 701);
             this.Controls.Add(this.layoutControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmWaiting2";
@@ -597,28 +567,19 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             this.Load += new System.EventHandler(this.frmWaiting2_Load);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.frmWaitingScreen_KeyUp);
             this.Controls.SetChildIndex(this.layoutControl1, 0);
-            this.Controls.SetChildIndex(this.layoutControl2, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
-            this.panelControl2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
-            this.layoutControl2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl)).EndInit();
-            this.panelControl.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
-            this.panelControl1.ResumeLayout(false);
-            this.panelControl1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.panelControlInput)).EndInit();
+            this.panelControlInput.ResumeLayout(false);
+            this.panelControlInput.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCamera)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbCccdImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbImage)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtNumberInput.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -626,18 +587,12 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         }
 
         #endregion
-
-        private DevExpress.XtraLayout.LayoutControl layoutControl1;
-        private DevExpress.XtraEditors.PanelControl panelControl2;
-        private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
-        private DevExpress.XtraLayout.LayoutControl layoutControl2;
-        private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup2;
-        private DevExpress.XtraEditors.PanelControl panelControl;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private System.Windows.Forms.Timer timerLabel;
         private System.Windows.Forms.Timer timerWallPaper;
         private System.Windows.Forms.Timer timerCheckFocus;
+        private DevExpress.XtraLayout.LayoutControl layoutControl1;
+        private System.Windows.Forms.Panel panel2;
+        private DevExpress.XtraEditors.PanelControl panelControlInput;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.PictureBox pbCamera;
         private System.Windows.Forms.Label label7;
@@ -663,12 +618,14 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
-        private DevExpress.XtraEditors.PanelControl panelControl1;
         private DevExpress.XtraEditors.SimpleButton btnConfirm;
         private System.Windows.Forms.PictureBox pbImage;
-        private DevExpress.XtraEditors.TextEdit txtNumberInput;
         private DevExpress.XtraEditors.LabelControl label2;
         private DevExpress.XtraEditors.LabelControl lblMessage;
-        private DevExpress.XtraEditors.PictureEdit pictureEdit1;
+        private System.Windows.Forms.Panel panel1;
+        private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
+        private Inventec.CustomControls.PNTextEdit txtNumberInput;
     }
 }

@@ -1048,7 +1048,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
 
                     WaitingManager.Hide();
                     SetDefaultHost();
-                    frmChooseObject frmChoose = new frmChooseObject(loadFormRegisterExamKiosk);
+                    frmChooseObject frmChoose = new frmChooseObject(loadFormRegisterExamKiosk, (HIS.Desktop.Common.DelegateCloseForm_Uc)closingForm);
                     frmChoose.ShowDialog();
                 }
             }
@@ -1278,7 +1278,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
 
                         WaitingManager.Hide();
                         SetDefaultHost();
-                        frmChooseObject frmChoose = new frmChooseObject(loadFormRegisterExamKiosk);
+                        frmChooseObject frmChoose = new frmChooseObject(loadFormRegisterExamKiosk, (HIS.Desktop.Common.DelegateCloseForm_Uc)closingForm);
                         frmChoose.ShowDialog();
                     }
                 }
@@ -1621,7 +1621,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                     {
                         this.isCallPrintForm = true;
                         SetDefaultHost();
-                        frmRegisteredExam frm = new frmRegisteredExam(this.currentModule, this.PatientData, loadFormRegisterExamKiosk, OpenFormByPatientData, patientForKioskSDO, IsEmergency);
+                        frmRegisteredExam frm = new frmRegisteredExam(this.currentModule, this.PatientData, loadFormRegisterExamKiosk, OpenFormByPatientData, patientForKioskSDO, IsEmergency, (HIS.Desktop.Common.DelegateCloseForm_Uc)closingForm);
                         frm.ShowDialog();
                         return true;
                     }
@@ -1772,7 +1772,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                         this.PatientData.PatientForKiosk = MapDataFromCard(card);
                     }
                     SetDefaultHost();
-                    frmChooseObject frmChoose = new frmChooseObject(loadFormRegisterExamKiosk);
+                    frmChooseObject frmChoose = new frmChooseObject(loadFormRegisterExamKiosk, (HIS.Desktop.Common.DelegateCloseForm_Uc)closingForm);
                     frmChoose.ShowDialog();
                 }
             }
