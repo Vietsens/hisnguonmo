@@ -1684,7 +1684,6 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 lciFreeCoPainTime = null;
                 panelControl1 = null;
                 txtFreeCoPainTime = null;
-                emptySpaceItem1 = null;
                 lciInCode = null;
                 txtInCode = null;
                 lciHNCode = null;
@@ -1922,6 +1921,61 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        private void chkTt46_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkTt46.Checked)
+                {
+                    txtTt46.Enabled = true;
+                    rdoRightRoute.Checked = true;
+                }
+                else
+                {
+                    txtTt46.Text = null;
+                    txtTt46.Enabled = false;
+                }
+                if (rdoRightRoute.Checked)
+                    ValidateRightRouteType();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkHasWorkingLetter_CheckedChanged(object sender, EventArgs e)
+        {
+
+            try
+            {
+                if(chkHasWorkingLetter.Checked)
+                    rdoRightRoute.Checked = true;
+                if (rdoRightRoute.Checked)
+                    ValidateRightRouteType();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void chkHasAbsentLetter_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkHasAbsentLetter.Checked)
+                    rdoRightRoute.Checked = true;
+                if (rdoRightRoute.Checked)
+                    ValidateRightRouteType();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 
