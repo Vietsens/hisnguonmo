@@ -138,12 +138,12 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                 zoomFactor();
                 LoadDataBySereServId();
 
-                Task[] taskall = new Task[4];
+                Task[] taskall = new Task[3];
 
-                taskall[0] = Task.Factory.StartNew(() => { GetServiceReq(); });
-                taskall[1] = Task.Factory.StartNew(() => { LoadTreatmentWithPaty(); });
-                taskall[2] = Task.Factory.StartNew(() => { GetPatientById(); });
-                taskall[3] = Task.Factory.StartNew(() => { KiemTraThongTinPhieuKetQuaDienTu(); });
+                //taskall[0] = Task.Factory.StartNew(() => { GetServiceReq(); });
+                taskall[0] = Task.Factory.StartNew(() => { LoadTreatmentWithPaty(); });
+                taskall[1] = Task.Factory.StartNew(() => { GetPatientById(); });
+                taskall[2] = Task.Factory.StartNew(() => { KiemTraThongTinPhieuKetQuaDienTu(); });
                 Task.WaitAll(taskall);
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("this.listEmrDocument", this.listEmrDocument));
@@ -244,6 +244,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                 if (rs != null && rs.Count > 0)
                 {
                     sereServ = rs[0];
+                    GetServiceReq();
                     SereServClickRow(rs[0]);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("this.sereServ", this.sereServ));
                 }
