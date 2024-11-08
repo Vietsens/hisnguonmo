@@ -5287,9 +5287,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             try
             {
 				int icd_code = txtIcdCode.Text.Length;
+				Inventec.Common.Logging.LogSystem.Debug("Do dai icd code: " + icd_code);
 				int icd_name = Inventec.Common.String.CountVi.Count(cboIcds.Text) ?? 0;
+				Inventec.Common.Logging.LogSystem.Debug("Do dai icd name: " + icd_name);
 				int icd_sub_code = txtIcdSubCode.Text.Length;
+				Inventec.Common.Logging.LogSystem.Debug("Do dai icd sub code: " + icd_sub_code);
 				int icd_text = Inventec.Common.String.CountVi.Count(txtIcdText.Text) ?? 0;
+				Inventec.Common.Logging.LogSystem.Debug("Do dai icd sub name: " + icd_text);
 				int icd_yhct_len = 0;
 				int icd_yhct_sub_len = 0;
 				if(this.ucIcdYhct != null)
@@ -5299,6 +5303,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     {
 						var rs = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
 						if (rs != null) icd_yhct_len = rs.ToString().Length;
+						Inventec.Common.Logging.LogSystem.Debug("Do dai icd yhct code: " + icd_yhct_len);
 					}
 
 				}
@@ -5309,6 +5314,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 					{
 						var rs = ((HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
 						if (rs != null) icd_yhct_sub_len = rs.ToString().Length;
+						Inventec.Common.Logging.LogSystem.Debug("Do dai icd yhct sub code: " + icd_yhct_sub_len);
 					}
 				}
 
@@ -6260,7 +6266,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 					}
 					else
 					{
+						
 						txtIcdText.Focus();
+						
 					}
 					if (HisConfigCFG.IcdServiceHasCheck != "1" && HisConfigCFG.IcdServiceHasCheck != "2" && HisConfigCFG.IcdServiceHasCheck != "3" && HisConfigCFG.IcdServiceHasCheck != "4" && HisConfigCFG.IcdServiceHasCheck != "5")
 						return;
