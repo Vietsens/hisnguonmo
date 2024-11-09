@@ -1,3 +1,12 @@
+### Release 2.336.0
+* Sửa lại số thứ tự phòng khám không đánh số đối với y lệnh là đơn thuốc
+* Bổ sung xem thông tin sơ đồ bệnh viện, bảng giá dịch vụ trên chức năng kios
+* Bổ sung thông tin có giấy công tác, giấy tạm trú... đi kèm thẻ BHYT
+* Bổ sung thiết lập thành phần tham gia PT/TT theo đúng thông tư 50/2014
+* Bổ sung thông tin thời gian bắt đầu, người xử lý gửi kèm bản tin HL7 2.7 sang hệ thống PACS
+* Sửa thông tin ngày thực hiện y lệnh thuốc trong XML 2, mã bệnh bị quá ký tự trong các bảng XML phục vụ XML 130 và QĐ 4750/QĐ-BYT
+* Sửa mẫu repx tờ điều trị bổ sung thông tin dòng thuốc, thông tin bổ sung cho danh sách dự trù.
+
 ### Release 2.335.0
 * Bổ sung tính năng Danh sách đặt lịch hẹn khám
 * Bổ sung tính năng xuất XML gộp
