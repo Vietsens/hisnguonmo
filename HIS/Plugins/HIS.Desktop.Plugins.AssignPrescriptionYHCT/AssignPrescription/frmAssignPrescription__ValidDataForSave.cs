@@ -23,6 +23,7 @@ using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.Resources;
+using HIS.UC.Icd;
 using HIS.UC.Icd.ADO;
 using HIS.UC.SecondaryIcd.ADO;
 using Inventec.Common.Adapter;
@@ -408,6 +409,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     var treatDT = treatmentFinishProcessor.GetDataOutput(ucTreatmentFinish);
                     if (treatDT.IsAutoTreatmentFinish)
                     {
+                        var subIcd = (SecondaryIcdDataADO)this.subIcdProcessor.GetValue(this.ucSecondaryIcd);
+                        if (subIcd != null && !string.IsNullOrEmpty(subIcd.ICD_SUB_CODE))
+                        {
+                            var subIcdList = subIcd.ICD_SUB_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                            if (subIcdList != null && subIcdList.Count > 12)
+                            {
+                                if (HisConfigCFG.IsCheckSubIcdExceedLimit == "1" || (HisConfigCFG.IsCheckSubIcdExceedLimit == "2" && DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục?",
+                             HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                             MessageBoxButtons.YesNo) == DialogResult.No))
+                                {
+                                    return result = false;
+                                }
+                            }
+                        }
                         if (HisConfigCFG.CheckSameHein == 1)
                         {
                             bool checkSameHein = false;

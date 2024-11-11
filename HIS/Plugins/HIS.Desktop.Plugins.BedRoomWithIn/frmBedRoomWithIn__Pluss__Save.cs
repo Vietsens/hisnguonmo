@@ -109,7 +109,10 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 this.positionHandleControl = -1;
                 vali = IsValiICD() && vali;
                 vali = IsValiICDSub() && vali;
+                LogSystem.Debug("cboTreatment : " + cboTreatmentType.EditValue + " txt: " + txtTreatmentTypeCode.Text);
+                LogSystem.Debug("cboPatientReceive : " + cboPatientReceive.EditValue + " txt: " + txtPatientReceive.Text);
                 vali = dxValidationProvider2.Validate() && vali;
+                LogSystem.Debug("Validation control. " + vali);
                 vali = ValidSereServWithCondition() && vali;
                 if (!vali) return;
                 WaitingManager.Show();

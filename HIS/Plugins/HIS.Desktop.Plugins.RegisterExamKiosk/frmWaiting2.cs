@@ -1,79 +1,50 @@
-/* IVT
- * @Project : hisnguonmo
- * Copyright (C) 2017 INVENTEC
- *  
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *  
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
- * GNU General Public License for more details.
- *  
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+﻿using DevExpress.XtraEditors;
+using His.Bhyt.InsuranceExpertise;
+using His.Bhyt.InsuranceExpertise.LDO;
+using HIS.Desktop.Common;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.HisConfig;
+using HIS.Desktop.Plugins.RegisterExamKiosk.ADO;
+using HIS.Desktop.Plugins.RegisterExamKiosk.Config;
+using HIS.Desktop.Plugins.RegisterExamKiosk.Popup;
+using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.CheckHeinCardGOV;
+using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ChooseObject;
+using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisteredExam;
+using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk;
+using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
+using Inventec.Common.QrCodeBHYT;
+using Inventec.Common.QrCodeCCCD;
+using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.LibraryHein.Bhyt;
+using MOS.SDO;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Resources;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk;
-using MOS.EFMODEL.DataModels;
-using MOS.Filter;
-using Inventec.Core;
-using Inventec.Common.Adapter;
-using MOS.SDO;
-using Inventec.Desktop.Common.Message;
-using System.Resources;
-using Inventec.Desktop.Common.LanguageManager;
-using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.CheckHeinCardGOV;
-using Inventec.Common.Logging;
-using HIS.Desktop.LocalStorage.BackendData;
-using His.Bhyt.InsuranceExpertise;
-using His.Bhyt.InsuranceExpertise.LDO;
-using System.Threading;
-using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ChooseObject;
-using HIS.Desktop.Common;
-using HIS.Desktop.Plugins.RegisterExamKiosk.Config;
-using HIS.Desktop.Plugins.RegisterExamKiosk.ADO;
-using Inventec.Common.QrCodeBHYT;
-using DevExpress.XtraEditors;
-using Inventec.Common.QrCodeCCCD;
-using MOS.LibraryHein.Bhyt;
-using HIS.Desktop.LocalStorage.HisConfig;
-using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisteredExam;
 using WcfCCCD;
-using System.IO;
-using System.Diagnostics;
-using System.Net.Http;
-using Newtonsoft.Json;
-using System.Net.Http.Headers;
-using System.Net;
-using System.Configuration;
-using HIS.Desktop.ApiConsumer;
 
 namespace HIS.Desktop.Plugins.RegisterExamKiosk
 {
-    public partial class frmWaitingScreen : HIS.Desktop.Utility.FormBase
+    public partial class frmWaiting2 : HIS.Desktop.Utility.FormBase
     {
-
-        /// <summary>
-        /// Nghiệp vụ: 
-        /// Thẻ được phát hành tại trung tâm phát hành thẻ
-        /// Bệnh nhân quẹt thẻ=> check xem thẻ có hợp lệ hay không. Thẻ hợp lệ là thẻ có Patient_id >0
-        /// Nếu thẻ hợp lệ gọi form tiếp theo để xử lí nghiệp vụ tiếp
-        /// 
-        /// Module sử dụng với phần mềm CDA để quẹt thẻ
-        /// </summary>
-        /// 
-
         #region Declare
         int indexImage;
         List<Image> listImage;
@@ -90,13 +61,12 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         bool IsCheckHein = false;
         #endregion
 
-        #region Contructor
-        public frmWaitingScreen()
+        public frmWaiting2()
         {
             InitializeComponent();
         }
         System.Windows.Forms.Timer timerCheckVisible = new System.Windows.Forms.Timer();
-        public frmWaitingScreen(Inventec.Desktop.Common.Modules.Module module)
+        public frmWaiting2(Inventec.Desktop.Common.Modules.Module module)
             : base(module)
         {
             InitializeComponent();
@@ -105,6 +75,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 this.currentModule = module;
                 string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
                 this.Icon = Icon.ExtractAssociatedIcon(iconPath);
+
             }
             catch (Exception ex)
             {
@@ -112,68 +83,219 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             }
 
         }
-        public void frmWaitingScreen_Load(object sender, EventArgs e)
+
+        private void frmWaiting2_Load(object sender, EventArgs e)
         {
             try
             {
-                AppConfigs.LoadConfig();
-                checkConfig();
-                CheckEmploy();
-                //Lấy ảnh từ thư mục trong HIS.Desktop
-                getImageFromFile();
-
-                LoadDefaultScreenSaver();
-
-                //Load ảnh mặc định lên form 
-                if (listImage != null && listImage.Count > 0)
+                if (this.InvokeRequired)
                 {
-                    this.panelControl2.ContentImage = listImage[0];
+                    this.Invoke((MethodInvoker)(() =>
+                    {
+                        LoadMethod();
+                    }));
+                }
+                else
+                {
+                    LoadMethod();
                 }
 
-                //Thời gian hiển thị thông báo khi quẹt thẻ ms
-                timerLabel.Interval = 3000;
-
-                //Thời gian đổi hình nền
-                timerWallPaper.Interval = 10000;
-
-                timerCheckVisible.Interval = 5000;
-                //timerCheckVisible.Tick += TimerCheckVisible_Tick;
-
-                RegisterTimer(currentModule.ModuleLink, "timerWallPaper", timerWallPaper.Interval, timerWallPaper_Tick);
-                StartTimer(currentModule.ModuleLink, "timerWallPaper");
-                RegisterTimer(currentModule.ModuleLink, "timerCheckFocus", timerCheckFocus.Interval, timerCheckFocus_Tick);
-                StartTimer(currentModule.ModuleLink, "timerCheckFocus");
-                lblMessage.Text = "HỆ THỐNG ĐĂNG KÝ KHÁM CHỮA BỆNH THÔNG MINH.";
-
-                RegisterTimer(currentModule.ModuleLink, "timerCheckVisible", timerCheckVisible.Interval, TimerCheckVisible_Tick);
-                SetDefaultHost();
-                label2.Text = null;
-                //Mở host CDA
-                InitWCFReadCard();
-                if (HisConfigCFG.IdentityNumberOption == "1")
-                {
-                    label2.Text = "XIN MỜI QUẸT THẺ HOẶC NHẬP SỐ CCCD, CMND, MÃ BỆNH NHÂN";
-                }
-                else if (HisConfigCFG.IdentityNumberOption == "2")
-                {
-                    label2.Text = "XIN MỜI QUẸT THẺ KHÁM CHỮA BỆNH THÔNG MINH\nHOẶC XÁC THỰC CCCD";
-                    txtNumberInput.Size = new Size(txtNumberInput.Size.Width - 200, txtNumberInput.Size.Height);
-                    txtNumberInput.Location = new Point(txtNumberInput.Location.X + 25, txtNumberInput.Location.Y);
-                    btnConfirm.Location = new Point(btnConfirm.Location.X - 175, btnConfirm.Location.Y);
-                    btnCancel.Location = new Point(btnCancel.Location.X - 175, btnCancel.Location.Y);
-                    txtNumberInput.TextHintNull = "Nhập 3 số cuối của CCCD";
-                    txtNumberInput.MaxLengthTexts = 3;
-                    OpenServiceCccd();
-                    StartTimer(currentModule.ModuleLink, "timerCheckVisible");
-                }
-                //label2.Text = "XIN MỜI QUẸT THẺ HOẶC NHẬP SỐ THẺ\nCMND, CCCD, MÃ BỆNH NHÂN";
-                txtNumberInput.Focus();
             }
             catch (Exception ex)
             {
                 StopTimer(currentModule.ModuleLink, "timerWallPaper");
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        private void SetCaptionByLanguageKey()
+        {
+            try
+            {
+                ////Khoi tao doi tuong resource
+                Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.RegisterExamKiosk.Resources.Lang", typeof(frmWaiting2).Assembly);
+
+                ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
+                this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.label7.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.label7.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.pnSimpleButton1.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.pnSimpleButton1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lblPer.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.lblPer.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.label21.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.label21.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lblExpried.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.lblExpried.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lblEthe.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.lblEthe.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lblGenderName.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.lblGenderName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lblName.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.lblName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lblDate.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.lblDate.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lblNational.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.lblNational.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lblDob.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.lblDob.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lblCccdCode.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.lblCccdCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.label12.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.label12.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.label11.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.label11.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.label10.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.label10.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.label9.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.label9.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lblCapPer.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.lblCapPer.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.label6.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.label6.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.label5.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.label5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.label4.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.label4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.label3.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.label3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.label1.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.label1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnConfirm.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.btnConfirm.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.label2.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.label2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lblMessage.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.lblMessage.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.Text = Inventec.Common.Resource.Get.Value("frmWaiting2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.Text = this.currentModule.text.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void LoadMethod()
+        {
+            try
+            {
+
+                SetCaptionByLanguageKey();
+                // Load Configuration and Initialize
+                LoadConfigurations();
+                SetupTimers();
+
+                // Load and Display Image
+                DisplayImageInPanel();
+
+                // Set initial message
+                lblMessage.Text = "Hệ thống đăng ký khám bệnh thông minh";
+
+                // Configure Identification Prompt
+                ConfigureIdentityPrompt();
+
+                // Final UI Adjustments
+                CenterPanel();
+                CreateButton();
+
+                txtNumberInput.Focus();
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void LoadConfigurations()
+        {
+            AppConfigs.LoadConfig();
+            checkConfig();
+            CheckEmploy();
+            getImageFromFile(); // Assuming this loads images into listImage
+            LoadDefaultScreenSaver();
+        }
+
+        private void SetupTimers()
+        {
+            timerLabel.Interval = 3000;
+            timerWallPaper.Interval = 10000;
+            timerCheckVisible.Interval = 5000;
+
+            RegisterTimer(currentModule.ModuleLink, "timerWallPaper", timerWallPaper.Interval, timerWallPaper_Tick);
+            StartTimer(currentModule.ModuleLink, "timerWallPaper");
+
+            RegisterTimer(currentModule.ModuleLink, "timerCheckFocus", timerCheckFocus.Interval, timerCheckFocus_Tick);
+            StartTimer(currentModule.ModuleLink, "timerCheckFocus");
+
+            RegisterTimer(currentModule.ModuleLink, "timerCheckVisible", timerCheckVisible.Interval, TimerCheckVisible_Tick);
+        }
+
+        private void DisplayImageInPanel()
+        {
+            if (listImage != null && listImage.Count > 0)
+            {
+                Image originalImage = listImage[0];
+                int panelWidth = panel1.Width;
+                int panelHeight = panel1.Height;
+
+                int cropWidth = Math.Min(panelWidth, originalImage.Width);
+                int cropHeight = Math.Min(panelHeight, originalImage.Height);
+
+                int cropX = Math.Max(originalImage.Width - cropWidth - 20, 0); // Adjust 20 for desired offset
+                int cropY = (originalImage.Height - cropHeight) / 2;
+
+                Bitmap croppedImage = new Bitmap(panelWidth, panelHeight);
+                using (Graphics g = Graphics.FromImage(croppedImage))
+                {
+                    g.DrawImage(originalImage, new Rectangle(0, 0, panelWidth, panelHeight),
+                                new Rectangle(cropX, cropY, cropWidth, cropHeight),
+                                GraphicsUnit.Pixel);
+                }
+
+                panel1.BackgroundImage = croppedImage;
+                panel1.BackgroundImageLayout = ImageLayout.Stretch;
+            }
+        }
+
+        private void ConfigureIdentityPrompt()
+        {
+            SetDefaultHost();
+            label2.Text = null;
+
+            InitWCFReadCard();
+
+            if (HisConfigCFG.IdentityNumberOption == "1")
+            {
+                label2.Text = "Xin mời quẹt thẻ hoặc nhập số CCCD, CMND, mã bệnh nhân";
+            }
+            else if (HisConfigCFG.IdentityNumberOption == "2")
+            {
+                label2.Text = "XIN MỜI QUẸT THẺ KHÁM CHỮA BỆNH THÔNG MINH\nHOẶC XÁC THỰC CCCD";
+                AdjustInputFields();
+
+                OpenServiceCccd();
+                StartTimer(currentModule.ModuleLink, "timerCheckVisible");
+            }
+        }
+
+        private void AdjustInputFields()
+        {
+            txtNumberInput.Size = new Size(txtNumberInput.Size.Width - 200, txtNumberInput.Size.Height);
+            txtNumberInput.Location = new Point(txtNumberInput.Location.X + 25, txtNumberInput.Location.Y);
+            btnConfirm.Location = new Point(btnConfirm.Location.X - 175, btnConfirm.Location.Y);
+            txtNumberInput.TextHintNull = "Nhập số";
+            txtNumberInput.MaxLengthTexts = 3;
+            txtNumberInput.Focus();
+
+        }
+        private void CreateButton()
+        {
+            try
+            {
+                List<HomeButton> listData = new List<HomeButton>();
+                string config = HisConfigs.Get<string>("HIS.Desktop.Plugins.RegisterExamKiosk.HomeButton");
+                if (!string.IsNullOrEmpty(config))
+                {
+                    var rs = JsonConvert.DeserializeObject<List<HomeButton>>(config);
+                    listData = rs;
+                    GenerateButtons(listData);
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        class HomeButton
+        {
+            public string ButtonName { get; set; }
+            public string ButtonLink { get; set; }
+        };
+
+        private void CenterPanel()
+        {
+            // Giả sử panelChild là panel con cần đặt ở giữa, còn panelParent là panel cha hoặc Form
+            int x = (panel2.Width - panelControlInput.Width) / 2;
+            int y = (panel2.Height - panelControlInput.Height) / 2;
+
+            panelControlInput.Location = new Point(x, y);
         }
 
         public void CheckEmploy()
@@ -224,8 +346,6 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             }
 
         }
-
-        #endregion
         private void SetDefaultHost()
         {
 
@@ -255,14 +375,14 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 {
                     txtNumberInput.Visible = true;
                     btnConfirm.Visible = true;
-                    btnCancel.Visible = false;
+                    // btnCancel.Visible = false;
                     groupBox1.Visible = false;
                 }
                 else if (HisConfigCFG.IdentityNumberOption == "2")
                 {
                     txtNumberInput.Visible = false;
                     btnConfirm.Visible = false;
-                    btnCancel.Visible = false;
+                    //btnCancel.Visible = false;
                     groupBox1.Visible = true;
                 }
             }
@@ -287,7 +407,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 var employee = currentEmployee;
                 if (!string.IsNullOrEmpty(connect_infor))
                 {
-                    
+
                     connectInfors = connect_infor.Split('|').ToList();
                     api = connectInfors.Count > 0 ? connectInfors[0] : string.Empty;
 
@@ -481,10 +601,10 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                                 }
                                 else if (TopKMatching.Count > 1)
                                 {
-                                    SetDelegateServiceCccd (false);
+                                    SetDelegateServiceCccd(false);
                                     txtNumberInput.Visible = true;
                                     btnConfirm.Visible = true;
-                                    btnCancel.Visible = true;
+                                    //btnCancel.Visible = true;
                                     groupBox1.Visible = false;
                                     IsUseFaceReg = true;
                                     return;
@@ -815,7 +935,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         {
             try
             {
-                frmWaitingScreen_Load(null, null);
+                frmWaiting2_Load(null, null);
             }
             catch (Exception ex)
             {
@@ -823,28 +943,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             }
         }
 
-        private void SetCaptionByLanguageKey()
-        {
-            try
-            {
-                if (this.currentModule != null && !String.IsNullOrEmpty(this.currentModule.text))
-                {
-                    this.Text = this.currentModule.text;
-                }
-                ////Khoi tao doi tuong resource
-                Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.RegisterExamKiosk.Resources.Lang", typeof(HIS.Desktop.Plugins.RegisterExamKiosk.frmWaitingScreen).Assembly);
 
-                ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
-                this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmWaitingScreen.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("frmWaitingScreen.layoutControl3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("frmWaitingScreen.layoutControl2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.Text = Inventec.Common.Resource.Get.Value("frmWaitingScreen.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
 
         private HisPatientForKioskSDO GetPatientInfoByFilter(HisPatientAdvanceFilter filter)
         {
@@ -975,9 +1074,9 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                     if (hisCardSdo != null)
                     {
                         this.PatientData.CardInfo = hisCardSdo;
-                        
+
                     }
-                    
+
                 }, serviceCode);
                 taskAll.Add(tsCard);
 
@@ -1035,9 +1134,9 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 Inventec.Common.Logging.LogSystem.Debug("OpenFormByPatientData__" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => PatientData), PatientData));
                 if (!string.IsNullOrEmpty(HeinCardNumber))
                 {
-                    WaitingManager.Show();
+
                     this.CheckheinCardFromHeinInsuranceApi(heinData);
-                    WaitingManager.Hide();
+
                 }
                 else
                 {
@@ -1046,9 +1145,9 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                         return;
                     }
 
-                    WaitingManager.Hide();
+
                     SetDefaultHost();
-                    frmChooseObject frmChoose = new frmChooseObject(loadFormRegisterExamKiosk, (HIS.Desktop.Common.DelegateCloseForm_Uc)closingForm);
+                    frmChooseObject frmChoose = new frmChooseObject(loadFormRegisterExamKiosk, (DelegateCloseForm_Uc)closingForm);
                     frmChoose.ShowDialog();
                 }
             }
@@ -1073,7 +1172,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 if (patienType != null && patienType.GetType() == typeof(long))
                 {
                     long patientTypeId = (long)patienType;
-                    
+
                     var frm = new frmRegisterExamKiosk(PatientData, (HIS.Desktop.Common.DelegateRefreshData)SetNull, this.currentModule, (HIS.Desktop.Common.DelegateCloseForm_Uc)closingForm, patientTypeId);
                     frm.ShowDialog();
                 }
@@ -1088,7 +1187,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        
+
         private async Task CheckheinCardFromHeinInsuranceApi(HeinCardData dataHein)
         {
             try
@@ -1120,7 +1219,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                             }
                             this.PatientData.PatientForKiosk = GetPatientInfoByFilter(filter);
                         }
-                        
+
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => PatientData), PatientData));
                         if (!string.IsNullOrEmpty(rsIns.gtTheTu))
                         {
@@ -1141,7 +1240,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                                 }
                             }
                         }
-                        
+
                         DateTime dTheDen = DateTime.MinValue;
                         if (!string.IsNullOrEmpty(rsIns.gtTheDen))
                         {
@@ -1167,7 +1266,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                             DateTime d;
                             if (DateTime.TryParseExact(rsIns.gtTheTuMoi, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dTheTuMoi))
                             {
-                               //Gắn giá trị thẻ mới
+                                //Gắn giá trị thẻ mới
                             }
                         }
                         string mathe = "";
@@ -1303,7 +1402,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             {
                 hein = new HeinCardData();
                 hein.Address = patient.HeinAddress;
-                
+
                 if (patient.IsHasNotDayDob == 1)
                 {
                     hein.Dob = patient.Dob.ToString().Substring(0, 4);
@@ -1397,6 +1496,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             string cccd = "";
             try
             {
+                WaitingManager.Show();
                 if (String.IsNullOrEmpty(dataHein.PatientName)
                     || String.IsNullOrEmpty(dataHein.Dob)
                     || String.IsNullOrEmpty(dataHein.HeinCardNumber))
@@ -1404,11 +1504,11 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                     Inventec.Common.Logging.LogSystem.Info("Khong goi cong BHXH check thong tin the do du lieu truyen vao chua du du lieu bat buoc___" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataHein), dataHein));
                     return reult;
                 }
-                Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên cán bộ:{0}", nameCb));   
+                Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên cán bộ:{0}", nameCb));
                 Inventec.Common.Logging.LogSystem.Debug(String.Format("CCCD cán bộ:{0}", cccdCb));
                 Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên api:{0}", api));
 
-                
+
 
                 CommonParam param = new CommonParam();
                 ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
@@ -1421,10 +1521,12 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 checkHistoryLDO.hoTenCb = nameCb;
                 checkHistoryLDO.cccdCb = cccdCb;
                 Inventec.Common.Logging.LogSystem.Info("CheckHanSDTheBHYT => 1");
+                WaitingManager.Show();
                 reult = await apiInsuranceExpertise.CheckHistory(BHXHLoginCFG.USERNAME, BHXHLoginCFG.PASSWORD, BHXHLoginCFG.ADDRESS, checkHistoryLDO, BHXHLoginCFG.ADDRESS_OPTION);
-
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Info("CheckHanSDTheBHYT => 2");
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => reult), reult));
+                WaitingManager.Hide();
             }
             catch (Exception ex)
             {
@@ -1439,16 +1541,29 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         {
             try
             {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke((MethodInvoker)(() =>
+                    {
+                        WaitingManager.Show();
+                    }));
+                }
+                else
+                {
+                    WaitingManager.Show(this);
+                }
+
                 CheckDataFromInputNumber();
                 txtNumberInput.Texts = "";
                 txtNumberInput.Focus();
+                WaitingManager.Hide();
+
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private void CheckDataFromInputNumber()
         {
             try
@@ -1824,7 +1939,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                     string dtDate = card.Dob.Replace("/", "");
                     result.DOB = Int64.Parse(dtDate.Substring(4, 4) + dtDate.Substring(2, 2) + dtDate.Substring(0, 2) + "000000");
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -1917,8 +2032,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         {
             try
             {
-                lblMessage.Text = "HỆ THỐNG ĐĂNG KÝ KHÁM CHỮA BỆNH THÔNG MINH.";
-                label2.Text = "XIN MỜI QUẸT THẺ HOẶC NHẬP SỐ THẺ\nCMND, CCCD, MÃ BỆNH NHÂN";
+                lblMessage.Text = "Hệ thống đăng ký khám bệnh thông minh";
+                label2.Text = "Xin mời quẹt thẻ hoặc nhập số CCCD, CMND, mã bệnh nhân";
                 StopTimer(currentModule.ModuleLink, "timerLabel");
             }
             catch (Exception ex)
@@ -1937,8 +2052,39 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                     if (indexImage == listImage.Count)
                     {
                         indexImage = 0;
+
                     }
-                    this.panelControl2.ContentImage = listImage[indexImage];
+                    if (listImage != null && listImage.Count > 0)
+                    {
+                        Image originalImage = listImage[indexImage];
+
+                        // Panel dimensions
+                        int panelWidth = panel1.Width;
+                        int panelHeight = panel1.Height;
+
+                        // Calculate the cropping rectangle with a right offset
+                        int cropWidth = Math.Min(panelWidth, originalImage.Width);
+                        int cropHeight = Math.Min(panelHeight, originalImage.Height);
+
+                        // Set cropX to shift towards the right side (up to the image's width limit)
+                        int cropX = originalImage.Width - cropWidth - 20; // Adjust 20 to set desired offset
+                        cropX = Math.Max(cropX, 0); // Ensure cropX is not negative
+
+                        int cropY = (originalImage.Height - cropHeight) / 2;
+
+                        // Create a cropped and resized image to fit the panel
+                        Bitmap croppedImage = new Bitmap(panelWidth, panelHeight);
+                        using (Graphics g = Graphics.FromImage(croppedImage))
+                        {
+                            g.DrawImage(originalImage, new Rectangle(0, 0, panelWidth, panelHeight),
+                                        new Rectangle(cropX, cropY, cropWidth, cropHeight),
+                                        GraphicsUnit.Pixel);
+                        }
+
+                        // Set the cropped and resized image as panel background
+                        panel1.BackgroundImage = croppedImage;
+                        panel1.BackgroundImageLayout = ImageLayout.Stretch;
+                    }
                 }
             }
             catch (Exception ex)
@@ -2099,5 +2245,99 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void panelControl_Resize(object sender, EventArgs e)
+        {
+            CenterPanel();
+        }
+        private void GenerateButtons(List<HomeButton> buttonData)
+        {
+            try
+            {
+                int verticalSpacing = 20; // Space between rows
+                int horizontalSpacing = 30; // Space between buttons in a row
+                int buttonsPerRow = 2; // Max buttons per row
+                int maxWidthLimit = 250; // Set a maximum width limit for each button
+
+                for (int i = 0; i < buttonData.Count; i++)
+                {
+                    // Calculate row and column positions
+                    int row = i / buttonsPerRow;
+                    int column = i % buttonsPerRow;
+
+                    // Create the button with text and style
+                    SimpleButton btn = new SimpleButton
+                    {
+                        Text = buttonData[i].ButtonName,
+                        BackColor = Color.White,
+                        ForeColor = Color.DeepSkyBlue,
+                        BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder,
+                        AutoSize = false,
+                        ToolTip = buttonData[i].ButtonName,
+                        Cursor = Cursors.Hand,
+                        Font = new Font("Arial", 22, FontStyle.Regular),
+                        Tag = buttonData[i].ButtonLink
+                    };
+
+                    // Calculate the width based on text size with a limit
+                    using (Graphics g = this.CreateGraphics())
+                    {
+                        string text = buttonData[i].ButtonName;
+                        SizeF textSize = g.MeasureString(text, btn.Font);
+
+                        // Trim text if it exceeds max width
+                        while (textSize.Width > maxWidthLimit)
+                        {
+                            text = text.Substring(0, text.Length - 1); // Remove one character at a time
+                            textSize = g.MeasureString(text + "...", btn.Font);
+                        }
+
+                        btn.Text = text + (textSize.Width > maxWidthLimit ? "..." : "");
+                        btn.Size = new Size(Math.Min((int)textSize.Width + 20, maxWidthLimit), 59);
+                    }
+
+                    // Set location based on row and column
+                    btn.Location = new Point(
+                        113 + column * (btn.Width + horizontalSpacing),
+                        426 + row * (btn.Height + verticalSpacing)
+                    );
+
+                    // Add click event
+                    btn.Click += OpenWebViewForm;
+
+                    // Add the button to the panel
+                    this.panelControlInput.Controls.Add(btn);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
+
+
+
+        private void OpenWebViewForm(object sender, EventArgs e)
+        {
+            try
+            {
+                SimpleButton clickedButton = sender as SimpleButton;
+                if (clickedButton != null && clickedButton.Tag is string url)
+                {
+                    LogSystem.Debug("Duyet web: url: " + url.ToString());
+                    WebViewer webViewForm = new WebViewer(url, (HIS.Desktop.Common.DelegateCloseForm_Uc)closingForm);
+                    webViewForm.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
+
+
 }

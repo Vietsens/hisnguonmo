@@ -1521,7 +1521,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                     emrFilter.TREATMENT_CODE__EXACT = vHisTrackingList.First().TREATMENT_CODE;
                     emrFilter.IS_DELETE = false;
                     emrFilter.DOCUMENT_TYPE_ID = IMSys.DbConfig.EMR_RS.EMR_DOCUMENT_TYPE.ID__TRACKING;
-
+                    emrFilter.IS_ACTIVE = IMSys.DbConfig.EMR_RS.COMMON.IS_ACTIVE__TRUE;
                     var documents = new BackendAdapter(param).Get<List<V_EMR_DOCUMENT>>("api/EmrDocument/GetView", ApiConsumers.EmrConsumer, emrFilter, param);
                     if (documents != null && documents.Count > 0)
                     {
@@ -1720,6 +1720,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                     emrFilter.TREATMENT_CODE__EXACT = tracking.TREATMENT_CODE;
                     emrFilter.IS_DELETE = false;
                     emrFilter.DOCUMENT_TYPE_ID = IMSys.DbConfig.EMR_RS.EMR_DOCUMENT_TYPE.ID__TRACKING;
+                    emrFilter.IS_ACTIVE = IMSys.DbConfig.EMR_RS.COMMON.IS_ACTIVE__TRUE;
 
                     var documents = new BackendAdapter(param).Get<List<V_EMR_DOCUMENT>>("api/EmrDocument/GetView", ApiConsumers.EmrConsumer, emrFilter, param);
                     if (documents != null && documents.Count > 0)

@@ -1731,7 +1731,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
                     this.Invoke(new MethodInvoker(delegate () { this.Close(); }));
                     if (DelegateClose != null)
                     {
-                        DelegateClose(null);
+                       DelegateClose(null);
                     }
                 }
             }

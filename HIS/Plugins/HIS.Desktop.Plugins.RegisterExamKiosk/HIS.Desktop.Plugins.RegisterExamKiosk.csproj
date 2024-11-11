@@ -57,6 +57,39 @@
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraVerticalGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="EO.Base">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.Pdf">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.Pdf.Mvc">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.Pdf.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.Pdf.WinForm">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.Pdf.WinForm.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.Pdf.Wpf">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.Pdf.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.Web">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.Web.Design">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.Web.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.WebBrowser">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.WebBrowser.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.WebBrowser.WinForm">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.WebBrowser.WinForm.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.WebBrowser.Wpf">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.WebBrowser.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.WebEngine">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.WebEngine.dll</HintPath>
+    </Reference>
     <Reference Include="His.Bhyt.InsuranceExpertise">
       <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\His.Bhyt.InsuranceExpertise.dll</HintPath>
     </Reference>
@@ -104,6 +137,10 @@
     </Reference>
     <Reference Include="Inventec.Common.FlexCelExport">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelExport\Inventec.Common.FlexCelExport.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.FlexCelPrint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
@@ -216,9 +253,9 @@
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=13.0.1.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ReferencedAssemblies\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Library packages\Newtonsoft.Json.6.0.8\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SDA.EFMODEL">
       <HintPath>..\..\..\..\lib\SDA\SDA.EFMODEL.dll</HintPath>
@@ -258,6 +295,12 @@
     <Compile Include="Config\CheckHeinCardCFG.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Config\HisConfigCHECKHEINCARD.cs" />
+    <Compile Include="frmWaiting2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWaiting2.Designer.cs">
+      <DependentUpon>frmWaiting2.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmWaitingScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -320,6 +363,12 @@
     <Compile Include="Popup\ServiceRoom\frmServiceRoom.Designer.cs">
       <DependentUpon>frmServiceRoom.cs</DependentUpon>
     </Compile>
+    <Compile Include="Popup\WebViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popup\WebViewer.Designer.cs">
+      <DependentUpon>WebViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="PrintCode.cs" />
     <Compile Include="PrintKiosk.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -329,6 +378,9 @@
     <Compile Include="WaitingScreen\IWaitingScreen.cs" />
     <Compile Include="WaitingScreen\WaitingScreenBehavior.cs" />
     <Compile Include="WaitingScreen\WaitingScreenFactory.cs" />
+    <EmbeddedResource Include="frmWaiting2.resx">
+      <DependentUpon>frmWaiting2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmWaitingScreen.resx">
       <DependentUpon>frmWaitingScreen.cs</DependentUpon>
     </EmbeddedResource>
@@ -359,6 +411,9 @@
     <EmbeddedResource Include="Popup\ServiceRoom\frmServiceRoom.resx">
       <DependentUpon>frmServiceRoom.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Popup\WebViewer.resx">
+      <DependentUpon>WebViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -373,6 +428,8 @@
     <EmbeddedResource Include="Resources\Lang.vi.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

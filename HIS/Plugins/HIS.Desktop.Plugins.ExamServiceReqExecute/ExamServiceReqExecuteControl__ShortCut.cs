@@ -69,6 +69,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 GetUcIcdYHCT();
+                Inventec.Common.Logging.LogSystem.Debug("Valid ICD");
+                if (!ValidIcd(false)) return;
                 bool check = CheckIcd();
                 if (check == false)
                 {

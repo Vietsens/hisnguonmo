@@ -529,6 +529,53 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
             return valid;
         }
+        public bool isWarning = true;
+        private bool ValidIcd(bool isSave)
+        {
+            bool valid = true;
+            try
+            {
+                int icd_code = txtIcdCode.Text.Length;
+                Inventec.Common.Logging.LogSystem.Debug("Do dai ma cd chinh: " + icd_code);
+                int icd_name = Inventec.Common.String.CountVi.Count(cboIcds.Text)??0;
+                Inventec.Common.Logging.LogSystem.Debug("Do dai ten cd chinh: " + icd_name);
+                int icd_code_sub = txtIcdSubCode.Text.Length;
+                Inventec.Common.Logging.LogSystem.Debug("Do dai ma cd phu: " + icd_code_sub);
+                int icd_text = Inventec.Common.String.CountVi.Count(txtIcdText.Text) ?? 0;
+                Inventec.Common.Logging.LogSystem.Debug("Do dai ten cd phu: " + icd_text);
+                int yhct_code = this.IcdCodeYHCT != null ? this.IcdCodeYHCT.Length : 0;
+                Inventec.Common.Logging.LogSystem.Debug("Do dai ma cd yhct phu: " + yhct_code);
+                int yhct_sub_code = this.IcdSubCodeYHCT != null ? this.IcdSubCodeYHCT.Length : 0;
+                Inventec.Common.Logging.LogSystem.Debug("Do dai ten cd yhct phu: " + yhct_sub_code);
+                string errror_string = "";
+                if(icd_code + icd_code_sub > 100)
+                {
+                    errror_string = "Mã chẩn đoán phụ nhập quá 100 ký tự";
+                }
+                else if(icd_name + icd_text > 1500)
+                {
+                    errror_string = "Tên chẩn đoán phụ nhập quá 1500 ký tự";
+                }
+                else if(yhct_code + yhct_sub_code > 255)
+                {
+                    errror_string = "Mã chẩn đoán YHCT phụ nhập quá 255 ký tự";
+                }
+                if (!string.IsNullOrEmpty(errror_string))
+                {
+                    if(isSave) MessageBox.Show(this, errror_string, "Thông báo", MessageBoxButtons.OK);
+                    isWarning = true;
+                    valid = false;
+                }
+                
+
+            }
+            catch (Exception ex)
+            {
+                valid = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return valid;
+        }
         private bool ValidAddress()
         {
             bool valid = true;
