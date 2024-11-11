@@ -171,6 +171,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         public List<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE> hisTreatmentTypes;
         HIS_PATIENT currentPatient;
 
+        public List<HIS_CAREER> careers;
 
         bool isFinished = false;
         #endregion
@@ -295,6 +296,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 Inventec.Common.Logging.LogSystem.Error("TreatmentFinish 1");
                 LoadDataFromRam();
                 InitComboHisHospitalizeReason();
+                ValidatecboCareer();
                 Config.ConfigKey.GetConfigKey();
                 ProcessCheckMaterialInvoice();
                 Inventec.Common.Logging.LogSystem.Error("CreateThreadGetData 2");
@@ -308,7 +310,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 SetEndOrder();
 
                 SetDefaultValueControl();
-
+                LoadDataToComboCareer();
 
                 LoadDataEye(currentHisTreatment);
                 LoadComboControls();
@@ -343,6 +345,25 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void LoadDataToComboCareer()
+        {
+            try
+            {
+                careers = BackendDataWorker.Get<HIS_CAREER>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("CAREER_CODE", "", 50, 1));
+                columnInfos.Add(new ColumnInfo("CAREER_NAME", "", 150, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("CAREER_NAME", "ID", columnInfos, false, 200);
+                ControlEditorLoader.Load(cboCareer, careers, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void SetCaptionByLanguageKey()
         {
             try
@@ -1176,7 +1197,15 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         cboResult.EditValue = null;
 
                     }
-
+                    if (!string.IsNullOrEmpty(data.TDL_PATIENT_CAREER_CODE))
+                    {
+                        var currentCareer = careers.Where(o => o.CAREER_CODE == data.TDL_PATIENT_CAREER_CODE).FirstOrDefault();
+                        cboCareer.EditValue = currentCareer.ID;
+                    }
+                    else
+                    {
+                        cboCareer.EditValue = null;
+                    }
                     cboTTExt.EditValue = data.TREATMENT_END_TYPE_EXT_ID;
                     if (data.TREATMENT_END_TYPE_EXT_ID != null)
                     {
@@ -5873,6 +5902,22 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 validRule.ErrorText = "Trường dữ liệu bắt buộc";
                 validRule.ErrorType = ErrorType.Warning;
                 dxValidationProvider.SetValidationRule(this.txtHosReasonNt, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ValidatecboCareer()
+        {
+            try
+            {
+                ControlEditValidationRule validRule = new ControlEditValidationRule();
+                validRule.editor = this.cboCareer;
+                validRule.ErrorText = "Trường dữ liệu bắt buộc";
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProvider.SetValidationRule(this.cboCareer, validRule);
             }
             catch (Exception ex)
             {
