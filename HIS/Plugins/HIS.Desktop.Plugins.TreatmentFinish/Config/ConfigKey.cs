@@ -72,6 +72,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         private const string KEY__MustChooseSeviceExam = "HIS.Desktop.Plugins.TreatmentFinish.MustChooseSeviceExam.Option";
         private const string KEY__IsAllowTreatmentFinishDepartmentIsActiveFee = "HIS.Desktop.Plugins.TreatmentFinish.IsAllowTreatmentFinishDepartmentIsActiveFee";
         private const string KEY_TreatmentEndTypeIsTransfer = "HIS.Desktop.Plugins.TreatmentFinish.TreatmentEndTypeIsTransfer";
+        private const string KEY_IsCheckSubIcdExceedLimit = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
+
+
         internal static string OptionTreatmentEndTypeIsTransfer;
         internal static string MustChooseSeviceExamOption;
         internal static string WarningUnfinishedServiceOption;
@@ -104,10 +107,14 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         internal static string SubclinicalResultOption;
         internal static string AllowManyOpeningOption;
         internal static string IsAllowTreatmentFinishDepartmentIsActiveFee;
+
+        internal static string IsCheckSubIcdExceedLimit;
+
         internal static void GetConfigKey()
         {
             try
             {
+                IsCheckSubIcdExceedLimit = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_IsCheckSubIcdExceedLimit);
                 OptionTreatmentEndTypeIsTransfer = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_TreatmentEndTypeIsTransfer);
                 MustChooseSeviceExamOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MustChooseSeviceExam);
                 WarningUnfinishedServiceOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__WARNING_UNFINISHED_SERVICE_OPTION);

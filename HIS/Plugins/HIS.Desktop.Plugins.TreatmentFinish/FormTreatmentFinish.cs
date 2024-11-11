@@ -2446,7 +2446,22 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-
+                var checkICDSubCode = codeCheckSubICD.Split(';').ToList();
+                if (checkICDSubCode != null && checkICDSubCode.Count > 12)
+                {
+                    if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "1")
+                    {
+                        XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    else if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "2")
+                    {
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục không?",
+                           "Thông báo",
+                          MessageBoxButtons.YesNo) == DialogResult.No)
+                            return;
+                    }
+                }
                 List<WarningADO> warningADONew = new List<WarningADO>();
                 if ((ConfigKey.MustChooseSeviceExamOption == "1" || ConfigKey.MustChooseSeviceExamOption == "2") && !this.CheckMustChooseSeviceExamOption()) return;
                 if (!this.CheckAssignServiceBed_ForSave(ValidationDataType.PopupMessage, ref warningADONew))
@@ -2893,6 +2908,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         string codeCheckCD;
         string nameCheckCD;
         string codeCheckCDYHCT;
+        string codeCheckSubICD;
         private void GetValueUC()
         {
             try 
@@ -2905,6 +2921,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     var subIcd = subIcdProcessor.GetValue(ucSecondaryIcd);
                     if (subIcd != null && subIcd is SecondaryIcdDataADO)
                     {
+                        codeCheckSubICD = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
                         codeCheckCD = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
                         nameCheckCD = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
                     }
@@ -2968,6 +2985,23 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 {
                     XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
+                }
+
+                var checkICDSubCode = codeCheckSubICD.Split(';').ToList();
+                if (checkICDSubCode != null && checkICDSubCode.Count > 12)
+                {
+                    if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "1")
+                    {
+                        XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    else if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "2")
+                    {
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục không?",
+                           "Thông báo",
+                          MessageBoxButtons.YesNo) == DialogResult.No)
+                            return;
+                    }
                 }
                 HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager check = new Desktop.Plugins.Library.CheckIcd.CheckIcdManager(null, currentHisTreatment);
                 string message = null;
@@ -4909,6 +4943,22 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 {
                     XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
+                }
+                var checkICDSubCode = codeCheckSubICD.Split(';').ToList();
+                if (checkICDSubCode != null && checkICDSubCode.Count > 12)
+                {
+                    if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "1")
+                    {
+                        XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    else if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "2")
+                    {
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục không?",
+                           "Thông báo",
+                          MessageBoxButtons.YesNo) == DialogResult.No)
+                            return;
+                    }
                 }
 
                 frmWarning form = new frmWarning(DelegateCheckSkipMethod, this.warningADOs, this._isSkipWarningForSave);
