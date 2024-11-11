@@ -1440,6 +1440,24 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     return;
                 }
 
+                var checkICDSubCode = data.IcdSubCode.Split(';').ToList();
+                if (checkICDSubCode != null && checkICDSubCode.Count > 12)
+                {
+                    if (HisConfig.IsCheckSubIcdExceedLimit == "1")
+                    {
+                        XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    else if (HisConfig.IsCheckSubIcdExceedLimit == "2")
+                    {
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục không?",
+                           "Thông báo",
+                          MessageBoxButtons.YesNo) == DialogResult.No)
+                            return;
+                    }
+                }
+
+
                 if (this.ucIcdCause != null)
                 {
                     var icdValue = this.IcdCauseProcessor.GetValue(this.ucIcdCause);
