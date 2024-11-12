@@ -1534,6 +1534,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 this.txtEyeTensionLeft.ReadOnly = true;
                 this.txtEyeTensionRight.ReadOnly = true;
                 this.txtKskCode.ReadOnly = true;
+                this.cboCareer.ReadOnly = true;
             }
             catch (Exception ex)
             {
@@ -2475,20 +2476,23 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                var checkICDSubCode = codeCheckSubICD.Split(';').ToList();
-                if (checkICDSubCode != null && checkICDSubCode.Count > 12)
+                if (!string.IsNullOrEmpty(codeCheckSubICD))
                 {
-                    if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "1")
+                    var checkICDSubCode = codeCheckSubICD.Split(';').ToList();
+                    if (checkICDSubCode != null && checkICDSubCode.Count > 12)
                     {
-                        XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-                    else if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "2")
-                    {
-                        if (DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục không?",
-                           "Thông báo",
-                          MessageBoxButtons.YesNo) == DialogResult.No)
+                        if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "1")
+                        {
+                            XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return;
+                        }
+                        else if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "2")
+                        {
+                            if (DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục không?",
+                               "Thông báo",
+                              MessageBoxButtons.YesNo) == DialogResult.No)
+                                return;
+                        }
                     }
                 }
                 List<WarningADO> warningADONew = new List<WarningADO>();
