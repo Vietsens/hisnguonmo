@@ -1449,6 +1449,11 @@ namespace HIS.Desktop.Plugins.TransactionList
                             if ((data.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT || data.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU) && data.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
                                 e.RepositoryItem = repQr;
                         }
+                        else if (e.Column.FieldName == "ChangePayForm")
+                        {
+                            if (data.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE && string.IsNullOrEmpty(data.BANK_TRANSACTION_CODE))
+                                e.RepositoryItem = repositoryItemBtnChangePay;
+                        }
                     }
                 }
             }
@@ -2799,6 +2804,11 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 if ((transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT || transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU) && transactionData.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && transactionData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
                                     repQr_ButtonClick(transactionData);
                             }
+                            else if (hi.Column.FieldName == "ChangePayForm")
+                            {
+                                if (transactionData.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && transactionData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE && string.IsNullOrEmpty(transactionData.BANK_TRANSACTION_CODE))
+                                    btnChangePayForm_ButtonClick(transactionData);
+                            }
                         }
                     }
                 }
@@ -2806,6 +2816,46 @@ namespace HIS.Desktop.Plugins.TransactionList
             catch (Exception ex)
             {
                 LogSystem.Warn(ex);
+            }
+        }
+
+      
+        private void btnChangePayForm_ButtonClick(V_HIS_TRANSACTION currentTransaction)
+        {
+            try
+            {
+                List<V_HIS_TRANSACTION> listTransactionSelect = new List<V_HIS_TRANSACTION>();
+                var rowHandles = gridViewTransaction.GetSelectedRows();
+                if (rowHandles != null && rowHandles.Count() > 0)
+                {
+                    foreach (var i in rowHandles)
+                    {
+                        var row = (V_HIS_TRANSACTION)gridViewTransaction.GetRow(i);
+                        if (row != null)
+                        {
+                            listTransactionSelect.Add(row);
+                        }
+                    }
+                }
+
+                ChangePayForm frmErrorForm = new ChangePayForm(currentTransaction, currentModule.RoomId, loadPayForm, listTransactionSelect);
+                frmErrorForm.ShowDialog();
+            }
+             catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void loadPayForm(string value)
+        {
+            try
+            {
+                frmTransactionList_Load(null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -3407,5 +3457,36 @@ namespace HIS.Desktop.Plugins.TransactionList
             }
 
         }
+
+        private void repQr_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                this.transactionPrint = (V_HIS_TRANSACTION)gridViewTransaction.GetFocusedRow();
+                if ((transactionPrint.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT || transactionPrint.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU) && transactionPrint.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && transactionPrint.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                {
+                    repQr_ButtonClick(transactionPrint);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repositoryItemBtnChangePay_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                this.transactionPrint = (V_HIS_TRANSACTION)gridViewTransaction.GetFocusedRow();
+                if (transactionPrint.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && transactionPrint.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE && string.IsNullOrEmpty(transactionPrint.BANK_TRANSACTION_CODE))
+                    btnChangePayForm_ButtonClick(transactionPrint);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }
+ 
