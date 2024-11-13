@@ -2851,7 +2851,8 @@ namespace HIS.Desktop.Plugins.TransactionList
         {
             try
             {
-                frmTransactionList_Load(null, null);
+                FillDataToGrid();
+                //frmTransactionList_Load(null, null);
             }
             catch (Exception ex)
             {
