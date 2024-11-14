@@ -108,6 +108,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     this.lciExpMestReason.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
                     //this.cboExpMestReason.Properties.Buttons[1].Visible = false;
                 }
+
+                this.dxValidationProviderControl.SetValidationRule(txtAdvise, null);
+                this.ValidateMaxLengthControl(this.txtAdvise, false, 1024);
             }
             catch (Exception ex)
             {
@@ -157,6 +160,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             validate.IsRequired = true;
             validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
             this.dxValidProviderBoXung.SetValidationRule(txtHuongDan, validate);
+        }
+        private void ValidateMaxLengthControl(BaseControl control, bool IsRequire, int maxLength)
+        {
+            ControlMaxLengthValidationRule validate = new ControlMaxLengthValidationRule();
+            validate.editor = control;
+            validate.maxLength = maxLength;
+            validate.IsRequired = IsRequire;
+            validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+            this.dxValidationProviderControl.SetValidationRule(control, validate);
         }
 
         private void ValidateLookupWithTextEdit(LookUpEdit cbo, TextEdit textEdit, DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditor)
