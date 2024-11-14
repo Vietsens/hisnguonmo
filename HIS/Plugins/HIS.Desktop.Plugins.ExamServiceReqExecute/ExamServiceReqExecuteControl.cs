@@ -2845,7 +2845,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (hisServiceReqSDO.TreatmentFinishSDO != null)
                 {
                     hisServiceReqSDO.IsFinish = true;
-                    hisServiceReqSDO.FinishTime = hisServiceReqSDO.TreatmentFinishSDO.TreatmentFinishTime;
+
+                    //ngant muon sua thanh null khi loi hoac co thong bao
+                    if(hisServiceReqSDO.TreatmentFinishSDO.TreatmentFinishTime > 0) hisServiceReqSDO.FinishTime = hisServiceReqSDO.TreatmentFinishSDO.TreatmentFinishTime;
                 }
                 else if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>("HIS.HIS_SERVICE_REQ.EXAM.AUTO_FINISH_AFTER_UNFINISH") == 1 && HisServiceReqView.IS_AUTO_FINISHED == 1)
                 {
