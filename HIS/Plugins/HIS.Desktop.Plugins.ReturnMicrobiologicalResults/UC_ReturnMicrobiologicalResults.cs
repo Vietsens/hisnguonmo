@@ -35,6 +35,7 @@ using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.ReturnMicrobiologicalResults.ADO;
 using HIS.Desktop.Plugins.ReturnMicrobiologicalResults.Config;
@@ -2344,6 +2345,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 ValidationMaxLengthNote();
                 dxValidationProvider1.SetValidationRule(dtResultTime, null);
                 if (!dxValidationProvider1.Validate()) return;
+                
                 bool isCalledApi = true;
                 bool success = SaveValue(ref param, ref isCalledApi);
                 if (isCalledApi)
@@ -4227,6 +4229,26 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                     if ((XtraMessageBox.Show("Bạn chưa nhập số hiệu mẫu. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No))
                         return;
                 }
+                string config = HisConfigs.Get<string>("HIS.Desktop.Plugins.ConnectionTest.IsRequiredMachine");
+                if (config == "1")
+                {
+                    if (testLisResultADO.MACHINE_ID == null)
+                    {
+                        MessageBox.Show(this, string.Format("Dịch vụ {0} chưa có thông tin máy trả kết quả", testLisResultADO.SERVICE_NAME), "Thông báo", MessageBoxButtons.OK);
+                        return;
+                    }
+                }
+                else if (config == "2")
+                {
+                    if (testLisResultADO.MACHINE_ID == null)
+                    {
+                        if (MessageBox.Show(this, string.Format("Dịch vụ {0} chưa có thông tin máy trả kết quả. Bạn có muốn tiếp tục?", testLisResultADO.SERVICE_NAME), "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                        {
+                            return;
+                        }
+
+                    }
+                }
                 this.popupMenuProcessor = new PopupMenuProcessor(this.baManager, MouseRightClick, pointPopup);
                 this.popupMenuProcessor.InitMenuResult();
             }
@@ -4261,6 +4283,28 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                     {
                         if (String.IsNullOrEmpty(testLisResultADO.LABORATORY_CODE) && XtraMessageBox.Show("Bạn chưa nhập số hiệu mẫu. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
                             return;
+
+                        ///validation theo config chặn hoặc cảnh báo  nếu không có máy xét nghiệm
+                        string config = HisConfigs.Get<string>("HIS.Desktop.Plugins.ConnectionTest.IsRequiredMachine");
+                        if (config == "1")
+                        {
+                            if(testLisResultADO.MACHINE_ID == null)
+                            {
+                                MessageBox.Show(this, string.Format("Dịch vụ {0} chưa có thông tin máy trả kết quả", testLisResultADO.SERVICE_NAME), "Thông báo", MessageBoxButtons.OK);
+                                return;
+                            }
+                        }
+                        else if (config == "2")
+                        {
+                            if (testLisResultADO.MACHINE_ID == null)
+                            {
+                                if(MessageBox.Show(this, string.Format("Dịch vụ {0} chưa có thông tin máy trả kết quả. Bạn có muốn tiếp tục?", testLisResultADO.SERVICE_NAME), "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                                {
+                                    return;
+                                }
+                                
+                            }
+                        }
                         if (testLisResultADO.SAMPLE_SERVICE_ID > 0 && testLisResultADO.ErrorTypeLabCode == ErrorType.None)
                         {
                             LisSampleServiceSDO sampleServiceResultSDO = new LisSampleServiceSDO();

@@ -262,6 +262,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 DateKQ.ToolTip = ConvertStringTime(DateKQ);
                 DateLM.ToolTip = ConvertStringTime(DateLM);
                 GetTimeSystem();
+                EnableControlWarning();
                 RegisterTimer(currentModule.ModuleLink, "timer1", timer1.Interval, timer1_Tick);
                 StartTimer(currentModule.ModuleLink, "timer1");
                 RegisterTimer(currentModule.ModuleLink, "timer2", timer2.Interval, timer2_Tick);
@@ -269,6 +270,34 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void EnableControlWarning()
+        {
+            try
+            {
+                string config = HisConfigs.Get<string>("HIS.Desktop.Plugins.ConnectionTest.IsRequiredMachine");
+                if(config == "1")
+                {
+                    chkCon.Checked = true;
+                    chkCon.Enabled = chkWarn.Enabled = false;
+                }
+                else if(config == "2")
+                {
+                    chkWarn.Checked = true;
+                    chkCon.Enabled = chkWarn.Enabled = false;
+                }
+                else
+                {
+                    chkCon.Enabled = chkWarn.Enabled = true;
+                    chkCon.Checked = chkWarn.Checked = false;
+                }
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
