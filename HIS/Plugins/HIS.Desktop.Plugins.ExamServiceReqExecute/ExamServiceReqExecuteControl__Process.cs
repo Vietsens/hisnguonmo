@@ -1094,7 +1094,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (chkTreatmentFinish.Checked && this.ucTreatmentFinish != null)
                 {
                     result = this.treatmentFinishProcessor.Validate(this.ucTreatmentFinish, isNotCheckValidateIcdUC);
+                    result = result && ValidIcdLen();
                 }
+                
             }
             catch (Exception ex)
             {

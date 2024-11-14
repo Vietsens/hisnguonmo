@@ -32,6 +32,7 @@ using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.ModuleExt;
 using HIS.Desktop.Plugins.ExamServiceReqExecute.ADO;
@@ -52,6 +53,7 @@ using HIS.UC.ExamFinish.ADO;
 using HIS.UC.ExamServiceAdd;
 using HIS.UC.ExamServiceAdd.ADO;
 using HIS.UC.ExamTreatmentFinish;
+using HIS.UC.ExamTreatmentFinish.ADO;
 using HIS.UC.HisExamServiceAdd.ADO;
 using HIS.UC.Hospitalize;
 using HIS.UC.Hospitalize.ADO;
@@ -3317,6 +3319,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     }
                     isNotCheckValidateIcdUC = true;
                     result = treatmentFinishProcessor.Validate(ucTreatmentFinish, isNotCheckValidateIcdUC);
+
+                    
+                    
                 }
 
             }
@@ -3326,7 +3331,78 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
             return result;
         }
+        private bool ValidIcdLen()
+        {
+            bool validICD = true;
+            try
+            {
+                ///180971
+                ///kiểm tra chẩn đoán phụ và chẩn đoán phụ ra viện (nếu có) nếu vuoptjq quá 12 mã thì cảnh báo
 
+                var config = HisConfigs.Get<string>("HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit");
+                
+                if (config == "1")
+                {
+                    string[] arrIcdExtraCodes = this.txtIcdSubCode.Text.Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
+                    LogSystem.Debug("benh phu: " + arrIcdExtraCodes.Length);
+                    if (arrIcdExtraCodes.Length > 12)
+                    {
+                        MessageBox.Show(this, "Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại", "Thông báo", MessageBoxButtons.OK);
+                        validICD = false;
+
+                    }
+                    var sub_out = treatmentFinishProcessor.GetValue(ucTreatmentFinish);
+                    LogSystem.Debug("benh phu ra vien: " + sub_out);
+                    if (sub_out != null && sub_out is ExamTreatmentFinishResult)
+                    {
+                        string icd_sub_code = ((ExamTreatmentFinishResult)sub_out).TreatmentFinishSDO.IcdSubCode;
+                        string[] arrSubCode = icd_sub_code.Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
+                        LogSystem.Debug("benh phu ra vien len: " + arrSubCode.Length);
+                        if (validICD && arrSubCode.Length > 12)
+                        {
+                            MessageBox.Show(this, "Chẩn đoán phụ ra viện nhập quá 12 mã bệnh. Vui lòng kiểm tra lại", "Thông báo", MessageBoxButtons.OK);
+                            validICD = false;
+                        }
+                    }
+                }
+                else if (config == "2")
+                {
+                    string[] arrIcdExtraCodes = this.txtIcdSubCode.Text.Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
+                    LogSystem.Debug("benh phu: " + arrIcdExtraCodes.Length);
+                    if (arrIcdExtraCodes.Length > 12)
+                    {
+                        if (MessageBox.Show(this, "Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                        {
+                            validICD = false;
+                        }
+
+
+                    }
+                    var sub_out = treatmentFinishProcessor.GetValue(ucTreatmentFinish);
+                    LogSystem.Debug("benh phu ra vien: " + sub_out);
+                    if (sub_out != null && sub_out is ExamTreatmentFinishResult)
+                    {
+                        string icd_sub_code = ((ExamTreatmentFinishResult)sub_out).TreatmentFinishSDO.IcdSubCode;
+                        string[] arrSubCode = icd_sub_code.Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
+                        LogSystem.Debug("benh phu ra vien len: " + arrSubCode.Length);
+                        if (validICD && arrSubCode.Length > 12)
+                        {
+                            if (MessageBox.Show(this, "Chẩn đoán phụ ra viện nhập quá 12 mã bệnh. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                            {
+                                validICD = false;
+                            }
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                validICD = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return validICD;
+        }
         private void btnFinish_Click(object sender, EventArgs e)
         {
             try
