@@ -231,6 +231,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         {
             try
             {
+                IsCheckSubIcdExceedLimit = GetValue(KEY_IsCheckSubIcdExceedLimit);
                 ASSIGN_SERVICE_SIMULTANEITY_OPTION = GetValue(KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION);
                 InstructionTimeServiceMustBeGreaterThanStartTimeExam = GetValue(KEY__InstructionTimeServiceMustBeGreaterThanStartTimeExam);
                 RequiredTreatmentMethodOption = GetValue(KEY__RequiredTreatmentMethodOption);

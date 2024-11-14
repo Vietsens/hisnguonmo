@@ -106,6 +106,11 @@
     <Reference Include="Inventec.Desktop.Core">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Token.ClientSystem, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="Inventec.UC.Login, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+    </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
@@ -120,7 +125,7 @@
     </Reference>
     <Reference Include="MPS.Processor.Mps000315.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000315.PDO\bin\Debug\MPS.Processor.Mps000315.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000315.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000452.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000452.PDO.dll</HintPath>
@@ -172,6 +177,7 @@
     <Compile Include="ADO\TypeADO.cs" />
     <Compile Include="ADO\VaccineTypeADO.cs" />
     <Compile Include="CallModule.cs" />
+    <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="EnterKskInfomantionVer2Processor.cs" />
     <Compile Include="EnterKskInfomantionVer2\EnterKskInfomantionVer2Behavior.cs" />
     <Compile Include="EnterKskInfomantionVer2\EnterKskInfomantionVer2Factory.cs" />

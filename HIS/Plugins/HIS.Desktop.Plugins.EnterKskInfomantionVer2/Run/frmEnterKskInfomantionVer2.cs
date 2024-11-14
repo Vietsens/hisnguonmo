@@ -62,6 +62,7 @@ using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Utility;
 using HIS.Desktop.ADO;
+using HIS.Desktop.Plugins.EnterKskInfomantionVer2.Config;
 namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 {
     public partial class frmEnterKskInfomantionVer2 : HIS.Desktop.Utility.FormBase
@@ -88,7 +89,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             KET_QUA_4,
             KET_QUA_5
         }
-        public ENameSItem? NameSItem { get;set; }
+        public ENameSItem? NameSItem { get; set; }
 
         public enum ENameOtherItem
         {
@@ -138,9 +139,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 WaitingManager.Show();
+                HisConfigCFG.LoadConfig();
                 ShowInformationPatient();
                 FillDataToPages();
                 SetTabDefault();
+                SetEnableControl();
                 WaitingManager.Hide();
             }
             catch (System.Exception ex)
@@ -148,6 +151,232 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void SetEnableControl()
+        {
+            try
+            {
+                if (HisConfigCFG.DisablePartExamByExecutor == "1")
+                {
+                    if (this.currentKskGeneral != null)
+                    {
+                        LoginNameEnableControl(currentKskGeneral.EXAM_CIRCULATION_LOGINNAME, txtExamCirculation, cboExamCirculationRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tuần hoàn.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_RESPIRATORY_LOGINNAME, txtExamRespiratory, cboExamRespiratoryRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám hô hấp.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_DIGESTION_LOGINNAME, txtExamDigestion, cboExamDigestionRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tiêu hóa.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_KIDNEY_UROLOGY_LOGINNAME, txtExamKidneyUrology, cboExamKidneyUrologyRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thận tiết niệu.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_NEUROLOGICAL_LOGINNAME, txtExamNeurological, cboExamNeurologicalRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thần kinh.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_MUSCLE_BONE_LOGINNAME, txtExamMuscleBone, cboExamMuscleBoneRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cơ xương khớp.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_ENT_LOGINNAME, txtExamEntLeftNormal); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_ENT_LOGINNAME, txtExamEntRightNomal); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_ENT_LOGINNAME, txtExamEntLeftWhisper); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_ENT_LOGINNAME, txtExamEntRightWhisper); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_ENT_LOGINNAME, txtExamEntDisease, cboExamEntDiseaseRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_STOMATOLOGY_LOGINNAME, txtExamStomatologyUpper); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám răng hàm mặt.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_STOMATOLOGY_LOGINNAME, txtExamStomatologyLower); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám răng hàm mặt.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_STOMATOLOGY_LOGINNAME, txtExamStomatologyDisease, cboExamStomatologyRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám răng hàm mặt.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_EYE_LOGINNAME, txtExamEyeSightRight); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_EYE_LOGINNAME, txtExamEyeSightLeft); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_EYE_LOGINNAME, txtExamEyeSightGlassRight); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_EYE_LOGINNAME, txtExamEyeSightGlassLeft); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_EYE_LOGINNAME, txtExamEyeDisease, cboExamEyeRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_OEND_LOGINNAME, txtExamOend, cboExamOendRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám nội tiết.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_MENTAL_LOGINNAME, txtExamMental, cboExamMentalRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tâm thần.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_DERMATOLOGY_LOGINNAME, txtExamDernatology, cboExamDernatologyRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám da liễu.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_SURGERY_LOGINNAME, txtExamSurgery, cboExamSurgeryRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable thông tin ngoại khoa
+                        LoginNameEnableControl(currentKskGeneral.EXAM_OBSTETRIC_LOGINNAME, txtExamObstetric, cboExamSurgeryRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám sản phụ khoa.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_SUBCLINICAL_LOGINNAME, txtResultSubclinical, txtNoteSubclinical); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+                    }
+                    if (this.currentKskOverEight != null)
+                    {
+                        LoginNameEnableControl(currentKskOverEight.EXAM_CIRCULATION_LOGINNAME, txtExamCirculation2, cboExamCirculationRank2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tuần hoàn.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_RESPIRATORY_LOGINNAME, txtExamRespiratory2, cboExamRespiratoryRank2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám hô hấp.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_DIGESTION_LOGINNAME, txtExamDigestion2, cboExamDigestionRank2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tiêu hóa.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_KIDNEY_UROLOGY_LOGINNAME, txtExamKidneyUrology2, cboExamKidneyUrologyRank2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thận tiết niệu.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_NEUROLOGICAL_LOGINNAME, txtExamNeurological2, cboExamNeurologicalRank2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thần kinh.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_MUSCLE_BONE_LOGINNAME, txtExamMuscleBone2, cboExamMuscleBoneRank2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cơ xương khớp.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_ENT_LOGINNAME, txtExamEntLeftNormal2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_ENT_LOGINNAME, txtExamEntRightNomal2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_ENT_LOGINNAME, txtExamEntLeftWhisper2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_ENT_LOGINNAME, txtExamEntRightWhisper2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_ENT_LOGINNAME, txtExamEntDisease2, cboExamEntDiseaseRank2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_STOMATOLOGY_LOGINNAME, txtExamStomatologyUpper2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám răng hàm mặt.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_STOMATOLOGY_LOGINNAME, txtExamStomatologyLower2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám răng hàm mặt.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_STOMATOLOGY_LOGINNAME, txtExamStomatologyDisease2, cboExamStomatologyRank2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám răng hàm mặt.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_EYE_LOGINNAME, txtExamEyeSightRight2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_EYE_LOGINNAME, txtExamEyeSightLeft2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_EYE_LOGINNAME, txtExamEyeSightGlassRight2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_EYE_LOGINNAME, txtExamEyeSightGlassLeft2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_EYE_LOGINNAME, txtExamEyeDisease2, cboExamEyeRank2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_OEND_LOGINNAME, txtExamOend2, cboExamOend2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám nội tiết.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_MENTAL_LOGINNAME, txtExamMental2, cboExamMentalRank2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tâm thần.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_DERMATOLOGY_LOGINNAME, txtExamDernatology2, cboExamDernatologyRank2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám da liễu.
+
+                        LoginNameEnableControl(currentKskOverEight.EXAM_SURGERY_LOGINNAME, txtExamSurgery2, cboExamSurgeryRank2); // có dữ liệu và khác với tài khoản đăng nhập thì disable thông tin ngoại khoa
+                        LoginNameEnableControl(currentKskOverEight.EXAM_OBSTETRIC_LOGINNAME, txtExamObstetric2, cboExamSurgeryRank2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám sản phụ khoa.
+                        LoginNameEnableControl(currentKskOverEight.TEST_URINE_LOGINNAME, txtTestUrineGluco2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin xét nghiệm nước tiểu
+                        LoginNameEnableControl(currentKskOverEight.TEST_URINE_LOGINNAME, txtTestUrineProtein2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin xét nghiệm nước tiểu
+                        LoginNameEnableControl(currentKskOverEight.TEST_URINE_LOGINNAME, txtTestUrineOther2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin xét nghiệm nước tiểu
+                        LoginNameEnableControl(currentKskOverEight.DIIM_LOGINNAME, txtResultDiim2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin kết quả chẩn đoán hình ảnh
+                        LoginNameEnableControl(currentKskOverEight.TEST_BLOOD, txtTestBloodHc2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin kết quả xét nghiệm máu
+                        LoginNameEnableControl(currentKskOverEight.TEST_BLOOD, txtTestBloodBc2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin kết quả xét nghiệm máu
+                        LoginNameEnableControl(currentKskOverEight.TEST_BLOOD, txtTestBloodTc2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin kết quả xét nghiệm máu
+                        LoginNameEnableControl(currentKskOverEight.TEST_BLOOD, txtTestBloodGluco2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin kết quả xét nghiệm máu
+                        LoginNameEnableControl(currentKskOverEight.TEST_BLOOD, txtTestBloodUre2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin kết quả xét nghiệm máu
+                        LoginNameEnableControl(currentKskOverEight.TEST_BLOOD, txtTestBloodCreatinin2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin kết quả xét nghiệm máu
+                        LoginNameEnableControl(currentKskOverEight.TEST_BLOOD, txtTestBloodAsat2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin kết quả xét nghiệm máu
+                        LoginNameEnableControl(currentKskOverEight.TEST_BLOOD, txtTestBloodAlat2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin kết quả xét nghiệm máu
+                    }
+                    if (this.currentKskUnderEight != null)
+                    {
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_CIRCULATION_LOGINNAME, txtExamCirculation3, cboExamCirculationRank3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tuần hoàn.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_RESPIRATORY_LOGINNAME, txtExamRespiratory3, cboExamRespiratoryRank3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám hô hấp.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_DIGESTION_LOGINNAME, txtExamDigestion3, cboExamDigestionRank3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tiêu hóa.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_KIDNEY_UROLOGY_LOGINNAME, txtExamKidneyUrology3, cboExamKidneyUrologyRank3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thận tiết niệu.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_NEURO_MENTAL_LOGINNAME, txtExamNeuroMental3, cboExamNeuroMental3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thần kinh.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_CLINICAL_OTHER_LOGINNAME, txtExamClinicalOther3, cboExamClinicalOther3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cơ xương khớp.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_ENT_LOGINNAME, txtExamEntLeftNormal3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_ENT_LOGINNAME, txtExamEntRightNomal3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_ENT_LOGINNAME, txtExamEntLeftWhisper3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_ENT_LOGINNAME, txtExamEntRightWhisper3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_ENT_LOGINNAME, txtExamEntDisease3, cboExamEntDiseaseRank3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_STOMATOLOGY_LOGINNAME, txtExamStomatologyUpper3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám răng hàm mặt.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_STOMATOLOGY_LOGINNAME, txtExamStomatologyLower3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám răng hàm mặt.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_STOMATOLOGY_LOGINNAME, txtExamStomatologyDisease3, cboExamStomatologyRank3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám răng hàm mặt.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_EYE_LOGINNAME, txtExamEyeSightRight3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_EYE_LOGINNAME, txtExamEyeSightLeft3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_EYE_LOGINNAME, txtExamEyeSightGlassRight3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_EYE_LOGINNAME, txtExamEyeSightGlassLeft3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_EYE_LOGINNAME, txtExamEyeDisease3, cboExamEyeRank3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_SUBCLINICAL_LOGINNAME, txtResultSubclinical3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+                    }
+                    if (this.currentKskPeriodDriver != null)
+                    {
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_CARDIOVASCULAR_LOGINNAME, txtExamCardiovascular4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tim mạch.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_CARDIOVASCULAR_LOGINNAME, spnExamCardiovascularPulse4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tim mạch.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_CARDIOVASCULAR_LOGINNAME, spnExamCardiovascularBloodMax4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tim mạch.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_CARDIOVASCULAR_LOGINNAME, spnExamCardiovascularBloodMin4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tim mạch.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_CARDIOVASCULAR_LOGINNAME, txtExamCardiovascularConclude4, cboExamCardiovascularRank4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tim mạch.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_RESPIRATORY_LOGINNAME, txtExamRespiratory4, cboExamRespiratoryRank4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám hô hấp.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_RESPIRATORY_LOGINNAME, txtExamRespiratoryConclude4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám hô hấp.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_NEUROLOGICAL_LOGINNAME, txtExamNeurological4, cboNeurologicalRank4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thần kinh.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_NEUROLOGICAL_LOGINNAME, txtNeurologicalConclude4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thần kinh.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_MUSCLE_BONE_LOGINNAME, txtExamMuscleBone4, cboExamMuscleBoneRank4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cơ xương khớp.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_MUSCLE_BONE_LOGINNAME, txtExamMuscleBoneConclude4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cơ xương khớp.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_ENT_LOGINNAME, txtExamEntLeftNormal4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_ENT_LOGINNAME, txtExamEntRightNomal4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_ENT_LOGINNAME, txtExamEntLeftWhisper4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_ENT_LOGINNAME, txtExamEntRightWhisper4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_ENT_LOGINNAME, txtExamEntDisease4, cboExamEntDiseaseRank4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_ENT_LOGINNAME, txtExamEntConclude4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_EYE_LOGINNAME, txtExamEyeSightRight4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_EYE_LOGINNAME, txtExamEyeSightLeft4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_EYE_LOGINNAME, txtExamEyeSightGlassRight4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_EYE_LOGINNAME, txtExamEyeSightGlassLeft4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_EYE_LOGINNAME, txtExamEyeDisease4, cboExamEyeRank4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_EYE_LOGINNAME, txtExamEyeConclude4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_EYE_LOGINNAME, txtExamTwoEyesight4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_EYE_LOGINNAME, txtExamTwoEyesightGlass4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_EYE_LOGINNAME, txtExamEyeFieldHoriNormal4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_EYE_LOGINNAME, txtExamEyeFieldHoriLimit4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_EYE_LOGINNAME, txtExamEyeFieldVertNormal4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_EYE_LOGINNAME, txtExamEyeFieldVertLimit4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_EYE_LOGINNAME, chkExamEyeFieldIsBlind4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_EYE_LOGINNAME, chkExamEyeFieldIsGreen4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_EYE_LOGINNAME, chkExamEyeFieldIsNormal4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_EYE_LOGINNAME, chkExamEyeFieldIsRed4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_EYE_LOGINNAME, chkExamEyeFieldIsYellow4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_MENTAL_LOGINNAME, txtExamMental4, cboExamMentalRank4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tâm thần.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_MENTAL_LOGINNAME, txtExamMentalConclude4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tâm thần.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_OEND_LOGINNAME, txtExamOend4, cboExamOendRank4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám nội tiết.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_OEND_LOGINNAME, txtExamOendConclude4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám nội tiết.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_MATERNITY_LOGINNAME, txtExamMaternity4, cboExamMaternityRank4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thai sản
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_MATERNITY_LOGINNAME, txtExamMaternityConclude4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thai sản
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_SUBCLINICAL_LOGINNAME, txtMorphineHeroin4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_SUBCLINICAL_LOGINNAME, txtTestAmphetamin4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_SUBCLINICAL_LOGINNAME, txtTestMethamphetamin4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_SUBCLINICAL_LOGINNAME, txtTestMarijuna4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_SUBCLINICAL_LOGINNAME, txtTestConcentration4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_SUBCLINICAL_LOGINNAME, txtResultSubclinical4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_SUBCLINICAL_LOGINNAME, txtNoteSubclinical4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+                    }
+                    if (this.currentKskDriverCar != null)
+                    {
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_CARDIOVASCULAR_LOGINNAME, txtExamCardiovascular5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tim mạch.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_CARDIOVASCULAR_LOGINNAME, spnExamCardiovascularPulse5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tim mạch.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_CARDIOVASCULAR_LOGINNAME, spnExamCardiovascularBloodMax5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tim mạch.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_CARDIOVASCULAR_LOGINNAME, spnExamCardiovascularBloodMin5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tim mạch.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_CARDIOVASCULAR_LOGINNAME, txtExamCardiovascularConclude5, cboExamCardiovascularRank5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tim mạch.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_RESPIRATORY_LOGINNAME, txtExamRespiratory5, cboExamRespiratoryRank5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám hô hấp.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_RESPIRATORY_LOGINNAME, txtExamRespiratoryConclude5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám hô hấp.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_NEUROLOGICAL_LOGINNAME, txtExamNeurological5, cboExamNeurologicalRank5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thần kinh.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_NEUROLOGICAL_LOGINNAME, txtExamNeurologicalConclude5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thần kinh.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_MUSCLE_BONE_LOGINNAME, txtExamMuscleBone5, cboExamMuscleBoneRank5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cơ xương khớp.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_MUSCLE_BONE_LOGINNAME, txtExamMuscleBoneConclude5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cơ xương khớp.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_ENT_LOGINNAME, txtExamEntLeftNormal5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_ENT_LOGINNAME, txtExamEntRightNomal5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_ENT_LOGINNAME, txtExamEntLeftWhisper5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_ENT_LOGINNAME, txtExamEntRightWhisper5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_ENT_LOGINNAME, txtExamEntDisease5, cboExamEntDiseaseRank5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_ENT_LOGINNAME, txtExamEntDiseaseConclude5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_EYE_LOGINNAME, txtExamEyeSightRight5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_EYE_LOGINNAME, txtExamEyeSightLeft5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_EYE_LOGINNAME, txtExamEyeSightGlassRight5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_EYE_LOGINNAME, txtExamEyeSightGlassLeft5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_EYE_LOGINNAME, txtExamEyeDisease5, cboExamEyeRank5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_EYE_LOGINNAME, txtExamEyeConclude5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_EYE_LOGINNAME, txtExamTwoEyesight5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_EYE_LOGINNAME, txtExamTwoEyesightGlass5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_EYE_LOGINNAME, txtExamEyeFieldHoriNormal5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_EYE_LOGINNAME, txtExamEyeFieldHoriLimit5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_EYE_LOGINNAME, txtExamEyeFieldVertNormal5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_EYE_LOGINNAME, txtExamEyeFieldVertLimit5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_EYE_LOGINNAME, chkExamEyeFieldIsBlind5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_EYE_LOGINNAME, chkExamEyeFieldIsGreen5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_EYE_LOGINNAME, chkExamEyeFieldIsNormal5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_EYE_LOGINNAME, chkExamEyeFieldIsRed5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_EYE_LOGINNAME, chkExamEyeFieldIsYellow5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_MENTAL_LOGINNAME, txtExamMental5, cboExamMentalRank5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tâm thần.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_MENTAL_LOGINNAME, txtExamMentalConclude5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tâm thần.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_OEND_LOGINNAME, txtExamOend5, cboExamOendRank5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám nội tiết.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_OEND_LOGINNAME, txtExamOendConclude5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám nội tiết.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_MATERNITY_LOGINNAME, txtExamMaternity5, cboExamMaternityRank5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thai sản
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_MATERNITY_LOGINNAME, txtExamMaternityConclude5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thai sản
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_SUBCLINICAL_LOGINNAME, txtMorphineHeroin5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_SUBCLINICAL_LOGINNAME, txtAmphetamin5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_SUBCLINICAL_LOGINNAME, txtTestMethamphetamin5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_SUBCLINICAL_LOGINNAME, txtTestMarijuna5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_SUBCLINICAL_LOGINNAME, txtTestConcentration5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_SUBCLINICAL_LOGINNAME, txtResultSubclinical5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_SUBCLINICAL_LOGINNAME, txtNoteSubclinical5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void LoginNameEnableControl(string data, BaseEdit txt, BaseEdit cbo = null)
+        {
+
+            try
+            {
+                var loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                if (!string.IsNullOrEmpty(data) && data != loginName)
+                {
+                    txt.Enabled = false;
+                    if (cbo != null)
+                        cbo.Enabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         private void SetTabDefault()
@@ -611,7 +840,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     NameSItem = null;
                     ReturnObject = true;
                 }
-                else if(data != null && data is List<ContentSubclinicalADO>)
+                else if (data != null && data is List<ContentSubclinicalADO>)
                 {
                     var item = (data as List<ContentSubclinicalADO>).LastOrDefault();
                     if (item != null)

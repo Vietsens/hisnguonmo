@@ -1108,34 +1108,31 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             try
             {
                 timerReloadTransReq.Stop();
-                //var lstCheckBank = new List<string>() { "MBB", "VCB" };
-                //if (string.IsNullOrEmpty(inputTransReq.BankName) || !lstCheckBank.Contains(inputTransReq.BankName))
-                //{
-                if (currentTransReq != null)
+                var lstCheckBank = new List<string>() { "VCB" }; //Bỏ MBB
+                if (string.IsNullOrEmpty(inputTransReq.BankName) || !lstCheckBank.Contains(inputTransReq.BankName))
+                {
+                    if (currentTransReq != null)
+                    {
+                        {
+                            IsCheckNode = false;
+                            CallApiCancelTransReq();
+                        }
+
+                    }
+                }
+                else if (lstCheckBank.Contains(inputTransReq.BankName) && currentTransReq != null && lstCheckBank.Exists(o => inputTransReq.ConfigValue.KEY.Contains(o)))
                 {
                     {
                         IsCheckNode = false;
-                        CallApiCancelTransReq();
+                        CommonParam param = new CommonParam();
+                        MOS.SDO.QrPaymentCancelSDO tdo = new MOS.SDO.QrPaymentCancelSDO();
+                        tdo.Bank = inputTransReq.BankName;
+                        tdo.TransReqId = currentTransReq.ID;
+                        tdo.BankConfig = inputTransReq.ConfigValue.VALUE;
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => tdo), tdo));
+                        var IsCancel = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>("api/HisTransReq/QrPaymentCancel", ApiConsumers.MosConsumer, tdo, param);
                     }
-
                 }
-                //}
-                //else if (lstCheckBank.Contains(inputTransReq.BankName) && currentTransReq != null && lstCheckBank.Exists(o => inputTransReq.ConfigValue.KEY.Contains(o)))
-                //{
-                //    {
-                //        IsCheckNode = false;
-                //        CommonParam param = new CommonParam();
-                //        MOS.TDO.QrPaymentCancelTDO tdo = new MOS.TDO.QrPaymentCancelTDO();
-                //        tdo.Bank = inputTransReq.BankName;
-                //        tdo.TransReqId = currentTransReq.ID;
-                //        dynamic bank = new System.Dynamic.ExpandoObject();
-                //        bank.BANK = tdo.Bank;
-                //        bank.VALUE = inputTransReq.ConfigValue.VALUE;
-                //        tdo.BankConfig = Newtonsoft.Json.JsonConvert.SerializeObject(bank);
-                //        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => tdo), tdo));
-                //        var IsCancel = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>("api/HisTransReq/QrPaymentCancel", ApiConsumers.MosConsumer, tdo, param);
-                //    }
-                //}
 
 
                 QrCodeProcessor.DicContentBank = new Dictionary<string, string>();
@@ -1214,7 +1211,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     else if (currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__CANCEL && (inputTransReq.TransReqId == CreateReqType.Deposit || inputTransReq.TransReqId == CreateReqType.Transaction) && (inputTransReq.Transaction != null || (inputTransReq.Transactions != null && inputTransReq.Transactions.Count > 0)))
                     {
                         HisTransactionViewFilter tvf = new HisTransactionViewFilter();
-                        tvf.IDs = inputTransReq.Transaction != null ? new List<long>() { inputTransReq.Transaction.ID } : (inputTransReq.Transactions != null && inputTransReq.Transactions.Count > 0 ? inputTransReq.Transactions.Select(o=>o.ID).ToList() : null);
+                        tvf.IDs = inputTransReq.Transaction != null ? new List<long>() { inputTransReq.Transaction.ID } : (inputTransReq.Transactions != null && inputTransReq.Transactions.Count > 0 ? inputTransReq.Transactions.Select(o => o.ID).ToList() : null);
                         transactionPrintList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, tvf, null);
                         transactionPrint = transactionPrintList[0];
                     }
@@ -2575,7 +2572,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                             if (PosStatic.IsOpenPos())
                                 PosStatic.SendData(null);
                             btnNew.Enabled = btnCreate.Enabled = false;
-                            btnPrint.Enabled = true; 
+                            btnPrint.Enabled = true;
                             cboPayForm.Enabled = false;
                             CallApiCancelTransReq();
                             InitPopupMenuOther();

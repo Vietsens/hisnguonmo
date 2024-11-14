@@ -25,9 +25,11 @@ using EMR.Filter;
 using EMR.SDO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LocalStorage.EmrConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
 using Inventec.Common.SignLibrary;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
@@ -104,7 +106,29 @@ namespace EMR.Desktop.Plugins.EmrSign
                 FillDataToControl();
 
                 EnableSetting();
+                AddPatientByKey();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
+        private void AddPatientByKey()
+        {
+            try
+            {
+                EMR.Filter.EmrDocumentTypeFilter documentTypeFilter = new Filter.EmrDocumentTypeFilter();
+                documentTypeFilter.ID = this.Document.DOCUMENT_TYPE_ID;
+                var apiTypeData = new BackendAdapter(new CommonParam()).Get<List<EMR_DOCUMENT_TYPE>>("api/EmrDocumentType/Get", ApiConsumers.EmrConsumer, documentTypeFilter, SessionManager.ActionLostToken, null);
+                if (apiTypeData != null && apiTypeData.Count > 0)
+                {
+                    var IsAddPatientSign = apiTypeData.FirstOrDefault().PATIENT_MUST_SIGN == 1;
+                    if (IsAddPatientSign)
+                    {
+                        BtnAddPatient_Click(null, null);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -188,7 +212,7 @@ namespace EMR.Desktop.Plugins.EmrSign
 
                 EMR.Filter.EmrSignerFilter filter = new Filter.EmrSignerFilter();
                 //filter.LOGINNAME = this.LoginName;
-                filter.IS_ACTIVE = 1; 
+                filter.IS_ACTIVE = 1;
                 ListSigner = new BackendAdapter(new CommonParam()).Get<List<EMR_SIGNER>>(EMR.URI.EmrSigner.GET, ApiConsumers.EmrConsumer, filter, SessionManager.ActionLostToken, null);
                 if (ListSigner != null && ListSigner.Count > 0)
                 {
@@ -809,7 +833,7 @@ namespace EMR.Desktop.Plugins.EmrSign
                         {
                             sdo.Creates = Mapper.Map<List<EMR_SIGN>>(createData);
                         }
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("______"+Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("______" + Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
                         var apiresult = new BackendAdapter(param).Post<List<EMR_SIGN>>(EMR.URI.EmrSign.UPDATE_SDO, ApiConsumers.EmrConsumer, sdo, SessionManager.ActionLostToken, param);
                         if (apiresult != null && apiresult.Count > 0)
                         {
@@ -916,7 +940,6 @@ namespace EMR.Desktop.Plugins.EmrSign
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void BtnAddPatient_Click(object sender, EventArgs e)
         {
             try
@@ -925,7 +948,12 @@ namespace EMR.Desktop.Plugins.EmrSign
                 {
                     SignADO adop = new SignADO();
                     adop.Action = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit;
-                    adop.NUM_ORDER = MaxOrder + 100;
+                    if (GlobalStore.EmrConfigs.Exists(o => o.KEY == "EMR.EMR_DOCUMENT.PATIENT_SIGN_FIRST.OPTION")  && GlobalStore.EmrConfigs.FirstOrDefault(o=>o.KEY == "EMR.EMR_DOCUMENT.PATIENT_SIGN_FIRST.OPTION").VALUE == "1")
+                    {
+                        adop.NUM_ORDER = MaxOrder - 1;
+                    }
+                    else 
+                        adop.NUM_ORDER = MaxOrder + 100;
                     adop.IdRow = adop.NUM_ORDER;
                     adop.DOCUMENT_ID = this.DocumentId;
                     adop.PATIENT_CODE = this.Document.PATIENT_CODE;
@@ -934,13 +962,16 @@ namespace EMR.Desktop.Plugins.EmrSign
                     adop.Signer = this.Document.VIR_PATIENT_NAME;
                     adop.TITLE = Resources.ResourceLanguageManager.BenhNhan;
                     adop.IsPatient = true;
-                    MaxOrder = adop.IdRow;
                     this.ListDataSign.Add(adop);
                 }
 
+                MaxOrder = ListDataSign.Max(o => o.IdRow);
                 WaitingManager.Hide();
                 gridControlSign.BeginUpdate();
                 gridControlSign.DataSource = null;
+                ListDataSign = ListDataSign.OrderBy(o => o.IdRow).ToList();
+                ListDataSign.ForEach(o => o.Action = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit);
+                ListDataSign.First().Action = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd;
                 gridControlSign.DataSource = ListDataSign;
                 gridControlSign.EndUpdate();
                 WaitingManager.Hide();

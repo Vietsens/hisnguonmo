@@ -415,9 +415,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                             var subIcdList = subIcd.ICD_SUB_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList();
                             if (subIcdList != null && subIcdList.Count > 12)
                             {
-                                if (HisConfigCFG.IsCheckSubIcdExceedLimit == "1" || (HisConfigCFG.IsCheckSubIcdExceedLimit == "2" && DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục?",
-                             HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
-                             MessageBoxButtons.YesNo) == DialogResult.No))
+                                if ((HisConfigCFG.IsCheckSubIcdExceedLimit == "1" && DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại",
+HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+MessageBoxButtons.OK) == DialogResult.OK) || (HisConfigCFG.IsCheckSubIcdExceedLimit == "2" && DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục?",
+HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+MessageBoxButtons.YesNo) == DialogResult.No))
                                 {
                                     return result = false;
                                 }

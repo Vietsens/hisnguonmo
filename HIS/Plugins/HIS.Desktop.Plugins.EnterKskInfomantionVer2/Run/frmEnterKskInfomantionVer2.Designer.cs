@@ -315,6 +315,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlGroup5 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
+            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
+            this.dtpStart = new DevExpress.XtraEditors.DateEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.bar1 = new DevExpress.XtraBars.Bar();
+            this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControl1 = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControl2 = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControl3 = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControl4 = new DevExpress.XtraBars.BarDockControl();
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.dteRecentWorkTwoTo = new DevExpress.XtraEditors.DateEdit();
@@ -370,6 +379,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem81 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem89 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem109 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem110 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem15 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem37 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -377,13 +389,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl5 = new DevExpress.XtraLayout.LayoutControl();
             this.cboExamOend2 = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
-            this.bar1 = new DevExpress.XtraBars.Bar();
-            this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControl1 = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControl2 = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControl3 = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControl4 = new DevExpress.XtraBars.BarDockControl();
             this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtExamOend2 = new DevExpress.XtraEditors.TextEdit();
             this.txtHealthExamRankDescription2 = new DevExpress.XtraEditors.TextEdit();
@@ -1183,11 +1188,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem102 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem105 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem8 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.dtpStart = new DevExpress.XtraEditors.DateEdit();
-            this.layoutControlItem109 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
-            this.layoutControlItem110 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem15 = new DevExpress.XtraLayout.EmptySpaceItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
@@ -1336,6 +1336,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
             this.layoutControl4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtpStart.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtpStart.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteRecentWorkTwoTo.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteRecentWorkTwoTo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteRecentWorkTwoFrom.Properties.CalendarTimeProperties)).BeginInit();
@@ -1386,6 +1389,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem81)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem89)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem109)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem110)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).BeginInit();
@@ -1394,7 +1400,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).BeginInit();
             this.layoutControl5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamOend2.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtExamOend2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHealthExamRankDescription2.Properties)).BeginInit();
@@ -2097,11 +2102,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem102)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem105)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtpStart.Properties.CalendarTimeProperties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtpStart.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem109)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem110)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem15)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -3988,6 +3988,89 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControl4.TabIndex = 0;
             this.layoutControl4.Text = "layoutControl4";
             // 
+            // labelControl5
+            // 
+            this.labelControl5.Location = new System.Drawing.Point(2, 2);
+            this.labelControl5.Name = "labelControl5";
+            this.labelControl5.Size = new System.Drawing.Size(209, 13);
+            this.labelControl5.StyleController = this.layoutControl4;
+            this.labelControl5.TabIndex = 34;
+            this.labelControl5.Text = "9. Ngày bắt đầu vào học/làm việc hiện nay:";
+            // 
+            // dtpStart
+            // 
+            this.dtpStart.EditValue = null;
+            this.dtpStart.Location = new System.Drawing.Point(117, 19);
+            this.dtpStart.MenuManager = this.barManager1;
+            this.dtpStart.Name = "dtpStart";
+            this.dtpStart.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtpStart.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtpStart.Size = new System.Drawing.Size(108, 20);
+            this.dtpStart.StyleController = this.layoutControl4;
+            this.dtpStart.TabIndex = 33;
+            // 
+            // barManager1
+            // 
+            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
+            this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControl1);
+            this.barManager1.DockControls.Add(this.barDockControl2);
+            this.barManager1.DockControls.Add(this.barDockControl3);
+            this.barManager1.DockControls.Add(this.barDockControl4);
+            this.barManager1.Form = this;
+            this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
+            this.bbtnSave});
+            this.barManager1.MaxItemId = 1;
+            // 
+            // bar1
+            // 
+            this.bar1.BarName = "Tools";
+            this.bar1.DockCol = 0;
+            this.bar1.DockRow = 0;
+            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
+            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnSave)});
+            this.bar1.Text = "Tools";
+            this.bar1.Visible = false;
+            // 
+            // bbtnSave
+            // 
+            this.bbtnSave.Caption = "barButtonItem1";
+            this.bbtnSave.Id = 0;
+            this.bbtnSave.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
+            this.bbtnSave.Name = "bbtnSave";
+            this.bbtnSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnSave_ItemClick);
+            // 
+            // barDockControl1
+            // 
+            this.barDockControl1.CausesValidation = false;
+            this.barDockControl1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControl1.Location = new System.Drawing.Point(0, 0);
+            this.barDockControl1.Size = new System.Drawing.Size(1287, 29);
+            // 
+            // barDockControl2
+            // 
+            this.barDockControl2.CausesValidation = false;
+            this.barDockControl2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControl2.Location = new System.Drawing.Point(0, 720);
+            this.barDockControl2.Size = new System.Drawing.Size(1287, 0);
+            // 
+            // barDockControl3
+            // 
+            this.barDockControl3.CausesValidation = false;
+            this.barDockControl3.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControl3.Location = new System.Drawing.Point(0, 29);
+            this.barDockControl3.Size = new System.Drawing.Size(0, 691);
+            // 
+            // barDockControl4
+            // 
+            this.barDockControl4.CausesValidation = false;
+            this.barDockControl4.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControl4.Location = new System.Drawing.Point(1287, 29);
+            this.barDockControl4.Size = new System.Drawing.Size(0, 691);
+            // 
             // label15
             // 
             this.label15.Location = new System.Drawing.Point(280, 108);
@@ -4652,6 +4735,36 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem17.TextVisible = false;
             // 
+            // layoutControlItem109
+            // 
+            this.layoutControlItem109.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem109.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem109.Control = this.dtpStart;
+            this.layoutControlItem109.Location = new System.Drawing.Point(0, 17);
+            this.layoutControlItem109.Name = "layoutControlItem109";
+            this.layoutControlItem109.Size = new System.Drawing.Size(227, 24);
+            this.layoutControlItem109.Text = "Ngày bắt đầu:";
+            this.layoutControlItem109.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem109.TextSize = new System.Drawing.Size(110, 20);
+            this.layoutControlItem109.TextToControlDistance = 5;
+            // 
+            // layoutControlItem110
+            // 
+            this.layoutControlItem110.Control = this.labelControl5;
+            this.layoutControlItem110.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem110.Name = "layoutControlItem110";
+            this.layoutControlItem110.Size = new System.Drawing.Size(320, 17);
+            this.layoutControlItem110.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem110.TextVisible = false;
+            // 
+            // emptySpaceItem15
+            // 
+            this.emptySpaceItem15.AllowHotTrack = false;
+            this.emptySpaceItem15.Location = new System.Drawing.Point(227, 17);
+            this.emptySpaceItem15.Name = "emptySpaceItem15";
+            this.emptySpaceItem15.Size = new System.Drawing.Size(93, 24);
+            this.emptySpaceItem15.TextSize = new System.Drawing.Size(0, 0);
+            // 
             // layoutControlGroup3
             // 
             this.layoutControlGroup3.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.False;
@@ -4811,66 +4924,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboExamOend2.Size = new System.Drawing.Size(85, 20);
             this.cboExamOend2.StyleController = this.layoutControl5;
             this.cboExamOend2.TabIndex = 99;
-            // 
-            // barManager1
-            // 
-            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
-            this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControl1);
-            this.barManager1.DockControls.Add(this.barDockControl2);
-            this.barManager1.DockControls.Add(this.barDockControl3);
-            this.barManager1.DockControls.Add(this.barDockControl4);
-            this.barManager1.Form = this;
-            this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
-            this.bbtnSave});
-            this.barManager1.MaxItemId = 1;
-            // 
-            // bar1
-            // 
-            this.bar1.BarName = "Tools";
-            this.bar1.DockCol = 0;
-            this.bar1.DockRow = 0;
-            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
-            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnSave)});
-            this.bar1.Text = "Tools";
-            this.bar1.Visible = false;
-            // 
-            // bbtnSave
-            // 
-            this.bbtnSave.Caption = "barButtonItem1";
-            this.bbtnSave.Id = 0;
-            this.bbtnSave.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
-            this.bbtnSave.Name = "bbtnSave";
-            this.bbtnSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnSave_ItemClick);
-            // 
-            // barDockControl1
-            // 
-            this.barDockControl1.CausesValidation = false;
-            this.barDockControl1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControl1.Location = new System.Drawing.Point(0, 0);
-            this.barDockControl1.Size = new System.Drawing.Size(1287, 29);
-            // 
-            // barDockControl2
-            // 
-            this.barDockControl2.CausesValidation = false;
-            this.barDockControl2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControl2.Location = new System.Drawing.Point(0, 720);
-            this.barDockControl2.Size = new System.Drawing.Size(1287, 0);
-            // 
-            // barDockControl3
-            // 
-            this.barDockControl3.CausesValidation = false;
-            this.barDockControl3.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControl3.Location = new System.Drawing.Point(0, 29);
-            this.barDockControl3.Size = new System.Drawing.Size(0, 691);
-            // 
-            // barDockControl4
-            // 
-            this.barDockControl4.CausesValidation = false;
-            this.barDockControl4.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControl4.Location = new System.Drawing.Point(1287, 29);
-            this.barDockControl4.Size = new System.Drawing.Size(0, 691);
             // 
             // gridView5
             // 
@@ -14008,59 +14061,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.emptySpaceItem8.Size = new System.Drawing.Size(1110, 26);
             this.emptySpaceItem8.TextSize = new System.Drawing.Size(0, 0);
             // 
-            // dtpStart
-            // 
-            this.dtpStart.EditValue = null;
-            this.dtpStart.Location = new System.Drawing.Point(117, 19);
-            this.dtpStart.MenuManager = this.barManager1;
-            this.dtpStart.Name = "dtpStart";
-            this.dtpStart.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtpStart.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtpStart.Size = new System.Drawing.Size(108, 20);
-            this.dtpStart.StyleController = this.layoutControl4;
-            this.dtpStart.TabIndex = 33;
-            // 
-            // layoutControlItem109
-            // 
-            this.layoutControlItem109.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem109.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem109.Control = this.dtpStart;
-            this.layoutControlItem109.Location = new System.Drawing.Point(0, 17);
-            this.layoutControlItem109.Name = "layoutControlItem109";
-            this.layoutControlItem109.Size = new System.Drawing.Size(227, 24);
-            this.layoutControlItem109.Text = "Ngày bắt đầu:";
-            this.layoutControlItem109.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem109.TextSize = new System.Drawing.Size(110, 20);
-            this.layoutControlItem109.TextToControlDistance = 5;
-            // 
-            // labelControl5
-            // 
-            this.labelControl5.Location = new System.Drawing.Point(2, 2);
-            this.labelControl5.Name = "labelControl5";
-            this.labelControl5.Size = new System.Drawing.Size(209, 13);
-            this.labelControl5.StyleController = this.layoutControl4;
-            this.labelControl5.TabIndex = 34;
-            this.labelControl5.Text = "9. Ngày bắt đầu vào học/làm việc hiện nay:";
-            // 
-            // layoutControlItem110
-            // 
-            this.layoutControlItem110.Control = this.labelControl5;
-            this.layoutControlItem110.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlItem110.Name = "layoutControlItem110";
-            this.layoutControlItem110.Size = new System.Drawing.Size(320, 17);
-            this.layoutControlItem110.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem110.TextVisible = false;
-            // 
-            // emptySpaceItem15
-            // 
-            this.emptySpaceItem15.AllowHotTrack = false;
-            this.emptySpaceItem15.Location = new System.Drawing.Point(227, 17);
-            this.emptySpaceItem15.Name = "emptySpaceItem15";
-            this.emptySpaceItem15.Size = new System.Drawing.Size(93, 24);
-            this.emptySpaceItem15.TextSize = new System.Drawing.Size(0, 0);
-            // 
             // frmEnterKskInfomantionVer2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -14228,6 +14228,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).EndInit();
             this.layoutControl4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dtpStart.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtpStart.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteRecentWorkTwoTo.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteRecentWorkTwoTo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteRecentWorkTwoFrom.Properties.CalendarTimeProperties)).EndInit();
@@ -14278,6 +14281,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem81)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem89)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem109)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem110)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).EndInit();
@@ -14286,7 +14292,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).EndInit();
             this.layoutControl5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.cboExamOend2.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtExamOend2.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHealthExamRankDescription2.Properties)).EndInit();
@@ -14989,11 +14994,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem102)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem105)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtpStart.Properties.CalendarTimeProperties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtpStart.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem109)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem110)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem15)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

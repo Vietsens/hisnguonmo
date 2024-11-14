@@ -145,6 +145,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 {
                     this.ValidationSingleControl(this.txtInteractionReason, this.dxValidationProviderControl);
                 }
+
+                this.dxValidationProviderControl.SetValidationRule(txtAdvise, null);
+                this.ValidationSingleControlWithMaxLength(this.txtAdvise, false, 1024);
             }
             catch (Exception ex)
             {
