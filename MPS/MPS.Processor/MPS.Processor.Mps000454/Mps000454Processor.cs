@@ -51,6 +51,7 @@ namespace MPS.Processor.Mps000454
                 //objectTag.AddObjectData(store, "KskPeriodDriver", new List<HIS_KSK_PERIOD_DRIVER>() { rdo.HisKskPeriodDriver });
 
                 SetSingleKey();
+                SetSignatureKeyImageByCFG();
                 objectTag.AddObjectData(store, "ExamRank", rdo.examRank);
                 if (rdo.lstDriverDity == null)
                 {
