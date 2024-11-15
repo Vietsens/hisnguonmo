@@ -213,7 +213,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         LoginNameEnableControl(currentKskOverEight.EXAM_DERMATOLOGY_LOGINNAME, txtExamDernatology2, cboExamDernatologyRank2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám da liễu.
 
                         LoginNameEnableControl(currentKskOverEight.EXAM_SURGERY_LOGINNAME, txtExamSurgery2, cboExamSurgeryRank2); // có dữ liệu và khác với tài khoản đăng nhập thì disable thông tin ngoại khoa
-                        LoginNameEnableControl(currentKskOverEight.EXAM_OBSTETRIC_LOGINNAME, txtExamObstetric2, cboExamSurgeryRank2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám sản phụ khoa.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_OBSTETRIC_LOGINNAME, txtExamObstetric2, cboExamObstetricRank2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám sản phụ khoa.
                         LoginNameEnableControl(currentKskOverEight.TEST_URINE_LOGINNAME, txtTestUrineGluco2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin xét nghiệm nước tiểu
                         LoginNameEnableControl(currentKskOverEight.TEST_URINE_LOGINNAME, txtTestUrineProtein2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin xét nghiệm nước tiểu
                         LoginNameEnableControl(currentKskOverEight.TEST_URINE_LOGINNAME, txtTestUrineOther2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin xét nghiệm nước tiểu
