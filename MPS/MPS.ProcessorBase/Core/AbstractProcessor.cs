@@ -388,9 +388,10 @@ namespace MPS.ProcessorBase.Core
                             {
                                 foreach (var genSignature in genSignatureByKetCFGs)
                                 {
-                                    if (singleValueDictionary.ContainsKey(genSignature.LoginnameKey) && singleValueDictionary[genSignature.LoginnameKey] != null && !String.IsNullOrEmpty(genSignature.LoginnameKey) && !String.IsNullOrEmpty(genSignature.SignatureKey))
+                                    string loginNameKey = genSignature.LoginnameKey.Trim();
+                                    if (singleValueDictionary.ContainsKey(loginNameKey) && singleValueDictionary[loginNameKey] != null && !String.IsNullOrEmpty(genSignature.LoginnameKey) && !String.IsNullOrEmpty(genSignature.SignatureKey))
                                     {
-                                        string loginname = singleValueDictionary[genSignature.LoginnameKey].ToString();
+                                        string loginname = singleValueDictionary[loginNameKey].ToString();
 
                                         var signer = PrintConfig.EmrSigners.FirstOrDefault(o => o.LOGINNAME == loginname);
 
