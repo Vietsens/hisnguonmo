@@ -335,6 +335,7 @@
     <Compile Include="Save\Update\SaveUpdateBehavior__In.cs" />
     <Compile Include="Save\Update\SaveUpdateBehavior__Out.cs" />
     <Compile Include="Util\DateTimeUtil.cs" />
+    <Compile Include="ValidateRule\ValidateMaxLength.cs" />
     <Compile Include="Worker\AssignPrescriptionWorker.cs" />
     <Compile Include="AssignPrescription\frmAssignPrescription__InitUC.cs">
       <SubType>Form</SubType>
@@ -561,6 +562,7 @@
   <ItemGroup>
     <None Include="Resources\noi-dung-mau-dis.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>echo PREBUILDSTEP for $(ProjectName)

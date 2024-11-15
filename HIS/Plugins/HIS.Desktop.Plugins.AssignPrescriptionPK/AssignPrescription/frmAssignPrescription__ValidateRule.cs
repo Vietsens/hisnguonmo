@@ -147,14 +147,30 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 }
 
                 this.dxValidationProviderControl.SetValidationRule(txtAdvise, null);
-                this.ValidationSingleControlWithMaxLength(this.txtAdvise, false, 1024);
+                this.ValidMaxLengthControl(this.txtAdvise, false, 1024);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void ValidMaxLengthControl(BaseEdit txt, bool IsRequired, int maxlength)
+        {
 
+            try
+            {
+                ValidateMaxLength valid = new ValidateMaxLength();
+                valid.maxLength = maxlength;
+                valid.textEdit = txt;
+                valid.IsRequired = IsRequired;
+                this.dxValidationProviderControl.SetValidationRule(txt, valid);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
         private void ValdateSecondaryIcd()
         {
             try

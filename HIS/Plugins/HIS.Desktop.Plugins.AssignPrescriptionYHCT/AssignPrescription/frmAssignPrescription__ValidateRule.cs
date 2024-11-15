@@ -24,6 +24,7 @@ using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.Resources;
+using HIS.Desktop.Plugins.AssignPrescriptionYHCT.ValidateRule;
 using Inventec.Core;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using Inventec.Desktop.Common.LibraryMessage;
@@ -110,14 +111,30 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 }
 
                 this.dxValidationProviderControl.SetValidationRule(txtAdvise, null);
-                this.ValidateMaxLengthControl(this.txtAdvise, false, 1024);
+                this.ValidMaxLengthControl(this.txtAdvise, false, 1024);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void ValidMaxLengthControl(BaseEdit txt, bool IsRequired, int maxlength)
+        {
 
+            try
+            {
+                ValidateMaxLength valid = new ValidateMaxLength();
+                valid.maxLength = maxlength;
+                valid.textEdit = txt;
+                valid.IsRequired = IsRequired;
+                this.dxValidationProviderControl.SetValidationRule(txt, valid);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
         bool ValidExpMestReason()
         {
             bool valid = true;
