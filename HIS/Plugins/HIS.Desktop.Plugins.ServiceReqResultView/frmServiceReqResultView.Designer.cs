@@ -310,9 +310,10 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             // 
             // txtktv
             // 
-            this.txtktv.Location = new System.Drawing.Point(636, 443);
+            this.txtktv.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.txtktv.Location = new System.Drawing.Point(640, 443);
             this.txtktv.Name = "txtktv";
-            this.txtktv.Size = new System.Drawing.Size(452, 20);
+            this.txtktv.Size = new System.Drawing.Size(448, 20);
             this.txtktv.StyleController = this.layoutControl3;
             this.txtktv.TabIndex = 14;
             // 
@@ -320,9 +321,10 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             // 
             this.txtPtv.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.txtPtv.Location = new System.Drawing.Point(97, 443);
+            this.txtPtv.MaximumSize = new System.Drawing.Size(454, 0);
             this.txtPtv.MinimumSize = new System.Drawing.Size(100, 0);
             this.txtPtv.Name = "txtPtv";
-            this.txtPtv.Size = new System.Drawing.Size(460, 20);
+            this.txtPtv.Size = new System.Drawing.Size(454, 20);
             this.txtPtv.StyleController = this.layoutControl3;
             this.txtPtv.TabIndex = 13;
             // 
@@ -639,7 +641,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.layoutControlItem17.Location = new System.Drawing.Point(0, 441);
             this.layoutControlItem17.Name = "layoutControlItem17";
             this.layoutControlItem17.OptionsToolTip.ToolTip = "Người đọc kết quả";
-            this.layoutControlItem17.Size = new System.Drawing.Size(559, 24);
+            this.layoutControlItem17.Size = new System.Drawing.Size(553, 24);
             this.layoutControlItem17.Text = "Người đọc KQ:";
             this.layoutControlItem17.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem17.TextSize = new System.Drawing.Size(90, 20);
@@ -650,12 +652,12 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.layoutControlItem18.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem18.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.layoutControlItem18.Control = this.txtktv;
-            this.layoutControlItem18.Location = new System.Drawing.Point(559, 441);
+            this.layoutControlItem18.Location = new System.Drawing.Point(553, 441);
             this.layoutControlItem18.Name = "layoutControlItem18";
-            this.layoutControlItem18.Size = new System.Drawing.Size(531, 24);
+            this.layoutControlItem18.Size = new System.Drawing.Size(537, 24);
             this.layoutControlItem18.Text = "Kỹ thuật viên:";
             this.layoutControlItem18.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem18.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem18.TextSize = new System.Drawing.Size(80, 20);
             this.layoutControlItem18.TextToControlDistance = 5;
             // 
             // xtraTabPacs
@@ -850,11 +852,6 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmServiceReqResultView";
             this.Load += new System.EventHandler(this.frmServiceReqResultView_Load);
-            this.Controls.SetChildIndex(this.barDockControlTop, 0);
-            this.Controls.SetChildIndex(this.barDockControlBottom, 0);
-            this.Controls.SetChildIndex(this.barDockControlRight, 0);
-            this.Controls.SetChildIndex(this.barDockControlLeft, 0);
-            this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();

@@ -49,6 +49,8 @@ namespace MPS.Processor.Mps000453
                 //objectTag.AddObjectData(store, "KskUnderEighteen", new List<HIS_KSK_UNDER_EIGHTEEN>() { rdo.HisKskUnderEighteen });
                 //objectTag.AddObjectData(store, "Dhst", new List<HIS_DHST>() { rdo.HisDhst });
                 SetSingleKey();
+                SetSignatureKeyImageByCFG();
+
                 if (rdo.lstUneiVaty == null)
                 {
                     rdo.lstUneiVaty = new List<HIS_KSK_UNEI_VATY>();

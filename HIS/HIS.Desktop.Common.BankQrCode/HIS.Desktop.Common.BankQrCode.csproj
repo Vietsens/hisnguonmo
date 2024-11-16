@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
     </Reference>

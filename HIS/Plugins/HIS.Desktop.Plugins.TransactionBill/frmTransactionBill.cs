@@ -481,7 +481,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             bool enable = false;
             try
             {
-                if(HisConfigCFG.AutoCreateDepositTransaction && currentTreatment.IS_PAUSE == 1)
+                if (HisConfigCFG.AutoCreateDepositTransaction && currentTreatment.IS_PAUSE == 1)
                 {
                     cboDepositBook.Enabled = true;
                     spnNumOrder.Enabled = true;
@@ -1152,7 +1152,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         acFilter.ORDER_DIRECTION = "DESC";
                         acFilter.ORDER_FIELD = "ID";
                         var dt = new BackendAdapter(new CommonParam()).Get<List<V_HIS_ACCOUNT_BOOK>>("api/HisAccountBook/GetView", ApiConsumers.MosConsumer, acFilter, null);
-                        if(dt != null && dt.Count > 0)
+                        if (dt != null && dt.Count > 0)
                             ListAccountBookDeposit.AddRange(dt);
                         step += 100;
                         count -= 100;
@@ -3039,6 +3039,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
                                 IsPin = false;
                             }
                         }
+                        else if (item.KEY == chkAddressBhyt.Name)
+                        {
+                            chkAddressBhyt.Checked = item.VALUE == "1";
+                        }
                     }
                 }
                 InformationBuyerADO ado = new InformationBuyerADO();
@@ -3366,6 +3370,16 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         btnStateForInformationUser.Properties.Buttons[1].Visible = false;
                         IsPin = true;
                     }
+                    if (IsPin)
+                    {
+                        chkAddressBhyt.Checked = false;
+                        chkAddressBhyt.Enabled = false;
+                    }
+                    else
+                    {
+                        chkAddressBhyt.Checked = false;
+                        chkAddressBhyt.Enabled = true;
+                    }
                     btnStateForInformationUser.Update();
                     HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == btnStateForInformationUser.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
                     if (csAddOrUpdate != null)
@@ -3572,8 +3586,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 if (cboBuyerOrganization.EditValue != null)
                 {
                     var dt = dtWorkPlace.Where(o => o.ID == Int64.Parse(cboBuyerOrganization.EditValue.ToString())).First();
-                    txtBuyerAddress.Text = dt.ADDRESS;
-                    txtBuyerTaxCode.Text = dt.TAX_CODE;
+                    if (!chkAddressBhyt.Checked)
+                    {
+                        txtBuyerAddress.Text = dt.ADDRESS;
+                        txtBuyerTaxCode.Text = dt.TAX_CODE;
+                    }
                     cboBuyerOrganization.Properties.Buttons[1].Visible = true;
                     //HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdateValue = (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0) ? this.currentBySessionControlStateRDO.Where(o => o.KEY == cboBuyerOrganization.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
                     //if (csAddOrUpdateValue != null)
@@ -3693,7 +3710,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             try
             {
                 var data = cboDepositBook.Properties.DataSource as List<V_HIS_ACCOUNT_BOOK>;
-                if(data != null && data.Count > 0)
+                if (data != null && data.Count > 0)
                 {
                     if (cboDepositBook.EditValue != null)
                     {
@@ -3845,7 +3862,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                                 LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
 
                                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
-                                 
+
                             };
                             popupMenu1.AddItem(btnOption);
                         }
@@ -3871,6 +3888,54 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     }
 
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void chkAddressBhyt_CheckedChanged(object sender, EventArgs e)
+        {
+
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                if (chkAddressBhyt.Checked && resultPatientType != null && !string.IsNullOrEmpty(resultPatientType.ADDRESS))
+                {
+                    txtBuyerAddress.Text = resultPatientType.ADDRESS;
+                }
+                else if (currentTransaction != null && currentTransaction.IS_CANCEL == 1)
+                {
+                    txtBuyerAddress.Text = currentTransaction.BUYER_ADDRESS;
+                }
+                else if (this.currentTreatment != null)
+                {
+                    txtBuyerAddress.Text = currentTreatment.TDL_PATIENT_ADDRESS;
+                }
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkAddressBhyt.Name && o.MODULE_LINK == currentModule.ModuleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkAddressBhyt.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkAddressBhyt.Name;
+                    csAddOrUpdate.VALUE = (chkAddressBhyt.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = currentModule.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
             }
             catch (Exception ex)
             {

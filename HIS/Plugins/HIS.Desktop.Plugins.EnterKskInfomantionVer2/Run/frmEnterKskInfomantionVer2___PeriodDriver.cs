@@ -388,7 +388,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private HIS_KSK_PERIOD_DRIVER GetValuePeriodDriver()
         {
             HIS_KSK_PERIOD_DRIVER obj = new HIS_KSK_PERIOD_DRIVER();
@@ -398,7 +397,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     obj.ID = currentKskPeriodDriver.ID;
                 if (cboLicenseClass4.EditValue != null)
                 {
-                    obj.LICENSE_CLASS_ID = Int64.Parse(cboLicenseClass4.EditValue.ToString());
+                    obj.LICENSE_CLASS_ID = (long?)Int64.Parse(cboLicenseClass4.EditValue.ToString());
                     obj.LICENSE_CLASS_NAME = cboLicenseClass4.Text;
                 }
                 obj.PATHOLOGICAL_HISTORY_FAMILY = txtPathologicalHistoryFamily4.Text;
@@ -407,25 +406,25 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.MATERNITY_HISTORY = txtMaternityHistory4.Text;
                 obj.EXAM_NEUROLOGICAL = txtExamNeurological4.Text;
                 obj.EXAM_NEUROLOGICAL_CONCLUDE = txtNeurologicalConclude4.Text;
-                obj.EXAM_NEUROLOGICAL_RANK = cboNeurologicalRank4.EditValue != null ? Int64.Parse(cboNeurologicalRank4.EditValue.ToString()) : 0;
+                obj.EXAM_NEUROLOGICAL_RANK = cboNeurologicalRank4.EditValue != null ? (long?)Int64.Parse(cboNeurologicalRank4.EditValue.ToString()) : null;
                 obj.EXAM_MUSCLE_BONE = txtExamMuscleBone4.Text;
                 obj.EXAM_MUSCLE_BONE_CONCLUDE = txtExamMuscleBoneConclude4.Text;
-                obj.EXAM_MUSCLE_BONE_RANK = cboExamMuscleBoneRank4.EditValue != null ? Int64.Parse(cboExamMuscleBoneRank4.EditValue.ToString()) : 0;
+                obj.EXAM_MUSCLE_BONE_RANK = cboExamMuscleBoneRank4.EditValue != null ? (long?)Int64.Parse(cboExamMuscleBoneRank4.EditValue.ToString()) : null;
                 obj.EXAM_MENTAL = txtExamMental4.Text;
                 obj.EXAM_MENTAL_CONCLUDE = txtExamMentalConclude4.Text;
-                obj.EXAM_MENTAL_RANK = cboExamMentalRank4.EditValue != null ? Int64.Parse(cboExamMentalRank4.EditValue.ToString()) : 0;
+                obj.EXAM_MENTAL_RANK = cboExamMentalRank4.EditValue != null ? (long?)Int64.Parse(cboExamMentalRank4.EditValue.ToString()) : null;
                 obj.EXAM_RESPIRATORY = txtExamRespiratory4.Text;
                 obj.EXAM_RESPIRATORY_CONCLUDE = txtExamRespiratoryConclude4.Text;
-                obj.EXAM_RESPIRATORY_RANK = cboExamRespiratoryRank4.EditValue != null ? Int64.Parse(cboExamRespiratoryRank4.EditValue.ToString()) : 0;
+                obj.EXAM_RESPIRATORY_RANK = cboExamRespiratoryRank4.EditValue != null ? (long?)Int64.Parse(cboExamRespiratoryRank4.EditValue.ToString()) : null;
                 obj.EXAM_OEND = txtExamOend4.Text;
                 obj.EXAM_OEND_CONCLUDE = txtExamOendConclude4.Text;
-                obj.EXAM_OEND_RANK = cboExamOendRank4.EditValue != null ? Int64.Parse(cboExamOendRank4.EditValue.ToString()) : 0;
+                obj.EXAM_OEND_RANK = cboExamOendRank4.EditValue != null ? (long?)Int64.Parse(cboExamOendRank4.EditValue.ToString()) : null;
                 obj.EXAM_MATERNITY = txtExamMaternity4.Text;
                 obj.EXAM_MATERNITY_CONCLUDE = txtExamMaternityConclude4.Text;
-                obj.EXAM_MATERNITY_RANK = cboExamMaternityRank4.EditValue != null ? Int64.Parse(cboExamMaternityRank4.EditValue.ToString()) : 0;
+                obj.EXAM_MATERNITY_RANK = cboExamMaternityRank4.EditValue != null ? (long?)Int64.Parse(cboExamMaternityRank4.EditValue.ToString()) : null;
                 obj.EXAM_EYE_DISEASE = txtExamEyeDisease4.Text;
                 obj.EXAM_EYE_CONCLUDE = txtExamEyeConclude4.Text;
-                obj.EXAM_EYE_RANK = cboExamEyeRank4.EditValue != null ? Int64.Parse(cboExamEyeRank4.EditValue.ToString()) : 0;
+                obj.EXAM_EYE_RANK = cboExamEyeRank4.EditValue != null ? (long?)Int64.Parse(cboExamEyeRank4.EditValue.ToString()) : null;
                 obj.EXAM_EYESIGHT_RIGHT = txtExamEyeSightRight4.Text;
                 obj.EXAM_EYESIGHT_LEFT = txtExamEyeSightLeft4.Text;
                 obj.EXAM_EYESIGHT_GLASS_RIGHT = txtExamEyeSightGlassRight4.Text;
@@ -436,11 +435,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.EXAM_EYEFIELD_HORI_LIMIT = txtExamEyeFieldHoriLimit4.Text;
                 obj.EXAM_EYEFIELD_VERT_NORMAL = txtExamEyeFieldVertNormal4.Text;
                 obj.EXAM_EYEFIELD_VERT_LIMIT = txtExamEyeFieldVertLimit4.Text;
-                obj.EXAM_EYECOLOR_IS_NORMAL = chkExamEyeFieldIsNormal4.Checked ? (short?)1 : 0;
-                obj.EXAM_EYECOLOR_IS_BLIND = chkExamEyeFieldIsBlind4.Checked ? (short?)1 : 0;
-                obj.EXAM_EYECOLOR_IS_BLIND_RED = chkExamEyeFieldIsRed4.Checked ? (short?)1 : 0;
-                obj.EXAM_EYECOLOR_IS_BLIND_GREEN = chkExamEyeFieldIsGreen4.Checked ? (short?)1 : 0;
-                obj.EXAM_EYECOLOR_IS_BLIND_YELOW = chkExamEyeFieldIsYellow4.Checked ? (short?)1 : 0;
+                obj.EXAM_EYECOLOR_IS_NORMAL = chkExamEyeFieldIsNormal4.Checked ? (short?)1 : null;
+                obj.EXAM_EYECOLOR_IS_BLIND = chkExamEyeFieldIsBlind4.Checked ? (short?)1 : null;
+                obj.EXAM_EYECOLOR_IS_BLIND_RED = chkExamEyeFieldIsRed4.Checked ? (short?)1 : null;
+                obj.EXAM_EYECOLOR_IS_BLIND_GREEN = chkExamEyeFieldIsGreen4.Checked ? (short?)1 : null;
+                obj.EXAM_EYECOLOR_IS_BLIND_YELOW = chkExamEyeFieldIsYellow4.Checked ? (short?)1 : null;
 
                 obj.EXAM_ENT_LEFT_NORMAL = txtExamEntLeftNormal4.Text;
                 obj.EXAM_ENT_LEFT_WHISPER = txtExamEntLeftWhisper4.Text;
@@ -448,13 +447,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.EXAM_ENT_RIGHT_WHISPER = txtExamEntRightWhisper4.Text;
                 obj.EXAM_ENT_DISEASE = txtExamEntDisease4.Text;
                 obj.EXAM_ENT_CONCLUDE = txtExamEntConclude4.Text;
-                obj.EXAM_ENT_RANK = cboExamEntDiseaseRank4.EditValue != null ? Int64.Parse(cboExamEntDiseaseRank4.EditValue.ToString()) : 0;
+                obj.EXAM_ENT_RANK = cboExamEntDiseaseRank4.EditValue != null ? (long?)Int64.Parse(cboExamEntDiseaseRank4.EditValue.ToString()) : null;
                 obj.EXAM_CARDIOVASCULAR = txtExamCardiovascular4.Text;
                 obj.EXAM_CARDIOVASCULAR_CONCLUDE = txtExamCardiovascularConclude4.Text;
-                obj.EXAM_CARDIOVASCULAR_RANK = cboExamCardiovascularRank4.EditValue != null ? Int64.Parse(cboExamCardiovascularRank4.EditValue.ToString()) : 0;
-                obj.EXAM_CARDIOVASCULAR_BLOOD_MAX = spnExamCardiovascularBloodMax4.EditValue != null ? Int64.Parse(spnExamCardiovascularBloodMax4.EditValue.ToString()) : 0;
-                obj.EXAM_CARDIOVASCULAR_BLOOD_MIN = spnExamCardiovascularBloodMin4.EditValue != null ? Int64.Parse(spnExamCardiovascularBloodMin4.EditValue.ToString()) : 0;
-                obj.EXAM_CARDIOVASCULAR_PULSE = spnExamCardiovascularPulse4.EditValue != null ? Int64.Parse(spnExamCardiovascularPulse4.EditValue.ToString()) : 0;
+                obj.EXAM_CARDIOVASCULAR_RANK = cboExamCardiovascularRank4.EditValue != null ? (long?)Int64.Parse(cboExamCardiovascularRank4.EditValue.ToString()) : null;
+                obj.EXAM_CARDIOVASCULAR_BLOOD_MAX = spnExamCardiovascularBloodMax4.EditValue != null ? (long?)Int64.Parse(spnExamCardiovascularBloodMax4.EditValue.ToString()) : null;
+                obj.EXAM_CARDIOVASCULAR_BLOOD_MIN = spnExamCardiovascularBloodMin4.EditValue != null ? (long?)Int64.Parse(spnExamCardiovascularBloodMin4.EditValue.ToString()) : null;
+                obj.EXAM_CARDIOVASCULAR_PULSE = spnExamCardiovascularPulse4.EditValue != null ? (long?)Int64.Parse(spnExamCardiovascularPulse4.EditValue.ToString()) : null;
                 obj.TEST_MORPHIN_HEROIN = txtMorphineHeroin4.Text;
                 obj.TEST_AMPHETAMIN = txtTestAmphetamin4.Text;
                 obj.TEST_METHAMPHETAMIN = txtTestMethamphetamin4.Text;
@@ -471,7 +470,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
             return obj;
         }
-
         private List<HIS_PERIOD_DRIVER_DITY> GetDriverDity()
         {
             List<HIS_PERIOD_DRIVER_DITY> obj = new List<HIS_PERIOD_DRIVER_DITY>();

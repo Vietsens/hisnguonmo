@@ -5682,7 +5682,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                 mediMatyTypeADO.PRES_AMOUNT = mediMatyTypeADO.AMOUNT;
                             }
 
-                            bool rsMaxPresInBatch = false;
+                            bool rsMaxPresInBatch = true;
                             if (e.Column.FieldName == "AMOUNT")
                             {
                                 IsCellChangeAmount = true;

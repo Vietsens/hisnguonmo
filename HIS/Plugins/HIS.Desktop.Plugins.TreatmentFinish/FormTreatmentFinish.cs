@@ -171,6 +171,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         public List<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE> hisTreatmentTypes;
         HIS_PATIENT currentPatient;
 
+        public List<HIS_CAREER> careers;
 
         bool isFinished = false;
         #endregion
@@ -295,6 +296,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 Inventec.Common.Logging.LogSystem.Error("TreatmentFinish 1");
                 LoadDataFromRam();
                 InitComboHisHospitalizeReason();
+                ValidatecboCareer();
                 Config.ConfigKey.GetConfigKey();
                 ProcessCheckMaterialInvoice();
                 Inventec.Common.Logging.LogSystem.Error("CreateThreadGetData 2");
@@ -308,7 +310,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 SetEndOrder();
 
                 SetDefaultValueControl();
-
+                LoadDataToComboCareer();
 
                 LoadDataEye(currentHisTreatment);
                 LoadComboControls();
@@ -343,6 +345,25 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void LoadDataToComboCareer()
+        {
+            try
+            {
+                careers = BackendDataWorker.Get<HIS_CAREER>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("CAREER_CODE", "", 50, 1));
+                columnInfos.Add(new ColumnInfo("CAREER_NAME", "", 150, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("CAREER_NAME", "ID", columnInfos, false, 200);
+                ControlEditorLoader.Load(cboCareer, careers, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void SetCaptionByLanguageKey()
         {
             try
@@ -1176,7 +1197,15 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         cboResult.EditValue = null;
 
                     }
-
+                    if (!string.IsNullOrEmpty(data.TDL_PATIENT_CAREER_CODE))
+                    {
+                        var currentCareer = careers.Where(o => o.CAREER_CODE == data.TDL_PATIENT_CAREER_CODE).FirstOrDefault();
+                        cboCareer.EditValue = currentCareer.ID;
+                    }
+                    else
+                    {
+                        cboCareer.EditValue = null;
+                    }
                     cboTTExt.EditValue = data.TREATMENT_END_TYPE_EXT_ID;
                     if (data.TREATMENT_END_TYPE_EXT_ID != null)
                     {
@@ -1505,6 +1534,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 this.txtEyeTensionLeft.ReadOnly = true;
                 this.txtEyeTensionRight.ReadOnly = true;
                 this.txtKskCode.ReadOnly = true;
+                this.cboCareer.ReadOnly = true;
             }
             catch (Exception ex)
             {
@@ -2446,7 +2476,25 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-
+                if (!string.IsNullOrEmpty(codeCheckSubICD))
+                {
+                    var checkICDSubCode = codeCheckSubICD.Split(';').ToList();
+                    if (checkICDSubCode != null && checkICDSubCode.Count > 12)
+                    {
+                        if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "1")
+                        {
+                            XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                        else if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "2")
+                        {
+                            if (DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục không?",
+                               "Thông báo",
+                              MessageBoxButtons.YesNo) == DialogResult.No)
+                                return;
+                        }
+                    }
+                }
                 List<WarningADO> warningADONew = new List<WarningADO>();
                 if ((ConfigKey.MustChooseSeviceExamOption == "1" || ConfigKey.MustChooseSeviceExamOption == "2") && !this.CheckMustChooseSeviceExamOption()) return;
                 if (!this.CheckAssignServiceBed_ForSave(ValidationDataType.PopupMessage, ref warningADONew))
@@ -2893,6 +2941,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         string codeCheckCD;
         string nameCheckCD;
         string codeCheckCDYHCT;
+        string codeCheckSubICD;
         private void GetValueUC()
         {
             try 
@@ -2905,6 +2954,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     var subIcd = subIcdProcessor.GetValue(ucSecondaryIcd);
                     if (subIcd != null && subIcd is SecondaryIcdDataADO)
                     {
+                        codeCheckSubICD = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
                         codeCheckCD = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
                         nameCheckCD = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
                     }
@@ -2968,6 +3018,23 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 {
                     XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
+                }
+
+                var checkICDSubCode = codeCheckSubICD.Split(';').ToList();
+                if (checkICDSubCode != null && checkICDSubCode.Count > 12)
+                {
+                    if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "1")
+                    {
+                        XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    else if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "2")
+                    {
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục không?",
+                           "Thông báo",
+                          MessageBoxButtons.YesNo) == DialogResult.No)
+                            return;
+                    }
                 }
                 HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager check = new Desktop.Plugins.Library.CheckIcd.CheckIcdManager(null, currentHisTreatment);
                 string message = null;
@@ -4910,6 +4977,22 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
+                var checkICDSubCode = codeCheckSubICD.Split(';').ToList();
+                if (checkICDSubCode != null && checkICDSubCode.Count > 12)
+                {
+                    if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "1")
+                    {
+                        XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    else if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "2")
+                    {
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục không?",
+                           "Thông báo",
+                          MessageBoxButtons.YesNo) == DialogResult.No)
+                            return;
+                    }
+                }
 
                 frmWarning form = new frmWarning(DelegateCheckSkipMethod, this.warningADOs, this._isSkipWarningForSave);
                 form.ShowDialog();
@@ -5823,6 +5906,22 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 validRule.ErrorText = "Trường dữ liệu bắt buộc";
                 validRule.ErrorType = ErrorType.Warning;
                 dxValidationProvider.SetValidationRule(this.txtHosReasonNt, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ValidatecboCareer()
+        {
+            try
+            {
+                ControlEditValidationRule validRule = new ControlEditValidationRule();
+                validRule.editor = this.cboCareer;
+                validRule.ErrorText = "Trường dữ liệu bắt buộc";
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProvider.SetValidationRule(this.cboCareer, validRule);
             }
             catch (Exception ex)
             {

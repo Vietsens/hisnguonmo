@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
 using HIS.Desktop.ApiConsumer;
 using Inventec.Common.BankQrCode;
 using Inventec.Common.BankQrCode.ADO;
@@ -24,7 +25,6 @@ using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HIS.Desktop.Common.BankQrCode
@@ -39,20 +39,25 @@ namespace HIS.Desktop.Common.BankQrCode
             {
                 bool IsQrDynamic = false;
                 List<string> banks = new List<string>() { "MBB", "VCB" };
-                if (string.IsNullOrEmpty(data.QR_TEXT) && configValue != null && configValue.Count == 1 && banks.Exists(o => configValue[0].KEY.IndexOf(o) > -1))
+                if (string.IsNullOrEmpty(data.QR_TEXT) && configValue != null && configValue.Count > 0 && banks.Exists(o => configValue.Exists(p=>p.KEY.IndexOf(o) > -1)))
                 {
-                    CommonParam param = new CommonParam();
-                    MOS.TDO.QrPaymentGenerateTDO tdo = new MOS.TDO.QrPaymentGenerateTDO();
-                    tdo.TransReqId = data.ID;
-                    tdo.Bank = configValue[0].KEY.Contains("MBB") ? "MBB" : "VCB";
-                    dynamic bank = new System.Dynamic.ExpandoObject();
-                    bank.BANK = tdo.Bank;
-                    bank.VALUE = configValue[0].VALUE;
-                    tdo.BankConfig = Newtonsoft.Json.JsonConvert.SerializeObject(bank);
-                    var dataGenQr = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANS_REQ>("api/HisTransReq/QrPaymentGenerate", ApiConsumers.MosConsumer, tdo, param);
-                    if (dataGenQr != null)
+                    if (configValue.Count == 1)
                     {
-                        data = dataGenQr;
+                        CommonParam param = new CommonParam();
+                        MOS.TDO.QrPaymentGenerateTDO tdo = new MOS.TDO.QrPaymentGenerateTDO();
+                        tdo.TransReqId = data.ID;
+                        tdo.Bank = configValue[0].KEY.Contains("MBB") ? "MBB" : "VCB";
+                        tdo.BankConfig = configValue[0].VALUE;
+                        data = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANS_REQ>("api/HisTransReq/QrPaymentGenerate", ApiConsumers.MosConsumer, tdo, param);
+                        if (data == null)
+                        {
+                            XtraMessageBox.Show(param.GetMessage());
+                            return null;
+                        }
+                    }
+                    else
+                    {
+                        configValue = configValue.Where(o => !banks.Exists(p => o.KEY.IndexOf(p) > -1)).ToList();
                     }
                 }
                 if (data != null && !string.IsNullOrEmpty(data.QR_TEXT))

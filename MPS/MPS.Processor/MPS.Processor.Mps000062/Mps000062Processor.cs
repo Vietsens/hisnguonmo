@@ -3774,29 +3774,6 @@ namespace MPS.Processor.Mps000062
                     _MediInfusionDutru = _MediInfusionDutru.Distinct().ToList();
                     #endregion
 
-                    #region dv cls dự trù
-                    if (_ServiceCLSSplits != null && _ServiceCLSSplits.Count > 0 && _ServiceReqDuTrus != null && _ServiceReqDuTrus.Count > 0)
-                    {
-                        _ServiceClsDuTru = _ServiceCLSSplits.Where(o => _ServiceReqDuTrus.Exists(p => p.ID == o.SERVICE_REQ_ID && p.USE_TIME > p.INTRUCTION_TIME)).ToList();
-                        if (_ServiceClsDuTru != null && _ServiceClsDuTru.Count > 0)
-                        {
-                            _ServiceClsDuTru.ForEach(o => o.USE_TIME = _ServiceReqDuTrus.FirstOrDefault(p => p.ID == o.SERVICE_REQ_ID).USE_TIME);
-                        }
-                    }
-                    #endregion
-
-                    #region dv tt dự trù
-                    if (_TTServices != null && _TTServices.Count > 0 && _ServiceReqDuTrus != null && _ServiceReqDuTrus.Count > 0)
-                    {
-                        _ServiceTtDuTru = _TTServices.Where(o => _ServiceReqDuTrus.Exists(p => p.ID == o.SERVICE_REQ_ID && p.USE_TIME > p.INTRUCTION_TIME)).ToList();
-                        if (_ServiceTtDuTru != null && _ServiceTtDuTru.Count > 0)
-                        {
-                            _ServiceTtDuTru.ForEach(o => o.USE_TIME = _ServiceReqDuTrus.FirstOrDefault(p => p.ID == o.SERVICE_REQ_ID).USE_TIME);
-                            _TTServices = _TTServices.Where(o => !_ServiceTtDuTru.Exists(p => p.SERVICE_ID == o.SERVICE_ID && p.SERVICE_REQ_ID == o.SERVICE_REQ_ID)).ToList();
-                        }
-                    }
-                    #endregion
-
                     #region thuốc thực hiện dự trù
                     if (dataGroupsIntructionTHDT != null && dataGroupsIntructionTHDT.Count() > 0)
                     {
@@ -3910,32 +3887,58 @@ namespace MPS.Processor.Mps000062
                     }
                     _MediInfusionTHDT = _MediInfusionTHDT.Distinct().ToList();
                     #endregion
-
-                    #region thực hiện dv cls dự trù
-
-                    var serviceReqTracking = _ServiceReqTHDT != null && _ServiceReqTHDT.Count > 0 ? _ServiceReqTHDT.Where(o => rdo._Trackings.Exists(p => o.USED_FOR_TRACKING_ID == p.ID)).ToList() : null;
-                    if (_ServiceCLSSplits != null && _ServiceCLSSplits.Count > 0 && serviceReqTracking != null && serviceReqTracking.Count > 0)
-                    {
-                        _ServiceClsTHDT = _ServiceCLSSplits.Where(o => serviceReqTracking.Exists(p => p.ID == o.SERVICE_REQ_ID)).ToList();
-                        if (_ServiceClsTHDT != null && _ServiceClsTHDT.Count > 0)
-                        {
-                            _ServiceClsTHDT.ForEach(o => o.USE_TIME = serviceReqTracking.FirstOrDefault(p => p.ID == o.SERVICE_REQ_ID).USE_TIME);
-                        }
-                    }
-                    #endregion
-
-                    #region thực hiện tt dự trù
-                    if (_TTServices != null && _TTServices.Count > 0 && serviceReqTracking != null && serviceReqTracking.Count > 0)
-                    {
-                        _ServiceTtTHDT = _TTServices.Where(o => serviceReqTracking.Exists(p => p.ID == o.SERVICE_REQ_ID)).ToList();
-                        if (_ServiceTtTHDT != null && _ServiceTtTHDT.Count > 0)
-                        {
-                            _ServiceTtTHDT.ForEach(o => o.USE_TIME = serviceReqTracking.FirstOrDefault(p => p.ID == o.SERVICE_REQ_ID).USE_TIME);
-                            _TTServices = _TTServices.Where(o => !_ServiceTtTHDT.Exists(p => p.SERVICE_ID == o.SERVICE_ID && p.SERVICE_REQ_ID == o.SERVICE_REQ_ID)).ToList();
-                        }
-                    }
-                    #endregion
                 }
+
+
+                #region dv cls dự trù
+                if (_ServiceCLSSplits != null && _ServiceCLSSplits.Count > 0 && _ServiceReqDuTrus != null && _ServiceReqDuTrus.Count > 0)
+                {
+                    _ServiceClsDuTru = _ServiceCLSSplits.Where(o => _ServiceReqDuTrus.Exists(p => p.ID == o.SERVICE_REQ_ID && p.USE_TIME > p.INTRUCTION_TIME)).ToList();
+                    if (_ServiceClsDuTru != null && _ServiceClsDuTru.Count > 0)
+                    {
+                        _ServiceClsDuTru.ForEach(o => o.USE_TIME = _ServiceReqDuTrus.FirstOrDefault(p => p.ID == o.SERVICE_REQ_ID).USE_TIME);
+                    }
+                }
+                #endregion
+
+                #region dv tt dự trù
+                if (_TTServices != null && _TTServices.Count > 0 && _ServiceReqDuTrus != null && _ServiceReqDuTrus.Count > 0)
+                {
+                    _ServiceTtDuTru = _TTServices.Where(o => _ServiceReqDuTrus.Exists(p => p.ID == o.SERVICE_REQ_ID && p.USE_TIME > p.INTRUCTION_TIME)).ToList();
+                    if (_ServiceTtDuTru != null && _ServiceTtDuTru.Count > 0)
+                    {
+                        _ServiceTtDuTru.ForEach(o => o.USE_TIME = _ServiceReqDuTrus.FirstOrDefault(p => p.ID == o.SERVICE_REQ_ID).USE_TIME);
+                        _TTServices = _TTServices.Where(o => !_ServiceTtDuTru.Exists(p => p.SERVICE_ID == o.SERVICE_ID && p.SERVICE_REQ_ID == o.SERVICE_REQ_ID)).ToList();
+                    }
+                }
+                #endregion
+
+
+
+                #region thực hiện dv cls dự trù
+
+                var serviceReqTracking = _ServiceReqTHDT != null && _ServiceReqTHDT.Count > 0 ? _ServiceReqTHDT.Where(o => rdo._Trackings.Exists(p => o.USED_FOR_TRACKING_ID == p.ID)).ToList() : null;
+                if (_ServiceCLSSplits != null && _ServiceCLSSplits.Count > 0 && serviceReqTracking != null && serviceReqTracking.Count > 0)
+                {
+                    _ServiceClsTHDT = _ServiceCLSSplits.Where(o => serviceReqTracking.Exists(p => p.ID == o.SERVICE_REQ_ID)).ToList();
+                    if (_ServiceClsTHDT != null && _ServiceClsTHDT.Count > 0)
+                    {
+                        _ServiceClsTHDT.ForEach(o => o.USE_TIME = serviceReqTracking.FirstOrDefault(p => p.ID == o.SERVICE_REQ_ID).USE_TIME);
+                    }
+                }
+                #endregion
+
+                #region thực hiện tt dự trù
+                if (_TTServices != null && _TTServices.Count > 0 && serviceReqTracking != null && serviceReqTracking.Count > 0)
+                {
+                    _ServiceTtTHDT = _TTServices.Where(o => serviceReqTracking.Exists(p => p.ID == o.SERVICE_REQ_ID)).ToList();
+                    if (_ServiceTtTHDT != null && _ServiceTtTHDT.Count > 0)
+                    {
+                        _ServiceTtTHDT.ForEach(o => o.USE_TIME = serviceReqTracking.FirstOrDefault(p => p.ID == o.SERVICE_REQ_ID).USE_TIME);
+                        _TTServices = _TTServices.Where(o => !_ServiceTtTHDT.Exists(p => p.SERVICE_ID == o.SERVICE_ID && p.SERVICE_REQ_ID == o.SERVICE_REQ_ID)).ToList();
+                    }
+                }
+                #endregion
             }
             catch (Exception ex)
             {
@@ -5091,11 +5094,11 @@ namespace MPS.Processor.Mps000062
                     {
                         #region dvu cls dự trù
                         List<ServiceCLS> ServiceAll = new List<ServiceCLS>();
-                        if (_ServiceClsDuTru != null && _ServiceClsDuTru.Count > 0)
+                        if (_ServiceClsDuTru != null && _ServiceClsDuTru.Count > 0 && _ServiceClsDuTru.Exists(o=>o.TRACKING_ID == item.ID))
                         {
                             //_ServiceClsDuTru.ForEach(o => o.USE_TIME = _ServiceReqDuTrus.FirstOrDefault(ReqDT => o.SERVICE_REQ_ID == ReqDT.ID).USE_TIME);
                             //ServiceAll.AddRange(ClsDuTrus);
-                            var _ServiceClsDuTruGroupUseTime = _ServiceClsDuTru.OrderBy(o => o.USE_TIME).GroupBy(o => o.USE_TIME).ToList();
+                            var _ServiceClsDuTruGroupUseTime = _ServiceClsDuTru.Where(o=>o.TRACKING_ID == item.ID).OrderBy(o => o.USE_TIME).GroupBy(o => o.USE_TIME).ToList();
                             {
                                 foreach (var lstService in _ServiceClsDuTruGroupUseTime)
                                 {
@@ -5145,10 +5148,10 @@ namespace MPS.Processor.Mps000062
 
                         #region dvu tt dự trù
                         //var TtDutrus = this._TTServices != null && this._TTServices.Count > 0 ? this._TTServices.Where(o => _ServiceReqDuTrus.Exists(ReqDT => o.SERVICE_REQ_ID == ReqDT.ID && (ReqDT.USE_TIME ?? 0) > ReqDT.INTRUCTION_TIME)).ToList() : new List<ServiceCLS>();
-                        if (_ServiceTtDuTru != null && _ServiceTtDuTru.Count > 0)
+                        if (_ServiceTtDuTru != null && _ServiceTtDuTru.Count > 0 && _ServiceTtDuTru.Exists(o => o.TRACKING_ID == item.ID))
                         {
                             //ServiceAll.AddRange(TtDutrus);
-                            var _ServiceTtDuTruGroupUseTime = _ServiceTtDuTru.OrderBy(o => o.USE_TIME).GroupBy(o => o.USE_TIME).ToList();
+                            var _ServiceTtDuTruGroupUseTime = _ServiceTtDuTru.Where(o => o.TRACKING_ID == item.ID).OrderBy(o => o.USE_TIME).GroupBy(o => o.USE_TIME).ToList();
                             {
                                 foreach (var lstService in _ServiceTtDuTruGroupUseTime)
                                 {
@@ -5446,7 +5449,7 @@ namespace MPS.Processor.Mps000062
 
                     #region thực hiện dịch vụ dự trù
 
-                    if (_ServiceReqTHDT != null && _ServiceReqTHDT.Count > 0)
+                    if (_ServiceReqTHDT != null && _ServiceReqTHDT.Count > 0 && _ServiceReqTHDT.Exists(o => o.TRACKING_ID == item.ID))
                     {
                         #region thực hiện dvu cls dự trù
                         List<ServiceCLS> ServiceAll = new List<ServiceCLS>();
@@ -5454,7 +5457,7 @@ namespace MPS.Processor.Mps000062
                         if (_ServiceClsTHDT != null && _ServiceClsTHDT.Count > 0)
                         {
                             //ServiceAll.AddRange(ClsDuTrus);
-                            var _ServiceClsTHDTGroupUseTime = _ServiceClsTHDT.OrderBy(o => o.USE_TIME).GroupBy(o => o.USE_TIME).ToList();
+                            var _ServiceClsTHDTGroupUseTime = _ServiceClsTHDT.Where(o => o.TRACKING_ID == item.ID).OrderBy(o => o.USE_TIME).GroupBy(o => o.USE_TIME).ToList();
                             foreach (var lstService in _ServiceClsTHDTGroupUseTime)
                             {
                                 string title = Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Thực hiện dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(lstService.Key ?? 0), FontStyle.Bold);
@@ -5502,12 +5505,12 @@ namespace MPS.Processor.Mps000062
 
                         #region thực hiện dvu tt dự trù
                         //var TtDutrus = this._TTServices != null && this._TTServices.Count > 0 ? this._TTServices.Where(o => _ServiceReqTHDT.Exists(ReqTHDT => o.SERVICE_REQ_ID == ReqTHDT.ID && ReqTHDT.USED_FOR_TRACKING_ID == item.ID)).ToList() : null;
-                        if (_ServiceTtTHDT != null && _ServiceTtTHDT.Count > 0)
+                        if (_ServiceTtTHDT != null && _ServiceTtTHDT.Count > 0 && _ServiceTtTHDT.Exists(o => o.TRACKING_ID == item.ID))
                         {
                             //TtDutrus.ForEach(o => o.USE_TIME = _ServiceReqDuTrus.FirstOrDefault(ReqDT => o.SERVICE_REQ_ID == ReqDT.ID).USE_TIME);
                             //_TTServices = _TTServices.Where(o => !TtDutrus.Exists(p => p.SERVICE_ID == o.SERVICE_ID && p.SERVICE_REQ_ID == o.SERVICE_REQ_ID)).ToList();
                             //ServiceAll.AddRange(TtDutrus);
-                            var _ServiceTtTHDTGroupUseTime = _ServiceTtTHDT.OrderBy(o => o.USE_TIME).GroupBy(o => o.USE_TIME).ToList();
+                            var _ServiceTtTHDTGroupUseTime = _ServiceTtTHDT.Where(o => o.TRACKING_ID == item.ID).OrderBy(o => o.USE_TIME).GroupBy(o => o.USE_TIME).ToList();
 
                             foreach (var lstService in _ServiceTtTHDTGroupUseTime)
                             {
@@ -5744,20 +5747,16 @@ namespace MPS.Processor.Mps000062
                                     ExpMestMedicineADO Ado = new ExpMestMedicineADO(iem, rdo._MedicineTypes);
                                     _expMestMedicines.Add(Ado);
                                 }
-                                Inventec.Common.Logging.LogSystem.Warn("dữ liệu _expMestMedicines 1: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => _expMestMedicines), _expMestMedicines));
                             }
 
                             if (_expMestMedicines != null && _expMestMedicines.Count > 0)
                             {
                                 _expMestMedicines = _expMestMedicines.Where(o => o.USE_TIME_TO >= item.TRACKING_TIME).OrderBy(p => p.NUM_ORDER).ToList();
                                 _expMestMedicines = ProcessSortListExpMestMedicine(_expMestMedicines);
-                                Inventec.Common.Logging.LogSystem.Warn("dữ liệu _expMestMedicines 2: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => _expMestMedicines), _expMestMedicines));
 
                                 foreach (var emmedi in _expMestMedicines)
                                 {
                                     var medicineTypeName = rdo._MedicineTypes.FirstOrDefault(p => p.ID == emmedi.TDL_MEDICINE_TYPE_ID);
-
-                                    Inventec.Common.Logging.LogSystem.Warn("dữ liệu medicineTypeName: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeName), medicineTypeName));
 
                                     if (medicineTypeName != null)
                                     {
@@ -6305,9 +6304,9 @@ namespace MPS.Processor.Mps000062
                             var groupByRemedy = ml.GroupBy(o => o.TDL_SERVICE_REQ_ID).ToList();
                             foreach (var re in groupByRemedy)
                             {
+                                var uiTime = re.ToList()[0].USE_TIME ?? re.ToList()[0].INTRUCTION_TIME;
                                 if (re.ToList()[0].REMEDY_COUNT != null)
                                 {
-                                    var uiTime = re.ToList()[0].USE_TIME ?? re.ToList()[0].INTRUCTION_TIME;
                                     re.ToList()[0].ASSIGN_TIME_TO = (re.ToList()[0].ASSIGN_TIME_TO ?? 0) < uiTime ? uiTime : re.ToList()[0].ASSIGN_TIME_TO;
                                     item.MEDICINES_MERGE_DETAIL___DATA += string.Format("Bài thuốc sử dụng từ ngày {0} đến ngày {1}", Inventec.Common.DateTime.Convert.TimeNumberToDateString(uiTime), Inventec.Common.DateTime.Convert.TimeNumberToDateString(re.ToList()[0].ASSIGN_TIME_TO ?? uiTime));
                                     item.MEDICINES_MERGE_DETAIL___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
@@ -6318,7 +6317,7 @@ namespace MPS.Processor.Mps000062
                                 {
                                     long userTimeTo = re.ToList().Max(p => p.USE_TIME_TO ?? 0);
                                     long assignTimeTo = re.ToList()[0].ASSIGN_TIME_TO ?? 0;
-                                    long intructionTime = re.ToList()[0].INTRUCTION_TIME;
+                                    long intructionTime = uiTime;
 
                                     if (userTimeTo > 0 && intructionTime > 0)
                                     {

@@ -498,6 +498,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 bool isHasTreatmentFinishChecked = (treatUC != null && treatUC.IsAutoTreatmentFinish);
                 if (isHasTreatmentFinishChecked && treatUC != null)
                 {
+                    if (subIcd != null && !string.IsNullOrEmpty(subIcd.ICD_SUB_CODE)) {
+                        var subIcdList = subIcd.ICD_SUB_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                        if (subIcdList != null && subIcdList.Count > 12)
+                        {
+                            if ((HisConfigCFG.IsCheckSubIcdExceedLimit == "1" && DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại",
+                         HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                         MessageBoxButtons.OK) == DialogResult.OK) || (HisConfigCFG.IsCheckSubIcdExceedLimit == "2" && DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục?",
+                         HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                         MessageBoxButtons.YesNo) == DialogResult.No))
+                            {
+                                return;
+                            }
+                        }
+                    }
                     if ((string.IsNullOrEmpty(currentTreatment.TREATMENT_METHOD) || string.IsNullOrEmpty(treatUC.TreatmentMethod)) && ((HisConfigCFG.RequiredTreatmentMethodOption == "1" && currentTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU && (treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__RAVIEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CTCV)) || (HisConfigCFG.RequiredTreatmentMethodOption == "2" && (treatUC.TreatmentEndTypeExtId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM || ((currentTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU || currentTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || currentTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY) && (treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__RAVIEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CTCV))))))
                     {
                         frmTreatmentMethod frm = new frmTreatmentMethod(TreatmentMethod, treatmentMethod =>

@@ -602,6 +602,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     hisTreatmentFinishSDO.HospitalizeReasonCode = null;
                     hisTreatmentFinishSDO.HospitalizeReasonName = txtHosReasonNt.Text.Trim();
                 }
+                if (cboCareer.EditValue != null)
+                {
+                    hisTreatmentFinishSDO.CareerId = (long)cboCareer.EditValue;
+                }
             }
             catch (Exception ex)
             {
