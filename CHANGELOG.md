@@ -1,3 +1,9 @@
+### Release 2.337.0
+* Bổ sung xử lý hiển thị ảnh chữ ký của bác sĩ trên phiếu kết quả khám sức khỏe
+* Bổ sung chặn số lượng bệnh kèm theo vượt quá 12 mã bệnh
+* Bổ sung xác nhận bệnh nhân sử dụng thuốc theo từng buổi trong ngày
+* Sửa độ dài các trường dữ liệu cho phù hợp với quy định của XML 130 và QĐ 4750/QĐ-BYT
+
 ### Release 2.336.0
 * Sửa lại số thứ tự phòng khám không đánh số đối với y lệnh là đơn thuốc
 * Bổ sung xem thông tin sơ đồ bệnh viện, bảng giá dịch vụ trên chức năng kios
