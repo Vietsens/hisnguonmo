@@ -39,7 +39,7 @@ namespace HIS.Desktop.Common.BankQrCode
             {
                 bool IsQrDynamic = false;
                 List<string> banks = new List<string>() { "MBB", "VCB" };
-                if (string.IsNullOrEmpty(data.QR_TEXT) && configValue != null && configValue.Count > 0 && banks.Exists(o => configValue.Exists(p=>p.KEY.IndexOf(o) > -1)))
+                if (string.IsNullOrEmpty(data.QR_TEXT) && configValue != null && configValue.Count > 0 && banks.Exists(o => configValue.Exists(p=>p.KEY.IndexOf(string.Format(".{0}", o)) > -1)))
                 {
                     if (configValue.Count == 1)
                     {
