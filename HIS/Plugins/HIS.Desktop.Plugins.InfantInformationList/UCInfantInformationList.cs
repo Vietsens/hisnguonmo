@@ -37,8 +37,6 @@ using System.Collections;
 using Inventec.Desktop.Common.Message;
 using Inventec.Core;
 using MOS.Filter;
-using VSK.Filter;
-using VSK.EFMODEL;
 using Inventec.Common.Adapter;
 using Inventec.Desktop.Common.LanguageManager;
 using HIS.Desktop.Utilities.Extensions;
@@ -1030,7 +1028,15 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                         {
                             foreach (var item in listConnectionInfo)
                             {
-                                HIS.Bhyt.Hssk.SyncDataProcess data = new Bhyt.Hssk.SyncDataProcess(HisConfigs.Get<string>("HIS.CHECK_HEIN_CARD.BHXH__ADDRESS"), item.UserName, item.Password);
+                                HIS.Bhyt.Hssk.SyncDataProcess data = new Bhyt.Hssk.SyncDataProcess(HisConfigs.Get<string>("HIS.CHECK_HEIN_CARD.BHXH__ADDRESS"), item.UserName, item.Password, (string xmlData, string element, string serialNumber) =>
+                                {
+                                    if (VerifyServiceSignProcessorIsRunning())
+                                    {
+                                        SignProcessorClient signProcessorClient = new SignProcessorClient();
+                                        return signProcessorClient.StringBase64SignXml(xmlData, element, serialNumber);
+                                    }else
+                                        return null;
+                                });
                                 foreach (var i in rowHandles)
                                 {
                                     var row = (V_HIS_BABY)gridView1.GetRow(i);
