@@ -88,6 +88,9 @@ namespace MPS.Processor.Mps000047
                     {
                         System.Reflection.PropertyInfo piMedicineTypeName = typeof(ExpMestAggregatePrintByPageADO).GetProperty("MEDICINE_TYPE_NAME" + i);
                         singleValueDictionary.Add("MEDICINE_TYPE_NAME" + i, piMedicineTypeName.GetValue(item));
+
+                        System.Reflection.PropertyInfo piConCenTra = typeof(ExpMestAggregatePrintByPageADO).GetProperty("CONCENTRA" + i);
+                        singleValueDictionary.Add("CONCENTRA" + i, piConCenTra.GetValue(item));
                     }
 
 
@@ -139,6 +142,21 @@ namespace MPS.Processor.Mps000047
             return result;
         }
 
+        string GetConCenTra(long serviceId)
+        {
+            string result = "";
+            try
+            {
+                result = rdo.MedicineExpmestTypeADOs.FirstOrDefault(o => o.SERVICE_ID == serviceId).CONCENTRA;
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return result;
+        }
 //        Các bước lấy ra dữ liệu buồng như sau:
 //- B1: Lấy ra dữ liệu buồng của hồ sơ điều trị đó và tương ứng với khoa (V_HIS_TREATMENT_BED_ROOM có DEPARTMENT_ID tương ứng với khoa, TREATMENT_ID tương ứng với hồ sơ điều trị)
 //- B2: Kiểm tra, trong dữ liệu buồng có được ở B1, nếu tồn tại V_HIS_TREATMENT_BED_ROOM có REMOVE_TIME null thì lấy V_HIS_TREATMENT_BED_ROOM có ADD_TIME lớn nhất mà REMOVE_TIME null
@@ -250,6 +268,10 @@ namespace MPS.Processor.Mps000047
                         System.Reflection.PropertyInfo piMedicineTypeId = typeof(ExpMestAggregatePrintByPageADO).GetProperty("SERVICE_ID" + i);
                         if (piMedicineTypeId != null)
                             piMedicineTypeId.SetValue(sdo, index < distinctDates.Count ? distinctDates[index] : 0);
+
+                        System.Reflection.PropertyInfo piConCenTra = typeof(ExpMestAggregatePrintByPageADO).GetProperty("CONCENTRA" + i);
+                        if (piConCenTra != null)
+                            piConCenTra.SetValue(sdo, index < distinctDates.Count ? GetConCenTra(distinctDates[index]) : "");
 
                         index++;
                     }
