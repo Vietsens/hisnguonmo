@@ -1071,6 +1071,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                             ado.SERVICE_UNIT_CODE = data.SERVICE_UNIT_CODE;
                             ado.SERVICE_UNIT_NAME = data.SERVICE_UNIT_NAME;
                             ado.SERVICE_ID = data.SERVICE_ID;
+                            ado.CONCENTRA = data.CONCENTRA;
                         }
 
                         if (this.aggrExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE
