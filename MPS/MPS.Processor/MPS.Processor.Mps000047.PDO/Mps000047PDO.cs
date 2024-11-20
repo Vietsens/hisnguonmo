@@ -123,7 +123,7 @@ namespace MPS.Processor.Mps000047.PDO
         public V_HIS_PATIENT Patient { get; set; }
         public long TreatmentId { get; set; }
         public string TREATMENT_CODE { get; set; }
-
+        public string CONCENTRA { get; set; }
 
     }
 
@@ -330,6 +330,108 @@ namespace MPS.Processor.Mps000047.PDO
         public string MEDICINE_TYPE_NAME98 { get; set; }
         public string MEDICINE_TYPE_NAME99 { get; set; }
         public string MEDICINE_TYPE_NAME100 { get; set; }
+
+        public string CONCENTRA1 { get; set; }
+        public string CONCENTRA2 { get; set; }
+        public string CONCENTRA3 { get; set; }
+        public string CONCENTRA4 { get; set; }
+        public string CONCENTRA5 { get; set; }
+        public string CONCENTRA6 { get; set; }
+        public string CONCENTRA7 { get; set; }
+        public string CONCENTRA8 { get; set; }
+        public string CONCENTRA9 { get; set; }
+        public string CONCENTRA10 { get; set; }
+        public string CONCENTRA11 { get; set; }
+        public string CONCENTRA12 { get; set; }
+        public string CONCENTRA13 { get; set; }
+        public string CONCENTRA14 { get; set; }
+        public string CONCENTRA15 { get; set; }
+        public string CONCENTRA16 { get; set; }
+        public string CONCENTRA17 { get; set; }
+        public string CONCENTRA18 { get; set; }
+        public string CONCENTRA19 { get; set; }
+        public string CONCENTRA20 { get; set; }
+        public string CONCENTRA21 { get; set; }
+        public string CONCENTRA22 { get; set; }
+        public string CONCENTRA23 { get; set; }
+        public string CONCENTRA24 { get; set; }
+        public string CONCENTRA25 { get; set; }
+        public string CONCENTRA26 { get; set; }
+        public string CONCENTRA27 { get; set; }
+        public string CONCENTRA28 { get; set; }
+        public string CONCENTRA29 { get; set; }
+        public string CONCENTRA30 { get; set; }
+        public string CONCENTRA31 { get; set; }
+        public string CONCENTRA32 { get; set; }
+        public string CONCENTRA33 { get; set; }
+        public string CONCENTRA34 { get; set; }
+        public string CONCENTRA35 { get; set; }
+        public string CONCENTRA36 { get; set; }
+        public string CONCENTRA37 { get; set; }
+        public string CONCENTRA38 { get; set; }
+        public string CONCENTRA39 { get; set; }
+        public string CONCENTRA40 { get; set; }
+        public string CONCENTRA41 { get; set; }
+        public string CONCENTRA42 { get; set; }
+        public string CONCENTRA43 { get; set; }
+        public string CONCENTRA44 { get; set; }
+        public string CONCENTRA45 { get; set; }
+        public string CONCENTRA46 { get; set; }
+        public string CONCENTRA47 { get; set; }
+        public string CONCENTRA48 { get; set; }
+        public string CONCENTRA49 { get; set; }
+        public string CONCENTRA50 { get; set; }
+        public string CONCENTRA51 { get; set; }
+        public string CONCENTRA52 { get; set; }
+        public string CONCENTRA53 { get; set; }
+        public string CONCENTRA54 { get; set; }
+        public string CONCENTRA55 { get; set; }
+        public string CONCENTRA56 { get; set; }
+        public string CONCENTRA57 { get; set; }
+        public string CONCENTRA58 { get; set; }
+        public string CONCENTRA59 { get; set; }
+        public string CONCENTRA60 { get; set; }
+        public string CONCENTRA61 { get; set; }
+        public string CONCENTRA62 { get; set; }
+        public string CONCENTRA63 { get; set; }
+        public string CONCENTRA64 { get; set; }
+        public string CONCENTRA65 { get; set; }
+        public string CONCENTRA66 { get; set; }
+        public string CONCENTRA67 { get; set; }
+        public string CONCENTRA68 { get; set; }
+        public string CONCENTRA69 { get; set; }
+        public string CONCENTRA70 { get; set; }
+        public string CONCENTRA71 { get; set; }
+        public string CONCENTRA72 { get; set; }
+        public string CONCENTRA73 { get; set; }
+        public string CONCENTRA74 { get; set; }
+        public string CONCENTRA75 { get; set; }
+        public string CONCENTRA76 { get; set; }
+        public string CONCENTRA77 { get; set; }
+        public string CONCENTRA78 { get; set; }
+        public string CONCENTRA79 { get; set; }
+        public string CONCENTRA80 { get; set; }
+        public string CONCENTRA81 { get; set; }
+        public string CONCENTRA82 { get; set; }
+        public string CONCENTRA83 { get; set; }
+        public string CONCENTRA84 { get; set; }
+        public string CONCENTRA85 { get; set; }
+        public string CONCENTRA86 { get; set; }
+        public string CONCENTRA87 { get; set; }
+        public string CONCENTRA88 { get; set; }
+        public string CONCENTRA89 { get; set; }
+        public string CONCENTRA90 { get; set; }
+        public string CONCENTRA91 { get; set; }
+        public string CONCENTRA92 { get; set; }
+        public string CONCENTRA93 { get; set; }
+        public string CONCENTRA94 { get; set; }
+        public string CONCENTRA95 { get; set; }
+        public string CONCENTRA96 { get; set; }
+        public string CONCENTRA97 { get; set; }
+        public string CONCENTRA98 { get; set; }
+        public string CONCENTRA99 { get; set; }
+        public string CONCENTRA100 { get; set; }
+
 
         public List<ExpMestAggregatePrintADO> ExpMestAggregatePrintADOs { get; set; }
     }
