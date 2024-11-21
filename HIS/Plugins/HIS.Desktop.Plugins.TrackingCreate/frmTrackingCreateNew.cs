@@ -112,7 +112,9 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         internal SecondaryIcdProcessor subIcdProcessor;
         internal UserControl ucSecondaryIcd;
         internal SecondaryIcdProcessor subIcdYhctProcessor;
+        internal SecondaryIcdProcessor subIcdPbProcessor;
         internal UserControl ucSecondaryIcdYhct;
+        internal UserControl ucSecondaryIcdPb;
 
         internal DHSTProcessor dhstProcessor;
 
@@ -272,7 +274,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 ado.DelegateGetIcdMain = GetIcdMainCode;
                 Rectangle activeScreenDimensions = Screen.FromControl(this).Bounds;
                 ado.hisTreatment = this._Treatment;
-                if (activeScreenDimensions != null) ado.Width = activeScreenDimensions.Width / 2 - 10;
+                //if (activeScreenDimensions != null) ado.Width = activeScreenDimensions.Width / 2 - 10;
                 ado.Height = 24;
                 ado.TextNullValue = "Nhấn F1 để chọn bệnh";
                 ado.limitDataSource = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;
@@ -374,8 +376,99 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        
-        
+        private void InitUcSecondaryIcdPb()
+        {
+            try
+            {
+                var icdYhct = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == 1).ToList();
+                subIcdPbProcessor = new SecondaryIcdProcessor(new CommonParam(), icdYhct);
+                HIS.UC.SecondaryIcd.ADO.SecondaryIcdInitADO ado = new UC.SecondaryIcd.ADO.SecondaryIcdInitADO();
+                ado.DelegateNextFocus = NextForcusSubIcdToDo;
+                //ado.DelegateGetIcdMain = GetIcdMainCodeYhct;
+                //ado.delegateCheckICD = CheckICDSecondYHCT;
+                Rectangle activeScreenDimensions = Screen.FromControl(this).Bounds;
+
+                //if (activeScreenDimensions != null) ado.Width = activeScreenDimensions.Width / 2 - 10;
+                ado.Height = 24;
+                ado.TextLblIcd = "CĐ phân biệt:";
+                ado.TootiplciIcdSubCode = "Chẩn đoán phân biệt kèm theo";
+                ado.TextNullValue = "Nhấn F1 để chọn bệnh";
+                ado.limitDataSource = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;
+                ucSecondaryIcdPb = (UserControl)subIcdPbProcessor.Run(ado);
+
+                if (ucSecondaryIcdPb != null)
+                {
+                    this.layoutControlSubIcdPb.Controls.Add(ucSecondaryIcdPb);
+                    ucSecondaryIcdPb.Dock = DockStyle.Fill;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private bool CheckICDPb()
+        {
+            bool result = true;
+            try
+            {
+                result = (bool)this.subIcdPbProcessor.GetValidate(this.ucSecondaryIcdPb) && result;
+                if (this.icdProcessor != null && this.ucIcd != null || (this.subIcdProcessor != null && this.ucSecondaryIcd != null)
+                    || (this.subIcdPbProcessor != null && this.ucSecondaryIcdPb != null))
+                {
+                    var icdValue = this.icdProcessor.GetValue(this.ucIcd);
+                    var icdValueSecond = subIcdProcessor.GetValue(this.ucSecondaryIcd);
+                    var icdValuePB = subIcdPbProcessor.GetValue(this.ucSecondaryIcdPb);
+                    string mainCode = "";
+                    string mainCodeSecond = "";
+                    if (icdValue != null)
+                    {
+                        mainCode = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
+                        
+                    }
+                    if(icdValueSecond != null)
+                    {
+                        mainCodeSecond = ((SecondaryIcdDataADO)icdValueSecond).ICD_SUB_CODE;
+                    }
+                    if(icdValuePB != null)
+                    {
+                        
+                        string subcodePb = ((SecondaryIcdDataADO)icdValuePB).ICD_SUB_CODE;
+                        List<string> listSubCode = new List<string>();
+
+                        if (!string.IsNullOrEmpty(mainCodeSecond))
+                        {
+                            listSubCode = mainCodeSecond.Split(';').ToList();
+                        }
+                        listSubCode.Add(mainCode);
+                        List<string> listSubCodePB = new List<string>();
+                        if (!string.IsNullOrEmpty(subcodePb))
+                        {
+                            listSubCodePB = subcodePb.Split(';').ToList();
+                        }
+                        //check co hay k
+                        string error = "";
+                        var commonValues = listSubCodePB.Intersect(listSubCode).ToList();
+                        if(commonValues != null && commonValues.Count() > 0)
+                        {
+                            error += string.Format("Mã bệnh phân biệt {0} đã sử dụng cho mã bệnh chính và phụ. Vui lòng kiểm tra lại",string.Join(",",commonValues.ToList()));
+                            
+                            result = false;
+                        }
+                        LogSystem.Debug("SetError: " + error);
+                        this.subIcdPbProcessor.SetError(ucSecondaryIcdPb, error);
+                    }
+
+                }
+                    
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
         private bool CheckICD(string icd_code, string icd_sub_code, ref string mess, ref string code_error, bool ref_code)
         {
             bool valid = false;
@@ -512,6 +605,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 InitUcdSecondIcd();
                 InitUcIcdYhct();
                 InitUcSecondaryIcdYhct();
+                InitUcSecondaryIcdPb();
                 cboLogin.EditValue = this.loginName;
                 txtLoginName.EditValue = this.loginName;
                 //InitComboUser();
@@ -871,6 +965,16 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         if (ucSecondaryIcdYhct != null)
                         {
                             subIcdYhctProcessor.Reload(ucSecondaryIcdYhct, subYhctIcd);
+                        }
+                    }
+                    if (!String.IsNullOrWhiteSpace(data.ICD_DIFF_CODE) || !String.IsNullOrWhiteSpace(data.ICD_DIFF_TEXT))
+                    {
+                        SecondaryIcdDataADO subPbIcd = new SecondaryIcdDataADO();
+                        subPbIcd.ICD_SUB_CODE = data.ICD_DIFF_CODE;
+                        subPbIcd.ICD_TEXT = data.ICD_DIFF_TEXT;
+                        if (ucSecondaryIcdPb != null)
+                        {
+                            this.subIcdPbProcessor.Reload(ucSecondaryIcdPb, subPbIcd);
                         }
                     }
 
@@ -2545,6 +2649,15 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         trackingSave.ICD_TEXT = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
                     }
                 }
+                if(this.ucSecondaryIcdPb != null)
+                {
+                    var subICDPB = this.subIcdPbProcessor.GetValue(ucSecondaryIcdPb);
+                    if(subICDPB != null && subICDPB is SecondaryIcdDataADO)
+                    {
+                        trackingSave.ICD_DIFF_CODE = ((SecondaryIcdDataADO)subICDPB).ICD_SUB_CODE;
+                        trackingSave.ICD_DIFF_TEXT = ((SecondaryIcdDataADO)subICDPB).ICD_TEXT;
+                    }
+                }
                 //thay bang uc
                 //trackingSave.ICD_TEXT = txtIcdExtraName.Text;
                 //trackingSave.ICD_SUB_CODE = txtIcdExtraCode.Text;
@@ -2874,12 +2987,15 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 IsValid = (bool)icdProcessor.ValidationIcd(this.ucIcd);
                 IsValid = (bool)this.subIcdProcessor.GetValidate(this.ucSecondaryIcd) && IsValid;
                 IsValid = (bool)this.subIcdYhctProcessor.GetValidate(this.ucSecondaryIcdYhct) && IsValid;
+                
                 IsValid = (bool)this.icdYhctProcessor.ValidationIcd(this.ucIcdYhct) && IsValid;
                 IsValid = IsValid && dxValidationProvider1.Validate();
                 if (!IsValid)
                     return;
                 
                 IsValid = IsValid && CheckICDPreSave();
+                IsValid = IsValid && CheckICDPb();
+                
                 if (!IsValid)
                     return;
                 //this._Treatment = new HIS_TREATMENT();
@@ -3394,9 +3510,19 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             {
                 checksign = true;
                 this.positionHandleControl = -1;
+                bool IsValid = true;
+                IsValid = (bool)icdProcessor.ValidationIcd(this.ucIcd);
+                IsValid = (bool)this.subIcdProcessor.GetValidate(this.ucSecondaryIcd) && IsValid;
+                IsValid = (bool)this.subIcdYhctProcessor.GetValidate(this.ucSecondaryIcdYhct) && IsValid;
+
+                IsValid = (bool)this.icdYhctProcessor.ValidationIcd(this.ucIcdYhct) && IsValid;
+                IsValid = IsValid && CheckICDPb();
+
+                if (!IsValid)
+                    return;
                 if (!dxValidationProvider1.Validate())
                     return;
-
+                
                 {
 
                     DateTime trackingTime = dtTrackingTime.DateTime;
