@@ -90,7 +90,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                             treatment = ExamTreatmentFinishInitADO.Treatment;
                         }
 
-                        EndTypeForm.FormTransfer form = new EndTypeForm.FormTransfer(this.moduleData, treatment, UpdateExamTreatmentFinish);
+                        EndTypeForm.FormTransfer form = new EndTypeForm.FormTransfer(this.moduleData, treatment, UpdateExamTreatmentFinish,this._treatmentext);
                         form.ShowDialog();
                         return null;
                     }

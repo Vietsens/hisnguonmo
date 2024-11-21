@@ -29,22 +29,24 @@ namespace HIS.UC.ExamTreatmentFinish.Run
     public sealed class RunBehavior : IRun
     {
         TreatmentFinishInitADO entity;
+        MOS.EFMODEL.DataModels.HIS_TREATMENT_EXT _treatmentExt;
         public RunBehavior()
             : base()
         {
         }
 
-        public RunBehavior(CommonParam param, TreatmentFinishInitADO data)
+        public RunBehavior(CommonParam param, TreatmentFinishInitADO data,MOS.EFMODEL.DataModels.HIS_TREATMENT_EXT treatmentExt)
             : base()
         {
             this.entity = data;
+            this._treatmentExt = treatmentExt;
         }
 
         object IRun.Run()
         {
             try
             {
-                return new UCExamTreatmentFinish(entity);
+                return new UCExamTreatmentFinish(entity,_treatmentExt);
             }
             catch (Exception ex)
             {
