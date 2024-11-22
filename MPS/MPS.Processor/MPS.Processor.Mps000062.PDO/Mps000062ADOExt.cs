@@ -278,6 +278,10 @@ namespace MPS.Processor.Mps000062.PDO
         /// Tổng hợp chi tiết của MEDICINES___DATA, MEDICINES_DuTru___DATA,  MEDICINES_THDT___DATA
         /// </summary>
         public string MEDICINES_MERGE_DETAIL___DATA { get; set; }
+        /// <summary>
+        /// Key tạo dữ liệu gồm dịch vụ CLS và dịch vụ TT các trường hợp không dự trù, dự trù, thực hiện dự trù
+        /// </summary>
+        public string SERVICE_MERGE_X01___DATA { get; set; }
         public string SERVICE_CLS_DuTru___DATA { get; set; }
         public string SERVICE_CLS_DuTru_X01___DATA { get; set; }
         public string SERVICE_CLS_THDT___DATA { get; set; }
@@ -819,7 +823,9 @@ namespace MPS.Processor.Mps000062.PDO
         public long? REQ_BLOOD_RH_ID { get; set; }
         public long? REQ_BLOOD_TYPE_ID { get; set; }
         public long? USE_TIME { get; set; }
-
+        public long? NUM_ORDER_SERVICE_TYPE { get; set; }
+        public bool IsGoupService { get; set; }
+        public List<ServiceCLS> serviceSplits { get; set; }
         public ServiceCLS() { }
 
         public ServiceCLS(HIS_SERE_SERV data)
@@ -829,6 +835,7 @@ namespace MPS.Processor.Mps000062.PDO
                 if (data != null)
                 {
                     Inventec.Common.Mapper.DataObjectMapper.Map<ServiceCLS>(this, data);
+                    serviceSplits = new List<ServiceCLS>();
                 }
             }
             catch (Exception ex)

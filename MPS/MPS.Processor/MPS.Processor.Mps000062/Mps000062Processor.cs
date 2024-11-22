@@ -1552,6 +1552,11 @@ namespace MPS.Processor.Mps000062
                         {
                             ServiceCLS group = new ServiceCLS(item);
                             group.TRACKING_ID = _tracking.ID;
+                            var sereServExt = rdo._SereServExts.FirstOrDefault(p => p.SERE_SERV_ID == item.ID);
+                            if (sereServExt != null)
+                                group.INSTRUCTION_NOTE = sereServExt.INSTRUCTION_NOTE;
+                            var serviceReq = _ServiceReqs.FirstOrDefault(o => o.ID == item.SERVICE_REQ_ID);
+                            group.USE_TIME = serviceReq != null ? serviceReq.USE_TIME : null;
                             _ServiceCLSSplits.Add(group);
                         }
                     }
@@ -1603,9 +1608,15 @@ namespace MPS.Processor.Mps000062
                                     {
                                         group.SERVICE_NAME += item.TDL_SERVICE_NAME + "; ";
                                     }
+                                    var serviceReq = _ServiceReqs.FirstOrDefault(o => o.ID == item.SERVICE_REQ_ID);
+                                    group.serviceSplits.Add(new ServiceCLS() { SERVICE_NAME = item.TDL_SERVICE_NAME, INSTRUCTION_NOTE = sereServExt != null && !string.IsNullOrEmpty(sereServExt.INSTRUCTION_NOTE) ? sereServExt.INSTRUCTION_NOTE : null, USE_TIME = serviceReq != null ? serviceReq.USE_TIME : null, TDL_SERVICE_UNIT_ID = item.TDL_SERVICE_UNIT_ID, SERVICE_ID = item.SERVICE_ID, AMOUNT = item.AMOUNT, TDL_INTRUCTION_TIME = item.TDL_INTRUCTION_TIME });
+                                    group.IsGoupService = true;
                                     group.TRACKING_ID = _tracking.ID;
                                     serviceName += item.TDL_SERVICE_NAME + "; ";
                                     group.AMOUNT = item.AMOUNT;
+                                    var numOrderServiceType = rdo._ServiceTypes.FirstOrDefault(o => o.ID == item.TDL_SERVICE_TYPE_ID);
+                                    if (numOrderServiceType != null)
+                                        group.NUM_ORDER_SERVICE_TYPE = numOrderServiceType.NUM_ORDER;
                                     IsHasSereServ = true;
                                 }
                                 if (IsHasSereServ)
@@ -1658,9 +1669,15 @@ namespace MPS.Processor.Mps000062
                                         {
                                             group.SERVICE_NAME += item.TDL_SERVICE_NAME + "; ";
                                         }
+                                        var serviceReq = _ServiceReqs.FirstOrDefault(o => o.ID == item.SERVICE_REQ_ID);
+                                        group.serviceSplits.Add(new ServiceCLS() { SERVICE_NAME = item.TDL_SERVICE_NAME, INSTRUCTION_NOTE = sereServExt != null && !string.IsNullOrEmpty(sereServExt.INSTRUCTION_NOTE) ? sereServExt.INSTRUCTION_NOTE : null, USE_TIME = serviceReq != null ? serviceReq.USE_TIME : null, TDL_SERVICE_UNIT_ID = item.TDL_SERVICE_UNIT_ID, SERVICE_ID = item.SERVICE_ID, AMOUNT = item.AMOUNT, TDL_INTRUCTION_TIME = item.TDL_INTRUCTION_TIME });
+                                        group.IsGoupService = true;
                                         group.TRACKING_ID = _tracking.ID;
                                         serviceName += item.TDL_SERVICE_NAME + "; ";
                                         group.AMOUNT = item.AMOUNT;
+                                        var numOrderServiceType = rdo._ServiceTypes.FirstOrDefault(o => o.ID == item.TDL_SERVICE_TYPE_ID);
+                                        if (numOrderServiceType != null)
+                                            group.NUM_ORDER_SERVICE_TYPE = numOrderServiceType.NUM_ORDER;
                                         IsHasSereServ = true;
                                     }
                                     if (IsHasSereServ)
@@ -1915,6 +1932,9 @@ namespace MPS.Processor.Mps000062
                                         {
                                             group.SERVICE_NAME += item.TDL_SERVICE_NAME + "; ";
                                         }
+                                        var serviceReq = _ServiceReqs.FirstOrDefault(o => o.ID == item.SERVICE_REQ_ID);
+                                        group.serviceSplits.Add(new ServiceCLS() { SERVICE_NAME = item.TDL_SERVICE_NAME, INSTRUCTION_NOTE = sereServExt != null && !string.IsNullOrEmpty(sereServExt.INSTRUCTION_NOTE) ? sereServExt.INSTRUCTION_NOTE : null, USE_TIME = serviceReq != null ? serviceReq.USE_TIME : null, TDL_SERVICE_UNIT_ID = item.TDL_SERVICE_UNIT_ID, SERVICE_ID = item.SERVICE_ID, AMOUNT = item.AMOUNT, TDL_INTRUCTION_TIME = item.TDL_INTRUCTION_TIME });
+                                        group.IsGoupService = true;
                                         group.TRACKING_ID = _tracking.ID;
                                         serviceName += item.TDL_SERVICE_NAME + "; ";
                                         group.AMOUNT = item.AMOUNT;
@@ -2128,6 +2148,9 @@ namespace MPS.Processor.Mps000062
                                             {
                                                 group.SERVICE_NAME += item.TDL_SERVICE_NAME + "; ";
                                             }
+                                            var serviceReq = _ServiceReqs.FirstOrDefault(o => o.ID == item.SERVICE_REQ_ID);
+                                            group.serviceSplits.Add(new ServiceCLS() { SERVICE_NAME = item.TDL_SERVICE_NAME, INSTRUCTION_NOTE = sereServExt != null && !string.IsNullOrEmpty(sereServExt.INSTRUCTION_NOTE) ? sereServExt.INSTRUCTION_NOTE : null, USE_TIME = serviceReq != null ? serviceReq.USE_TIME : null, TDL_SERVICE_UNIT_ID = item.TDL_SERVICE_UNIT_ID, SERVICE_ID = item.SERVICE_ID, AMOUNT = item.AMOUNT, TDL_INTRUCTION_TIME = item.TDL_INTRUCTION_TIME });
+                                            group.IsGoupService = true;
                                             group.TRACKING_ID = _tracking.ID;
                                             serviceName += item.TDL_SERVICE_NAME + "; ";
                                             group.AMOUNT = item.AMOUNT;
@@ -2279,6 +2302,14 @@ namespace MPS.Processor.Mps000062
                                 {
                                     group.INSTRUCTION_NOTE = intruc.INSTRUCTION_NOTE;
                                 }
+                                var numOrderServiceType = rdo._ServiceTypes.FirstOrDefault(o => o.ID == item.TDL_SERVICE_TYPE_ID);
+                                if (numOrderServiceType != null)
+                                {
+                                    group.NUM_ORDER_SERVICE_TYPE = numOrderServiceType.NUM_ORDER;
+                                    group.SERVICE_TYPE_NAME = numOrderServiceType.SERVICE_TYPE_NAME;
+                                }
+                                var serviceReq = _ServiceReqs.FirstOrDefault(o => o.ID == item.SERVICE_REQ_ID);
+                                group.USE_TIME = serviceReq != null ? serviceReq.USE_TIME : null;
                                 _TTServices.Add(group);
                             }
                         }
@@ -4141,7 +4172,6 @@ namespace MPS.Processor.Mps000062
             }
             return data;
         }
-
         private List<ImpMestMedicineADO> ProcessSortListImpMestMedicine(List<ImpMestMedicineADO> impMestMedicine)
         {
             List<ImpMestMedicineADO> data = new List<ImpMestMedicineADO>();
@@ -4149,7 +4179,7 @@ namespace MPS.Processor.Mps000062
                 return data;
             try
             {
-                if (rdo._WorkPlaceSDO.IsOrderByType == 4 && impMestMedicine != null && impMestMedicine.Count > 0)
+                if (impMestMedicine != null && impMestMedicine.Count > 0)
                 {
                     var medicinegroups = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDICINE_GROUP>();
                     foreach (var current in impMestMedicine)
@@ -4162,31 +4192,47 @@ namespace MPS.Processor.Mps000062
                             var mediLine = rdo.MedicineLine.FirstOrDefault(o => o.ID == mediType.MEDICINE_LINE_ID);
                             if (mediLine != null)
                             {
-                                current.NUM_ORDER_MEDICINE_LINE = mediLine.NUM_ORDER ?? 0;
-                                current.MEDICINE_LINE_NAME = mediLine.MEDICINE_LINE_NAME;
+                                ado.NUM_ORDER_MEDICINE_LINE = mediLine.NUM_ORDER ?? 0;
+                                ado.MEDICINE_LINE_NAME = mediLine.MEDICINE_LINE_NAME;
                             }
                             var mediUf = rdo._MedicineUseForms.FirstOrDefault(o => o.ID == mediType.MEDICINE_USE_FORM_ID);
                             if (mediUf != null)
                             {
-                                current.NUM_ORDER_MEDICINE_USE_FORM = mediUf.NUM_ORDER ?? 0;
-                                current.MEDICINE_USE_FORM_NAME = mediUf.MEDICINE_USE_FORM_NAME;
+                                ado.NUM_ORDER_MEDICINE_USE_FORM = mediUf.NUM_ORDER ?? 0;
+                                ado.MEDICINE_USE_FORM_NAME = mediUf.MEDICINE_USE_FORM_NAME;
                             }
                             var mediG = medicinegroups.FirstOrDefault(o => o.ID == mediType.MEDICINE_GROUP_ID);
                             if (mediG != null)
                             {
-                                current.NUM_ORDER_MEDICINE_GROUP = mediG.NUM_ORDER ?? 0;
-                                current.MEDICINE_GROUP_NAME = mediG.MEDICINE_GROUP_NAME;
+                                ado.NUM_ORDER_MEDICINE_GROUP = mediG.NUM_ORDER ?? 0;
+                                ado.MEDICINE_GROUP_NAME = mediG.MEDICINE_GROUP_NAME;
                             }
                             var dosaForm = rdo.DosageForm.FirstOrDefault(o => o.DOSAGE_FORM_NAME == mediType.DOSAGE_FORM);
                             if (dosaForm != null)
                             {
-                                current.NUM_ORDER_DOSAGE_FORM = dosaForm.NUM_ORDER ?? 0;
-                                current.DOSAGE_FORM_NAME = dosaForm.DOSAGE_FORM_NAME;
+                                ado.NUM_ORDER_DOSAGE_FORM = dosaForm.NUM_ORDER ?? 0;
+                                ado.DOSAGE_FORM_NAME = dosaForm.DOSAGE_FORM_NAME;
                             }
                         }
                         data.Add(ado);
                     }
-                    data = data.OrderByDescending(o => o.NUM_ORDER_MEDICINE_LINE ?? -1).ThenByDescending(o => o.NUM_ORDER_MEDICINE_USE_FORM ?? -1).ThenByDescending(o => o.NUM_ORDER_MEDICINE_GROUP ?? -1).ThenByDescending(o => o.NUM_ORDER_DOSAGE_FORM ?? -1).ThenBy(o => o.NUM_ORDER).ToList();
+                    switch (rdo._WorkPlaceSDO.IsOrderByType)
+                    {
+                        case 1:
+                            data = data.OrderByDescending(o => o.NUM_ORDER_MEDICINE_USE_FORM ?? -1).ThenBy(o => o.INTRUCTION_TIME_OLD ?? Int64.MaxValue).ToList();
+                            break;
+                        case 2:
+                            data = data.OrderByDescending(o => o.NUM_ORDER_MEDICINE_GROUP ?? -1).ThenByDescending(o => o.NUM_ORDER_MEDICINE_USE_FORM).ThenBy(o => o.INTRUCTION_TIME_OLD ?? Int64.MaxValue).ToList();
+                            break;
+                        case 3:
+                            data = data.OrderBy(o => o.NUM_ORDER_MEDICINE_USE_FORM ?? -1).ThenBy(o => o.INTRUCTION_TIME_OLD ?? Int64.MaxValue).ToList();
+                            break;
+                        case 4:
+                            data = data.OrderByDescending(o => o.NUM_ORDER_MEDICINE_LINE ?? -1).ThenByDescending(o => o.NUM_ORDER_MEDICINE_USE_FORM ?? -1).ThenByDescending(o => o.NUM_ORDER_MEDICINE_GROUP ?? -1).ThenByDescending(o => o.NUM_ORDER_DOSAGE_FORM ?? -1).ThenBy(o => o.NUM_ORDER).ToList();
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 else
                     data = impMestMedicine;
@@ -4520,6 +4566,9 @@ namespace MPS.Processor.Mps000062
 
                     //Danh sách để tổng hợp chi tiết của MEDICINES___DATA, MEDICINES_DuTru___DATA,  MEDICINES_THDT___DATA, sắp xếp theo key HIS.Desktop.Plugins.TrackingPrint.OderOption
                     List<ExpMestMetyReqADO> lstExpMestMety = new List<ExpMestMetyReqADO>();
+
+                    //Danh sách gồm dịch vụ của các key [SERVICE_CLS_X01___DATA], [SERVICE_CLS_DuTru_X01___DATA], [SERVICE_CLS_THDT_X01___DATA], [TT_SERVICE___DATA], [TT_SERVICE_DuTru___DATA], [TT_SERVICE_THDT___DATA]
+                    List<ServiceCLS> lstServiceCls = new List<ServiceCLS>();
                     if (medicines != null && medicines.Count > 0)
                     {
                         item.MEDICINES___DATA = "";
@@ -4735,7 +4784,7 @@ namespace MPS.Processor.Mps000062
                             item.MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID;
                             dem++;
 
-                            lstExpMestMety.Add(new ExpMestMetyReqADO() { INTRUCTION_DATE = medi.INTRUCTION_DATE, INTRUCTION_TIME = medi.INTRUCTION_TIME, INTRUCTION_TIME_STR = medi.INTRUCTION_TIME_STR, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.MEDICINE_GROUP_NUM_ORDER ?? -1, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, REMEDY_COUNT = medi.REMEDY_COUNT,USE_TIME = medi.USE_TIME, USE_TIME_TO = medi.USE_TIME_TO, ADVISE = medi.ADVISE, ASSIGN_TIME_TO = medi.ASSIGN_TIME_TO,DAY_COUNT = medi.DAY_COUNT, DATA_REPX = dataRepx });
+                            lstExpMestMety.Add(new ExpMestMetyReqADO() { INTRUCTION_DATE = medi.INTRUCTION_DATE, INTRUCTION_TIME = medi.INTRUCTION_TIME, INTRUCTION_TIME_STR = medi.INTRUCTION_TIME_STR, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.MEDICINE_GROUP_NUM_ORDER ?? -1, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, REMEDY_COUNT = medi.REMEDY_COUNT, USE_TIME = medi.USE_TIME, USE_TIME_TO = medi.USE_TIME_TO, ADVISE = medi.ADVISE, ASSIGN_TIME_TO = medi.ASSIGN_TIME_TO, DAY_COUNT = medi.DAY_COUNT, DATA_REPX = dataRepx });
                         }
                     }
 
@@ -5094,11 +5143,11 @@ namespace MPS.Processor.Mps000062
                     {
                         #region dvu cls dự trù
                         List<ServiceCLS> ServiceAll = new List<ServiceCLS>();
-                        if (_ServiceClsDuTru != null && _ServiceClsDuTru.Count > 0 && _ServiceClsDuTru.Exists(o=>o.TRACKING_ID == item.ID))
+                        if (_ServiceClsDuTru != null && _ServiceClsDuTru.Count > 0 && _ServiceClsDuTru.Exists(o => o.TRACKING_ID == item.ID))
                         {
                             //_ServiceClsDuTru.ForEach(o => o.USE_TIME = _ServiceReqDuTrus.FirstOrDefault(ReqDT => o.SERVICE_REQ_ID == ReqDT.ID).USE_TIME);
                             //ServiceAll.AddRange(ClsDuTrus);
-                            var _ServiceClsDuTruGroupUseTime = _ServiceClsDuTru.Where(o=>o.TRACKING_ID == item.ID).OrderBy(o => o.USE_TIME).GroupBy(o => o.USE_TIME).ToList();
+                            var _ServiceClsDuTruGroupUseTime = _ServiceClsDuTru.Where(o => o.TRACKING_ID == item.ID).OrderBy(o => o.USE_TIME).GroupBy(o => o.USE_TIME).ToList();
                             {
                                 foreach (var lstService in _ServiceClsDuTruGroupUseTime)
                                 {
@@ -5130,6 +5179,8 @@ namespace MPS.Processor.Mps000062
 
                                             serviceClss.Add(string.Format("{0}x{1}", s1, amount));
                                             serviceClss01.Add(string.Format("{0}x{1}", s1, strAmount));
+
+                                            lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = namesvt.SERVICE_TYPE_NAME, SERVICE_NAME = s1, AMOUNT = service.AMOUNT, INSTRUCTION_NOTE = service.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = namesvt.NUM_ORDER ?? Int64.MinValue, IsGoupService = service.IsGoupService, USE_TIME = service.USE_TIME, TDL_INTRUCTION_TIME = service.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = service.TDL_SERVICE_UNIT_ID, SERVICE_ID = service.SERVICE_ID, serviceSplits = service.serviceSplits });
 
                                         }
                                         if (serviceClss != null && serviceClss.Count > 0)
@@ -5169,6 +5220,8 @@ namespace MPS.Processor.Mps000062
                                         {
                                             var s1 = (service.SERVICE_NAME ?? service.TDL_SERVICE_NAME) + " ";
                                             serviceTts.Add(string.Format("{0}", s1));
+
+                                            lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = namesvt.SERVICE_TYPE_NAME, SERVICE_NAME = s1, AMOUNT = service.AMOUNT, INSTRUCTION_NOTE = service.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = namesvt.NUM_ORDER ?? Int64.MinValue, IsGoupService = service.IsGoupService, USE_TIME = service.USE_TIME, TDL_INTRUCTION_TIME = service.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = service.TDL_SERVICE_UNIT_ID, SERVICE_ID = service.SERVICE_ID, serviceSplits = service.serviceSplits });
 
                                         }
                                         if (serviceTts != null && serviceTts.Count > 0)
@@ -5449,12 +5502,12 @@ namespace MPS.Processor.Mps000062
 
                     #region thực hiện dịch vụ dự trù
 
-                    if (_ServiceReqTHDT != null && _ServiceReqTHDT.Count > 0 && _ServiceReqTHDT.Exists(o => o.TRACKING_ID == item.ID))
-                    {
+                    //if (_ServiceReqTHDT != null && _ServiceReqTHDT.Count > 0 && _ServiceReqTHDT.Exists(o => o.TRACKING_ID == item.ID))
+                    //{
                         #region thực hiện dvu cls dự trù
-                        List<ServiceCLS> ServiceAll = new List<ServiceCLS>();
+                        //List<ServiceCLS> ServiceAll = new List<ServiceCLS>();
                         //var ClsDuTrus = this._ServiceCLSSplits != null && this._ServiceCLSSplits.Count > 0 ? this._ServiceCLSSplits.Where(o => _ServiceReqTHDT.Exists(ReqTHDT => o.SERVICE_REQ_ID == ReqTHDT.ID && ReqTHDT.USED_FOR_TRACKING_ID == item.ID)).ToList() : null;
-                        if (_ServiceClsTHDT != null && _ServiceClsTHDT.Count > 0)
+                        if (_ServiceClsTHDT != null && _ServiceClsTHDT.Count > 0 && _ServiceClsTHDT.Exists(o => o.TRACKING_ID == item.ID))
                         {
                             //ServiceAll.AddRange(ClsDuTrus);
                             var _ServiceClsTHDTGroupUseTime = _ServiceClsTHDT.Where(o => o.TRACKING_ID == item.ID).OrderBy(o => o.USE_TIME).GroupBy(o => o.USE_TIME).ToList();
@@ -5488,6 +5541,7 @@ namespace MPS.Processor.Mps000062
 
                                         serviceClss.Add(string.Format("{0}x{1}", s1, amount));
                                         serviceClss01.Add(string.Format("{0}x{1}", s1, strAmount));
+                                        lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = namesvt.SERVICE_TYPE_NAME, SERVICE_NAME = s1, AMOUNT = service.AMOUNT, INSTRUCTION_NOTE = service.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = namesvt.NUM_ORDER ?? Int64.MinValue, IsGoupService = service.IsGoupService, USE_TIME = service.USE_TIME, TDL_INTRUCTION_TIME = service.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = service.TDL_SERVICE_UNIT_ID, SERVICE_ID = service.SERVICE_ID, serviceSplits = service.serviceSplits });
 
                                     }
                                     if (serviceClss != null && serviceClss.Count > 0)
@@ -5529,6 +5583,7 @@ namespace MPS.Processor.Mps000062
                                         var s1 = (service.SERVICE_NAME ?? service.TDL_SERVICE_NAME) + " ";
 
                                         serviceTts.Add(string.Format("{0}", s1));
+                                        lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = namesvt.SERVICE_TYPE_NAME, SERVICE_NAME = s1, AMOUNT = service.AMOUNT, INSTRUCTION_NOTE = service.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = namesvt.NUM_ORDER ?? Int64.MinValue, IsGoupService = service.IsGoupService, USE_TIME = service.USE_TIME, TDL_INTRUCTION_TIME = service.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = service.TDL_SERVICE_UNIT_ID, SERVICE_ID = service.SERVICE_ID, serviceSplits = service.serviceSplits });
 
                                     }
                                     if (serviceTts != null && serviceTts.Count > 0)
@@ -5589,7 +5644,7 @@ namespace MPS.Processor.Mps000062
                         //    }
                         //}
                         #endregion
-                    }
+                    //}
                     #endregion
 
 
@@ -5725,16 +5780,12 @@ namespace MPS.Processor.Mps000062
                     //        && o.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT).ToList()
                     //    : null;
 
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceReqDDTs), serviceReqDDTs)
-                        + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item), item));
                     if (serviceReqDDTs != null && serviceReqDDTs.Count > 0)
                     {
                         //1.Lay tu danh sach yeu cau
                         foreach (var itemByServiceReq in serviceReqDDTs)
                         {
                             var itemExpMest = rdo._DicHisExpMests.ContainsKey(itemByServiceReq.ID) ? rdo._DicHisExpMests[itemByServiceReq.ID] : null;
-
-                            Inventec.Common.Logging.LogSystem.Warn("dữ liệu itemExpMest: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => itemExpMest), itemExpMest));
 
                             if (itemExpMest == null)
                                 continue;
@@ -5767,7 +5818,6 @@ namespace MPS.Processor.Mps000062
                                         item.PRE_MEDICINE += String.Format("<table><tr><td width=\"650\" text-align=\"left\" align=\"left\">- {0}</td></span></tr><tr><td text-align=\"right\" align=\"left\" width=\"650\">{1}</td></tr></table>", s1, s2);
 
                                     }
-                                    Inventec.Common.Logging.LogSystem.Warn("dữ liệu PRE_MEDICINE: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.PRE_MEDICINE), item.PRE_MEDICINE));
                                     item.MEDICINE_TYPE_ID = emmedi.TDL_MEDICINE_TYPE_ID;
                                 }
                             }
@@ -6152,6 +6202,7 @@ namespace MPS.Processor.Mps000062
                             {
                                 item.TT_SERVICE___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                             }
+                            lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = item1.SERVICE_TYPE_NAME, SERVICE_NAME = item1.TDL_SERVICE_NAME, AMOUNT = item1.AMOUNT, INSTRUCTION_NOTE = item1.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = item1.NUM_ORDER_SERVICE_TYPE ?? Int64.MinValue, IsGoupService = item1.IsGoupService, USE_TIME = item1.USE_TIME, TDL_INTRUCTION_TIME = item1.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = item1.TDL_SERVICE_UNIT_ID, SERVICE_ID = item1.SERVICE_ID, serviceSplits = item1.serviceSplits });
                             dem++;
                         }
                     }
@@ -6161,7 +6212,7 @@ namespace MPS.Processor.Mps000062
                     item.SERVICE_CLS_X01___DATA = "";
                     item.SERVICE_CLS_BOLD_X01___DATA = "";
                     var listServiceCLSs = this._ServiceCLSs != null && this._ServiceCLSs.Count > 0 ? this._ServiceCLSs.Where(o => o.TRACKING_ID == item.ID).ToList() : null;
-                    if (listServiceCLSs != null && listServiceCLSs.Count > 0)
+                    if (listServiceCLSs != null && listServiceCLSs.Count > 0 && !string.IsNullOrEmpty(listServiceCLSs[0].SERVICE_NAME))
                     {
                         int dem = 0;
                         if (listServiceCLSs.Select(o => o.TDL_INTRUCTION_DATE).Distinct().Count() == 1)
@@ -6189,6 +6240,7 @@ namespace MPS.Processor.Mps000062
                                     item.SERVICE_CLS_BOLD___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                     item.SERVICE_CLS_BOLD_X01___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                 }
+                                lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = item1.SERVICE_TYPE_NAME, SERVICE_NAME = item1.SERVICE_NAME, AMOUNT = item1.AMOUNT, INSTRUCTION_NOTE = item1.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = item1.NUM_ORDER_SERVICE_TYPE ?? Int64.MinValue, IsGoupService = item1.IsGoupService, USE_TIME = item1.USE_TIME, TDL_INTRUCTION_TIME = item1.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = item1.TDL_SERVICE_UNIT_ID, SERVICE_ID = item1.SERVICE_ID, serviceSplits = item1.serviceSplits });
                                 dem++;
                             }
                         }
@@ -6226,6 +6278,7 @@ namespace MPS.Processor.Mps000062
                                     item.SERVICE_CLS_BOLD___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                     item.SERVICE_CLS_BOLD_X01___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                 }
+                                lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = item1.SERVICE_TYPE_NAME, SERVICE_NAME = item1.SERVICE_NAME, AMOUNT = item1.AMOUNT, INSTRUCTION_NOTE = item1.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = item1.NUM_ORDER_SERVICE_TYPE ?? Int64.MinValue, IsGoupService = item1.IsGoupService, USE_TIME = item1.USE_TIME, TDL_INTRUCTION_TIME = item1.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = item1.TDL_SERVICE_UNIT_ID, SERVICE_ID = item1.SERVICE_ID, serviceSplits = item1.serviceSplits });
                                 dem++;
                             }
                         }
@@ -6348,7 +6401,7 @@ namespace MPS.Processor.Mps000062
                                 }
                                 if (rdo._DicServiceReqs != null && rdo._DicServiceReqs.Count > 0 && rdo._DicServiceReqs.ContainsKey(re.Key ?? 0) && !string.IsNullOrEmpty(rdo._DicServiceReqs[re.Key ?? 0].ADVISE))
                                 {
-                                    item.MEDICINES_MERGE_DETAIL___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(" " + rdo._DicServiceReqs[re.Key ?? 0].ADVISE, FontStyle.Italic); 
+                                    item.MEDICINES_MERGE_DETAIL___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(" " + rdo._DicServiceReqs[re.Key ?? 0].ADVISE, FontStyle.Italic);
                                     item.MEDICINES_MERGE_DETAIL___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                 }
 
@@ -6362,11 +6415,72 @@ namespace MPS.Processor.Mps000062
                         item.MEDICINES_MERGE_DETAIL___DATA = string.Join(Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br), lstExpMestMety.Select(o => o.DATA_REPX));
                     }
 
+                    item.SERVICE_MERGE_X01___DATA = "";
+                    if (lstServiceCls != null && lstServiceCls.Count > 0)
+                    {
+                        lstServiceCls.ForEach(o =>
+                        {
+                            o.SERVICE_TYPE_NAME = o.SERVICE_TYPE_NAME.Replace(":", "").Trim();//Xóa bỏ dấu : sau loại dịch vụ nếu có
+                        });
+                        var groupServiceType = lstServiceCls.Where(o => o.NUM_ORDER_SERVICE_TYPE > 0).GroupBy(o => new { o.NUM_ORDER_SERVICE_TYPE, o.SERVICE_TYPE_NAME }).ToList().OrderByDescending(o => o.Key.NUM_ORDER_SERVICE_TYPE).ToList();
+                        var ListNumOrderNull = lstServiceCls.Where(o => o.NUM_ORDER_SERVICE_TYPE < 0).ToList();
+                        if (ListNumOrderNull != null && ListNumOrderNull.Count > 0)
+                        {
+                            var groupNomOrderNull = ListNumOrderNull.OrderBy(o => o.USE_TIME ?? Int64.MinValue).OrderBy(o => o.TDL_INTRUCTION_TIME).GroupBy(o => new { o.NUM_ORDER_SERVICE_TYPE, o.SERVICE_TYPE_NAME }).ToList();
+                            groupServiceType.AddRange(groupNomOrderNull);
+                        }
+                        foreach (var st in groupServiceType)
+                        {
+                            item.SERVICE_MERGE_X01___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("- " + st.Key.SERVICE_TYPE_NAME + ":", FontStyle.Bold);
+                            item.SERVICE_MERGE_X01___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+
+                            List<ServiceCLS> serCls = new List<ServiceCLS>();
+                            foreach (var sv in st)
+                            {
+                                if (sv.IsGoupService)
+                                {
+                                    serCls.AddRange(sv.serviceSplits);
+                                }
+                                else
+                                {
+                                    serCls.Add(sv);
+                                }
+                            }
+                            serCls = serCls.OrderBy(o => o.USE_TIME ?? Int64.MinValue).OrderBy(o => o.TDL_INTRUCTION_TIME).ToList();
+                            var groupService = serCls.GroupBy(o => o.SERVICE_ID).ToList();
+                            foreach (var gs in groupService)
+                            {
+                                var sv = gs.ToList()[0];
+                                var amount = gs.ToList().Sum(o => o.AMOUNT);
+                                var instructionNotes = gs.ToList().Where(o => !string.IsNullOrEmpty(o.INSTRUCTION_NOTE)).ToList();
+                                var strInstructionNote = "";
+                                if(instructionNotes != null && instructionNotes.Count > 0)
+                                {
+                                    strInstructionNote = string.Join(", ", instructionNotes.Select(o=>o.INSTRUCTION_NOTE));
+                                }    
+                                if (!string.IsNullOrEmpty(strInstructionNote))
+                                    item.SERVICE_MERGE_X01___DATA += sv.SERVICE_NAME.Replace(":", "").Trim() + ": " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(strInstructionNote, FontStyle.Italic);
+                                else item.SERVICE_MERGE_X01___DATA += sv.SERVICE_NAME.Replace(";", "").Trim();
+
+                                if (rdo._ServiceTypes.FirstOrDefault(o => o.SERVICE_TYPE_NAME == st.Key.SERVICE_TYPE_NAME).ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT)
+                                {
+                                    item.SERVICE_MERGE_X01___DATA += string.IsNullOrEmpty(strInstructionNote) ? ": " : " ";
+                                    var strAmount = ((amount >= 1 && amount < 10) ? "0" + Inventec.Common.Number.Convert.NumberToStringRoundMax4(amount) : Inventec.Common.Number.Convert.NumberToStringRoundMax4(amount) + "");
+                                    item.SERVICE_MERGE_X01___DATA += "x" + strAmount;
+                                    var serviceUnit = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_UNIT>().FirstOrDefault(o => o.ID == sv.TDL_SERVICE_UNIT_ID);
+                                    if (serviceUnit != null)
+                                        item.SERVICE_MERGE_X01___DATA += " " + serviceUnit.SERVICE_UNIT_NAME;
+                                }
+                                item.SERVICE_MERGE_X01___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                            }
+                        }
+                    }
 
                     var user = users != null ? users.FirstOrDefault(o => o.LOGINNAME == item.CREATOR) : null;
                     item.TRACKING_USERNAME = user != null ? user.USERNAME : "";
 
-
+                    item.ICD_DIFF_CODE = GetStringValueInSingleValueDictionaryByKey("ICD_DIFF_CODE");
+                    item.ICD_DIFF_TEXT = GetStringValueInSingleValueDictionaryByKey("ICD_DIFF_TEXT");
                     item.PARENT_ORGANIZATION_NAME = GetStringValueInSingleValueDictionaryByKey(Mps000062ExtendSingleKey.PARENT_ORGANIZATION_NAME);
                     item.ORGANIZATION_NAME = GetStringValueInSingleValueDictionaryByKey(Mps000062ExtendSingleKey.ORGANIZATION_NAME);
                     item.DEPARTMENT_NAME = GetStringValueInSingleValueDictionaryByKey(Mps000062ExtendSingleKey.DEPARTMENT_NAME);
@@ -6700,7 +6814,6 @@ namespace MPS.Processor.Mps000062
                 //List<Mps000062ADOExt> mps000062ADOExts = new List<Mps000062ADOExt>();
                 //mps000062ADOExts.Add(mps000062ADOExt);
                 success = success && objectTag.AddObjectData(templaterExportStore, mps000062ADOExt.Mps000062ADOs);
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => success), success) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => mps000062ADOExt.Mps000062ADOs), mps000062ADOExt.Mps000062ADOs));
             }
             catch (Exception ex)
             {
@@ -6762,13 +6875,17 @@ namespace MPS.Processor.Mps000062
                         SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.ICD_NAME_BY_TRACKING, dataTracking.ICD_NAME));
                         SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.ICD_SUB_CODE_BY_TRACKING, dataTracking.ICD_SUB_CODE));
                         SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.ICD_TEXT_BY_TRACKING, dataTracking.ICD_TEXT));
+                        SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.ICD_DIFF_CODE, dataTracking.ICD_DIFF_CODE));
+                        SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.ICD_DIFF_TEXT, dataTracking.ICD_DIFF_TEXT));
                     }
                     else
                     {
                         SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.ICD_CODE_BY_TRACKING, TrackingLast.ICD_CODE));
                         SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.ICD_NAME_BY_TRACKING, TrackingLast.ICD_NAME));
                         SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.ICD_SUB_CODE_BY_TRACKING, TrackingLast.ICD_SUB_CODE));
-                        SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.ICD_TEXT_BY_TRACKING, TrackingLast.ICD_TEXT));
+                        SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.ICD_TEXT_BY_TRACKING, TrackingLast.ICD_TEXT)); 
+                        SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.ICD_DIFF_CODE, dataTracking.ICD_DIFF_CODE));
+                        SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.ICD_DIFF_TEXT, dataTracking.ICD_DIFF_TEXT));
                     }
                     SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.DEPARTMENT_CODE, TrackingLast.DEPARTMENT_CODE));
                     SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.DEPARTMENT_NAME, TrackingLast.DEPARTMENT_NAME));

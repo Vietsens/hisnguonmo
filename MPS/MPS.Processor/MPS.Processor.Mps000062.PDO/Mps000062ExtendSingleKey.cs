@@ -61,6 +61,8 @@ namespace MPS.Processor.Mps000062.PDO
         public const string ICD_NAME_BY_TRACKING = "ICD_NAME_BY_TRACKING";
         public const string ICD_SUB_CODE_BY_TRACKING = "ICD_SUB_CODE_BY_TRACKING";
         public const string ICD_TEXT_BY_TRACKING = "ICD_TEXT_BY_TRACKING";
+        public const string ICD_DIFF_CODE = "ICD_DIFF_CODE";
+        public const string ICD_DIFF_TEXT = "ICD_DIFF_TEXT";
 
         public const string ORDER_SHEET = "ORDER_SHEET";
 
