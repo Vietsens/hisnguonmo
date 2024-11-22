@@ -1,3 +1,9 @@
+### Release 2.338.0
+* Thêm thông tin chẩn đoán phân biệt vào tờ điều trị
+* Sửa lỗi ký số USB ký giấy chứng sinh, chứng tử gửi BYT
+* Sửa thứ tự hiển thị dịch vụ trên tờ điều trị repx
+* Không giới hạn ký tự đối với các thông tin quá trình bệnh lý và diễn biến lâm sàng phục vụ XML 130 và QĐ 4750/QĐ-BYT
+
 ### Release 2.337.0
 * Bổ sung xử lý hiển thị ảnh chữ ký của bác sĩ trên phiếu kết quả khám sức khỏe
 * Bổ sung chặn số lượng bệnh kèm theo vượt quá 12 mã bệnh
