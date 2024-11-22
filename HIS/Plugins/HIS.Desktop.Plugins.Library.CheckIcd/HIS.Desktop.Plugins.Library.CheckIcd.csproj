@@ -111,7 +111,6 @@
     <EmbeddedResource Include="frmAttachIcd.resx">
       <DependentUpon>frmAttachIcd.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
