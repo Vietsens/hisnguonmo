@@ -146,8 +146,14 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                             txtTranPatiReason.Text = tranPatiReason.TRAN_PATI_REASON_CODE;
                         }
                     }
-                    txtDauHieuLamSang.Text = treatment.CLINICAL_NOTE;
-                    txtXetNghiem.Text = treatment.SUBCLINICAL_RESULT;
+                    HisTreatmentExtFilter filter = new HisTreatmentExtFilter(); 
+                    filter.TREATMENT_ID = treatment.ID;
+                    var treatmentExt = new BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT_EXT>>("api/HisTreatmentExt/Get", ApiConsumers.MosConsumer, filter, null);
+                    if (treatmentExt != null)
+                    {
+                        txtDauHieuLamSang.Text = treatmentExt[0].CLINICAL_NOTE;
+                        txtXetNghiem.Text = treatmentExt[0].SUBCLINICAL_RESULT;
+                    }
                     txtTinhTrangNguoiBenh.Text = treatment.PATIENT_CONDITION;
                     txtPhuongTienVanChuyen.Text = treatment.TRANSPORT_VEHICLE;
                     if (treatment != null && !string.IsNullOrEmpty(treatment.TRANSPORTER_LOGINNAMES))
@@ -425,12 +431,12 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                 CommonBaseEditor.ValidateGridLookupWithTextEdit(this.cboTranPatiReason, this.txtTranPatiReason, this.dxValidationProviderControl);
                 CommonBaseEditor.ValidateGridLookupWithTextEdit(this.cboTranPatiForm, this.txtTranPatiForm, this.dxValidationProviderControl);
                 CommonBaseEditor.ValidateGridLookupWithTextEditSpecial(this.cboTransporterLoginName, txtTransporterLoginName, this.dxValidationProviderControl);
-                ValidationControlMaxLength(txtDauHieuLamSang, 500, true);
+                ValidationControlMaxLength(txtDauHieuLamSang, 4000, true);
                 ValidationControlMaxLength(txtHuongDieuTri, 200, true);
                 //ValidationControlMaxLength(txtNguoiHoTong, 50);
                 ValidationControlMaxLength(txtTinhTrangNguoiBenh, 3000);
                 ValidationControlMaxLength(txtPhuongTienVanChuyen, 200, true);
-                ValidationControlMaxLength(txtXetNghiem, 500);
+                ValidationControlMaxLength(txtXetNghiem, 4000, true);
                 ValidationControlMaxLength(txtPPKTThuoc, 200, true);
             }
             catch (Exception ex)

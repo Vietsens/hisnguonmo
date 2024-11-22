@@ -43,9 +43,9 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
             {
                 this.delegateRefeshIcd = delegateRefeshIcd;
                 this.treatment = treatment;
-                this.genderList = BackendDataWorker.Get<HIS_GENDER>().ToList();
-                this.ageTypeList = BackendDataWorker.Get<HIS_AGE_TYPE>().ToList();
-                this.icdList = BackendDataWorker.Get<V_HIS_ICD>().ToList();
+                this.genderList = BackendDataWorker.Get<HIS_GENDER>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                this.ageTypeList = BackendDataWorker.Get<HIS_AGE_TYPE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                this.icdList = BackendDataWorker.Get<V_HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
             }
             catch (Exception ex)
             {
@@ -56,7 +56,7 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
         public bool ProcessCheckIcd(string icdCodes, string icdSubCodes, ref string MessageError, bool IsCheck = false)
         {
             bool rs = true;
-            bool go = true; 
+            bool go = true;
             try
             {
                 if (treatment == null)
@@ -68,7 +68,7 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
                 List<string> listIcdTotal = new List<string>();
                 List<string> listIcdCodeTre = new List<string>();
                 List<string> listIcdSubCodeTre = new List<string>();
-               
+
                 if (!string.IsNullOrEmpty(icdSubCodes))
                     listIcdSubCode.AddRange(icdSubCodes.Split(Seperator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
                 listIcdTotal.AddRange(listIcdSubCode);

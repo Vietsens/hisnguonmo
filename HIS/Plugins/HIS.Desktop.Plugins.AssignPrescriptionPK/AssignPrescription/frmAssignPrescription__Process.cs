@@ -2162,11 +2162,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
-                CommonParam param = new CommonParam();
-                //Lấy list service package
-                HisServiceConditionFilter filter = new HisServiceConditionFilter();
-                filter.IS_ACTIVE = GlobalVariables.CommonNumberTrue;
-                this.workingServiceConditions = new BackendAdapter(param).Get<List<HIS_SERVICE_CONDITION>>(RequestUriStore.HIS_SERVICE_CONDITION_GET, ApiConsumers.MosConsumer, filter, ProcessLostToken, param);
+                workingServiceConditions = BackendDataWorker.Get<HIS_SERVICE_CONDITION>().Where(o => o.IS_ACTIVE == GlobalVariables.CommonNumberTrue).ToList();
             }
             catch (Exception ex)
             {

@@ -470,7 +470,6 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
             // 
             this.txtXetNghiem.Location = new System.Drawing.Point(2, 213);
             this.txtXetNghiem.Name = "txtXetNghiem";
-            this.txtXetNghiem.Properties.MaxLength = 500;
             this.txtXetNghiem.Size = new System.Drawing.Size(464, 60);
             this.txtXetNghiem.StyleController = this.layoutControl1;
             this.txtXetNghiem.TabIndex = 9;
@@ -479,7 +478,6 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
             // 
             this.txtDauHieuLamSang.Location = new System.Drawing.Point(2, 114);
             this.txtDauHieuLamSang.Name = "txtDauHieuLamSang";
-            this.txtDauHieuLamSang.Properties.MaxLength = 500;
             this.txtDauHieuLamSang.Size = new System.Drawing.Size(464, 79);
             this.txtDauHieuLamSang.StyleController = this.layoutControl1;
             this.txtDauHieuLamSang.TabIndex = 6;
