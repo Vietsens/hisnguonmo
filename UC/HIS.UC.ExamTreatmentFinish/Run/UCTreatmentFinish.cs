@@ -124,7 +124,22 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        public UCExamTreatmentFinish(TreatmentFinishInitADO _ExamTreatmentFinishInitADO)
+        {
+            InitializeComponent();
+            try
+            {
+                this.ExamTreatmentFinishInitADO = _ExamTreatmentFinishInitADO;
+                this.treatmentEndTypeExts = _ExamTreatmentFinishInitADO.TreatmentEndTypeExts;
+                this.moduleData = _ExamTreatmentFinishInitADO.moduleData;
+                this.icdSubCodeScreeen = _ExamTreatmentFinishInitADO.dlgGetIcdSubCode();
+                //this._treatmentext = _treatmentExt;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void UCExamTreatmentFinish_Load(object sender, EventArgs e)
         {
             try
