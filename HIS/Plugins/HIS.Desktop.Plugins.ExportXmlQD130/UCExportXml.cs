@@ -58,6 +58,12 @@ using Newtonsoft.Json;
 using DevExpress.XtraBars;
 using System.Resources;
 using Inventec.Desktop.Common.LanguageManager;
+using EMR.WCF.DCO;
+using Inventec.Common.SignLibrary.ServiceSign;
+using System.Xml;
+using System.Security.Cryptography.X509Certificates;
+using System.Diagnostics;
+using System.Threading;
 
 namespace HIS.Desktop.Plugins.ExportXmlQD130
 {
@@ -119,6 +125,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         public SavePathADO savePathADO;
         bool isExportXml;
         bool isSendCollinearXml;
+        bool isNotFileSign;
+        string SerialNumber;
         public SearchFilterADO searchFilter = new SearchFilterADO();
         public UCExportXml(Inventec.Desktop.Common.Modules.Module moduleData)
             : base(moduleData)
@@ -246,6 +254,35 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.InitControlState();
                 this.SetDefaultSearchFilter();
                 this.FillDataToGridTreatment();
+                this.InitCheckUSBToken();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void InitCheckUSBToken()
+        {
+            try
+            {
+                if (HisConfigCFG.BHXH__XML_SIGN_OPTION == "1")
+                {
+                    chkSignFileCertUtil.Checked = true;
+                    chkSignFileCertUtil.Properties.ReadOnly = true;
+                }
+                else
+                {
+                    if (!String.IsNullOrWhiteSpace(SerialNumber))
+                    {
+                        chkSignFileCertUtil.Checked = !String.IsNullOrWhiteSpace(SerialNumber);
+                    }
+                    else
+                    {
+                        chkSignFileCertUtil.Checked = false;
+                        chkSignFileCertUtil.Properties.ReadOnly = false;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -417,6 +454,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 dtTimeFrom.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Inventec.Common.DateTime.Get.StartDay() ?? 0) ?? DateTime.MinValue;
                 dtTimeTo.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Inventec.Common.DateTime.Get.EndDay() ?? 0) ?? DateTime.MinValue;
                 dtHeinLockTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Inventec.Common.DateTime.Get.Now() ?? 0) ?? DateTime.MinValue;
+
             }
             catch (Exception ex)
             {
@@ -1009,7 +1047,26 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         isExportXml = true;
                         CreateThreadGetData(limit);
                         isExportXml = false;
-                        message = ProcessExportXmlDetail(ref result, ref memoryStream, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat);
+                        if (chkSignFileCertUtil.Checked == false)
+                        {
+                            message = ProcessExportXmlDetail(ref result, ref memoryStream, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat);
+                        }
+                        else
+                        { 
+                            if (string.IsNullOrEmpty(SerialNumber))
+                            {
+                                if (XtraMessageBox.Show("Không có thông tin Usb Token ký số. Bạn có muốn tiếp tục xuất xml?", Resources.ResourceMessageLang.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No)
+                                    return false;
+
+                                message = ProcessExportXmlDetail(ref result, ref memoryStream, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat);
+
+                            }
+                            else
+                            {
+                                isNotFileSign = false;
+                                message = ProcessExportXmlDetail(ref result, ref memoryStream, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat);
+                            }
+                        }
                         if (!String.IsNullOrEmpty(message))
                         {
                             paramExport.Messages.Add(message);
@@ -1261,6 +1318,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 string username = null, password = null, address = null, typeXml = null;
                 string xml130Api = null, xmlGdykApi = null;
                 List<string> connectInfors = new List<string>();
+                int count = 0;
                 if (string.IsNullOrEmpty(connect_infor))
                 {
 
@@ -1376,6 +1434,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     string saveFilePathXml12 = "";
                     string fullFileNameCollinearXml = "";
                     string saveFilePathCollinearXml = "";
+
+                   
+
+
                     if (XuatXmlTT)
                     {
                         fullFileNameCollinearXml = xmlProcessor.GetFileNameCollinear();
@@ -1455,6 +1517,67 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             rsXml12.Close();
                         }
                     }
+
+                    if (isNotFileSign == false)
+                    {
+                        // Lấy đường dẫn đến thư mục hiện tại của chương trình
+                        string currentDirectory = Directory.GetCurrentDirectory();
+
+                        // Tạo đường dẫn đến thư mục tạm trong thư mục hiện tại
+                        string tempFolderPath = Path.Combine(currentDirectory, "Temp");
+
+                        // Tạo thư mục tạm nếu chưa tồn tại
+                        Directory.CreateDirectory(tempFolderPath);
+
+                        // Tạo đường dẫn đến file tạm 
+                        string tempFilePath = Path.Combine(tempFolderPath, string.Format("SignXml130{0}.xml", count));
+                        File.Create(tempFilePath).Close();
+                        //FileStream file = new FileStream(saveFilePathCollinearXml, FileMode.Create, FileAccess.Write);
+
+                        WcfSignDCO wcfSignDCO = new WcfSignDCO();
+                        wcfSignDCO.SerialNumber = SerialNumber;
+                        wcfSignDCO.OutputFile = tempFilePath;
+                        wcfSignDCO.PIN = "";
+                        if (!string.IsNullOrEmpty(saveFilePathCollinearXml))
+                        {
+                            wcfSignDCO.SourceFile = saveFilePathCollinearXml;//tempFolderPath;
+                        }
+                        else
+                        {
+                            wcfSignDCO.SourceFile = saveFilePath;//tempFolderPath;
+                        }
+                        string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
+                        SignProcessorClient signProcessorClient = new SignProcessorClient();
+                        var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
+                        string pathAfterFileSign = "";
+                        if (wcfSignResultDCO != null && wcfSignResultDCO.Success)
+                        {
+                            pathAfterFileSign = wcfSignResultDCO.OutputFile;
+                        }
+
+                        if (this.savePathADO == null || string.IsNullOrEmpty(this.savePathADO.pathCollinearXml))
+                        {
+                            XtraMessageBox.Show("Vui lòng thiết lập thư mục lưu trữ trước khi xuất dữ liệu.", Resources.ResourceMessageLang.ThongBao);
+                            btnSavePath_Click(null, null);
+                        }
+                        if (this.savePathADO != null && !string.IsNullOrEmpty(this.savePathADO.pathXml))
+                        {
+                            // string destinationFile = Path.Combine(savePathADO.pathXml, "SignXml130.xml");
+                            File.Move(pathAfterFileSign, savePathADO.pathXml);
+                        }
+
+                        string xmlFilePath = Path.Combine(tempFolderPath, string.Format("SignXml130{0}.xml", count));
+                        if (File.Exists(xmlFilePath))
+                        {
+                            File.Delete(xmlFilePath);
+                        }
+                        // Xóa tất cả các file trong thư mục temp
+                        foreach (string ifile in Directory.GetFiles(tempFolderPath))
+                        {
+                            File.Delete(ifile);
+                        }
+                    }
+                    count++;
                 }
                 if (DicErrorMess.Count > 0)
                 {
@@ -1536,36 +1659,106 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 string saveFilePath = "";
                 string saveFilePathXml12 = "";
 
-                fullFileName = "DATA_XML_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".xml";
-                saveFilePath = String.Format("{0}/{1}", this.savePathADO.pathXml, fullFileName);
-                saveFilePathXml12 = String.Format("{0}/{1}{2}", this.savePathADO.pathXmlGDYK, "XML12_", fullFileName);
-                var rs = xmlProcessor.RunPlus(saveFilePath, ref errorMess);
-                var rsXml12 = XuatXml12 ? xmlProcessor.RunXml12Plus(saveFilePathXml12, ref errorMessXml12) : null;
-                if (!String.IsNullOrWhiteSpace(errorMess))
-                {
-                    Inventec.Common.Logging.LogSystem.Error("Run130: " + errorMess);
-                }
-                if (!String.IsNullOrWhiteSpace(errorMessXml12))
-                {
-                    Inventec.Common.Logging.LogSystem.Error("Run130_XML12: " + errorMessXml12);
-                }
-                if (rs != null)
-                {
-                    FileStream file = new FileStream(saveFilePath, FileMode.Create, FileAccess.Write);
-                    rs.WriteTo(file);
-                    file.Close();
-                    rs.Close();
-                    isSuccess = true;
-                }
-                if (rsXml12 != null)
-                {
-                    FileStream file12 = new FileStream(saveFilePathXml12, FileMode.Create, FileAccess.Write);
-                    rsXml12.WriteTo(file12);
-                    file12.Close();
-                    rsXml12.Close();
-                    isSuccess = true;
-                }
-                result = errorMess;
+
+                    fullFileName = "DATA_XML_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".xml";
+                    saveFilePath = String.Format("{0}/{1}", this.savePathADO.pathXml, fullFileName);
+                    saveFilePathXml12 = String.Format("{0}/{1}{2}", this.savePathADO.pathXmlGDYK, "XML12_", fullFileName);
+                    var rs = xmlProcessor.RunPlus(saveFilePath, ref errorMess);
+                    var rsXml12 = XuatXml12 ? xmlProcessor.RunXml12Plus(saveFilePathXml12, ref errorMessXml12) : null;
+                    if (!String.IsNullOrWhiteSpace(errorMess))
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("Run130: " + errorMess);
+                    }
+                    if (!String.IsNullOrWhiteSpace(errorMessXml12))
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("Run130_XML12: " + errorMessXml12);
+                    }
+                    if (rs != null)
+                    {
+                        FileStream file = new FileStream(saveFilePath, FileMode.Create, FileAccess.Write);
+                        rs.WriteTo(file);
+                        file.Close();
+                        rs.Close();
+                        isSuccess = true;
+                    }
+                    if (rsXml12 != null)
+                    {
+                        FileStream file12 = new FileStream(saveFilePathXml12, FileMode.Create, FileAccess.Write);
+                        rsXml12.WriteTo(file12);
+                        file12.Close();
+                        rsXml12.Close();
+                        isSuccess = true;
+                    }
+
+                    if (isNotFileSign == false)
+                    {
+
+                        // Lấy đường dẫn đến thư mục hiện tại của chương trình
+                        string currentDirectory = Directory.GetCurrentDirectory();
+
+                        // Tạo đường dẫn đến thư mục tạm trong thư mục hiện tại
+                        string tempFolderPath = Path.Combine(currentDirectory, "Temp");
+
+                        // Tạo thư mục tạm nếu chưa tồn tại
+                        Directory.CreateDirectory(tempFolderPath);
+
+                        // Tạo đường dẫn đến file tạm 
+                        string tempFilePath = Path.Combine(tempFolderPath, "SignXml130.xml");
+                        File.Create(tempFilePath).Close();
+                        //FileStream file = new FileStream(saveFilePathCollinearXml, FileMode.Create, FileAccess.Write);
+
+                        WcfSignDCO wcfSignDCO = new WcfSignDCO();
+                        wcfSignDCO.SerialNumber = SerialNumber;
+                        wcfSignDCO.OutputFile = tempFilePath;
+                        wcfSignDCO.PIN = "";
+                        if (!string.IsNullOrEmpty(saveFilePath))
+                        {
+                            wcfSignDCO.SourceFile = saveFilePath;
+                        }
+                        else
+                        {
+                            wcfSignDCO.SourceFile = saveFilePathXml12;
+                        }
+                        string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
+                        SignProcessorClient signProcessorClient = new SignProcessorClient();
+                        var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
+                        string pathAfterFileSign = "";
+                        if (wcfSignResultDCO != null && wcfSignResultDCO.Success)
+                        {
+                            pathAfterFileSign = wcfSignResultDCO.OutputFile;
+                        }
+
+                        if (this.savePathADO == null || string.IsNullOrEmpty(this.savePathADO.pathCollinearXml))
+                        {
+                            XtraMessageBox.Show("Vui lòng thiết lập thư mục lưu trữ trước khi xuất dữ liệu.", Resources.ResourceMessageLang.ThongBao);
+                            btnSavePath_Click(null, null);
+                        }
+                        if (this.savePathADO != null && !string.IsNullOrEmpty(this.savePathADO.pathXml))
+                        {
+                            //if (File.Exists(pathAfterFileSign))
+                            //{
+                            //    File.Delete(pathAfterFileSign);  // Delete existing file
+                            //    File.Move(pathAfterFileSign, savePathADO.pathXml);  // Move the new file
+                            //}
+                            //else
+                            //{
+                            //    File.Move(pathAfterFileSign, savePathADO.pathXml);
+                            //}
+                            File.Move(pathAfterFileSign, savePathADO.pathXml);
+                        }
+
+                        string xmlFilePath = Path.Combine(tempFolderPath, "SignXml130.xml");
+                        if (File.Exists(xmlFilePath))
+                        {
+                            File.Delete(xmlFilePath);
+                        }
+                        // Xóa tất cả các file trong thư mục temp
+                        foreach (string ifile in Directory.GetFiles(tempFolderPath))
+                        {
+                            File.Delete(ifile);
+                        }
+                        result = errorMess;
+                    }
             }
             catch (Exception ex)
             {
@@ -2742,6 +2935,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             this.searchFilter = !String.IsNullOrWhiteSpace(item.VALUE) ? Newtonsoft.Json.JsonConvert.DeserializeObject<SearchFilterADO>(item.VALUE) : new SearchFilterADO();
                         }
+                        else if (item.KEY == chkSignFileCertUtil.Name)
+                        {
+                            SerialNumber = item.VALUE;
+                            //chkSignFileCertUtil.Checked = !String.IsNullOrWhiteSpace(SerialNumber);
+                        }
                     }
                 }
                 isNotLoadWhileChangeControlStateInFirst = false;
@@ -2986,19 +3184,38 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     frmSettingConfigSync frmSettingConfigSync = new frmSettingConfigSync(tempConfigSync, isAutoSync, UpdateConfigSign);
                     frmSettingConfigSync.ShowDialog(this.ParentForm);
                 }
-                if (!isAutoSync && this.configSync != null && this.configSync.period > 0)
+                if (chkSignFileCertUtil.Checked == false)
                 {
-                    isAutoSync = true;
-                    btnAutoSync.Text = Resources.ResourceMessageLang.DangDongBo;
-                    btnAutoSync.ToolTip = Resources.ResourceMessageLang.DangChayTienTrinhDongBoDuLieuXml130LenCongBHYT;
-                    this.StartTimer();
+                    if (!isAutoSync && this.configSync != null && this.configSync.period > 0)
+                    {
+                        isAutoSync = true;
+                        btnAutoSync.Text = Resources.ResourceMessageLang.DangDongBo;
+                        btnAutoSync.ToolTip = Resources.ResourceMessageLang.DangChayTienTrinhDongBoDuLieuXml130LenCongBHYT;
+                        this.StartTimer();
+                    }
+                    else
+                    {
+                        isAutoSync = false;
+                        autoSync.Stop();
+                        btnAutoSync.Text = Resources.ResourceMessageLang.DongBoTD;
+                        btnAutoSync.ToolTip = Resources.ResourceMessageLang.DongBoTuDong;
+                    }
                 }
                 else
                 {
-                    isAutoSync = false;
-                    autoSync.Stop();
-                    btnAutoSync.Text = Resources.ResourceMessageLang.DongBoTD;
-                    btnAutoSync.ToolTip = Resources.ResourceMessageLang.DongBoTuDong;
+                    if (string.IsNullOrEmpty(SerialNumber))
+                    {
+                        MessageBox.Show("Không có thông tin Usb Token ký số");
+                        return;
+                    }
+                    else
+                    {
+                        isNotFileSign = false;
+                        isAutoSync = true;
+                        btnAutoSync.Text = Resources.ResourceMessageLang.DangDongBo;
+                        btnAutoSync.ToolTip = Resources.ResourceMessageLang.DangChayTienTrinhDongBoDuLieuXml130LenCongBHYT;
+                        this.StartTimer();
+                    }
                 }
             }
             catch (Exception ex)
@@ -3609,8 +3826,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             MemoryStream resultSync = null;
                             MemoryStream resultSync12 = null;
                             MemoryStream resultSyncTT = null;
+                            string saveFilePathXml12 ="";
+                            string saveFilePathXml ="";
+                            string saveFilePathXmlTT = "";
                             string errorMess = "";
+                            int count = 0;
                             Inventec.Common.Logging.LogSystem.Debug("Dang xu ly gui  : " + treatment.TDL_PATIENT_NAME + " Ma dieu tri: " + treatment.TREATMENT_CODE);
+
                             if (configSync != null && !this.configSync.dontSend)
                             {
 
@@ -3638,12 +3860,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("syncResult__" + Inventec.Common.Logging.LogUtil.GetMemberName(() => syncResult), syncResult));
                                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("syncResult12__" + Inventec.Common.Logging.LogUtil.GetMemberName(() => syncResult12), syncResult12));
 
+                                   
 
                                     if (syncResult != null && syncResult12 != null)
                                     {
-
-
-
                                         string errorCode = syncResult.ErrorCode;
                                         if (errorCode == "01" || errorCode == "02" || errorCode == "03")
                                         {
@@ -3683,7 +3903,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                                                     if (resultSync != null)
                                                     {
-                                                        string saveFilePathXml = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
+                                                        saveFilePathXml = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
                                                         FileStream file12 = new FileStream(saveFilePathXml, FileMode.Create, FileAccess.Write);
                                                         resultSync.WriteTo(file12);
                                                         file12.Close();
@@ -3692,7 +3912,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                     }
                                                     if (resultSync12 != null)
                                                     {
-                                                        string saveFilePathXml12 = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML12_", fullFileName);
+                                                        saveFilePathXml12 = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML12_", fullFileName);
                                                         FileStream file12 = new FileStream(saveFilePathXml12, FileMode.Create, FileAccess.Write);
                                                         resultSync12.WriteTo(file12);
                                                         file12.Close();
@@ -3701,7 +3921,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                     }
                                                     if (resultSyncTT != null)
                                                     {
-                                                        string saveFilePathXmlTT = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XMLTT_", fullFileName);
+                                                        saveFilePathXmlTT = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XMLTT_", fullFileName);
                                                         FileStream file12 = new FileStream(saveFilePathXmlTT, FileMode.Create, FileAccess.Write);
                                                         resultSyncTT.WriteTo(file12);
                                                         file12.Close();
@@ -3764,7 +3984,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                             if (resultSync != null)
                                             {
                                                 string fullFileName = xmlProcessor.GetFileName();
-                                                string saveFilePathXml = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
+                                                saveFilePathXml = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
                                                 FileStream file12 = new FileStream(saveFilePathXml, FileMode.Create, FileAccess.Write);
                                                 resultSync.WriteTo(file12);
                                                 file12.Close();
@@ -3804,7 +4024,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                     if (this.configSync != null && !string.IsNullOrEmpty(this.configSync.folderPath))
                                     {
                                         string fullFileName = xmlProcessor.GetFileName();
-                                        string saveFilePathXml = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
+                                        saveFilePathXml = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
                                         FileStream file12 = new FileStream(saveFilePathXml, FileMode.Create, FileAccess.Write);
                                         resultSync.WriteTo(file12);
                                         file12.Close();
@@ -3816,7 +4036,68 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
 
                             }
+                            if (isNotFileSign == false)
+                            {
+                                // Lấy đường dẫn đến thư mục hiện tại của chương trình
+                                string currentDirectory = Directory.GetCurrentDirectory();
 
+                                // Tạo đường dẫn đến thư mục tạm trong thư mục hiện tại
+                                string tempFolderPath = Path.Combine(currentDirectory, "Temp");
+
+                                // Tạo thư mục tạm nếu chưa tồn tại
+                                Directory.CreateDirectory(tempFolderPath);
+
+                                // Tạo đường dẫn đến file tạm 
+                                string tempFilePath = Path.Combine(tempFolderPath, string.Format("SignXml130{0}.xml", count));
+                                File.Create(tempFilePath).Close();
+
+                                WcfSignDCO wcfSignDCO = new WcfSignDCO();
+                                wcfSignDCO.SerialNumber = SerialNumber;
+                                wcfSignDCO.OutputFile = tempFilePath;
+                                wcfSignDCO.PIN = "";
+                                if (resultSync != null)
+                                {
+                                    wcfSignDCO.SourceFile = saveFilePathXml;
+                                }
+                                else if (resultSync12 != null)
+                                {
+                                    wcfSignDCO.SourceFile = saveFilePathXml12;
+                                }
+                                else if (resultSyncTT != null)
+                                { 
+                                    wcfSignDCO.SourceFile = saveFilePathXmlTT;
+                                }
+                                string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
+                                SignProcessorClient signProcessorClient = new SignProcessorClient();
+                                var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
+                                string pathAfterFileSign = "";
+                                if (wcfSignResultDCO.Success)
+                                {
+                                    pathAfterFileSign = wcfSignResultDCO.OutputFile;
+                                }
+
+                                if (this.savePathADO == null || string.IsNullOrEmpty(this.savePathADO.pathCollinearXml))
+                                {
+                                    XtraMessageBox.Show("Vui lòng thiết lập thư mục lưu trữ trước khi xuất dữ liệu.", Resources.ResourceMessageLang.ThongBao);
+                                    btnSavePath_Click(null, null);
+                                }
+                                //gọi api đẩy cổng ...
+                                //...
+                                Task task = Task.Run(async () => syncResult = await xmlProcessor.SendFileSign(tempFilePath));
+                                resultSync = xmlProcessor.Run(ref errorMess);
+
+                                string xmlFilePath = Path.Combine(tempFolderPath, string.Format("SignXml130{0}.xml", count));
+                                if (File.Exists(xmlFilePath))
+                                {
+                                    File.Delete(xmlFilePath);
+                                }
+                                // Xóa tất cả các file trong thư mục temp
+                                foreach (string file in Directory.GetFiles(tempFolderPath))
+                                {
+                                    File.Delete(file);
+                                }
+                            }
+                            count++;
                         }
                     }
                 }
@@ -3954,6 +4235,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         }
                         foreach (var treatment in HisTreatments)
                         {
+                            int count = 0;
                             InputADO ado = new InputADO();
                             ado.Treatment = treatment;
                             if (dicMedicalAssessment.ContainsKey(treatment.ID))
@@ -3962,33 +4244,99 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             }
                             ado.TotalConfigData = NewConfig;
                             His.Bhyt.ExportXml.XML130.CreateXmlProcessor xmlProcessor = new His.Bhyt.ExportXml.XML130.CreateXmlProcessor(ado);
-
+                            SyncResultADO syncResult = null;
+                            MemoryStream resultSync = null;
                             string errorMess = "";
                             string fullFileName = "";
                             fullFileName = xmlProcessor.GetFileName();
                             string saveFilePathXml12 = String.Format("{0}/{1}{2}", this.savePathADO.pathXmlGDYK, "XML12_", fullFileName);
-                            var rsXml12 = xmlProcessor.RunXml12(ref errorMess);
-                            if (!String.IsNullOrWhiteSpace(errorMess))
+                            if (chkSignFileCertUtil.Checked == false)
                             {
-                                Inventec.Common.Logging.LogSystem.Error("Run130: " + errorMess);
-                            }
-                            if (rsXml12 != null)
-                            {
-                                FileStream file12 = new FileStream(saveFilePathXml12, FileMode.Create, FileAccess.Write);
-                                rsXml12.WriteTo(file12);
-                                file12.Close();
-                                rsXml12.Close();
-                                success = true;
+                                var rsXml12 = xmlProcessor.RunXml12(ref errorMess);
+                                if (!String.IsNullOrWhiteSpace(errorMess))
+                                {
+                                    Inventec.Common.Logging.LogSystem.Error("Run130: " + errorMess);
+                                }
+                                if (rsXml12 != null)
+                                {
+                                    FileStream file12 = new FileStream(saveFilePathXml12, FileMode.Create, FileAccess.Write);
+                                    rsXml12.WriteTo(file12);
+                                    file12.Close();
+                                    rsXml12.Close();
+                                    success = true;
+                                }
+                                else
+                                {
+                                    if (!DicErrorMess.ContainsKey(errorMess))
+                                    {
+                                        DicErrorMess[errorMess] = new List<string>();
+                                    }
+
+                                    DicErrorMess[errorMess].Add(treatment.TREATMENT_CODE);
+                                }
                             }
                             else
                             {
-                                if (!DicErrorMess.ContainsKey(errorMess))
+                                if (string.IsNullOrEmpty(SerialNumber))
                                 {
-                                    DicErrorMess[errorMess] = new List<string>();
-                                }
+                                    MessageBox.Show("Không có thông tin Usb Token ký số");
+                                    return;
 
-                                DicErrorMess[errorMess].Add(treatment.TREATMENT_CODE);
+                                }
+                                else
+                                {
+                                    // Lấy đường dẫn đến thư mục hiện tại của chương trình
+                                    string currentDirectory = Directory.GetCurrentDirectory();
+
+                                    // Tạo đường dẫn đến thư mục tạm trong thư mục hiện tại
+                                    string tempFolderPath = Path.Combine(currentDirectory, "Temp");
+
+                                    // Tạo thư mục tạm nếu chưa tồn tại
+                                    Directory.CreateDirectory(tempFolderPath);
+
+                                    // Tạo đường dẫn đến file tạm 
+                                    string tempFilePath = Path.Combine(tempFolderPath, string.Format("SignXml130{0}.xml", count));
+                                    File.Create(tempFilePath).Close();
+                                    //FileStream file = new FileStream(saveFilePathCollinearXml, FileMode.Create, FileAccess.Write);
+
+                                    WcfSignDCO wcfSignDCO = new WcfSignDCO();
+                                    wcfSignDCO.SerialNumber = SerialNumber;
+                                    wcfSignDCO.OutputFile = tempFilePath;
+                                    wcfSignDCO.PIN = "";
+                                    wcfSignDCO.SourceFile = saveFilePathXml12;
+                                    string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
+                                    SignProcessorClient signProcessorClient = new SignProcessorClient();
+                                    var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
+                                    string pathAfterFileSign = "";
+                                    if (wcfSignResultDCO.Success)
+                                    {
+                                        pathAfterFileSign = wcfSignResultDCO.OutputFile;
+                                    }
+
+                                    if (this.savePathADO == null || string.IsNullOrEmpty(this.savePathADO.pathCollinearXml))
+                                    {
+                                        XtraMessageBox.Show("Vui lòng thiết lập thư mục lưu trữ trước khi xuất dữ liệu.", Resources.ResourceMessageLang.ThongBao);
+                                        btnSavePath_Click(null, null);
+                                    }
+
+                                    //gọi api đẩy cổng ...
+                                    //...
+                                    Task task = Task.Run(async () => syncResult = await xmlProcessor.SendFileSign(tempFilePath));
+                                    resultSync = xmlProcessor.Run(ref errorMess);
+
+                                    string xmlFilePath = Path.Combine(tempFolderPath, string.Format("SignXml130{0}.xml", count));
+                                    if (File.Exists(xmlFilePath))
+                                    {
+                                        File.Delete(xmlFilePath);
+                                    }
+                                    // Xóa tất cả các file trong thư mục temp
+                                    foreach (string ifile in Directory.GetFiles(tempFolderPath))
+                                    {
+                                        File.Delete(ifile);
+                                    }
+                                }
                             }
+                            count++;
                         }
                         if (DicErrorMess.Count > 0)
                         {
@@ -4327,10 +4675,34 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         if (XtraMessageBox.Show("Chưa chọn thư mục lưu file chỉ tiêu dữ liệu giám định y khoa. Bạn có muốn chọn đường dẫn không?", Resources.ResourceMessageLang.ThongBao, MessageBoxButtons.YesNo) == DialogResult.Yes)
                             btnSavePath_Click(null, null);
                     }
+                    
                     xuatXml12 = !string.IsNullOrEmpty(this.savePathADO.pathXmlGDYK);
-                    WaitingManager.Show();
-                    success = this.GenerateXmlPlus(ref param, ref memoryStream, xuatXml12, listSelection);
-                    WaitingManager.Hide();
+                    if (chkSignFileCertUtil.Checked == false)
+                    {
+                        WaitingManager.Show();
+                        success = this.GenerateXmlPlus(ref param, ref memoryStream, xuatXml12, listSelection);
+                        WaitingManager.Hide();
+                    }
+                    else
+                    { 
+                        if (string.IsNullOrEmpty(SerialNumber))
+                        {
+                            if (XtraMessageBox.Show("Không có thông tin Usb Token ký số. Bạn có muốn tiếp tục xuất xml?", Resources.ResourceMessageLang.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No)
+                                return;
+
+                            WaitingManager.Show();
+                            success = this.GenerateXmlPlus(ref param, ref memoryStream, xuatXml12, listSelection);
+                            WaitingManager.Hide();
+                        }
+                        else
+                        {
+                            isNotFileSign = false;
+                            WaitingManager.Show();
+                            success = this.GenerateXmlPlus(ref param, ref memoryStream, xuatXml12, listSelection);
+                            WaitingManager.Hide();
+                        }
+                    }
+
                     if (success && param.Messages.Count == 0)
                     {
                         MessageManager.Show(this.ParentForm, param, success);
@@ -4347,6 +4719,135 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        public string AppFilePathSignService()
+        {
+            try
+            {
+                string pathFolderTemp = Path.Combine(Path.Combine(Path.Combine(Application.StartupPath, "Integrate"), "EMR.SignProcessor"), "EMR.SignProcessor.exe");
+                return pathFolderTemp;
+            }
+            catch (IOException exception)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("Error create temp file: " + exception.Message);
+                return "";
+            }
+        }
+        private bool IsProcessOpen(string name)
+        {
+            foreach (Process clsProcess in Process.GetProcesses())
+            {
+                if (clsProcess.ProcessName == name || clsProcess.ProcessName == String.Format("{0}.exe", name) || clsProcess.ProcessName == String.Format("{0} (32 bit)", name) || clsProcess.ProcessName == String.Format("{0}.exe (32 bit)", name))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        internal bool VerifyServiceSignProcessorIsRunning()
+        {
+            bool valid = false;
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.1");
+                string exeSignPath = AppFilePathSignService();
+                if (File.Exists(exeSignPath))
+                {
+                    if (IsProcessOpen("EMR.SignProcessor"))
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.2");
+                        valid = true;
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.3");
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => exeSignPath), exeSignPath));
+                        ProcessStartInfo startInfo = new ProcessStartInfo();
+                        startInfo.FileName = exeSignPath;
+                        try
+                        {
+                            Process.Start(startInfo);
+                            Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.4");
+                            Thread.Sleep(500);
+                            valid = true;
+                            Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.5");
+                        }
+                        catch (Exception exx)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn(exx);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return valid;
+        }
+        private void chkSignFileCertUtil_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkSignFileCertUtil.Checked == true)
+                {
+                    if (VerifyServiceSignProcessorIsRunning())
+                    {
+                        WcfSignDCO wcfSignDCO = new WcfSignDCO();
+                        wcfSignDCO.HwndParent = this.ParentForm.Handle;
+                        string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
+                        SignProcessorClient signProcessorClient = new SignProcessorClient();
+                        var wcfSignResultDCO = signProcessorClient.GetSerialNumber(jsonData);  //EDIT
+                        if (wcfSignResultDCO != null)
+                        {
+                            SerialNumber = wcfSignResultDCO.OutputFile;
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(SerialNumber))
+                    {
+                        HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkSignFileCertUtil.Name && o.MODULE_LINK == this.currentModule.ModuleLink).FirstOrDefault() : null;
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
+                        if (csAddOrUpdate != null)
+                        {
+                            csAddOrUpdate.VALUE = SerialNumber;
+                        }
+                        else
+                        {
+                            csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                            csAddOrUpdate.KEY = chkSignFileCertUtil.Name;
+                            csAddOrUpdate.VALUE = SerialNumber;
+                            csAddOrUpdate.MODULE_LINK = this.currentModule.ModuleLink;
+                            if (this.currentControlStateRDO == null)
+                                this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                            this.currentControlStateRDO.Add(csAddOrUpdate);
+                        }
+                        this.controlStateWorker.SetData(this.currentControlStateRDO);
+                    }
+                    else
+                    {
+                        chkSignFileCertUtil.Checked = false;
+                        XtraMessageBox.Show(Resources.ResourceMessageLang.KhongLayDuocThongTinChungThuHoacChungThuKhongHopLe, Resources.ResourceMessageLang.ThongBao);
+                    }
+                }
+                else
+                {
+                    HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkSignFileCertUtil.Name && o.MODULE_LINK == this.currentModule.ModuleLink).FirstOrDefault() : null;
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
+                    if (csAddOrUpdate != null)
+                    {
+                        csAddOrUpdate.VALUE = "";
+                    }
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                    this.controlStateWorker.SetData(this.currentControlStateRDO);
+                }
+                
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
