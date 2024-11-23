@@ -28,14 +28,17 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
     class HisConfigCFG
     {
         internal const string HIS_QD_130_BYT__CONNECTION_INFO = "HIS.QD_130_BYT.CONNECTION_INFO";
+        internal const string MOS_BHXH__XML_SIGN_OPTION = "MOS.BHXH.XML_SIGN.OPTION";
 
         internal static string QD_130_BYT__CONNECTION_INFO;
+        internal static string BHXH__XML_SIGN_OPTION;
 
         internal static void LoadConfig()
         {
             try
             {
                 QD_130_BYT__CONNECTION_INFO = GetValue(HIS_QD_130_BYT__CONNECTION_INFO);
+                BHXH__XML_SIGN_OPTION = GetValue(MOS_BHXH__XML_SIGN_OPTION);
             }
             catch (Exception ex)
             {
