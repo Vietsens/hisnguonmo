@@ -934,10 +934,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         {
             try
             {
+                //LogSystem.Debug("To dieu tri tu chuc nang danh sach truyen qua. " + LogUtil.TraceData("HIS_TRACKING", data));
                 CommonParam param = new CommonParam();
                 if (data != null)
                 {
-                    //Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
                     HIS.UC.Icd.ADO.IcdInputADO icd = new HIS.UC.Icd.ADO.IcdInputADO();
                     icd.ICD_NAME = data.ICD_NAME;
                     icd.ICD_CODE = data.ICD_CODE;
