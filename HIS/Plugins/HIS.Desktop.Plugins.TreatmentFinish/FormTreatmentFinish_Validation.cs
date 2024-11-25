@@ -57,28 +57,22 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 if (ConfigKey.PathologicalProcessOption == "1" && currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU)
                 {
                     layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
-                    ValidationMaxLengthAndRequire(txtDauHieuLamSang, 3000);
+                    ValidateRequired(txtDauHieuLamSang);
                 }
                 else if (ConfigKey.PathologicalProcessOption == "2" && (currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU || currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY))
                 {
                     layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
-                    ValidationMaxLengthAndRequire(txtDauHieuLamSang, 3000);
+                    ValidateRequired(txtDauHieuLamSang);
                 }
-                else
-                {
-                    ValidationMaxLength(txtDauHieuLamSang, 3000);
-                }
+                
                 if ((Config.ConfigKey.SubclinicalResultOption == "2" && (currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU ||
         currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY)) || (Config.ConfigKey.SubclinicalResultOption == "1" && (currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU ||
         currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU)))
                 {
                     lblKetQuaXetNghiem.Appearance.ForeColor = System.Drawing.Color.Maroon;
-                    ValidationMaxLengthAndRequire(txtKetQuaXetNghiem, 4000);
+                    ValidateRequired(txtKetQuaXetNghiem);
                 }
-                else
-                {
-                    ValidationMaxLength(txtKetQuaXetNghiem, 4000);
-                }
+                
                 ValidationMaxLength(txtSurgery, 3000);
                 ValidationMaxLength(txtMaBHXH, 10, true);
                 ValidationComboProgram();
@@ -95,7 +89,21 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             }
 
         }
-
+        private void ValidateRequired(BaseEdit memoEdit)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule LoginName = new Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule();
+                LoginName.editor = memoEdit;
+                LoginName.ErrorText = ResourceMessage.TruongDuLieuBatBuoc;
+                LoginName.ErrorType = ErrorType.Warning;
+                dxValidationProvider.SetValidationRule(memoEdit, LoginName);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void ValidateTextEdit(TextEdit txt)
         {
             try

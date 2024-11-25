@@ -170,7 +170,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         public List<MOS.EFMODEL.DataModels.HIS_BRANCH> hisBranchs;
         public List<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE> hisTreatmentTypes;
         HIS_PATIENT currentPatient;
-
+        HIS_TREATMENT_EXT currentTreatmentExt = new HIS_TREATMENT_EXT();
         public List<HIS_CAREER> careers;
 
         bool isFinished = false;
@@ -314,6 +314,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
                 LoadDataEye(currentHisTreatment);
                 LoadComboControls();
+                LoadDataTreatmentExt();
                 FillDataCurrentTreatment(currentHisTreatment);
 
                 TaskLoadBedLog();
@@ -342,6 +343,24 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void LoadDataTreatmentExt()
+        {
+            try
+            {
+                if (currentHisTreatment == null) return;
+                List<HIS_TREATMENT_EXT> listTreatmentExt = null;
+                MOS.Filter.HisTreatmentExtFilter filter = new MOS.Filter.HisTreatmentExtFilter();
+                filter.TREATMENT_ID = currentHisTreatment.ID;
+                listTreatmentExt = new BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT_EXT>>("api/HisTreatmentExt/Get", ApiConsumers.MosConsumer, filter, null);
+                
+                if(listTreatmentExt != null) currentTreatmentExt = listTreatmentExt.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -1577,9 +1596,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             try
             {
                 HIS_SERVICE_REQ examServiceReq = null;
-                if (!String.IsNullOrWhiteSpace(currentHisTreatment.CLINICAL_NOTE))
+
+                if (this.currentTreatmentExt != null && !String.IsNullOrWhiteSpace(this.currentTreatmentExt.CLINICAL_NOTE))
                 {
-                    txtDauHieuLamSang.Text = currentHisTreatment.CLINICAL_NOTE;
+                    txtDauHieuLamSang.Text = this.currentTreatmentExt.CLINICAL_NOTE;
                 }
                 else
                 {
@@ -1596,9 +1616,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     }
                 }
 
-                if (!String.IsNullOrWhiteSpace(currentHisTreatment.SUBCLINICAL_RESULT))
+                if (this.currentTreatmentExt != null && !String.IsNullOrWhiteSpace(this.currentTreatmentExt.SUBCLINICAL_RESULT))
                 {
-                    txtKetQuaXetNghiem.Text = currentHisTreatment.SUBCLINICAL_RESULT;
+                    txtKetQuaXetNghiem.Text = this.currentTreatmentExt.SUBCLINICAL_RESULT;
                 }
                 else
                 {
@@ -2937,26 +2957,24 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         {
             LogTheadInSessionInfo(saveTemp, "btnSaveTemp_Click");
         }
-
-        string codeCheckCD;
-        string nameCheckCD;
-        string codeCheckCDYHCT;
-        string codeCheckSubICD;
+        //sua lai viec 181736
+        string codeCheckCD = "";
+        string nameCheckCD = "";
+        string codeCheckCDYHCT = "";
+        string codeCheckSubICD = "";
         private void GetValueUC()
         {
             try 
 	        {
-                codeCheckCD = "";
-                nameCheckCD = "";
-                codeCheckCDYHCT = "";
+                
                 if (ucSecondaryIcd != null)
                 {
                     var subIcd = subIcdProcessor.GetValue(ucSecondaryIcd);
                     if (subIcd != null && subIcd is SecondaryIcdDataADO)
                     {
-                        codeCheckSubICD = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
-                        codeCheckCD = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
-                        nameCheckCD = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
+                        codeCheckSubICD += ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
+                        codeCheckCD += ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
+                        nameCheckCD += ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
                     }
                 }
                 if (ucIcd != null)

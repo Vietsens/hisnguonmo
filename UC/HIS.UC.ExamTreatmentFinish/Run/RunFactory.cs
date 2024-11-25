@@ -17,6 +17,7 @@
  */
 using HIS.UC.ExamTreatmentFinish.ADO;
 using Inventec.Core;
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,14 +28,14 @@ namespace HIS.UC.ExamTreatmentFinish.Run
 {
     class RunFactory
     {
-        internal static IRun MakeIExamTreatmentFinish(CommonParam param, object data)
+        internal static IRun MakeIExamTreatmentFinish(CommonParam param, object data,object _treatmentExt)
         {
             IRun result = null;
             try
             {
                 if (data is TreatmentFinishInitADO)
                 {
-                    result = new RunBehavior(param, (TreatmentFinishInitADO)data);
+                    result = new RunBehavior(param, (TreatmentFinishInitADO)data,(HIS_TREATMENT_EXT) _treatmentExt);
                 }
                 if (result == null) throw new NullReferenceException();
             }

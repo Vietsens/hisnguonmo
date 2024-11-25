@@ -50,12 +50,12 @@ namespace HIS.UC.ExamTreatmentFinish
         {
         }
 
-        public object Run(TreatmentFinishInitADO arg)
+        public object Run(TreatmentFinishInitADO arg,HIS_TREATMENT_EXT _treatmentExt)
         {
             uc = null;
             try
             {
-                IRun behavior = RunFactory.MakeIExamTreatmentFinish(param, arg);
+                IRun behavior = RunFactory.MakeIExamTreatmentFinish(param, arg, _treatmentExt);
                 uc = behavior != null ? (behavior.Run()) : null;
             }
             catch (Exception ex)

@@ -66,6 +66,7 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
 
         internal const string ModuleLink_HisTranPatiTemp = "HIS.Desktop.Plugins.HisTranPatiTemp";
         List<V_HIS_EMPLOYEE> selected = new List<V_HIS_EMPLOYEE>();
+        HIS_TREATMENT_EXT currentTreatmentExt = new HIS_TREATMENT_EXT();
         #endregion
 
         #region Construct
@@ -83,7 +84,7 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             }
         }
 
-        public FormTransfer(Inventec.Desktop.Common.Modules.Module _moduleData, MOS.EFMODEL.DataModels.HIS_TREATMENT treatment, Action<HisTreatmentFinishSDO> _actEdited)
+        public FormTransfer(Inventec.Desktop.Common.Modules.Module _moduleData, MOS.EFMODEL.DataModels.HIS_TREATMENT treatment, Action<HisTreatmentFinishSDO> _actEdited,HIS_TREATMENT_EXT treatmentExt)
         {
             InitializeComponent();
             try
@@ -91,6 +92,7 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
                 this.moduleData = _moduleData;
                 this.hisTreatment = treatment;
                 this.actEdited = _actEdited;
+                this.currentTreatmentExt = treatmentExt;
             }
             catch (Exception ex)
             {
@@ -111,7 +113,7 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
                 //LoadKeysFromlanguage();
                 SetCaptionByLanguageKey();
                 LoadDataToCombo();
-
+                //LoadDataTreatmentExt(hisTreatment);
                 if (this.hisTreatment != null)
                 {
                     loadDataTranPatiOld(hisTreatment);//Lấy thông tin chuyển viện cũ
@@ -123,6 +125,24 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void LoadDataTreatmentExt(HIS_TREATMENT treatment)
+        {
+            try
+            {
+                if (treatment == null) return;
+                List<HIS_TREATMENT_EXT> listTreatmentExt = null;
+                MOS.Filter.HisTreatmentExtFilter filter = new MOS.Filter.HisTreatmentExtFilter();
+                filter.TREATMENT_ID = treatment.ID;
+                listTreatmentExt = new BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT_EXT>>("api/HisTreatmentExt/Get", ApiConsumers.MosConsumer, filter, null);
+
+                if (listTreatmentExt != null) currentTreatmentExt = listTreatmentExt.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -190,7 +210,7 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
                     }
                     txtPPKTThuoc.Text = treatment.TREATMENT_METHOD;
                     Inventec.Common.Logging.LogSystem.Error("UCTREATMENT___________");
-                    txtClinicalNote.Text = treatment.CLINICAL_NOTE;
+                    txtClinicalNote.Text = this.currentTreatmentExt.CLINICAL_NOTE;
                     //if (!string.IsNullOrEmpty(treatment.SUBCLINICAL_RESULT))
                     //{
                     //    txtSubclinicalResult.Text = treatment.SUBCLINICAL_RESULT;

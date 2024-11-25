@@ -85,6 +85,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         long RoomId = 0;
 
         TreatmentFinishInitADO ExamTreatmentFinishInitADO;
+        HIS_TREATMENT_EXT _treatmentext;
 
         bool isNotLoadWhileChangeControlStateInFirst;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
@@ -107,6 +108,22 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         internal UserControl ucSecondaryIcd;
         List<HIS_DEPARTMENT> listDepartment;
         List<HIS_BRANCH> listBranch;
+        public UCExamTreatmentFinish(TreatmentFinishInitADO _ExamTreatmentFinishInitADO,HIS_TREATMENT_EXT _treatmentExt)
+        {
+            InitializeComponent();
+            try
+            {
+                this.ExamTreatmentFinishInitADO = _ExamTreatmentFinishInitADO;
+                this.treatmentEndTypeExts = _ExamTreatmentFinishInitADO.TreatmentEndTypeExts;
+                this.moduleData = _ExamTreatmentFinishInitADO.moduleData;
+                this.icdSubCodeScreeen = _ExamTreatmentFinishInitADO.dlgGetIcdSubCode();
+                this._treatmentext = _treatmentExt;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         public UCExamTreatmentFinish(TreatmentFinishInitADO _ExamTreatmentFinishInitADO)
         {
             InitializeComponent();
@@ -116,13 +133,13 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 this.treatmentEndTypeExts = _ExamTreatmentFinishInitADO.TreatmentEndTypeExts;
                 this.moduleData = _ExamTreatmentFinishInitADO.moduleData;
                 this.icdSubCodeScreeen = _ExamTreatmentFinishInitADO.dlgGetIcdSubCode();
+                //this._treatmentext = _treatmentExt;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private void UCExamTreatmentFinish_Load(object sender, EventArgs e)
         {
             try
@@ -1164,11 +1181,11 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                                 treatment.TREATMENT_METHOD = currentTreatmentFinishSDO.TreatmentMethod;
                                 treatment.TREATMENT_DIRECTION = currentTreatmentFinishSDO.TreatmentDirection;
                                 treatment.USED_MEDICINE = currentTreatmentFinishSDO.UsedMedicine;
-                                treatment.CLINICAL_NOTE = currentTreatmentFinishSDO.ClinicalNote;
-                                treatment.SUBCLINICAL_RESULT = currentTreatmentFinishSDO.SubclinicalResult;
+                                this._treatmentext.CLINICAL_NOTE = currentTreatmentFinishSDO.ClinicalNote;
+                                this._treatmentext.SUBCLINICAL_RESULT = currentTreatmentFinishSDO.SubclinicalResult;
                             }
 
-                            EndTypeForm.FormTransfer form = new EndTypeForm.FormTransfer(this.moduleData, treatment, UpdateExamTreatmentFinish);
+                            EndTypeForm.FormTransfer form = new EndTypeForm.FormTransfer(this.moduleData, treatment, UpdateExamTreatmentFinish,this._treatmentext);
                             form.ShowDialog();
                         }
                         else if (data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET)
