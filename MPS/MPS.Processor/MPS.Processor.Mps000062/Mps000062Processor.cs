@@ -6464,9 +6464,8 @@ namespace MPS.Processor.Mps000062
 
                                 if (rdo._ServiceTypes.FirstOrDefault(o => o.SERVICE_TYPE_NAME == st.Key.SERVICE_TYPE_NAME).ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT)
                                 {
-                                    item.SERVICE_MERGE_X01___DATA += string.IsNullOrEmpty(strInstructionNote) ? ": " : " ";
                                     var strAmount = ((amount >= 1 && amount < 10) ? "0" + Inventec.Common.Number.Convert.NumberToStringRoundMax4(amount) : Inventec.Common.Number.Convert.NumberToStringRoundMax4(amount) + "");
-                                    item.SERVICE_MERGE_X01___DATA += "x" + strAmount;
+                                    item.SERVICE_MERGE_X01___DATA += " x" + strAmount;
                                     var serviceUnit = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_UNIT>().FirstOrDefault(o => o.ID == sv.TDL_SERVICE_UNIT_ID);
                                     if (serviceUnit != null)
                                         item.SERVICE_MERGE_X01___DATA += " " + serviceUnit.SERVICE_UNIT_NAME;
