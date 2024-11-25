@@ -232,11 +232,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
-                CommonParam param = new CommonParam();
-                HisObeyContraindiFilter filter = new HisObeyContraindiFilter();
-                filter.SERVICE_REQ_CODE__EXACT = oldServiceReq.SERVICE_REQ_CODE;
-                ObeyContraindiEdit = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_OBEY_CONTRAINDI>>("api/HisObeyContraindi/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
-
+                if (HisConfigCFG.ContraindicaterWarningOption == "1" || HisConfigCFG.ContraindicaterWarningOption == "2")
+                {
+                    CommonParam param = new CommonParam();
+                    HisObeyContraindiFilter filter = new HisObeyContraindiFilter();
+                    filter.SERVICE_REQ_CODE__EXACT = oldServiceReq.SERVICE_REQ_CODE;
+                    filter.TREATMENT_ID = oldServiceReq.TREATMENT_ID;
+                    filter.REQUEST_LOGINNAME__EXACT = oldServiceReq.REQUEST_LOGINNAME;
+                    ObeyContraindiEdit = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_OBEY_CONTRAINDI>>("api/HisObeyContraindi/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                }
             }
             catch (Exception ex)
             {

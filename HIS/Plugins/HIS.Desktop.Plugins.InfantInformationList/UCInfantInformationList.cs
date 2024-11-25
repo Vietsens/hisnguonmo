@@ -530,6 +530,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                                 }
                                 if (data.BIRTH_CERT_NUM != null)
                                 {
+                                    birthCert = data.BIRTH_CERT_NUM.Value.ToString();
                                     if (data.BIRTH_CERT_NUM.ToString().Length < 5)
                                     {
                                         birthCert = String.Format("{0:00000}", data.BIRTH_CERT_NUM);

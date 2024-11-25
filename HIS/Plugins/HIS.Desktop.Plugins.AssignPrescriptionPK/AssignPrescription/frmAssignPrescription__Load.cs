@@ -1906,7 +1906,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     HisSereServFilter hisSereServFilter = new HisSereServFilter();
                     hisSereServFilter.TREATMENT_ID = treatment.ID;
                     hisSereServFilter.TDL_SERVICE_TYPE_IDs = setyAllowsIds;
-                    this.sereServWithTreatment = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>("api/HisSereServ/GetView", ApiConsumers.MosConsumerNoStore, hisSereServFilter, ProcessLostToken, param);
+                    this.sereServWithTreatment = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumerNoStore, hisSereServFilter, ProcessLostToken, param);
                     //}
                     //else
                     //{
