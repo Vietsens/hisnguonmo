@@ -333,7 +333,8 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
                                         continue;
                                     }
                                     IcdCodeError = item.ICD_CODE;
-                                    MessageError += String.Format("Mã bệnh {0} cùng nhóm {1} với mã bệnh {2} đã dùng trong đợt điều trị.", string.Join(",", lstICD), item.ICD_GROUP_NAME, IcdCodeError);
+                                    //MessageError += String.Format("Mã bệnh {0} cùng nhóm {1} với mã bệnh {2} đã dùng trong đợt điều trị.", string.Join(",", lstICD), item.ICD_GROUP_NAME, IcdCodeError);
+                                    MessageError += String.Format("Mã bệnh {0} cùng nhóm {1} với mã bệnh {2} đã dùng trong đợt điều trị.", IcdCodeError, item.ICD_GROUP_NAME, string.Join(",", lstICD));
                                     hasError = true;
                                     foreach (var _i in lstICD)
                                     {
