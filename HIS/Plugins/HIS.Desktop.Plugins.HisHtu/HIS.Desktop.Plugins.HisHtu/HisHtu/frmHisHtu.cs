@@ -730,6 +730,7 @@ namespace HIS.Desktop.Plugins.HisHtu.HisHtu
                 SetFocusEditor();
                 txtHtuCode.Text = null;
                 txtHtuName.Text = null;
+                chkAcinInterActive.Checked = false;
                 txtHtuCode.Focus();
             }
             catch (Exception ex)
@@ -873,6 +874,7 @@ namespace HIS.Desktop.Plugins.HisHtu.HisHtu
                 {
                     currentDTO.NUM_ORDER = null;
                 }
+                currentDTO.CHECK_ACIN_INTERACTIVE = (short?)(chkAcinInterActive.Checked ? 1 : 0);
             }
             catch (Exception ex)
             {
