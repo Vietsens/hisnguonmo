@@ -62,14 +62,15 @@ namespace HIS.Desktop.Plugins.CallPatientSample
         int index = 0;
         int rowCount = 0;
         bool isSetNum = false;
-
-        public frmWaitingScreenSample22(Inventec.Desktop.Common.Modules.Module module, V_LIS_SAMPLE sample, List<long> sttIds, V_HIS_ROOM r)
+        bool isTach = false;
+        public frmWaitingScreenSample22(Inventec.Desktop.Common.Modules.Module module, V_LIS_SAMPLE sample, List<long> sttIds, V_HIS_ROOM r,bool isTach = false)
             : base(module)
         {
             InitializeComponent();
             this.lisSample = sample;
             this.sampleSttIds = sttIds;
             this.room = r;
+            this.isTach = isTach;
         }
 
         private void frmWaitingScreen_QY_Load(object sender, EventArgs e)
@@ -82,11 +83,12 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 SetDataToGridControlWaitingCLSs();
                 GetFilePath();
                 StartAllTimer();
-                SetFromConfigToControl();
+                //SetFromConfigToControl();
                 var emp = BackendDataWorker.Get<HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
                 lblDoctorName.Text = string.Format("{0} {1}", emp != null ? (emp.TITLE != null ? emp.TITLE + ": " : "") : "", Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName().ToUpper());
-                rowCount = gridViewWaitingCls.RowCount - 1;
+                rowCount = gridViewWaitingCls.RowCount +gridViewDaLM.RowCount - 1;
                 SetFormFrontOfAll();
+                SetEnableLayout();
                 timer1.Interval = 2000;
                 timer1.Enabled = true;
                 timer1.Start();
@@ -99,6 +101,26 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void SetEnableLayout()
+        {
+            try
+            {
+                this.layoutControlItem14.Visibility = this.layoutControlItem16.Visibility = isTach ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                if (!isTach)
+                {
+                    gridControlWaitingCls.Dock = DockStyle.Fill;
+                    labelControlChLM.Width = this.Width;
+                    labelControlChLM.Text = "Danh sách chờ";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
 
         private void SetFormFrontOfAll()
         {
@@ -428,7 +450,21 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private HIS_PATIENT_TYPE GetPatientTypeName(long ID)
+        {
+            try
+            {
+                if (ID == 0) return new HIS_PATIENT_TYPE();
+                var data = BackendDataWorker.Get<HIS_PATIENT_TYPE>().Where(s => s.ID == ID).FirstOrDefault();
+                return data ?? new HIS_PATIENT_TYPE();
+            }
+            catch (Exception ex)
+            {
 
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
         private void gridViewWaitingCls_CustomUnboundColumnData(object sender, CustomColumnDataEventArgs e)
         {
             try
@@ -442,6 +478,10 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                         if (e.Column.FieldName == "AGE_DISPLAY")
                         {
                             e.Value = GetYearOld(data.TDL_PATIENT_DOB);
+                        }
+                        if(e.Column.FieldName == "PATIENT_TYPE_NAME")
+                        {
+                            e.Value = data.PAEX_LOGINNAME;// GetPatientTypeName(data.TDL_PATIENT_TYPE_ID??0).PATIENT_TYPE_NAME;
                         }
                     }
                 }
@@ -538,7 +578,16 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             List<HIS.Desktop.LocalStorage.BackendData.ADO.ServiceReq1ADO> serviceReq1Ados = new List<LocalStorage.BackendData.ADO.ServiceReq1ADO>();
             try
             {
-                var groups = serviceReq1s.GroupBy(g => new { g.CALL_SAMPLE_ORDER, g.PATIENT_CODE, g.FIRST_NAME, g.LAST_NAME, g.DOB }).ToList();
+                serviceReq1s.ForEach(item =>
+                {
+                    if (item.SAMPLE_STT_ID == 5)
+                    {
+                        item.SAMPLE_STT_ID = 2;
+                    }
+                    if (item.SAMPLE_STT_ID == 6) item.SAMPLE_STT_ID = 1;
+                });
+
+                var groups = serviceReq1s.GroupBy(g => new { g.CALL_SAMPLE_ORDER, g.PATIENT_CODE, g.FIRST_NAME, g.LAST_NAME, g.DOB,g.PATIENT_TYPE_NAME,g.SAMPLE_STT_ID }).ToList();
                 List<ServiceReq1ADO> lisAdos = null;
                 if (CallPatientDataWorker.DicCallPatient != null && CallPatientDataWorker.DicCallPatient.ContainsKey(room.ID))
                 {
@@ -556,6 +605,9 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                     serviceReq1Ado.NUM_ORDER = item.FirstOrDefault().CALL_SAMPLE_ORDER;
                     serviceReq1Ado.TDL_PATIENT_DOB = item.FirstOrDefault().DOB ?? 0;
                     serviceReq1Ado.SERVICE_REQ_STT_ID = item.FirstOrDefault().SAMPLE_STT_ID;
+                    serviceReq1Ado.PAEX_LOGINNAME = item.FirstOrDefault().PATIENT_TYPE_NAME;
+                    serviceReq1Ado.PRIORITY = item.FirstOrDefault().PRIORITY;
+                    
 
                     if (ado != null && ado.CallPatientSTT)
                     {
@@ -677,16 +729,56 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                     int countPatient = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>(AppConfigKeys.CONFIG_KEY__SO_BENH_NHAN_TREN_DANH_SACH_CHO_KHAM_VA_CLS);
                     if (countPatient == 0)
                         countPatient = 10;
-
-                    // danh sách chờ kết quả cận lâm sàng
-                    var ServiceReqFilterSTTs = CallPatientDataWorker.DicCallPatient[room.ID].Where(o => this.sampleSttIds.Contains(o.SERVICE_REQ_STT_ID)).ToList();
-                    gridControlWaitingCls.Invoke(new MethodInvoker(delegate
+                    if (this.isTach)
                     {
-                        gridControlWaitingCls.BeginUpdate();
-                        gridControlWaitingCls.DataSource = ServiceReqFilterSTTs;
-                        gridControlWaitingCls.EndUpdate();
-                    }));
-                    Inventec.Common.Logging.LogSystem.Info("Du lieu DicCallPatient:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => CallPatientDataWorker.DicCallPatient[room.ID].Take(countPatient).ToList()), CallPatientDataWorker.DicCallPatient[room.ID].Take(countPatient).ToList()));
+                        var ServiceReqFilterSTTs = CallPatientDataWorker.DicCallPatient[room.ID].Where(o => o.SERVICE_REQ_STT_ID == 1 || o.SERVICE_REQ_STT_ID == 6).ToList();
+                        if (gridControlWaitingCls.InvokeRequired)
+                        {
+                            gridControlWaitingCls.Invoke(new MethodInvoker(delegate
+                            {
+                                gridControlWaitingCls.BeginUpdate();
+                                gridControlWaitingCls.DataSource = ServiceReqFilterSTTs;
+                                gridControlWaitingCls.EndUpdate();
+                            }));
+                        }
+                        else
+                        {
+                            gridControlWaitingCls.BeginUpdate();
+                            gridControlWaitingCls.DataSource = ServiceReqFilterSTTs;
+                            gridControlWaitingCls.EndUpdate();
+                        }
+                        var ServiceReqFilterSTTsDa = CallPatientDataWorker.DicCallPatient[room.ID].Where(o => o.SERVICE_REQ_STT_ID == 2 || o.SERVICE_REQ_STT_ID == 5).ToList();
+                        if (gridControlDaLM.InvokeRequired)
+                        {
+                            gridControlDaLM.Invoke(new MethodInvoker(delegate
+                            {
+                                gridControlDaLM.BeginUpdate();
+                                gridControlDaLM.DataSource = ServiceReqFilterSTTsDa;
+                                gridControlDaLM.EndUpdate();
+                            }));
+                        }
+                        else
+                        {
+                            gridControlDaLM.BeginUpdate();
+                            gridControlDaLM.DataSource = ServiceReqFilterSTTsDa;
+                            gridControlDaLM.EndUpdate();
+                        }
+                        
+                    }
+                    else
+                    {
+                        // danh sách chờ kết quả cận lâm sàng
+                        var ServiceReqFilterSTTs = CallPatientDataWorker.DicCallPatient[room.ID].Where(o => this.sampleSttIds.Contains(o.SERVICE_REQ_STT_ID)).ToList();
+                        gridControlWaitingCls.Invoke(new MethodInvoker(delegate
+                        {
+                            gridControlWaitingCls.BeginUpdate();
+                            gridControlWaitingCls.DataSource = ServiceReqFilterSTTs;
+                            gridControlWaitingCls.EndUpdate();
+                        }));
+                        Inventec.Common.Logging.LogSystem.Info("Du lieu DicCallPatient:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => CallPatientDataWorker.DicCallPatient[room.ID].Take(countPatient).ToList()), CallPatientDataWorker.DicCallPatient[room.ID].Take(countPatient).ToList()));
+                    }
+                    
+                    
                 }
                 else
                 {
@@ -696,6 +788,12 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                            gridControlWaitingCls.DataSource = null;
                            gridControlWaitingCls.EndUpdate();
                        }));
+                    gridControlDaLM.Invoke(new MethodInvoker(delegate
+                    {
+                        gridControlDaLM.BeginUpdate();
+                        gridControlDaLM.DataSource = null;
+                        gridControlDaLM.EndUpdate();
+                    }));
                 }
             }
             catch (Exception ex)
@@ -926,6 +1024,154 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewWaitingCls_RowCellStyle(object sender, RowCellStyleEventArgs e)
+        {
+            try
+            {
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+
+                // Lấy dữ liệu của hàng hiện tại bằng e.RowHandle
+                LocalStorage.BackendData.ADO.ServiceReq1ADO data = view.GetRow(e.RowHandle) as LocalStorage.BackendData.ADO.ServiceReq1ADO;
+
+                if (data != null)
+                {
+                    if (data.PRIORITY != null && data.PRIORITY > 0)
+                    {
+                        // In đậm chữ nếu PRIORITY > 0
+                        e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
+                    }
+                    else
+                    {
+                        // Bình thường nếu không thỏa điều kiện
+                        e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Regular);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewDaLM_CustomUnboundColumnData(object sender, CustomColumnDataEventArgs e)
+        {
+            try
+            {
+                if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
+                {
+                    LocalStorage.BackendData.ADO.ServiceReq1ADO data = (LocalStorage.BackendData.ADO.ServiceReq1ADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    if (data != null)
+                    {
+                        DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                        if (e.Column.FieldName == "AGE_DISPLAY")
+                        {
+                            e.Value = GetYearOld(data.TDL_PATIENT_DOB);
+                        }
+                        if (e.Column.FieldName == "PATIENT_TYPE_NAME")
+                        {
+                            e.Value = data.PAEX_LOGINNAME; //Map doi tuong bn vao truong nay //GetPatientTypeName(data.TDL_PATIENT_TYPE_ID ?? 0).PATIENT_TYPE_NAME;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewDaLM_RowCellStyle(object sender, RowCellStyleEventArgs e)
+        {
+            try
+            {
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+
+                // Lấy dữ liệu của hàng hiện tại bằng e.RowHandle
+                LocalStorage.BackendData.ADO.ServiceReq1ADO data = view.GetRow(e.RowHandle) as LocalStorage.BackendData.ADO.ServiceReq1ADO;
+
+                if (data != null)
+                {
+                    if (data.PRIORITY != null && data.PRIORITY > 0)
+                    {
+                        // In đậm chữ nếu PRIORITY > 0
+                        e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
+                    }
+                    else
+                    {
+                        // Bình thường nếu không thỏa điều kiện
+                        e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Regular);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+
+        private void gridViewWaitingCls_CustomColumnDisplayText(object sender, CustomColumnDisplayTextEventArgs e)
+        {
+            try
+            {
+                if (e.Column.FieldName == "TDL_PATIENT_NAME")
+                {
+                    var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+
+                    LocalStorage.BackendData.ADO.ServiceReq1ADO data = (LocalStorage.BackendData.ADO.ServiceReq1ADO)view.GetRow(e.ListSourceRowIndex);
+
+                    if (data != null && data.PRIORITY != null && data.PRIORITY > 0)
+                    {
+                       
+                        e.DisplayText = string.Format("{0}(ƯT)",e.Value);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewDaLM_CustomColumnDisplayText(object sender, CustomColumnDisplayTextEventArgs e)
+        {
+            try
+            {
+                if (e.Column.FieldName == "TDL_PATIENT_NAME")
+                {
+                    var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+
+                    LocalStorage.BackendData.ADO.ServiceReq1ADO data = (LocalStorage.BackendData.ADO.ServiceReq1ADO)view.GetRow(e.ListSourceRowIndex);
+
+                    if (data != null && data.PRIORITY != null && data.PRIORITY > 0)
+                    {
+
+                        e.DisplayText = string.Format("{0}(ƯT)", e.Value);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void frmWaitingScreenSample22_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Escape)
+                {
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
