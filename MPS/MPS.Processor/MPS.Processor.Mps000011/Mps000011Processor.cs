@@ -241,7 +241,7 @@ namespace MPS.Processor.Mps000011
 
 
                 AddObjectKeyIntoListkey<PatientADO>(rdo.PatientADO, false);
-                AddObjectKeyIntoListkey<HIS_TREATMENT>(rdo.currentTreatment, false);
+                AddObjectKeyIntoListkey<V_HIS_TREATMENT>(rdo.currentTreatment, false);
                 AddObjectKeyIntoListkey<V_HIS_PATIENT_TYPE_ALTER>(rdo.PatyAlterBhyt, false);
                 AddObjectKeyIntoListkey<Mps000011ADO>(rdo.Mps000011ADO, false);
                 AddObjectKeyIntoListkey<HIS_TRAN_PATI_TECH>(rdo._TranPatiTech, false);
