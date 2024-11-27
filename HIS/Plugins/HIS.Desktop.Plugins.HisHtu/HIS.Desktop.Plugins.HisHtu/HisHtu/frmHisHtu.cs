@@ -546,7 +546,14 @@ namespace HIS.Desktop.Plugins.HisHtu.HisHtu
                     txtHtuCode.Text = data.HTU_CODE;
                     txtHtuName.Text = data.HTU_NAME;
                     spinEdit1.EditValue = data.NUM_ORDER;
-
+                    if (data.CHECK_ACIN_INTERACTIVE == 1)
+                    {
+                        chkAcinInterActive.Checked = true;
+                    }
+                    else
+                    {
+                        chkAcinInterActive.Checked = false;
+                    }
                 }
             }
             catch (Exception ex)
@@ -731,6 +738,7 @@ namespace HIS.Desktop.Plugins.HisHtu.HisHtu
                 txtHtuCode.Text = null;
                 txtHtuName.Text = null;
                 chkAcinInterActive.Checked = false;
+                chkAcinInterActive.Text = "Kiểm tra tương tác thuốc nếu cùng cách dùng"; 
                 txtHtuCode.Focus();
             }
             catch (Exception ex)
@@ -744,6 +752,7 @@ namespace HIS.Desktop.Plugins.HisHtu.HisHtu
             try
             {
                 SaveProcess();
+                
             }
             catch (Exception ex)
             {
@@ -779,13 +788,15 @@ namespace HIS.Desktop.Plugins.HisHtu.HisHtu
                     return;
                 isExist = BackendDataWorker.Get<HIS_HTU>().Exists(o => o.HTU_CODE.Equals(txtHtuCode.Text.Trim()));
                 ValidationtxtHtuControl();
-                if (isExist)
+                if (ActionType == GlobalVariables.ActionAdd)
                 {
-                    //kiểm tra mã tồn tại 
-                    if (!dxValidationProviderEditorInfo.Validate())
-                        return;
+                    if (isExist)
+                    {
+                        //kiểm tra mã tồn tại 
+                        if (!dxValidationProviderEditorInfo.Validate())
+                            return;
+                    }
                 }
-
 
                 WaitingManager.Show();
                 MOS.EFMODEL.DataModels.HIS_HTU updateDTO = new MOS.EFMODEL.DataModels.HIS_HTU();
