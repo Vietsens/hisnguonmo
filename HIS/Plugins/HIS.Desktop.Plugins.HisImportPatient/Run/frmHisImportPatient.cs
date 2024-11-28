@@ -858,7 +858,7 @@ namespace HIS.Desktop.Plugins.HisImportPatient.Run
 							foreach (var ser in item.SERVICE_CLS_CODE.Split(','))
 							{
 								count++;
-								var dtCheckCode = lstSerivce.FirstOrDefault(o => o.SERVICE_CODE == item.SERVICE_CODE);
+								var dtCheckCode = lstSerivce.FirstOrDefault(o => o.SERVICE_CODE == ser);
 								if (dtCheckCode != null && dtCheckCode.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
 								{
 									lstServiceClsId.Add(dtCheckCode.ID);
@@ -878,7 +878,7 @@ namespace HIS.Desktop.Plugins.HisImportPatient.Run
 						}
 						else
 						{
-							var dtCheckCode = lstSerivce.FirstOrDefault(o => o.SERVICE_CODE == item.SERVICE_CODE);
+							var dtCheckCode = lstSerivce.FirstOrDefault(o => o.SERVICE_CODE == item.SERVICE_CLS_CODE);
 							if (dtCheckCode != null && dtCheckCode.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
 							{
 								lstServiceClsId.Add(dtCheckCode.ID);

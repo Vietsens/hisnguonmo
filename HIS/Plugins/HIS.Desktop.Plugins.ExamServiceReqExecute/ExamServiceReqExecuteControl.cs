@@ -184,6 +184,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         long IsRequiredWeightOption;
 
         HIS_ICD icdDefaultFinish = new HIS_ICD();
+        HIS_TREATMENT_EXT currentTreatmentExt = new HIS_TREATMENT_EXT();
 
         List<HIS_EMR_COVER_CONFIG> LstEmrCoverConfig;
         List<HIS_EMR_COVER_CONFIG> LstEmrCoverConfigDepartment;
@@ -300,6 +301,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (isTimeServer) this.currentTime = param.Now;
 
                 LoadTreatmentByPatient();
+                LoadDataTreatmentExt();
                 LoadCurrentPatient();
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .3");
 
@@ -368,7 +370,24 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void LoadDataTreatmentExt()
+        {
+            try
+            {
+                if (treatment == null) return;
+                List<HIS_TREATMENT_EXT> listTreatmentExt = null;
+                MOS.Filter.HisTreatmentExtFilter filter = new MOS.Filter.HisTreatmentExtFilter();
+                filter.TREATMENT_ID = treatment.ID;
+                listTreatmentExt = new BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT_EXT>>("api/HisTreatmentExt/Get", ApiConsumers.MosConsumer, filter, null);
 
+                if (listTreatmentExt != null) currentTreatmentExt = listTreatmentExt.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void FillDatatoCDYHCT()
         {
             try
@@ -2338,7 +2357,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         treatmentFinishInitADO.ListEventsCausesDeath = dtEventsCausesDeath;
                     }
                     if (this.isTimeServer) treatmentFinishInitADO.Treatment.OUT_TIME = loadParam().Now;
-                    this.ucTreatmentFinish = (UserControl)treatmentFinishProcessor.Run(treatmentFinishInitADO);
+                    this.ucTreatmentFinish = (UserControl)treatmentFinishProcessor.Run(treatmentFinishInitADO,this.currentTreatmentExt);
                     LoadUCToPanelExecuteExt(this.ucTreatmentFinish, chkTreatmentFinish);
 
                     if (treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU
@@ -2837,7 +2856,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if ((HisConfigCFG.MustChooseSeviceExamOption == "1" || HisConfigCFG.MustChooseSeviceExamOption == "2") && !CheckMustChooseSeviceExamOption())
                     return;
                 HisServiceReqExamUpdateSDO hisServiceReqSDO = new HisServiceReqExamUpdateSDO();
-                ProcessExamServiceReqExecute(HisServiceReqView, hisServiceReqSDO);
+                if (!ProcessExamServiceReqExecute(HisServiceReqView, hisServiceReqSDO)) return;
                 if (IsReturn) return;
                 //Nếu key HIS.HIS_SERVICE_REQ.EXAM.AUTO_FINISH_AFTER_UNFINISH =1 và IS_AUTO_FINISHED = 1 thì tự động kết thúc khám (gửi lên IsFinish = true và FinishTime).
 

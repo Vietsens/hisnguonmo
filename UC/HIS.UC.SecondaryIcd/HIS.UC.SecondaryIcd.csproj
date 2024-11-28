@@ -97,6 +97,9 @@
     <Compile Include="SetAttachIcd\ISetAttachIcd.cs" />
     <Compile Include="SetAttachIcd\SetAttachIcdBehavior.cs" />
     <Compile Include="SetAttachIcd\SetAttachIcdFactory.cs" />
+    <Compile Include="SetError\ISetError.cs" />
+    <Compile Include="SetError\SetErrorBahavior.cs" />
+    <Compile Include="SetError\SetErrorFactory.cs" />
     <Compile Include="ShowPopupIcdChoose\ShowPopupIcdChooseBehavior.cs" />
     <Compile Include="ShowPopupIcdChoose\ShowPopupIcdChooseFactory.cs" />
     <Compile Include="ShowPopupIcdChoose\IShowPopupIcdChoose.cs" />
@@ -150,7 +153,6 @@
     <EmbeddedResource Include="frmSecondaryIcd.resx">
       <DependentUpon>frmSecondaryIcd.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.my.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx">
