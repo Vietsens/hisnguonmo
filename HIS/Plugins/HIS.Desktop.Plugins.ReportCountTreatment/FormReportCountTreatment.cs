@@ -17,6 +17,7 @@
  */
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Base;
+using HIS.Desktop.LocalStorage.BackendData;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
@@ -50,6 +51,7 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
         private List<ADO.DepartmentADO> ListDepartment;
         //private Get.GetTreatmentInfo TreatmentInfo;
         private bool IsKham, IsNoiTru, IsNgoaiTru, IsBanNgay;
+        public Dictionary<string, List<HIS_BED>> dicBedGroupString = new Dictionary<string, List<HIS_BED>>();
         public FormReportCountTreatment()
         {
             InitializeComponent();
@@ -209,7 +211,7 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
                     }
                     var dichVuSelected = radioGroupDichVu.EditValue != null ? Convert.ToInt32(radioGroupDichVu.EditValue) : -1;
 
-                    if (dichVuSelected == (int)Enum.DichVu.Kham 
+                    if (dichVuSelected == (int)Enum.DichVu.Kham
                         || dichVuSelected == (int)Enum.DichVu.CanLamSang)
                     {
                         ProcessDataServiceReqToGrid(TimeFrom, TimeTo);
@@ -431,18 +433,28 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
                     COUNT_CC.TYPE = GetLanguageControl("HIS_DESKTOP_PLUGINS_REPORT_COUNT_TREATMENT__GC_CC");
                     listData.Add(COUNT_CC);
 
+                    ADO.FilterADO COUNT_H = new ADO.FilterADO();
+                    COUNT_H.ID = 9;
+                    COUNT_H.TYPE = "Giường H";
+                    listData.Add(COUNT_H);
+
+                    ADO.FilterADO COUNT_T = new ADO.FilterADO();
+                    COUNT_T.ID = 10;
+                    COUNT_T.TYPE = "Giường T";
+                    listData.Add(COUNT_T);
+
                     ADO.FilterADO COUNT_FEMALE = new ADO.FilterADO();
-                    COUNT_FEMALE.ID = 9;
+                    COUNT_FEMALE.ID = 11;
                     COUNT_FEMALE.TYPE = GetLanguageControl("HIS_DESKTOP_PLUGINS_REPORT_COUNT_TREATMENT__GC_FEMALE");
                     listData.Add(COUNT_FEMALE);
 
                     ADO.FilterADO COUNT_END_DEPARTMENT = new ADO.FilterADO();
-                    COUNT_END_DEPARTMENT.ID = 10;
+                    COUNT_END_DEPARTMENT.ID = 12;
                     COUNT_END_DEPARTMENT.TYPE = GetLanguageControl("HIS_DESKTOP_PLUGINS_REPORT_COUNT_TREATMENT__GC_END_DEPA__TOOL_TIP");
                     listData.Add(COUNT_END_DEPARTMENT);
 
                     ADO.FilterADO COUNT_CURR = new ADO.FilterADO();
-                    COUNT_CURR.ID = 11;
+                    COUNT_CURR.ID = 13;
                     COUNT_CURR.TYPE = GetLanguageControl("HIS_DESKTOP_PLUGINS_REPORT_COUNT_TREATMENT__GC_HIEN_CO");
                     listData.Add(COUNT_CURR);
                 }
@@ -882,8 +894,8 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
                 var listTreatmentTotal = new Get.GetTreatment(timeFrom, timeTo, typeChk).GetTotalTreatment();
                 if (listTreatmentTotal != null && listTreatmentTotal.Count > 0)
                 {
-                    listTreatmentTotal = listTreatmentTotal.Where(o => (o.TDL_TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && o.CLINICAL_IN_TIME.HasValue) 
-                                                                    || (o.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && o.IN_TIME>0)).ToList();
+                    listTreatmentTotal = listTreatmentTotal.Where(o => (o.TDL_TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && o.CLINICAL_IN_TIME.HasValue)
+                                                                    || (o.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && o.IN_TIME > 0)).ToList();
                     if (listTreatmentTotal != null && listTreatmentTotal.Count > 0)
                     {
                         var TreatmentInfo = new Get.GetTreatmentInfo(listTreatmentTotal.Select(o => o.ID).ToList());
@@ -996,6 +1008,7 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
                     Dictionary<long, List<V_HIS_DEPARTMENT_TRAN>> dicDepartmentTranIn = new Dictionary<long, List<V_HIS_DEPARTMENT_TRAN>>();
                     Dictionary<long, List<V_HIS_DEPARTMENT_TRAN>> dicDepartmentTranOut = new Dictionary<long, List<V_HIS_DEPARTMENT_TRAN>>();
 
+                    var dicTreatmentBedRoomInfo = new Get.GetTreatmentInfo(listTreatmentAdo.Select(o => o.ID).ToList(), timeFrom, timeTo).GetTreatmentBedRoom();
                     foreach (var treatment in listTreatmentAdo)
                     {
                         long? treatmentInTime = 0;
@@ -1060,6 +1073,30 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
                             ado.COUNT_CC += 1;
                             if (ado.TreatmentCc == null) ado.TreatmentCc = new List<ADO.TreatmentADO>();
                             ado.TreatmentCc.Add(treatment);
+                        }
+
+                        if (dicTreatmentBedRoomInfo != null && dicTreatmentBedRoomInfo.Count > 0 && dicTreatmentBedRoomInfo.ContainsKey(treatment.ID))
+                        {
+                            var BedRoom = dicTreatmentBedRoomInfo[treatment.ID];
+                            if (BedRoom.BED_ID != null)
+                            {
+                                var Beds = BackendDataWorker.Get<HIS_BED>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.ID == BedRoom.BED_ID).FirstOrDefault();
+                                if (Beds != null)
+                                {
+                                    if (GetFisrtChar(Beds.BED_CODE) == "H")
+                                    {
+                                        ado.COUNT_BED_H += 1; 
+                                        if (ado.BedH == null) ado.BedH = new List<ADO.TreatmentADO>();
+                                        ado.BedH.Add(treatment);
+                                    }
+                                    else if (GetFisrtChar(Beds.BED_CODE) == "T")
+                                    {
+                                        ado.COUNT_BED_T += 1;
+                                        if (ado.BedT == null) ado.BedT = new List<ADO.TreatmentADO>();
+                                        ado.BedT.Add(treatment);
+                                    }
+                                }
+                            }
                         }
 
                         if (treatment.IN_TIME >= timeFrom && treatment.IN_TIME <= timeTo && CheckYear(treatment.TDL_PATIENT_DOB, treatment.IN_TIME, 6, false))
@@ -1174,42 +1211,6 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
 
                         dicAdo[treatment.DEPARTMENT_ID] = ado;
                     }
-
-                    #region cũ
-                    //var groupDepartment = listTreatmentAdo.GroupBy(o => o.DEPARTMENT_ID).ToList();
-                    //foreach (var groups in groupDepartment)
-                    //{
-                    //    var ado = ProcessDepartmentAdo(groups.ToList(), timeFrom, timeTo);
-
-                    //    Inventec.Common.Logging.LogSystem.Info("DEPARTMENT: " + groups.First().DEPARTMENT_NAME);
-                    //    Inventec.Common.Logging.LogSystem.Info("groups ids: " + string.Join(",", groups.Select(s => s.ID).ToList()));
-                    //    long ins = 0;
-                    //    foreach (var item in groups)
-                    //    {
-                    //        if (item.CLINICAL_IN_TIME.HasValue)
-                    //        {
-                    //            var listTran = listDepartmentTran.Where(o => o.DEPARTMENT_IN_TIME >= timeFrom && o.DEPARTMENT_IN_TIME <= timeTo && o.TREATMENT_ID == item.ID).ToList();
-                    //            if (listTran != null && listTran.Count > 0)
-                    //            {
-                    //                var tranin = listTran.Where(o => o.DEPARTMENT_ID == groups.First().DEPARTMENT_ID).ToList();
-                    //                if (tranin != null && tranin.Count > 0)
-                    //                {
-                    //                    ins += 1;
-                    //                }
-                    //            }
-                    //        }
-                    //    }
-
-                    //    var tranPrevious = listDepartmentTran.Where(o => o.DEPARTMENT_ID != groups.First().DEPARTMENT_ID && o.DEPARTMENT_IN_TIME >= timeFrom && o.DEPARTMENT_IN_TIME <= timeTo && o.PREVIOUS_ID.HasValue).ToList();
-                    //    if (tranPrevious != null && tranPrevious.Count > 0)
-                    //    {
-                    //        ado.COUNT_OUT = listDepartmentTran.Count(o => o.DEPARTMENT_ID == groups.First().DEPARTMENT_ID && tranPrevious.Select(w => w.PREVIOUS_ID.Value).Contains(o.ID));
-                    //    }
-                    //    ado.COUNT_IN = ins;
-
-                    //    listAdo.Add(ado);
-                    //}
-                    #endregion
 
                     if (dicAdo != null && dicAdo.Count > 0)
                     {
@@ -1378,15 +1379,23 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
                             {
                                 listDataGridDetail.AddRange(item.TreatmentCc);
                             }
-                            else if (type == 9 && item.TreatmentFemale != null)//COUNT_FEMALE
+                            else if (type == 9 && item.BedH != null)//COUNT_FEMALE
+                            {
+                                listDataGridDetail.AddRange(item.BedH);
+                            }
+                            else if (type == 10 && item.BedT != null)//COUNT_END_DEPARTMENT
+                            {
+                                listDataGridDetail.AddRange(item.BedT);
+                            }
+                            else if (type == 11 && item.TreatmentFemale != null)//COUNT_FEMALE
                             {
                                 listDataGridDetail.AddRange(item.TreatmentFemale);
                             }
-                            else if (type == 10 && item.TreatmentEndDepartment != null)//COUNT_END_DEPARTMENT
+                            else if (type == 12 && item.TreatmentEndDepartment != null)//COUNT_END_DEPARTMENT
                             {
                                 listDataGridDetail.AddRange(item.TreatmentEndDepartment);
                             }
-                            else if (type == 11 && item.TreatmentCurr != null)//COUNT_CURR
+                            else if (type == 13 && item.TreatmentCurr != null)//COUNT_CURR
                             {
                                 listDataGridDetail.AddRange(item.TreatmentCurr);
                             }
@@ -1424,6 +1433,14 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
                             if (item.TreatmentCc != null)
                             {
                                 listDataGridDetail.AddRange(item.TreatmentCc);
+                            }
+                            if (item.BedH != null)
+                            {
+                                listDataGridDetail.AddRange(item.BedH);
+                            }
+                            if (item.BedT != null)
+                            {
+                                listDataGridDetail.AddRange(item.BedT);
                             }
                             if (item.TreatmentFemale != null)
                             {
@@ -1504,6 +1521,10 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
             }
             return result;
         }
+        public string GetFisrtChar(string data)
+        {
+            return data.ToUpper().First().ToString();
+        }
 
         private void SetDefaultValueControl()
         {
@@ -1518,6 +1539,8 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
                 TxtOut.Text = "0";
                 chkNoiTru.Checked = true;
                 BtnView.Enabled = false;
+                var Beds = BackendDataWorker.Get<HIS_BED>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                dicBedGroupString = Beds.Where(o => o.BED_NAME.ToUpper().StartsWith("H") || o.BED_NAME.ToUpper().StartsWith("T")).ToList().GroupBy(o => GetFisrtChar(o.BED_NAME)).ToDictionary(o => o.Key, o => o.ToList());
                 InitControlState();
             }
             catch (Exception ex)
@@ -1676,7 +1699,7 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
                     var listDataGridDetail = new List<ADO.TreatmentADO>();
                     var dichVuSelected = radioGroupDichVu.EditValue != null ? Convert.ToInt32(radioGroupDichVu.EditValue) : -1;
 
-                    if (dichVuSelected == (int)Enum.DichVu.Kham 
+                    if (dichVuSelected == (int)Enum.DichVu.Kham
                         || dichVuSelected == (int)Enum.DichVu.CanLamSang)
                     {
                         ProcessListTreatmentServiceReqAdo(ListDepartment, ref listDataGridDetail);
@@ -1855,14 +1878,14 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
         {
             try
             {
-            //    if (radioGroupDienDieuTri.EditValue != null)
-            //    {
-            //        if (radioGroupDichVu.EditValue != null)
-            //            radioGroupDichVu.SelectedIndex = -1;
+                //    if (radioGroupDienDieuTri.EditValue != null)
+                //    {
+                //        if (radioGroupDichVu.EditValue != null)
+                //            radioGroupDichVu.SelectedIndex = -1;
 
-            //        BtnView.Enabled = false;
-            //    }
-                
+                //        BtnView.Enabled = false;
+                //    }
+
             }
             catch (Exception ex)
             {
@@ -1879,7 +1902,7 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
                     chkKham.Checked = chkNoiTru.Checked = chkNgoaiTru.Checked = chkBanNgay.Checked = false;
                     BtnView.Enabled = false;
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -1888,19 +1911,19 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
         }
 
         private void CheckStatus(CheckEdit chk)
-		{
+        {
             try
             {
-                if(chk.Checked)
-				{
+                if (chk.Checked)
+                {
                     BtnView.Enabled = false;
                     radioGroupDichVu.SelectedIndex = -1;
                 }
-                if(!IsNoiTru && !IsKham && !IsNgoaiTru && !IsBanNgay && radioGroupDichVu.SelectedIndex == -1)
-				{
+                if (!IsNoiTru && !IsKham && !IsNgoaiTru && !IsBanNgay && radioGroupDichVu.SelectedIndex == -1)
+                {
                     chk.Checked = true;
-				}                    
-                
+                }
+
             }
             catch (Exception ex)
             {
@@ -1908,21 +1931,21 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
             }
         }
 
-		private void chkKham_CheckedChanged(object sender, EventArgs e)
-		{
-			try
-			{
+        private void chkKham_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
                 IsKham = chkKham.Checked;
                 CheckStatus(chkKham);
             }
-			catch (Exception ex)
-			{
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-		}
+        }
 
-		private void chkNoiTru_CheckedChanged(object sender, EventArgs e)
-		{
+        private void chkNoiTru_CheckedChanged(object sender, EventArgs e)
+        {
             try
             {
                 IsNoiTru = chkNoiTru.Checked;
@@ -1934,8 +1957,8 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
             }
         }
 
-		private void chkNgoaitru_CheckedChanged(object sender, EventArgs e)
-		{
+        private void chkNgoaitru_CheckedChanged(object sender, EventArgs e)
+        {
             try
             {
                 IsNgoaiTru = chkNgoaiTru.Checked;
@@ -1947,8 +1970,8 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
             }
         }
 
-		private void chkBanNgay_CheckedChanged(object sender, EventArgs e)
-		{
+        private void chkBanNgay_CheckedChanged(object sender, EventArgs e)
+        {
             try
             {
                 IsBanNgay = chkBanNgay.Checked;
@@ -1959,6 +1982,6 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-	}
+    }
 }
 
