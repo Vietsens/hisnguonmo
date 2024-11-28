@@ -493,15 +493,15 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                 startPage = ((CommonParam)param).Start ?? 0;
                 int limit = ((CommonParam)param).Limit ?? 0;
                 CommonParam paramCommon = new CommonParam(startPage, limit);
-                ApiResultObject<List<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST>> apiResult = null;
-                MOS.Filter.HisExpMestViewFilter filter = new MOS.Filter.HisExpMestViewFilter();
+                ApiResultObject<List<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_3>> apiResult = null;
+                MOS.Filter.HisExpMestView3Filter filter = new MOS.Filter.HisExpMestView3Filter();
                 SetFilter(ref filter);
                 gridView.BeginUpdate();
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("filter(HisExpMestViewFilter)", filter));
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("filter(HisExpMestView3Filter)", filter));
                 apiResult = new Inventec.Common.Adapter.BackendAdapter
-                    (paramCommon).GetRO<List<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST>>
-                    (ApiConsumer.HisRequestUriStore.HIS_EXP_MEST_GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, filter, paramCommon);
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("apiResult(List<V_HIS_EXP_MEST>)", apiResult));
+                    (paramCommon).GetRO<List<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_3>>
+                    ("api/HisExpMest/GetView3", ApiConsumer.ApiConsumers.MosConsumer, filter, paramCommon);
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("apiResult(List<V_HIS_EXP_MEST_3>)", apiResult));
                 if (apiResult != null)
                 {
                     var data = apiResult.Data;
@@ -531,7 +531,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             }
         }
 
-        private void SetFilter(ref MOS.Filter.HisExpMestViewFilter filter)
+        private void SetFilter(ref MOS.Filter.HisExpMestView3Filter filter)
         {
             try
             {
@@ -629,7 +629,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             }
         }
 
-        private void SetFilterStatus(ref MOS.Filter.HisExpMestViewFilter filter)
+        private void SetFilterStatus(ref MOS.Filter.HisExpMestView3Filter filter)
         {
             try
             {
@@ -656,7 +656,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private void SetFilterPres(ref MOS.Filter.HisExpMestViewFilter filter)
+        private void SetFilterPres(ref MOS.Filter.HisExpMestView3Filter filter)
         {
             try
             {
@@ -911,7 +911,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             {
                 if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
                 {
-                    MOS.EFMODEL.DataModels.V_HIS_EXP_MEST data = (MOS.EFMODEL.DataModels.V_HIS_EXP_MEST)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_3 data = (MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_3)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     if (data != null)
                     {
                         if (e.Column.FieldName == "STT")
@@ -944,6 +944,10 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                         else if (e.Column.FieldName == "CREATE_TIME_DISPLAY")
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.CREATE_TIME ?? 0);
+                        }
+                        else if (e.Column.FieldName == "TDL_INTRUCTION_DATE_MIN_DISPLAY")
+                        {
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)(data.TDL_INTRUCTION_DATE_MIN ?? 0));
                         }
                         else if (e.Column.FieldName == "EXP_TIME_DISPLAY")
                         {
@@ -1403,14 +1407,14 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
         {
             try
             {
-                List<V_HIS_EXP_MEST> _ExpMestTraDoiChecks = new List<V_HIS_EXP_MEST>();
+                List<V_HIS_EXP_MEST_3> _ExpMestTraDoiChecks = new List<V_HIS_EXP_MEST_3>();
                 if (gridView.RowCount > 0)
                 {
                     for (int i = 0; i < gridView.SelectedRowsCount; i++)
                     {
                         if (gridView.GetSelectedRows()[i] >= 0)
                         {
-                            _ExpMestTraDoiChecks.Add((V_HIS_EXP_MEST)gridView.GetRow(gridView.GetSelectedRows()[i]));
+                            _ExpMestTraDoiChecks.Add((V_HIS_EXP_MEST_3)gridView.GetRow(gridView.GetSelectedRows()[i]));
                         }
                     }
                 }
@@ -1469,7 +1473,9 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                 {
                     if (hi.InRowCell)
                     {
-                        var ExpMestData = (V_HIS_EXP_MEST)gridView.GetRow(hi.RowHandle);
+                        var ExpMestData3 = (V_HIS_EXP_MEST_3)gridView.GetRow(hi.RowHandle);
+                        MOS.EFMODEL.DataModels.V_HIS_EXP_MEST ExpMestData = new MOS.EFMODEL.DataModels.V_HIS_EXP_MEST();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST>(ExpMestData, ExpMestData3);
                         string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                         if (ExpMestData != null)
                         {
@@ -1731,7 +1737,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                 GridHitInfo hi = e.HitInfo;
                 if (hi.InRowCell)
                 {
-                    var expMest = (V_HIS_EXP_MEST)gridView.GetFocusedRow();
+                    var expMest = (V_HIS_EXP_MEST_3)gridView.GetFocusedRow();
                     if (this.baManager == null)
                     {
                         this.baManager = new BarManager();
@@ -1739,14 +1745,14 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                     }
                     if (expMest != null)
                     {
-                        List<V_HIS_EXP_MEST> _ExpMestTraDoiChecks = new List<V_HIS_EXP_MEST>();
+                        List<V_HIS_EXP_MEST_3> _ExpMestTraDoiChecks = new List<V_HIS_EXP_MEST_3>();
                         if (gridView.RowCount > 0)
                         {
                             for (int i = 0; i < gridView.SelectedRowsCount; i++)
                             {
                                 if (gridView.GetSelectedRows()[i] >= 0)
                                 {
-                                    _ExpMestTraDoiChecks.Add((V_HIS_EXP_MEST)gridView.GetRow(gridView.GetSelectedRows()[i]));
+                                    _ExpMestTraDoiChecks.Add((V_HIS_EXP_MEST_3)gridView.GetRow(gridView.GetSelectedRows()[i]));
                                 }
                             }
                         }
@@ -1812,14 +1818,14 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                 {
                     //Review
                     List<object> listArgs = new List<object>();
-                    List<V_HIS_EXP_MEST> _ExpMestTraDoiChecks = new List<V_HIS_EXP_MEST>();
+                    List<V_HIS_EXP_MEST_3> _ExpMestTraDoiChecks = new List<V_HIS_EXP_MEST_3>();
                     if (gridView.RowCount > 0)
                     {
                         for (int i = 0; i < gridView.SelectedRowsCount; i++)
                         {
                             if (gridView.GetSelectedRows()[i] >= 0)
                             {
-                                _ExpMestTraDoiChecks.Add((V_HIS_EXP_MEST)gridView.GetRow(gridView.GetSelectedRows()[i]));
+                                _ExpMestTraDoiChecks.Add((V_HIS_EXP_MEST_3)gridView.GetRow(gridView.GetSelectedRows()[i]));
                             }
                         }
                     }
@@ -1830,7 +1836,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                     }
                     else
                     {
-                        var expMest = (V_HIS_EXP_MEST)gridView.GetFocusedRow();
+                        var expMest = (V_HIS_EXP_MEST_3)gridView.GetFocusedRow();
                         listArgs.Add(expMest);
                     }
 
@@ -1917,7 +1923,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             {
                 List<V_HIS_EXP_MEST_MEDICINE> expMestMedicineTemps = new List<V_HIS_EXP_MEST_MEDICINE>();
                 List<V_HIS_EXP_MEST_MATERIAL> expMestMaterialTemps = new List<V_HIS_EXP_MEST_MATERIAL>();
-                var AggExpMest = (V_HIS_EXP_MEST)gridView.GetFocusedRow();
+                var AggExpMest = (V_HIS_EXP_MEST_3)gridView.GetFocusedRow();
 
                 List<V_HIS_EXP_MEST> expMestCheckeds = new List<V_HIS_EXP_MEST>();
                 CommonParam param = new CommonParam();
@@ -1979,7 +1985,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             {
                 if (e.Column.FieldName == "DISCARD_DISPLAY")
                 {
-                    var ExpMestData = (V_HIS_EXP_MEST)gridView.GetRow(e.RowHandle);
+                    var ExpMestData = (V_HIS_EXP_MEST_3)gridView.GetRow(e.RowHandle);
                     #region ----- DISCARD_DISPLAY -----
                     if (((_Room != null && _Room.DEPARTMENT_ID == ExpMestData.REQ_DEPARTMENT_ID)
                     && (ExpMestData.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DRAFT
@@ -2037,7 +2043,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                     if (e.RowHandle < 0)
                         return;
                     int rowHandleSelected = gridView.GetVisibleRowHandle(e.RowHandle);
-                    var data = (V_HIS_EXP_MEST)gridView.GetRow(rowHandleSelected);
+                    var data = (V_HIS_EXP_MEST_3)gridView.GetRow(rowHandleSelected);
                     if (data != null && data.HAS_NOT_PRES == 1)
                     {
                         e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Italic);
