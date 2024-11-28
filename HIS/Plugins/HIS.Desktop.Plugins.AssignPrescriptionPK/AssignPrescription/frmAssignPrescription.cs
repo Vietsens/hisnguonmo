@@ -110,6 +110,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         internal int idRow = 1;
         internal long InstructionTime { get; set; }
         public List<MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE_ACIN> ListMedicineTypeAcin { get; set; }
+        public List<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_MEDICINE> ListMedicineTypeOld { get; set; }
 
         internal bool limitHeinMedicinePrice = false;
         internal V_HIS_SERE_SERV currentSereServ { get; set; }
@@ -1215,7 +1216,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             try
             {
                 ListMedicineTypeAcin = null;
-                if (HisConfigCFG.AcinInteractiveOption != "1" && HisConfigCFG.AcinInteractiveOption != "2")
+                ListMedicineTypeOld = null;
+                if (HisConfigCFG.AcinInteractiveOption != "1" && HisConfigCFG.AcinInteractiveOption != "2" && HisConfigCFG.AcinInteractiveOption != "3")
                     return;
                 CommonParam param = new CommonParam();
                 HisExpMestMedicineViewFilter searchMedicineFilter = new HisExpMestMedicineViewFilter();
@@ -1232,11 +1234,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         this.currentTreatmentWithPatientType = this.LoadDataToCurrentTreatmentData(treatmentId, this.InstructionTime);
                     searchMedicineFilter.TDL_PATIENT_ID = currentTreatmentWithPatientType.PATIENT_ID;
                 }
-                var dt = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MEDICINE>>(HisRequestUriStore.HIS_EXP_MEST_MEDICINE_GETVIEW, ApiConsumers.MosConsumer, searchMedicineFilter, ProcessLostToken, param);
+                ListMedicineTypeOld = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MEDICINE>>(HisRequestUriStore.HIS_EXP_MEST_MEDICINE_GETVIEW, ApiConsumers.MosConsumer, searchMedicineFilter, ProcessLostToken, param);
 
-                Inventec.Common.Logging.LogSystem.Debug("GetListEMMedicineAcinInteractive___" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dt), dt));
-                if (dt != null && dt.Count > 0)
-                    ListMedicineTypeAcin = GetMedicineTypeAcinByMedicineType(dt.Where(o => o.AMOUNT > (o.TH_AMOUNT ?? 0)).Select(o => o.MEDICINE_TYPE_ID).ToList());
+                Inventec.Common.Logging.LogSystem.Debug("GetListEMMedicineAcinInteractive___" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListMedicineTypeOld), ListMedicineTypeOld));
+                if (ListMedicineTypeOld != null && ListMedicineTypeOld.Count > 0)
+                    ListMedicineTypeAcin = GetMedicineTypeAcinByMedicineType(ListMedicineTypeOld.Where(o => o.AMOUNT > (o.TH_AMOUNT ?? 0)).Select(o => o.MEDICINE_TYPE_ID).ToList());
             }
             catch (Exception ex)
             {
@@ -1763,8 +1765,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             else
                 this.medicineTypeTutSelected.MEDICINE_USE_FORM_ID = null;
 
-            if (cboHtu.EditValue != null)
-                this.medicineTypeTutSelected.HTU_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboHtu.EditValue ?? 0).ToString());
+            if (DataHtuList != null && DataHtuList.Count > 0 && DataHtuList.Exists(o => o.IsChecked))
+                this.medicineTypeTutSelected.HTU_ID = DataHtuList.FirstOrDefault(o => o.IsChecked).ID;
             else
                 this.medicineTypeTutSelected.HTU_ID = null;
 
@@ -4428,7 +4430,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    this.FocusShowpopup(this.cboHtu, true);
+                    //this.FocusShowpopup(this.cboHtu, true);
                 }
             }
             catch (Exception ex)
@@ -4679,9 +4681,17 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         {
             try
             {
-                if (e.CloseMode == PopupCloseMode.Normal)
+                //if (e.CloseMode == PopupCloseMode.Normal)
                 {
-                    if (this.cboHtu.EditValue != null)
+                    var dataSource = gridViewHtu.DataSource as List<HtuADO>;
+                    DataHtuList.ForEach(o => o.IsChecked = dataSource.Exists(p => p.IsChecked && p.ID == o.ID));
+                    if (DataHtuList != null && DataHtuList.Count > 0 && DataHtuList.Exists(o => o.IsChecked))
+                    {
+                        cboHtu.Text = string.Join(", ", DataHtuList.Where(o => o.IsChecked).Select(o => o.HTU_NAME));
+                    }
+                    else
+                        cboHtu.Text = null;
+                    if (string.IsNullOrEmpty(cboHtu.Text))
                         this.cboHtu.Properties.Buttons[1].Visible = true;
                     this.SetHuongDanFromSoLuongNgay();
 
@@ -4694,6 +4704,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         this.spinAmount.Focus();
                         this.spinAmount.SelectAll();
                     }
+                    popupContainerHtu.HidePopup();
                 }
             }
             catch (Exception ex)
@@ -4708,7 +4719,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    if (this.cboHtu.EditValue != null)
+                    if (!string.IsNullOrEmpty(cboHtu.Text))
                         this.cboHtu.Properties.Buttons[1].Visible = true;
                     this.SetHuongDanFromSoLuongNgay();
 
@@ -4735,7 +4746,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             {
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
-                    this.cboHtu.EditValue = null;
+                    DataHtuList.ForEach(o => o.IsChecked = false);
+                    this.cboHtu.Text = null;
                     this.cboHtu.Properties.Buttons[1].Visible = false;
                     this.SetHuongDanFromSoLuongNgay();
                 }
@@ -4765,6 +4777,33 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     BackendDataWorker.Reset<MOS.EFMODEL.DataModels.HIS_HTU>();
                     this.InitComboHtu(null);
                 }
+                else if (e.Button.Kind == ButtonPredefines.Combo)
+                {
+                    if (!string.IsNullOrEmpty(cboHtu.Text))
+                    {
+                        if (DataHtuListShow != null && DataHtuListShow.Count > 0)
+                        {
+                            foreach (var item in DataHtuListShow)
+                            {
+                                if (DataHtuList.Exists(o => o.ID == item.ID && o.IsChecked))
+                                    item.IsChecked = true;
+                                else
+                                    item.IsChecked = false;
+                            }
+                        }
+                        DataHtuListShow = DataHtuListShow.OrderByDescending(o => o.IsChecked ? 1 : 0).ToList();
+                    }
+                    else
+                    {
+                        DataHtuListShow.ForEach(o => o.IsChecked = false);
+                    }
+                        
+                    gridControlHtu.DataSource = null;
+                    gridControlHtu.DataSource = DataHtuListShow;
+                    //popupContainerHtu.Visible = true;
+                    Rectangle buttonBounds = new Rectangle(cboHtu.Bounds.X, cboHtu.Bounds.Y, cboHtu.Bounds.Width, cboHtu.Bounds.Height);
+                    popupContainerHtu.ShowPopup(new Point(buttonBounds.X, buttonBounds.Bottom + 245));
+                }
             }
             catch (NullReferenceException ex)
             {
@@ -4784,9 +4823,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         {
             try
             {
-                if (String.IsNullOrEmpty(this.cboHtu.Text) && this.cboHtu.EditValue != null)
+                if (String.IsNullOrEmpty(this.cboHtu.Text))
                 {
-                    this.cboHtu.EditValue = null;
                     this.cboHtu.Properties.Buttons[1].Visible = false;
                 }
             }
@@ -5381,9 +5419,18 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         || this.currentMedicineTypeADOForEdit.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_DM) ? true : false;
 
                     this.cboMedicineUseForm.EditValue = this.currentMedicineTypeADOForEdit.MEDICINE_USE_FORM_ID;
-                    this.cboHtu.EditValue = this.currentMedicineTypeADOForEdit.HTU_ID;
-                    if ((this.currentMedicineTypeADOForEdit.HTU_ID ?? 0) > 0)
-                        this.cboHtu.Properties.Buttons[1].Visible = true;
+                    if (currentMedicineTypeADOForEdit.HTU_IDs != null && currentMedicineTypeADOForEdit.HTU_IDs.Count > 0)
+                    {
+                        if (DataHtuList != null && DataHtuList.Count > 0)
+                        {
+                            DataHtuList.ForEach(o =>
+                            {
+                                o.IsChecked = currentMedicineTypeADOForEdit.HTU_IDs.Exists(p => p == o.ID);
+                            });
+                            this.cboHtu.Text = string.Join(", ", DataHtuList.Where(o => o.IsChecked).Select(o => o.HTU_NAME));
+                            this.cboHtu.Properties.Buttons[1].Visible = true;
+                        }
+                    }
                     else
                         this.cboHtu.Properties.Buttons[1].Visible = false;
                     this.InstructionTime = intructionTimeSelecteds.OrderByDescending(o => o).First();
@@ -10260,7 +10307,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    this.FocusShowpopup(this.cboHtu, true);
+                    //this.FocusShowpopup(this.cboHtu, true);
                 }
             }
             catch (Exception ex)
@@ -12188,6 +12235,11 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void btnChooseHtu_Click(object sender, EventArgs e)
+        {
+            cboHtu_Closed(null, null);
         }
 
         internal bool CheckValidMaterial(bool IsCheckList = false)

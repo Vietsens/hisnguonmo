@@ -561,14 +561,22 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             this.currentMedicineTypeADOForEdit.IS_SUB_PRES = null;
                         }
                     }
-                    if (currentMedicineTypeADOForEdit.HTU_ID != null)
+                    if (currentMedicineTypeADOForEdit.HTU_IDs != null && currentMedicineTypeADOForEdit.HTU_IDs.Count > 0)
                     {
-                        this.cboHtu.EditValue = currentMedicineTypeADOForEdit.HTU_ID;
+                        if (DataHtuList != null && DataHtuList.Count > 0)
+                        {
+                            DataHtuList.ForEach(o =>
+                            {
+                                o.IsChecked = currentMedicineTypeADOForEdit.HTU_IDs.Exists(p => p == o.ID);
+                            });
+                            this.cboHtu.Text = string.Join(", ", DataHtuList.Where(o => o.IsChecked).Select(o => o.HTU_NAME));
+                        }
                         this.cboHtu.Properties.Buttons[1].Visible = true;
                     }
                     else
                     {
-                        this.cboHtu.EditValue = null;
+                        DataHtuList.ForEach(o => o.IsChecked = false);
+                        this.cboHtu.Text = null;
                         this.cboHtu.Properties.Buttons[1].Visible = false;
                     }
                     if (CheckExistMedicinePaymentLimit(this.currentMedicineTypeADOForEdit.MEDICINE_TYPE_CODE))
