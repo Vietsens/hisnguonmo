@@ -814,6 +814,8 @@ namespace HIS.Desktop.Plugins.HisHtu.HisHtu
                         success = true;
                         FillDataToGridControl();
                         ResetFormData();
+                        chkAcinInterActive.Text = "Kiểm tra tương tác thuốc nếu cùng cách dùng";
+                        chkAcinInterActive.Checked = false;
                     }
                 }
                 else
