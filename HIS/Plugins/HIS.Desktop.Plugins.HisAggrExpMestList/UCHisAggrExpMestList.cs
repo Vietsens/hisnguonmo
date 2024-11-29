@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
+using System.Data; 
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -947,7 +947,16 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                         }
                         else if (e.Column.FieldName == "TDL_INTRUCTION_DATE_MIN_DISPLAY")
                         {
-                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)(data.TDL_INTRUCTION_DATE_MIN ?? 0));
+                            // e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)(data.TDL_INTRUCTION_DATE_MIN ?? 0));
+                            string dateTime = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)(data.TDL_INTRUCTION_DATE_MIN ?? 0));
+                            if (dateTime.Length >= 10)
+                            {
+                                e.Value = dateTime.Substring(0, 10);
+                            }
+                            else
+                            {
+                                e.Value = dateTime;
+                            }
                         }
                         else if (e.Column.FieldName == "EXP_TIME_DISPLAY")
                         {
