@@ -148,6 +148,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 this.dxValidationProviderControl.SetValidationRule(txtAdvise, null);
                 this.ValidMaxLengthControl(this.txtAdvise, false, 1024);
+                if (HisConfigCFG.IsRequiredHtu == "1")
+                {
+                    this.ValidationSingleControl(this.cboHtu, this.dxValidProviderBoXung);
+                    lciHtu.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+                }
             }
             catch (Exception ex)
             {

@@ -445,12 +445,15 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                     lciIsPregnancyTermination.MinSize = new Size(lciIsPregnancyTermination.MinSize.Width, 50);
                     layoutControlItem14.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     layoutControlItem15.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                    ValidationRequired(memTreatmentMethod);
                 }
                 else if (type == FormEnum.TYPE.NGHI_DUONG_THAI)
                 {
                     lciLaySoTheBHYT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     lciBhxhCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     typeExt = BackendDataWorker.Get<HIS_TREATMENT_END_TYPE_EXT>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_DUONG_THAI);
+                    dxValidationProvider1.SetValidationRule(txtBhxhCode, null);
                 }
                 else if (type == FormEnum.TYPE.NGHI_VIEC_HUONG_BHXH)
                 {
