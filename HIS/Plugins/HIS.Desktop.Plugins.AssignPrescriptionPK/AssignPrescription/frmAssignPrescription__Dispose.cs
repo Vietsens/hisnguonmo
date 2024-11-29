@@ -184,7 +184,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.spinSoLuongNgay.EditValueChanged -= new System.EventHandler(this.spinSoLuongNgay_EditValueChanged);
                 this.spinSoLuongNgay.PreviewKeyDown -= new System.Windows.Forms.PreviewKeyDownEventHandler(this.spinSoLuongNgay_PreviewKeyDown);
 
-                this.cboHtu.Closed -= new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboHtu_Closed);
                 this.cboHtu.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboHtu_ButtonClick);
                 this.cboHtu.Leave -= new System.EventHandler(this.cboHtu_Leave);
                 this.cboHtu.PreviewKeyDown -= new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboHtu_PreviewKeyDown);

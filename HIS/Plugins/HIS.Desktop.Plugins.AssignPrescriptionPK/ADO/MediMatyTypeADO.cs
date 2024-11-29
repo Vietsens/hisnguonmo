@@ -38,7 +38,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
 
         }
 
-        public MediMatyTypeADO(MOS.EFMODEL.DataModels.V_HIS_EMTE_MEDICINE_TYPE inputData, long? intructionTime, bool isChayThan,long useTime = 0)
+        public MediMatyTypeADO(MOS.EFMODEL.DataModels.V_HIS_EMTE_MEDICINE_TYPE inputData, long? intructionTime, bool isChayThan, long useTime = 0)
         {
             try
             {
@@ -117,7 +117,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                     {
                         this.Toi = ConvertNumber.ProcessNumberInterger(inputData.EVENING);
                     }
-                    this.HTU_ID = inputData.HTU_ID;
+                    if (inputData.HTU_ID != null)
+                        this.HTU_IDs = new List<long>() { inputData.HTU_ID ?? 0 };
 
                     this.IsExpend = ((inputData.IS_EXPEND ?? 0) == GlobalVariables.CommonNumberTrue ? true : false);
                     this.IsAllowOdd = (mety.IS_ALLOW_ODD == 1) ? true : false;
@@ -128,10 +129,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                     {
                         this.UseDays = inputData.DAY_COUNT;
                         DateTime dtTime = new DateTime();
-                        if(useTime > 0)
+                        if (useTime > 0)
                             dtTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(useTime).Value;
                         else if (intructionTime.HasValue)
-                            dtTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(intructionTime.Value).Value;                       
+                            dtTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(intructionTime.Value).Value;
                         DateTime dtUseTimeTo = dtTime.AddDays((double)this.UseDays - 1);
                         this.UseTimeTo = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtUseTimeTo);
                     }
@@ -140,7 +141,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                         this.UseDays = 1;
                     }
 
-                    this.HTU_ID = inputData.HTU_ID;
+                    if (inputData.HTU_ID != null)
+                        this.HTU_IDs = new List<long>() { inputData.HTU_ID ?? 0 };
 
                     this.PrimaryKey = ((inputData.SERVICE_ID ?? 0) + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString());
                     AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setNumRow();
@@ -258,7 +260,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 if (maty != null)
                 {
                     Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this, maty);
-                    this.DataType = (maty.IS_REUSABLE == 1 || maty.IS_IDENTITY_MANAGEMENT == 1)  ? HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD : HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU;
+                    this.DataType = (maty.IS_REUSABLE == 1 || maty.IS_IDENTITY_MANAGEMENT == 1) ? HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD : HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU;
                     this.ID = inputData.MATERIAL_TYPE_ID;
                     this.MEDICINE_TYPE_CODE = inputData.MATERIAL_TYPE_CODE;
                     this.MEDICINE_TYPE_NAME = inputData.MATERIAL_TYPE_NAME;
@@ -434,8 +436,17 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 {
                     this.BREATH_TIME = ConvertNumber.ProcessNumberInterger(inputData.BREATH_TIME);
                 }
-                this.HTU_ID = inputData.HTU_ID;
-
+                var htuIds = !string.IsNullOrEmpty(inputData.HTU_IDS) ? inputData.HTU_IDS.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).ToList() : null;
+                if (htuIds != null && htuIds.Count > 0)
+                {
+                    foreach (var htu in htuIds)
+                    {
+                        if (HTU_IDs == null)
+                            HTU_IDs = new List<long>();
+                        this.HTU_IDs.Add(Int64.Parse(htu));
+                    }
+                }
+                this.HTU_ID_NOT_CHECK_ACIN_INTERACTIVE = inputData.HTU_ID;
                 if (isEdit)
                 {
                     this.PRE_AMOUNT = this.AMOUNT;
@@ -608,8 +619,17 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 {
                     this.BREATH_TIME = ConvertNumber.ProcessNumberInterger(inputData.BREATH_TIME);
                 }
-                this.HTU_ID = inputData.HTU_ID;
-
+                var htuIds = !string.IsNullOrEmpty(inputData.HTU_IDS) ? inputData.HTU_IDS.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).ToList() : null;
+                if (htuIds != null && htuIds.Count > 0)
+                {
+                    foreach (var htu in htuIds)
+                    {
+                        if (HTU_IDs == null)
+                            HTU_IDs = new List<long>();
+                        this.HTU_IDs.Add(Int64.Parse(htu));
+                    }
+                }
+                this.HTU_ID_NOT_CHECK_ACIN_INTERACTIVE = inputData.HTU_ID;
 
                 this.IsExpend = ((inputData.IS_EXPEND ?? -1) == GlobalVariables.CommonNumberTrue ? true : false);
                 this.IsExpendType = ((inputData.EXPEND_TYPE_ID ?? -1) == GlobalVariables.CommonNumberTrue ? true : false);
@@ -1235,7 +1255,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 }
                 if (!String.IsNullOrEmpty(inputData.EVENING))
                     this.Toi = ConvertNumber.ProcessNumberInterger(inputData.EVENING);
-                this.HTU_ID = inputData.HTU_ID;
+                if (inputData.HTU_ID != null)
+                    this.HTU_IDs = new List<long>() { inputData.HTU_ID ?? 0 };
 
                 this.SERVICE_REQ_ID = inputData.SERVICE_REQ_ID;
                 this.SERVICE_REQ_METY_MATY_ID = inputData.ID;
@@ -1341,7 +1362,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                     this.Chieu = ConvertNumber.ProcessNumberInterger(inputData.AFTERNOON);
                 if (!String.IsNullOrEmpty(inputData.EVENING))
                     this.Toi = ConvertNumber.ProcessNumberInterger(inputData.EVENING);
-                this.HTU_ID = inputData.HTU_ID;
+                if (inputData.HTU_ID != null)
+                    this.HTU_IDs = new List<long>() { inputData.HTU_ID ?? 0 };
                 this.EXCEED_LIMIT_IN_PRES_REASON = inputData.EXCEED_LIMIT_IN_PRES_REASON;
                 this.EXCEED_LIMIT_IN_DAY_REASON = inputData.EXCEED_LIMIT_IN_DAY_REASON;
                 this.EXCEED_LIMIT_IN_BATCH_REASON = inputData.EXCEED_LIMIT_IN_TREAT_REASON;
@@ -1432,7 +1454,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 {
                     this.DataType = HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_DM;
                 }
-                else 
+                else
                 {
                     this.DataType = HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU;
                     this.IS_SUB_PRES = null;
@@ -1563,16 +1585,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
             }
         }
 
-        internal void UpdateAutoRoundUpByConvertUnitRatioInDataRow(MediMatyTypeADO medicineTypeSDO,V_HIS_TREATMENT treatmentView)
+        internal void UpdateAutoRoundUpByConvertUnitRatioInDataRow(MediMatyTypeADO medicineTypeSDO, V_HIS_TREATMENT treatmentView)
         {
             try
             {
-                if (medicineTypeSDO.CONVERT_RATIO.HasValue && medicineTypeSDO.CONVERT_RATIO.Value > 1) {
-                    if ((HisConfigCFG.IsAutoRoundUpByConvertUnitRatio && (medicineTypeSDO.IsUseOrginalUnitForPres ?? false) == false) || (HisConfigCFG.IsShowPresAmount && treatmentView != null && treatmentView.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)){
+                if (medicineTypeSDO.CONVERT_RATIO.HasValue && medicineTypeSDO.CONVERT_RATIO.Value > 1)
+                {
+                    if ((HisConfigCFG.IsAutoRoundUpByConvertUnitRatio && (medicineTypeSDO.IsUseOrginalUnitForPres ?? false) == false) || (HisConfigCFG.IsShowPresAmount && treatmentView != null && treatmentView.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM))
+                    {
                         {
                             decimal? presAmountTmp = medicineTypeSDO.PRES_AMOUNT ?? medicineTypeSDO.AMOUNT;
                             medicineTypeSDO.PRES_AMOUNT = presAmountTmp;
-                            decimal amount = (Math.Ceiling((medicineTypeSDO.AMOUNT ?? 0) / medicineTypeSDO.CONVERT_RATIO.Value)) * (medicineTypeSDO.CONVERT_RATIO.Value);     
+                            decimal amount = (Math.Ceiling((medicineTypeSDO.AMOUNT ?? 0) / medicineTypeSDO.CONVERT_RATIO.Value)) * (medicineTypeSDO.CONVERT_RATIO.Value);
                             if (amount != medicineTypeSDO.AMOUNT)
                             {
                                 Inventec.Common.Logging.LogSystem.Debug("Ke don co cau hinh IsAutoRoundUpByConvertUnitRatio || IsShowPresAmount & Khám & CONVERT_RATIO > 1 & so luong lam tron theo don vi quy doi khac so luong ke____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeSDO.MEDICINE_TYPE_NAME), medicineTypeSDO.MEDICINE_TYPE_NAME) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeSDO.MEDICINE_TYPE_CODE), medicineTypeSDO.MEDICINE_TYPE_CODE) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeSDO.AMOUNT), medicineTypeSDO.AMOUNT) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => amount), amount) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeSDO.CONVERT_RATIO), medicineTypeSDO.CONVERT_RATIO));
@@ -1656,7 +1680,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result));
             return result;
         }
-        public Dictionary<long,List<long>> dicUseTimeBeanIds { get; set; }
+        public Dictionary<long, List<long>> dicUseTimeBeanIds { get; set; }
         public long? SERVICE_CONDITION_ID { get; set; }
         public string SERVICE_CONDITION_NAME { get; set; }
         public short? IS_NOT_PRES { get; set; }
@@ -1704,7 +1728,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
         public string Trua { get; set; }
         public string Chieu { get; set; }
         public string Toi { get; set; }
-        public long? HTU_ID { get; set; }
+        public List<long> HTU_IDs { get; set; }
+        public long? HTU_ID_NOT_CHECK_ACIN_INTERACTIVE { get; set; }
         public long? UseTimeTo { get; set; }
         public decimal? UseDays { get; set; }
         public decimal TotalPrice { get; set; }
@@ -1749,7 +1774,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
         public List<string> IcdsWarning { get; set; }
         public bool IsWarned { get; set; }
         public string OVER_RESULT_TEST_REASON { get; set; }
-        public Dictionary<long,List<TreatmentOverReason>> dicTreatmentOverResultTestReason { get; set; }
+        public Dictionary<long, List<TreatmentOverReason>> dicTreatmentOverResultTestReason { get; set; }
         public bool IsEditOverResultTestReason { get; set; }
         public string OVER_KIDNEY_REASON { get; set; }
         public long? OVER_REASON_ID { get; set; }

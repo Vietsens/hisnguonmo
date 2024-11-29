@@ -71,8 +71,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             this.cboMedicineUseForm.EditValue = medicineType.MEDICINE_USE_FORM_ID;
                         }
                     }
-
-                    this.cboHtu.EditValue = medicineTypeTut.HTU_ID;
+                    this.cboHtu.Text = null;
+                    if (DataHtuList != null && DataHtuList.Count > 0)
+                    {
+                        DataHtuList.ForEach(o => o.IsChecked = o.ID == medicineTypeTut.HTU_ID);
+                        this.cboHtu.Text = string.Join(", ", DataHtuList.Where(o => o.IsChecked).Select(o => o.HTU_NAME));
+                    }
                     if (medicineTypeTut.HTU_ID != null)
                         this.cboHtu.Properties.Buttons[1].Visible = true;
                     else
