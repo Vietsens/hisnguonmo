@@ -8,10 +8,10 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient
 {
     class HisHivGroupPatientUriStore
     {
-        internal const string HIS_ICD_GROUP_CREATE = "api/HisIcdGroup/Create";
-        internal const string HIS_ICD_GROUP_DELETE = "api/HisIcdGroup/Delete";
-        internal const string HIS_ICD_GROUP_UPDATE = "api/HisIcdGroup/Update";
-        internal const string HIS_ICD_GROUP_GET = "api/HisIcdGroup/Get";
-        internal const string HIS_ICD_GROUP_CHANGE_LOCK = "api/HisIcdGroup/ChangeLock";
+        internal const string HIS_HIV_GROUP_PATIENT_CREATE = "api/HisHivGroupPatient/Create";
+        internal const string HIS_HIV_GROUP_PATIENT_DELETE = "api/HisHivGroupPatient/Delete";
+        internal const string HIS_HIV_GROUP_PATIENT_UPDATE = "api/HisHivGroupPatient/Update";
+        internal const string HIS_HIV_GROUP_PATIENT_GET = "api/HisHivGroupPatient/Get";
+        internal const string HIS_HIV_GROUP_PATIENT_CHANGE_LOCK = "api/HisHivGroupPatient/ChangeLock";
     }
 }

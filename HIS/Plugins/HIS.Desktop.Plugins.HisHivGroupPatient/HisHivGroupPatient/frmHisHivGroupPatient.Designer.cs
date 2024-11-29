@@ -425,7 +425,7 @@
             // gridColumn4
             // 
             this.gridColumn4.Caption = "Mã";
-            this.gridColumn4.FieldName = "ICD_GROUP_CODE";
+            this.gridColumn4.FieldName = "HIV_GROUP_PATIENT_CODE";
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
@@ -436,7 +436,7 @@
             // gridColumn5
             // 
             this.gridColumn5.Caption = "Tên";
-            this.gridColumn5.FieldName = "ICD_GROUP_NAME";
+            this.gridColumn5.FieldName = "HIV_GROUP_PATIENT_NAME";
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.Visible = true;
             this.gridColumn5.VisibleIndex = 4;
@@ -633,6 +633,7 @@
             new DevExpress.XtraBars.LinkPersistInfo(this.bbtnSearch),
             new DevExpress.XtraBars.LinkPersistInfo(this.bbtnFocusDefault)});
             this.bar1.Text = "Tools";
+            this.bar1.Visible = false;
             // 
             // bbtnAdd
             // 

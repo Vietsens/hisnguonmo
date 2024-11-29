@@ -41,7 +41,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
         int startPage = 0;
         int ActionType = -1;
         int positionHandle = -1;
-        MOS.EFMODEL.DataModels.HIS_ICD_GROUP currentData;
+        MOS.EFMODEL.DataModels.HIS_HIV_GROUP_PATIENT currentData;
         PagingGrid pagingGrid;
         DelegateSelectData delegateSelect = null;
         Dictionary<string, int> dicOrderTabIndexControl = new Dictionary<string, int>();
@@ -351,18 +351,18 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
                 startPage = ((CommonParam)param).Start ?? 0;
                 int limit = ((CommonParam)param).Limit ?? 0;
                 CommonParam commonParam = new CommonParam(startPage, limit);
-                Inventec.Core.ApiResultObject<List<MOS.EFMODEL.DataModels.HIS_ICD_GROUP>> apiResult = null;
+                Inventec.Core.ApiResultObject<List<MOS.EFMODEL.DataModels.HIS_HIV_GROUP_PATIENT>> apiResult = null;
                 HisMestPatientTypeViewFilter filter = new HisMestPatientTypeViewFilter();
                 SetFilterNavBar(ref filter);
                 filter.ORDER_DIRECTION = "DESC";
                 filter.ORDER_FIELD = "MODIFY_TIME";
 
                 gridView1.BeginUpdate();//HisHivGroupPatientUriStore.HisHivGroupPatient_GET
-                apiResult = new BackendAdapter(commonParam).GetRO<List<MOS.EFMODEL.DataModels.HIS_ICD_GROUP>>(HisHivGroupPatientUriStore.HIS_ICD_GROUP_GET,
+                apiResult = new BackendAdapter(commonParam).GetRO<List<MOS.EFMODEL.DataModels.HIS_HIV_GROUP_PATIENT>>(HisHivGroupPatientUriStore.HIS_HIV_GROUP_PATIENT_GET,
                     ApiConsumers.MosConsumer, filter, commonParam);
                 if (apiResult != null)
                 {
-                    var data = (List<MOS.EFMODEL.DataModels.HIS_ICD_GROUP>)apiResult.Data;
+                    var data = (List<MOS.EFMODEL.DataModels.HIS_HIV_GROUP_PATIENT>)apiResult.Data;
                     if (data != null)
                     {
                         gridView1.GridControl.DataSource = data;
@@ -398,7 +398,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
         {
             try
             {
-                var rowData = (MOS.EFMODEL.DataModels.HIS_ICD_GROUP)gridView1.GetFocusedRow();
+                var rowData = (MOS.EFMODEL.DataModels.HIS_HIV_GROUP_PATIENT)gridView1.GetFocusedRow();
                 if (rowData != null)
                 {
                     currentData = rowData;
@@ -411,14 +411,14 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
             }
         }
 
-        private void ChangedDataRow(HIS_ICD_GROUP data)
+        private void ChangedDataRow(HIS_HIV_GROUP_PATIENT data)
         {
             try
             {
                 if (data != null)
                 {
-                    txtMa.Text = currentData.ICD_GROUP_CODE;
-                    txtTen.Text = currentData.ICD_GROUP_NAME;
+                    txtMa.Text = currentData.HIV_GROUP_PATIENT_CODE;
+                    txtTen.Text = currentData.HIV_GROUP_PATIENT_NAME;
                     this.ActionType = GlobalVariables.ActionEdit;
                     EnableControlChanged(this.ActionType);
                     positionHandle = -1;
@@ -435,7 +435,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
         {
             try
             {
-                var rowData = (MOS.EFMODEL.DataModels.HIS_ICD_GROUP)gridView1.GetFocusedRow();
+                var rowData = (MOS.EFMODEL.DataModels.HIS_HIV_GROUP_PATIENT)gridView1.GetFocusedRow();
                 if (rowData != null)
                 {
                     currentData = rowData;
@@ -454,7 +454,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    var rowData = (MOS.EFMODEL.DataModels.HIS_ICD_GROUP)gridView1.GetFocusedRow();
+                    var rowData = (MOS.EFMODEL.DataModels.HIS_HIV_GROUP_PATIENT)gridView1.GetFocusedRow();
                     if (rowData != null)
                     {
                         ChangedDataRow(rowData);
@@ -474,7 +474,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
                 DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
                 if (e.RowHandle >= 0)
                 {
-                    HIS_ICD_GROUP data = (HIS_ICD_GROUP)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                    HIS_HIV_GROUP_PATIENT data = (HIS_HIV_GROUP_PATIENT)((IList)((BaseView)sender).DataSource)[e.RowHandle];
                     if (e.Column.FieldName == "LOCK")
                     {
                         e.RepositoryItem = data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE ? btnGLock : btnGUnLock;
@@ -496,7 +496,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
             DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
             if (e.RowHandle >= 0)
             {
-                HIS_ICD_GROUP data = (HIS_ICD_GROUP)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                HIS_HIV_GROUP_PATIENT data = (HIS_HIV_GROUP_PATIENT)((IList)((BaseView)sender).DataSource)[e.RowHandle];
                 if (e.Column.FieldName == "IS_ACTIVE")
                 {
                     if (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
@@ -543,7 +543,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
 
                 WaitingManager.Show();
 
-                MOS.EFMODEL.DataModels.HIS_ICD_GROUP updateDTO = new MOS.EFMODEL.DataModels.HIS_ICD_GROUP();
+                MOS.EFMODEL.DataModels.HIS_HIV_GROUP_PATIENT updateDTO = new MOS.EFMODEL.DataModels.HIS_HIV_GROUP_PATIENT();
 
                 if (this.currentData != null && this.currentData.ID > 0)
                 {
@@ -554,7 +554,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
                 if (ActionType == GlobalVariables.ActionAdd)
                 {
                     updateDTO.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                    var result = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_ICD_GROUP>(HisHivGroupPatientUriStore.HIS_ICD_GROUP_CREATE,
+                    var result = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_HIV_GROUP_PATIENT>(HisHivGroupPatientUriStore.HIS_HIV_GROUP_PATIENT_CREATE,
                         ApiConsumers.MosConsumer, updateDTO, param);
                     if (result != null)
                     {
@@ -565,7 +565,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
                 }
                 else
                 {
-                    var result = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_ICD_GROUP>(HisHivGroupPatientUriStore.HIS_ICD_GROUP_UPDATE,
+                    var result = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_HIV_GROUP_PATIENT>(HisHivGroupPatientUriStore.HIS_HIV_GROUP_PATIENT_UPDATE,
                         ApiConsumers.MosConsumer, updateDTO, param);
                     if (result != null)
                     {
@@ -575,7 +575,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
                 }
                 if (success)
                 {
-                    BackendDataWorker.Reset<HIS_ICD_GROUP>();
+                    BackendDataWorker.Reset<HIS_HIV_GROUP_PATIENT>();
                     SetFocusEditor();
                 }
 
@@ -647,12 +647,12 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
             }
         }
 
-        private void UpdateDTOFromDataFrom(ref HIS_ICD_GROUP updateDTO)
+        private void UpdateDTOFromDataFrom(ref HIS_HIV_GROUP_PATIENT updateDTO)
         {
             try
             {
-                updateDTO.ICD_GROUP_CODE = txtMa.Text.Trim();
-                updateDTO.ICD_GROUP_NAME = txtTen.Text.Trim();
+                updateDTO.HIV_GROUP_PATIENT_CODE = txtMa.Text.Trim();
+                updateDTO.HIV_GROUP_PATIENT_NAME = txtTen.Text.Trim();
             }
             catch (Exception ex)
             {
@@ -660,14 +660,14 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
             }
         }
 
-        private void LoadCurrent(long currentID, ref HIS_ICD_GROUP updateDTO)
+        private void LoadCurrent(long currentID, ref HIS_HIV_GROUP_PATIENT updateDTO)
         {
             try
             {
                 CommonParam param = new CommonParam();
                 HisPatientFilter filter = new HisPatientFilter();
                 filter.ID = currentID;
-                updateDTO = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_ICD_GROUP>>(HisHivGroupPatientUriStore.HIS_ICD_GROUP_GET,
+                updateDTO = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_HIV_GROUP_PATIENT>>(HisHivGroupPatientUriStore.HIS_HIV_GROUP_PATIENT_GET,
                     ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
             }
             catch (Exception ex)
@@ -700,7 +700,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
                 {
                     gridView1.Focus();
                     gridView1.FocusedRowHandle = 0;
-                    var rowData = (MOS.EFMODEL.DataModels.HIS_ICD_GROUP)gridView1.GetFocusedRow();
+                    var rowData = (MOS.EFMODEL.DataModels.HIS_HIV_GROUP_PATIENT)gridView1.GetFocusedRow();
                     if (rowData != null)
                     {
                         ChangedDataRow(rowData);
@@ -725,7 +725,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
                 {
                     gridView1.Focus();
                     gridView1.FocusedRowHandle = 0;
-                    var rowData = (MOS.EFMODEL.DataModels.HIS_ICD_GROUP)gridView1.GetFocusedRow();
+                    var rowData = (MOS.EFMODEL.DataModels.HIS_HIV_GROUP_PATIENT)gridView1.GetFocusedRow();
                     if (rowData != null)
                     {
                         ChangedDataRow(rowData);
@@ -744,7 +744,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
             {
                 if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
                 {
-                    MOS.EFMODEL.DataModels.HIS_ICD_GROUP pData = (MOS.EFMODEL.DataModels.HIS_ICD_GROUP)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    MOS.EFMODEL.DataModels.HIS_HIV_GROUP_PATIENT pData = (MOS.EFMODEL.DataModels.HIS_HIV_GROUP_PATIENT)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     short statu = Inventec.Common.TypeConvert.Parse.ToInt16((pData.IS_ACTIVE ?? -1).ToString());
                     if (e.Column.FieldName == "STT")
                     {
@@ -929,19 +929,19 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
         private void btnGLock_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             CommonParam param = new CommonParam();
-            HIS_ICD_GROUP success = new HIS_ICD_GROUP();
+            HIS_HIV_GROUP_PATIENT success = new HIS_HIV_GROUP_PATIENT();
             bool notHandler = false;
             try
             {
 
-                HIS_ICD_GROUP data = (HIS_ICD_GROUP)gridView1.GetFocusedRow();
+                HIS_HIV_GROUP_PATIENT data = (HIS_HIV_GROUP_PATIENT)gridView1.GetFocusedRow();
                 if (MessageBox.Show(HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonBoKhoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    HIS_ICD_GROUP data1 = new HIS_ICD_GROUP();
+                    HIS_HIV_GROUP_PATIENT data1 = new HIS_HIV_GROUP_PATIENT();
                     data1.ID = data.ID;
                     WaitingManager.Show();
-                    success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_ICD_GROUP>(HisHivGroupPatientUriStore.HIS_ICD_GROUP_CHANGE_LOCK,
-                        ApiConsumers.MosConsumer, data, param);
+                    success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_HIV_GROUP_PATIENT>(HisHivGroupPatientUriStore.HIS_HIV_GROUP_PATIENT_CHANGE_LOCK,
+                        ApiConsumers.MosConsumer, data1.ID, param);
                     WaitingManager.Hide();
                     if (success != null)
                     {
@@ -962,18 +962,20 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
         private void btnGUnLock_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             CommonParam param = new CommonParam();
-            HIS_ICD_GROUP success = new HIS_ICD_GROUP();
+            HIS_HIV_GROUP_PATIENT success = new HIS_HIV_GROUP_PATIENT();
             bool notHandler = false;
             try
-            {
-                MOS.EFMODEL.DataModels.HIS_ICD_GROUP data = (HIS_ICD_GROUP)gridView1.GetFocusedRow();
+            { 
+                MOS.EFMODEL.DataModels.HIS_HIV_GROUP_PATIENT data = (HIS_HIV_GROUP_PATIENT)gridView1.GetFocusedRow();
                 if (MessageBox.Show(HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(
                     HIS.Desktop.LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonKhoaDuLieuKhong), "",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {   
+                {
+                    HIS_HIV_GROUP_PATIENT data1 = new HIS_HIV_GROUP_PATIENT();
+                    data1.ID = data.ID;
                     WaitingManager.Show();
-                    success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_ICD_GROUP>(HisHivGroupPatientUriStore.HIS_ICD_GROUP_CHANGE_LOCK,
-                        ApiConsumers.MosConsumer, data, param);
+                    success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_HIV_GROUP_PATIENT>(HisHivGroupPatientUriStore.HIS_HIV_GROUP_PATIENT_CHANGE_LOCK,
+                        ApiConsumers.MosConsumer, data1.ID, param);
                     WaitingManager.Hide();
                     if (success != null)
                     {
@@ -996,7 +998,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
             try
             {
                 CommonParam param = new CommonParam();
-                var rowData = (HIS_ICD_GROUP)gridView1.GetFocusedRow();
+                var rowData = (HIS_HIV_GROUP_PATIENT)gridView1.GetFocusedRow();
                 if (MessageBox.Show(HIS.Desktop.LibraryMessage.MessageUtil.GetMessage
                     (HIS.Desktop.LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong), "", 
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -1004,12 +1006,12 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
                     if (rowData != null)
                     {
                         bool success = false;
-                        success = new BackendAdapter(param).Post<bool>(HisHivGroupPatientUriStore.HIS_ICD_GROUP_DELETE,
-                            ApiConsumers.MosConsumer, rowData, param);
+                        success = new BackendAdapter(param).Post<bool>(HisHivGroupPatientUriStore.HIS_HIV_GROUP_PATIENT_DELETE,
+                            ApiConsumers.MosConsumer, rowData.ID, param);
                         if (success)
                         {
                             FillDataFromList();
-                            currentData = ((List<HIS_ICD_GROUP>)gridControl1.DataSource).FirstOrDefault();
+                            currentData = ((List<HIS_HIV_GROUP_PATIENT>)gridControl1.DataSource).FirstOrDefault();
                         }
                         MessageManager.Show(this, param, success);
                     }

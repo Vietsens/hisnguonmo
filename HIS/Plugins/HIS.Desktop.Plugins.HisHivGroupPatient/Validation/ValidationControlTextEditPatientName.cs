@@ -21,16 +21,16 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.Validation
                 }
                 else
                 {
-                    if (Inventec.Common.String.CountVi.Count(txtTen.Text) > 20)
+                    if (Inventec.Common.String.CountVi.Count(txtTen.Text) > 200)
                     {
-                        this.ErrorText = "Độ dài mã vượt quá " + 20;
+                        this.ErrorText = "Độ dài tên vượt quá " + 200;
                         return valid;
                     }
                     else
                     {
-                        if (Inventec.Common.String.CountVi.Count(txtTen.Text) > 20)
+                        if (Inventec.Common.String.CountVi.Count(txtTen.Text) > 200)
                         {
-                            this.ErrorText = "Độ dài mã vượt quá " + 20;
+                            this.ErrorText = "Độ dài tên vượt quá " + 200;
                             return valid;
                         }
                         else
