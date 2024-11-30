@@ -172,7 +172,6 @@
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
     <None Include="Resources\Lock-Lock-16-16.png" />
   </ItemGroup>
   <ItemGroup>
