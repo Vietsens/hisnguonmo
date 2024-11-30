@@ -1,3 +1,10 @@
+### Release 2.339.0
+* Sửa màn hình chờ lấy mẫu để phân biệt bệnh nhân ưu tiên, đã lấy mẫu, chưa lấy mẫu
+* Sửa đổi bổ sung chuẩn dữ liệu đầu ra theo quyết định 3176/QĐ-BYT ngày 29/10/2024 về sửa đổi bổ sung QĐ 4750 và QĐ 130
+* Bổ sung Cảnh báo khám cùng ngày CSKCB khác
+* Bổ sung thông tin giường vào chức năng thông tin giao ban
+* Bổ sung ký số dữ liệu XML theo quyết định 3700/BHXH-CNTT
+
 ### Release 2.338.0
 * Thêm thông tin chẩn đoán phân biệt vào tờ điều trị
 * Sửa lỗi ký số USB ký giấy chứng sinh, chứng tử gửi BYT
