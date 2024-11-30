@@ -223,7 +223,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                               {
                                   break;
                               }
-                          case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__SA:
+                          case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__AN:
                               {
                                   break;
                               }
