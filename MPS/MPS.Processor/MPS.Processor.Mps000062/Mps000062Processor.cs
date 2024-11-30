@@ -5180,7 +5180,7 @@ namespace MPS.Processor.Mps000062
                                             serviceClss.Add(string.Format("{0}x{1}", s1, amount));
                                             serviceClss01.Add(string.Format("{0}x{1}", s1, strAmount));
 
-                                            lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = namesvt.SERVICE_TYPE_NAME, SERVICE_NAME = s1, AMOUNT = service.AMOUNT, INSTRUCTION_NOTE = service.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = namesvt.NUM_ORDER ?? Int64.MinValue, IsGoupService = service.IsGoupService, USE_TIME = service.USE_TIME, TDL_INTRUCTION_TIME = service.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = service.TDL_SERVICE_UNIT_ID, SERVICE_ID = service.SERVICE_ID, serviceSplits = service.serviceSplits });
+                                            lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = namesvt.SERVICE_TYPE_NAME, SERVICE_NAME = s1, AMOUNT = service.AMOUNT, INSTRUCTION_NOTE = service.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = namesvt.NUM_ORDER ?? Int64.MinValue, IsGoupService = service.IsGoupService, USE_TIME = service.USE_TIME, TDL_INTRUCTION_TIME = service.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = service.TDL_SERVICE_UNIT_ID, SERVICE_ID = service.SERVICE_ID, serviceSplits = service.serviceSplits, TDL_SERVICE_TYPE_ID = service.TDL_SERVICE_TYPE_ID });
 
                                         }
                                         if (serviceClss != null && serviceClss.Count > 0)
@@ -5221,7 +5221,7 @@ namespace MPS.Processor.Mps000062
                                             var s1 = (service.SERVICE_NAME ?? service.TDL_SERVICE_NAME) + " ";
                                             serviceTts.Add(string.Format("{0}", s1));
 
-                                            lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = namesvt.SERVICE_TYPE_NAME, SERVICE_NAME = s1, AMOUNT = service.AMOUNT, INSTRUCTION_NOTE = service.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = namesvt.NUM_ORDER ?? Int64.MinValue, IsGoupService = service.IsGoupService, USE_TIME = service.USE_TIME, TDL_INTRUCTION_TIME = service.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = service.TDL_SERVICE_UNIT_ID, SERVICE_ID = service.SERVICE_ID, serviceSplits = service.serviceSplits });
+                                            lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = namesvt.SERVICE_TYPE_NAME, SERVICE_NAME = s1, AMOUNT = service.AMOUNT, INSTRUCTION_NOTE = service.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = namesvt.NUM_ORDER ?? Int64.MinValue, IsGoupService = service.IsGoupService, USE_TIME = service.USE_TIME, TDL_INTRUCTION_TIME = service.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = service.TDL_SERVICE_UNIT_ID, SERVICE_ID = service.SERVICE_ID, serviceSplits = service.serviceSplits, TDL_SERVICE_TYPE_ID = service.TDL_SERVICE_TYPE_ID });
 
                                         }
                                         if (serviceTts != null && serviceTts.Count > 0)
@@ -5541,7 +5541,7 @@ namespace MPS.Processor.Mps000062
 
                                         serviceClss.Add(string.Format("{0}x{1}", s1, amount));
                                         serviceClss01.Add(string.Format("{0}x{1}", s1, strAmount));
-                                        lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = namesvt.SERVICE_TYPE_NAME, SERVICE_NAME = s1, AMOUNT = service.AMOUNT, INSTRUCTION_NOTE = service.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = namesvt.NUM_ORDER ?? Int64.MinValue, IsGoupService = service.IsGoupService, USE_TIME = service.USE_TIME, TDL_INTRUCTION_TIME = service.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = service.TDL_SERVICE_UNIT_ID, SERVICE_ID = service.SERVICE_ID, serviceSplits = service.serviceSplits });
+                                        lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = namesvt.SERVICE_TYPE_NAME, SERVICE_NAME = s1, AMOUNT = service.AMOUNT, INSTRUCTION_NOTE = service.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = namesvt.NUM_ORDER ?? Int64.MinValue, IsGoupService = service.IsGoupService, USE_TIME = service.USE_TIME, TDL_INTRUCTION_TIME = service.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = service.TDL_SERVICE_UNIT_ID, SERVICE_ID = service.SERVICE_ID, serviceSplits = service.serviceSplits, TDL_SERVICE_TYPE_ID = service.TDL_SERVICE_TYPE_ID });
 
                                     }
                                     if (serviceClss != null && serviceClss.Count > 0)
@@ -5583,7 +5583,7 @@ namespace MPS.Processor.Mps000062
                                         var s1 = (service.SERVICE_NAME ?? service.TDL_SERVICE_NAME) + " ";
 
                                         serviceTts.Add(string.Format("{0}", s1));
-                                        lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = namesvt.SERVICE_TYPE_NAME, SERVICE_NAME = s1, AMOUNT = service.AMOUNT, INSTRUCTION_NOTE = service.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = namesvt.NUM_ORDER ?? Int64.MinValue, IsGoupService = service.IsGoupService, USE_TIME = service.USE_TIME, TDL_INTRUCTION_TIME = service.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = service.TDL_SERVICE_UNIT_ID, SERVICE_ID = service.SERVICE_ID, serviceSplits = service.serviceSplits });
+                                        lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = namesvt.SERVICE_TYPE_NAME, SERVICE_NAME = s1, AMOUNT = service.AMOUNT, INSTRUCTION_NOTE = service.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = namesvt.NUM_ORDER ?? Int64.MinValue, IsGoupService = service.IsGoupService, USE_TIME = service.USE_TIME, TDL_INTRUCTION_TIME = service.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = service.TDL_SERVICE_UNIT_ID, SERVICE_ID = service.SERVICE_ID, serviceSplits = service.serviceSplits, TDL_SERVICE_TYPE_ID = service.TDL_SERVICE_TYPE_ID });
 
                                     }
                                     if (serviceTts != null && serviceTts.Count > 0)
@@ -6202,7 +6202,7 @@ namespace MPS.Processor.Mps000062
                             {
                                 item.TT_SERVICE___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                             }
-                            lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = item1.SERVICE_TYPE_NAME, SERVICE_NAME = item1.TDL_SERVICE_NAME, AMOUNT = item1.AMOUNT, INSTRUCTION_NOTE = item1.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = item1.NUM_ORDER_SERVICE_TYPE ?? Int64.MinValue, IsGoupService = item1.IsGoupService, USE_TIME = item1.USE_TIME, TDL_INTRUCTION_TIME = item1.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = item1.TDL_SERVICE_UNIT_ID, SERVICE_ID = item1.SERVICE_ID, serviceSplits = item1.serviceSplits });
+                            lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = item1.SERVICE_TYPE_NAME, SERVICE_NAME = item1.TDL_SERVICE_NAME, AMOUNT = item1.AMOUNT, INSTRUCTION_NOTE = item1.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = item1.NUM_ORDER_SERVICE_TYPE ?? Int64.MinValue, IsGoupService = item1.IsGoupService, USE_TIME = item1.USE_TIME, TDL_INTRUCTION_TIME = item1.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = item1.TDL_SERVICE_UNIT_ID, SERVICE_ID = item1.SERVICE_ID, serviceSplits = item1.serviceSplits, TDL_SERVICE_TYPE_ID = item1.TDL_SERVICE_TYPE_ID });
                             dem++;
                         }
                     }
@@ -6240,7 +6240,7 @@ namespace MPS.Processor.Mps000062
                                     item.SERVICE_CLS_BOLD___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                     item.SERVICE_CLS_BOLD_X01___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                 }
-                                lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = item1.SERVICE_TYPE_NAME, SERVICE_NAME = item1.SERVICE_NAME, AMOUNT = item1.AMOUNT, INSTRUCTION_NOTE = item1.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = item1.NUM_ORDER_SERVICE_TYPE ?? Int64.MinValue, IsGoupService = item1.IsGoupService, USE_TIME = item1.USE_TIME, TDL_INTRUCTION_TIME = item1.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = item1.TDL_SERVICE_UNIT_ID, SERVICE_ID = item1.SERVICE_ID, serviceSplits = item1.serviceSplits });
+                                lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = item1.SERVICE_TYPE_NAME, SERVICE_NAME = item1.SERVICE_NAME, AMOUNT = item1.AMOUNT, INSTRUCTION_NOTE = item1.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = item1.NUM_ORDER_SERVICE_TYPE ?? Int64.MinValue, IsGoupService = item1.IsGoupService, USE_TIME = item1.USE_TIME, TDL_INTRUCTION_TIME = item1.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = item1.TDL_SERVICE_UNIT_ID, SERVICE_ID = item1.SERVICE_ID, serviceSplits = item1.serviceSplits, TDL_SERVICE_TYPE_ID = item1.TDL_SERVICE_TYPE_ID });
                                 dem++;
                             }
                         }
@@ -6278,7 +6278,7 @@ namespace MPS.Processor.Mps000062
                                     item.SERVICE_CLS_BOLD___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                     item.SERVICE_CLS_BOLD_X01___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                 }
-                                lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = item1.SERVICE_TYPE_NAME, SERVICE_NAME = item1.SERVICE_NAME, AMOUNT = item1.AMOUNT, INSTRUCTION_NOTE = item1.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = item1.NUM_ORDER_SERVICE_TYPE ?? Int64.MinValue, IsGoupService = item1.IsGoupService, USE_TIME = item1.USE_TIME, TDL_INTRUCTION_TIME = item1.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = item1.TDL_SERVICE_UNIT_ID, SERVICE_ID = item1.SERVICE_ID, serviceSplits = item1.serviceSplits });
+                                lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = item1.SERVICE_TYPE_NAME, SERVICE_NAME = item1.SERVICE_NAME, AMOUNT = item1.AMOUNT, INSTRUCTION_NOTE = item1.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = item1.NUM_ORDER_SERVICE_TYPE ?? Int64.MinValue, IsGoupService = item1.IsGoupService, USE_TIME = item1.USE_TIME, TDL_INTRUCTION_TIME = item1.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = item1.TDL_SERVICE_UNIT_ID, SERVICE_ID = item1.SERVICE_ID, serviceSplits = item1.serviceSplits, TDL_SERVICE_TYPE_ID = item1.TDL_SERVICE_TYPE_ID });
                                 dem++;
                             }
                         }
@@ -6420,18 +6420,21 @@ namespace MPS.Processor.Mps000062
                     {
                         lstServiceCls.ForEach(o =>
                         {
-                            o.SERVICE_TYPE_NAME = o.SERVICE_TYPE_NAME.Replace(":", "").Trim();//Xóa bỏ dấu : sau loại dịch vụ nếu có
+                            o.SERVICE_TYPE_NAME = (o.SERVICE_TYPE_NAME ?? "").Replace(":", "").Trim();//Xóa bỏ dấu : sau loại dịch vụ nếu có
                         });
-                        var groupServiceType = lstServiceCls.Where(o => o.NUM_ORDER_SERVICE_TYPE > 0).GroupBy(o => new { o.NUM_ORDER_SERVICE_TYPE, o.SERVICE_TYPE_NAME }).ToList().OrderByDescending(o => o.Key.NUM_ORDER_SERVICE_TYPE).ToList();
+                        var groupServiceType = lstServiceCls.Where(o => o.NUM_ORDER_SERVICE_TYPE > 0).GroupBy(o => new { o.NUM_ORDER_SERVICE_TYPE, o.TDL_SERVICE_TYPE_ID }).ToList().OrderByDescending(o => o.Key.NUM_ORDER_SERVICE_TYPE).ToList();
                         var ListNumOrderNull = lstServiceCls.Where(o => o.NUM_ORDER_SERVICE_TYPE < 0).ToList();
                         if (ListNumOrderNull != null && ListNumOrderNull.Count > 0)
                         {
-                            var groupNomOrderNull = ListNumOrderNull.OrderBy(o => o.USE_TIME ?? Int64.MinValue).OrderBy(o => o.TDL_INTRUCTION_TIME).GroupBy(o => new { o.NUM_ORDER_SERVICE_TYPE, o.SERVICE_TYPE_NAME }).ToList();
-                            groupServiceType.AddRange(groupNomOrderNull);
+                            var groupNomOrderNull = ListNumOrderNull.OrderBy(o => o.USE_TIME ?? Int64.MinValue).OrderBy(o => o.TDL_INTRUCTION_TIME).GroupBy(o => new { o.NUM_ORDER_SERVICE_TYPE, o.TDL_SERVICE_TYPE_ID }).ToList();
+                            if (groupServiceType == null)
+                                groupServiceType = groupNomOrderNull;
+                            else
+                                groupServiceType.AddRange(groupNomOrderNull);
                         }
                         foreach (var st in groupServiceType)
                         {
-                            item.SERVICE_MERGE_X01___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("- " + st.Key.SERVICE_TYPE_NAME + ":", FontStyle.Bold);
+                            item.SERVICE_MERGE_X01___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("- " + (!string.IsNullOrEmpty(st.ToList()[0].SERVICE_TYPE_NAME) ? st.ToList()[0].SERVICE_TYPE_NAME : rdo._ServiceTypes.FirstOrDefault(o => o.ID == st.Key.TDL_SERVICE_TYPE_ID).SERVICE_TYPE_NAME) + ":", FontStyle.Bold);
                             item.SERVICE_MERGE_X01___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
 
                             List<ServiceCLS> serCls = new List<ServiceCLS>();
@@ -6460,9 +6463,8 @@ namespace MPS.Processor.Mps000062
                                 }    
                                 if (!string.IsNullOrEmpty(strInstructionNote))
                                     item.SERVICE_MERGE_X01___DATA += sv.SERVICE_NAME.Replace(":", "").Trim() + ": " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(strInstructionNote, FontStyle.Italic);
-                                else item.SERVICE_MERGE_X01___DATA += sv.SERVICE_NAME.Replace(";", "").Trim();
-
-                                if (rdo._ServiceTypes.FirstOrDefault(o => o.SERVICE_TYPE_NAME == st.Key.SERVICE_TYPE_NAME).ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT)
+                                else item.SERVICE_MERGE_X01___DATA += sv.SERVICE_NAME.Replace(";", "").Trim();                                
+                                if (rdo._ServiceTypes.FirstOrDefault(o => o.ID == st.Key.TDL_SERVICE_TYPE_ID).ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT)
                                 {
                                     var strAmount = ((amount >= 1 && amount < 10) ? "0" + Inventec.Common.Number.Convert.NumberToStringRoundMax4(amount) : Inventec.Common.Number.Convert.NumberToStringRoundMax4(amount) + "");
                                     item.SERVICE_MERGE_X01___DATA += " x" + strAmount;

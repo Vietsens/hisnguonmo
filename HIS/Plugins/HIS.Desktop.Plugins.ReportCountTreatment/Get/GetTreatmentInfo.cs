@@ -32,6 +32,7 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment.Get
         private List<long> TreatmentIds;
         internal List<V_HIS_DEPARTMENT_TRAN> ListDepartmentTran;
         internal List<HIS_TREATMENT_BED_ROOM> ListTreatmentBedRoom;
+        internal List<HIS_DEPARTMENT> Departments;
         long? timeFrom;
         long? timeTo;
 
@@ -46,10 +47,11 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment.Get
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        public GetTreatmentInfo(List<long> treatmentIds, long? timeFrom, long? timeTo) : this(treatmentIds)
+        public GetTreatmentInfo(List<long> treatmentIds, long? timeFrom, long? timeTo, List<HIS_DEPARTMENT> departments) : this(treatmentIds)
         {
             try
             {
+                this.Departments = departments;
                 this.timeFrom = timeFrom;
                 this.timeTo = timeTo;
             }
@@ -97,7 +99,7 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment.Get
 
         public Dictionary<long, HIS_TREATMENT_BED_ROOM> GetTreatmentBedRoom()
         {
-            Dictionary<long, HIS_TREATMENT_BED_ROOM> result = new Dictionary<long,HIS_TREATMENT_BED_ROOM>();
+            Dictionary<long, HIS_TREATMENT_BED_ROOM> result = new Dictionary<long, HIS_TREATMENT_BED_ROOM>();
             try
             {
                 ThreadGetTreatmentBedRoomInfo();
@@ -108,9 +110,12 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment.Get
                     foreach (var groups in groupTreatment)
                     {
                         HIS_TREATMENT_BED_ROOM t = groups
-                            .OrderByDescending(o => o.REMOVE_TIME)
-                            .ThenByDescending(o=>o.ID).FirstOrDefault();
+                            .OrderByDescending(o => o.REMOVE_TIME ?? -1)
+                            .ThenByDescending(o => o.ID).FirstOrDefault();
+                        if(t.TREATMENT_ID == 150352)
+                        {
 
+                        }
                         result[t.TREATMENT_ID] = t;
                     }
                 }
@@ -272,7 +277,16 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment.Get
                             apiResult = apiResult.Where(o => o.REMOVE_TIME == null || (timeFrom <= o.REMOVE_TIME && o.REMOVE_TIME <= timeTo)).ToList();
                             if (apiResult != null && apiResult.Count > 0)
                             {
-                                this.ListTreatmentBedRoom.AddRange(apiResult);
+                                HisBedRoomViewFilter hisBedRoomViewFilter = new HisBedRoomViewFilter();
+                                hisBedRoomViewFilter.IDs = apiResult.Select(o => o.BED_ROOM_ID).ToList();
+                                hisBedRoomViewFilter.DEPARTMENT_IDs = Departments.Select(o => o.ID).ToList();
+                                var apiBedRoomResult = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_ROOM>>("api/HisBedRoom/GetView", ApiConsumer.ApiConsumers.MosConsumer, hisBedRoomViewFilter, param);
+                                if (apiBedRoomResult != null && apiBedRoomResult.Count > 0)
+                                {
+                                    apiResult = apiResult.Where(o => apiBedRoomResult.Exists(p => p.ID == o.BED_ROOM_ID)).ToList();
+                                    if(apiResult != null && apiResult.Count > 0)
+                                        this.ListTreatmentBedRoom.AddRange(apiResult);
+                                }
                             }
                         }
                     }

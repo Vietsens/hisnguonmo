@@ -818,7 +818,7 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                                 case "XML15":
                                     His.Bhyt.ExportXml.XML130.XML15.CreateXmlMain xmlMain15 = new His.Bhyt.ExportXml.XML130.XML15.CreateXmlMain();
                                     if (xmlMain15 != null)
-                                        listObj.Add(xmlMain15.RunXML15DetailsData(fileHoSo.NOIDUNGFILE));
+                                        listObj.AddRange(xmlMain15.RunXML15DetailsData(fileHoSo.NOIDUNGFILE));
                                     break;
 
                             }

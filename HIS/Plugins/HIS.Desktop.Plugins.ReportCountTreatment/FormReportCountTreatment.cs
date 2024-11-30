@@ -892,6 +892,8 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
                     typeChk.Add(IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY);
 
                 var listTreatmentTotal = new Get.GetTreatment(timeFrom, timeTo, typeChk).GetTotalTreatment();
+
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listTreatmentTotal.Count), listTreatmentTotal.Count));
                 if (listTreatmentTotal != null && listTreatmentTotal.Count > 0)
                 {
                     listTreatmentTotal = listTreatmentTotal.Where(o => (o.TDL_TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && o.CLINICAL_IN_TIME.HasValue)
@@ -902,27 +904,27 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
                         var dicTreatmentInfo = TreatmentInfo.Get();
                         var ListTreatement = ProcessDataADO(listTreatmentTotal, dicTreatmentInfo);
 
-                        if (ListTreatement != null && ListTreatement.Count > 0)
-                        {
-                            var branchId = long.Parse((CboBranch.EditValue ?? "0").ToString());
-                            var department = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.BRANCH_ID == branchId).ToList();
-                            if (department != null && department.Count > 0)
-                            {
-                                ListTreatement = ListTreatement.Where(o => department.Select(s => s.ID).Contains(o.DEPARTMENT_ID)).ToList();
-                                if (ListTreatement != null && ListTreatement.Count > 0)
-                                {
-                                    department = department.Where(o => ListTreatement.Select(s => s.DEPARTMENT_ID).Distinct().Contains(o.ID)).ToList();
-                                }
+                        var branchId = long.Parse((CboBranch.EditValue ?? "0").ToString());
+                        var department = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.BRANCH_ID == branchId).ToList();
 
-                                InitComboDepartment(department);
+                        if (department != null && department.Count > 0)
+                        {
+                            ListTreatement = ListTreatement.Where(o => department.Select(s => s.ID).Contains(o.DEPARTMENT_ID)).ToList();
+                            if (ListTreatement != null && ListTreatement.Count > 0)
+                            {
+                                department = department.Where(o => ListTreatement.Select(s => s.DEPARTMENT_ID).Distinct().Contains(o.ID)).ToList();
                             }
 
+
+                            var TreatmentBedRoomInfo = new Get.GetTreatmentInfo(listTreatmentTotal.Select(o => o.ID).ToList(), timeFrom, timeTo, department).GetTreatmentBedRoom();
+
+                            InitComboDepartment(department);
                             InitComboType(1);
 
                             if (ListTreatement != null && ListTreatement.Count > 0)
                             {
                                 ProcessDataGridDetail(ListTreatement, TreatmentInfo.ListDepartmentTran, timeFrom, timeTo);
-                                ProcessDataGridTotal(ListTreatement, TreatmentInfo.ListDepartmentTran, timeFrom, timeTo);
+                                ProcessDataGridTotal(ListTreatement, TreatmentInfo.ListDepartmentTran, TreatmentBedRoomInfo, timeFrom, timeTo);
                                 ProcessDataControl();
                                 //ProcessDataControl(ListTreatement, timeFrom, timeTo);
                             }
@@ -996,7 +998,7 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
         }
 
         #region noi tru, ngoai tru
-        private void ProcessDataGridTotal(List<ADO.TreatmentADO> listTreatmentAdo, List<V_HIS_DEPARTMENT_TRAN> listDepartmentTran, long timeFrom, long timeTo)
+        private void ProcessDataGridTotal(List<ADO.TreatmentADO> listTreatmentAdo, List<V_HIS_DEPARTMENT_TRAN> listDepartmentTran, Dictionary<long, HIS_TREATMENT_BED_ROOM> dicTreatmentBedRoomInfo, long timeFrom, long timeTo)
         {
             try
             {
@@ -1008,9 +1010,12 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
                     Dictionary<long, List<V_HIS_DEPARTMENT_TRAN>> dicDepartmentTranIn = new Dictionary<long, List<V_HIS_DEPARTMENT_TRAN>>();
                     Dictionary<long, List<V_HIS_DEPARTMENT_TRAN>> dicDepartmentTranOut = new Dictionary<long, List<V_HIS_DEPARTMENT_TRAN>>();
 
-                    var dicTreatmentBedRoomInfo = new Get.GetTreatmentInfo(listTreatmentAdo.Select(o => o.ID).ToList(), timeFrom, timeTo).GetTreatmentBedRoom();
                     foreach (var treatment in listTreatmentAdo)
                     {
+                        if (treatment.ID == 150352)
+                        {
+
+                        }
                         long? treatmentInTime = 0;
                         if (treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
                         {
@@ -1085,7 +1090,7 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
                                 {
                                     if (GetFisrtChar(Beds.BED_CODE) == "H")
                                     {
-                                        ado.COUNT_BED_H += 1; 
+                                        ado.COUNT_BED_H += 1;
                                         if (ado.BedH == null) ado.BedH = new List<ADO.TreatmentADO>();
                                         ado.BedH.Add(treatment);
                                     }
