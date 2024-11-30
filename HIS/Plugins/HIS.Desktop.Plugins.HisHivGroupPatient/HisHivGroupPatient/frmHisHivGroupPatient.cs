@@ -52,8 +52,8 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
         public frmHisHivGroupPatient(Inventec.Desktop.Common.Modules.Module moduledata)
         {
             try
-            {
-                InitializeComponent();
+            { 
+                InitializeComponent(); 
                 DevExpress.LookAndFeel.UserLookAndFeel.Default.SetSkinStyle("The Bezier"); 
                 this.moduledata = moduledata;
                 try
