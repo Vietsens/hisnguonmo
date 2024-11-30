@@ -2337,7 +2337,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                         MessageManager.Show(Resources.ResourceMessageLang.ChucNangChuaHoTroPhienBanHienTai);
                                     }
                                 }
-                                else
+                                else if (!success && param.Messages.Count > 0)
                                 {
                                     MessageManager.Show(param, success);
                                 }
@@ -3632,6 +3632,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 WaitingManager.Show();
                 callSyncSuccess = false;
                 isSendCollinearXml = true;
+                if (chkSignFileCertUtil.Checked == true && string.IsNullOrEmpty(SerialNumber))
+                {
+                    MessageBox.Show("Không có thông tin Usb Token ký số");
+                    return;
+                }
                 await ProcessSyncTreatment(listSelection);
 
                 if (callSyncSuccess)
@@ -4255,7 +4260,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                 string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
                 SignProcessorClient signProcessorClient = new SignProcessorClient();
-                string pathAfterFileSign = "";
+                string pathAfterFileSign = sourceFile;
                 if (VerifyServiceSignProcessorIsRunning())
                 {
                     var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
@@ -4295,10 +4300,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 }
                 if (configSync != null && !this.configSync.dontSend && string.IsNullOrEmpty(this.configSync.folderPath))
                 {
-                      if (File.Exists(wcfSignDCO.SourceFile))
-                            {
-                                File.Delete(wcfSignDCO.SourceFile);
-                            }
+                    if (File.Exists(wcfSignDCO.SourceFile))
+                    {
+                        File.Delete(wcfSignDCO.SourceFile);
+                    }
                 }
             }
             catch (Exception ex)
@@ -4448,97 +4453,28 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             string fullFileName = "";
                             fullFileName = xmlProcessor.GetFileName();
                             string saveFilePathXml12 = String.Format("{0}/{1}{2}", this.savePathADO.pathXmlGDYK, "XML12_", fullFileName);
-                            if (chkSignFileCertUtil.Checked == false)
+                            var rsXml12 = xmlProcessor.RunXml12(ref errorMess);
+                            if (!String.IsNullOrWhiteSpace(errorMess))
                             {
-                                var rsXml12 = xmlProcessor.RunXml12(ref errorMess);
-                                if (!String.IsNullOrWhiteSpace(errorMess))
-                                {
-                                    Inventec.Common.Logging.LogSystem.Error("Run130: " + errorMess);
-                                }
-                                if (rsXml12 != null)
-                                {
-                                    FileStream file12 = new FileStream(saveFilePathXml12, FileMode.Create, FileAccess.Write);
-                                    rsXml12.WriteTo(file12);
-                                    file12.Close();
-                                    rsXml12.Close();
-                                    success = true;
-                                }
-                                else
-                                {
-                                    if (!DicErrorMess.ContainsKey(errorMess))
-                                    {
-                                        DicErrorMess[errorMess] = new List<string>();
-                                    }
-
-                                    DicErrorMess[errorMess].Add(treatment.TREATMENT_CODE);
-                                }
+                                Inventec.Common.Logging.LogSystem.Error("Run130: " + errorMess);
+                            }
+                            if (rsXml12 != null)
+                            {
+                                FileStream file12 = new FileStream(saveFilePathXml12, FileMode.Create, FileAccess.Write);
+                                rsXml12.WriteTo(file12);
+                                file12.Close();
+                                rsXml12.Close();
+                                success = true;
                             }
                             else
                             {
-                                if (string.IsNullOrEmpty(SerialNumber))
+                                if (!DicErrorMess.ContainsKey(errorMess))
                                 {
-                                    MessageBox.Show("Không có thông tin Usb Token ký số");
-                                    return;
-
+                                    DicErrorMess[errorMess] = new List<string>();
                                 }
-                                else
-                                {
-                                    // Lấy đường dẫn đến thư mục hiện tại của chương trình
-                                    string currentDirectory = Directory.GetCurrentDirectory();
 
-                                    // Tạo đường dẫn đến thư mục tạm trong thư mục hiện tại
-                                    string tempFolderPath = Path.Combine(currentDirectory, "Temp");
-
-                                    // Tạo thư mục tạm nếu chưa tồn tại
-                                    Directory.CreateDirectory(tempFolderPath);
-
-                                    // Tạo đường dẫn đến file tạm 
-                                    string tempFilePath = Path.Combine(tempFolderPath, fullFileName);
-                                    File.Create(tempFilePath).Close();
-                                    //FileStream file = new FileStream(saveFilePathCollinearXml, FileMode.Create, FileAccess.Write);
-
-                                    WcfSignDCO wcfSignDCO = new WcfSignDCO();
-                                    wcfSignDCO.SerialNumber = SerialNumber;
-                                    wcfSignDCO.OutputFile = tempFilePath;
-                                    wcfSignDCO.PIN = "";
-                                    wcfSignDCO.SourceFile = saveFilePathXml12;
-                                    string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
-                                    SignProcessorClient signProcessorClient = new SignProcessorClient();
-                                    var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
-                                    string pathAfterFileSign = "";
-                                    if (wcfSignResultDCO.Success)
-                                    {
-                                        pathAfterFileSign = wcfSignResultDCO.OutputFile;
-                                    }
-
-                                    if (this.savePathADO == null || string.IsNullOrEmpty(this.savePathADO.pathCollinearXml))
-                                    {
-                                        XtraMessageBox.Show("Vui lòng thiết lập thư mục lưu trữ trước khi xuất dữ liệu.", Resources.ResourceMessageLang.ThongBao);
-                                        btnSavePath_Click(null, null);
-                                    }
-
-                                    //gọi api đẩy cổng ...
-                                    //...
-                                    Task task = Task.Run(async () => syncResult = await xmlProcessor.SendFileSign(pathAfterFileSign));
-                                    resultSync = xmlProcessor.Run(ref errorMess);
-
-                                    //string xmlFilePath = Path.Combine(tempFolderPath, fullFileName);
-
-                                    if (wcfSignDCO.SourceFile.Trim() != pathAfterFileSign.Trim())
-                                    {
-                                        if (File.Exists(wcfSignDCO.SourceFile))
-                                        {
-                                            File.Delete(wcfSignDCO.SourceFile);
-                                        }
-                                    }
-                                    // Xóa tất cả các file trong thư mục temp
-                                    foreach (string ifile in Directory.GetFiles(tempFolderPath))
-                                    {
-                                        File.Delete(ifile);
-                                    }
-                                }
+                                DicErrorMess[errorMess].Add(treatment.TREATMENT_CODE);
                             }
-                            count++;
                         }
                         if (DicErrorMess.Count > 0)
                         {
@@ -4704,11 +4640,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 }
                 if (this.savePathADO != null && !string.IsNullOrEmpty(this.savePathADO.pathCollinearXml))
                 {
-                    if (string.IsNullOrEmpty(SerialNumber))
-                    {
-                        MessageBox.Show("Không có thông tin Usb Token ký số");
-                        return;
-                    }
+                    //if (string.IsNullOrEmpty(SerialNumber))
+                    //{
+                    //    MessageBox.Show("Không có thông tin Usb Token ký số");
+                    //    return;
+                    //}
                     WaitingManager.Show();
                     Inventec.Common.Logging.LogSystem.Info("btnExportCollinearXml_Click Begin");
                     success = this.GenerateXml(ref param, ref memoryStream, false, true, false, listSelection);

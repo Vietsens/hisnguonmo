@@ -46,10 +46,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
@@ -134,10 +134,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnSave});
@@ -166,8 +162,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(389, 29);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(389, 0);
             // 
             // barDockControlBottom
             // 
@@ -330,7 +326,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.cboLoaiHS.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboLoaiHS.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.cboLoaiHS.Properties.NullText = "";
             this.cboLoaiHS.Properties.View = this.gridLookUpEdit4View;
             this.cboLoaiHS.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboLoaiHS_Properties_ButtonClick);
