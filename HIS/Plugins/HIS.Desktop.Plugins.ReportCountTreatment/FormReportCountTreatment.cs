@@ -892,6 +892,8 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
                     typeChk.Add(IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY);
 
                 var listTreatmentTotal = new Get.GetTreatment(timeFrom, timeTo, typeChk).GetTotalTreatment();
+
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listTreatmentTotal.Count), listTreatmentTotal.Count));
                 if (listTreatmentTotal != null && listTreatmentTotal.Count > 0)
                 {
                     listTreatmentTotal = listTreatmentTotal.Where(o => (o.TDL_TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && o.CLINICAL_IN_TIME.HasValue)
@@ -914,7 +916,7 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
                             }
 
 
-                            var TreatmentBedRoomInfo = new Get.GetTreatmentInfo(listTreatmentTotal.Select(o => o.ID).ToList(), timeFrom, TimeTo, department).GetTreatmentBedRoom();
+                            var TreatmentBedRoomInfo = new Get.GetTreatmentInfo(listTreatmentTotal.Select(o => o.ID).ToList(), timeFrom, timeTo, department).GetTreatmentBedRoom();
 
                             InitComboDepartment(department);
                             InitComboType(1);
@@ -1010,6 +1012,10 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment
 
                     foreach (var treatment in listTreatmentAdo)
                     {
+                        if (treatment.ID == 150352)
+                        {
+
+                        }
                         long? treatmentInTime = 0;
                         if (treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
                         {

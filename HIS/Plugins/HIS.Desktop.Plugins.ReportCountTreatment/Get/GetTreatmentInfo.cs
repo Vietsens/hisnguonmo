@@ -110,9 +110,12 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment.Get
                     foreach (var groups in groupTreatment)
                     {
                         HIS_TREATMENT_BED_ROOM t = groups
-                            .OrderByDescending(o => o.REMOVE_TIME)
+                            .OrderByDescending(o => o.REMOVE_TIME ?? -1)
                             .ThenByDescending(o => o.ID).FirstOrDefault();
+                        if(t.TREATMENT_ID == 150352)
+                        {
 
+                        }
                         result[t.TREATMENT_ID] = t;
                     }
                 }
@@ -277,7 +280,7 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment.Get
                                 HisBedRoomViewFilter hisBedRoomViewFilter = new HisBedRoomViewFilter();
                                 hisBedRoomViewFilter.IDs = apiResult.Select(o => o.BED_ROOM_ID).ToList();
                                 hisBedRoomViewFilter.DEPARTMENT_IDs = Departments.Select(o => o.ID).ToList();
-                                var apiBedRoomResult = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_ROOM>>("api/HisBedRoom/GetView", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                                var apiBedRoomResult = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_ROOM>>("api/HisBedRoom/GetView", ApiConsumer.ApiConsumers.MosConsumer, hisBedRoomViewFilter, param);
                                 if (apiBedRoomResult != null && apiBedRoomResult.Count > 0)
                                 {
                                     apiResult = apiResult.Where(o => apiBedRoomResult.Exists(p => p.ID == o.BED_ROOM_ID)).ToList();
