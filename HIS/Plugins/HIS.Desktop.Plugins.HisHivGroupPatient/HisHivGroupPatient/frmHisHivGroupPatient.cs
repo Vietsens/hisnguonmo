@@ -29,6 +29,7 @@ using Inventec.Common.TypeConvert;
 using DevExpress.Data;
 using HIS.Desktop.LibraryMessage;
 using DevExpress.XtraEditors.DXErrorProvider;
+using HIS.Desktop.Plugins.HisHivGroupPatient.Resources;
 
 namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
 {
@@ -51,8 +52,9 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
         public frmHisHivGroupPatient(Inventec.Desktop.Common.Modules.Module moduledata)
         {
             try
-            {
-                InitializeComponent();
+            { 
+                InitializeComponent(); 
+                DevExpress.LookAndFeel.UserLookAndFeel.Default.SetSkinStyle("The Bezier"); 
                 this.moduledata = moduledata;
                 try
                 {

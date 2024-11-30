@@ -53,7 +53,6 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                 ValidationControlMaxLength(txtRelativeName, 100);
                 ValidateGridLookupWithTextEdit(cboUser, txtLoginName, dxValidationProvider1);
                 ValidationControlBHXH(txtBhxhCode);
-                ValidationRequired(memTreatmentMethod);
                 
             }
             catch (Exception ex)

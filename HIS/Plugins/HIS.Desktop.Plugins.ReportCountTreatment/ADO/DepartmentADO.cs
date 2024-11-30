@@ -35,6 +35,8 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment.ADO
         public long COUNT_DEATH { get; set; }
         public long COUNT_TRAN { get; set; }
         public long COUNT_CC { get; set; }
+        public long COUNT_BED_H { get; set; }
+        public long COUNT_BED_T { get; set; }
         public long COUNT_6T { get; set; }
         public long COUNT_80T { get; set; }
         public long COUNT_FEMALE { get; set; }
@@ -47,6 +49,8 @@ namespace HIS.Desktop.Plugins.ReportCountTreatment.ADO
         internal List<TreatmentADO> TreatmentDeath { get; set; }
         internal List<TreatmentADO> TreatmentTran { get; set; }
         internal List<TreatmentADO> TreatmentCc { get; set; }
+        internal List<TreatmentADO> BedH{ get; set; }
+        internal List<TreatmentADO> BedT { get; set; }
         internal List<TreatmentADO> TreatmentTreEm { get; set; }
         internal List<TreatmentADO> TreatmentCaoTuoi { get; set; }
         internal List<TreatmentADO> TreatmentFemale { get; set; }
