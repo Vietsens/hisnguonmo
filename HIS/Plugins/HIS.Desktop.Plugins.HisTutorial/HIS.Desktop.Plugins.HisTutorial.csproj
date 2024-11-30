@@ -42,7 +42,7 @@
       <HintPath>..\..\..\..\Lib\ACS\ACS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="AxInterop.WMPLib">
-      <HintPath>..\..\..\..\Lib\HIS\ReferencedAssemblies\AxInterop.WMPLib.dll</HintPath>
+      <HintPath>..\..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\AxInterop.WMPLib.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2">
       <HintPath>..\..\..\..\Lib\DEVEXPRESS\DevExpress.Data.v15.2.dll</HintPath>
@@ -67,6 +67,18 @@
     </Reference>
     <Reference Include="DevExpress.XtraPdfViewer.v15.2">
       <HintPath>..\..\..\..\Lib\DEVEXPRESS\DevExpress.XtraPdfViewer.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.ApiConsumer">
+      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.ListReports\HIS.Desktop.ApiConsumer.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Controls.Session">
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCTransPati\HIS.Desktop.Controls.Session.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.BackendData">
+      <HintPath>..\..\..\..\lib\HIS\His.UC.UCHein\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.LocalData">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.ACS_RS">
       <HintPath>..\..\..\..\Lib\IMSys.DbConfig\IMSys.DbConfig.ACS_RS\IMSys.DbConfig.ACS_RS.dll</HintPath>
@@ -143,22 +155,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
-      <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
-      <Name>HIS.Desktop.ApiConsumer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
-      <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
-      <Name>HIS.Desktop.Controls.Session</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
-      <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
-      <Name>HIS.Desktop.LocalStorage.BackendData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
-      <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
-      <Name>HIS.Desktop.LocalStorage.LocalData</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
       <Name>HIS.Desktop.LocalStorage.Location</Name>
