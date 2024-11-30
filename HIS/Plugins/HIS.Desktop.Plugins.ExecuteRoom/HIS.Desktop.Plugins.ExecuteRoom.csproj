@@ -93,7 +93,7 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.OtherTreatmentHistory\HIS.Desktop.Plugins.Library.OtherTreatmentHistory.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TreeSereServ7V2">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.UC.TreeSereServ7V2.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.TreeSereServ7V2.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.ViewEmrDocument, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

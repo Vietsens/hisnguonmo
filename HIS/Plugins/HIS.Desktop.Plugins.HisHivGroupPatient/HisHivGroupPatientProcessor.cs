@@ -16,7 +16,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient
             "HIS.Desktop.Plugins.HisHivGroupPatient",
             "Danh mục chung",
             "Bussiness",
-            13,
+            8,
             "module.png",
             "A",
             Module.MODULE_TYPE_ID__FORM,

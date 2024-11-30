@@ -7,8 +7,8 @@ using System.Resources;
 
 namespace HIS.Desktop.Plugins.HisHivGroupPatient.Resources
 {
-    class ResourcesGroupPatient
+    class ResourceLanguageManager
     {
-        public static ResourceManager GroupPatientResource { get; set; }
+        public static ResourceManager LanguageResource { get; set; }
     }
 }

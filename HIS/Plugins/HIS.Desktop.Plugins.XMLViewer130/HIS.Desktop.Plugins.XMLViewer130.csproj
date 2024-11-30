@@ -46,7 +46,7 @@
       <HintPath>..\..\..\..\LIB\HIS\His.Bhyt.ExportXml\His.Bhyt.ExportXml.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130">
-      <HintPath>..\..\..\..\..\..\HISUTIL\His.Bhyt\His.Bhyt.ExportXml.XML130\bin\Debug\His.Bhyt.ExportXml.XML130.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130\His.Bhyt.ExportXml.XML130.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML1">
       <HintPath>..\..\..\..\LIB\HIS\His.Bhyt.ExportXml.XML130.XML1\His.Bhyt.ExportXml.XML130.XML1.dll</HintPath>
@@ -193,7 +193,6 @@
     <EmbeddedResource Include="frmXMLViewer.resx">
       <DependentUpon>frmXMLViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="UCXml130.resx">
       <DependentUpon>UCXml130.cs</DependentUpon>
     </EmbeddedResource>

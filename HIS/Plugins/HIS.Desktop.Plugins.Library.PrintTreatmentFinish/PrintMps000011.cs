@@ -18,6 +18,7 @@
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
+using Inventec.Common.Adapter;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
@@ -173,11 +174,15 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
                     {
                         _TranPatiTech = tranPatiTechs.FirstOrDefault(p => p.ID == HisTreatment.TRAN_PATI_TECH_ID);
                     }
-
+                    HisTreatmentFilter filterTreatment = new HisTreatmentFilter()
+                    {
+                        ID = HisTreatment.ID
+                    };
+                    var treatment = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumer.ApiConsumers.MosConsumer, filterTreatment, null);
                     mps000011RDO = new MPS.Processor.Mps000011.PDO.Mps000011PDO(
                         patientADO,
                        VHisPatientTypeAlter,
-                       HisTreatment,
+                       treatment.FirstOrDefault(),
                        tranpatiReasonADOs,
                        tranPatiForm,
                        ado,

@@ -73,8 +73,9 @@
     <Reference Include="ACS.SDO">
       <HintPath>..\..\..\lib\ACS\ACS.SDO.dll</HintPath>
     </Reference>
-    <Reference Include="AutoMapper">
-      <HintPath>..\..\..\lib\MRS\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Library packages\AutoMapper 4.0.4\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="AxInterop.SIGNVIEWLib">
       <HintPath>..\..\..\lib\WCF\EMR.WCF\EMR.SignProcessor\AxInterop.SIGNVIEWLib.dll</HintPath>
@@ -162,12 +163,30 @@
     <Reference Include="FRD">
       <HintPath>..\..\..\Lib\FRD\FRD.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.EventLog">
+      <HintPath>..\..\..\lib\HIS\HIS.UC.ListMaterialType\HIS.Desktop.EventLog.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.BackendData">
+      <HintPath>..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.ConfigCustomizaButton">
       <HintPath>..\..\..\lib\HIS\HIS.UC.UCPatientRaw\HIS.Desktop.LocalStorage.ConfigCustomizaButton.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.LisConfig">
+      <HintPath>..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.LisConfig.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.LocalData">
+      <HintPath>..\..\..\lib\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.Location, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Lib\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.LocalStorage.Location.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.PubSub">
+      <HintPath>..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.PubSub.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.ModuleExt">
+      <HintPath>..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.ConnectBloodPressure, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -175,6 +194,9 @@
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.IntegrateAssignPrescription">
       <HintPath>..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.IntegrateAssignPrescription\HIS.Desktop.Plugins.Library.IntegrateAssignPrescription.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.LocalCacheManager">
+      <HintPath>..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.LocalCacheManager.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Print">
       <HintPath>..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment\HIS.Desktop.Print.dll</HintPath>
@@ -195,9 +217,18 @@
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\Lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.Adapter">
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.Mail, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\LIB\Inventec.Common\Inventec.Common.Mail\Inventec.Common.Mail.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Mapper">
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.RichEditor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -206,6 +237,13 @@
     <Reference Include="Inventec.Common.SignLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\LIB\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.WebApiClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.WordContent">
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.WordContent\Inventec.Common.WordContent.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -533,10 +571,6 @@
       <Project>{d6f9e3dd-7029-499f-a759-2e28d80687ea}</Project>
       <Name>Inventec.Aup.Utility</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.csproj">
-      <Project>{dd2b84a4-a370-41a1-8dfa-10197540c101}</Project>
-      <Name>Inventec.Common.Adapter</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.csproj">
       <Project>{13abfbb0-586a-4f63-8fdd-1a8f8c356c9e}</Project>
       <Name>Inventec.Common.Controls.EditorLoader</Name>
@@ -557,17 +591,9 @@
       <Project>{a9e46128-5af1-4bbd-b318-854517fc26ab}</Project>
       <Name>Inventec.Common.FlexCelPrint</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.csproj">
-      <Project>{fb371fca-366f-4d79-b5ee-d5a3c25f6c02}</Project>
-      <Name>Inventec.Common.LocalStorage.SdaConfig</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.csproj">
       <Project>{4859008d-a40d-47bb-a185-019c8b140569}</Project>
       <Name>Inventec.Common.Logging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.csproj">
-      <Project>{7b793974-0c88-47d8-8686-cfa8f5f6e464}</Project>
-      <Name>Inventec.Common.Mapper</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Number\Inventec.Common.Number.csproj">
       <Project>{7428c903-6c07-4763-9154-a5c7461a9cbf}</Project>
@@ -608,14 +634,6 @@
     <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.csproj">
       <Project>{36fae455-24a7-45af-b360-aa6dc4d771f8}</Project>
       <Name>Inventec.Common.TypeConvert</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.csproj">
-      <Project>{f8a0b7b7-f43a-4f57-94bf-490cf1c3be43}</Project>
-      <Name>Inventec.Common.WebApiClient</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.WordContent\Inventec.Common.WordContent.csproj">
-      <Project>{e2ba1ac3-7691-4833-b261-280c95d34f45}</Project>
-      <Name>Inventec.Common.WordContent</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.XmlConfig\Inventec.Common.XmlConfig.csproj">
       <Project>{32fc4275-3a0e-424b-9768-1f20a1bf1db1}</Project>
@@ -697,17 +715,9 @@
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
       <Name>HIS.Desktop.Controls.Session</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.EventLog\HIS.Desktop.EventLog.csproj">
-      <Project>{306cbc95-d95a-48e1-941e-f3ecc0cbee34}</Project>
-      <Name>HIS.Desktop.EventLog</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
       <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
       <Name>HIS.Desktop.LibraryMessage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
-      <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
-      <Name>HIS.Desktop.LocalStorage.BackendData</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
       <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
@@ -725,22 +735,6 @@
       <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
       <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.LocalStorage.LisConfig\HIS.Desktop.LocalStorage.LisConfig.csproj">
-      <Project>{10821b01-1a57-4c91-9dbb-6ac222dada22}</Project>
-      <Name>HIS.Desktop.LocalStorage.LisConfig</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
-      <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
-      <Name>HIS.Desktop.LocalStorage.LocalData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.LocalStorage.PubSub\HIS.Desktop.LocalStorage.PubSub.csproj">
-      <Project>{e791eade-c034-4b2a-873c-8fdb26fdeb8d}</Project>
-      <Name>HIS.Desktop.LocalStorage.PubSub</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
-      <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>
-      <Name>HIS.Desktop.ModuleExt</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
       <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
       <Name>HIS.Desktop.Utilities</Name>
@@ -752,10 +746,6 @@
     <ProjectReference Include="..\Plugins\HIS.Desktop.Plugins.HisTutorial\HIS.Desktop.Plugins.HisTutorial.csproj">
       <Project>{f22facd5-3da1-4f80-bb8e-dc83a0ab5cdb}</Project>
       <Name>HIS.Desktop.Plugins.HisTutorial</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Plugins\HIS.Desktop.Plugins.LocalCacheManager\HIS.Desktop.Plugins.LocalCacheManager.csproj">
-      <Project>{5317499f-b8bb-4f85-8c5d-a6b01476d810}</Project>
-      <Name>HIS.Desktop.Plugins.LocalCacheManager</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
