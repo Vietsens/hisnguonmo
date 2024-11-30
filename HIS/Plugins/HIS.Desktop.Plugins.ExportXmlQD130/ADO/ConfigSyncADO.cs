@@ -35,5 +35,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         public bool isCheckCollinearXml { get; set; }
         public string folderPath { get; set; }
         public bool dontSend { get; set; }
+        public bool isXML3176 { get; set; }
     }
 }

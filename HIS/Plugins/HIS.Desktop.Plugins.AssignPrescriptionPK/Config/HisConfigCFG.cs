@@ -144,6 +144,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         private const string KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION";
         private const string KEY_CheckSoNgay = "His.Desktop.Plugins.AssignPrescriptionPK.CheckSoNgay";
         private const string KEY_IsCheckSubIcdExceedLimit = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
+        private const string KEY_IsRequiredHtu = "HIS.Desktop.Plugins.AssignPrescription.IsRequiredHtu";
+        internal static string IsRequiredHtu;
         internal static string IsCheckSubIcdExceedLimit;
         internal static bool CheckSoNgay;
         internal static string ASSIGN_SERVICE_SIMULTANEITY_OPTION;
@@ -435,6 +437,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         {
             try
             {
+                IsRequiredHtu = GetValue(KEY_IsRequiredHtu);
                 IsCheckSubIcdExceedLimit = GetValue(KEY_IsCheckSubIcdExceedLimit);
                 CheckSoNgay = GetValue(KEY_CheckSoNgay) == GlobalVariables.CommonStringTrue;
                 ASSIGN_SERVICE_SIMULTANEITY_OPTION = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION);

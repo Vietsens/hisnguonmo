@@ -31,11 +31,11 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
     delegate void AggrExpMestMouseRightClick(object sender, ItemClickEventArgs e);
     class PopupMenuProcessor
     {
-        V_HIS_EXP_MEST _ExpMest = null;
+        V_HIS_EXP_MEST_3 _ExpMest = null;
         BarManager _BarManager = null;
         PopupMenu _PopupMenu = null;
         AggrExpMestMouseRightClick _MouseRightClick;
-        List<V_HIS_EXP_MEST> CheckedExpMest;
+        List<V_HIS_EXP_MEST_3> CheckedExpMest;
 
         internal enum ItemType
         {
@@ -45,7 +45,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
 
         }
 
-        internal PopupMenuProcessor(V_HIS_EXP_MEST expMest, List<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST> checkedExpMest, BarManager barmanager, AggrExpMestMouseRightClick mouseRightClick)
+        internal PopupMenuProcessor(V_HIS_EXP_MEST_3 expMest, List<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_3> checkedExpMest, BarManager barmanager, AggrExpMestMouseRightClick mouseRightClick)
         {
             this._ExpMest = expMest;
             this._MouseRightClick = mouseRightClick;

@@ -577,6 +577,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     spnPeriod.Enabled = !autoSyncIsRunning;
                     chkOutTime.Checked = configSync.isCheckOutTime;
                     chkCollinearXML.Checked = configSync.isCheckCollinearXml;
+                    chkXML3176.Checked = configSync.isXML3176;
                     chkDontSend.Enabled = false;
                     chkDontSend.Checked = configSync.dontSend;
                     txtFolder.Text = configSync.folderPath;
@@ -636,6 +637,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.configSync.period = spnPeriod.Value;
                 this.configSync.isCheckOutTime = chkOutTime.Checked;
                 this.configSync.isCheckCollinearXml = chkCollinearXML.Checked;
+                this.configSync.isXML3176 = chkXML3176.Checked;
                 #region bo sung folder luu
                 this.configSync.folderPath = txtFolder.Text;
                 this.configSync.dontSend = chkDontSend.Checked;

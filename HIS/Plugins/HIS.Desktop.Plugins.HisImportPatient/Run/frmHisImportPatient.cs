@@ -858,7 +858,7 @@ namespace HIS.Desktop.Plugins.HisImportPatient.Run
 							foreach (var ser in item.SERVICE_CLS_CODE.Split(','))
 							{
 								count++;
-								var dtCheckCode = lstSerivce.FirstOrDefault(o => o.SERVICE_CODE == item.SERVICE_CODE);
+								var dtCheckCode = lstSerivce.FirstOrDefault(o => o.SERVICE_CODE == ser);
 								if (dtCheckCode != null && dtCheckCode.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
 								{
 									lstServiceClsId.Add(dtCheckCode.ID);
@@ -878,7 +878,7 @@ namespace HIS.Desktop.Plugins.HisImportPatient.Run
 						}
 						else
 						{
-							var dtCheckCode = lstSerivce.FirstOrDefault(o => o.SERVICE_CODE == item.SERVICE_CODE);
+							var dtCheckCode = lstSerivce.FirstOrDefault(o => o.SERVICE_CODE == item.SERVICE_CLS_CODE);
 							if (dtCheckCode != null && dtCheckCode.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
 							{
 								lstServiceClsId.Add(dtCheckCode.ID);
@@ -1021,7 +1021,7 @@ namespace HIS.Desktop.Plugins.HisImportPatient.Run
 					#endregion
 
 					#region Thu sau
-					if (!string.IsNullOrEmpty(item.IS_NOT_REQUIRE_FEE) && item.IS_NOT_REQUIRE_FEE.Trim().ToLower() == "X")
+					if (!string.IsNullOrEmpty(item.IS_NOT_REQUIRE_FEE) && item.IS_NOT_REQUIRE_FEE.Trim().ToLower() == "x")
 					{
 						kskAdo.IS_NOT_REQUIRE_FEE = "1";
 					}
@@ -1317,7 +1317,8 @@ namespace HIS.Desktop.Plugins.HisImportPatient.Run
 				hisPatient.IS_CHRONIC = ado.IS_CHRONIC == "1" ? (short?)1 : 0;
 				hisPatient.IS_TUBERCULOSIS = ado.IS_TUBERCULOSIS == "1" ? (short?)1 : 0;
 
-			}
+
+            }
 			catch (Exception ex)
 			{
 				hisPatient = null;
@@ -1369,7 +1370,7 @@ namespace HIS.Desktop.Plugins.HisImportPatient.Run
 				ServiceReqData.RequestLoginName = cboLogin.EditValue != null ? cboLogin.EditValue.ToString() : null;
 				ServiceReqData.RequestUserName = cboLogin.EditValue != null ? cboLogin.Text.ToString() : null;
 
-			}
+            }
 			catch (Exception ex)
 			{
 				Inventec.Common.Logging.LogSystem.Warn(ex);
@@ -1594,7 +1595,7 @@ namespace HIS.Desktop.Plugins.HisImportPatient.Run
 							}
 						}
 						SetDataSource(importAdos);
-						DevExpress.XtraEditors.XtraMessageBox.Show("Có {DicMessage.Count} bệnh nhân nhập khẩu lỗi. Xem các dòng để biết thêm chi tiết");
+						DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Có {0} bệnh nhân nhập khẩu lỗi. Xem các dòng để biết thêm chi tiết", DicMessage.Count));
 
 					}
 

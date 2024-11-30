@@ -38,7 +38,9 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
         {
             try
             {
-                var ExpMestData = (MOS.EFMODEL.DataModels.V_HIS_EXP_MEST)gridView.GetFocusedRow();
+                MOS.EFMODEL.DataModels.V_HIS_EXP_MEST ExpMestData = new MOS.EFMODEL.DataModels.V_HIS_EXP_MEST();
+                var ExpMestData3 = (MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_3)gridView.GetFocusedRow();
+                Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST>(ExpMestData, ExpMestData3);
                 if (ExpMestData != null)
                 {
                     WaitingManager.Show();
@@ -118,7 +120,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                     Resources.ResourceMessage.ThongBao,
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    var row = (MOS.EFMODEL.DataModels.V_HIS_EXP_MEST)gridView.GetFocusedRow();
+                    var row = (MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_3)gridView.GetFocusedRow();
                     if (row != null)
                     {
                         WaitingManager.Show();
@@ -154,7 +156,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             {
                 bool success = false;
                 CommonParam param = new CommonParam();
-                MOS.EFMODEL.DataModels.V_HIS_EXP_MEST row = (MOS.EFMODEL.DataModels.V_HIS_EXP_MEST)gridView.GetFocusedRow();
+                MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_3 row = (MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_3)gridView.GetFocusedRow();
                 if (row != null)
                 {
                     //WaitingManager.Show();
@@ -223,7 +225,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                 WaitingManager.Show();
                 bool success = false;
                 CommonParam param = new CommonParam();
-                MOS.EFMODEL.DataModels.V_HIS_EXP_MEST row = (MOS.EFMODEL.DataModels.V_HIS_EXP_MEST)gridView.GetFocusedRow();
+                MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_3 row = (MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_3)gridView.GetFocusedRow();
                 HisExpMestSDO ado = new HisExpMestSDO();
                 ado.ExpMestId = row.ID;
                 ado.ReqRoomId = this.roomId;
@@ -255,7 +257,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             {
                 bool success = false;
                 CommonParam param = new CommonParam();
-                MOS.EFMODEL.DataModels.V_HIS_EXP_MEST row = (MOS.EFMODEL.DataModels.V_HIS_EXP_MEST)gridView.GetFocusedRow();
+                MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_3 row = (MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_3)gridView.GetFocusedRow();
                 if (row != null)
                 {
                     //if (row.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DM)//Review //row.BLOOD_TYPE_COUNT > 0 && row.EXP_MEST_TYPE_ID == Base.HisExpMestTypeCFG.EXP_MEST_TYPE_ID__PRES)
@@ -340,7 +342,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                 WaitingManager.Show();
                 bool success = false;
                 CommonParam param = new CommonParam();
-                MOS.EFMODEL.DataModels.V_HIS_EXP_MEST row = (MOS.EFMODEL.DataModels.V_HIS_EXP_MEST)gridView.GetFocusedRow();
+                MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_3 row = (MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_3)gridView.GetFocusedRow();
                 HisExpMestSDO data = new HisExpMestSDO();
                 data.ExpMestId = row.ID;
                 data.ReqRoomId = this.roomId;
@@ -371,7 +373,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             {
                 bool success = false;
                 CommonParam param = new CommonParam();
-                MOS.EFMODEL.DataModels.V_HIS_EXP_MEST row = (MOS.EFMODEL.DataModels.V_HIS_EXP_MEST)gridView.GetFocusedRow();
+                MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_3 row = (MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_3)gridView.GetFocusedRow();
                 if (row != null)
                 {
 

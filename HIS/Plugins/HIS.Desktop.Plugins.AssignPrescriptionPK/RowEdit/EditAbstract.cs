@@ -88,7 +88,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit
         protected MediMatyTypeADO medicineTypeSDO { get; set; }
 
         protected decimal? Speed { get; set; }
-        protected long? HtuId { get; set; }
+        protected List<long> HtuIds { get; set; }
+        protected long HtuIdNotCheckAcinInteractive { get; set; }
         protected long? MedicineUseFormId { get; set; }
         protected string Tutorial { get; set; }
         protected bool IsExpend { get; set; }
@@ -147,8 +148,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit
             this.MediStockD1SDOs = frmAssignPrescription.mediStockD1ADOs;
             if (frmAssignPrescription.cboMedicineUseForm.EditValue != null)
                 this.MedicineUseFormId = Inventec.Common.TypeConvert.Parse.ToInt64((frmAssignPrescription.cboMedicineUseForm.EditValue ?? "0").ToString());
-            if (frmAssignPrescription.cboHtu.EditValue != null)
-                this.HtuId = Inventec.Common.TypeConvert.Parse.ToInt64((frmAssignPrescription.cboHtu.EditValue ?? "0").ToString());
+            this.HtuIds = frmAssignPrescription.DataHtuList.Exists(o => o.IsChecked) ? frmAssignPrescription.DataHtuList.Where(o => o.IsChecked).Select(o => o.ID).ToList() : null;
+            this.HtuIdNotCheckAcinInteractive = frmAssignPrescription.DataHtuList.Exists(o => o.IsChecked && o.CHECK_ACIN_INTERACTIVE != 1) ? frmAssignPrescription.DataHtuList.Where(o => o.IsChecked && o.CHECK_ACIN_INTERACTIVE != 1).OrderBy(o => o.NUM_ORDER).ToList()[0].ID : 0;
             this.Tutorial = frmAssignPrescription.txtTutorial.Text.Trim();
             this.UseDays = frmAssignPrescription.spinSoLuongNgay.Value;
             if (!String.IsNullOrEmpty(frmAssignPrescription.spinSang.Text))
@@ -250,7 +251,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit
                 medicineTypeSDO.TUTORIAL = this.Tutorial;
                 medicineTypeSDO.IsExpend = this.IsExpend;
                 medicineTypeSDO.MEDICINE_USE_FORM_ID = this.MedicineUseFormId;
-                medicineTypeSDO.HTU_ID = this.HtuId;
+                medicineTypeSDO.HTU_IDs = this.HtuIds;
+                medicineTypeSDO.HTU_ID_NOT_CHECK_ACIN_INTERACTIVE = this.HtuIdNotCheckAcinInteractive;
                 medicineTypeSDO.Speed = this.Speed;
                 medicineTypeSDO.IsKidneyShift = this.IsKidneyShift;
                 medicineTypeSDO.KidneyShiftCount = this.KidneyShiftCount;
