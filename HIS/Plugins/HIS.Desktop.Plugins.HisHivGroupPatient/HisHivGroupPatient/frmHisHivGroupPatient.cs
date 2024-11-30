@@ -29,6 +29,7 @@ using Inventec.Common.TypeConvert;
 using DevExpress.Data;
 using HIS.Desktop.LibraryMessage;
 using DevExpress.XtraEditors.DXErrorProvider;
+using HIS.Desktop.Plugins.HisHivGroupPatient.Resources;
 
 namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
 {
@@ -53,7 +54,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
             try
             {
                 InitializeComponent();
-                pagingGrid = new PagingGrid();
+                DevExpress.LookAndFeel.UserLookAndFeel.Default.SetSkinStyle("The Bezier"); 
                 this.moduledata = moduledata;
                 try
                 {
@@ -80,9 +81,9 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Warn(ex); 
             }
-        }
+        } 
 
         private void Show()
         {
@@ -91,9 +92,10 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
             EnableControlChanged(this.ActionType);
             SetDefaultValue();
             InitTabIndex();
-            SetReroucesByGroupPatient();
+            SetCaptionByLanguageKey();
             ValidateFrom();
         }
+
 
         private void ValidateFrom()
         {
@@ -140,67 +142,42 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
             }
         }
 
-        private void SetReroucesByGroupPatient()
+        private void SetCaptionByLanguageKey()
         {
             try
             {
-                Resources.ResourcesGroupPatient.GroupPatientResource = new ResourceManager("HIS.Desktop.Plugins.HisHivGroupPatient.Resources.Lang", 
-                    typeof(HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient.frmHisHivGroupPatient).Assembly);
+                ////Khoi tao doi tuong resource
+                Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.HisHivGroupPatient.Resources.Lang", typeof(frmHisHivGroupPatient).Assembly);
 
-                this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.LayoutControl1.Text",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.LayoutControl2.Text",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.LayoutControl3.Text",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.btnAdd.Text = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.btnAdd.Text",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.btnEdit.Text = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.btnEdit.Text",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.btnReset.Text = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.btnReset.Text",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.btnSearch.Text = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.btnSearch.Text",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.bar1.Text = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.bar1.Text",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.bbtnAdd.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.bbtnAdd.Caption",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.bbtnEdit.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.bbtnEdit.Caption",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.bbtnReset.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.bbtnReset.Caption",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.bbtnSearch.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.bbtnSearch.Caption",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.bbtnFocusDefault.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.bbtnFocusDefault.Caption",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.gridColumn1.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.gridColumn1.Caption",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.gridColumn2.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.gridColumn2.Caption",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.gridColumn3.Caption",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.gridColumn4.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.gridColumn4.Caption",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.gridColumn5.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.gridColumn5.Caption",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.gridColumn6.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.gridColumn6.Caption",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.gridColumn7.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.gridColumn7.Caption",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.gridColumn8.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.gridColumn8.Caption",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.gridColumn9.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.gridColumn9.Caption",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.gridColumn10.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.gridColumn10.Caption",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.txtMa.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.txtMa.Properties.NullValuePrompt",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.txtTen.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.txtTen.Properties.NullValuePrompt",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-                this.txtSearch.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.txtSearch.Properties.NullValuePrompt",
-                    Resources.ResourcesGroupPatient.GroupPatientResource, LanguageManager.GetCulture());
-
-                if (this.moduledata != null && !String.IsNullOrEmpty(this.moduledata.text))
+                ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
+                this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.layoutControl2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnSearch.Text = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.btnSearch.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtSearch.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.txtSearch.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtSearch.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.txtSearch.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.layoutControl3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnAdd.Text = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.btnAdd.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnReset.Text = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.btnReset.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnEdit.Text = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.btnEdit.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem4.Text = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.layoutControlItem4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem5.Text = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.layoutControlItem5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn1.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.gridColumn1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn2.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.gridColumn2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn4.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.gridColumn4.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn5.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.gridColumn5.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn6.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.gridColumn6.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn7.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.gridColumn7.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn8.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.gridColumn8.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn9.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.gridColumn9.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn10.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.gridColumn10.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.bar1.Text = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.bar1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.bbtnAdd.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.bbtnAdd.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.bbtnEdit.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.bbtnEdit.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.bbtnReset.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.bbtnReset.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.bbtnSearch.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.bbtnSearch.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.bbtnFocusDefault.Caption = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.bbtnFocusDefault.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.Text = Inventec.Common.Resource.Get.Value("frmHisHivGroupPatient.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                if (this.moduledata != null)
                 {
                     this.Text = this.moduledata.text;
                 }
@@ -277,7 +254,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
             try
             {
                 this.ActionType = GlobalVariables.ActionAdd;
-                txtSearch.Text = "";
+                txtSearch.Text = ""; 
                 txtMa.Text = "";
                 txtTen.Text = "";
             }
@@ -497,7 +474,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
             if (e.RowHandle >= 0)
             {
                 HIS_HIV_GROUP_PATIENT data = (HIS_HIV_GROUP_PATIENT)((IList)((BaseView)sender).DataSource)[e.RowHandle];
-                if (e.Column.FieldName == "IS_ACTIVE")
+                if (e.Column.FieldName == "IS_ACTIVE_HGP")
                 {
                     if (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
                     {
@@ -750,7 +727,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
                     {
                         e.Value = e.ListSourceRowIndex + 1 + startPage;
                     }
-                    else if (e.Column.FieldName == "IS_ACTIVE")
+                    else if (e.Column.FieldName == "IS_ACTIVE_HGP")
                     {
                         try
                         {
@@ -768,7 +745,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
                             Inventec.Common.Logging.LogSystem.Error(ex);
                         }
                     }
-                    else if (e.Column.FieldName == "CREATE_TIME")
+                    else if (e.Column.FieldName == "CREATE_TIME_HGP")
                     {
                         try
                         {
@@ -779,7 +756,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
                             Inventec.Common.Logging.LogSystem.Error(ex);
                         }
                     }
-                    else if (e.Column.FieldName == "MODIFY_TIME")
+                    else if (e.Column.FieldName == "MODIFY_TIME_HGP")
                     {
                         try
                         {
@@ -922,7 +899,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Warn(ex);  
             }
         }
 

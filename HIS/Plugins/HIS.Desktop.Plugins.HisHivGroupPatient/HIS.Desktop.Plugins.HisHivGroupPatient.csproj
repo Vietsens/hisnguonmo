@@ -154,7 +154,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\ResourcesGroupPatient.cs" />
+    <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Validation\ValidationControlTextEditPatientCode.cs" />
     <Compile Include="Validation\ValidationControlTextEditPatientName.cs" />
   </ItemGroup>
