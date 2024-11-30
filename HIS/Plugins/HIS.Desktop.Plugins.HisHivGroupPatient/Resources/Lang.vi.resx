@@ -157,7 +157,7 @@
     <value>Người sửa</value>
   </data>
   <data name="frmHisHivGroupPatient.gridColumn2.Caption" xml:space="preserve">
-    <value>Icon khóa</value>
+    <value>gridColumnisLock</value>
   </data>
   <data name="frmHisHivGroupPatient.gridColumn3.Caption" xml:space="preserve">
     <value>Icon xóa</value>
@@ -172,15 +172,36 @@
     <value>Trạng thái</value>
   </data>
   <data name="frmHisHivGroupPatient.gridColumn7.Caption" xml:space="preserve">
-    <value>Thời gian tạo</value>
+    <value>Thời gian tạo </value>
   </data>
   <data name="frmHisHivGroupPatient.gridColumn8.Caption" xml:space="preserve">
-    <value>Người tạo</value>
+    <value>Người tạo </value>
   </data>
   <data name="frmHisHivGroupPatient.gridColumn9.Caption" xml:space="preserve">
     <value>Thời gian sửa</value>
   </data>
+  <data name="frmHisHivGroupPatient.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmHisHivGroupPatient.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmHisHivGroupPatient.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmHisHivGroupPatient.layoutControlItem4.Text" xml:space="preserve">
+    <value>Mã nhóm:</value>
+  </data>
+  <data name="frmHisHivGroupPatient.layoutControlItem5.Text" xml:space="preserve">
+    <value>Tên nhóm:</value>
+  </data>
+  <data name="frmHisHivGroupPatient.Text" xml:space="preserve">
+    <value>Nhóm HIV/AIDS</value>
+  </data>
+  <data name="frmHisHivGroupPatient.txtSearch.Properties.NullText" xml:space="preserve">
+    <value>Nhập giá trị tìm kiếm</value>
+  </data>
   <data name="frmHisHivGroupPatient.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
-    <value>Từ khóa tìm kiếm</value>
+    <value>Nhập giá trị tìm kiếm</value>
   </data>
 </root>
