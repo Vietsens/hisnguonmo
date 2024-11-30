@@ -3661,7 +3661,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private async Task ProcessSyncTreatment(List<V_HIS_TREATMENT_1> listTreatmentSync) 
+        private async Task ProcessSyncTreatment(List<V_HIS_TREATMENT_1> listTreatmentSync)
         {
             try
             {
@@ -4292,6 +4292,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 foreach (string file in Directory.GetFiles(tempFolderPath))
                 {
                     File.Delete(file);
+                }
+                if (configSync != null && !this.configSync.dontSend && string.IsNullOrEmpty(this.configSync.folderPath))
+                {
+                      if (File.Exists(wcfSignDCO.SourceFile))
+                            {
+                                File.Delete(wcfSignDCO.SourceFile);
+                            }
                 }
             }
             catch (Exception ex)
@@ -5152,6 +5159,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             try
             {
+                btnAutoSyncClick = false;
                 isXML130 = false;
                 showMessSusscess = false;
                 isXML3176 = true;
