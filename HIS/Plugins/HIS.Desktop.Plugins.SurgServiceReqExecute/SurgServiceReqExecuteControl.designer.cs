@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -70,7 +69,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlLeft = new DevExpress.XtraLayout.LayoutControl();
             this.btnCoppyInfo = new DevExpress.XtraEditors.SimpleButton();
             this.chkServiceCode = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -135,6 +134,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem57 = new DevExpress.XtraLayout.LayoutControlItem();
             this.btnOther = new DevExpress.XtraEditors.DropDownButton();
             this.layoutControlRight = new DevExpress.XtraLayout.LayoutControl();
+            this.cboHospSubs = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
+            this.customGridLookUpEditWithFilterMultiColumn2View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
+            this.cboEndDeptSubs = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
+            this.customGridViewWithFilterMultiColumn7 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.lblIntructionTime = new DevExpress.XtraEditors.LabelControl();
             this.chkClose = new DevExpress.XtraEditors.CheckEdit();
             this.chkSign = new DevExpress.XtraEditors.CheckEdit();
@@ -321,6 +324,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem60 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem61 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem62 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciEndDeptSubs = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciHospSubs = new DevExpress.XtraLayout.LayoutControlItem();
             this.customGridViewWithFilterMultiColumn4 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.customGridViewWithFilterMultiColumn6 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.customGridViewWithFilterMultiColumn5 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
@@ -330,8 +335,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.customGridViewWithFilterMultiColumn1 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.customGridLookUpEditWithFilterMultiColumn1View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.repositoryItemCustomGridLookUpEditNew1View = new HIS.Desktop.Utilities.Extensions.CustomGridView();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.timerInitForm = new System.Windows.Forms.Timer(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.timerInitForm = new System.Windows.Forms.Timer();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpinEditSTTImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlLeft)).BeginInit();
@@ -372,6 +377,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem57)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlRight)).BeginInit();
             this.layoutControlRight.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cboHospSubs.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn2View)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboEndDeptSubs.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkClose.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSign.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkKetThuc.Properties)).BeginInit();
@@ -547,6 +556,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem60)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem61)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem62)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciEndDeptSubs)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHospSubs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn5)).BeginInit();
@@ -1330,6 +1341,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // layoutControlRight
             // 
+            this.layoutControlRight.Controls.Add(this.cboHospSubs);
+            this.layoutControlRight.Controls.Add(this.cboEndDeptSubs);
             this.layoutControlRight.Controls.Add(this.lblIntructionTime);
             this.layoutControlRight.Controls.Add(this.chkClose);
             this.layoutControlRight.Controls.Add(this.chkSign);
@@ -1413,6 +1426,54 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlRight.Size = new System.Drawing.Size(792, 688);
             this.layoutControlRight.TabIndex = 0;
             this.layoutControlRight.Text = "layoutControl2";
+            // 
+            // cboHospSubs
+            // 
+            this.cboHospSubs.Location = new System.Drawing.Point(724, 432);
+            this.cboHospSubs.MenuManager = this.barManager1;
+            this.cboHospSubs.Name = "cboHospSubs";
+            this.cboHospSubs.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboHospSubs.Properties.AutoComplete = false;
+            this.cboHospSubs.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboHospSubs.Properties.NullText = "";
+            this.cboHospSubs.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboHospSubs.Properties.View = this.customGridLookUpEditWithFilterMultiColumn2View;
+            this.cboHospSubs.Size = new System.Drawing.Size(94, 20);
+            this.cboHospSubs.StyleController = this.layoutControlRight;
+            this.cboHospSubs.TabIndex = 117;
+            // 
+            // customGridLookUpEditWithFilterMultiColumn2View
+            // 
+            this.customGridLookUpEditWithFilterMultiColumn2View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridLookUpEditWithFilterMultiColumn2View.Name = "customGridLookUpEditWithFilterMultiColumn2View";
+            this.customGridLookUpEditWithFilterMultiColumn2View.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridLookUpEditWithFilterMultiColumn2View.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboEndDeptSubs
+            // 
+            this.cboEndDeptSubs.Location = new System.Drawing.Point(488, 432);
+            this.cboEndDeptSubs.MenuManager = this.barManager1;
+            this.cboEndDeptSubs.Name = "cboEndDeptSubs";
+            this.cboEndDeptSubs.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboEndDeptSubs.Properties.AutoComplete = false;
+            this.cboEndDeptSubs.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboEndDeptSubs.Properties.NullText = "";
+            this.cboEndDeptSubs.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboEndDeptSubs.Properties.View = this.customGridViewWithFilterMultiColumn7;
+            this.cboEndDeptSubs.Size = new System.Drawing.Size(127, 20);
+            this.cboEndDeptSubs.StyleController = this.layoutControlRight;
+            this.cboEndDeptSubs.TabIndex = 116;
+            // 
+            // customGridViewWithFilterMultiColumn7
+            // 
+            this.customGridViewWithFilterMultiColumn7.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridViewWithFilterMultiColumn7.Name = "customGridViewWithFilterMultiColumn7";
+            this.customGridViewWithFilterMultiColumn7.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridViewWithFilterMultiColumn7.OptionsView.ShowGroupPanel = false;
             // 
             // lblIntructionTime
             // 
@@ -1537,7 +1598,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.xtraTabControl1.Location = new System.Drawing.Point(488, 268);
             this.xtraTabControl1.Name = "xtraTabControl1";
             this.xtraTabControl1.SelectedTabPage = this.xtraTabPageMoTa;
-            this.xtraTabControl1.Size = new System.Drawing.Size(330, 184);
+            this.xtraTabControl1.Size = new System.Drawing.Size(330, 160);
             this.xtraTabControl1.TabIndex = 106;
             this.xtraTabControl1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPageMoTa,
@@ -1548,7 +1609,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             this.xtraTabPageMoTa.Controls.Add(this.txtDescription);
             this.xtraTabPageMoTa.Name = "xtraTabPageMoTa";
-            this.xtraTabPageMoTa.Size = new System.Drawing.Size(324, 156);
+            this.xtraTabPageMoTa.Size = new System.Drawing.Size(324, 132);
             this.xtraTabPageMoTa.Text = "Mô tả";
             // 
             // txtDescription
@@ -1557,14 +1618,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.txtDescription.Location = new System.Drawing.Point(0, 0);
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.Properties.MaxLength = 4000;
-            this.txtDescription.Size = new System.Drawing.Size(324, 156);
+            this.txtDescription.Size = new System.Drawing.Size(324, 132);
             this.txtDescription.TabIndex = 28;
             // 
             // xtraTabPageGhiChu
             // 
             this.xtraTabPageGhiChu.Controls.Add(this.txtResultNote);
             this.xtraTabPageGhiChu.Name = "xtraTabPageGhiChu";
-            this.xtraTabPageGhiChu.Size = new System.Drawing.Size(324, 156);
+            this.xtraTabPageGhiChu.Size = new System.Drawing.Size(324, 132);
             this.xtraTabPageGhiChu.Text = "Ghi chú";
             // 
             // txtResultNote
@@ -1572,14 +1633,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.txtResultNote.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtResultNote.Location = new System.Drawing.Point(0, 0);
             this.txtResultNote.Name = "txtResultNote";
-            this.txtResultNote.Size = new System.Drawing.Size(324, 156);
+            this.txtResultNote.Size = new System.Drawing.Size(324, 132);
             this.txtResultNote.TabIndex = 30;
             // 
             // xtraTabPageLuocDo
             // 
             this.xtraTabPageLuocDo.Controls.Add(this.cardControl);
             this.xtraTabPageLuocDo.Name = "xtraTabPageLuocDo";
-            this.xtraTabPageLuocDo.Size = new System.Drawing.Size(324, 156);
+            this.xtraTabPageLuocDo.Size = new System.Drawing.Size(324, 132);
             this.xtraTabPageLuocDo.Text = "Lược đồ";
             // 
             // cardControl
@@ -1594,7 +1655,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.repositoryItemPictureEdit1,
             this.repositoryItembtnDelete,
             this.SpinEditSTTImage});
-            this.cardControl.Size = new System.Drawing.Size(324, 156);
+            this.cardControl.Size = new System.Drawing.Size(324, 132);
             this.cardControl.TabIndex = 5;
             this.cardControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.tileView1,
@@ -2851,7 +2912,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem59,
             this.layoutControlItem60,
             this.layoutControlItem61,
-            this.layoutControlItem62});
+            this.layoutControlItem62,
+            this.lciEndDeptSubs,
+            this.lciHospSubs});
             this.lciRight.Location = new System.Drawing.Point(0, 0);
             this.lciRight.Name = "Root";
             this.lciRight.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -3722,7 +3785,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem39.Location = new System.Drawing.Point(381, 266);
             this.layoutControlItem39.MinSize = new System.Drawing.Size(119, 24);
             this.layoutControlItem39.Name = "layoutControlItem39";
-            this.layoutControlItem39.Size = new System.Drawing.Size(439, 188);
+            this.layoutControlItem39.Size = new System.Drawing.Size(439, 164);
             this.layoutControlItem39.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem39.Text = "phút";
             this.layoutControlItem39.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -3844,6 +3907,34 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem62.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem62.TextSize = new System.Drawing.Size(95, 20);
             this.layoutControlItem62.TextToControlDistance = 5;
+            // 
+            // lciEndDeptSubs
+            // 
+            this.lciEndDeptSubs.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciEndDeptSubs.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciEndDeptSubs.Control = this.cboEndDeptSubs;
+            this.lciEndDeptSubs.Location = new System.Drawing.Point(381, 430);
+            this.lciEndDeptSubs.Name = "lciEndDeptSubs";
+            this.lciEndDeptSubs.OptionsToolTip.ToolTip = "Chọn người ký thay trưởng khoa";
+            this.lciEndDeptSubs.Size = new System.Drawing.Size(236, 24);
+            this.lciEndDeptSubs.Text = "Người ký thay TK:";
+            this.lciEndDeptSubs.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciEndDeptSubs.TextSize = new System.Drawing.Size(100, 20);
+            this.lciEndDeptSubs.TextToControlDistance = 5;
+            // 
+            // lciHospSubs
+            // 
+            this.lciHospSubs.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciHospSubs.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciHospSubs.Control = this.cboHospSubs;
+            this.lciHospSubs.Location = new System.Drawing.Point(617, 430);
+            this.lciHospSubs.Name = "lciHospSubs";
+            this.lciHospSubs.OptionsToolTip.ToolTip = "Chọn người ký thay giám đốc viện";
+            this.lciHospSubs.Size = new System.Drawing.Size(203, 24);
+            this.lciHospSubs.Text = "Người ký thay GĐ:";
+            this.lciHospSubs.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciHospSubs.TextSize = new System.Drawing.Size(100, 20);
+            this.lciHospSubs.TextToControlDistance = 5;
             // 
             // customGridViewWithFilterMultiColumn4
             // 
@@ -3970,6 +4061,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem57)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlRight)).EndInit();
             this.layoutControlRight.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cboHospSubs.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn2View)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboEndDeptSubs.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkClose.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSign.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkKetThuc.Properties)).EndInit();
@@ -4145,6 +4240,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem60)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem61)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem62)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciEndDeptSubs)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHospSubs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn5)).EndInit();
@@ -4437,5 +4534,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem61;
         private DevExpress.XtraEditors.LabelControl lblIntructionTime;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem62;
+        private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cboHospSubs;
+        private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridLookUpEditWithFilterMultiColumn2View;
+        private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cboEndDeptSubs;
+        private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridViewWithFilterMultiColumn7;
+        private DevExpress.XtraLayout.LayoutControlItem lciEndDeptSubs;
+        private DevExpress.XtraLayout.LayoutControlItem lciHospSubs;
     }
 }

@@ -787,6 +787,24 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     HisSereServPttt.SKIN_SURGERY_DESC_ID = null;
                 }
 
+                if(cboHospSubs.EditValue != null)
+                {
+                    HisSereServPttt.SURG_HOSP_SUBS_DIRECTOR_LOGINNAME = cboHospSubs.EditValue.ToString();
+                    HisSereServPttt.SURG_HOSP_SUBS_DIRECTOR_USERNAME = lstReAcsUserADO.FirstOrDefault(o=>o.LOGINNAME == cboHospSubs.EditValue.ToString()).USERNAME;
+                }
+                if (cboEndDeptSubs.EditValue != null)
+                {
+                    HisSereServPttt.SURG_DEPT_SUBS_HEAD_LOGINNAME = cboEndDeptSubs.EditValue.ToString();
+                    HisSereServPttt.SURG_DEPT_SUBS_HEAD_USERNAME  = lstReAcsUserADO.FirstOrDefault(o => o.LOGINNAME == cboEndDeptSubs.EditValue.ToString()).USERNAME;
+                }
+
+                var RoomV = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == Module.RoomId);
+                var Department = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>().FirstOrDefault(o => o.ID == RoomV.DEPARTMENT_ID);
+                HisSereServPttt.SURG_DEPARTMENT_HEAD_LOGINNAME = Department.HEAD_LOGINNAME;
+                HisSereServPttt.SURG_DEPARTMENT_HEAD_USERNAME = Department.HEAD_USERNAME;
+                var Branch = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BRANCH>().FirstOrDefault(o => o.ID == Department.BRANCH_ID);
+                HisSereServPttt.SURG_HOSPITAL_DIRECTOR_LOGINNAME = Branch.DIRECTOR_LOGINNAME;
+                HisSereServPttt.SURG_HOSPITAL_DIRECTOR_USERNAME = Branch.DIRECTOR_USERNAME;
                 hisSurgResultSDO.SereServPttt = HisSereServPttt;
             }
             catch (Exception ex)

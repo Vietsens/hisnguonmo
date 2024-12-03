@@ -175,7 +175,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 
                 Inventec.Common.Logging.LogSystem.Debug("SurgServiceReqExecuteControl_Load. 3");
                 AcsUserADOList = ProcessAcsUser();
-
+                LoadDataTocboUser();
                 this.LoadDataToComboPtttTemp();
                 Inventec.Common.Logging.LogSystem.Debug("SurgServiceReqExecuteControl_Load. 4");
                 this.SetIcdFromServiceReq(this.serviceReq);
@@ -726,7 +726,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         this.dxErrorProviver.SetError(txtConclude, "", ErrorType.None);
                     }
                 }
-                Inventec.Common.Logging.LogSystem.Debug("__________dxErrorProviver");
                 //
                 var rs = TypeRequiredEmotionlessMethodOption(this.sereServ);
                 if ((rs.RequiredEmotionlessOption == 1 || rs.RequiredEmotionlessOption == 2) && rs.IsServiceTypePT && cbbEmotionlessMethod.EditValue == null)
