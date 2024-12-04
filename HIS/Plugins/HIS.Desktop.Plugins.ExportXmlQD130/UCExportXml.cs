@@ -1022,10 +1022,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     {
                         MessageManager.Show(this.ParentForm, param, success);
                     }
-                    //else
-                    //{
-                    //    MessageManager.Show(param, success);
-                    //}
+                    else if (param.Messages.Count >= 1)
+                    {
+                        MessageManager.Show(param, success);
+                    }
 
                     this.gridControlTreatment.RefreshDataSource();
                 }
@@ -1815,8 +1815,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     {
                         File.Delete(ifile);
                     }
-                    result = errorMess;
                 }
+                result = errorMess;
             }
             catch (Exception ex)
             {
@@ -4654,10 +4654,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     {
                         MessageManager.Show(this.ParentForm, param, success);
                     }
-                    //else
-                    //{
-                    //    MessageManager.Show(param, success);
-                    //}
+                    else if (param.Messages.Count > 0)
+                    {
+                        MessageManager.Show(param, success);
+                    }
 
                     this.gridControlTreatment.RefreshDataSource();
                 }
@@ -5075,10 +5075,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     {
                         MessageManager.Show(this.ParentForm, param, success);
                     }
-                    //else
-                    //{
-                    //    MessageManager.Show(param, success);
-                    //}
+                    else if (param.Messages.Count > 0)
+                    {
+                        MessageManager.Show(param, success);
+                    }
 
                     this.gridControlTreatment.RefreshDataSource();
                 }
