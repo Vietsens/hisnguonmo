@@ -117,7 +117,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     var bbtnItem = sender as DevExpress.XtraEditors.SimpleButton;
                     printTypeCode = (bbtnItem.Tag ?? "").ToString();
                 }
-                LogTheadInSessionInfo(() => DelegateRunPrinter(printTypeCode, false, null), "PrintRequestAggregateDesignation");
+                LogTheadInSessionInfo(() => DelegateRunPrinter(printTypeCode, true, null), "PrintRequestAggregateDesignation");
             }
             catch (Exception ex)
             {
