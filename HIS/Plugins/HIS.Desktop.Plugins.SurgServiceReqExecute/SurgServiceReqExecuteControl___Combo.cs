@@ -398,6 +398,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     ado.DEPARTMENT_CODE = item.DEPARTMENT_CODE;
                     ado.DEPARTMENT_ID = item.DEPARTMENT_ID;
                     ado.DEPARTMENT_NAME = item.DEPARTMENT_NAME;
+                    ado.USERNAME = item.TDL_USERNAME;
                     this.lstReAcsUserADO.Add(ado);
                 }
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
