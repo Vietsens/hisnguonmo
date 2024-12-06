@@ -133,26 +133,23 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             {
                 HisConfigCHECKHEINCARD.LoadConfig();
                 string connect_infor = HisConfigCHECKHEINCARD.CHECK_HEIN_CARD_BHXH__API;
+                LogSystem.Debug("Connection info: " + connect_infor);
                 string username = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 var employee = GetEmployee(username);
                 LogSystem.Debug("employee: " + LogUtil.TraceData("employee", employee));
                 if (!string.IsNullOrEmpty(connect_infor))
                 {
                     connectInfors = connect_infor.Split('|').ToList();
+                    LogSystem.Debug("data split." + LogUtil.TraceData("connectInfors", connectInfors));
                     api = connectInfors.Count > 0 ? connectInfors[0] : string.Empty;
 
                     nameCb = connectInfors.Count > 1 && !string.IsNullOrEmpty(connectInfors[1]) ? connectInfors[1] : employee.TDL_USERNAME;
                     cccdCb = connectInfors.Count > 2 && !string.IsNullOrEmpty(connectInfors[2]) ? connectInfors[2] : employee.IDENTIFICATION_NUMBER;
 
-                    LogSystem.Debug("BHXHLoginCFG.OFFICERNAME: " + connectInfors[1]);
-                    LogSystem.Debug("BHXHLoginCFG.CCCDOFFICER: " + connectInfors[2]);
+                    if(connectInfors.Count > 1) LogSystem.Debug("BHXHLoginCFG.OFFICERNAME: " + connectInfors[1]);
+                    if(connectInfors.Count > 2)LogSystem.Debug("BHXHLoginCFG.CCCDOFFICER: " + connectInfors[2]);
                 }
-                else
-                {
-                    nameCb = employee.TDL_USERNAME;
-                    cccdCb = employee.IDENTIFICATION_NUMBER;
-                    
-                }
+                
             }
             catch (Exception ex)
             {
@@ -2137,6 +2134,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? hisPatient.VIR_PATIENT_NAME.ToLower() : checkHistoryLDO.hoTen);
                 checkHistoryLDO.cccdCb = cccdCb;
                 checkHistoryLDO.hoTenCb = nameCb;
+
                 Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 1");
                 if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
                     || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)
