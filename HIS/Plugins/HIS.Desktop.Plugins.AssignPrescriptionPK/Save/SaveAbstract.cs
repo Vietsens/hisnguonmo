@@ -124,6 +124,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
         public string EndTypeExtNote { get; set; }
         public string MotherName { get; set; }
         public string FatherName { get; set; }
+        public string HospitalizeReasonName { get; set; }
+        public string HospitalizeReasonCode { get; set; }
         protected frmAssignPrescription frmAssignPrescription { get; set; }
         protected bool IsMultiDate { get; set; }
         protected List<long> InstructionTimes { get; set; }
@@ -300,6 +302,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     this.EndTypeExtNote = treatDT.EndTypeExtNote;
                     this.MotherName = treatDT.MotherName;
                     this.FatherName = treatDT.FatherName;
+                    this.HospitalizeReasonName = treatDT.HospitalizeReasonName;
+                    this.HospitalizeReasonCode = treatDT.HospitalizeReasonCode;
 
                 }
                 this.TreatmentFinishSDO = frmAssignPrescription.treatmentFinishProcessor.GetData(frmAssignPrescription.ucTreatmentFinish);
