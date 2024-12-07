@@ -77,7 +77,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK
                 if (medicineTypeCodeOthers != null && medicineTypeCodeOthers.Count > 0 && currentMedicineTypeAcins != null && currentMedicineTypeAcins.Count > 0)
                 {
                     Inventec.Common.Logging.LogSystem.Debug("Cac thuoc dang ke hoac thuoc da ke trong ngay____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeCodes), medicineTypeCodes)
-                        + "________Thuoc dang chon de bo sung____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => mediMatyTypeADO), mediMatyTypeADO) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentMedicineTypeAcins), currentMedicineTypeAcins));
+                        + "________Thuoc dang chon de bo sung____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => mediMatyTypeADO), mediMatyTypeADO));
 
                     var dicMedicineTypeAcin = currentMedicineTypeAcins.GroupBy(o => o.MEDICINE_TYPE_ID).ToDictionary(o => o.Key, t => t.ToList());
                     var mediMatyTypeAcinByCurrents = dicMedicineTypeAcin.ContainsKey(mediMatyTypeADO.ID) ? dicMedicineTypeAcin[mediMatyTypeADO.ID] : null;
@@ -113,7 +113,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK
                 }
                 else
                 {
-                    Inventec.Common.Logging.LogSystem.Info("ValidSameAcin: khong du 2 thuoc de so sanh hoac thuoc khong co thiet lap thuoc - hoat chat" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeCodes), medicineTypeCodes) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeCodeOthers), medicineTypeCodeOthers) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentMedicineTypeAcins), currentMedicineTypeAcins));
+                    Inventec.Common.Logging.LogSystem.Info("ValidSameAcin: khong du 2 thuoc de so sanh hoac thuoc khong co thiet lap thuoc - hoat chat" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeCodes), medicineTypeCodes) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeCodeOthers), medicineTypeCodeOthers));
                 }
             }
             catch (Exception ex)

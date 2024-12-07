@@ -2996,7 +2996,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 }
                 if (ucIcdYhct != null)
                 {
-                    var IcdYHCT = icdYhctProcessor.GetValue(ucIcdYhct);
+                    var IcdYHCT = icdYhctProcessor.GetValue(ucIcdYhct, Template.NoFocus);
                     if (IcdYHCT != null && IcdYHCT is IcdInputADO)
                     {
                         codeCheckCDYHCT += ((IcdInputADO)IcdYHCT).ICD_CODE;

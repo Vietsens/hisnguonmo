@@ -52,8 +52,8 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
         public frmHisHivGroupPatient(Inventec.Desktop.Common.Modules.Module moduledata)
         {
             try
-            {
-                InitializeComponent();
+            { 
+                InitializeComponent(); 
                 DevExpress.LookAndFeel.UserLookAndFeel.Default.SetSkinStyle("The Bezier"); 
                 this.moduledata = moduledata;
                 try
@@ -988,7 +988,7 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
                         if (success)
                         {
                             FillDataFromList();
-                            currentData = ((List<HIS_HIV_GROUP_PATIENT>)gridControl1.DataSource).FirstOrDefault();
+                            currentData = ((List<HIS_HIV_GROUP_PATIENT>)gridControl1.DataSource).FirstOrDefault(); 
                         }
                         MessageManager.Show(this, param, success);
                     }
@@ -999,5 +999,15 @@ namespace HIS.Desktop.Plugins.HisHivGroupPatient.HisHivGroupPatient
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void txtSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnSearch.PerformClick();
+            }
+        }
+
+
     }
 }

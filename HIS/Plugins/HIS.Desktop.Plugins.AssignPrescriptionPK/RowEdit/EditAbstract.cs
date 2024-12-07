@@ -89,7 +89,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit
 
         protected decimal? Speed { get; set; }
         protected List<long> HtuIds { get; set; }
-        protected long HtuIdNotCheckAcinInteractive { get; set; }
+        protected long? HtuIdNotCheckAcinInteractive { get; set; }
         protected long? MedicineUseFormId { get; set; }
         protected string Tutorial { get; set; }
         protected bool IsExpend { get; set; }
@@ -149,7 +149,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit
             if (frmAssignPrescription.cboMedicineUseForm.EditValue != null)
                 this.MedicineUseFormId = Inventec.Common.TypeConvert.Parse.ToInt64((frmAssignPrescription.cboMedicineUseForm.EditValue ?? "0").ToString());
             this.HtuIds = frmAssignPrescription.DataHtuList.Exists(o => o.IsChecked) ? frmAssignPrescription.DataHtuList.Where(o => o.IsChecked).Select(o => o.ID).ToList() : null;
-            this.HtuIdNotCheckAcinInteractive = frmAssignPrescription.DataHtuList.Exists(o => o.IsChecked && o.CHECK_ACIN_INTERACTIVE != 1) ? frmAssignPrescription.DataHtuList.Where(o => o.IsChecked && o.CHECK_ACIN_INTERACTIVE != 1).OrderBy(o => o.NUM_ORDER).ToList()[0].ID : 0;
+            this.HtuIdNotCheckAcinInteractive = frmAssignPrescription.DataHtuList.Exists(o => o.IsChecked && o.CHECK_ACIN_INTERACTIVE != 1) ? (long?)frmAssignPrescription.DataHtuList.Where(o => o.IsChecked && o.CHECK_ACIN_INTERACTIVE != 1).OrderBy(o => o.NUM_ORDER).ToList()[0].ID : null;
             this.Tutorial = frmAssignPrescription.txtTutorial.Text.Trim();
             this.UseDays = frmAssignPrescription.spinSoLuongNgay.Value;
             if (!String.IsNullOrEmpty(frmAssignPrescription.spinSang.Text))

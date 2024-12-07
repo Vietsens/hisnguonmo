@@ -807,9 +807,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     {
                         V_HIS_SERE_SERV_PTTT pttt = hisSereServPttt.FirstOrDefault(o => o.ID == item.ID);
                         if (pttt != null)
-                            pttt = item;//gán lại để cập nhật dữ liệu mới nhất
-                        else
-                            hisSereServPttt.Add(item);
+                            hisSereServPttt.Remove(pttt);//gán lại để cập nhật dữ liệu mới nhất
+                        hisSereServPttt.Add(item);
                     }
                 }
                 if (dicSereServCopy != null && dicSereServCopy.Count > 0 && dicSereServCopy.ContainsKey(sereServ.ID))
@@ -919,6 +918,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     }
 
                     this.txtMANNER.Text = this.sereServPTTT.MANNER;
+
+                    if (!string.IsNullOrEmpty(sereServPTTT.SUBS_DIRECTOR_LOGINNAME) && lstReAcsUserADO.Exists(o => o.LOGINNAME == sereServPTTT.SUBS_DIRECTOR_LOGINNAME))
+                    {
+                        cboHospSubs.EditValue = sereServPTTT.SUBS_DIRECTOR_LOGINNAME;
+                    }
+
+                    if (!string.IsNullOrEmpty(sereServPTTT.SUBS_HEAD_LOGINNAME) && lstReAcsUserADO.Exists(o => o.LOGINNAME == sereServPTTT.SUBS_HEAD_LOGINNAME))
+                    {
+                        cboEndDeptSubs.EditValue = sereServPTTT.SUBS_HEAD_LOGINNAME;
+                    }
                 }
                 else
                 {
@@ -1041,6 +1050,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             txtBanMoCode.Text = "";
                             cboBanMo.EditValue = null;
                         }
+                    }
+
+                    if (!string.IsNullOrEmpty(this.sereServPTTT.SUBS_DIRECTOR_LOGINNAME) && lstReAcsUserADO.Exists(o => o.LOGINNAME == this.sereServPTTT.SUBS_DIRECTOR_LOGINNAME))
+                    {
+                        cboHospSubs.EditValue = this.sereServPTTT.SUBS_DIRECTOR_LOGINNAME;
+                    }
+
+                    if (!string.IsNullOrEmpty(this.sereServPTTT.SUBS_HEAD_LOGINNAME) && lstReAcsUserADO.Exists(o => o.LOGINNAME == this.sereServPTTT.SUBS_HEAD_LOGINNAME))
+                    {
+                        cboEndDeptSubs.EditValue = this.sereServPTTT.SUBS_HEAD_LOGINNAME;
                     }
                 }
                 else if (this.sereServ != null && !this.sereServ.EKIP_ID.HasValue)
