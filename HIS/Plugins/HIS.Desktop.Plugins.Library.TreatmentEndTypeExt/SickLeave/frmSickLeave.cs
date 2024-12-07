@@ -1002,8 +1002,8 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                         nameCb = connectInfors.Count > 1 && !string.IsNullOrEmpty(connectInfors[1]) ? connectInfors[1] : employee.TDL_USERNAME;
                         cccdCb = connectInfors.Count > 2 && !string.IsNullOrEmpty(connectInfors[2]) ? connectInfors[2] : employee.IDENTIFICATION_NUMBER;
 
-                        LogSystem.Debug("BHXHLoginCFG.OFFICERNAME: " + connectInfors[1]);
-                        LogSystem.Debug("BHXHLoginCFG.CCCDOFFICER: " + connectInfors[2]);
+                        if(connectInfors.Count > 1)LogSystem.Debug("BHXHLoginCFG.OFFICERNAME: " + connectInfors[1]);
+                        if(connectInfors.Count > 2)LogSystem.Debug("BHXHLoginCFG.CCCDOFFICER: " + connectInfors[2]);
                     }
                 }
                 catch (Exception ex)
