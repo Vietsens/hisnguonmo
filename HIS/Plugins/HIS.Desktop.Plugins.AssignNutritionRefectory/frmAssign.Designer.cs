@@ -86,7 +86,6 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.repoBtnDeleteE = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repoBtnEditD = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repoBtnDeleteD = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
             this.dtTimeFrom = new DevExpress.XtraEditors.DateEdit();
             this.dtTimeTo = new DevExpress.XtraEditors.DateEdit();
             this.cboRation = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -155,6 +154,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -260,9 +260,9 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             // 
             // btnReset1
             // 
-            this.btnReset1.Location = new System.Drawing.Point(145, 74);
+            this.btnReset1.Location = new System.Drawing.Point(137, 74);
             this.btnReset1.Name = "btnReset1";
-            this.btnReset1.Size = new System.Drawing.Size(127, 22);
+            this.btnReset1.Size = new System.Drawing.Size(135, 22);
             this.btnReset1.StyleController = this.layoutControl3;
             this.btnReset1.TabIndex = 11;
             this.btnReset1.Text = "Làm lại";
@@ -272,7 +272,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             // 
             this.btnFind1.Location = new System.Drawing.Point(2, 74);
             this.btnFind1.Name = "btnFind1";
-            this.btnFind1.Size = new System.Drawing.Size(139, 22);
+            this.btnFind1.Size = new System.Drawing.Size(131, 22);
             this.btnFind1.StyleController = this.layoutControl3;
             this.btnFind1.TabIndex = 10;
             this.btnFind1.Text = "Tìm kiếm";
@@ -280,6 +280,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             // 
             // txtServiceReqCode
             // 
+            this.txtServiceReqCode.EditValue = "";
             this.txtServiceReqCode.Location = new System.Drawing.Point(78, 2);
             this.txtServiceReqCode.Name = "txtServiceReqCode";
             this.txtServiceReqCode.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -290,6 +291,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.txtServiceReqCode.Size = new System.Drawing.Size(194, 20);
             this.txtServiceReqCode.StyleController = this.layoutControl3;
             this.txtServiceReqCode.TabIndex = 5;
+            this.txtServiceReqCode.EditValueChanged += new System.EventHandler(this.txtServiceReqCode_EditValueChanged);
             // 
             // gridControlServiceReq
             // 
@@ -365,8 +367,6 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.gridColumn22.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn22.Name = "gridColumn22";
             this.gridColumn22.OptionsColumn.ShowCaption = false;
-            this.gridColumn22.Visible = true;
-            this.gridColumn22.VisibleIndex = 2;
             this.gridColumn22.Width = 30;
             // 
             // gridColumn23
@@ -378,7 +378,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.gridColumn23.Name = "gridColumn23";
             this.gridColumn23.OptionsColumn.ShowCaption = false;
             this.gridColumn23.Visible = true;
-            this.gridColumn23.VisibleIndex = 3;
+            this.gridColumn23.VisibleIndex = 2;
             this.gridColumn23.Width = 30;
             // 
             // repoBtnPrintE
@@ -401,7 +401,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.gridColumn24.OptionsColumn.ShowCaption = false;
             this.gridColumn24.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn24.Visible = true;
-            this.gridColumn24.VisibleIndex = 4;
+            this.gridColumn24.VisibleIndex = 3;
             this.gridColumn24.Width = 30;
             // 
             // repositoryItemPictureEdit1
@@ -416,7 +416,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.gridColumn25.Name = "gridColumn25";
             this.gridColumn25.OptionsColumn.AllowEdit = false;
             this.gridColumn25.Visible = true;
-            this.gridColumn25.VisibleIndex = 5;
+            this.gridColumn25.VisibleIndex = 4;
             this.gridColumn25.Width = 150;
             // 
             // gridColumn26
@@ -427,7 +427,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.gridColumn26.OptionsColumn.AllowEdit = false;
             this.gridColumn26.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn26.Visible = true;
-            this.gridColumn26.VisibleIndex = 6;
+            this.gridColumn26.VisibleIndex = 5;
             this.gridColumn26.Width = 150;
             // 
             // gridColumn27
@@ -438,7 +438,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.gridColumn27.OptionsColumn.AllowEdit = false;
             this.gridColumn27.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn27.Visible = true;
-            this.gridColumn27.VisibleIndex = 7;
+            this.gridColumn27.VisibleIndex = 6;
             this.gridColumn27.Width = 150;
             // 
             // gridColumn28
@@ -449,7 +449,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.gridColumn28.OptionsColumn.AllowEdit = false;
             this.gridColumn28.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn28.Visible = true;
-            this.gridColumn28.VisibleIndex = 8;
+            this.gridColumn28.VisibleIndex = 7;
             this.gridColumn28.Width = 120;
             // 
             // gridColumn29
@@ -460,7 +460,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.gridColumn29.OptionsColumn.AllowEdit = false;
             this.gridColumn29.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn29.Visible = true;
-            this.gridColumn29.VisibleIndex = 9;
+            this.gridColumn29.VisibleIndex = 8;
             this.gridColumn29.Width = 120;
             // 
             // gridColumn30
@@ -471,7 +471,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.gridColumn30.OptionsColumn.AllowEdit = false;
             this.gridColumn30.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn30.Visible = true;
-            this.gridColumn30.VisibleIndex = 10;
+            this.gridColumn30.VisibleIndex = 9;
             this.gridColumn30.Width = 120;
             // 
             // gridColumn31
@@ -481,17 +481,17 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.gridColumn31.Name = "gridColumn31";
             this.gridColumn31.OptionsColumn.AllowEdit = false;
             this.gridColumn31.Visible = true;
-            this.gridColumn31.VisibleIndex = 11;
+            this.gridColumn31.VisibleIndex = 10;
             this.gridColumn31.Width = 70;
             // 
             // gridColumn32
             // 
             this.gridColumn32.Caption = "Người yêu cầu";
-            this.gridColumn32.FieldName = "REQUEST_USER_NAME";
+            this.gridColumn32.FieldName = "REQUEST_USERNAME";
             this.gridColumn32.Name = "gridColumn32";
             this.gridColumn32.OptionsColumn.AllowEdit = false;
             this.gridColumn32.Visible = true;
-            this.gridColumn32.VisibleIndex = 12;
+            this.gridColumn32.VisibleIndex = 11;
             this.gridColumn32.Width = 70;
             // 
             // gridColumn33
@@ -502,7 +502,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.gridColumn33.OptionsColumn.AllowEdit = false;
             this.gridColumn33.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn33.Visible = true;
-            this.gridColumn33.VisibleIndex = 13;
+            this.gridColumn33.VisibleIndex = 12;
             this.gridColumn33.Width = 120;
             // 
             // gridColumn34
@@ -512,7 +512,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.gridColumn34.Name = "gridColumn34";
             this.gridColumn34.OptionsColumn.AllowEdit = false;
             this.gridColumn34.Visible = true;
-            this.gridColumn34.VisibleIndex = 14;
+            this.gridColumn34.VisibleIndex = 13;
             this.gridColumn34.Width = 70;
             // 
             // gridColumn35
@@ -523,7 +523,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.gridColumn35.OptionsColumn.AllowEdit = false;
             this.gridColumn35.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn35.Visible = true;
-            this.gridColumn35.VisibleIndex = 15;
+            this.gridColumn35.VisibleIndex = 14;
             this.gridColumn35.Width = 120;
             // 
             // gridColumn36
@@ -533,7 +533,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.gridColumn36.Name = "gridColumn36";
             this.gridColumn36.OptionsColumn.AllowEdit = false;
             this.gridColumn36.Visible = true;
-            this.gridColumn36.VisibleIndex = 16;
+            this.gridColumn36.VisibleIndex = 15;
             this.gridColumn36.Width = 70;
             // 
             // repoBtnEditE
@@ -558,7 +558,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             // 
             this.repoBtnEditD.AutoHeight = false;
             this.repoBtnEditD.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repoBtnEditD.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repoBtnEditD.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
             this.repoBtnEditD.Name = "repoBtnEditD";
             this.repoBtnEditD.ReadOnly = true;
             this.repoBtnEditD.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
@@ -567,14 +567,10 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             // 
             this.repoBtnDeleteD.AutoHeight = false;
             this.repoBtnDeleteD.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repoBtnDeleteD.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repoBtnDeleteD.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
             this.repoBtnDeleteD.Name = "repoBtnDeleteD";
             this.repoBtnDeleteD.ReadOnly = true;
             this.repoBtnDeleteD.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            // 
-            // toolTipController1
-            // 
-            this.toolTipController1.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.toolTipController1_GetActiveObjectInfo);
             // 
             // dtTimeFrom
             // 
@@ -589,8 +585,6 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.dtTimeFrom.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dtTimeFrom.Properties.EditFormat.FormatString = "";
             this.dtTimeFrom.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.dtTimeFrom.Properties.Mask.EditMask = "dd/MM/yyyy";
-            this.dtTimeFrom.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
             this.dtTimeFrom.Size = new System.Drawing.Size(74, 20);
             this.dtTimeFrom.StyleController = this.layoutControl3;
             this.dtTimeFrom.TabIndex = 7;
@@ -609,8 +603,6 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.dtTimeTo.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dtTimeTo.Properties.EditFormat.FormatString = "";
             this.dtTimeTo.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.dtTimeTo.Properties.Mask.EditMask = "dd/MM/yyyy";
-            this.dtTimeTo.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
             this.dtTimeTo.Size = new System.Drawing.Size(92, 20);
             this.dtTimeTo.StyleController = this.layoutControl3;
             this.dtTimeTo.TabIndex = 9;
@@ -620,6 +612,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             // 
             this.cboRation.Location = new System.Drawing.Point(77, 50);
             this.cboRation.Name = "cboRation";
+            this.cboRation.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboRation.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
@@ -628,6 +621,8 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.cboRation.Size = new System.Drawing.Size(195, 20);
             this.cboRation.StyleController = this.layoutControl3;
             this.cboRation.TabIndex = 8;
+            this.cboRation.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboRation_ButtonClick);
+            this.cboRation.EditValueChanged += new System.EventHandler(this.cboRation_EditValueChanged);
             // 
             // gridView1
             // 
@@ -677,6 +672,8 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             // 
             // layoutControlItem7
             // 
+            this.layoutControlItem7.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem7.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem7.Control = this.dtTimeFrom;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem7.Name = "layoutControlItem7";
@@ -702,21 +699,23 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.layoutControlItem18.Control = this.btnFind1;
             this.layoutControlItem18.Location = new System.Drawing.Point(0, 72);
             this.layoutControlItem18.Name = "layoutControlItem18";
-            this.layoutControlItem18.Size = new System.Drawing.Size(143, 26);
+            this.layoutControlItem18.Size = new System.Drawing.Size(135, 26);
             this.layoutControlItem18.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem18.TextVisible = false;
             // 
             // layoutControlItem19
             // 
             this.layoutControlItem19.Control = this.btnReset1;
-            this.layoutControlItem19.Location = new System.Drawing.Point(143, 72);
+            this.layoutControlItem19.Location = new System.Drawing.Point(135, 72);
             this.layoutControlItem19.Name = "layoutControlItem19";
-            this.layoutControlItem19.Size = new System.Drawing.Size(131, 26);
+            this.layoutControlItem19.Size = new System.Drawing.Size(139, 26);
             this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem19.TextVisible = false;
             // 
             // layoutControlItem16
             // 
+            this.layoutControlItem16.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem16.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem16.Control = this.cboRation;
             this.layoutControlItem16.Location = new System.Drawing.Point(0, 48);
             this.layoutControlItem16.Name = "layoutControlItem16";
@@ -772,16 +771,16 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             // 
             // ucPagingTreatment
             // 
-            this.ucPagingTreatment.Location = new System.Drawing.Point(274, 240);
+            this.ucPagingTreatment.Location = new System.Drawing.Point(276, 246);
             this.ucPagingTreatment.Name = "ucPagingTreatment";
-            this.ucPagingTreatment.Size = new System.Drawing.Size(872, 26);
+            this.ucPagingTreatment.Size = new System.Drawing.Size(870, 20);
             this.ucPagingTreatment.TabIndex = 14;
             // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(132, 122);
+            this.btnReset.Location = new System.Drawing.Point(137, 122);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(138, 22);
+            this.btnReset.Size = new System.Drawing.Size(135, 22);
             this.btnReset.StyleController = this.layoutControl2;
             this.btnReset.TabIndex = 13;
             this.btnReset.Text = "Làm lại (Ctrl R)";
@@ -791,7 +790,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             // 
             this.btnFind.Location = new System.Drawing.Point(2, 122);
             this.btnFind.Name = "btnFind";
-            this.btnFind.Size = new System.Drawing.Size(126, 22);
+            this.btnFind.Size = new System.Drawing.Size(131, 22);
             this.btnFind.StyleController = this.layoutControl2;
             this.btnFind.TabIndex = 12;
             this.btnFind.Text = "Tìm (Ctrl F)";
@@ -800,26 +799,27 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             // txtSearchValue
             // 
             this.txtSearchValue.EditValue = "";
-            this.txtSearchValue.Location = new System.Drawing.Point(58, 2);
+            this.txtSearchValue.Location = new System.Drawing.Point(77, 2);
             this.txtSearchValue.Name = "txtSearchValue";
             this.txtSearchValue.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.txtSearchValue.Properties.NullText = "Từ khóa tìm kiếm (F2)";
             this.txtSearchValue.Properties.NullValuePrompt = "Từ khóa tìm kiếm (F2)";
             this.txtSearchValue.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtSearchValue.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtSearchValue.Size = new System.Drawing.Size(212, 20);
+            this.txtSearchValue.Size = new System.Drawing.Size(195, 20);
             this.txtSearchValue.StyleController = this.layoutControl2;
             this.txtSearchValue.TabIndex = 5;
+            this.txtSearchValue.EditValueChanged += new System.EventHandler(this.txtSearchValue_EditValueChanged);
             this.txtSearchValue.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearchValue_KeyDown);
             // 
             // gridControlTreatment
             // 
-            this.gridControlTreatment.Location = new System.Drawing.Point(274, 2);
+            this.gridControlTreatment.Location = new System.Drawing.Point(276, 2);
             this.gridControlTreatment.MainView = this.gridViewTreatment;
             this.gridControlTreatment.Name = "gridControlTreatment";
             this.gridControlTreatment.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repoBtnAssign});
-            this.gridControlTreatment.Size = new System.Drawing.Size(872, 234);
+            this.gridControlTreatment.Size = new System.Drawing.Size(870, 240);
             this.gridControlTreatment.TabIndex = 4;
             this.gridControlTreatment.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewTreatment});
@@ -884,7 +884,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             // 
             this.repoBtnAssign.AutoHeight = false;
             this.repoBtnAssign.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.AssignNutritionRefectory.Properties.Resources.suat_an, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.AssignNutritionRefectory.Properties.Resources.suat_an, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "Chỉ định suất ăn", null, null, true)});
             this.repoBtnAssign.Name = "repoBtnAssign";
             this.repoBtnAssign.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repoBtnAssign.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repoBtnAssign_ButtonClick);
@@ -1077,16 +1077,19 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             // 
             // cboDepartment
             // 
-            this.cboDepartment.Location = new System.Drawing.Point(57, 26);
+            this.cboDepartment.Location = new System.Drawing.Point(77, 26);
             this.cboDepartment.Name = "cboDepartment";
             this.cboDepartment.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboDepartment.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboDepartment.Properties.NullText = "";
             this.cboDepartment.Properties.View = this.gridLookUpEdit1View;
-            this.cboDepartment.Size = new System.Drawing.Size(213, 20);
+            this.cboDepartment.Size = new System.Drawing.Size(195, 20);
             this.cboDepartment.StyleController = this.layoutControl2;
             this.cboDepartment.TabIndex = 7;
+            this.cboDepartment.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboDepartment_ButtonClick);
+            this.cboDepartment.EditValueChanged += new System.EventHandler(this.cboDepartment_EditValueChanged);
             this.cboDepartment.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboDepartment_CustomDisplayText);
             // 
             // gridLookUpEdit1View
@@ -1098,14 +1101,14 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             // 
             // cboRoom
             // 
-            this.cboRoom.Location = new System.Drawing.Point(57, 50);
+            this.cboRoom.Location = new System.Drawing.Point(77, 50);
             this.cboRoom.Name = "cboRoom";
             this.cboRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboRoom.Properties.NullText = "";
             this.cboRoom.Properties.View = this.gridView3;
-            this.cboRoom.Size = new System.Drawing.Size(213, 20);
+            this.cboRoom.Size = new System.Drawing.Size(195, 20);
             this.cboRoom.StyleController = this.layoutControl2;
             this.cboRoom.TabIndex = 9;
             this.cboRoom.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboRoom_ButtonClick);
@@ -1121,13 +1124,13 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             // 
             // cboPatientIn
             // 
-            this.cboPatientIn.Location = new System.Drawing.Point(58, 74);
+            this.cboPatientIn.Location = new System.Drawing.Point(77, 74);
             this.cboPatientIn.Name = "cboPatientIn";
             this.cboPatientIn.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboPatientIn.Properties.NullText = "";
             this.cboPatientIn.Properties.View = this.gridView4;
-            this.cboPatientIn.Size = new System.Drawing.Size(212, 20);
+            this.cboPatientIn.Size = new System.Drawing.Size(195, 20);
             this.cboPatientIn.StyleController = this.layoutControl2;
             this.cboPatientIn.TabIndex = 11;
             this.cboPatientIn.EditValueChanged += new System.EventHandler(this.cboPatientIn_EditValueChanged);
@@ -1143,7 +1146,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             // 
             this.cboTimeFrom.EditValue = null;
             this.cboTimeFrom.Enabled = false;
-            this.cboTimeFrom.Location = new System.Drawing.Point(58, 98);
+            this.cboTimeFrom.Location = new System.Drawing.Point(77, 98);
             this.cboTimeFrom.Name = "cboTimeFrom";
             this.cboTimeFrom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1153,10 +1156,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.cboTimeFrom.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.cboTimeFrom.Properties.EditFormat.FormatString = "";
             this.cboTimeFrom.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.cboTimeFrom.Properties.Mask.EditMask = "dd/MM/yyyy";
-            this.cboTimeFrom.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.cboTimeFrom.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.cboTimeFrom.Size = new System.Drawing.Size(104, 20);
+            this.cboTimeFrom.Size = new System.Drawing.Size(92, 20);
             this.cboTimeFrom.StyleController = this.layoutControl2;
             this.cboTimeFrom.TabIndex = 10;
             this.cboTimeFrom.EditValueChanged += new System.EventHandler(this.cboTimeFrom_EditValueChanged);
@@ -1165,7 +1165,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             // 
             this.cboTimeTo.EditValue = null;
             this.cboTimeTo.Enabled = false;
-            this.cboTimeTo.Location = new System.Drawing.Point(166, 98);
+            this.cboTimeTo.Location = new System.Drawing.Point(173, 98);
             this.cboTimeTo.Name = "cboTimeTo";
             this.cboTimeTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1175,10 +1175,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.cboTimeTo.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.cboTimeTo.Properties.EditFormat.FormatString = "";
             this.cboTimeTo.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.cboTimeTo.Properties.Mask.EditMask = "dd/MM/yyyy";
-            this.cboTimeTo.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.cboTimeTo.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.cboTimeTo.Size = new System.Drawing.Size(104, 20);
+            this.cboTimeTo.Size = new System.Drawing.Size(99, 20);
             this.cboTimeTo.StyleController = this.layoutControl2;
             this.cboTimeTo.TabIndex = 8;
             this.cboTimeTo.EditValueChanged += new System.EventHandler(this.cboTimeTo_EditValueChanged);
@@ -1211,18 +1208,18 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.gridControlTreatment;
-            this.layoutControlItem3.Location = new System.Drawing.Point(272, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(274, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(876, 238);
+            this.layoutControlItem3.Size = new System.Drawing.Size(874, 244);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.txtSearchValue;
-            this.layoutControlItem5.Location = new System.Drawing.Point(56, 0);
+            this.layoutControlItem5.Location = new System.Drawing.Point(75, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(216, 24);
+            this.layoutControlItem5.Size = new System.Drawing.Size(199, 24);
             this.layoutControlItem5.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextToControlDistance = 0;
@@ -1235,18 +1232,18 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.layoutControlItem9.Control = this.cboDepartment;
             this.layoutControlItem9.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(272, 24);
+            this.layoutControlItem9.Size = new System.Drawing.Size(274, 24);
             this.layoutControlItem9.Text = "Khoa:";
             this.layoutControlItem9.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem9.TextSize = new System.Drawing.Size(50, 13);
+            this.layoutControlItem9.TextSize = new System.Drawing.Size(70, 13);
             this.layoutControlItem9.TextToControlDistance = 5;
             // 
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.cboTimeTo;
-            this.layoutControlItem10.Location = new System.Drawing.Point(164, 96);
+            this.layoutControlItem10.Location = new System.Drawing.Point(171, 96);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(108, 24);
+            this.layoutControlItem10.Size = new System.Drawing.Size(103, 24);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
@@ -1257,27 +1254,27 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.layoutControlItem11.Control = this.cboRoom;
             this.layoutControlItem11.Location = new System.Drawing.Point(0, 48);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(272, 24);
+            this.layoutControlItem11.Size = new System.Drawing.Size(274, 24);
             this.layoutControlItem11.Text = "Buồng:";
             this.layoutControlItem11.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem11.TextSize = new System.Drawing.Size(50, 20);
+            this.layoutControlItem11.TextSize = new System.Drawing.Size(70, 20);
             this.layoutControlItem11.TextToControlDistance = 5;
             // 
             // layoutControlItem12
             // 
             this.layoutControlItem12.Control = this.cboTimeFrom;
-            this.layoutControlItem12.Location = new System.Drawing.Point(56, 96);
+            this.layoutControlItem12.Location = new System.Drawing.Point(75, 96);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(108, 24);
+            this.layoutControlItem12.Size = new System.Drawing.Size(96, 24);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
             // layoutControlItem13
             // 
             this.layoutControlItem13.Control = this.cboPatientIn;
-            this.layoutControlItem13.Location = new System.Drawing.Point(56, 72);
+            this.layoutControlItem13.Location = new System.Drawing.Point(75, 72);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(216, 24);
+            this.layoutControlItem13.Size = new System.Drawing.Size(199, 24);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
             // 
@@ -1286,7 +1283,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.layoutControlItem14.Control = this.btnFind;
             this.layoutControlItem14.Location = new System.Drawing.Point(0, 120);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(130, 26);
+            this.layoutControlItem14.Size = new System.Drawing.Size(135, 26);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             // 
@@ -1295,7 +1292,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 72);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(56, 24);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(75, 24);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem2
@@ -1303,7 +1300,8 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.emptySpaceItem2.AllowHotTrack = false;
             this.emptySpaceItem2.Location = new System.Drawing.Point(0, 0);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(56, 24);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(75, 24);
+            this.emptySpaceItem2.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem3
@@ -1311,15 +1309,15 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.emptySpaceItem3.AllowHotTrack = false;
             this.emptySpaceItem3.Location = new System.Drawing.Point(0, 146);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(272, 122);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(274, 122);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.ucPagingTreatment;
-            this.layoutControlItem8.Location = new System.Drawing.Point(272, 238);
+            this.layoutControlItem8.Location = new System.Drawing.Point(274, 244);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(876, 30);
+            this.layoutControlItem8.Size = new System.Drawing.Size(874, 24);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
@@ -1328,15 +1326,15 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.emptySpaceItem6.AllowHotTrack = false;
             this.emptySpaceItem6.Location = new System.Drawing.Point(0, 96);
             this.emptySpaceItem6.Name = "emptySpaceItem6";
-            this.emptySpaceItem6.Size = new System.Drawing.Size(56, 24);
+            this.emptySpaceItem6.Size = new System.Drawing.Size(75, 24);
             this.emptySpaceItem6.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.btnReset;
-            this.layoutControlItem15.Location = new System.Drawing.Point(130, 120);
+            this.layoutControlItem15.Location = new System.Drawing.Point(135, 120);
             this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(142, 26);
+            this.layoutControlItem15.Size = new System.Drawing.Size(139, 26);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
             // 
@@ -1370,6 +1368,10 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             this.layoutControlItem2.Size = new System.Drawing.Size(1152, 297);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
+            // 
+            // toolTipController1
+            // 
+            this.toolTipController1.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.toolTipController1_GetActiveObjectInfo);
             // 
             // imageList1
             // 

@@ -172,7 +172,9 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             {
                 SetDefaultControl();
                 SetDefaultValueTime();
-
+                LoadDataToDepartment(false);
+                LoadDataToBedRoom(false);
+                LoadDataToPatient();
             }
             catch (Exception ex)
             {
@@ -202,8 +204,6 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                 txtSearchValue.Text = "";
                 cboTimeTo.Enabled = cboTimeFrom.Enabled = false;
                 cboTimeFrom.EditValue = cboTimeTo.EditValue = null;
-
-
             }
             catch (Exception ex)
             {
@@ -216,16 +216,20 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
         {
             try
             {
+                this.ADD_TIME_FROM = this.ADD_TIME_TO = this.INTRUCTION_TIME_FROM = this.INTRUCTION_TIME_TO = 0;
+
+                dtTimeFrom.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((Inventec.Common.DateTime.Get.Now() ?? 0)) ?? DateTime.Now;
+                dtTimeTo.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((Inventec.Common.DateTime.Get.Now() ?? 0)) ?? DateTime.Now;
+                this.INTRUCTION_TIME_FROM = (long)Inventec.Common.DateTime.Get.Now() / 1000000 * 1000000;
+                this.INTRUCTION_TIME_TO = (long)Inventec.Common.DateTime.Get.Now() / 1000000 * 1000000 + 235959;
+
                 if (cboTimeFrom.Enabled == false) return;
                 cboTimeFrom.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((Inventec.Common.DateTime.Get.Now() ?? 0)) ?? DateTime.Now;
                 cboTimeTo.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((Inventec.Common.DateTime.Get.Now() ?? 0)) ?? DateTime.Now;
                 this.ADD_TIME_FROM = (long)Inventec.Common.DateTime.Get.Now() / 1000000 * 1000000;
                 this.ADD_TIME_TO = (long)Inventec.Common.DateTime.Get.Now() / 1000000 * 1000000 + 235959;
 
-                dtTimeFrom.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((Inventec.Common.DateTime.Get.Now() ?? 0)) ?? DateTime.Now;
-                dtTimeTo.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((Inventec.Common.DateTime.Get.Now() ?? 0)) ?? DateTime.Now;
-                this.INTRUCTION_TIME_FROM = (long)Inventec.Common.DateTime.Get.Now() / 1000000 * 1000000;
-                this.INTRUCTION_TIME_TO = (long)Inventec.Common.DateTime.Get.Now() / 1000000 * 1000000 + 235959;
+
             }
             catch (Exception ex)
             {
@@ -237,8 +241,8 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
         {
             try
             {
-                LoadDataToDepartment();
-                LoadDataToBedRoom();
+                LoadDataToDepartment(true);
+                LoadDataToBedRoom(true);
                 LoadDataToRation();
                 LoadDataToPatient();
             }
@@ -247,15 +251,18 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                 LogSystem.Error(ex);
             }
         }
-        private void InitComboDepartmentCheck()
+        private void InitComboDepartmentCheck(bool isFirstLoad)
         {
             try
             {
-                
-                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cboDepartment.Properties);
-                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(Event_Check);
-                cboDepartment.Properties.Tag = gridCheck;
-                cboDepartment.Properties.View.OptionsSelection.MultiSelect = true;
+
+                if (isFirstLoad)
+                {
+                    GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cboDepartment.Properties);
+                    gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(Event_Check);
+                    cboDepartment.Properties.Tag = gridCheck;
+                    cboDepartment.Properties.View.OptionsSelection.MultiSelect = true;
+                }
                 GridCheckMarksSelection gridCheckMark = cboDepartment.Properties.Tag as GridCheckMarksSelection;
                 if (gridCheckMark != null)
                 {
@@ -274,6 +281,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
         {
             try
             {
+                WaitingManager.Show();
                 List<HIS_DEPARTMENT> listOldSelected = null;
                 if (listSelectedDeaprtment != null && listSelectedDeaprtment.Count > 0)
                 {
@@ -291,14 +299,26 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                             erSelectedNews.Add(er);
                         }
                     }
-                    this.listSelectedDeaprtment = new List<HIS_DEPARTMENT>();
+
+                    if (this.listSelectedDeaprtment == null) this.listSelectedDeaprtment = new List<HIS_DEPARTMENT>();
                     this.listSelectedDeaprtment.AddRange(erSelectedNews);
+                    LoadDataToBedRoom(false);
 
                 }
-                //cboDepartment.Text = string.Join(";", listSelectedDeaprtment.Select(s => s.DEPARTMENT_NAME));
+                cboDepartment.Text = string.Join("; ", listSelectedDeaprtment.Select(s => s.DEPARTMENT_NAME));
+                if (cboDepartment.Properties.Buttons.Count > 1)
+                {
+                    cboDepartment.Properties.Buttons[1].Visible = !(listSelectedDeaprtment == null || listSelectedDeaprtment.Count == 0);
+                }
+                //WaitingManager.Show();
+
+                //var customEventArgs = new DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs(cboDepartment, cboDepartment.Text);
+
+                //cboDepartment_CustomDisplayText(cboDepartment, customEventArgs);
 
 
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listSelectedDeaprtment.Count), listSelectedDeaprtment.Count));
+                WaitingManager.Hide();
+                //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listSelectedDeaprtment.Count), listSelectedDeaprtment.Count));
             }
             catch (Exception ex)
             {
@@ -322,6 +342,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             try
             {
                 e.DisplayText = string.Join("; ", listSelectedDeaprtment.Select(s => s.DEPARTMENT_NAME));
+
             }
             catch (Exception ex)
             {
@@ -329,11 +350,12 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                 LogSystem.Error(ex);
             }
         }
-        private void InitComboDepartmentName(List<HIS_DEPARTMENT> data)
+        private void InitComboDepartmentName(List<HIS_DEPARTMENT> data, bool isFirstLoad)
         {
             try
             {
                 cboDepartment.Properties.DataSource = data;
+                if (!isFirstLoad) return;
                 cboDepartment.Properties.DisplayMember = "DEPARTMENT_NAME";
                 cboDepartment.Properties.ValueMember = "ID";
 
@@ -368,15 +390,15 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        private void LoadDataToDepartment()
+        private void LoadDataToDepartment(bool isFirstLoad)
         {
             try
             {
                 LogSystem.Debug("LoadDataToDepartment___Start");
                 var data = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(s => s.IS_ACTIVE == 1).ToList();
                 listSelectedDeaprtment.AddRange(data);
-                InitComboDepartmentName(data);
-                InitComboDepartmentCheck();
+                InitComboDepartmentName(data, isFirstLoad);
+                InitComboDepartmentCheck(isFirstLoad);
                 GridCheckMarksSelection gridCheckMark = cboDepartment.Properties.Tag as GridCheckMarksSelection;
                 if (gridCheckMark != null)
                 {
@@ -390,14 +412,19 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                 LogSystem.Error(ex);
             }
         }
-        private void InitComboBedRoomCheck()
+        private void InitComboBedRoomCheck(bool isFirstLoad)
         {
             try
             {
-                GridCheckMarksSelection gridCheckMarkRoom = new GridCheckMarksSelection(cboRoom.Properties);
-                gridCheckMarkRoom.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(Event_CheckRoom);
-                cboRoom.Properties.Tag = gridCheckMarkRoom;
-                cboRoom.Properties.View.OptionsSelection.MultiSelect = true;
+
+
+                if (isFirstLoad)
+                {
+                    GridCheckMarksSelection gridCheckMarkRoom = new GridCheckMarksSelection(cboRoom.Properties);
+                    gridCheckMarkRoom.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(Event_CheckRoom);
+                    cboRoom.Properties.Tag = gridCheckMarkRoom;
+                    cboRoom.Properties.View.OptionsSelection.MultiSelect = true;
+                }
                 GridCheckMarksSelection gridCheckMarkSelectionRoom = cboRoom.Properties.Tag as GridCheckMarksSelection;
                 if (gridCheckMarkSelectionRoom != null)
                 {
@@ -439,23 +466,27 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                     this.listSelectedRoom.AddRange(erSelectedNews);
 
                 }
-                cboRoom.Text = string.Join(";", listSelectedRoom.Select(s => s.BED_ROOM_NAME));
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listSelectedRoom.Count), listSelectedRoom.Count));
+                if (cboRoom.Properties.Buttons.Count > 1)
+                {
+                    cboRoom.Properties.Buttons[1].Visible = !(listSelectedRoom == null || listSelectedRoom.Count == 0);
+                }
+                cboRoom.Text = string.Join("; ", listSelectedRoom.Select(s => s.BED_ROOM_NAME));
+                //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listSelectedRoom.Count), listSelectedRoom.Count));
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        private void LoadDataToBedRoom()
+        private void LoadDataToBedRoom(bool isFirstLoad)
         {
             try
             {
                 LogSystem.Debug("LoadDataToBedRoom___Start");
                 var data = BackendDataWorker.Get<V_HIS_BED_ROOM>().Where(s => s.IS_ACTIVE == 1 && listSelectedDeaprtment.Select(d => d.ID).ToList().Contains(s.DEPARTMENT_ID)).ToList();
                 listSelectedRoom.AddRange(data);
-                InitComboBedRoom(data);
-                InitComboBedRoomCheck();
+                InitComboBedRoom(data, isFirstLoad);
+                InitComboBedRoomCheck(isFirstLoad);
                 GridCheckMarksSelection gridCheckMark = cboRoom.Properties.Tag as GridCheckMarksSelection;
                 if (gridCheckMark != null)
                 {
@@ -467,11 +498,13 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                 LogSystem.Error(ex);
             }
         }
-        private void InitComboBedRoom(List<V_HIS_BED_ROOM> data)
+        private void InitComboBedRoom(List<V_HIS_BED_ROOM> data, bool isFirstLoad)
         {
             try
             {
+
                 cboRoom.Properties.DataSource = data;
+                if (!isFirstLoad) return;
                 cboRoom.Properties.DisplayMember = "BED_ROOM_NAME";
                 cboRoom.Properties.ValueMember = "ID";
 
@@ -582,7 +615,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                 WaitingManager.Hide();
             }
         }
-        MOS.Filter.HisTreatmentBedRoomLViewFilter filter = new MOS.Filter.HisTreatmentBedRoomLViewFilter();
+        MOS.Filter.HisTreatmentBedRoomLViewFilter filter = null;
         private void LoadPaging(object param)
         {
             try
@@ -594,7 +627,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                 gridControlTreatment.BeginUpdate();
 
                 Inventec.Core.ApiResultObject<List<MOS.EFMODEL.DataModels.L_HIS_TREATMENT_BED_ROOM>> apiResult = null;
-
+                filter = new HisTreatmentBedRoomLViewFilter();
                 UpdateDataFilterTreatment(ref filter);
                 filter.ORDER_FIELD = "MODIFY_TIME";
                 filter.ORDER_DIRECTION = "DESC";
@@ -645,13 +678,16 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                 if (this.ADD_TIME_FROM > 0 && string.IsNullOrWhiteSpace(txtSearchValue.Text))
                 {
                     filter.ADD_TIME_FROM = this.ADD_TIME_FROM;
-                    filter.ADD_TIME_TO = this.ADD_TIME_TO;
                 }
                 else
                 {
                     filter.ADD_TIME_FROM = null;
-                    filter.ADD_TIME_TO = null;
                 }
+                if (this.ADD_TIME_TO > 0 && string.IsNullOrWhiteSpace(txtSearchValue.Text))
+                {
+                    filter.ADD_TIME_TO = this.ADD_TIME_TO;
+                }
+                else filter.ADD_TIME_TO = null;
 
             }
             catch (Exception ex)
@@ -755,11 +791,11 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                 {
                     filter.RATION_TIME_ID = Convert.ToInt64(cboRation.EditValue);
                 }
-                if (this.ADD_TIME_FROM > 0)
+                if (this.INTRUCTION_TIME_FROM > 0)
                 {
                     filter.INTRUCTION_TIME_FROM = this.INTRUCTION_TIME_FROM;
-                    filter.INTRUCTION_TIME_TO = this.INTRUCTION_TIME_TO;
                 }
+                if (this.INTRUCTION_TIME_TO > 0) { filter.INTRUCTION_TIME_TO = this.INTRUCTION_TIME_TO; }
 
             }
             catch (Exception ex)
@@ -787,17 +823,23 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                     }
                     else if (e.Column.FieldName == "TDL_HEIN_CARD_FROM_TIME_STR")
                     {
-                        e.Value = !string.IsNullOrEmpty(pData.TDL_HEIN_CARD_NUMBER) ? pData.TDL_HEIN_CARD_FROM_TIME + " - " + pData.TDL_HEIN_CARD_TO_TIME : "";
+                        e.Value = !string.IsNullOrEmpty(pData.TDL_HEIN_CARD_NUMBER) ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(pData.TDL_HEIN_CARD_FROM_TIME ?? 0) + " - " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(pData.TDL_HEIN_CARD_TO_TIME ?? 0) : "";
                     }
                     else if (e.Column.FieldName == "DAY_COUNT")
                     {
-                        var currentDate = Inventec.Common.DateTime.Get.Now() / 1000000;
-                        e.Value = (currentDate - pData.CLINICAL_IN_TIME / 1000000) + "";
+                        if (pData.CLINICAL_IN_TIME == null)
+                            e.Value = "";
+                        else
+                        {
+                            TimeSpan? durationTime = new TimeSpan(0, 0, 0, 0);
+                            durationTime = DateTime.Now - Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(pData.CLINICAL_IN_TIME ?? 0);
+                            e.Value = durationTime.Value.Days + 1;
+                        }
 
                     }
                     else if (e.Column.FieldName == "CLINICAL_IN_TIME_STR")
                     {
-                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(pData.CLINICAL_IN_TIME ?? 0);
+                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(pData.CLINICAL_IN_TIME ?? 0);
                     }
                     else if (e.Column.FieldName == "NOTE_STR")
                     {
@@ -893,18 +935,18 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                     {
                         if (e.Column.FieldName == "EDIT")
                         {
-                            if (!(data.IS_NO_EXECUTE == 1) && (this.LoginName == data.CREATOR || this.LoginName == data.REQUEST_LOGINNAME || this.IsAdmin) && (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL || ConfigCFG.ALLOW_MODIFYING_OF_STARTED == "1"))
+                            if (!(data.IS_NO_EXECUTE == 1) && (this.LoginName == data.REQUEST_LOGINNAME || this.IsAdmin) && (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL || ConfigCFG.ALLOW_MODIFYING_OF_STARTED == "1"))
                             {
                                 e.RepositoryItem = repoBtnEditE;
                             }
                             else
                             {
-                                e.RepositoryItem = repoBtnEditD;
+                                e.RepositoryItem = null;
                             }
                         }
                         if (e.Column.FieldName == "DELETE")
                         {
-                            if ((this.LoginName == data.CREATOR || this.LoginName == data.REQUEST_LOGINNAME || this.IsAdmin) && data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
+                            if (( this.LoginName == data.REQUEST_LOGINNAME || this.IsAdmin) && data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
                             {
                                 e.RepositoryItem = repoBtnDeleteE;
                             }
@@ -966,7 +1008,8 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                 {
                     List<object> listArgs = new List<object>();
                     listArgs.Add(data.TREATMENT_ID);
-                    listArgs.Add(filter);
+                    filter.TREATMENT_ID = data.TREATMENT_ID;
+                    listArgs.Add(filter ?? new HisTreatmentBedRoomLViewFilter() { TREATMENT_ID = data.TREATMENT_ID });
                     HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.AssignNutrition", this.moduleData.RoomId, this.moduleData.RoomTypeId, listArgs);
                     Inventec.Common.Logging.LogSystem.Debug("Call module : HIS.Desktop.Plugins.AssignNutrition" + LogUtil.TraceData("listArgs", listArgs));
                 }
@@ -1010,6 +1053,26 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                 LogSystem.Error(ex);
             }
         }
+        private void cboDepartment_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    listSelectedDeaprtment.Clear();
+                    GridCheckMarksSelection gridCheck = cboDepartment.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheck != null)
+                    {
+                        gridCheck.ClearSelection(cboDepartment.Properties.View);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Error(ex);
+            }
+        }
         #region EDIT VALUE CHANGE
         private void cboRoom_EditValueChanged(object sender, EventArgs e)
         {
@@ -1033,6 +1096,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                     long time_from = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(cboTimeFrom.DateTime) ?? 0;
                     this.ADD_TIME_FROM = time_from > 0 ? time_from / 1000000 * 1000000 : 0;
                 }
+                else this.ADD_TIME_FROM = 0;
             }
             catch (Exception ex)
             {
@@ -1048,8 +1112,10 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                 if (cboTimeTo.EditValue != null && cboTimeTo.DateTime != null && cboTimeTo.DateTime != DateTime.MinValue)
                 {
                     long time_to = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(cboTimeTo.DateTime) ?? 0;
-                    this.ADD_TIME_FROM = time_to > 0 ? time_to / 1000000 * 1000000 + 235959 : 0;
+                    this.ADD_TIME_TO = time_to > 0 ? time_to / 1000000 * 1000000 + 235959 : 0;
                 }
+                else this.ADD_TIME_TO = 0;
+
             }
             catch (Exception ex)
             {
@@ -1067,6 +1133,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                     long time_from = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTimeFrom.DateTime) ?? 0;
                     this.INTRUCTION_TIME_FROM = time_from > 0 ? time_from / 1000000 * 1000000 : 0;
                 }
+                else this.INTRUCTION_TIME_FROM = 0;
             }
             catch (Exception ex)
             {
@@ -1082,7 +1149,11 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                 if (dtTimeTo.EditValue != null && dtTimeTo.DateTime != null && dtTimeTo.DateTime != DateTime.MinValue)
                 {
                     long time_from = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTimeTo.DateTime) ?? 0;
-                    this.INTRUCTION_TIME_TO = time_from > 0 ? time_from / 1000000 * 1000000 : 0;
+                    this.INTRUCTION_TIME_TO = time_from > 0 ? time_from / 1000000 * 1000000 + 235959 : 0;
+                }
+                else
+                {
+                    this.INTRUCTION_TIME_TO = 0;
                 }
             }
             catch (Exception ex)
@@ -1116,6 +1187,18 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                 LogSystem.Error(ex);
             }
         }
+        private void cboDepartment_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Error(ex);
+            }
+        }
         #endregion
         #region BUTTON CLICK
         private void btnReset_Click(object sender, EventArgs e)
@@ -1123,16 +1206,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             try
             {
                 SetDefaultValue();
-                GridCheckMarksSelection gridCheckmarkDepartment = cboDepartment.Properties.Tag as GridCheckMarksSelection;
-                if (gridCheckmarkDepartment != null)
-                {
-                    gridCheckmarkDepartment.ClearSelection(cboDepartment.Properties.View);
-                }
-                GridCheckMarksSelection gridCheckmarkRoom = cboRoom.Properties.Tag as GridCheckMarksSelection;
-                if (gridCheckmarkRoom != null)
-                {
-                    gridCheckmarkRoom.ClearSelection(cboRoom.Properties.View);
-                }
+
             }
             catch (Exception ex)
             {
@@ -1168,6 +1242,11 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                 else if (e.Control && e.KeyCode == Keys.R)
                 {
                     btnReset.PerformClick();
+                }
+                else if (e.KeyCode == Keys.F2)
+                {
+                    txtSearchValue.Focus();
+                    txtSearchValue.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -1212,7 +1291,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                 {
                     List<object> listArgs = new List<object>();
 
-                    AssignServiceEditADO ado = new AssignServiceEditADO(data.ID,data.INTRUCTION_TIME,RefreshClick);
+                    AssignServiceEditADO ado = new AssignServiceEditADO(data.ID, data.INTRUCTION_TIME, RefreshClick);
                     listArgs.Add(ado);
 
                     HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.AssignNutritionEdit", this.moduleData.RoomId, this.moduleData.RoomTypeId, listArgs);
@@ -1251,11 +1330,12 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                     {
                         CommonParam param = new CommonParam();
                         Inventec.Common.Logging.LogSystem.Debug("Call api xoa du lieu" + LogUtil.TraceData("V_HIS_SERVICE_REQ_10", data));
-                        bool rs = new BackendAdapter(param).Post<bool>("api/HisServiceReq/Delete", ApiConsumers.MosConsumer, data.ID, param);
+                        bool rs = new BackendAdapter(param).Post<bool>("api/HisServiceReq/Delete", ApiConsumers.MosConsumer, data, param);
                         MessageManager.Show(this, param, rs);
                     }
                 }
             }
+
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
@@ -1332,11 +1412,16 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                     {
                         currnentSS = rs;
                     }
+                    List<V_HIS_SERVICE_REQ> lsitServiceReq = new List<V_HIS_SERVICE_REQ>();
                     V_HIS_SERVICE_REQ sv = new V_HIS_SERVICE_REQ();
                     Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_SERVICE_REQ>(sv, this.currentServiceReq);
+                    lsitServiceReq.Add(sv);
+                    List<HIS_SERE_SERV_RATION> listRation = new List<HIS_SERE_SERV_RATION>();
+                    var ration = new BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV_RATION>>("api/HisSereServRation/Get", ApiConsumers.MosConsumer, new HisSereServRationFilter() { SERVICE_REQ_ID = this.currentServiceReq.ID }, null);
+                    if (ration != null) listRation = ration;
                     MPS.Processor.Mps000275.PDO.Mps000275PDO mps000275PDO = new MPS.Processor.Mps000275.PDO.Mps000275PDO
                     (
-                        sv, currnentSS
+                        lsitServiceReq, currnentSS, listRation, null
                     );
                     WaitingManager.Hide();
                     Inventec.Common.Logging.LogSystem.Debug("In mps00275: " + LogUtil.TraceData("mps000275PDO", mps000275PDO));
@@ -1374,7 +1459,7 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                 if (view == null) return;
 
                 GridHitInfo info = view.CalcHitInfo(e.ControlMousePosition);
-                
+
                 if (info.InRowCell && info.Column.FieldName == "STATUS")
                 {
                     if (lastRowHandle != info.RowHandle || lastColumn != info.Column)
@@ -1402,18 +1487,10 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
                                 tooltipText = "Hoàn thành";
                             }
 
-                            //// Kiểm tra nếu tooltip mới giống tooltip cũ
-                            //if (lastInfo != null && lastInfo.Object == info && lastInfo.Text == tooltipText)
-                            //{
-                            //    e.Info = lastInfo;
-                            //    return;
-                            //}
-
-                            // Tạo mới tooltip
                             lastInfo = new ToolTipControlInfo(
                                 new DevExpress.XtraGrid.GridToolTipInfo(view, new DevExpress.XtraGrid.Views.Base.CellToolTipInfo(info.RowHandle, info.Column, "Text")),
                                 tooltipText);
-                            
+
                         }
                     }
                     e.Info = lastInfo;
@@ -1425,5 +1502,55 @@ namespace HIS.Desktop.Plugins.AssignNutritionRefectory
             }
         }
 
+        private void cboRation_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboRation.Properties.Buttons.Count > 0) cboRation.Properties.Buttons[1].Visible = cboRation.EditValue != null;
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Error(ex);
+            }
+        }
+
+        private void cboRation_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    cboRation.EditValue = null;
+                    cboRation.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Error(ex);
+            }
+        }
+
+        private void txtServiceReqCode_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(txtServiceReqCode.Text))
+                {
+                    txtServiceReqCode.Text = txtServiceReqCode.Text.PadLeft(12, '0');
+                }
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Error(ex);
+            }
+        }
+
+        private void txtSearchValue_EditValueChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
