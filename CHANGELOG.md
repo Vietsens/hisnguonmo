@@ -1,3 +1,9 @@
+### Release 2.340.0
+* Bổ sung thông tin người ký thay Trưởng khoa, giám đốc bệnh viện vào phiếu xác nhận PTTT
+* Thêm tính năng chỉ định suất ăn tại nhà ăn
+* Thêm danh sách key thông tin y lệnh vào phiếu chỉ định tổng hợp.
+* Sửa lỗi liên quan đến ký số dữ liệu XML theo quyết định 3700/BHXH-CNTT
+
 ### Release 2.339.0
 * Sửa màn hình chờ lấy mẫu để phân biệt bệnh nhân ưu tiên, đã lấy mẫu, chưa lấy mẫu
 * Sửa đổi bổ sung chuẩn dữ liệu đầu ra theo quyết định 3176/QĐ-BYT ngày 29/10/2024 về sửa đổi bổ sung QĐ 4750 và QĐ 130
