@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.PregnancyRest
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPregnancyRest));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -65,11 +64,15 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtPatientFatherName = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barBtnPrint = new DevExpress.XtraBars.BarButtonItem();
             this.barBtnSaveNPrint = new DevExpress.XtraBars.BarButtonItem();
             this.barBtnSave = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.txtPatientMotherName = new DevExpress.XtraEditors.TextEdit();
             this.btnCheckTT = new DevExpress.XtraEditors.SimpleButton();
             this.dtPregnancyTerminationTime = new DevExpress.XtraEditors.DateEdit();
@@ -150,11 +153,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             this.lciCheckTT = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.comboBoxEdit1 = new DevExpress.XtraEditors.ComboBoxEdit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -278,7 +277,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // txtPatientFatherName
             // 
-            this.txtPatientFatherName.Location = new System.Drawing.Point(418, 94);
+            this.txtPatientFatherName.Location = new System.Drawing.Point(418, 98);
             this.txtPatientFatherName.MenuManager = this.barManager1;
             this.txtPatientFatherName.Name = "txtPatientFatherName";
             this.txtPatientFatherName.Size = new System.Drawing.Size(223, 20);
@@ -290,6 +289,10 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barBtnPrint,
@@ -334,9 +337,37 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             this.barBtnSave.Name = "barBtnSave";
             this.barBtnSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barBtnSave_ItemClick);
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(660, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 406);
+            this.barDockControlBottom.Size = new System.Drawing.Size(660, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 377);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(660, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 377);
+            // 
             // txtPatientMotherName
             // 
-            this.txtPatientMotherName.Location = new System.Drawing.Point(127, 94);
+            this.txtPatientMotherName.Location = new System.Drawing.Point(127, 98);
             this.txtPatientMotherName.MenuManager = this.barManager1;
             this.txtPatientMotherName.Name = "txtPatientMotherName";
             this.txtPatientMotherName.Size = new System.Drawing.Size(192, 20);
@@ -347,7 +378,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // btnCheckTT
             // 
             this.btnCheckTT.Image = ((System.Drawing.Image)(resources.GetObject("btnCheckTT.Image")));
-            this.btnCheckTT.Location = new System.Drawing.Point(616, 166);
+            this.btnCheckTT.Location = new System.Drawing.Point(616, 170);
             this.btnCheckTT.Name = "btnCheckTT";
             this.btnCheckTT.Size = new System.Drawing.Size(25, 22);
             this.btnCheckTT.StyleController = this.layoutControl1;
@@ -358,7 +389,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // dtPregnancyTerminationTime
             // 
             this.dtPregnancyTerminationTime.EditValue = null;
-            this.dtPregnancyTerminationTime.Location = new System.Drawing.Point(127, 215);
+            this.dtPregnancyTerminationTime.Location = new System.Drawing.Point(127, 219);
             this.dtPregnancyTerminationTime.MenuManager = this.barManager1;
             this.dtPregnancyTerminationTime.Name = "dtPregnancyTerminationTime";
             this.dtPregnancyTerminationTime.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -379,7 +410,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // txtGestationalAge
             // 
-            this.txtGestationalAge.Location = new System.Drawing.Point(418, 215);
+            this.txtGestationalAge.Location = new System.Drawing.Point(418, 219);
             this.txtGestationalAge.MenuManager = this.barManager1;
             this.txtGestationalAge.Name = "txtGestationalAge";
             this.txtGestationalAge.Size = new System.Drawing.Size(223, 20);
@@ -390,7 +421,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // chkIsPregnancyTermination
             // 
-            this.chkIsPregnancyTermination.Location = new System.Drawing.Point(127, 192);
+            this.chkIsPregnancyTermination.Location = new System.Drawing.Point(127, 196);
             this.chkIsPregnancyTermination.MenuManager = this.barManager1;
             this.chkIsPregnancyTermination.Name = "chkIsPregnancyTermination";
             this.chkIsPregnancyTermination.Properties.Caption = "";
@@ -402,7 +433,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // btnInfantInformation
             // 
-            this.btnInfantInformation.Location = new System.Drawing.Point(477, 311);
+            this.btnInfantInformation.Location = new System.Drawing.Point(477, 315);
             this.btnInfantInformation.Name = "btnInfantInformation";
             this.btnInfantInformation.Size = new System.Drawing.Size(164, 22);
             this.btnInfantInformation.StyleController = this.layoutControl1;
@@ -412,7 +443,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // txtCodeWorkPlace
             // 
-            this.txtCodeWorkPlace.Location = new System.Drawing.Point(127, 142);
+            this.txtCodeWorkPlace.Location = new System.Drawing.Point(127, 146);
             this.txtCodeWorkPlace.MenuManager = this.barManager1;
             this.txtCodeWorkPlace.Name = "txtCodeWorkPlace";
             this.txtCodeWorkPlace.Size = new System.Drawing.Size(64, 20);
@@ -422,7 +453,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // cboWorkPlace
             // 
-            this.cboWorkPlace.Location = new System.Drawing.Point(193, 142);
+            this.cboWorkPlace.Location = new System.Drawing.Point(193, 146);
             this.cboWorkPlace.MenuManager = this.barManager1;
             this.cboWorkPlace.Name = "cboWorkPlace";
             this.cboWorkPlace.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -448,7 +479,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // txtMaBHXH
             // 
-            this.txtMaBHXH.Location = new System.Drawing.Point(419, 166);
+            this.txtMaBHXH.Location = new System.Drawing.Point(419, 170);
             this.txtMaBHXH.MenuManager = this.barManager1;
             this.txtMaBHXH.Name = "txtMaBHXH";
             this.txtMaBHXH.Properties.MaxLength = 10;
@@ -459,7 +490,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // cboSickUserName
             // 
-            this.cboSickUserName.Location = new System.Drawing.Point(193, 46);
+            this.cboSickUserName.Location = new System.Drawing.Point(193, 50);
             this.cboSickUserName.Name = "cboSickUserName";
             this.cboSickUserName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboSickUserName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -484,7 +515,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // cboDocumentBookId
             // 
-            this.cboDocumentBookId.Location = new System.Drawing.Point(127, 22);
+            this.cboDocumentBookId.Location = new System.Drawing.Point(127, 26);
             this.cboDocumentBookId.MenuManager = this.barManager1;
             this.cboDocumentBookId.Name = "cboDocumentBookId";
             this.cboDocumentBookId.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -509,7 +540,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // txtSickUserName
             // 
-            this.txtSickUserName.Location = new System.Drawing.Point(127, 46);
+            this.txtSickUserName.Location = new System.Drawing.Point(127, 50);
             this.txtSickUserName.MenuManager = this.barManager1;
             this.txtSickUserName.Name = "txtSickUserName";
             this.txtSickUserName.Size = new System.Drawing.Size(66, 20);
@@ -520,7 +551,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // txtWorkPlace
             // 
             this.txtWorkPlace.EditValue = "";
-            this.txtWorkPlace.Location = new System.Drawing.Point(323, 142);
+            this.txtWorkPlace.Location = new System.Drawing.Point(323, 146);
             this.txtWorkPlace.MenuManager = this.barManager1;
             this.txtWorkPlace.Name = "txtWorkPlace";
             this.txtWorkPlace.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -533,7 +564,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // txtTreatmentMethod
             // 
-            this.txtTreatmentMethod.Location = new System.Drawing.Point(127, 263);
+            this.txtTreatmentMethod.Location = new System.Drawing.Point(127, 267);
             this.txtTreatmentMethod.Margin = new System.Windows.Forms.Padding(2);
             this.txtTreatmentMethod.MenuManager = this.barManager1;
             this.txtTreatmentMethod.Name = "txtTreatmentMethod";
@@ -545,7 +576,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // txtHeinCardNumber
             // 
-            this.txtHeinCardNumber.Location = new System.Drawing.Point(127, 166);
+            this.txtHeinCardNumber.Location = new System.Drawing.Point(127, 170);
             this.txtHeinCardNumber.Margin = new System.Windows.Forms.Padding(2);
             this.txtHeinCardNumber.MenuManager = this.barManager1;
             this.txtHeinCardNumber.Name = "txtHeinCardNumber";
@@ -556,7 +587,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // CboTreatmentEndTypExt
             // 
-            this.CboTreatmentEndTypExt.Location = new System.Drawing.Point(127, -2);
+            this.CboTreatmentEndTypExt.Location = new System.Drawing.Point(127, 2);
             this.CboTreatmentEndTypExt.MenuManager = this.barManager1;
             this.CboTreatmentEndTypExt.Name = "CboTreatmentEndTypExt";
             this.CboTreatmentEndTypExt.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -583,7 +614,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // LblExtraEndCode
             // 
             this.LblExtraEndCode.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.LblExtraEndCode.Location = new System.Drawing.Point(418, 22);
+            this.LblExtraEndCode.Location = new System.Drawing.Point(418, 26);
             this.LblExtraEndCode.Name = "LblExtraEndCode";
             this.LblExtraEndCode.Size = new System.Drawing.Size(223, 20);
             this.LblExtraEndCode.StyleController = this.layoutControl1;
@@ -591,7 +622,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // BtnSave
             // 
-            this.BtnSave.Location = new System.Drawing.Point(577, 361);
+            this.BtnSave.Location = new System.Drawing.Point(577, 365);
             this.BtnSave.Name = "BtnSave";
             this.BtnSave.Size = new System.Drawing.Size(64, 22);
             this.BtnSave.StyleController = this.layoutControl1;
@@ -601,7 +632,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // BtnPrint
             // 
-            this.BtnPrint.Location = new System.Drawing.Point(350, 361);
+            this.BtnPrint.Location = new System.Drawing.Point(350, 365);
             this.BtnPrint.Name = "BtnPrint";
             this.BtnPrint.Size = new System.Drawing.Size(111, 22);
             this.BtnPrint.StyleController = this.layoutControl1;
@@ -611,7 +642,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // BtnSaveNPrint
             // 
-            this.BtnSaveNPrint.Location = new System.Drawing.Point(465, 361);
+            this.BtnSaveNPrint.Location = new System.Drawing.Point(465, 365);
             this.BtnSaveNPrint.Name = "BtnSaveNPrint";
             this.BtnSaveNPrint.Size = new System.Drawing.Size(108, 22);
             this.BtnSaveNPrint.StyleController = this.layoutControl1;
@@ -621,7 +652,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // gridControlBaby
             // 
-            this.gridControlBaby.Location = new System.Drawing.Point(2, 337);
+            this.gridControlBaby.Location = new System.Drawing.Point(2, 341);
             this.gridControlBaby.MainView = this.gridViewBaby;
             this.gridControlBaby.Name = "gridControlBaby";
             this.gridControlBaby.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
@@ -784,7 +815,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // TxtRelativeName
             // 
-            this.TxtRelativeName.Location = new System.Drawing.Point(127, 118);
+            this.TxtRelativeName.Location = new System.Drawing.Point(127, 122);
             this.TxtRelativeName.Name = "TxtRelativeName";
             this.TxtRelativeName.Size = new System.Drawing.Size(192, 20);
             this.TxtRelativeName.StyleController = this.layoutControl1;
@@ -793,7 +824,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // CboRelativeType
             // 
-            this.CboRelativeType.Location = new System.Drawing.Point(418, 118);
+            this.CboRelativeType.Location = new System.Drawing.Point(418, 122);
             this.CboRelativeType.Name = "CboRelativeType";
             this.CboRelativeType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.CboRelativeType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -822,7 +853,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             0,
             0,
             0});
-            this.SpLeaveDay.Location = new System.Drawing.Point(418, 46);
+            this.SpLeaveDay.Location = new System.Drawing.Point(418, 50);
             this.SpLeaveDay.Name = "SpLeaveDay";
             this.SpLeaveDay.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.SpLeaveDay.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -841,7 +872,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // DtRestTimeTo
             // 
             this.DtRestTimeTo.EditValue = null;
-            this.DtRestTimeTo.Location = new System.Drawing.Point(418, 70);
+            this.DtRestTimeTo.Location = new System.Drawing.Point(418, 74);
             this.DtRestTimeTo.Name = "DtRestTimeTo";
             this.DtRestTimeTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -862,7 +893,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // DtRestTimeFrom
             // 
             this.DtRestTimeFrom.EditValue = null;
-            this.DtRestTimeFrom.Location = new System.Drawing.Point(127, 70);
+            this.DtRestTimeFrom.Location = new System.Drawing.Point(127, 74);
             this.DtRestTimeFrom.Name = "DtRestTimeFrom";
             this.DtRestTimeFrom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -882,7 +913,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // txtPregnancyTerminationReason
             // 
-            this.txtPregnancyTerminationReason.Location = new System.Drawing.Point(127, 239);
+            this.txtPregnancyTerminationReason.Location = new System.Drawing.Point(127, 243);
             this.txtPregnancyTerminationReason.MenuManager = this.barManager1;
             this.txtPregnancyTerminationReason.Name = "txtPregnancyTerminationReason";
             this.txtPregnancyTerminationReason.Properties.ScrollBars = System.Windows.Forms.ScrollBars.None;
@@ -892,7 +923,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             // 
             // txtEndTypeExtNote
             // 
-            this.txtEndTypeExtNote.Location = new System.Drawing.Point(127, 287);
+            this.txtEndTypeExtNote.Location = new System.Drawing.Point(127, 291);
             this.txtEndTypeExtNote.MenuManager = this.barManager1;
             this.txtEndTypeExtNote.Name = "txtEndTypeExtNote";
             this.txtEndTypeExtNote.Properties.ScrollBars = System.Windows.Forms.ScrollBars.None;
@@ -937,7 +968,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             this.lciCheckTT,
             this.layoutControlItem8,
             this.layoutControlItem10});
-            this.layoutControlGroup1.Location = new System.Drawing.Point(0, -4);
+            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlGroup1.Size = new System.Drawing.Size(643, 389);
@@ -1315,34 +1346,6 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem10.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem10.TextToControlDistance = 5;
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(660, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 406);
-            this.barDockControlBottom.Size = new System.Drawing.Size(660, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 377);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(660, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 377);
             // 
             // dxValidationProvider1
             // 

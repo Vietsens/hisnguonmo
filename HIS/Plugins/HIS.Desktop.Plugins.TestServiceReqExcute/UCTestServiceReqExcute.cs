@@ -418,7 +418,7 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
 
 
                         var listSereServTeinByServServ = lstSereServTeinItem.Where(o => o.SERE_SERV_ID == item.ID).ToList();
-                        var machineSereServ = lstSereServTeinItem.Where(o => o.MACHINE_ID.HasValue).ToList();
+                        var machineSereServ = lstSereServTeinItem.Where(o => o.MACHINE_ID.HasValue && o.SERE_SERV_ID == item.ID).ToList();
                         if (machineSereServ != null && machineSereServ.Count > 0 && machineSereServ[0].MACHINE_ID != null)
                             hisSereServTeinSDO.MACHINE_ID = machineSereServ[0].MACHINE_ID;
 
