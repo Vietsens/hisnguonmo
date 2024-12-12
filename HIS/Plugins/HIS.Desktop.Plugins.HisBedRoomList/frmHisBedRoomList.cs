@@ -1681,6 +1681,8 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                     CONFIGADO config = Newtonsoft.Json.JsonConvert.DeserializeObject<CONFIGADO>(txtConfig.Text);
                     gridView12.SetRowCellValue(0, "Value", config.BANK);
                     gridView12.SetRowCellValue(1, "Value", config.VALUE);
+                    this.KEY = config.BANK;
+                    this.VALUE = config.VALUE;
                     
                 }
                 gridView12.OptionsView.NewItemRowPosition = DevExpress.XtraGrid.Views.Grid.NewItemRowPosition.None;
@@ -1693,7 +1695,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        List<HIS_CONFIG> listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+        List<HIS_CONFIG> listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode")).ToList();
         List<HIS_CONFIG> listConfigEncode = new List<HIS_CONFIG>();
         private void InitComboControlConfig()
         {
@@ -1717,7 +1719,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                         string[] parts = shotkey.Split('.');
                         if (parts.Length > 0)
                         {
-                            cf.KEY = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
+                            cf.KEY = parts[parts.Length - 1];
                         }
                     }
                     cf.VALUE = item.VALUE;
@@ -1768,7 +1770,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 if (grid != null)
                 {
                     var selectedBank = grid.EditValue.ToString();
-                    KEY = selectedBank;
+                    this.KEY = selectedBank;
                     
                 }
             }
