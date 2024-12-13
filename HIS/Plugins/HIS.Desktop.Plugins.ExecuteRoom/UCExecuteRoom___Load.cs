@@ -55,6 +55,8 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraTab;
 using DevExpress.Utils;
 using EMR.SDO;
+using Inventec.Common.QrCodeBHYT;
+using HIS.Desktop.Plugins.Library.CheckHeinGOV;
 //using static Aspose.Pdf.Operator;
 
 namespace HIS.Desktop.Plugins.ExecuteRoom
@@ -358,7 +360,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 Inventec.Common.Logging.LogSystem.Debug("HIS.Desktop.Plugins.ExecuteRoom FillDataToGridServiceReq hisServiceReqFilter" + Inventec.Common.Logging.LogUtil.TraceData("", hisServiceReqFilter));
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("hisServiceReqFilter  #######" + Inventec.Common.Logging.LogUtil.GetMemberName(() => hisServiceReqFilter), hisServiceReqFilter));
 
-                apiResult = new BackendAdapter(paramCommon)
+                apiResult = new Inventec.Common.Adapter.BackendAdapter(paramCommon)
                     .GetRO<List<L_HIS_SERVICE_REQ>>("api/HisServiceReq/GetLView", ApiConsumers.MosConsumer, hisServiceReqFilter, paramCommon);
 
                 gridControlServiceReq.DataSource = null;
@@ -934,7 +936,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     }
                     HisPatientTypeAlterViewFilter filterPatienTypeAlter = new HisPatientTypeAlterViewFilter();
                     filterPatienTypeAlter.TREATMENT_ID = serviceReq.TREATMENT_ID;
-                    this.currentPatientTypeAlter = new BackendAdapter(param)
+                    this.currentPatientTypeAlter = new Inventec.Common.Adapter.BackendAdapter(param)
                         .Get<List<MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER>>("/api/HisPatientTypeAlter/GetView", ApiConsumers.MosConsumer, filterPatienTypeAlter, param).OrderByDescending(o => o.ID).ThenByDescending(o => o.LOG_TIME).FirstOrDefault();
 
                     //Mức hưởng BHYT
@@ -1760,15 +1762,47 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         {
             try
             {
-                LogTheadInSessionInfo(() => LoadModuleExecuteService_Action(serviceReqInput), "ProcessServiceReq");
+                LogTheadInSessionInfo(() => LoadModuleExecuteService_ActionAsync(serviceReqInput), "ProcessServiceReq");
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private string ProcessDate(string date)
+        {
+            string result = "";
+            try
+            {
+                if (!string.IsNullOrEmpty(date))
+                {
+                    if (date.Length == 4)
+                    {
+                        result = date;
+                    }
+                    else if (date.Length == 6)
+                    {
+                        result = new StringBuilder().Append(date.Substring(0, 2)).Append("/").Append(date.Substring(2, 4))
+                            .ToString();
+                    }
+                    else if (date.Length == 8)
+                    {
+                        result = new StringBuilder().Append(date.Substring(0, 2)).Append("/").Append(date.Substring(2, 2))
+                            .Append("/")
+                            .Append(date.Substring(4, 4))
+                            .ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
 
-        private void LoadModuleExecuteService_Action(L_HIS_SERVICE_REQ serviceReqInput)
+            return result;
+        }
+
+        private async Task LoadModuleExecuteService_ActionAsync(L_HIS_SERVICE_REQ serviceReqInput)
         {
             try
             {
@@ -1877,6 +1911,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         }
                     }
                 }
+
                 if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.LockExecuteCFG) == "1" && serviceReqInput.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA)
                 {
                     var services = listServices;
@@ -1925,6 +1960,69 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     Inventec.Common.Logging.LogSystem.Warn(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceWarnMustHavePress), serviceWarnMustHavePress) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServInServiceReqs), sereServInServiceReqs));
                 }
                 Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 1");
+                
+                if (HisConfigCFG.IsCheckHeinCard && serviceReqInput.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && !string.IsNullOrEmpty(serviceReqInput.TDL_HEIN_CARD_NUMBER) && serviceReqInput.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && serviceReqInput.START_TIME == null && serviceReqInput.CREATE_TIME < Int64.Parse(DateTime.Now.ToString("yyyyMMdd") + "000000"))
+                {
+                    if (this.SereServCurrentTreatment == null || this.SereServCurrentTreatment.Count == 0 || !this.SereServCurrentTreatment.Any(o => o.SERVICE_REQ_ID == serviceReqInput.ID))
+                    {
+                        HisSereServFilter sereServFilter = new HisSereServFilter();
+                        sereServFilter.ORDER_FIELD = "SERVICE_NUM_ORDER";
+                        sereServFilter.ORDER_DIRECTION = "DESC";
+                        sereServFilter.TREATMENT_ID = serviceReqInput.TREATMENT_ID;
+                        //sereServFilter.SERVICE_REQ_ID = serviceReqInput.ID;
+                        //sereServFilter.TDL_SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA;
+                        sereServFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                        this.SereServCurrentTreatment = new BackendAdapter(new CommonParam())
+                            .Get<List<ADOserserv7>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, sereServFilter, null);
+                    }
+                    if (SereServCurrentTreatment != null && SereServCurrentTreatment.Count > 0 && SereServCurrentTreatment.Exists(o => o.SERVICE_REQ_ID == serviceReqInput.ID && o.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT))
+                    {
+                        HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.LoadConfig();
+                        HIS.Desktop.Plugins.Library.RegisterConfig.BHXHLoginCFG.LoadConfig();
+                        if (currentTreatment4 == null)
+                            LoadTreatment4ByServiceReq();
+                        HeinCardData heinCardDataForCheckGOV = new HeinCardData();
+                        heinCardDataForCheckGOV.PatientName = currentTreatment4.TDL_PATIENT_NAME;
+                        heinCardDataForCheckGOV.Address = currentTreatment4.TDL_PATIENT_ADDRESS;
+                        heinCardDataForCheckGOV.Dob = currentTreatment4.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1 ? currentTreatment4.TDL_PATIENT_DOB.ToString().Substring(0, 4) : ProcessDate(currentTreatment4.TDL_PATIENT_DOB.ToString().Substring(6, 2) + currentTreatment4.TDL_PATIENT_DOB.ToString().Substring(4, 2) + currentTreatment4.TDL_PATIENT_DOB.ToString().Substring(0, 4));
+                        heinCardDataForCheckGOV.Gender = currentTreatment4.TDL_PATIENT_GENDER_NAME;
+
+                        heinCardDataForCheckGOV.HeinCardNumber = currentTreatment4.TDL_HEIN_CARD_NUMBER;
+                        heinCardDataForCheckGOV.FromDate = ProcessDate(currentTreatment4.TDL_HEIN_CARD_FROM_TIME.HasValue ? currentTreatment4.TDL_HEIN_CARD_FROM_TIME.ToString().Substring(6, 2) + currentTreatment4.TDL_HEIN_CARD_FROM_TIME.ToString().Substring(4, 2) + currentTreatment4.TDL_HEIN_CARD_FROM_TIME.ToString().Substring(0, 4) : null);
+                        heinCardDataForCheckGOV.MediOrgCode = currentTreatment4.TDL_HEIN_MEDI_ORG_CODE;
+                        HeinGOVManager heinGOVManager = new HeinGOVManager(null);
+                        var ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, null, DateTime.Now, false, false);
+                        if (ResultDataADO != null && (ResultDataADO.ResultHistoryLDO.maKetQua != "000" && ResultDataADO.ResultHistoryLDO.maKetQua != "003" && ResultDataADO.ResultHistoryLDO.maKetQua != "004") && !string.IsNullOrEmpty(ResultDataADO.ResultHistoryLDO.ghiChu))
+                        {
+                            XtraMessageBox.Show(ResultDataADO.ResultHistoryLDO.ghiChu, "Thông báo");
+                            List<object> listArgs = new List<object>();
+                            Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.CallPatientTypeAlter").FirstOrDefault();
+                            if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.CallPatientTypeAlter");
+                            if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                            {
+                                PatientTypeDepartmentADO a = new PatientTypeDepartmentADO();
+
+                                a.patientTypeAlter = PatientTYpeAlterView(serviceReqInput);
+                                a.CREATE_TIME = a.patientTypeAlter.CREATE_TIME;
+                                a.LOG_TIME = a.patientTypeAlter.LOG_TIME;
+                                a.MODIFY_TIME = a.patientTypeAlter.MODIFY_TIME;
+                                a.TREATMENT_ID = a.patientTypeAlter.TREATMENT_ID;
+                                a.CREATOR = a.patientTypeAlter.CREATOR;
+                                a.MODIFIER = a.patientTypeAlter.MODIFIER;
+                                a.Id = a.patientTypeAlter.DEPARTMENT_TRAN_ID.ToString();
+
+                                listArgs.Add(a);
+                                listArgs.Add(this.currentModule);
+                                //listArgs.Add(serviceReqInput.TREATMENT_ID);
+                                listArgs.Add((RefeshReference)ReloadData);
+                                var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, roomId, roomTypeId), listArgs);
+                                if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                                ((Form)extenceInstance).ShowDialog();
+                            }
+                            return;
+                        }
+                    }
+                }
                 if (serviceReqInput.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
                 {
                     Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 2");
@@ -1937,6 +2035,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 3");
 
                 V_HIS_SERVICE_REQ serviceReqDynamic = GetDynamicData(serviceReqInput);
+
                 //Get module link
                 if (serviceReqInput.EXE_SERVICE_MODULE_ID.HasValue)
                 {
@@ -2025,6 +2124,28 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private V_HIS_PATIENT_TYPE_ALTER PatientTYpeAlterView(L_HIS_SERVICE_REQ serviceReq)
+        {
+            try
+            {
+                CommonParam param = new Inventec.Core.CommonParam();
+                HisPatientTypeAlterViewFilter filterPatienTypeAlter = new HisPatientTypeAlterViewFilter();
+                filterPatienTypeAlter.TREATMENT_ID = serviceReq.TREATMENT_ID;
+                return new Inventec.Common.Adapter.BackendAdapter(param)
+                    .Get<List<MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER>>("/api/HisPatientTypeAlter/GetView", ApiConsumers.MosConsumer, filterPatienTypeAlter, param).OrderByDescending(o => o.ID).ThenByDescending(o => o.LOG_TIME).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return null;
+        }
+        private void ReloadData()
+        {
+            LoadTreatment4ByServiceReq();
+            btnFind_Click(null, null);
         }
 
         //private void LoadModuleExecuteService__Old(string moduleLink, L_HIS_SERVICE_REQ serviceReqInput)
@@ -2638,7 +2759,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
                         documents = new BackendAdapter(paramCommon).Post<List<EmrDocumentFileSDO>>("api/EmrDocument/DownloadFile", ApiConsumers.EmrConsumer, sdo, paramCommon);
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => paramCommon), paramCommon));
-                        Inventec.Common.Logging.LogSystem.Debug("document__"+(documents != null && documents.Count > 0));
+                        Inventec.Common.Logging.LogSystem.Debug("document__" + (documents != null && documents.Count > 0));
                     }
 
                     if (xtraTabDocument.SelectedTabPage == xtraTabDocumentReq)

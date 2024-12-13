@@ -49,6 +49,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         private const string IS_USING_EXECUTE_ROOM_PAYMENT = "MOS.EPAYMENT.IS_USING_EXECUTE_ROOM_PAYMENT";
         private const string IS_ShowResultWhenReqComplete = "HIS.Desktop.Plugins.ContentSubclinical.ShowResultWhenReqComplete";
         private const string IS_HAS_CONNECTION_EMR = "MOS.HAS_CONNECTION_EMR";
+        private const string KEY__IsCheckHeinCard = "HIS.Desktop.Plugins.ExamServiceReqExecute.IsCheckHeinCard";
+        internal static bool IsCheckHeinCard;
         internal static bool IsHasConnectionEmr;
         internal static string IsShowResultWhenReqComplete;
         internal static bool IsUsingExecuteRoomPayment;
@@ -87,6 +89,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             try
             {
                 LogSystem.Debug("LoadConfig => 1");
+                IsCheckHeinCard = GetValue(KEY__IsCheckHeinCard) == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CommonStringTrue;
                 IsHasConnectionEmr = GetValue(IS_HAS_CONNECTION_EMR) == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CommonStringTrue;
                 IsShowResultWhenReqComplete = GetValue(IS_ShowResultWhenReqComplete);
                 IsUsingExecuteRoomPayment = GetValue(IS_USING_EXECUTE_ROOM_PAYMENT) == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CommonStringTrue;
