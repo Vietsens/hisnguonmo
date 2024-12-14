@@ -305,21 +305,25 @@ namespace HIS.Desktop.Plugins.ConsultationRegList
                     }
                     else if (e.Column.FieldName == "Status")
                     {
-                        if (data.REGISTER_STT_ID == 1)
+                        if (data.REGISTER_STT_ID == 1) // Yeu cau
                         {
                             e.Value = imageList1.Images[0];
                         }
-                        else if (data.REGISTER_STT_ID == 2)
+                        else if (data.REGISTER_STT_ID == 2)// dang xu ly
                         {
                             e.Value = imageList1.Images[1];
                         }
-                        else if (data.REGISTER_STT_ID == 5)
+                        else if (data.REGISTER_STT_ID == 5)//huy
                         {
                             e.Value = imageList1.Images[2];
                         }
-                        else if (data.REGISTER_STT_ID == 4)
+                        else if (data.REGISTER_STT_ID == 4)//khong lien lac duoc
                         {
                             e.Value = imageList1.Images[3];
+                        }
+                        else//hoan thanh
+                        {
+                            e.Value = imageList1.Images[4];
                         }
 
 
