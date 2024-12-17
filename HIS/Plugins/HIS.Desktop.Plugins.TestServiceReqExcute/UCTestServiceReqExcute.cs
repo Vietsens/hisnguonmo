@@ -479,6 +479,17 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
                                 {
                                     hisSereServTein.VALUE = ssTein.VALUE;
                                 }
+                                else
+                                {
+                                    if (string.IsNullOrEmpty(hisSereServTeinSDO.VALUE))
+                                    {
+                                        var data = _TestIndexs.Where(o => o.TEST_INDEX_CODE == hisSereServTeinSDO.TEST_INDEX_CODE).FirstOrDefault();
+                                        if (data != null && !string.IsNullOrEmpty(data.DEFAULT_VALUE))
+                                        {
+                                            hisSereServTein.VALUE = data.DEFAULT_VALUE;
+                                        }
+                                    }
+                                }
                                 //hisSereServTein.DESCRIPTION = ssTein.DESCRIPTION;
                                 hisSereServTein.SERE_SERV_ID = ssTein.SERE_SERV_ID;
                                 hisSereServTein.TEST_INDEX_ID = ssTein.TEST_INDEX_ID;
@@ -574,7 +585,6 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
                     var testIndexRangeAll = BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>();
                     foreach (var hisSereServTeinSDO in lstHisSereServTeinSDO)
                     {
-
                         V_HIS_TEST_INDEX_RANGE testIndexRange = new V_HIS_TEST_INDEX_RANGE();
                         testIndexRange = GetTestIndexRange(this.currentServiceReq.TDL_PATIENT_DOB, this.genderId, hisSereServTeinSDO.TEST_INDEX_ID ?? 0, ref this.testIndexRangeAll);
                         if (testIndexRange != null)
