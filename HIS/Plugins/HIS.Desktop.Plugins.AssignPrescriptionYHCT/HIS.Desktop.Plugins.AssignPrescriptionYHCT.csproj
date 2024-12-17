@@ -77,9 +77,8 @@
     <Reference Include="HIS.Desktop.Print">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.DateEditor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.DateEditor\HIS.UC.DateEditor.dll</HintPath>
+    <Reference Include="HIS.UC.DateEditor">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.DateEditor.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Icd, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -94,6 +93,9 @@
     </Reference>
     <Reference Include="HIS.UC.PeriousExpMestList">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.PeriousExpMestList\HIS.UC.PeriousExpMestList.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.SecondaryIcd">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.SecondaryIcd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TreatmentFinish">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.TreatmentFinish\HIS.UC.TreatmentFinish.dll</HintPath>
@@ -455,10 +457,6 @@
     <Compile Include="Worker\ValidAcinInteractiveWorker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UC\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.csproj">
-      <Project>{04b2ab94-562d-4753-a158-1aad3217408b}</Project>
-      <Name>HIS.UC.SecondaryIcd</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>
