@@ -1772,7 +1772,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         {
             try
             {
-                if (!string.IsNullOrEmpty(serviceReqInput.NOTE))
+                
+                if (!string.IsNullOrEmpty(serviceReqInput.NOTE) && HisConfigs.Get<string>("HIS.Desktop.Plugins.ExecuteRoom.ShowNoteOption") != "1")
                 {
                     XtraMessageBox.Show(serviceReqInput.NOTE, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
                 }
