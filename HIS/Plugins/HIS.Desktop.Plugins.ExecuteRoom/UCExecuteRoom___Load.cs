@@ -1960,8 +1960,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     Inventec.Common.Logging.LogSystem.Warn(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceWarnMustHavePress), serviceWarnMustHavePress) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServInServiceReqs), sereServInServiceReqs));
                 }
                 Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 1");
-                
-                if (HisConfigCFG.IsCheckHeinCard && serviceReqInput.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && !string.IsNullOrEmpty(serviceReqInput.TDL_HEIN_CARD_NUMBER) && serviceReqInput.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && serviceReqInput.START_TIME == null && serviceReqInput.CREATE_TIME < Int64.Parse(DateTime.Now.ToString("yyyyMMdd") + "000000"))
+
+                if (HisConfigCFG.IsCheckHeinCard && !string.IsNullOrEmpty(serviceReqInput.TDL_HEIN_CARD_NUMBER) && serviceReqInput.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && serviceReqInput.START_TIME == null && serviceReqInput.CREATE_TIME < Int64.Parse(DateTime.Now.ToString("yyyyMMdd") + "000000"))
                 {
                     if (this.SereServCurrentTreatment == null || this.SereServCurrentTreatment.Count == 0 || !this.SereServCurrentTreatment.Any(o => o.SERVICE_REQ_ID == serviceReqInput.ID))
                     {
@@ -1981,45 +1981,48 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         HIS.Desktop.Plugins.Library.RegisterConfig.BHXHLoginCFG.LoadConfig();
                         if (currentTreatment4 == null)
                             LoadTreatment4ByServiceReq();
-                        HeinCardData heinCardDataForCheckGOV = new HeinCardData();
-                        heinCardDataForCheckGOV.PatientName = currentTreatment4.TDL_PATIENT_NAME;
-                        heinCardDataForCheckGOV.Address = currentTreatment4.TDL_PATIENT_ADDRESS;
-                        heinCardDataForCheckGOV.Dob = currentTreatment4.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1 ? currentTreatment4.TDL_PATIENT_DOB.ToString().Substring(0, 4) : ProcessDate(currentTreatment4.TDL_PATIENT_DOB.ToString().Substring(6, 2) + currentTreatment4.TDL_PATIENT_DOB.ToString().Substring(4, 2) + currentTreatment4.TDL_PATIENT_DOB.ToString().Substring(0, 4));
-                        heinCardDataForCheckGOV.Gender = currentTreatment4.TDL_PATIENT_GENDER_NAME;
-
-                        heinCardDataForCheckGOV.HeinCardNumber = currentTreatment4.TDL_HEIN_CARD_NUMBER;
-                        heinCardDataForCheckGOV.FromDate = ProcessDate(currentTreatment4.TDL_HEIN_CARD_FROM_TIME.HasValue ? currentTreatment4.TDL_HEIN_CARD_FROM_TIME.ToString().Substring(6, 2) + currentTreatment4.TDL_HEIN_CARD_FROM_TIME.ToString().Substring(4, 2) + currentTreatment4.TDL_HEIN_CARD_FROM_TIME.ToString().Substring(0, 4) : null);
-                        heinCardDataForCheckGOV.MediOrgCode = currentTreatment4.TDL_HEIN_MEDI_ORG_CODE;
-                        HeinGOVManager heinGOVManager = new HeinGOVManager(null);
-                        var ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, null, DateTime.Now, false, false);
-                        if (ResultDataADO != null && (ResultDataADO.ResultHistoryLDO.maKetQua != "000" && ResultDataADO.ResultHistoryLDO.maKetQua != "003" && ResultDataADO.ResultHistoryLDO.maKetQua != "004") && !string.IsNullOrEmpty(ResultDataADO.ResultHistoryLDO.ghiChu))
+                        if (currentTreatment4.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
                         {
-                            XtraMessageBox.Show(ResultDataADO.ResultHistoryLDO.ghiChu, "Thông báo");
-                            List<object> listArgs = new List<object>();
-                            Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.CallPatientTypeAlter").FirstOrDefault();
-                            if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.CallPatientTypeAlter");
-                            if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                            HeinCardData heinCardDataForCheckGOV = new HeinCardData();
+                            heinCardDataForCheckGOV.PatientName = currentTreatment4.TDL_PATIENT_NAME;
+                            heinCardDataForCheckGOV.Address = currentTreatment4.TDL_PATIENT_ADDRESS;
+                            heinCardDataForCheckGOV.Dob = currentTreatment4.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1 ? currentTreatment4.TDL_PATIENT_DOB.ToString().Substring(0, 4) : ProcessDate(currentTreatment4.TDL_PATIENT_DOB.ToString().Substring(6, 2) + currentTreatment4.TDL_PATIENT_DOB.ToString().Substring(4, 2) + currentTreatment4.TDL_PATIENT_DOB.ToString().Substring(0, 4));
+                            heinCardDataForCheckGOV.Gender = currentTreatment4.TDL_PATIENT_GENDER_NAME;
+
+                            heinCardDataForCheckGOV.HeinCardNumber = currentTreatment4.TDL_HEIN_CARD_NUMBER;
+                            heinCardDataForCheckGOV.FromDate = ProcessDate(currentTreatment4.TDL_HEIN_CARD_FROM_TIME.HasValue ? currentTreatment4.TDL_HEIN_CARD_FROM_TIME.ToString().Substring(6, 2) + currentTreatment4.TDL_HEIN_CARD_FROM_TIME.ToString().Substring(4, 2) + currentTreatment4.TDL_HEIN_CARD_FROM_TIME.ToString().Substring(0, 4) : null);
+                            heinCardDataForCheckGOV.MediOrgCode = currentTreatment4.TDL_HEIN_MEDI_ORG_CODE;
+                            HeinGOVManager heinGOVManager = new HeinGOVManager(null);
+                            var ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, null, DateTime.Now, false, false);
+                            if (ResultDataADO != null && (ResultDataADO.ResultHistoryLDO.maKetQua != "000" && ResultDataADO.ResultHistoryLDO.maKetQua != "003" && ResultDataADO.ResultHistoryLDO.maKetQua != "004") && !string.IsNullOrEmpty(ResultDataADO.ResultHistoryLDO.ghiChu))
                             {
-                                PatientTypeDepartmentADO a = new PatientTypeDepartmentADO();
+                                XtraMessageBox.Show(ResultDataADO.ResultHistoryLDO.ghiChu, "Thông báo");
+                                List<object> listArgs = new List<object>();
+                                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.CallPatientTypeAlter").FirstOrDefault();
+                                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.CallPatientTypeAlter");
+                                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                                {
+                                    PatientTypeDepartmentADO a = new PatientTypeDepartmentADO();
 
-                                a.patientTypeAlter = PatientTYpeAlterView(serviceReqInput);
-                                a.CREATE_TIME = a.patientTypeAlter.CREATE_TIME;
-                                a.LOG_TIME = a.patientTypeAlter.LOG_TIME;
-                                a.MODIFY_TIME = a.patientTypeAlter.MODIFY_TIME;
-                                a.TREATMENT_ID = a.patientTypeAlter.TREATMENT_ID;
-                                a.CREATOR = a.patientTypeAlter.CREATOR;
-                                a.MODIFIER = a.patientTypeAlter.MODIFIER;
-                                a.Id = a.patientTypeAlter.DEPARTMENT_TRAN_ID.ToString();
+                                    a.patientTypeAlter = PatientTYpeAlterView(serviceReqInput);
+                                    a.CREATE_TIME = a.patientTypeAlter.CREATE_TIME;
+                                    a.LOG_TIME = a.patientTypeAlter.LOG_TIME;
+                                    a.MODIFY_TIME = a.patientTypeAlter.MODIFY_TIME;
+                                    a.TREATMENT_ID = a.patientTypeAlter.TREATMENT_ID;
+                                    a.CREATOR = a.patientTypeAlter.CREATOR;
+                                    a.MODIFIER = a.patientTypeAlter.MODIFIER;
+                                    a.Id = a.patientTypeAlter.DEPARTMENT_TRAN_ID.ToString();
 
-                                listArgs.Add(a);
-                                listArgs.Add(this.currentModule);
-                                //listArgs.Add(serviceReqInput.TREATMENT_ID);
-                                listArgs.Add((RefeshReference)ReloadData);
-                                var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, roomId, roomTypeId), listArgs);
-                                if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                                ((Form)extenceInstance).ShowDialog();
+                                    listArgs.Add(a);
+                                    listArgs.Add(this.currentModule);
+                                    listArgs.Add(true);
+                                    listArgs.Add((RefeshReference)ReloadData);
+                                    var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, roomId, roomTypeId), listArgs);
+                                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                                    ((Form)extenceInstance).ShowDialog();
+                                }
+                                return;
                             }
-                            return;
                         }
                     }
                 }
