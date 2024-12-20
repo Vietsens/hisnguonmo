@@ -43,7 +43,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit.Validation
 
                 if (txtEdit != null && !string.IsNullOrEmpty(txtEdit.Text) && Inventec.Common.String.CountVi.Count(txtEdit.Text) > maxlength)
                 {
-                    this.ErrorText = "Trường dữ liệu vượt quá maxlength( " + maxlength + " kí tự)";
+                    this.ErrorText = "Trường dữ liệu vượt quá( " + maxlength + " kí tự)";
                     return vaild;
                 }
                 vaild = true;

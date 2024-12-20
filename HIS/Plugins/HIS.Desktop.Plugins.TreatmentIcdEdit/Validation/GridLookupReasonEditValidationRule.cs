@@ -26,6 +26,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit.Validation
     class GridLookupReasonEditValidationRule : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
         internal DevExpress.XtraEditors.GridLookUpEdit cbo;
+        internal DevExpress.XtraEditors.ButtonEdit btn;
         internal DevExpress.XtraEditors.TextEdit txt;
         internal bool IsRequired;
         internal int MaxLengthCode;
@@ -35,23 +36,54 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit.Validation
             bool valid = false;
             try
             {
-                if (cbo == null) return valid;
+                if (cbo == null && btn == null) return valid;
 
-                if (IsRequired && (cbo.EditValue == null || String.IsNullOrWhiteSpace(cbo.EditValue.ToString()) || string.IsNullOrEmpty(txt.Text.Trim())))
+                if (IsRequired && (string.IsNullOrEmpty(btn.Text.Trim()) ))
                 {
                     this.ErrorText = "Trường dữ liệu bắt buộc";
                     this.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     return valid;
                 }
-                if(!string.IsNullOrEmpty(txt.Text.Trim()) && Inventec.Common.String.CountVi.Count(txt.Text.Trim()) > MaxLengthCode)
+                //if(!string.IsNullOrEmpty(txt.Text.Trim()) && Inventec.Common.String.CountVi.Count(txt.Text.Trim()) > MaxLengthCode)
+                //{
+                //    this.ErrorText = "Mã vượt ký tự cho phép, " + MaxLengthCode + " ký tự";
+                //    this.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                //    return valid;
+                //}
+                //if (!string.IsNullOrEmpty(cbo.Text.Trim()) && Inventec.Common.String.CountVi.Count(cbo.Text.Trim()) > MaxLengthName)
+                //{
+                //    this.ErrorText = "Tên vượt ký tự cho phép, " + MaxLengthName + " ký tự";
+                //    this.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                //    return valid;
+                //}
+                if (!string.IsNullOrEmpty(btn.Text.Trim()) && Inventec.Common.String.CountVi.Count(btn.Text.Trim()) > MaxLengthName)
                 {
-                    this.ErrorText = "Mã vượt ký tự cho phép, " + MaxLengthCode + " ký tự";
+                    this.ErrorText = "Tên vượt ký tự cho phép, " + MaxLengthName + " ký tự";
                     this.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     return valid;
                 }
-                if (!string.IsNullOrEmpty(cbo.Text.Trim()) && Inventec.Common.String.CountVi.Count(cbo.Text.Trim()) > MaxLengthName)
+                valid = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return valid;
+        }
+    }
+    public class ComboValidationRule : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
+    {
+        internal DevExpress.XtraEditors.GridLookUpEdit cbo;
+
+        public override bool Validate(System.Windows.Forms.Control control, object value)
+        {
+            bool valid = false;
+            try
+            {
+                if (cbo == null) return valid;
+                if (cbo.EditValue == null)
                 {
-                    this.ErrorText = "Tên vượt ký tự cho phép, " + MaxLengthName + " ký tự";
+                    this.ErrorText = "Trường dữ liệu bắt buộc";
                     this.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     return valid;
                 }

@@ -588,6 +588,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+       
         private void CreateThreadGetData()
         {
             try
@@ -1042,13 +1043,23 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
 
                     if (!String.IsNullOrEmpty(currentVHisTreatment.HOSPITALIZE_REASON_NAME))
                     {
-                        cboReasonNT.EditValue = currentVHisTreatment.HOSPITALIZE_REASON_CODE;
+                        btnReasonNT.Text = currentVHisTreatment.HOSPITALIZE_REASON_NAME;
+                        //cboReasonNT.EditValue = currentVHisTreatment.HOSPITALIZE_REASON_CODE??"";
                         //cboReasonNT.Text = currentVHisTreatment.HOSPITALIZE_REASON_NAME;
                         //txtReasonNTCode.Text = currentVHisTreatment.HOSPITALIZE_REASON_CODE;
                     }
                     else
                     {
-                        cboReasonNT.EditValue = "";
+                        btnReasonNT.Text = "";
+                        //cboReasonNT.EditValue = "";
+                    }
+                    if (!String.IsNullOrEmpty(currentVHisTreatment.HOSPITALIZE_REASON_CODE))
+                    {
+                        txtReasonNTCode.Text = currentVHisTreatment.HOSPITALIZE_REASON_CODE;
+                    }
+                    else
+                    {
+                        txtReasonNTCode.Text = "";
                     }
 
                     if (!String.IsNullOrEmpty(currentVHisTreatment.HOSPITALIZATION_REASON))
@@ -1069,6 +1080,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         chkTuberculosis.Checked = false;
                     }
                     txtNumManager.Text = currentVHisTreatment.TUBERCULOSIS_CODE;
+                    txtTdlPatientNote.Text = currentVHisTreatment.TDL_PATIENT_NOTE;
                     //if (chkTuberculosis.Checked == false)
                     //{
                     //    txtNumManager.Enabled = false;
@@ -1270,13 +1282,15 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 ValidTextControlMaxlength(this.txtSanPham, 200, false);
                 ValidTextControlMaxlength(this.txtReasonVV, 200, false);
                 ValidTextControlMaxlength(this.txtReasonNTCode, 10, false);
-                ValidTextControlMaxlength(this.cboReasonNT, 1000, false);
-                layoutControlItem39.AppearanceItemCaption.ForeColor = Color.Black;
+                ValidTextControlMaxlength(this.btnReasonNT, 1000, false);
+                ValidTextControlMaxlength(this.txtTdlPatientNote, 2000, false);
+                layoutControlItem38.AppearanceItemCaption.ForeColor = Color.Black;
                 if (dtClinicalInTime.EditValue != null)
                 {
                     ValidationRequired(txtReasonVV);
+                    //ValidationRequiredBtn(btnReasonNT);
                     ValidationReason();
-                    layoutControlItem39.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    layoutControlItem38.AppearanceItemCaption.ForeColor = Color.Maroon;
                 }
             }
             catch (Exception ex)
@@ -1284,18 +1298,35 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void ValidationRequiredBtn(ButtonEdit btnReasonNT)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule validate = new ControlEditValidationRule();
+                validate.editor = btnReasonNT;
+                validate.ErrorText = ResourceMessage.TruongDuLieuBatBuoc;
+                validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                this.dxValidationProviderTime.SetValidationRule(btnReasonNT, validate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void ValidationReason()
         {
-
             try
             {
                 GridLookupReasonEditValidationRule rule = new GridLookupReasonEditValidationRule();
-                rule.cbo = cboReasonNT;
-                rule.txt = txtReasonNTCode;
-                rule.MaxLengthCode = 10;
+                rule.btn = btnReasonNT;
+                //rule.txt = txtReasonNTCode;
+                //rule.MaxLengthCode = 10;
                 rule.MaxLengthName = 1000;
                 rule.IsRequired = true;
-                dxValidationProviderTime.SetValidationRule(txtReasonNTCode, rule);
+                dxValidationProviderTime.SetValidationRule(btnReasonNT, rule);
+                //ComboValidationRule rule = new ComboValidationRule();
+                //rule.cbo = btnReasonNT;
             }
             catch (Exception ex)
             {
@@ -1303,7 +1334,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             }
 
         }
-
+        
         private void ValidationRequired(BaseEdit control)
         {
             try
@@ -1674,13 +1705,9 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 {
                     data.HospitalizationReason = txtReasonVV.Text;
                 }
-                if (cboReasonNT.EditValue != null)
+                if (!string.IsNullOrEmpty(btnReasonNT.Text))
                 {
-                    var checkReasonNT = this.HisHospitalizeReason.FirstOrDefault(o => o.HOSPITALIZE_REASON_CODE.ToUpper() == cboReasonNT.EditValue.ToString().ToUpper());
-                    if (checkReasonNT != null)
-                    {
-                        data.HospitalizeReasonName = checkReasonNT.HOSPITALIZE_REASON_NAME;
-                    }
+                    data.HospitalizeReasonName = btnReasonNT.Text;
                 }
                 if (chkTuberculosis.Checked == true)
                 {
@@ -1694,7 +1721,12 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 {
                     data.TuberculosisCode = txtNumManager.Text;
                 }
-                
+                if (!string.IsNullOrEmpty(txtTdlPatientNote.Text))
+                {
+                    data.TdlPatientNote = txtTdlPatientNote.Text;
+                }
+
+                Inventec.Common.Logging.LogSystem.Info("CODE:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
 
                 HisTreatmentCommonInfoUpdateSDO result = new BackendAdapter(param).Post<HisTreatmentCommonInfoUpdateSDO>(RequestUriStore.HIS_TREATMENT_UPDATE_COMMON_INFO, ApiConsumer.ApiConsumers.MosConsumer, data, param);
 
@@ -2425,14 +2457,33 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 //    }
                 //}
 
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("HOSPITALIZE_REASON_CODE", "", 100, 1));
-                columnInfos.Add(new ColumnInfo("HOSPITALIZE_REASON_NAME", "", 250, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("HOSPITALIZE_REASON_NAME", "HOSPITALIZE_REASON_CODE", columnInfos, false, 350);
-                ControlEditorLoader.Load(cboReasonNT, HisHospitalizeReason, controlEditorADO);
 
+                //List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                //columnInfos.Add(new ColumnInfo("HOSPITALIZE_REASON_CODE", "", 100, 1));
+                //columnInfos.Add(new ColumnInfo("HOSPITALIZE_REASON_NAME", "", 250, 2));
+                //ControlEditorADO controlEditorADO = new ControlEditorADO("HOSPITALIZE_REASON_NAME", "HOSPITALIZE_REASON_CODE", columnInfos, false, 350);
+                //ControlEditorLoader.Load(cboReasonNT, HisHospitalizeReason, controlEditorADO);
+                cboReasonNT.Properties.DataSource = HisHospitalizeReason;
+                cboReasonNT.Properties.DisplayMember = "HOSPITALIZE_REASON_NAME";
+                cboReasonNT.Properties.ValueMember = "HOSPITALIZE_REASON_CODE";
 
+                DevExpress.XtraGrid.Columns.GridColumn column = cboReasonNT.Properties.View.Columns.AddField("HOSPITALIZE_REASON_CODE");
+                column.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+                column.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
+                column.VisibleIndex = 1;
+                column.Width = 150;
+                column.Caption = "Mã";
 
+                DevExpress.XtraGrid.Columns.GridColumn column1 = cboReasonNT.Properties.View.Columns.AddField("HOSPITALIZE_REASON_NAME");
+                column1.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+                column1.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
+                column1.VisibleIndex = 2;
+                column1.Width = 250;
+                column1.Caption = "Tên";
+
+                //ControlEditorADO controlEditorADO = new ControlEditorADO("HOSPITALIZE_REASON_NAME", "HOSPITALIZE_REASON_CODE", columnInfos, false, 350);
+                //ControlEditorLoader.Load(cboReasonNT, HisHospitalizeReason, controlEditorADO);
+                //cboReasonNT.Properties.DataSource = HisHospitalizeReason;
             }
             catch (Exception ex)
             {
@@ -2878,24 +2929,19 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             }
         }
 
-        private void cboReasonNT_EditValueChanged(object sender, EventArgs e)
+        private void dtClinicalInTime_EditValueChanged(object sender, EventArgs e)
         {
-
             try
             {
-                if (cboReasonNT.EditValue != null)
+                if (!string.IsNullOrEmpty(dtClinicalInTime.Text))
                 {
-                    cboReasonNT.Properties.Buttons[1].Visible = true;
-
-                    var data = this.HisHospitalizeReason.FirstOrDefault(o => o.HOSPITALIZE_REASON_CODE.ToLower() == cboReasonNT.EditValue.ToString().ToLower());
-                    if (data != null)
-                    {
-                        txtReasonNTCode.Text = data.HOSPITALIZE_REASON_CODE;
-                    }
+                    lblReasonVV.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    layoutControlItem38.AppearanceItemCaption.ForeColor = Color.Maroon;
                 }
                 else
                 {
-                    cboReasonNT.Properties.Buttons[1].Visible = false;
+                    lblReasonVV.AppearanceItemCaption.ForeColor = Color.Black;
+                    layoutControlItem38.AppearanceItemCaption.ForeColor = Color.Black;
                 }
             }
             catch (Exception ex)
@@ -2904,7 +2950,31 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             }
         }
 
-        private void cboReasonNT_Closed(object sender, ClosedEventArgs e)
+        private void btnReasonNT_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboReasonNT.EditValue = null;
+                    btnReasonNT.EditValue = null;
+                    txtReasonNTCode.Text = "";
+                }
+                else if (e.Button.Kind == ButtonPredefines.Combo)
+                {
+                    cboReasonNT.Properties.DataSource = HisHospitalizeReason;
+                    btnReasonNT.Focus();
+                    cboReasonNT.ShowPopup();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        bool enterReason = true;
+        private void cboReasonNT_Closed_2(object sender, ClosedEventArgs e)
         {
             try
             {
@@ -2915,11 +2985,13 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         var data = this.HisHospitalizeReason.FirstOrDefault(o => o.HOSPITALIZE_REASON_CODE.ToLower() == cboReasonNT.EditValue.ToString().ToLower());
                         if (data != null)
                         {
+                            btnReasonNT.Text = data.HOSPITALIZE_REASON_NAME;
+                            btnReasonNT.Properties.Buttons[1].Visible = true;
                             txtReasonNTCode.Text = data.HOSPITALIZE_REASON_CODE;
-                            cboReasonNT.Properties.Buttons[1].Visible = true;
                         }
 
                         this.inIcdProcessor.FocusControl(ucInIcd);
+                        enterReason = false;
                     }
                 }
             }
@@ -2929,44 +3001,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             }
         }
 
-        private void dtClinicalInTime_EditValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(dtClinicalInTime.Text))
-                {
-                    lblReasonVV.AppearanceItemCaption.ForeColor = Color.Maroon;
-                    layoutControlItem39.AppearanceItemCaption.ForeColor = Color.Maroon;
-                }
-                else
-                {
-                    lblReasonVV.AppearanceItemCaption.ForeColor = Color.Black;
-                    layoutControlItem39.AppearanceItemCaption.ForeColor = Color.Black;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        private void cboReasonNT_ButtonClick(object sender, ButtonPressedEventArgs e)
-        {
-            try
-            {
-                if (e.Button.Kind == ButtonPredefines.Delete)
-                {
-                    txtReasonNTCode.EditValue = null;
-                    cboReasonNT.EditValue = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        private void cboReasonNT_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        private void btnReasonNT_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try
             {
@@ -2986,6 +3021,30 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 else if (e.KeyCode == Keys.Down)
                 {
                     cboReasonNT.ShowPopup();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnReasonNT_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(btnReasonNT.Text))
+            {
+                txtReasonNTCode.Text = "";
+            }
+        }
+
+        private void cboReasonNT_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboReasonNT.EditValue != null)
+                {
+                    btnReasonNT.Text = (cboReasonNT.Properties.DataSource as List<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>).FirstOrDefault(o => o.HOSPITALIZE_REASON_CODE == cboReasonNT.EditValue.ToString()).HOSPITALIZE_REASON_NAME;
+                    txtReasonNTCode.Text = (cboReasonNT.Properties.DataSource as List<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>).FirstOrDefault(o => o.HOSPITALIZE_REASON_CODE == cboReasonNT.EditValue.ToString()).HOSPITALIZE_REASON_CODE;
                 }
             }
             catch (Exception ex)
