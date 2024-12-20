@@ -342,7 +342,8 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                             //Lấy ra danh sách thuốc thường trong kho không chứa thuốc gây nghiện, hướng thần
                             if (lstMedicineExpmestTypeKhongChua_GN_HT_ADO != null && lstMedicineExpmestTypeKhongChua_GN_HT_ADO.Count > 0)
                             {
-                                lstMedicineExpmestTypeADO = lstMedicineExpmestTypeKhongChua_GN_HT_ADO.Where(o => o.Type == 1 || o.Type == 2 || o.Type == 5).ToList();
+                                lstMedicineExpmestTypeADO = lstMedicineExpmestTypeKhongChua_GN_HT_ADO.Where(o => o.Type == 1 || o.Type == 2).ToList();
+                                Inventec.Common.Logging.LogSystem.Debug("Danh sach thuoc thuong trong kho: " + Inventec.Common.Logging.LogUtil.TraceData("lstMedicineExpmestTypeADO", lstMedicineExpmestTypeADO));
                             }
 
                             //Lọc bỏ danh sách thuốc thường trong kho
@@ -352,6 +353,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                             }
                             if (lstMedicineExpmestTypeKhongChua_GN_HT_ADO != null && lstMedicineExpmestTypeKhongChua_GN_HT_ADO.Count > 0)
                             {
+                                
                                 listSPHoTro = lstMedicineExpmestTypeKhongChua_GN_HT_ADO.Where(o => o.IS_FUNCTIONAL_FOOD == IS_TRUE || o.Type == 4).ToList();
                                 listTThuongNgoaiKho = lstMedicineExpmestTypeKhongChua_GN_HT_ADO.Except(listSPHoTro).ToList();
                             }
