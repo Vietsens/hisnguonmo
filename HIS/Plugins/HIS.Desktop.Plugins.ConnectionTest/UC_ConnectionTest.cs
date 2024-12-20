@@ -2810,7 +2810,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             }
                         }
                         var testIndFist = currentTestIndexs.FirstOrDefault(o => o.TEST_INDEX_CODE == lstResultItem[0].TEST_INDEX_CODE);
-
+                        LogSystem.Debug("lstResultItem.Count "+ lstResultItem.Count+ " ; IS_NOT_SHOW_SERVICE: "+testIndFist.IS_NOT_SHOW_SERVICE+ " ; testIndFist: "+LogUtil.TraceData("testIndFist", testIndFist));
                         if (lstResultItem != null
                             && lstResultItem.Count == 1
                             && testIndFist != null && testIndFist.IS_NOT_SHOW_SERVICE == 1)
@@ -2826,7 +2826,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             hisSereServTeinSDO.SAMPLE_SERVICE_ID = lstResultItem[0].SAMPLE_SERVICE_ID;
                             hisSereServTeinSDO.SAMPLE_SERVICE_STT_ID = lstResultItem[0].SAMPLE_SERVICE_STT_ID;
                             hisSereServTeinSDO.MODIFIER = lstResultItem[0].MODIFIER;
-                            hisSereServTeinSDO.VALUE_RANGE = lstResultItem[0].VALUE;
+                            hisSereServTeinSDO.VALUE_RANGE = ProcessValue(lstResultItem[0]);
                             hisSereServTeinSDO.LIS_RESULT_ID = lstResultItem[0].ID;
                             hisSereServTeinSDO.ID = lstResultItem[0].ID;
                             hisSereServTeinSDO.SAMPLE_ID = lstResultItem[0].SAMPLE_ID;
@@ -2885,7 +2885,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                                 hisSereServTeinSDO.SAMPLE_SERVICE_ID = ssTein.SAMPLE_SERVICE_ID;
                                 hisSereServTeinSDO.SAMPLE_SERVICE_STT_ID = ssTein.SAMPLE_SERVICE_STT_ID;
                                 hisSereServTein.MODIFIER = ssTein.MODIFIER;
-                                hisSereServTein.VALUE_RANGE = ssTein.VALUE;
+                                hisSereServTein.VALUE_RANGE = ProcessValue(ssTein);
                                 hisSereServTein.LIS_RESULT_ID = ssTein.ID;
                                 hisSereServTein.MACHINE_ID = ssTein.MACHINE_ID.HasValue ? ssTein.MACHINE_ID : ssTein.SERVICE_MACHINE_ID;
                                 hisSereServTein.MACHINE_ID_OLD = ssTein.MACHINE_ID.HasValue ? ssTein.MACHINE_ID : ssTein.SERVICE_MACHINE_ID;
@@ -2957,6 +2957,48 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private string ProcessValue(V_LIS_RESULT data)
+        {
+            string result = "";
+            try
+            {
+                if(data != null)
+                {
+                    LogSystem.Debug("Xu ly gia tri moi");
+                    LogSystem.Debug("ProcessValue 1");
+                    if (!string.IsNullOrEmpty(data.VALUE))
+                    {
+                        result = data.VALUE;
+                        LogSystem.Debug("ProcessValue 1.1");
+                    }
+                    else
+                    {
+                        LogSystem.Debug("ProcessValue 1.2");
+                        var rs = new BackendAdapter(new CommonParam()).Get<List<HIS_TEST_INDEX>>("api/HisTestIndex/Get", ApiConsumers.MosConsumer, new HisTestIndexFilter() { KEY_WORD = data.TEST_INDEX_CODE }, null);
+                        if(rs != null)
+                        {
+                            LogSystem.Debug("ProcessValue 1.2.1");
+                            var testIndex = rs.Where(s => s.TEST_INDEX_CODE == data.TEST_INDEX_CODE && s.DEFAULT_VALUE != null).FirstOrDefault();
+                            if(testIndex != null)
+                            {
+                                LogSystem.Debug("ProcessValue 1.2.2");
+                                result = testIndex.DEFAULT_VALUE;
+                            }
+                        }
+                        LogSystem.Debug("result: " + result);
+                    }
+                }
+                
+                
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         List<List<TestLisResultADO>> SplitList(List<TestLisResultADO> me, int size = 44)
@@ -4760,6 +4802,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         ((TestLisResultADO)data).Item_Edit_Value = 1;
                     }
+
 
                 }
                 else if (e.Column.FieldName == "NOTE")

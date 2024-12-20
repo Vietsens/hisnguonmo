@@ -51,7 +51,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UC_ConnectionTest));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -163,7 +162,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject108 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.cboRoom = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.lblRejectReason = new DevExpress.XtraEditors.LabelControl();
             this.lblCancelReason = new DevExpress.XtraEditors.LabelControl();
@@ -179,7 +178,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.txtConclude = new DevExpress.XtraEditors.MemoEdit();
             this.lblGenderName = new DevExpress.XtraEditors.LabelControl();
             this.txtAdd = new System.Windows.Forms.Label();
-            this.popupControlResultDescription = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlResultDescription = new DevExpress.XtraBars.PopupControlContainer();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.btnOKForResultDescription = new DevExpress.XtraEditors.SimpleButton();
             this.btnCancelForResultDescription = new DevExpress.XtraEditors.SimpleButton();
@@ -196,9 +195,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.ucViewEmrDocumentReq = new HIS.UC.ViewEmrDocument.UcEmrDocument.UcViewEmrDocument();
             this.xtraTabDocumentResult = new DevExpress.XtraTab.XtraTabPage();
             this.ucViewEmrDocumentResult = new HIS.UC.ViewEmrDocument.UcEmrDocument.UcViewEmrDocument();
-            this.popupControlContainerOldValue = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainerOldValue = new DevExpress.XtraBars.PopupControlContainer();
             this.txtOldValueIntoPopup = new DevExpress.XtraEditors.MemoEdit();
-            this.popupControlContainerNote = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainerNote = new DevExpress.XtraBars.PopupControlContainer();
             this.btnOKForNote = new DevExpress.XtraEditors.SimpleButton();
             this.btnCancelForNote = new DevExpress.XtraEditors.SimpleButton();
             this.txtNoteIntoPopup = new DevExpress.XtraEditors.MemoEdit();
@@ -252,7 +251,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.TextEditResultRange__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.TextEditNote__Enable = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.TextEditNote__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.imageList1 = new System.Windows.Forms.ImageList();
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.LciGroupEmrDocument = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -287,7 +286,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.lblApproveResultSuccess = new DevExpress.XtraEditors.LabelControl();
             this.btnApproveListResult = new DevExpress.XtraEditors.SimpleButton();
             this.chkSignApproveList = new DevExpress.XtraEditors.CheckEdit();
-            this.popupControlContainerRangeValue = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainerRangeValue = new DevExpress.XtraBars.PopupControlContainer();
             this.lkbDuongTinh = new System.Windows.Forms.LinkLabel();
             this.lkbAmTinh = new System.Windows.Forms.LinkLabel();
             this.btnCancelForValueRange = new DevExpress.XtraEditors.SimpleButton();
@@ -440,16 +439,16 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.layoutControlItem43 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem44 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
-            this.imageListIcon = new System.Windows.Forms.ImageList(this.components);
-            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController(this.components);
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
-            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.timerReloadMachineCounter = new System.Windows.Forms.Timer(this.components);
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.imageCollection2 = new DevExpress.Utils.ImageCollection(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.imageListIcon = new System.Windows.Forms.ImageList();
+            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController();
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
+            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.timerReloadMachineCounter = new System.Windows.Forms.Timer();
+            this.timer1 = new System.Windows.Forms.Timer();
+            this.timer2 = new System.Windows.Forms.Timer();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.imageCollection2 = new DevExpress.Utils.ImageCollection();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboRoom.Properties)).BeginInit();
