@@ -26,7 +26,6 @@ namespace HIS.UC.UCOtherServiceReqInfo.ADO
     public class UCServiceReqInfoADO
     {
         public UCServiceReqInfoADO() { }
-
         public string IN_CODE { get; set; }
         public long IntructionTime { get; set; }
         public long TreatmentType_ID { get; set; }

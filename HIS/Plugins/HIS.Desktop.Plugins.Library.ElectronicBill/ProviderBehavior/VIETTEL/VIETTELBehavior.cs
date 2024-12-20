@@ -78,7 +78,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                     if (configArr.Count() > 3)
                     {
                         IsTemp = configArr[3] == "1";
-                        if(IsTemp && _electronicBillTypeEnum != ElectronicBillType.ENUM.CREATE_INVOICE)
+                        if (IsTemp && _electronicBillTypeEnum != ElectronicBillType.ENUM.CREATE_INVOICE)
                         {
                             Inventec.Common.Logging.LogSystem.Error("Tính năng không được hỗ trợ khi phát hành hóa đơn nháp!");
                             ElectronicBillResultUtil.Set(ref result, false, "Tính năng không được hỗ trợ khi phát hành hóa đơn nháp!");

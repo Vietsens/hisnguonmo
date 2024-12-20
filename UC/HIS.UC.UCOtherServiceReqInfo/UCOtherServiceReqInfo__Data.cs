@@ -30,12 +30,17 @@ using HIS.Desktop.Utility;
 using MOS.EFMODEL.DataModels;
 using MOS.SDO;
 using HIS.Desktop.LocalStorage.ConfigApplication;
+using MOS.Filter;
+using HIS.Desktop.ApiConsumer;
 
 namespace HIS.UC.UCOtherServiceReqInfo
 {
     public partial class UCOtherServiceReqInfo : UserControl
     {
         #region Get - Set Data
+
+        private HisPatientSDO  patientSdo { get; set; }
+        private HIS_TREATMENT TreatmentByPatientSdo { get; set; }
 
         public void DisposeControl()
         {
@@ -448,17 +453,52 @@ namespace HIS.UC.UCOtherServiceReqInfo
         {
             try
             {
+                this.patientSdo = data;
                 this.chkIsChronic.Checked = data.IS_CHRONIC == 1;
                 this.chkTuberculosis.Checked = data.IS_TUBERCULOSIS == 1;
                 this.cboPatientClassify.EditValue = null;
                 this.cboPatientClassify.EditValue = data.PATIENT_CLASSIFY_ID;
                 this.chkIsHiv.Checked = data.IS_HIV == 1;
+                GetTreatment();
+                cboTreatmentType_EditValueChanged(null, null);
                 //this.AutoCheckPriorityByPriorityType(data);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void GetTreatment()
+        {
+
+            try
+            {
+                if(patientSdo == null || !patientSdo.TreatmentId.HasValue)
+                {
+                    TreatmentByPatientSdo = null;
+                    return;
+                }
+
+                try
+                {
+                    if (patientSdo.LastTreatmentFee != null && patientSdo.LastTreatmentFee.ID > 0)
+                        TreatmentByPatientSdo = new HIS_TREATMENT() { HOSPITALIZATION_REASON = patientSdo.LastTreatmentFee.HOSPITALIZATION_REASON, ICD_NAME = patientSdo.LastTreatmentFee.ICD_NAME, IS_CHRONIC = patientSdo.LastTreatmentFee.IS_CHRONIC };
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+
+                HisTreatmentFilter filter = new HisTreatmentFilter();
+                filter.ID = patientSdo.TreatmentId;
+                TreatmentByPatientSdo = new Inventec.Common.Adapter.BackendAdapter(new Inventec.Core.CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filter, null).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         public void SetMaMS(string msCode)
@@ -493,6 +533,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
         {
             try
             {
+                this.patientSdo = null;
                 this.dtIntructionTime.EditValue = DateTime.Now;
                 this.cboTreatmentType.EditValue = IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM;
                 this.cboEmergencyTime.EditValue = null;

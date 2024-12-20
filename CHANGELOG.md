@@ -1,3 +1,8 @@
+### Release 2.341.0
+* Sửa dữ liệu cho phù hợp với quy định của XML 130 và QĐ 4750/QĐ-BYT
+* Kiểm tra lại thông tin thẻ BHYT khi xử lý bệnh nhân hẹn khám
+* Tích hợp hóa đơn nháp hệ thống hóa đơn điện tử VIETTEL
+
 ### Release 2.340.0
 * Bổ sung thông tin người ký thay Trưởng khoa, giám đốc bệnh viện vào phiếu xác nhận PTTT
 * Thêm tính năng chỉ định suất ăn tại nhà ăn

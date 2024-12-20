@@ -721,6 +721,8 @@ namespace MPS.Processor.Mps000457
                         hisSereServTeinSDO.MODIFIER = "";
                         hisSereServTeinSDO.CHILD_ID = firstItem.ID + ".";
                         hisSereServTeinSDO.SERVICE_NUM_ORDER = firstItem.SERVICE_NUM_ORDER;
+                        hisSereServTeinSDO.ISO_PROCESS_CODE = firstItem.TDL_ISO_PROCESS_CODE;
+                        hisSereServTeinSDO.IS_MEET_ISO_STANDARD = firstItem.TDL_IS_MEET_ISO_STANDARD;
 
                         V_HIS_SERVICE service = rdo.ListTestService != null ? rdo.ListTestService.FirstOrDefault(o => o.SERVICE_CODE == group.Key.SERVICE_CODE) : null;
                         V_HIS_SERVICE parent = null;

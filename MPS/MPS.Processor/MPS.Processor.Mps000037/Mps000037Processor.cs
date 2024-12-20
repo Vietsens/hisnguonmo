@@ -135,6 +135,24 @@ namespace MPS.Processor.Mps000037
                     }
 
                     ExecuteRoomGroups = (ExecuteRoomGroups != null && ExecuteRoomGroups.Count > 0) ? ExecuteRoomGroups.OrderBy(o => o.EXECUTE_ROOM_NAME).ThenBy(p => p.EXECUTE_DEPARTMENT_NAME).ToList() : ExecuteRoomGroups;
+                    var grType = ListAdo.GroupBy(o => o.TDL_SERVICE_TYPE_ID).ToList();
+
+                    List<HIS_SERVICE_REQ_TYPE> srTypeList = new List<HIS_SERVICE_REQ_TYPE>();
+                    List<V_HIS_SERVICE_REQ> srList = new List<V_HIS_SERVICE_REQ>();
+                    foreach (var item in grType)
+                    {
+                        //Tạo key ServiceReqType và ServiceReq
+                        if (rdo.ListServiceReqType != null && rdo.ListServiceReqType.Count > 0)
+                            srTypeList.Add(rdo.ListServiceReqType.FirstOrDefault(o => o.ID == item.Key));
+
+                        var grServiceReq = item.GroupBy(o => o.SERVICE_REQ_ID).ToList();
+                        if (rdo.ListServiceReqPrint != null && rdo.ListServiceReqPrint.Count > 0 && rdo.ListServiceReqPrint.Exists(o => grServiceReq.Exists(p => p.Key == o.ID)))
+                        {
+                            srList.AddRange(rdo.ListServiceReqPrint.Where(o => grServiceReq.Exists(p => p.Key == o.ID)));
+                        }
+                    }
+                    objectTag.AddObjectData(store, "ServiceReqType", srTypeList.Count > 0 ? srTypeList.OrderBy(o => o.SERVICE_REQ_TYPE_NAME).ToList() : new List<HIS_SERVICE_REQ_TYPE>());
+                    objectTag.AddObjectData(store, "ServiceReq", srList.Count > 0 ? srList.OrderBy(o => o.SERVICE_REQ_TYPE_NAME).ThenBy(o => o.INTRUCTION_TIME).ToList() : new List<V_HIS_SERVICE_REQ>());
                     objectTag.AddObjectData(store, "Services", ListAdo);
                     objectTag.AddObjectData(store, "ExecuteRoomGroups", ExecuteRoomGroups);
                     objectTag.AddRelationship(store, "ExecuteRoomGroups", "Services", "HEIN_SERVICE_TYPE_NAME", "HEIN_SERVICE_TYPE_NAME");
@@ -160,9 +178,9 @@ namespace MPS.Processor.Mps000037
                             srTypeList.Add(rdo.ListServiceReqType.FirstOrDefault(o => o.ID == item.Key));
 
                         var grServiceReq = item.GroupBy(o => o.SERVICE_REQ_ID).ToList();
-                        if(rdo.ListServiceReqPrint != null && rdo.ListServiceReqPrint.Count > 0 && rdo.ListServiceReqPrint.Exists(o=>o.ID == grServiceReq.First().Key))
+                        if (rdo.ListServiceReqPrint != null && rdo.ListServiceReqPrint.Count > 0 && rdo.ListServiceReqPrint.Exists(o => grServiceReq.Exists(p => p.Key == o.ID)))
                         {
-                            srList.Add(rdo.ListServiceReqPrint.FirstOrDefault(o => o.ID == grServiceReq.First().Key));
+                            srList.AddRange(rdo.ListServiceReqPrint.Where(o => grServiceReq.Exists(p => p.Key == o.ID)));
                         }
                         //
                         serviceTypeGroup.Add(item.First());
@@ -190,8 +208,8 @@ namespace MPS.Processor.Mps000037
                     }
 
                     ListAdo = ListAdo.OrderBy(o => o.ID).ThenBy(p => p.SERVICE_NAME).ToList();
-                    objectTag.AddObjectData(store, "ServiceReqType", srTypeList.Count > 0 ? srTypeList.OrderBy(o=>o.SERVICE_REQ_TYPE_NAME).ToList() : new List<HIS_SERVICE_REQ_TYPE>());
-                    objectTag.AddObjectData(store, "ServiceReq", srList.Count > 0 ? srList.OrderBy(o=>o.SERVICE_REQ_TYPE_NAME).ThenBy(o=>o.INTRUCTION_TIME).ToList() : new List<V_HIS_SERVICE_REQ>());
+                    objectTag.AddObjectData(store, "ServiceReqType", srTypeList.Count > 0 ? srTypeList.OrderBy(o => o.SERVICE_REQ_TYPE_NAME).ToList() : new List<HIS_SERVICE_REQ_TYPE>());
+                    objectTag.AddObjectData(store, "ServiceReq", srList.Count > 0 ? srList.OrderBy(o => o.SERVICE_REQ_TYPE_NAME).ThenBy(o => o.INTRUCTION_TIME).ToList() : new List<V_HIS_SERVICE_REQ>());
                     objectTag.AddObjectData(store, "Services", ListAdo);
                     objectTag.AddRelationship(store, "ServiceReqType", "ServiceReq", "ID", "SERVICE_REQ_TYPE_ID");
                     objectTag.AddRelationship(store, "ServiceReq", "Services", "ID", "SERVICE_REQ_ID");

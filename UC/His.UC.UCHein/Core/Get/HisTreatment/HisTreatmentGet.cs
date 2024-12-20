@@ -29,12 +29,12 @@ namespace His.UC.UCHein.HisTreatment
 {
     class HisTreatmentGet
     {
-        internal static MOS.EFMODEL.DataModels.HIS_TREATMENT GetById(long treatmentId)
+        internal static MOS.EFMODEL.DataModels.V_HIS_TREATMENT_4 GetById(long treatmentId)
         {
             CommonParam param = new CommonParam();
-            HisTreatmentFilter filter = new HisTreatmentFilter();
+            HisTreatmentView4Filter filter = new HisTreatmentView4Filter();
             filter.ID = treatmentId;
-            return new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>(RequestUriStore.HIS_TREATMENT__GET, ApiConsumerStore.MosConsumer, filter, param).SingleOrDefault();
+            return new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT_4>>(RequestUriStore.HIS_TREATMENT__GETVIEW_4, ApiConsumerStore.MosConsumer, filter, param).SingleOrDefault();
         }
     }
 }
