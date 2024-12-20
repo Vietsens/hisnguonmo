@@ -644,7 +644,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
                         layoutControlItem35.Visibility = layoutControlItem36.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                         lblBalance.Text = this.patientForKioskSDO.Balance.ToString();
                     }
-                    cboCareer.EditValue = data.CareerId;
+                    var _id = (BackendDataWorker.Get<HIS_CAREER>().FirstOrDefault(o => o.IS_ACTIVE == 1 && o.ID == data.CareerId) ?? new HIS_CAREER()).ID;
+                    if(_id > 0)cboCareer.EditValue =  _id;
                     if (!string.IsNullOrEmpty(data.NationalName))
                     {
                         var national = BackendDataWorker.Get<SDA_NATIONAL>().FirstOrDefault(o => o.IS_ACTIVE == 1 && o.NATIONAL_NAME == data.NationalName);
