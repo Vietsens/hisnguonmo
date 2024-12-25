@@ -1416,14 +1416,18 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
         {
             try
             {
-                List<V_HIS_EXP_MEST_3> _ExpMestTraDoiChecks = new List<V_HIS_EXP_MEST_3>();
+                List<V_HIS_EXP_MEST> _ExpMestTraDoiChecks = new List<V_HIS_EXP_MEST>();
                 if (gridView.RowCount > 0)
                 {
                     for (int i = 0; i < gridView.SelectedRowsCount; i++)
                     {
                         if (gridView.GetSelectedRows()[i] >= 0)
                         {
-                            _ExpMestTraDoiChecks.Add((V_HIS_EXP_MEST_3)gridView.GetRow(gridView.GetSelectedRows()[i]));
+                            var row = ((V_HIS_EXP_MEST_3)gridView.GetRow(gridView.GetSelectedRows()[i]));
+                            MOS.EFMODEL.DataModels.V_HIS_EXP_MEST ExpMestData = new MOS.EFMODEL.DataModels.V_HIS_EXP_MEST();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST>(ExpMestData, row);
+                            _ExpMestTraDoiChecks.Add(ExpMestData);
+
                         }
                     }
                 }
@@ -1827,14 +1831,17 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                 {
                     //Review
                     List<object> listArgs = new List<object>();
-                    List<V_HIS_EXP_MEST_3> _ExpMestTraDoiChecks = new List<V_HIS_EXP_MEST_3>();
+                    List<V_HIS_EXP_MEST> _ExpMestTraDoiChecks = new List<V_HIS_EXP_MEST>();
                     if (gridView.RowCount > 0)
                     {
                         for (int i = 0; i < gridView.SelectedRowsCount; i++)
                         {
                             if (gridView.GetSelectedRows()[i] >= 0)
                             {
-                                _ExpMestTraDoiChecks.Add((V_HIS_EXP_MEST_3)gridView.GetRow(gridView.GetSelectedRows()[i]));
+                                var row = ((V_HIS_EXP_MEST_3)gridView.GetRow(gridView.GetSelectedRows()[i]));
+                                MOS.EFMODEL.DataModels.V_HIS_EXP_MEST ExpMestData = new MOS.EFMODEL.DataModels.V_HIS_EXP_MEST();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST>(ExpMestData, row);
+                                _ExpMestTraDoiChecks.Add(ExpMestData);
                             }
                         }
                     }
@@ -1846,7 +1853,9 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                     else
                     {
                         var expMest = (V_HIS_EXP_MEST_3)gridView.GetFocusedRow();
-                        listArgs.Add(expMest);
+                        MOS.EFMODEL.DataModels.V_HIS_EXP_MEST ExpMestData = new MOS.EFMODEL.DataModels.V_HIS_EXP_MEST();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST>(ExpMestData, expMest);
+                        listArgs.Add(ExpMestData);
                     }
 
                     listArgs.Add(printType);
