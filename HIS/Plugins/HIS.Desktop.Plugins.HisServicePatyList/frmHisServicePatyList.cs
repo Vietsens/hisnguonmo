@@ -4715,11 +4715,16 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
 
         private void spinPayoutRatio_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (spinPayoutRatio.Value < 0)
+            if (spinPayoutRatio.Value < 1)
             {
-                e.Cancel = true; 
-                MessageBox.Show("Giá trị không được âm!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                e.Cancel = true;
+                MessageBox.Show("Tỉ lệ thanh toán(%) không hợp lệ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private void spinPayoutRatio_InvalidValue(object sender, InvalidValueExceptionEventArgs e)
+        {
+            e.ErrorText = "Tỉ lệ thanh toán(%) không hợp lệ!";
         }
     }
 }
