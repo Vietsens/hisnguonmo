@@ -4718,13 +4718,13 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
             if (spinPayoutRatio.Value < 1)
             {
                 e.Cancel = true;
-                MessageBox.Show("Tỉ lệ thanh toán(%) không hợp lệ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Tỉ lệ thanh toán(%) không hợp lệ, tỉ lệ thanh toán phải là số dương!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         private void spinPayoutRatio_InvalidValue(object sender, InvalidValueExceptionEventArgs e)
         {
-            e.ErrorText = "Tỉ lệ thanh toán(%) không hợp lệ!";
+            e.ErrorText = "Tỉ lệ thanh toán(%) không hợp lệ, tỉ lệ thanh toán phải là số dương!";   
         }
     }
 }
