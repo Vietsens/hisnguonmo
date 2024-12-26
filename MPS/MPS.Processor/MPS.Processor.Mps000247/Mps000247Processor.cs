@@ -36,7 +36,7 @@ namespace MPS.Processor.Mps000247
         List<ExpMestMedicineADO> _ExpMestMedicineADOs = new List<ExpMestMedicineADO>();
         List<ExpMestMaterialADO> _ExpMestMaterialADOs = new List<ExpMestMaterialADO>();
         List<ExpMestADO> _ExpMestAdos = new List<ExpMestADO>();
-        List<HIS_EXP_MEST> _ExpMestIntructionDates = new List<HIS_EXP_MEST>();
+        List<V_HIS_EXP_MEST> _ExpMestIntructionDates = new List<V_HIS_EXP_MEST>();
 
         public Mps000247Processor(CommonParam param, PrintData printData)
             : base(param, printData)
@@ -237,7 +237,7 @@ namespace MPS.Processor.Mps000247
                 this._ExpMestMaterialADOs = new List<ExpMestMaterialADO>();
                 this._ExpMestMedicineADOs = new List<ExpMestMedicineADO>();
                 this._ExpMestAdos = new List<ExpMestADO>();
-                this._ExpMestIntructionDates = new List<HIS_EXP_MEST>();
+                this._ExpMestIntructionDates = new List<V_HIS_EXP_MEST>();
 
                 if (rdo._ExpMests_Print != null && rdo._ExpMests_Print.Count > 0)
                 {
