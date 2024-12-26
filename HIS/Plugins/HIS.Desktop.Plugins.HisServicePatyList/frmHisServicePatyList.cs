@@ -1372,6 +1372,10 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
                         dtTreatmentToTime.EditValue = null;
                     }
 
+                    if (data.SERVICE_RATIO == null)
+                    {
+                        spinPayoutRatio.EditValue = 0;
+                    }
                     spinPayoutRatio.EditValue = data.SERVICE_RATIO * 100;
                     spinPriority.EditValue = data.PRIORITY;
                     cboDayFrom.EditValue = data.DAY_FROM;
@@ -4709,5 +4713,13 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
             }
         }
 
+        private void spinPayoutRatio_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (spinPayoutRatio.Value < 0)
+            {
+                e.Cancel = true; 
+                MessageBox.Show("Giá trị không được âm!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
     }
 }
