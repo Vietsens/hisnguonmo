@@ -269,7 +269,26 @@ namespace HIS.Desktop.Plugins.HisImportServicePaty.FormLoad
                     }
                     else
                         error += string.Format(Message.MessageImport.ThieuTruongDL, "VAT");
-
+                    /// mới làm 
+                    if (!string.IsNullOrEmpty(item.SERVICE_RATIO))
+                    {
+                        if (checkNumber(item.SERVICE_RATIO))
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "SERVICE_RATIO");
+                        }
+                        else
+                        {
+                            var price = Inventec.Common.TypeConvert.Parse.ToDecimal(item.SERVICE_RATIO);
+                            if (price < 1)
+                            {
+                                error += string.Format(Message.MessageImport.KhongHopLe, "SERVICE_RATIO");
+                            }
+                            else
+                                mateAdo.SERVICE_RATIO = price.ToString();
+                        }
+                    }
+                    else
+                        error += string.Format(Message.MessageImport.ThieuTruongDL, "SERVICE_RATIO");
 
                     //if (!string.IsNullOrEmpty(item.SERVICE_TYPE_CODE))
                     //{
@@ -1138,6 +1157,7 @@ namespace HIS.Desktop.Plugins.HisImportServicePaty.FormLoad
                                     && string.IsNullOrEmpty(item.TREATMENT_TO_TIME_STR)
                                     && string.IsNullOrEmpty(item.EXECUTE_ROOM_CODES)
                                     && string.IsNullOrEmpty(item.BRANCH_CODE)
+                                    && item.SERVICE_RATIO == null
                                     && item.DAY_FROM_STR == null
                                     && item.DAY_TO_STR == null
                                      && item.INTRUCTION_NUMBER_FROM_STR == null
