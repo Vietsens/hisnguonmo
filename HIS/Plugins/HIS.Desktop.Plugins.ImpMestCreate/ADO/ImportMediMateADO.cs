@@ -100,5 +100,10 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.ADO
         public decimal? EXP_PRICE_10 { get; set; }
         public decimal? EXP_VAT_RATIO_10 { get; set; }
 
+        // tt thau
+        public string TDL_BID_EXTRA_CODE { get; set; }
+        public string INFORMATION_BID { get; set; }
+        public string TT_THAU { get; set; }
+
     }
 }
