@@ -872,6 +872,8 @@ namespace HIS.Desktop.Plugins.HisImportServicePaty.FormLoad
                     foreach (var item in data)
                     {
                         item.ID = 0;
+                        var ratio = item.SERVICE_RATIO / 100;
+                        item.SERVICE_RATIO = ratio;
                     }
                 }
                 CommonParam param = new CommonParam();
