@@ -615,9 +615,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
             long? numOfDays = null;
             try
             {
-                //if (item.UseDays.HasValue)
-                //    numOfDays = (long)(item.UseDays);
-                //else
+                if (item.UseDays.HasValue)
+                    numOfDays = (long)(item.UseDays);
+                else
                 {
                     if (this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd)
                     {
