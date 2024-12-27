@@ -5265,6 +5265,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

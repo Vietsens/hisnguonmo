@@ -38,8 +38,6 @@ using System.Collections;
 using Inventec.Desktop.Common.Message;
 using Inventec.Core;
 using MOS.Filter;
-using VSK.Filter;
-using VSK.EFMODEL;
 using Inventec.Common.Adapter;
 using Inventec.Desktop.Common.LanguageManager;
 using HIS.Desktop.Utilities.Extensions;
@@ -916,7 +914,16 @@ namespace HIS.Desktop.Plugins.HisKskDriverList
                         KskDataProcess data = new KskDataProcess();
                         KskDriverSyncSDO sdo = new KskDriverSyncSDO();
                         sdo.KskDriveId = row.ID;
-                        sdo.SyncData = data.MakeData(row, certificate);
+                        sdo.SyncData = data.MakeData(row, certificate, (string xmlData, string element, string serialNumber) =>
+                        {
+                            if (VerifyServiceSignProcessorIsRunning())
+                            {
+                                SignProcessorClient signProcessorClient = new SignProcessorClient();
+                                return signProcessorClient.StringBase64SignXml(xmlData, element, serialNumber);
+                            }
+                            else
+                                return null;
+                        });
                         listKskDriveSync.Add(sdo);
                     }
                     else
@@ -1147,7 +1154,16 @@ namespace HIS.Desktop.Plugins.HisKskDriverList
                             {
                                 KskDriverSyncSDO sdo = new KskDriverSyncSDO();
                                 sdo.KskDriveId = row.ID;
-                                sdo.SyncData = data.MakeData(row, certificate);
+                                sdo.SyncData = data.MakeData(row, certificate, (string xmlData, string element, string serialNumber) =>
+                                {
+                                    if (VerifyServiceSignProcessorIsRunning())
+                                    {
+                                        SignProcessorClient signProcessorClient = new SignProcessorClient();
+                                        return signProcessorClient.StringBase64SignXml(xmlData, element, serialNumber);
+                                    }
+                                    else
+                                        return null;
+                                });
                                 listKskDriveSync.Add(sdo);
                             }
                         }

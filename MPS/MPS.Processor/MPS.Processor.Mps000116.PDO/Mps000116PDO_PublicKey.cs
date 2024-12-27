@@ -163,6 +163,8 @@ namespace MPS.Processor.Mps000116.PDO
                     this.AMOUNT = datas.Sum(p => p.AMOUNT);
                     this.TypeId = 2;
                     this.TYPE_NAME = "Tự mua";
+                    this.VIR_PRICE = datas.Sum(o => o.PRICE ?? 0);
+                    this.TOTAL_PRICE = datas.Sum(o => o.AMOUNT * (o.PRICE ?? 0));
                     this.TOTAL_PRICE_STR = this.ConvertNumberToString(this.TOTAL_PRICE ?? 0);
                     this.VIR_PRICE_STR = this.ConvertNumberToString(this.VIR_PRICE ?? 0);
                     this.NUM_ORDER = datas[0].NUM_ORDER;
@@ -202,6 +204,8 @@ namespace MPS.Processor.Mps000116.PDO
                     this.SPEED = datas[0].SPEED;
                     this.TypeId = 1;
                     this.TYPE_NAME = "Tự mua";
+                    this.VIR_PRICE = datas.Sum(o => o.PRICE ?? 0);
+                    this.TOTAL_PRICE= datas.Sum(o => o.AMOUNT * (o.PRICE ?? 0));
                     this.TOTAL_PRICE_STR = this.ConvertNumberToString(this.TOTAL_PRICE ?? 0);
                     this.VIR_PRICE_STR = this.ConvertNumberToString(this.VIR_PRICE ?? 0);
                     this.MORNING = datas[0].MORNING;

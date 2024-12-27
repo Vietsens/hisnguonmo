@@ -1,3 +1,21 @@
+### Release 2.341.0
+* Sửa dữ liệu cho phù hợp với quy định của XML 130 và QĐ 4750/QĐ-BYT
+* Kiểm tra lại thông tin thẻ BHYT khi xử lý bệnh nhân hẹn khám
+* Tích hợp hóa đơn nháp hệ thống hóa đơn điện tử VIETTEL
+
+### Release 2.340.0
+* Bổ sung thông tin người ký thay Trưởng khoa, giám đốc bệnh viện vào phiếu xác nhận PTTT
+* Thêm tính năng chỉ định suất ăn tại nhà ăn
+* Thêm danh sách key thông tin y lệnh vào phiếu chỉ định tổng hợp.
+* Sửa lỗi liên quan đến ký số dữ liệu XML theo quyết định 3700/BHXH-CNTT
+
+### Release 2.339.0
+* Sửa màn hình chờ lấy mẫu để phân biệt bệnh nhân ưu tiên, đã lấy mẫu, chưa lấy mẫu
+* Sửa đổi bổ sung chuẩn dữ liệu đầu ra theo quyết định 3176/QĐ-BYT ngày 29/10/2024 về sửa đổi bổ sung QĐ 4750 và QĐ 130
+* Bổ sung Cảnh báo khám cùng ngày CSKCB khác
+* Bổ sung thông tin giường vào chức năng thông tin giao ban
+* Bổ sung ký số dữ liệu XML theo quyết định 3700/BHXH-CNTT
+
 ### Release 2.338.0
 * Thêm thông tin chẩn đoán phân biệt vào tờ điều trị
 * Sửa lỗi ký số USB ký giấy chứng sinh, chứng tử gửi BYT

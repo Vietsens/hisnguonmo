@@ -143,6 +143,9 @@
     <Reference Include="MPS.Processor.Mps000116">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.Processor\MPS.Processor.Mps000116.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000116.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000116.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.ProcessorBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
@@ -187,10 +190,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000116.PDO\MPS.Processor.Mps000116.PDO.csproj">
-      <Project>{8ab62e72-b1aa-4dd9-ab86-046f1c31fe68}</Project>
-      <Name>MPS.Processor.Mps000116.PDO</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>

@@ -147,7 +147,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         long ptttGroupId = 0;
                         long ptttMethodId = 0;
 
-                        var surgMisuService = lstService.FirstOrDefault(o => o.ID == sereServ.SERVICE_ID );
+                        var surgMisuService = lstService.FirstOrDefault(o => o.ID == sereServ.SERVICE_ID);
                         if (surgMisuService != null)
                         {
                             if (surgMisuService.PTTT_GROUP_ID.HasValue)
@@ -256,7 +256,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                                 ptttGroupId = ptttGroup.ID;
                                 txtPtttGroupCode.Text = ptttGroup.PTTT_GROUP_CODE;
                             }
-                            
+
                         }
 
                         if (ptttGroupId > 0)
@@ -787,6 +787,34 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     HisSereServPttt.SKIN_SURGERY_DESC_ID = null;
                 }
 
+                if (cboHospSubs.EditValue != null)
+                {
+                    HisSereServPttt.SUBS_DIRECTOR_LOGINNAME = cboHospSubs.EditValue.ToString();
+                    HisSereServPttt.SUBS_DIRECTOR_USERNAME = lstReAcsUserADO.FirstOrDefault(o => o.LOGINNAME == cboHospSubs.EditValue.ToString()).USERNAME;
+                }
+                else
+                {
+                    HisSereServPttt.SUBS_DIRECTOR_LOGINNAME = null;
+                    HisSereServPttt.SUBS_DIRECTOR_USERNAME = null;
+                }
+                if (cboEndDeptSubs.EditValue != null)
+                {
+                    HisSereServPttt.SUBS_HEAD_LOGINNAME = cboEndDeptSubs.EditValue.ToString();
+                    HisSereServPttt.SUBS_HEAD_USERNAME = lstReAcsUserADO.FirstOrDefault(o => o.LOGINNAME == cboEndDeptSubs.EditValue.ToString()).USERNAME;
+                }
+                else
+                {
+                    HisSereServPttt.SUBS_HEAD_LOGINNAME = null;
+                    HisSereServPttt.SUBS_HEAD_USERNAME = null;
+                }
+
+                var RoomV = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == Module.RoomId);
+                var Department = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>().FirstOrDefault(o => o.ID == RoomV.DEPARTMENT_ID);
+                HisSereServPttt.HEAD_LOGINNAME = Department.HEAD_LOGINNAME;
+                HisSereServPttt.HEAD_USERNAME = Department.HEAD_USERNAME;
+                var Branch = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BRANCH>().FirstOrDefault(o => o.ID == Department.BRANCH_ID);
+                HisSereServPttt.DIRECTOR_LOGINNAME = Branch.DIRECTOR_LOGINNAME;
+                HisSereServPttt.DIRECTOR_USERNAME = Branch.DIRECTOR_USERNAME;
                 hisSurgResultSDO.SereServPttt = HisSereServPttt;
             }
             catch (Exception ex)
@@ -1554,6 +1582,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 }
                 else
                 {
+                    cboHospSubs.EditValue = null;
+                    cboEndDeptSubs.EditValue = null;
                     cbbBlood.EditValue = null;
                     cbbBloodRh.EditValue = null;
                     cboDeathSurg.EditValue = null;

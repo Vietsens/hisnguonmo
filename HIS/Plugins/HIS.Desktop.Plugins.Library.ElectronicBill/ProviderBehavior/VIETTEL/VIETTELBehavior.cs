@@ -74,13 +74,24 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                     {
                         version = configArr[2];
                     }
-
+                    bool IsTemp = false;
+                    if (configArr.Count() > 3)
+                    {
+                        IsTemp = configArr[3] == "1";
+                        if (IsTemp && _electronicBillTypeEnum != ElectronicBillType.ENUM.CREATE_INVOICE)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error("Tính năng không được hỗ trợ khi phát hành hóa đơn nháp!");
+                            ElectronicBillResultUtil.Set(ref result, false, "Tính năng không được hỗ trợ khi phát hành hóa đơn nháp!");
+                            return result;
+                        }
+                    }
                     string[] accountConfigArr = AccountConfig.Split('|');
 
                     Inventec.Common.ElectronicBillViettel.DataInitApi viettelLogin = new Inventec.Common.ElectronicBillViettel.DataInitApi();
                     viettelLogin.VIETTEL_Address = serviceUrl;
                     viettelLogin.User = accountConfigArr[0].Trim();
                     viettelLogin.Pass = accountConfigArr[1].Trim();
+                    viettelLogin.IsTemp = IsTemp;
                     viettelLogin.SupplierTaxCode = ElectronicBillDataInput.Branch.TAX_CODE;
                     if (version == "2")
                     {

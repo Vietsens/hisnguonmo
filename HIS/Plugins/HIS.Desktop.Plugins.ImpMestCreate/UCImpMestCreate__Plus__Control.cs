@@ -243,15 +243,15 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 //    _result = true;
                                 //}
                             }
-                            if (txtSoDangKy.Text != this.currentMedicine.MEDICINE_REGISTER_NUMBER)
+                            if (txtSoDangKy.Text != (this.currentMedicine.MEDICINE_REGISTER_NUMBER??""))
                             {
                                 error_warning += string.Format(" số đăng ký là {0},", this.currentMedicine.MEDICINE_REGISTER_NUMBER);
                             }
-                            if (txtPackingJoinBid.Text != this.currentMedicine.PACKING_TYPE_NAME)
+                            if (txtPackingJoinBid.Text != (this.currentMedicine.PACKING_TYPE_NAME??""))
                             {
                                 error_warning += string.Format(" quy cách đóng gói là {0},", this.currentMedicine.PACKING_TYPE_NAME);
                             }
-                            if (txtHeinServiceBidMateType.Text != this.currentMedicine.HEIN_SERVICE_BHYT_NAME)
+                            if (txtHeinServiceBidMateType.Text != (this.currentMedicine.HEIN_SERVICE_BHYT_NAME??""))
                             {
                                 error_warning += string.Format(" tên BHYT là {0},", this.currentMedicine.HEIN_SERVICE_BHYT_NAME);
                             }
@@ -287,7 +287,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             {
                                 error_warning += string.Format(" giá sau VAT = {0},", _giaLanTruoc);
                             }
-                            if (txtSoDangKy.Text != this.currentMaterial.MATERIAL_REGISTER_NUMBER)
+                            if (txtSoDangKy.Text != (this.currentMaterial.MATERIAL_REGISTER_NUMBER??""))
                             {
                                 error_warning += string.Format(" số đăng ký là {0},", this.currentMaterial.MATERIAL_REGISTER_NUMBER);
                             }
