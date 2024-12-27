@@ -722,7 +722,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 
                 CommonParam paramCommon = new CommonParam();
                 dynamic filter = new System.Dynamic.ExpandoObject();
-                datas = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>();
+                //datas = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>();
+                datas = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<ACS.EFMODEL.DataModels.ACS_USER>>("api/AcsUser/Get", ApiConsumers.AcsConsumer, filter, paramCommon);
                 if (datas != null) BackendDataWorker.UpdateToRam(typeof(ACS.EFMODEL.DataModels.ACS_USER), datas, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
                 employeeList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>>("api/HisEmployee/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
                 if (employeeList != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE), employeeList, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
@@ -732,18 +733,22 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 
                 foreach (var item in datas)
                 {
+                    if (item.LOGINNAME == "anhnp")
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item), item));
+                    }
                     AcsUserADO user = new AcsUserADO();
                     user.ID = item.ID;
                     user.LOGINNAME = item.LOGINNAME;
                     user.USERNAME = item.USERNAME;
                     user.MOBILE = item.MOBILE;
                     user.PASSWORD = item.PASSWORD;
-                    user.IS_ACTIVE = item.IS_ACTIVE;
+                    //user.IS_ACTIVE = item.IS_ACTIVE;
 
-                    var check = employeeList.FirstOrDefault(o => o.LOGINNAME == item.LOGINNAME);
+                    var check = employeeList.FirstOrDefault(o => o.LOGINNAME == item.LOGINNAME && o.IS_ACTIVE == 1);
                     if (check != null)
                     {
-
+                        user.IS_ACTIVE = check.IS_ACTIVE;
                         user.DOB = Inventec.Common.DateTime.Convert.TimeNumberToDateString(check.DOB ?? 0);
 
                         user.DIPLOMA = check.DIPLOMA;
