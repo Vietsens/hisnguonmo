@@ -38,6 +38,7 @@ using HIS.UC.ExamFinish.ADO;
 using HIS.UC.ExamTreatmentFinish.ADO;
 using HIS.UC.HisExamServiceAdd.ADO;
 using HIS.UC.Hospitalize.ADO;
+using HIS.UC.Icd;
 using HIS.UC.SecondaryIcd.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.ThreadCustom;
@@ -1970,8 +1971,15 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         serviceReqUpdateSDO.TreatmentFinishSDO.TraditionalIcdSubCode = treatmentFinish.traditionInIcdSub.ICD_SUB_CODE;
                         serviceReqUpdateSDO.TreatmentFinishSDO.TraditionalIcdText = treatmentFinish.traditionInIcdSub.ICD_TEXT;
 
+                        var icd = BackendDataWorker.Get<HIS_ICD>()
+                        .Where(s => s.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && s.IS_TRADITIONAL == 1).ToList();
                         if (treatmentFinish != null && treatmentFinish.traditionalIcdTreatment != null)
                         {
+                            if (!icd.Any(s => s.ICD_CODE == treatmentFinish.traditionalIcdTreatment.ICD_CODE))
+                            {
+                                MessageBox.Show("Chẩn đoán YHCT phụ không có trong danh mục");
+                                return false;
+                            }
                             serviceReqUpdateSDO.TreatmentFinishSDO.TraditionalIcdCode = treatmentFinish.traditionalIcdTreatment.ICD_CODE;
                             serviceReqUpdateSDO.TreatmentFinishSDO.TraditionalIcdName = treatmentFinish.traditionalIcdTreatment.ICD_NAME;
                         }

@@ -901,8 +901,15 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 if (ucSecondaryIcd != null)
                 {
                     var subIcd = subIcdProcessor.GetValue(ucSecondaryIcd);
+                    var icd = BackendDataWorker.Get<HIS_ICD>()
+                        .Where(s => s.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && s.IS_TRADITIONAL == 1).ToList();
                     if (subIcd != null && subIcd is SecondaryIcdDataADO)
                     {
+                        if (!icd.Any(s => s.ICD_CODE == currentServiceReq.ICD_SUB_CODE))
+                        {
+                            MessageBox.Show("Chẩn đoán YHCT phụ không có trong danh mục");
+                            throw new InvalidOperationException("Chẩn đoán YHCT phụ không có trong danh mục"); // Ném ngoại lệ khi có lỗi
+                        }
                         currentServiceReq.ICD_SUB_CODE = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
                         currentServiceReq.ICD_TEXT = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
                     }
