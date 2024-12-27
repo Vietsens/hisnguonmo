@@ -4336,20 +4336,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     task.Wait();
                     syncResult = syncResultADO;
                 }
-                else
-                {
-                    if (this.configSync != null && !string.IsNullOrEmpty(this.configSync.folderPath))
-                    {
-                        if (wcfSignDCO.SourceFile.Trim() != pathAfterFileSign.Trim())
-                        {
-                            if (File.Exists(wcfSignDCO.SourceFile))
-                            {
-                                File.Delete(wcfSignDCO.SourceFile);
-                            }
-                        }
-                        File.Copy(pathAfterFileSign, wcfSignDCO.SourceFile);
-                    }
-                }
 
                 foreach (string file in Directory.GetFiles(tempFolderPath))
                 {
