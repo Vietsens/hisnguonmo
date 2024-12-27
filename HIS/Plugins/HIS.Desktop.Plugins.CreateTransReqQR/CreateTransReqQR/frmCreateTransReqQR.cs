@@ -140,6 +140,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             try
             {
                 var dataCom = SerialPort.GetPortNames().ToList();
+                comQRs.Add(new ComQR() { comName = "SDK Model" });
                 foreach (var data in dataCom)
                 {
                     comQRs.Add(new ComQR() { comName = data });
@@ -1164,7 +1165,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 if (PosStatic.IsOpenPos())
                 {
                     if (QrCodeProcessor.DicContentBank.ContainsKey(currentTransReq.TRANS_REQ_CODE))
-                        PosStatic.SendData(QrCodeProcessor.DicContentBank[currentTransReq.TRANS_REQ_CODE]);
+                        PosStatic.SendData(QrCodeProcessor.DicContentBank[currentTransReq.TRANS_REQ_CODE] + (cboCom.EditValue.ToString() == "SDK Model" ? ( "|" + lblAmount.Text + " VNĐ|" + (lblPatientName.Text.Split(' ').ToList().Count > 2 ? string.Join(" ", lblPatientName.Text.Split(' ').ToList().Take(3)) + "\r\n" + string.Join(" ", lblPatientName.Text.Split(' ').ToList().Skip(3).Take(10)) : lblPatientName.Text)) : ""));
                     else
                         PosStatic.SendData(null);
                 }
@@ -2203,7 +2204,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     string messError = null;
                     if (!PosStatic.IsOpenPos())
                     {
-                        if (PosStatic.OpenPos(cboCom.EditValue.ToString(), GetRecivedMessageDevice, ref messError))
+                        if (PosStatic.OpenPos(cboCom.EditValue.ToString() == "SDK Model" ? OptionPos.Library : OptionPos.Port, !IsConnectOld, cboCom.EditValue.ToString(), GetRecivedMessageDevice, ref messError))
                         {
                             cboCom.Enabled = false;
                             btnConnect.Text = "Ngắt kết nối";
@@ -2212,7 +2213,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
 
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentTransReq), currentTransReq));
                             if (currentTransReq != null && QrCodeProcessor.DicContentBank.ContainsKey(currentTransReq.TRANS_REQ_CODE))
-                                PosStatic.SendData(QrCodeProcessor.DicContentBank[currentTransReq.TRANS_REQ_CODE]);
+                                PosStatic.SendData(QrCodeProcessor.DicContentBank[currentTransReq.TRANS_REQ_CODE] + (cboCom.EditValue.ToString() == "SDK Model" ? ("|" + lblAmount.Text + " VNĐ|" + (lblPatientName.Text.Split(' ').ToList().Count > 2 ? string.Join(" ", lblPatientName.Text.Split(' ').ToList().Take(3)) + "\r\n" + string.Join(" ", lblPatientName.Text.Split(' ').ToList().Skip(3).Take(10)) : lblPatientName.Text)) : ""));
                             else
                                 PosStatic.SendData(null);
                         }
