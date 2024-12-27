@@ -3802,7 +3802,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                         HisSereServViewFilter ssfilter = new HisSereServViewFilter();
                                         ssfilter.SERVICE_REQ_ID = data.PARENT_ID;
                                         var listSereServ = new BackendAdapter(new CommonParam()).Get<List<V_HIS_SERE_SERV>>("api/HisSereServ/GetView", ApiConsumers.MosConsumer, ssfilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
-                                        if (listSereServ != null && listSereServ.Count > 0)
+                                        if (listSereServ != null && listSereServ.Count > 0 && listSereServ.FirstOrDefault().TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH && listSereServ.FirstOrDefault().TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G)
                                             assignServiceADO.SereServ = listSereServ.FirstOrDefault();
                                     }
                                     CallModule("HIS.Desktop.Plugins.AssignPrescriptionPK", sendObj);

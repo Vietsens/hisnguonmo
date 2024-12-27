@@ -30,8 +30,9 @@ namespace MPS.Processor.Mps000247.PDO
         public HIS_DEPARTMENT Department { get; set; }
         public List<V_HIS_EXP_MEST_MEDICINE> _ExpMestMedicines { get; set; }
         public List<V_HIS_EXP_MEST_MATERIAL> _ExpMestMaterials { get; set; }
-        public List<HIS_EXP_MEST> _ExpMests_Print { get; set; }
+        public List<V_HIS_EXP_MEST> _ExpMests_Print { get; set; }
         public long _ConfigKeyMERGER_DATA { get; set; }
+        public long _TimeFilterOption { get; set; }
         public List<V_HIS_TREATMENT_BED_ROOM> vHisTreatmentBedRooms { get; set; }
         public List<V_HIS_BED_LOG> _listBedLog { get; set; }
 
@@ -40,7 +41,7 @@ namespace MPS.Processor.Mps000247.PDO
         public Mps000247PDO(
             List<V_HIS_EXP_MEST_MEDICINE> _expMestMedicines,
             List<V_HIS_EXP_MEST_MATERIAL> _expMestMaterials,
-            List<HIS_EXP_MEST> _expMests_Print,
+            List<V_HIS_EXP_MEST> _expMests_Print,
             HIS_DEPARTMENT department,
             long _configKeyMERGER_DATA
             )
@@ -62,7 +63,7 @@ namespace MPS.Processor.Mps000247.PDO
         public Mps000247PDO(
            List<V_HIS_EXP_MEST_MEDICINE> _expMestMedicines,
            List<V_HIS_EXP_MEST_MATERIAL> _expMestMaterials,
-           List<HIS_EXP_MEST> _expMests_Print,
+           List<V_HIS_EXP_MEST> _expMests_Print,
            HIS_DEPARTMENT department,
            long _configKeyMERGER_DATA,
            List<V_HIS_TREATMENT_BED_ROOM> vHisTreatmentBedRooms,
@@ -78,6 +79,34 @@ namespace MPS.Processor.Mps000247.PDO
                 this._ConfigKeyMERGER_DATA = _configKeyMERGER_DATA;
                 this.vHisTreatmentBedRooms = vHisTreatmentBedRooms;
                 this._listBedLog = listBedLog;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        public Mps000247PDO(
+           List<V_HIS_EXP_MEST_MEDICINE> _expMestMedicines,
+           List<V_HIS_EXP_MEST_MATERIAL> _expMestMaterials,
+           List<V_HIS_EXP_MEST> _expMests_Print,
+           HIS_DEPARTMENT department,
+           long _configKeyMERGER_DATA,
+           List<V_HIS_TREATMENT_BED_ROOM> vHisTreatmentBedRooms,
+           List<V_HIS_BED_LOG> listBedLog,
+           long _timeFilterOption
+           )
+        {
+            try
+            {
+                this._ExpMestMedicines = _expMestMedicines;
+                this._ExpMestMaterials = _expMestMaterials;
+                this._ExpMests_Print = _expMests_Print;
+                this.Department = department;
+                this._ConfigKeyMERGER_DATA = _configKeyMERGER_DATA;
+                this.vHisTreatmentBedRooms = vHisTreatmentBedRooms;
+                this._listBedLog = listBedLog;
+                this._TimeFilterOption = _timeFilterOption;
             }
             catch (Exception ex)
             {
@@ -135,7 +164,9 @@ namespace MPS.Processor.Mps000247.PDO
         }
     }
 
-    public class ExpMestADO : HIS_EXP_MEST 
+
+
+    public class ExpMestADO : V_HIS_EXP_MEST 
     {
         public string BED_CODE { get; set; }
         public string BED_NAME { get; set; }
@@ -143,7 +174,7 @@ namespace MPS.Processor.Mps000247.PDO
 
         public ExpMestADO() { }
 
-        public ExpMestADO(HIS_EXP_MEST data) 
+        public ExpMestADO(V_HIS_EXP_MEST data) 
         {
             try
             { 

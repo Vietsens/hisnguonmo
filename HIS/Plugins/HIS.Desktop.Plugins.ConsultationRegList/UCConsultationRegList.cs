@@ -323,7 +323,6 @@ namespace HIS.Desktop.Plugins.ConsultationRegList
                         }
                         else//hoan thanh
                         {
-                            e.Value = imageList1.Images[4];
                         }
 
 

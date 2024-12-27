@@ -878,14 +878,14 @@ namespace HIS.Desktop.Plugins.BedHistory
                     CommonParam param = new CommonParam();
                     Inventec.Common.Logging.LogSystem.Debug("Du lieu goi den api: HisBedLog/TakeBedsInUse. TakeBedsInUseSDO: " + Inventec.Common.Logging.LogUtil.TraceData("TakeBedsInUseSDO", sdo));
                     List<HIS_BED_LOG> dataBedLogs = new BackendAdapter(param).Post<List<HIS_BED_LOG>>("/api/HisBedLog/TakeBedsInUse", ApiConsumers.MosConsumer, sdo, param);
-                    
+
                     if (dataBedLogs != null && dataBedLogs.Count > 0)
                     {
                         Inventec.Common.Logging.LogSystem.Debug("Du lieu goi den api tra ve: HisBedLog/TakeBedsInUse. dataBedLogs: " + Inventec.Common.Logging.LogUtil.TraceData("dataBedLogs", dataBedLogs.Select(s => s.BED_ID).ToList()));
 
                         foreach (var itemADO in result)
                         {
-                            
+
                             //var dataByBedLogs_onStartTime = dataBedLogs.Where(p => p.BED_ID == itemADO.ID && p.START_TIME <= startTimeFilter && (!p.FINISH_TIME.HasValue || (p.FINISH_TIME.HasValue && p.FINISH_TIME.Value >= startTimeFilter))).ToList() ?? new List<HIS_BED_LOG>();
                             //List<HIS_BED_LOG> dataByBedLogs_onFinishTime = new List<HIS_BED_LOG>();
                             //if (finishTimeFilter != null)
@@ -894,7 +894,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                             //    ||(p.S)).ToList() ?? new List<HIS_BED_LOG>();
                             //else
                             //    dataByBedLogs_onFinishTime = dataBedLogs.Where(p => p.BED_ID == itemADO.ID && (!p.FINISH_TIME.HasValue || (p.FINISH_TIME.HasValue && p.FINISH_TIME.Value >= startTimeFilter))).ToList() ?? new List<HIS_BED_LOG>();
-                            
+
                             //lọc thời gian mới
                             // Lấy danh sách log theo startTimeFilter
                             var dataByBedLogs_onStartTime = dataBedLogs
@@ -937,7 +937,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                             {
                                 itemADO.BedLogFinishIds = dataByBedLogs_onFinishTime.Select(o => o.ID).ToList();
                             }
-                            
+
                             if (dataByBedLogs != null && dataByBedLogs.Count > 0)
                             {
                                 if (itemADO.MAX_CAPACITY.HasValue)
@@ -951,7 +951,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                                     itemADO.IsKey = 1;
                                 itemADO.BedLogAllIds = dataByBedLogs.Select(o => o.ID).ToList();
                                 itemADO.AMOUNT = dataByBedLogs.Count;
-                                
+
                                 itemADO.AMOUNT_STR = dataByBedLogs.Count + "/" + itemADO.MAX_CAPACITY;
                                 itemADO.TREATMENT_BED_ROOM_IDs = dataByBedLogs.Select(o => o.TREATMENT_BED_ROOM_ID).ToList();
                                 dicTreatmentBedRoom[itemADO.ID] = itemADO.TREATMENT_BED_ROOM_IDs;
@@ -979,7 +979,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                     //    }
                     //    CommonParam param = new CommonParam();
                     //    var dataBedLogs = new BackendAdapter(param).Get<List<HIS_BED_LOG>>("api/HisBedLog/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
-                        
+
                     //}
                 }
             }
@@ -1331,6 +1331,12 @@ namespace HIS.Desktop.Plugins.BedHistory
                                 ado.SERVICE_CONDITION_ID = null;
                             }
                         }
+                        if (!BreakServiceCondition)
+                        {
+                            var data = gridControlBedServiceType.DataSource as List<HisBedServiceTypeADO>;
+                            if (data != null && data.Count > 0)
+                                CountTimeBed();
+                        }
 
                     }
                     else if (e.Column.FieldName == "finishTime")
@@ -1349,12 +1355,18 @@ namespace HIS.Desktop.Plugins.BedHistory
                             ProcessSaveBedLog(ado);
                         }
                         if (!BreakServiceCondition)
+                        {
                             RefeshDataToCboBed(0, ado, false);
+                            var data = gridControlBedServiceType.DataSource as List<HisBedServiceTypeADO>;
+                            if (data != null && data.Count > 0)
+                                CountTimeBed();
+                        }
 
                     }
                     else if (e.Column.FieldName == "IsChecked")
                     {
-                        listCurrentBedLog.Where(s => s.ID == ado.ID).ForEach(o => {
+                        listCurrentBedLog.Where(s => s.ID == ado.ID).ForEach(o =>
+                        {
                             o.START_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.startTime) ?? 0;
                             o.FINISH_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.finishTime);
                             o.BED_ID = ado.BED_ID;
@@ -1363,7 +1375,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                         });
                         CheckErrorDataBedLog(ado);
                         //if ((ado.ErrorTypeStartTime == ErrorType.Warning && ado.ErrorMessageStartTime == ResourceMessage.ERROR_OVERLAP_START_TIME) || (ado.ErrorTypeFinishTime == ErrorType.Warning && ado.ErrorMessageFinishTime == ResourceMessage.ERROR_OVERLAP_START_TIME)) return;
-                        
+
                         if (!ado.IsSave && !ado.Error)
                         {
                             ProcessSaveBedLog(ado, ado.IsChecked);
@@ -1383,8 +1395,8 @@ namespace HIS.Desktop.Plugins.BedHistory
                         }
                         //if (ado.Error) return;
                         var exitsBed = bedLogChecks.FirstOrDefault(s => s.BED_ID == ado.BED_ID && s.START_TIME != ado.START_TIME);
-                        
-                        if(exitsBed!= null)
+
+                        if (exitsBed != null)
                         {
                             var adoStart = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.startTime);
                             var adoFinish = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.finishTime);
@@ -1426,7 +1438,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                         }
                         if (!BreakServiceCondition)
                             CountTimeBed();
-                        
+
                         var data = gridControlBedServiceType.DataSource;
                         //gridControlBedHistory.RefreshDataSource();
 
@@ -1649,7 +1661,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                         B = A.Where(o => o.finishTime > ado.startTime).ToList();
                         if (B == null || B.Count() == 0) return;
                         //if (B.Exists(o => o.finishTime >= ado.finishTime || o.startTime <= ado.startTime)) isWarning = true; logic check cu
-                        foreach(var _b in B)
+                        foreach (var _b in B)
                         {
                             var adoStart = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.startTime);
                             var adoFinish = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.finishTime);
@@ -1996,16 +2008,16 @@ namespace HIS.Desktop.Plugins.BedHistory
                             {
                                 foreach (var item in this.bedLogChecks)
                                 {
-                                    
+
                                     item.IsChecked = true;
                                     CheckErrorDataBedLog(item);
-                                    if (item.Error 
-                                           || !string.IsNullOrEmpty(item.ErrorMessageStartTime) 
-                                           || ! string.IsNullOrEmpty(item.ErrorMessageFinishTime)
+                                    if (item.Error
+                                           || !string.IsNullOrEmpty(item.ErrorMessageStartTime)
+                                           || !string.IsNullOrEmpty(item.ErrorMessageFinishTime)
                                            || !string.IsNullOrEmpty(item.ErrorMessageBebServiceTypeId)
                                            || !string.IsNullOrEmpty(item.ErrorMessageBedId)
                                            || !string.IsNullOrEmpty(item.ErrorMessagePatientTypeId)
-                                           || !string.IsNullOrEmpty(item.ErrorMessagePrimaryPatientTypeId) 
+                                           || !string.IsNullOrEmpty(item.ErrorMessagePrimaryPatientTypeId)
                                            || item.ErrorTypeStartTime == ErrorType.Warning
                                            || item.ErrorTypeFinishTime == ErrorType.Warning)
                                     {
@@ -2108,7 +2120,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     bool IsRemoveShareCount = false;
-                    
+
                     if (deleteVhisBedLog.ID > 0)
                     {
                         if (IsShareBed == "1" && deleteVhisBedLog.SHARE_COUNT > 1 && DevExpress.XtraEditors.XtraMessageBox.Show("Giường hiện tại có nằm ghép. Bạn có muốn cập nhật thông tin nằm ghép của bệnh nhân khác không?", ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -2138,9 +2150,9 @@ namespace HIS.Desktop.Plugins.BedHistory
                             RemoveShareCount(lstbedLogIds);
                         }
                     }
-                    
-                    
-                    
+
+
+
 
                     if (bedLogChecks == null || bedLogChecks.Count <= 0)
                     {
@@ -2497,7 +2509,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                                     cbo.ShowPopup();
                                     return;
                                 }
-                                
+
                             }
                             else
                             {
@@ -3239,7 +3251,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                                 cbo.ShowPopup();
                                 return;
                             }
-                            
+
                         }
                         else
                         {
@@ -4281,7 +4293,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             {
                 if (bebHistoryAdos != null && bebHistoryAdos.Count > 0)
                 {
-                    foreach(var bed in bebHistoryAdos)
+                    foreach (var bed in bebHistoryAdos)
                     {
                         ADO.HisBedServiceTypeADO bedServiceType = new ADO.HisBedServiceTypeADO();
                         decimal tongSoNgayGiuong = 0;
@@ -4322,7 +4334,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                             bedServiceType.IsSplitDayOrResult = true;
                         result.Add(bedServiceType);
                     }
-                    
+
                 }
             }
             catch (Exception ex)

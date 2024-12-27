@@ -202,6 +202,14 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                 {
                     _expMestFilter.TDL_INTRUCTION_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtToIntructionTime.EditValue).ToString("yyyyMMddHHmmss"));
                 }
+                if (dteUseTimeFrom.EditValue != null && dteUseTimeFrom.DateTime != DateTime.MinValue)
+                {
+                    _expMestFilter.TDL_USE_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dteUseTimeFrom.EditValue).ToString("yyyyMMddHHmmss"));
+                }
+                if (dteUseTimeTo.EditValue != null && dteUseTimeTo.DateTime != DateTime.MinValue)
+                {
+                    _expMestFilter.TDL_USE_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dteUseTimeTo.EditValue).ToString("yyyyMMddHHmmss"));
+                }
                 #endregion
 
                 #region navBarFilterProcess
