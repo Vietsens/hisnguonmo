@@ -84,14 +84,6 @@
     <Reference Include="HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT\HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.HisSyncToHid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.HisSyncToHid.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReq, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReq\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.Print, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
@@ -379,11 +371,6 @@
     <Compile Include="Choice\frmTransPati.Designer.cs">
       <DependentUpon>frmTransPati.cs</DependentUpon>
     </Compile>
-    <Compile Include="Config\AppConfigs.cs" />
-    <Compile Include="Config\BHXHLoginCFG.cs" />
-    <Compile Include="Config\GateAndStepCFG.cs" />
-    <Compile Include="Config\HisConfigCFG.cs" />
-    <Compile Include="DataStore\DataStore.cs" />
     <Compile Include="DateUtil.cs" />
     <Compile Include="GlobalStore.cs" />
     <Compile Include="Delegate.cs" />
@@ -607,6 +594,14 @@
     <ProjectReference Include="..\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.csproj">
       <Project>{0aedfd21-7195-4fdb-a3ef-035640df48f3}</Project>
       <Name>HIS.Desktop.Plugins.Library.EmrGenerate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.HisSyncToHid\HIS.Desktop.Plugins.Library.HisSyncToHid.csproj">
+      <Project>{110d79a4-5109-4fbd-8044-52e018faf5ea}</Project>
+      <Name>HIS.Desktop.Plugins.Library.HisSyncToHid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.PrintServiceReq\HIS.Desktop.Plugins.Library.PrintServiceReq.csproj">
+      <Project>{235a5f91-4ddb-4c6f-967f-c2426e11bb28}</Project>
+      <Name>HIS.Desktop.Plugins.Library.PrintServiceReq</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Plugins.Library.RegisterConfig\HIS.Desktop.Plugins.Library.RegisterConfig.csproj">
       <Project>{9247dd49-482c-4227-88df-616a8aaf3f38}</Project>

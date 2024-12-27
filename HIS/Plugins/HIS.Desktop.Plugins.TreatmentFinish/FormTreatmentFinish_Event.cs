@@ -480,7 +480,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     hisTreatmentFinishSDO.HrmKskCode = txtKskCode.Text.Trim();
                 if (this.ucIcdCause != null)
                 {
-                    var icdValue = this.IcdCauseProcessor.GetValue(this.ucIcdCause, Template.NoFocus);
+                    var icdValue = this.IcdCauseProcessor.GetValue(this.ucIcdCause);
                     if (icdValue != null && icdValue is UC.Icd.ADO.IcdInputADO)
                     {
                         hisTreatmentFinishSDO.IcdCauseCode = ((UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
@@ -490,7 +490,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
                 if (this.ucIcdYhct != null)
                 {
-                    var icdValue = this.icdYhctProcessor.GetValue(this.ucIcdYhct, Template.NoFocus);
+                    var icdValue = this.icdYhctProcessor.GetValue(this.ucIcdYhct);
                     if (icdValue != null && icdValue is UC.Icd.ADO.IcdInputADO)
                     {
                         hisTreatmentFinishSDO.TraditionalIcdCode = ((UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;

@@ -175,7 +175,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 
                 Inventec.Common.Logging.LogSystem.Debug("SurgServiceReqExecuteControl_Load. 3");
                 AcsUserADOList = ProcessAcsUser();
-                LoadDataTocboUser();
+
                 this.LoadDataToComboPtttTemp();
                 Inventec.Common.Logging.LogSystem.Debug("SurgServiceReqExecuteControl_Load. 4");
                 this.SetIcdFromServiceReq(this.serviceReq);
@@ -211,7 +211,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 isNotLoadWhileChangeControlStateInFirst = false;
 
                 btnFinish.Enabled = !(HisConfigKeys.allowFinishWhenAccountIsDoctor == "1" && BackendDataWorker.Get<HIS_EMPLOYEE>().Where(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()).FirstOrDefault().IS_DOCTOR != 1);
-
+                
                 Inventec.Common.Logging.LogSystem.Debug("SurgServiceReqExecuteControl_Load. 6");
             }
             catch (Exception ex)
@@ -609,7 +609,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 if (data != null)
                 {
                     Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisServiceReqMaty").FirstOrDefault();
-
+                    
                     if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.HisServiceReqMaty");
                     if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                     {
@@ -685,7 +685,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         /// </summary>
         /// <param name="notShowMess"></param>
         /// <returns></returns>
-
+        
         private bool btnSaveClick(bool notShowMess)
         {
             bool success = false;
@@ -693,7 +693,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             try
             {
 
-                if (HisConfigCFG.IS_NOT_REQUIRED_PTTT_EXECUTE_ROLE != "1" && sereServ.IS_SENT_EXT != 1 && !CheckCountEkipUser() && !IsReadOnlyGridViewEkipUser)
+                if (HisConfigCFG.IS_NOT_REQUIRED_PTTT_EXECUTE_ROLE != "1" && sereServ.IS_SENT_EXT != 1 &&!CheckCountEkipUser() && !IsReadOnlyGridViewEkipUser)
                 {
                     MessageBox.Show(ResourceMessage.VuiLongNhapThongTinkipThucHien, ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
@@ -707,7 +707,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 this.positionHandle = -1;
                 ValidateControl();
                 InValid();
-
+                
                 valid = valid && dxValidationProvider1.Validate();
                 valid = valid && ((this.isAllowEditInfo && this.isStartTimeMustBeGreaterThanInstructionTime) ? this.ValidStartDatePTTT(ref hisSurgResultSDO) : true);
                 //valid = valid && dxValidationProvider1.Validate();
@@ -717,7 +717,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 {
                     if (string.IsNullOrEmpty(txtConclude.Text))
                     {
-                        this.dxErrorProviver.SetError(txtConclude, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc), ErrorType.Warning);
+                        this.dxErrorProviver.SetError(txtConclude, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc),ErrorType.Warning);
                         valid = false;
                     }
                     else
@@ -726,6 +726,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         this.dxErrorProviver.SetError(txtConclude, "", ErrorType.None);
                     }
                 }
+                Inventec.Common.Logging.LogSystem.Debug("__________dxErrorProviver");
                 //
                 var rs = TypeRequiredEmotionlessMethodOption(this.sereServ);
                 if ((rs.RequiredEmotionlessOption == 1 || rs.RequiredEmotionlessOption == 2) && rs.IsServiceTypePT && cbbEmotionlessMethod.EditValue == null)
@@ -848,7 +849,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 
                             ProcessSereServPttt(singleData);
                             //Cập nhật lại các trường Điều tị can thiệp DMV 
-                            if (SereServePTTTInfoStent != null)
+                            if(SereServePTTTInfoStent != null)
                             {
                                 singleData.SereServPttt.PCI = SereServePTTTInfoStent.PCI;
                                 singleData.SereServPttt.STENTING = SereServePTTTInfoStent.STENTING;
@@ -862,7 +863,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                                 singleData.SereServPttt.CONTRAST_AGENT = SereServePTTTInfoStent.CONTRAST_AGENT;
                                 singleData.SereServPttt.INSTRUMENTS_OTHER = SereServePTTTInfoStent.INSTRUMENTS_OTHER;
                                 singleData.SereServPttt.STENT_NOTE = SereServePTTTInfoStent.STENT_NOTE;
-                            }
+                            }    
                             //cập nhật cách thức và “Phân loại” từ ram
                             var currentService = lstService.FirstOrDefault(o => o.ID == this.sereServ.SERVICE_ID);
                             var pttt_forSaveGroup = hisSereServPttt_forSaveGroup.FirstOrDefault(o => o.SERE_SERV_ID == this.sereServ.ID);
@@ -1110,7 +1111,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     var service = lstService.FirstOrDefault(o => o.ID == this.sereServ.SERVICE_ID);
                     //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("service.MAX_TOTAL_PROCESS_TIME", service != null ? service.MAX_TOTAL_PROCESS_TIME : -1));
                     if (service != null && service.MAX_TOTAL_PROCESS_TIME.HasValue && service.MAX_TOTAL_PROCESS_TIME.Value > 0
-                            && processTime.TotalMinutes > service.MAX_TOTAL_PROCESS_TIME.Value && (string.IsNullOrEmpty(service.TOTAL_TIME_EXCEPT_PATY_IDS) || !("," + service.TOTAL_TIME_EXCEPT_PATY_IDS + ",").Contains("," + sereServ.PATIENT_TYPE_ID.ToString() + ",")))
+                            && processTime.TotalMinutes > service.MAX_TOTAL_PROCESS_TIME.Value && (string.IsNullOrEmpty(service.TOTAL_TIME_EXCEPT_PATY_IDS) || !("," + service.TOTAL_TIME_EXCEPT_PATY_IDS + ",").Contains("," + sereServ.PATIENT_TYPE_ID.ToString()+",")))
                     {
                         dicInvalidServices.Add(service.MAX_TOTAL_PROCESS_TIME.Value, new List<V_HIS_SERVICE>() { service });
                     }
@@ -2488,7 +2489,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 if (this.sereServPTTT_Detail == null)
                     this.sereServPTTT_Detail = new V_HIS_SERE_SERV_PTTT();
 
-                frmInputDetail frmInputDetail = new frmInputDetail(this.sereServ, currentEyeSurgDesc, stentConcludeSave, GetEyeSurgryDescLast, SkinSurgeryDes, GetSkinSurg, this.sereServPTTT_Detail, GetSereServPTTT, GetDmv);
+                frmInputDetail frmInputDetail = new frmInputDetail(this.sereServ,currentEyeSurgDesc, stentConcludeSave, GetEyeSurgryDescLast, SkinSurgeryDes, GetSkinSurg, this.sereServPTTT_Detail, GetSereServPTTT,GetDmv);
                 frmInputDetail.ShowDialog();
             }
             catch (Exception ex)
@@ -3869,7 +3870,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             {
                 if (cbbBlood.EditValue != null)
                 {
-                    MOS.EFMODEL.DataModels.HIS_BLOOD_ABO data = dataBloodAbo.FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cbbBlood.EditValue ?? 0).ToString()));
+                    MOS.EFMODEL.DataModels.HIS_BLOOD_ABO data= dataBloodAbo.FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cbbBlood.EditValue ?? 0).ToString()));
                     if (data != null)
                     {
                         txtBlood.Text = data.BLOOD_ABO_CODE;
@@ -4939,16 +4940,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             cboBanMo.EditValue = null;
                         }
                     }
-
-                    if (!string.IsNullOrEmpty(dataSereServPttt.SUBS_DIRECTOR_LOGINNAME) && lstReAcsUserADO.Exists(o => o.LOGINNAME == dataSereServPttt.SUBS_DIRECTOR_LOGINNAME))
-                    {
-                        cboHospSubs.EditValue = dataSereServPttt.SUBS_DIRECTOR_LOGINNAME;
-                    }
-
-                    if (!string.IsNullOrEmpty(dataSereServPttt.SUBS_HEAD_LOGINNAME) && lstReAcsUserADO.Exists(o => o.LOGINNAME == dataSereServPttt.SUBS_HEAD_LOGINNAME))
-                    {
-                        cboEndDeptSubs.EditValue = dataSereServPttt.SUBS_HEAD_LOGINNAME;
-                    }
                 }
                 else if (this.sereServ != null && !this.sereServ.EKIP_ID.HasValue)
                 {
@@ -5262,34 +5253,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             {
                 if (dtFinish.EditValue != null && dtFinish.DateTime != DateTime.MinValue && dtStart.EditValue != null && dtStart.DateTime != DateTime.MinValue)
                     spinExcuteTimeAdd.EditValue = (dtFinish.DateTime - dtStart.DateTime).TotalMinutes;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        private void cboEndDeptSubs_ButtonClick(object sender, ButtonPressedEventArgs e)
-        {
-
-            try
-            {
-                if (e.Button.Kind == ButtonPredefines.Delete)
-                    cboEndDeptSubs.EditValue = null;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-
-        }
-
-        private void cboHospSubs_ButtonClick(object sender, ButtonPressedEventArgs e)
-        {
-            try
-            {
-                if (e.Button.Kind == ButtonPredefines.Delete)
-                    cboHospSubs.EditValue = null;
             }
             catch (Exception ex)
             {

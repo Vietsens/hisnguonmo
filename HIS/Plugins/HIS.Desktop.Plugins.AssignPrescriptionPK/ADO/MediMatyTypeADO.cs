@@ -1542,7 +1542,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 this.CONTRAINDICATION = s.CONTRAINDICATION;
                 this.IS_OUT_HOSPITAL = s.IS_OUT_HOSPITAL;
                 this.MEDICINE_GROUP_ID = s.MEDICINE_GROUP_ID;
-                this.HTU_IDs = s.HTU_IDs;
             }
             catch (Exception ex)
             {

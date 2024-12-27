@@ -27,16 +27,14 @@ using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 {
     public partial class SurgServiceReqExecuteControl : UserControlBase
     {
-        private List<AcsUserADO> lstReAcsUserADO;
-
         private void ComboChuanDoanTD(DevExpress.XtraEditors.LookUpEdit cbo)
         {
             try
@@ -160,7 +158,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 controlEditorADO.ImmediatePopup = true;
                 ControlEditorLoader.Load(cbbEmotionlessMethod, dataEmotionlessMethod, controlEditorADO);
 
-                if (this.sereServPTTT != null && dataEmotionlessMethod.Exists(o => o.ID == this.sereServPTTT.EMOTIONLESS_METHOD_ID))
+                if (this.sereServPTTT != null && dataEmotionlessMethod.Exists(o=>o.ID== this.sereServPTTT.EMOTIONLESS_METHOD_ID))
                 {
                     cbbEmotionlessMethod.EditValue = this.sereServPTTT.EMOTIONLESS_METHOD_ID;
                 }
@@ -194,28 +192,28 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 ControlEditorADO controlEditorADO = new ControlEditorADO("BLOOD_ABO_CODE", "ID", columnInfos, false, 250);
                 controlEditorADO.ImmediatePopup = true;
                 ControlEditorLoader.Load(cbbBlood, dataBloodAbo, controlEditorADO);
-                if (!string.IsNullOrEmpty(this.Patient.BLOOD_ABO_CODE))
-                {
-                    var bloodAbo = dataBloodAbo.FirstOrDefault(o => o.BLOOD_ABO_CODE == Patient.BLOOD_ABO_CODE);
-                    if (bloodAbo != null)
+                    if (!string.IsNullOrEmpty(this.Patient.BLOOD_ABO_CODE))
                     {
-                        cbbBlood.EditValue = bloodAbo.ID;
-                        txtBlood.Text = bloodAbo.BLOOD_ABO_CODE;
+                        var bloodAbo = dataBloodAbo.FirstOrDefault(o => o.BLOOD_ABO_CODE == Patient.BLOOD_ABO_CODE);
+                        if (bloodAbo != null)
+                        {
+                            cbbBlood.EditValue = bloodAbo.ID;
+                            txtBlood.Text = bloodAbo.BLOOD_ABO_CODE;
+                        }
+                        else
+                        {
+                            cbbBlood.EditValue = null;
+                            txtBlood.Text = null;
+                        }
                     }
                     else
                     {
-                        cbbBlood.EditValue = null;
-                        txtBlood.Text = null;
+                        if (this.sereServPTTT != null)
+                        {
+                            txtBlood.Text = this.sereServPTTT.BLOOD_ABO_CODE;
+                            cbbBlood.EditValue = this.sereServPTTT.BLOOD_ABO_ID;
+                        }
                     }
-                }
-                else
-                {
-                    if (this.sereServPTTT != null)
-                    {
-                        txtBlood.Text = this.sereServPTTT.BLOOD_ABO_CODE;
-                        cbbBlood.EditValue = this.sereServPTTT.BLOOD_ABO_ID;
-                    }
-                }
             }
             catch (Exception ex)
             {
@@ -246,28 +244,28 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 controlEditorADO.ImmediatePopup = true;
                 ControlEditorLoader.Load(cbbBloodRh, dataBloodRh, controlEditorADO);
 
-                if (!string.IsNullOrEmpty(this.Patient.BLOOD_RH_CODE))
-                {
-                    var bloodRh = dataBloodRh.FirstOrDefault(o => o.BLOOD_RH_CODE == Patient.BLOOD_RH_CODE);
-                    if (bloodRh != null)
+                    if (!string.IsNullOrEmpty(this.Patient.BLOOD_RH_CODE))
                     {
-                        cbbBloodRh.EditValue = bloodRh.ID;
-                        txtBloodRh.Text = bloodRh.BLOOD_RH_CODE;
+                        var bloodRh = dataBloodRh.FirstOrDefault(o => o.BLOOD_RH_CODE == Patient.BLOOD_RH_CODE);
+                        if (bloodRh != null)
+                        {
+                            cbbBloodRh.EditValue = bloodRh.ID;
+                            txtBloodRh.Text = bloodRh.BLOOD_RH_CODE;
+                        }
+                        else
+                        {
+                            cbbBloodRh.EditValue = null;
+                            txtBloodRh.Text = null;
+                        }
                     }
                     else
                     {
-                        cbbBloodRh.EditValue = null;
-                        txtBloodRh.Text = null;
+                        if (this.sereServPTTT != null)
+                        {
+                            txtBloodRh.Text = this.sereServPTTT.BLOOD_RH_CODE;
+                            cbbBloodRh.EditValue = this.sereServPTTT.BLOOD_RH_ID;
+                        }
                     }
-                }
-                else
-                {
-                    if (this.sereServPTTT != null)
-                    {
-                        txtBloodRh.Text = this.sereServPTTT.BLOOD_RH_CODE;
-                        cbbBloodRh.EditValue = this.sereServPTTT.BLOOD_RH_ID;
-                    }
-                }
             }
             catch (Exception ex)
             {
@@ -383,93 +381,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             }
         }
 
-        private async Task LoadDataTocboUser()
-        {
-            try
-            {
-                this.lstReAcsUserADO = new List<AcsUserADO>();
-                var acsUser = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
-                foreach (var item in acsUser)
-                {
-                    AcsUserADO ado = new AcsUserADO(item);
-                    ado.DOB = (item.DOB ?? 0).ToString();
-                    ado.DOB_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(item.DOB ?? 0);
-                    ado.DIPLOMA = item.DIPLOMA;
-                    ado.DEPARTMENT_CODE = item.DEPARTMENT_CODE;
-                    ado.DEPARTMENT_ID = item.DEPARTMENT_ID;
-                    ado.DEPARTMENT_NAME = item.DEPARTMENT_NAME;
-                    ado.USERNAME = item.TDL_USERNAME;
-                    this.lstReAcsUserADO.Add(ado);
-                }
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("LOGINNAME", "Tên đăng nhập", 150, 1));
-                columnInfos.Add(new ColumnInfo("USERNAME", "Họ tên", 250, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("USERNAME", "LOGINNAME", columnInfos, true, 400);
-                ControlEditorLoader.Load(cboEndDeptSubs, this.lstReAcsUserADO.Where(o => o.IS_ACTIVE == 1).ToList(), controlEditorADO);
-                cboEndDeptSubs.Properties.ImmediatePopup = true;
-                ControlEditorLoader.Load(cboHospSubs, this.lstReAcsUserADO.Where(o => o.IS_ACTIVE == 1).ToList(), controlEditorADO);
-                cboHospSubs.Properties.ImmediatePopup = true;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void ValidHeadDepartmentAndDirectorBranch()
-        {
-
-            try
-            {
-                var RoomV = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == Module.RoomId);
-
-                var Department = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>().FirstOrDefault(o => o.ID == RoomV.DEPARTMENT_ID);
-
-                var empHead = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == Department.HEAD_LOGINNAME);
-                if (empHead != null && empHead.IS_NEED_SIGN_INSTEAD == 1)
-                {
-                    ValidationSigleControl(cboEndDeptSubs);
-                    lciEndDeptSubs.AppearanceItemCaption.ForeColor = Color.Maroon;
-                }
-                else
-                {
-                    dxValidationProvider1.RemoveControlError(cboEndDeptSubs);
-                    dxValidationProvider1.SetValidationRule(cboEndDeptSubs, null);
-                    lciEndDeptSubs.AppearanceItemCaption.ForeColor = Color.Black;
-                }
-
-                var Branch = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BRANCH>().FirstOrDefault(o => o.ID == Department.BRANCH_ID);
-                var empDirec = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == Branch.DIRECTOR_LOGINNAME);
-                if (empDirec != null && empDirec.IS_NEED_SIGN_INSTEAD == 1)
-                {
-                    ValidationSigleControl(cboHospSubs);
-                    lciHospSubs.AppearanceItemCaption.ForeColor = Color.Maroon;
-                }
-                else
-                {
-                    dxValidationProvider1.RemoveControlError(cboHospSubs);
-                    dxValidationProvider1.SetValidationRule(cboHospSubs, null);
-                    lciHospSubs.AppearanceItemCaption.ForeColor = Color.Black;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-
-        }
 
         private async Task LoadDataToComboPtttTemp()
         {
             try
             {
                 List<HIS_SERE_SERV_PTTT_TEMP> ptttTemp = new List<HIS_SERE_SERV_PTTT_TEMP>();
-                Action myaction = () =>
-                {
+                Action myaction = () => {
                     var DepartmentID = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == this.Module.RoomId).DepartmentId;
-                    string loginname = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                string loginname = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
 
-                    ptttTemp = BackendDataWorker.Get<HIS_SERE_SERV_PTTT_TEMP>().Where(o => o.IS_ACTIVE == 1 && (o.IS_PUBLIC == 1 || (o.IS_PUBLIC_IN_DEPARTMENT == 1 && o.DEPARTMENT_ID == DepartmentID) || (o.CREATOR == loginname))).ToList();
+                ptttTemp = BackendDataWorker.Get<HIS_SERE_SERV_PTTT_TEMP>().Where(o => o.IS_ACTIVE == 1 && (o.IS_PUBLIC == 1 || (o.IS_PUBLIC_IN_DEPARTMENT == 1 && o.DEPARTMENT_ID == DepartmentID) || (o.CREATOR == loginname))).ToList();
                 };
                 Task task = new Task(myaction);
                 task.Start();

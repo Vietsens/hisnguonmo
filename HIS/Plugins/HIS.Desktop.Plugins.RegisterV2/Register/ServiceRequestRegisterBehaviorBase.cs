@@ -645,7 +645,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.patientProfile.HisPatient.HOUSEHOLD_CODE = this.houseHold_Code;
                 this.patientProfile.HisPatient.HOUSEHOLD_RELATION_NAME = this.hoseHold_Relative;
                 this.patientProfile.HisPatient.IS_HIV = this.IsHiv ? (short?)1 : null;
-                this.patientProfile.HisPatient.BRANCH_ID = WorkPlace.GetBranchId();
                 //Kiểm tra số ký tự nhập vào trường CMND để phân biệt là nhập theo CMND hay theo thẻ căn cước công dân. Nhập 9 ký tự số => CMND, nhập 12 ký tự số => căn cước
                 if (!String.IsNullOrEmpty(this.cMNDNumber))
                {                   

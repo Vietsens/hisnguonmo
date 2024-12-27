@@ -76,7 +76,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 {
                     ValidateTextEdit(txtIcdCmCode);
                 }
-                ValidHeadDepartmentAndDirectorBranch();
             }
             catch (Exception ex)
             {
@@ -199,15 +198,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             validate.maxLength = maxLength;
             validate.IsRequired = isRequired;
             validate.ErrorText = Resources.ResourceMessage.TruongDuLieuVuotQuaKyTu;
-            validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-            this.dxValidationProvider1.SetValidationRule(control, validate);
-        }
-
-        private void ValidationSigleControl(BaseEdit control)
-        {
-            ControlEditValidationRule validate = new ControlEditValidationRule();
-            validate.editor = control;
-            validate.ErrorText = Resources.ResourceMessage.TruongDuLieuBatBuoc;
             validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
             this.dxValidationProvider1.SetValidationRule(control, validate);
         }

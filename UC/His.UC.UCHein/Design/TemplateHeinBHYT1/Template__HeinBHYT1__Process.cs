@@ -693,16 +693,26 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             {
                 //Nếu tuyến của bệnh viện là tuyến "Trung ương" & tuyến "Tỉnh" => bắt buộc chọn ô trường hợp
                 //bệnh viện tuyến dưới sẽ không phải chọn trường hợp
-                //Nếu tuyến của bệnh viện là tuyến "Trung ương" & tuyến "Tỉnh" => bắt buộc chọn ô trường hợp
-                if (((MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.NATIONAL == HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT //this.HeinLevelCodeCurrent
-                    || MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.PROVINCE == HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT// this.HeinLevelCodeCurrent
+                if ((MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.NATIONAL == this.HeinLevelCodeCurrent
+                    || MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.PROVINCE == this.HeinLevelCodeCurrent)
+                    && !this.MediOrgCodeCurrent.Equals(heinMediOrgCode)
+                    && (String.IsNullOrWhiteSpace(this.SysMediOrgCode) || !this.SysMediOrgCode.Contains(heinMediOrgCode))
+                    && (MediOrgCodesAccepts == null || MediOrgCodesAccepts.Contains(heinMediOrgCode))
+                    && (!(IsNotRequiredRightTypeInCaseOfHavingAreaCode && (liveArea == MOS.LibraryHein.Bhyt.HeinLiveArea.HeinLiveAreaCode.K1 || liveArea == MOS.LibraryHein.Bhyt.HeinLiveArea.HeinLiveAreaCode.K2 || liveArea == MOS.LibraryHein.Bhyt.HeinLiveArea.HeinLiveAreaCode.K3)))
                     )
-                    && !HIS.Desktop.LocalStorage.HisConfig.HisMediOrgCFG.MEDI_ORG_VALUE__CURRENT.Equals(heinMediOrgCode)))
                 {
                     Inventec.Common.Logging.LogSystem.Debug("HasChangeValidRightRouteType.1");
+                    //Neu CSKCBBD khong phai dung co so benh vien thi phai check valid cho truong 'truong hop'                     
+                    this.ValidRightRouteType(heinMediOrgCode);
+                    this.SetValidate(heinMediOrgCode);
                     hasValid = true;
                 }
-                ValidateRightRouteType();
+                //Ngược lại không bắt buộc nhập trường hợp
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("HasChangeValidRightRouteType.2");
+                    ValidateRightRouteType();
+                }
             }
             catch (Exception ex)
             {

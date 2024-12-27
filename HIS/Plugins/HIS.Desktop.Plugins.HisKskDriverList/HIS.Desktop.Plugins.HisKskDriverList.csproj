@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BBFEA186-4AD0-445B-A0AB-CE1A28B574D6}</ProjectGuid>
+    <ProjectGuid>{7F8BDCE1-DD62-49EB-9399-22D1F4AECB0D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HIS.Desktop.Plugins.HisKskDriverList</RootNamespace>
@@ -52,9 +52,6 @@
     <Reference Include="EMR.WCF.DCO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.SignLibrary\EMR.WCF.DCO.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Bhyt.Hssk">
-      <HintPath>..\..\..\..\lib\HIS\HIS.Bhyt.Hssk\HIS.Bhyt.Hssk.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.DelegateRegister">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.UCPatientRaw\HIS.Desktop.DelegateRegister.dll</HintPath>
@@ -141,7 +138,7 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.KskSignData">
-      <HintPath>..\..\..\..\lib\MOS\MOS.KskSignData.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.KskSignData.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
@@ -194,6 +191,7 @@
       <DependentUpon>UCHisKskDriverList.cs</DependentUpon>
     </Compile>
     <Compile Include="UCHisKskDriverListProcessor.cs" />
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

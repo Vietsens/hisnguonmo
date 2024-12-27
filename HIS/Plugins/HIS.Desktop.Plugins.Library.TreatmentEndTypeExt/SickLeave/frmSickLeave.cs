@@ -47,7 +47,6 @@ using His.Bhyt.InsuranceExpertise;
 using Inventec.Desktop.Common.Message;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
 using Inventec.Common.Logging;
-using HIS.Desktop.LocalStorage.HisConfig;
 
 namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
 {
@@ -948,7 +947,6 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
             patientFilter.ID = this.treatment.PATIENT_ID;
             Patient = new Inventec.Common.Adapter.BackendAdapter(new Inventec.Core.CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, patientFilter, null).FirstOrDefault();
             if (!dxValidationProvider1.Validate(txtBhxhCode) || Patient == null) return;
-            LogSystem.Debug("Bat dau check cong BHXH ");
             CheckBhxh();
         }
         private HIS_EMPLOYEE GetEmployee(string username)
@@ -970,10 +968,6 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
             }
             return result;
         }
-        List<string> connectInfors = new List<string>();
-        string api = "";
-        string nameCb = "";
-        string cccdCb = "";
         private async Task CheckBhxh()
         {
             ResultHistoryLDO rsData = null;
@@ -982,7 +976,7 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                 BHXHLoginCFG.LoadConfig();
                 CommonParam param = new CommonParam();
                 ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
-                
+                apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.APIEGW;
                 CheckHistoryLDO checkHistoryLDO = new CheckHistoryLDO();
                 checkHistoryLDO.maThe = txtBhxhCode.Text.Trim();
                 checkHistoryLDO.ngaySinh = Patient.IS_HAS_NOT_DAY_DOB == 1 ? Patient.DOB.ToString().Substring(0, 4) : ((Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Patient.DOB) ?? DateTime.MinValue).ToString("dd/MM/yyyy"));
@@ -990,33 +984,11 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                 checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? Patient.VIR_PATIENT_NAME.ToLower() : checkHistoryLDO.hoTen);
                 string username = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 var employee = GetEmployee(username);
-                try
-                {
-                    LogSystem.Debug("Get value config check cong BHXH: ");
-                    string connect_infor = HisConfigs.Get<string>("HIS.CHECK_HEIN_CARD.BHXH__API");
-                    if (!string.IsNullOrEmpty(connect_infor))
-                    {
-                        connectInfors = connect_infor.Split('|').ToList();
-                        api = connectInfors.Count > 0 ? connectInfors[0] : string.Empty;
-
-                        nameCb = connectInfors.Count > 1 && !string.IsNullOrEmpty(connectInfors[1]) ? connectInfors[1] : employee.TDL_USERNAME;
-                        cccdCb = connectInfors.Count > 2 && !string.IsNullOrEmpty(connectInfors[2]) ? connectInfors[2] : employee.IDENTIFICATION_NUMBER;
-
-                        if(connectInfors.Count > 1)LogSystem.Debug("BHXHLoginCFG.OFFICERNAME: " + connectInfors[1]);
-                        if(connectInfors.Count > 2)LogSystem.Debug("BHXHLoginCFG.CCCDOFFICER: " + connectInfors[2]);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Inventec.Common.Logging.LogSystem.Error(ex);
-                }
-                
                 LogSystem.Debug("employee: " + LogUtil.TraceData("employee", employee));
-                
-                apiInsuranceExpertise.ApiEgw = api;
-                checkHistoryLDO.hoTenCb = nameCb;
-                checkHistoryLDO.cccdCb = cccdCb;
-
+                LogSystem.Debug("BHXHLoginCFG.OFFICERNAME: " + BHXHLoginCFG.OFFICERNAME);
+                LogSystem.Debug("BHXHLoginCFG.CCCDOFFICER: " + BHXHLoginCFG.CCCDOFFICER);
+                checkHistoryLDO.hoTenCb = string.IsNullOrEmpty(BHXHLoginCFG.OFFICERNAME) ? employee.TDL_USERNAME : BHXHLoginCFG.OFFICERNAME;
+                checkHistoryLDO.cccdCb = string.IsNullOrEmpty(BHXHLoginCFG.CCCDOFFICER) ? employee.IDENTIFICATION_NUMBER : BHXHLoginCFG.CCCDOFFICER;
                 Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 1");
                 if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
                     || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)

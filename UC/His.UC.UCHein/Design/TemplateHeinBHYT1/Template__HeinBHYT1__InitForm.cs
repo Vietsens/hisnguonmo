@@ -148,7 +148,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                             this.InitDefaultRightRouteType();
                         else
                         {
-                            if (cboHeinRightRoute.EditValue == null && !SetDefaultRightCode())
+                            if (cboHeinRightRoute.EditValue == null)
                             {
                                 DevExpress.XtraEditors.XtraMessageBox.Show(Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.His_UCHein__MaDKKCBBDKhacVoiCuaVienNguoiDungPhaiChonTruongHop), Base.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao), DefaultBoolean.True);
                             }

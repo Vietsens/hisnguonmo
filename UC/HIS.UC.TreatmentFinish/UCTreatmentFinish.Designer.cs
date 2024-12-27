@@ -45,7 +45,6 @@ namespace HIS.UC.TreatmentFinish.Run
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCTreatmentFinish));
             DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
             DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
@@ -144,7 +143,7 @@ namespace HIS.UC.TreatmentFinish.Run
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             this.gBoxTreatmentFinishInfo.SuspendLayout();
@@ -285,7 +284,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // chkSignTL
             // 
-            this.chkSignTL.Location = new System.Drawing.Point(361, 187);
+            this.chkSignTL.Location = new System.Drawing.Point(361, 179);
             this.chkSignTL.Name = "chkSignTL";
             this.chkSignTL.Properties.Caption = "Ký";
             this.chkSignTL.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -296,7 +295,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // chkPrintTL
             // 
-            this.chkPrintTL.Location = new System.Drawing.Point(315, 187);
+            this.chkPrintTL.Location = new System.Drawing.Point(315, 179);
             this.chkPrintTL.Name = "chkPrintTL";
             this.chkPrintTL.Properties.Caption = "In";
             this.chkPrintTL.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -307,7 +306,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // chkSignBK
             // 
-            this.chkSignBK.Location = new System.Drawing.Point(361, 163);
+            this.chkSignBK.Location = new System.Drawing.Point(361, 155);
             this.chkSignBK.Name = "chkSignBK";
             this.chkSignBK.Properties.Caption = "Ký";
             this.chkSignBK.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -318,7 +317,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // chkAutoPrintBK
             // 
-            this.chkAutoPrintBK.Location = new System.Drawing.Point(315, 163);
+            this.chkAutoPrintBK.Location = new System.Drawing.Point(315, 155);
             this.chkAutoPrintBK.Name = "chkAutoPrintBK";
             this.chkAutoPrintBK.Properties.Caption = "In";
             this.chkAutoPrintBK.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -329,7 +328,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // chkXuatXML
             // 
-            this.chkXuatXML.Location = new System.Drawing.Point(339, 139);
+            this.chkXuatXML.Location = new System.Drawing.Point(339, 131);
             this.chkXuatXML.Name = "chkXuatXML";
             this.chkXuatXML.Properties.Caption = "";
             this.chkXuatXML.Size = new System.Drawing.Size(19, 19);
@@ -338,7 +337,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // chkSignExam
             // 
-            this.chkSignExam.Location = new System.Drawing.Point(361, 211);
+            this.chkSignExam.Location = new System.Drawing.Point(361, 203);
             this.chkSignExam.Name = "chkSignExam";
             this.chkSignExam.Properties.Caption = "Ký";
             this.chkSignExam.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -349,7 +348,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // chkPrintExam
             // 
-            this.chkPrintExam.Location = new System.Drawing.Point(315, 211);
+            this.chkPrintExam.Location = new System.Drawing.Point(315, 203);
             this.chkPrintExam.Name = "chkPrintExam";
             this.chkPrintExam.Properties.Caption = "In";
             this.chkPrintExam.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -360,7 +359,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // cboHospSubs
             // 
-            this.cboHospSubs.Location = new System.Drawing.Point(272, 115);
+            this.cboHospSubs.Location = new System.Drawing.Point(272, 107);
             this.cboHospSubs.Name = "cboHospSubs";
             this.cboHospSubs.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboHospSubs.Properties.AutoComplete = false;
@@ -385,7 +384,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // cboEndDeptSubs
             // 
-            this.cboEndDeptSubs.Location = new System.Drawing.Point(272, 91);
+            this.cboEndDeptSubs.Location = new System.Drawing.Point(272, 83);
             this.cboEndDeptSubs.Name = "cboEndDeptSubs";
             this.cboEndDeptSubs.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboEndDeptSubs.Properties.AutoComplete = false;
@@ -410,7 +409,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // txtHospSubs
             // 
-            this.txtHospSubs.Location = new System.Drawing.Point(82, 115);
+            this.txtHospSubs.Location = new System.Drawing.Point(82, 107);
             this.txtHospSubs.Name = "txtHospSubs";
             this.txtHospSubs.Size = new System.Drawing.Size(190, 20);
             this.txtHospSubs.StyleController = this.layoutControlEditor;
@@ -419,7 +418,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // txtEndDeptSubs
             // 
-            this.txtEndDeptSubs.Location = new System.Drawing.Point(82, 91);
+            this.txtEndDeptSubs.Location = new System.Drawing.Point(82, 83);
             this.txtEndDeptSubs.Name = "txtEndDeptSubs";
             this.txtEndDeptSubs.Size = new System.Drawing.Size(190, 20);
             this.txtEndDeptSubs.StyleController = this.layoutControlEditor;
@@ -428,7 +427,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // cboCareer
             // 
-            this.cboCareer.Location = new System.Drawing.Point(82, -7);
+            this.cboCareer.Location = new System.Drawing.Point(82, -15);
             this.cboCareer.Name = "cboCareer";
             this.cboCareer.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboCareer.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -452,7 +451,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             this.btnShowIcd.Image = ((System.Drawing.Image)(resources.GetObject("btnShowIcd.Image")));
             this.btnShowIcd.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.btnShowIcd.Location = new System.Drawing.Point(373, 65);
+            this.btnShowIcd.Location = new System.Drawing.Point(373, 57);
             this.btnShowIcd.Name = "btnShowIcd";
             this.btnShowIcd.Size = new System.Drawing.Size(54, 22);
             this.btnShowIcd.StyleController = this.layoutControlEditor;
@@ -462,7 +461,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // chkSignBHXH
             // 
-            this.chkSignBHXH.Location = new System.Drawing.Point(132, 163);
+            this.chkSignBHXH.Location = new System.Drawing.Point(132, 155);
             this.chkSignBHXH.Name = "chkSignBHXH";
             this.chkSignBHXH.Properties.Caption = "Ký";
             this.chkSignBHXH.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Far;
@@ -474,7 +473,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // chkPrintBHXH
             // 
-            this.chkPrintBHXH.Location = new System.Drawing.Point(82, 163);
+            this.chkPrintBHXH.Location = new System.Drawing.Point(82, 155);
             this.chkPrintBHXH.Name = "chkPrintBHXH";
             this.chkPrintBHXH.Properties.Caption = "In";
             this.chkPrintBHXH.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Far;
@@ -486,7 +485,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // chkPrintBANT
             // 
-            this.chkPrintBANT.Location = new System.Drawing.Point(132, 187);
+            this.chkPrintBANT.Location = new System.Drawing.Point(132, 179);
             this.chkPrintBANT.Name = "chkPrintBANT";
             this.chkPrintBANT.Properties.Caption = "In";
             this.chkPrintBANT.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Far;
@@ -500,7 +499,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // chkSignGHK
             // 
-            this.chkSignGHK.Location = new System.Drawing.Point(132, 139);
+            this.chkSignGHK.Location = new System.Drawing.Point(132, 131);
             this.chkSignGHK.Name = "chkSignGHK";
             this.chkSignGHK.Properties.Caption = "Ký";
             this.chkSignGHK.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Far;
@@ -512,7 +511,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // lblSoLuuTruBANT
             // 
             this.lblSoLuuTruBANT.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblSoLuuTruBANT.Location = new System.Drawing.Point(82, 213);
+            this.lblSoLuuTruBANT.Location = new System.Drawing.Point(82, 205);
             this.lblSoLuuTruBANT.Name = "lblSoLuuTruBANT";
             this.lblSoLuuTruBANT.Size = new System.Drawing.Size(89, 20);
             this.lblSoLuuTruBANT.StyleController = this.layoutControlEditor;
@@ -520,7 +519,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // cboProgram
             // 
-            this.cboProgram.Location = new System.Drawing.Point(82, 237);
+            this.cboProgram.Location = new System.Drawing.Point(82, 229);
             this.cboProgram.Name = "cboProgram";
             this.cboProgram.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboProgram.Properties.AutoComplete = false;
@@ -553,7 +552,7 @@ namespace HIS.UC.TreatmentFinish.Run
             this.lblNeedSickLeaveCert.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblNeedSickLeaveCert.Appearance.ForeColor = System.Drawing.Color.Red;
             this.lblNeedSickLeaveCert.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblNeedSickLeaveCert.Location = new System.Drawing.Point(2, -24);
+            this.lblNeedSickLeaveCert.Location = new System.Drawing.Point(2, -32);
             this.lblNeedSickLeaveCert.Name = "lblNeedSickLeaveCert";
             this.lblNeedSickLeaveCert.Size = new System.Drawing.Size(425, 13);
             this.lblNeedSickLeaveCert.StyleController = this.layoutControlEditor;
@@ -563,7 +562,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // cboTreatmentEndTypeExt
             // 
             this.cboTreatmentEndTypeExt.Enabled = false;
-            this.cboTreatmentEndTypeExt.Location = new System.Drawing.Point(82, 65);
+            this.cboTreatmentEndTypeExt.Location = new System.Drawing.Point(82, 57);
             this.cboTreatmentEndTypeExt.Name = "cboTreatmentEndTypeExt";
             this.cboTreatmentEndTypeExt.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
@@ -586,7 +585,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // chkIssueOutPatientStoreCode
             // 
-            this.chkIssueOutPatientStoreCode.Location = new System.Drawing.Point(82, 187);
+            this.chkIssueOutPatientStoreCode.Location = new System.Drawing.Point(82, 179);
             this.chkIssueOutPatientStoreCode.Name = "chkIssueOutPatientStoreCode";
             this.chkIssueOutPatientStoreCode.Properties.Caption = "Tạo";
             this.chkIssueOutPatientStoreCode.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Far;
@@ -601,7 +600,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // chkAutoPrintGHK
             // 
-            this.chkAutoPrintGHK.Location = new System.Drawing.Point(82, 139);
+            this.chkAutoPrintGHK.Location = new System.Drawing.Point(82, 131);
             this.chkAutoPrintGHK.Name = "chkAutoPrintGHK";
             this.chkAutoPrintGHK.Properties.Caption = "In";
             this.chkAutoPrintGHK.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Far;
@@ -614,7 +613,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // cboTreatmentEndType
             // 
             this.cboTreatmentEndType.EnterMoveNextControl = true;
-            this.cboTreatmentEndType.Location = new System.Drawing.Point(272, 41);
+            this.cboTreatmentEndType.Location = new System.Drawing.Point(272, 33);
             this.cboTreatmentEndType.Name = "cboTreatmentEndType";
             this.cboTreatmentEndType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -636,7 +635,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // txtTreatmentEndTypeCode
             // 
-            this.txtTreatmentEndTypeCode.Location = new System.Drawing.Point(82, 41);
+            this.txtTreatmentEndTypeCode.Location = new System.Drawing.Point(82, 33);
             this.txtTreatmentEndTypeCode.Name = "txtTreatmentEndTypeCode";
             this.txtTreatmentEndTypeCode.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.txtTreatmentEndTypeCode.Size = new System.Drawing.Size(190, 20);
@@ -647,7 +646,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // dtEndTime
             // 
             this.dtEndTime.EditValue = null;
-            this.dtEndTime.Location = new System.Drawing.Point(82, 17);
+            this.dtEndTime.Location = new System.Drawing.Point(82, 9);
             this.dtEndTime.Name = "dtEndTime";
             this.dtEndTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -702,7 +701,7 @@ namespace HIS.UC.TreatmentFinish.Run
             this.emptySpaceItem2,
             this.emptySpaceItem3,
             this.emptySpaceItem4});
-            this.Root.Location = new System.Drawing.Point(0, -26);
+            this.Root.Location = new System.Drawing.Point(0, -34);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.Root.Size = new System.Drawing.Size(429, 285);

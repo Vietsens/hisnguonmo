@@ -36,7 +36,6 @@ namespace MPS.Processor.Mps000037.PDO
         public List<V_HIS_SERVICE_REQ> ListServiceReqPrint { get; set; }
         public List<V_HIS_SERVICE> ListService { get; set; }
         public List<HIS_SERE_SERV_EXT> SereServExt { get; set; }
-        public List<HIS_SERVICE_REQ_TYPE> ListServiceReqType { get; set; }
     }
 
     //public class HisServiceReqCombo : MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ

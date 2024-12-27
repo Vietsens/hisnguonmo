@@ -1535,8 +1535,6 @@ namespace HIS.UC.TreatmentFinish.Run
                         treatmentFinishSDO.IsHasAupopsy = this.Treatment.IS_HAS_AUPOPSY;
                         treatmentFinishSDO.DeathCauseId = this.Treatment.DEATH_CAUSE_ID;
                         treatmentFinishSDO.DeathWithinId = this.Treatment.DEATH_WITHIN_ID;
-                        treatmentFinishSDO.HospitalizeReasonName = this.Treatment.HOSPITALIZE_REASON_NAME;
-                        treatmentFinishSDO.HospitalizeReasonCode = this.Treatment.HOSPITALIZE_REASON_CODE;
                         if (this.currentTreatmentEndTypeExt.WorkPlaceId == null)
                         {
                             if (!String.IsNullOrWhiteSpace(this.Treatment.TDL_PATIENT_WORK_PLACE_NAME))
@@ -2101,8 +2099,10 @@ namespace HIS.UC.TreatmentFinish.Run
                 result.FatherName = (treatmentFinishSDO != null && !string.IsNullOrEmpty(treatmentFinishSDO.FatherName)) ? treatmentFinishSDO.FatherName : null;
                 result.TransporterLoginnames = (treatmentFinishSDO != null && !string.IsNullOrEmpty(treatmentFinishSDO.TransporterLoginnames)) ? treatmentFinishSDO.TransporterLoginnames : null;
                 result.TreatmentMethod = (treatmentFinishSDO != null && treatmentFinishSDO.TreatmentMethod != null) ? treatmentFinishSDO.TreatmentMethod : null;
-                result.HospitalizeReasonCode = (treatmentFinishSDO != null && treatmentFinishSDO.HospitalizeReasonCode != null) ? treatmentFinishSDO.HospitalizeReasonCode : null;
-                result.HospitalizeReasonName = (treatmentFinishSDO != null && treatmentFinishSDO.HospitalizeReasonName != null) ? treatmentFinishSDO.HospitalizeReasonName : null;
+                if(result.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN && (string.IsNullOrEmpty(result.ClinicalNote) || string.IsNullOrEmpty(result.TreatmentDirection) || string.IsNullOrEmpty(result.TreatmentMethod) && string.IsNullOrEmpty(result.TransportVehicle) || (string.IsNullOrEmpty(result.TransporterLoginnames) && string.IsNullOrEmpty(result.Transporter)) || string.IsNullOrEmpty(result.TransferOutMediOrgCode) || !result.TranPatiReasonId.HasValue || !result.TranPatiFormId.HasValue))
+                {
+
+                }
                 Inventec.Common.Logging.LogSystem.Debug("GetDataOutput____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result));
             }
             catch (Exception ex)

@@ -28,7 +28,6 @@ using His.Bhyt.InsuranceExpertise.LDO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.BackendData.Core.RelaytionType;
-using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
 using HIS.Desktop.Utility;
@@ -36,7 +35,6 @@ using HIS.UC.Sick.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Controls.PopupLoader;
-using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using Inventec.Desktop.Common.Message;
@@ -1532,29 +1530,6 @@ namespace HIS.UC.Sick
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        List<string> connectInfors = new List<string>();
-        string api = "";
-        string nameCb = "";
-        string cccdCb = "";
-        private HIS_EMPLOYEE GetEmployee(string username)
-        {
-            HIS_EMPLOYEE result = new HIS_EMPLOYEE();
-            try
-            {
-                var rs = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(s => s.LOGINNAME == username).FirstOrDefault();
-                if (rs != null)
-                {
-                    result = rs;
-                }
-            }
-            catch (Exception ex)
-            {
-
-                Inventec.Common.Logging.LogSystem.Error(ex);
-                return null;
-            }
-            return result;
-        }
         private async Task CheckBhxh()
         {
             ResultHistoryLDO rsData = null;
@@ -1568,32 +1543,6 @@ namespace HIS.UC.Sick
                 checkHistoryLDO.ngaySinh = Patient.IS_HAS_NOT_DAY_DOB == 1 ? Patient.DOB.ToString().Substring(0,4) :((Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Patient.DOB) ?? DateTime.MinValue).ToString("dd/MM/yyyy"));
                 checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(Patient.VIR_PATIENT_NAME.ToLower());
                 checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? Patient.VIR_PATIENT_NAME.ToLower() : checkHistoryLDO.hoTen);
-                string username = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                var employee = GetEmployee(username);
-                try
-                {
-                    LogSystem.Debug("Get value config check cong BHXH: ");
-                    string connect_infor = HisConfigs.Get<string>("HIS.CHECK_HEIN_CARD.BHXH__API");
-                    if (!string.IsNullOrEmpty(connect_infor))
-                    {
-                        connectInfors = connect_infor.Split('|').ToList();
-                        api = connectInfors.Count > 0 ? connectInfors[0] : string.Empty;
-
-                        nameCb = connectInfors.Count > 1 && !string.IsNullOrEmpty(connectInfors[1]) ? connectInfors[1] : employee.TDL_USERNAME;
-                        cccdCb = connectInfors.Count > 2 && !string.IsNullOrEmpty(connectInfors[2]) ? connectInfors[2] : employee.IDENTIFICATION_NUMBER;
-
-                        LogSystem.Debug("BHXHLoginCFG.OFFICERNAME: " + connectInfors[1]);
-                        LogSystem.Debug("BHXHLoginCFG.CCCDOFFICER: " + connectInfors[2]);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Inventec.Common.Logging.LogSystem.Error(ex);
-                }
-                apiInsuranceExpertise.ApiEgw = api;
-                checkHistoryLDO.hoTenCb = nameCb;
-                checkHistoryLDO.cccdCb = cccdCb;
-
                 Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 1");
                 if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
                     || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)

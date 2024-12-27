@@ -1765,7 +1765,6 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.layoutControlItem5.Size = new System.Drawing.Size(377, 29);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
-            this.layoutControlItem5.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             // 
             // layoutControlItem6
             // 
@@ -1775,7 +1774,6 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.layoutControlItem6.Size = new System.Drawing.Size(69, 29);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
-            this.layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             // 
             // emptySpaceItem2
             // 

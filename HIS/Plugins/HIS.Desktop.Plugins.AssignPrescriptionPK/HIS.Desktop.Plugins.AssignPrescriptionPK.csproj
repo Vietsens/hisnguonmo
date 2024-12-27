@@ -148,6 +148,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.DateEditor\HIS.UC.DateEditor.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.ExamTreatmentFinish">
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.ExamTreatmentFinish\HIS.UC.ExamTreatmentFinish.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.Icd">
       <HintPath>..\..\..\..\lib\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
     </Reference>

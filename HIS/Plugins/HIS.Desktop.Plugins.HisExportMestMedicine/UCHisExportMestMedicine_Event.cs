@@ -42,8 +42,6 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
 {
     public partial class UCHisExportMestMedicine : UserControlBase
     {
-        bool isExpWithExpTime = false;
-        long? ExpTime = null;
         private void repositoryItemButtonViewDetail_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
@@ -577,25 +575,11 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                 WaitingManager.Hide();
             }
         }
-        private void checkExport(long? expTime)
-        {
-            try
-            {
-                isExpWithExpTime = false;
-                ExpTime = expTime;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-                WaitingManager.Hide();
-            }
-        }
 
         private void ButtonEnableActualExport_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
             {
-                isExpWithExpTime = false;
                 bool success = false;
                 CommonParam param = new CommonParam();
                 var rowDataExpMest = (V_HIS_EXP_MEST_2)gridView.GetFocusedRow();
@@ -603,247 +587,230 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                 Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST>(row, rowDataExpMest);
                 if (row != null)
                 {
-                    if (rowDataExpMest != null && rowDataExpMest.EXP_MEST_TYPE_ID == 1 && HisConfigCFG.AllowEditExpTime == "1")
+                    if (row.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BCS)
                     {
-                        isExpWithExpTime = true;
-                        frmMessage frm = new frmMessage(row, checkExport);
-                        frm.ShowDialog();
+                        bool IsFinish = false;
+                        if (row.IS_EXPORT_EQUAL_APPROVE == 1)
+                        {
+                            DevExpress.XtraEditors.XtraMessageBox.Show("Đã xuất hết số lượng duyệt", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
+                        }
+                        else if (row.IS_EXPORT_EQUAL_APPROVE == null || row.IS_EXPORT_EQUAL_APPROVE != 1)
+                        {
+                            HisExpMestMetyReqFilter expMestMetyReqFilter = new HisExpMestMetyReqFilter();
+                            expMestMetyReqFilter.EXP_MEST_ID = row.ID;
+
+                            var listExpMestMetyReq = new BackendAdapter(param).Get<List<HIS_EXP_MEST_METY_REQ>>("api/HisExpMestMetyReq/Get", ApiConsumers.MosConsumer, expMestMetyReqFilter, param);
+
+                            HisExpMestMatyReqFilter expMestMatyReqFilter = new HisExpMestMatyReqFilter();
+                            expMestMatyReqFilter.EXP_MEST_ID = row.ID;
+
+                            var listExpMestMatyReq = new BackendAdapter(param).Get<List<HIS_EXP_MEST_MATY_REQ>>("api/HisExpMestMatyReq/Get", ApiConsumers.MosConsumer, expMestMatyReqFilter, param);
+
+                            List<AmountADO> amountAdo = new List<AmountADO>();
+
+                            if (listExpMestMetyReq != null && listExpMestMetyReq.Count > 0)
+                            {
+                                foreach (var item in listExpMestMetyReq)
+                                {
+                                    var ado = new AmountADO(item);
+                                    amountAdo.Add(ado);
+                                }
+                            }
+
+                            if (listExpMestMatyReq != null && listExpMestMatyReq.Count > 0)
+                            {
+                                foreach (var item in listExpMestMatyReq)
+                                {
+                                    var ado = new AmountADO(item);
+                                    amountAdo.Add(ado);
+                                }
+                            }
+
+                            if (amountAdo != null && amountAdo.Count > 0)
+                            {
+                                var dataAdo = amountAdo.Where(o => o.Amount > o.Dd_Amount || o.Dd_Amount == null).ToList();
+                                //if (dataAdo != null && dataAdo.Count > 0)
+                                //{
+                                //    if (XtraMessageBox.Show("Phiếu chưa duyệt đủ số lượng yêu cầu. Bạn có muốn hoàn thành phiếu xuất?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                                //    {
+                                //        IsFinish = true;
+                                //    }
+                                //}
+                                //else
+                                IsFinish = true;
+                            }
+
+                        }
+
+                        HisExpMestExportSDO sdo = new HisExpMestExportSDO();
+                        sdo.ExpMestId = row.ID;
+                        sdo.ReqRoomId = this.roomId;
+                        sdo.IsFinish = IsFinish;
+                        if (gridControl.DataSource != null)
+                        {
+                            var datagridcontrol = (List<V_HIS_EXP_MEST_2>)gridControl.DataSource;
+                            var apiresult = new Inventec.Common.Adapter.BackendAdapter
+                                (param).Post<MOS.EFMODEL.DataModels.HIS_EXP_MEST>
+                                (ApiConsumer.HisRequestUriStore.HIS_EXP_MEST_EXPORT, ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
+                            if (apiresult != null)
+                            {
+                                foreach (var item in datagridcontrol)
+                                {
+                                    if (item.ID == apiresult.ID)
+                                    {
+                                        var ExpMestSTT = BackendDataWorker.Get<HIS_EXP_MEST_STT>().FirstOrDefault(o => o.ID == apiresult.EXP_MEST_STT_ID);
+                                        item.EXP_MEST_STT_ID = ExpMestSTT.ID;
+                                        item.EXP_MEST_STT_CODE = ExpMestSTT.EXP_MEST_STT_CODE;
+                                        item.EXP_MEST_STT_NAME = ExpMestSTT.EXP_MEST_STT_NAME;
+                                        item.LAST_EXP_LOGINNAME = apiresult.LAST_EXP_LOGINNAME;
+                                        item.MODIFY_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
+                                        break;
+                                    }
+                                }
+                                success = true;
+                                gridView.BeginUpdate();
+                                datagridcontrol = datagridcontrol.OrderByDescending(p => p.MODIFY_TIME).ToList();
+                                gridControl.DataSource = datagridcontrol;
+                                gridView.EndUpdate();
+                            }
+                        }
+                        #region Show message
+                        Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, success);
+                        #endregion
+
+                        #region Process has exception
+                        HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
+                        #endregion
+
                     }
-                    if (isExpWithExpTime == false)
+                    else if (row.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DDT)
                     {
-                        if (row.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BCS)
+                        HisExpMestSDO sdo = new HisExpMestSDO();
+                        sdo.ExpMestId = row.ID;
+                        sdo.ReqRoomId = this.roomId;
+                        //sdo.IsFinish = true;
+                        if (gridControl.DataSource != null)
                         {
-                            bool IsFinish = false;
-                            if (row.IS_EXPORT_EQUAL_APPROVE == 1)
+                            var datagridcontrol = (List<V_HIS_EXP_MEST_2>)gridControl.DataSource;
+                            var apiresult = new Inventec.Common.Adapter.BackendAdapter
+                                (param).Post<MOS.EFMODEL.DataModels.HIS_EXP_MEST>
+                                ("api/HisExpMest/InPresExport", ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
+                            if (apiresult != null)
                             {
-                                DevExpress.XtraEditors.XtraMessageBox.Show("Đã xuất hết số lượng duyệt", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                return;
-                            }
-                            else if (row.IS_EXPORT_EQUAL_APPROVE == null || row.IS_EXPORT_EQUAL_APPROVE != 1)
-                            {
-                                HisExpMestMetyReqFilter expMestMetyReqFilter = new HisExpMestMetyReqFilter();
-                                expMestMetyReqFilter.EXP_MEST_ID = row.ID;
-
-                                var listExpMestMetyReq = new BackendAdapter(param).Get<List<HIS_EXP_MEST_METY_REQ>>("api/HisExpMestMetyReq/Get", ApiConsumers.MosConsumer, expMestMetyReqFilter, param);
-
-                                HisExpMestMatyReqFilter expMestMatyReqFilter = new HisExpMestMatyReqFilter();
-                                expMestMatyReqFilter.EXP_MEST_ID = row.ID;
-
-                                var listExpMestMatyReq = new BackendAdapter(param).Get<List<HIS_EXP_MEST_MATY_REQ>>("api/HisExpMestMatyReq/Get", ApiConsumers.MosConsumer, expMestMatyReqFilter, param);
-
-                                List<AmountADO> amountAdo = new List<AmountADO>();
-
-                                if (listExpMestMetyReq != null && listExpMestMetyReq.Count > 0)
+                                foreach (var item in datagridcontrol)
                                 {
-                                    foreach (var item in listExpMestMetyReq)
+                                    if (item.ID == apiresult.ID)
                                     {
-                                        var ado = new AmountADO(item);
-                                        amountAdo.Add(ado);
+                                        var ExpMestSTT = BackendDataWorker.Get<HIS_EXP_MEST_STT>().FirstOrDefault(o => o.ID == apiresult.EXP_MEST_STT_ID);
+                                        item.EXP_MEST_STT_ID = ExpMestSTT.ID;
+                                        item.EXP_MEST_STT_CODE = ExpMestSTT.EXP_MEST_STT_CODE;
+                                        item.EXP_MEST_STT_NAME = ExpMestSTT.EXP_MEST_STT_NAME;
+                                        item.LAST_EXP_LOGINNAME = apiresult.LAST_EXP_LOGINNAME;
+                                        item.MODIFY_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
+                                        break;
                                     }
                                 }
-
-                                if (listExpMestMatyReq != null && listExpMestMatyReq.Count > 0)
-                                {
-                                    foreach (var item in listExpMestMatyReq)
-                                    {
-                                        var ado = new AmountADO(item);
-                                        amountAdo.Add(ado);
-                                    }
-                                }
-
-                                if (amountAdo != null && amountAdo.Count > 0)
-                                {
-                                    var dataAdo = amountAdo.Where(o => o.Amount > o.Dd_Amount || o.Dd_Amount == null).ToList();
-                                    //if (dataAdo != null && dataAdo.Count > 0)
-                                    //{
-                                    //    if (XtraMessageBox.Show("Phiếu chưa duyệt đủ số lượng yêu cầu. Bạn có muốn hoàn thành phiếu xuất?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                                    //    {
-                                    //        IsFinish = true;
-                                    //    }
-                                    //}
-                                    //else
-                                    IsFinish = true;
-                                }
-
+                                success = true;
+                                gridView.BeginUpdate();
+                                datagridcontrol = datagridcontrol.OrderByDescending(p => p.MODIFY_TIME).ToList();
+                                gridControl.DataSource = datagridcontrol;
+                                gridView.EndUpdate();
                             }
-
-                            HisExpMestExportSDO sdo = new HisExpMestExportSDO();
-                            sdo.ExpMestId = row.ID;
-                            sdo.ReqRoomId = this.roomId;
-                            sdo.IsFinish = IsFinish;
-                            if (ExpTime != null && ExpTime > 0)
-                            {
-                                sdo.ExpTime = ExpTime;
-                            }
-                            if (gridControl.DataSource != null)
-                            {
-                                var datagridcontrol = (List<V_HIS_EXP_MEST_2>)gridControl.DataSource;
-                                var apiresult = new Inventec.Common.Adapter.BackendAdapter
-                                    (param).Post<MOS.EFMODEL.DataModels.HIS_EXP_MEST>
-                                    (ApiConsumer.HisRequestUriStore.HIS_EXP_MEST_EXPORT, ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
-                                if (apiresult != null)
-                                {
-                                    foreach (var item in datagridcontrol)
-                                    {
-                                        if (item.ID == apiresult.ID)
-                                        {
-                                            var ExpMestSTT = BackendDataWorker.Get<HIS_EXP_MEST_STT>().FirstOrDefault(o => o.ID == apiresult.EXP_MEST_STT_ID);
-                                            item.EXP_MEST_STT_ID = ExpMestSTT.ID;
-                                            item.EXP_MEST_STT_CODE = ExpMestSTT.EXP_MEST_STT_CODE;
-                                            item.EXP_MEST_STT_NAME = ExpMestSTT.EXP_MEST_STT_NAME;
-                                            item.LAST_EXP_LOGINNAME = apiresult.LAST_EXP_LOGINNAME;
-                                            item.MODIFY_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
-                                            break;
-                                        }
-                                    }
-                                    success = true;
-                                    gridView.BeginUpdate();
-                                    datagridcontrol = datagridcontrol.OrderByDescending(p => p.MODIFY_TIME).ToList();
-                                    gridControl.DataSource = datagridcontrol;
-                                    gridView.EndUpdate();
-                                }
-                            }
-                            #region Show message
-                            Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, success);
-                            #endregion
-
-                            #region Process has exception
-                            HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
-                            #endregion
-
                         }
-                        else if (row.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DDT)
+                        #region Show message
+                        Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, success);
+                        #endregion
+
+                        #region Process has exception
+                        HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
+                        #endregion
+                    }
+                    else if (row.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__THPK)
+                    {
+                        HisExpMestSDO sdo = new HisExpMestSDO();
+                        sdo.ExpMestId = row.ID;
+                        sdo.ReqRoomId = this.roomId;
+                        //sdo.IsFinish = true;
+                        if (gridControl.DataSource != null)
                         {
-                            HisExpMestSDO sdo = new HisExpMestSDO();
-                            sdo.ExpMestId = row.ID;
-                            sdo.ReqRoomId = this.roomId;
-                            //sdo.IsFinish = true;
-                            if (gridControl.DataSource != null)
+                            var datagridcontrol = (List<V_HIS_EXP_MEST_2>)gridControl.DataSource;
+                            var apiresult = new Inventec.Common.Adapter.BackendAdapter
+                                (param).Post<MOS.EFMODEL.DataModels.HIS_EXP_MEST>
+                                ("api/HisExpMest/AggrExamExport", ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
+                            if (apiresult != null)
                             {
-                                var datagridcontrol = (List<V_HIS_EXP_MEST_2>)gridControl.DataSource;
-                                var apiresult = new Inventec.Common.Adapter.BackendAdapter
-                                    (param).Post<MOS.EFMODEL.DataModels.HIS_EXP_MEST>
-                                    ("api/HisExpMest/InPresExport", ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
-                                if (apiresult != null)
+                                foreach (var item in datagridcontrol)
                                 {
-                                    foreach (var item in datagridcontrol)
+                                    if (item.ID == apiresult.ID)
                                     {
-                                        if (item.ID == apiresult.ID)
-                                        {
-                                            var ExpMestSTT = BackendDataWorker.Get<HIS_EXP_MEST_STT>().FirstOrDefault(o => o.ID == apiresult.EXP_MEST_STT_ID);
-                                            item.EXP_MEST_STT_ID = ExpMestSTT.ID;
-                                            item.EXP_MEST_STT_CODE = ExpMestSTT.EXP_MEST_STT_CODE;
-                                            item.EXP_MEST_STT_NAME = ExpMestSTT.EXP_MEST_STT_NAME;
-                                            item.LAST_EXP_LOGINNAME = apiresult.LAST_EXP_LOGINNAME;
-                                            item.MODIFY_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
-                                            break;
-                                        }
+                                        var ExpMestSTT = BackendDataWorker.Get<HIS_EXP_MEST_STT>().FirstOrDefault(o => o.ID == apiresult.EXP_MEST_STT_ID);
+                                        item.EXP_MEST_STT_ID = ExpMestSTT.ID;
+                                        item.EXP_MEST_STT_CODE = ExpMestSTT.EXP_MEST_STT_CODE;
+                                        item.EXP_MEST_STT_NAME = ExpMestSTT.EXP_MEST_STT_NAME;
+                                        item.LAST_EXP_LOGINNAME = apiresult.LAST_EXP_LOGINNAME;
+                                        item.MODIFY_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
+                                        break;
                                     }
-                                    success = true;
-                                    gridView.BeginUpdate();
-                                    datagridcontrol = datagridcontrol.OrderByDescending(p => p.MODIFY_TIME).ToList();
-                                    gridControl.DataSource = datagridcontrol;
-                                    gridView.EndUpdate();
                                 }
+                                success = true;
+                                gridView.BeginUpdate();
+                                datagridcontrol = datagridcontrol.OrderByDescending(p => p.MODIFY_TIME).ToList();
+                                gridControl.DataSource = datagridcontrol;
+                                gridView.EndUpdate();
                             }
-                            #region Show message
-                            Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, success);
-                            #endregion
-
-                            #region Process has exception
-                            HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
-                            #endregion
                         }
-                        else if (row.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__THPK)
+                        #region Show message
+                        Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, success);
+                        #endregion
+
+                        #region Process has exception
+                        HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
+                        #endregion
+
+                    }
+                    else
+                    {
+                        HisExpMestExportSDO sdo = new HisExpMestExportSDO();
+                        sdo.ExpMestId = row.ID;
+                        sdo.ReqRoomId = this.roomId;
+                        sdo.IsFinish = true;
+                        if (gridControl.DataSource != null)
                         {
-                            HisExpMestSDO sdo = new HisExpMestSDO();
-                            sdo.ExpMestId = row.ID;
-                            sdo.ReqRoomId = this.roomId;
-                            //sdo.IsFinish = true;
-                            if (gridControl.DataSource != null)
+                            var datagridcontrol = (List<V_HIS_EXP_MEST_2>)gridControl.DataSource;
+                            var apiresult = new Inventec.Common.Adapter.BackendAdapter
+                                (param).Post<MOS.EFMODEL.DataModels.HIS_EXP_MEST>
+                                (ApiConsumer.HisRequestUriStore.HIS_EXP_MEST_EXPORT, ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
+                            if (apiresult != null)
                             {
-                                var datagridcontrol = (List<V_HIS_EXP_MEST_2>)gridControl.DataSource;
-                                var apiresult = new Inventec.Common.Adapter.BackendAdapter
-                                    (param).Post<MOS.EFMODEL.DataModels.HIS_EXP_MEST>
-                                    ("api/HisExpMest/AggrExamExport", ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
-                                if (apiresult != null)
+                                foreach (var item in datagridcontrol)
                                 {
-                                    foreach (var item in datagridcontrol)
+                                    if (item.ID == apiresult.ID)
                                     {
-                                        if (item.ID == apiresult.ID)
-                                        {
-                                            var ExpMestSTT = BackendDataWorker.Get<HIS_EXP_MEST_STT>().FirstOrDefault(o => o.ID == apiresult.EXP_MEST_STT_ID);
-                                            item.EXP_MEST_STT_ID = ExpMestSTT.ID;
-                                            item.EXP_MEST_STT_CODE = ExpMestSTT.EXP_MEST_STT_CODE;
-                                            item.EXP_MEST_STT_NAME = ExpMestSTT.EXP_MEST_STT_NAME;
-                                            item.LAST_EXP_LOGINNAME = apiresult.LAST_EXP_LOGINNAME;
-                                            item.MODIFY_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
-                                            break;
-                                        }
+                                        var ExpMestSTT = BackendDataWorker.Get<HIS_EXP_MEST_STT>().FirstOrDefault(o => o.ID == apiresult.EXP_MEST_STT_ID);
+                                        item.EXP_MEST_STT_ID = ExpMestSTT.ID;
+                                        item.EXP_MEST_STT_CODE = ExpMestSTT.EXP_MEST_STT_CODE;
+                                        item.EXP_MEST_STT_NAME = ExpMestSTT.EXP_MEST_STT_NAME;
+                                        item.LAST_EXP_LOGINNAME = apiresult.LAST_EXP_LOGINNAME;
+                                        item.MODIFY_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
+                                        break;
                                     }
-                                    success = true;
-                                    gridView.BeginUpdate();
-                                    datagridcontrol = datagridcontrol.OrderByDescending(p => p.MODIFY_TIME).ToList();
-                                    gridControl.DataSource = datagridcontrol;
-                                    gridView.EndUpdate();
                                 }
+                                success = true;
+                                gridView.BeginUpdate();
+                                datagridcontrol = datagridcontrol.OrderByDescending(p => p.MODIFY_TIME).ToList();
+                                gridControl.DataSource = datagridcontrol;
+                                gridView.EndUpdate();
                             }
-                            #region Show message
-                            Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, success);
-                            #endregion
-
-                            #region Process has exception
-                            HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
-                            #endregion
-
                         }
-                        else
-                        {
-                            HisExpMestExportSDO sdo = new HisExpMestExportSDO();
-                            sdo.ExpMestId = row.ID;
-                            sdo.ReqRoomId = this.roomId;
-                            sdo.IsFinish = true;
-                            if (ExpTime != null && ExpTime > 0)
-                            {
-                                sdo.ExpTime = ExpTime;
-                            }
-                            if (gridControl.DataSource != null)
-                            {
-                                var datagridcontrol = (List<V_HIS_EXP_MEST_2>)gridControl.DataSource;
-                                var apiresult = new Inventec.Common.Adapter.BackendAdapter
-                                    (param).Post<MOS.EFMODEL.DataModels.HIS_EXP_MEST>
-                                    (ApiConsumer.HisRequestUriStore.HIS_EXP_MEST_EXPORT, ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
-                                if (apiresult != null)
-                                {
-                                    foreach (var item in datagridcontrol)
-                                    {
-                                        if (item.ID == apiresult.ID)
-                                        {
-                                            var ExpMestSTT = BackendDataWorker.Get<HIS_EXP_MEST_STT>().FirstOrDefault(o => o.ID == apiresult.EXP_MEST_STT_ID);
-                                            item.EXP_MEST_STT_ID = ExpMestSTT.ID;
-                                            item.EXP_MEST_STT_CODE = ExpMestSTT.EXP_MEST_STT_CODE;
-                                            item.EXP_MEST_STT_NAME = ExpMestSTT.EXP_MEST_STT_NAME;
-                                            item.LAST_EXP_LOGINNAME = apiresult.LAST_EXP_LOGINNAME;
-                                            item.MODIFY_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
-                                            break;
-                                        }
-                                    }
-                                    success = true;
-                                    gridView.BeginUpdate();
-                                    datagridcontrol = datagridcontrol.OrderByDescending(p => p.MODIFY_TIME).ToList();
-                                    gridControl.DataSource = datagridcontrol;
-                                    gridView.EndUpdate();
-                                }
-                            }
-                            #region Show message
-                            Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, success);
-                            #endregion
+                        #region Show message
+                        Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, success);
+                        #endregion
 
-                            #region Process has exception
-                            HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
-                            #endregion
+                        #region Process has exception
+                        HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
+                        #endregion
 
-                        }
                     }
                 }
                 if (success && chkInHDSD.Checked)

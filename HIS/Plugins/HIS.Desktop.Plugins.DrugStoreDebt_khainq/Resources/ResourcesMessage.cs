@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.AssignNutritionRefectory
+namespace HIS.Desktop.Plugins.DrugStoreDebt_khainq.Resources
 {
-    interface IAssignNutritionRefectory
+    class ResourcesMessage
     {
-        object Run();
     }
 }

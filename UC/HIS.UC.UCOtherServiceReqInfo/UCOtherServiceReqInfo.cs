@@ -1320,28 +1320,25 @@ namespace HIS.UC.UCOtherServiceReqInfo
                     lciFortxtIncode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     dxValidationUCOtherReqInfo.SetValidationRule(txtIncode, null);
                 }
-               
+                var source = cboTreatmentType.Properties.DataSource as List<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE>;
+                if (source != null && source.FirstOrDefault(o => o.ID == treatmentTypeId).HEIN_TREATMENT_TYPE_CODE == MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.TRUE)
+                {
+                    layoutControlItem8.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    ValidateTextHosReason();
+                }
+                else
+                {
+                    layoutControlItem8.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    dxValidationUCOtherReqInfo.SetValidationRule(txtHosReason, null);
+                }
                 cboHosReason.EditValue = null;
-                dxValidationUCOtherReqInfo.SetValidationRule(txtHosReason, null);
                 dxValidationUCOtherReqInfo.SetValidationRule(txtHosReasonNt, null);
                 lciHosReason.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 lciHosReason.AppearanceItemCaption.ForeColor = Color.Black;
                 if (cboTreatmentType.EditValue != null)
                 {
                     var type = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.ID == treatmentTypeId);
-                    lciHosReason.Visibility = layoutControlItem8.Visibility = type != null && (type.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || type.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY || type.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU) ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-
-                    if (layoutControlItem8.Visible)
-                    {
-                        ValidateTextHosReason();
-                    }
-                    
-                    if(layoutControlItem8.Visible && lciHosReason.Visible && ((TreatmentByPatientSdo != null && TreatmentByPatientSdo.IS_CHRONIC == 1) || (this.patientSdo != null && !string.IsNullOrEmpty(this.patientSdo.AppointmentCode))))
-                    {
-                        txtHosReason.Text = TreatmentByPatientSdo.HOSPITALIZATION_REASON;
-                        txtHosReasonNt.Text = TreatmentByPatientSdo.ICD_NAME;
-                    }    
-
+                    lciHosReason.Visibility = type != null && type.HEIN_TREATMENT_TYPE_CODE == MOS.LibraryHein.Bhyt.HeinTreatmentType.HeinTreatmentTypeCode.TREAT ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     if (HisConfigCFG.InHospitalizationReasonRequired && lciHosReason.Visible)
                     {
                         lciHosReason.AppearanceItemCaption.ForeColor = Color.Maroon;

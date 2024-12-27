@@ -43,8 +43,6 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine.Base
         private const string ELECTRONIC_BILL__PRINT_NUM_COPY = "CONFIG_KEY__HIS_DESKTOP__ELECTRONIC_BILL__PRINT_NUM_COPY";
         private const string PlatformOptionCFG = "Inventec.Common.DocumentViewer.PlatformOption";
 
-        private const string ALLOW_EDIT_EXP_TIME = "HIS.Desktop.Plugins.HisExportMestMedicine.AllowToEditFinishTimeOutPres";
-
         private const string AUTO_PRINT_TYPE = "HIS.Desktop.Plugins.TransactionBill.ElectronicBill.AutoPrintType";
         private const string ENABLE_BUTTON_DELETE = "HIS.Desktop.Plugins.HisExportMestMedicine.EnableButtonDelete";
         internal static bool EXPORT_SALE__MUST_BILL;
@@ -61,9 +59,6 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine.Base
         internal static int E_BILL__PRINT_NUM_COPY;
         internal static string EnableButtonDelete;
         internal static string autoPrintType;
-
-        internal static string AllowEditExpTime;
-
         internal static void LoadConfig()
         {
             try
@@ -81,7 +76,6 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine.Base
                 E_BILL__PRINT_NUM_COPY = HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<int>(ELECTRONIC_BILL__PRINT_NUM_COPY);
                 autoPrintType = HisConfigs.Get<string>(AUTO_PRINT_TYPE);
                 PlatformOption = HisConfigs.Get<int>(PlatformOptionCFG);
-                AllowEditExpTime = HisConfigs.Get<string>(ALLOW_EDIT_EXP_TIME);
             }
             catch (Exception ex)
             {

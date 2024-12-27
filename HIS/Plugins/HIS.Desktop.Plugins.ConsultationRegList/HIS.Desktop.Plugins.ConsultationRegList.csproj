@@ -176,6 +176,15 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="VSK.EFMODEL">
+      <HintPath>..\..\..\..\LIB\VSK\VSK.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="VSK.Filter">
+      <HintPath>..\..\..\..\LIB\VSK\VSK.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="VSK.SDO">
+      <HintPath>..\..\..\..\LIB\VSK\VSK.SDO.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsultationRegList\ConsultationRegListBehavior.cs" />

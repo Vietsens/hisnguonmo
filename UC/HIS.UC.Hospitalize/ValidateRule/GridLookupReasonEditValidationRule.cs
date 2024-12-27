@@ -1,5 +1,4 @@
-﻿using MOS.EFMODEL.DataModels;
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -21,37 +20,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace HIS.UC.Hospitalize.ValidateRule
 {
     class GridLookupReasonEditValidationRule : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
-        internal DevExpress.XtraEditors.BaseEdit textEdit;
-        internal int? maxLength;
+        internal DevExpress.XtraEditors.GridLookUpEdit cbo;
+        internal DevExpress.XtraEditors.TextEdit txt;
         internal bool IsRequired;
-        internal object ListObject;
-        public override bool Validate(Control control, object value)
+        internal int MaxLength;
+        public override bool Validate(System.Windows.Forms.Control control, object value)
         {
             bool valid = false;
             try
             {
-                if (textEdit == null) return valid;
-                if (!String.IsNullOrEmpty(textEdit.Text.Trim()) && Encoding.UTF8.GetByteCount(textEdit.Text.Trim()) > maxLength)
+                if (cbo == null) return valid;
+
+                if (IsRequired && (cbo.EditValue == null || String.IsNullOrWhiteSpace(cbo.EditValue.ToString()) || string.IsNullOrEmpty(txt.Text.Trim())))
                 {
-                    this.ErrorText = "Vượt quá độ dài cho phép (" + maxLength + ")";
+                    this.ErrorText = "Trường dữ liệu bắt buộc";
                     this.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     return valid;
                 }
-                if (!String.IsNullOrEmpty(textEdit.Text.Trim()) && ListObject != null && ListObject is List<HIS_HOSPITALIZE_REASON>)
+                if(!string.IsNullOrEmpty(txt.Text.Trim()) && Inventec.Common.String.CountVi.Count(txt.Text.Trim()) > MaxLength)
                 {
-                    var obj = (ListObject as List<HIS_HOSPITALIZE_REASON>).FirstOrDefault(o => o.HOSPITALIZE_REASON_CODE.Equals(textEdit.Text.Trim()));
-                    if (obj == null)
-                    {
-                        this.ErrorText = "Mã lý do nhập viện không đúng.";
-                        this.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                        return valid;
-                    }
+                    this.ErrorText = "Mã vượt ký tự cho phép, " + MaxLength + " ký tự";
+                    this.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                    return valid;
                 }
                 valid = true;
             }

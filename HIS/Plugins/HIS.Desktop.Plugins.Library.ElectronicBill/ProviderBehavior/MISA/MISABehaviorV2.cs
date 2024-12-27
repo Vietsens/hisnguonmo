@@ -112,7 +112,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
                     {
                         downloadUrl = configArr[6];
                     }
-
+                    
                     if (configArr.Count() > 8)
                     {
                         this.InChuyenDoi = configArr[8].Trim() == "1";
@@ -577,23 +577,23 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
 
                     if (detail != null && detail.Count > 0)
                     {
-                        decimal totalAmountWithoutVAT = detail.Sum(s => s.AmountWithoutVATOC ?? 0);
+                        decimal totalAmount = detail.Sum(s => s.Amount + s.VatAmount);
                         decimal amount = detail.Sum(s => s.Amount);
                         decimal vatAmount = detail.Sum(s => s.VatAmount);
 
                         // tiền nguyên tệ
                         result.TotalSaleAmountOC = amount;
                         result.TotalVATAmountOC = vatAmount;
-                        result.TotalAmountOC = amount;
+                        result.TotalAmountOC = totalAmount;
                         result.PaymentMethodName = "TM/CK";
-                        result.TotalAmountInWords = Inventec.Common.String.Convert.CurrencyToVneseString(String.Format("{0:0.##}", amount)) + "đồng";
+                        result.TotalAmountInWords = Inventec.Common.String.Convert.CurrencyToVneseString(String.Format("{0:0.##}", totalAmount)) + "đồng";
                         // thông tin tổng tiền quy đổi
                         result.TotalSaleAmount = amount;
                         result.TotalVATAmount = vatAmount;
-                        result.TotalAmount = amount;
+                        result.TotalAmount = totalAmount;
 
-                        result.TotalAmountWithoutVAT = totalAmountWithoutVAT;
-                        result.TotalAmountWithoutVATOC = totalAmountWithoutVAT;
+                        result.TotalAmountWithoutVAT = amount;
+                        result.TotalAmountWithoutVATOC = amount;
 
 
                         var groupByVat = detail.GroupBy(o => o.VATRateName).ToList();

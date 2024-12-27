@@ -83,9 +83,6 @@
     <Reference Include="EMR.URI">
       <HintPath>..\..\..\..\LIB\EMR\EMR.URI.dll</HintPath>
     </Reference>
-    <Reference Include="His.Bhyt.InsuranceExpertise">
-      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.InsuranceExpertise\His.Bhyt.InsuranceExpertise.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
@@ -134,9 +131,6 @@
     <Reference Include="Inventec.Common.Mapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.WorkPlace\Inventec.Common.Mapper.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.QrCodeBHYT ">
-      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.QrCodeBHYT\Inventec.Common.QrCodeBHYT .dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Resource">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
@@ -485,17 +479,9 @@
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.CheckHeinGOV\HIS.Desktop.Plugins.Library.CheckHeinGOV.csproj">
-      <Project>{FFB3080E-3030-46E2-A2FF-1D53243B3946}</Project>
-      <Name>HIS.Desktop.Plugins.Library.CheckHeinGOV</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Plugins.Library.FormMedicalRecord\HIS.Desktop.Plugins.Library.FormMedicalRecord.csproj">
       <Project>{c154dfeb-1051-4c3d-a0a8-04ae3b1b2b2a}</Project>
       <Name>HIS.Desktop.Plugins.Library.FormMedicalRecord</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.RegisterConfig\HIS.Desktop.Plugins.Library.RegisterConfig.csproj">
-      <Project>{9247dd49-482c-4227-88df-616a8aaf3f38}</Project>
-      <Name>HIS.Desktop.Plugins.Library.RegisterConfig</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

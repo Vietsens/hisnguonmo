@@ -20,6 +20,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraExport;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
@@ -102,6 +103,7 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
             {
                 pagingGrid = new PagingGrid();
                 this.moduleData = moduleData;
+                spinPayoutRatio.Properties.MinValue = 0;
                 try
                 {
                     string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
@@ -1138,7 +1140,7 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
                         }
                         else if (e.Column.FieldName == "VAT_RATIO_RS")
                         {
-                            e.Value = (data.VAT_RATIO) * 100;
+                            e.Value = (data.VAT_RATIO) * 100;   
                         }
                         else if (e.Column.FieldName == "PACKAGE_NAME")
                         {
@@ -1185,7 +1187,7 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
             {
                 if (data != null)
                 {
-                    FillDataToEditorControl(data);
+                    FillDataToEditorControl(data);   
                     this.ActionType = GlobalVariables.ActionEdit;
                     cboRationTime.Properties.Buttons[1].Visible = true;
                     EnableControlChanged(this.ActionType);
@@ -1370,7 +1372,11 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
                         dtTreatmentToTime.EditValue = null;
                     }
 
-
+                    if (data.SERVICE_RATIO == null)
+                    {
+                        spinPayoutRatio.EditValue = 0;
+                    }
+                    spinPayoutRatio.EditValue = data.SERVICE_RATIO * 100;
                     spinPriority.EditValue = data.PRIORITY;
                     cboDayFrom.EditValue = data.DAY_FROM;
                     cboDayTo.EditValue = data.DAY_TO;
@@ -1991,6 +1997,7 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
                 SetValueRationTime(this.cboRationTime, this.rationTimeNameSelecteds, BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_RATION_TIME>().Where(o => o.IS_ACTIVE == 1).ToList());
                 cboServiceName.EditValue = null;
                 cboServiceTypeName.EditValue = null;
+                spinPayoutRatio.EditValue = null;
                 spinPrice.EditValue = null;
                 spinVatRatio.EditValue = 0;
                 spinIntructionFrom.EditValue = null;
@@ -2057,6 +2064,14 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
         {
             try
             {
+                //PRIORITY
+                //updateDTO.SERVICE_RATIO = 
+                decimal spinInput = (decimal)spinPayoutRatio.Value / 100;
+                updateDTO.SERVICE_RATIO = spinInput;
+                if (updateDTO.SERVICE_RATIO == 0)
+                {
+                    updateDTO.SERVICE_RATIO = null;
+                }
                 updateDTO.PRICE = (decimal)spinPrice.Value;
                 updateDTO.VAT_RATIO = Convert.ToDecimal((long)spinVatRatio.Value * 0.01);
                 updateDTO.INTRUCTION_NUMBER_FROM = (long)spinIntructionFrom.Value;
@@ -4698,5 +4713,18 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
             }
         }
 
+        private void spinPayoutRatio_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (spinPayoutRatio.Value < 1)
+            {
+                e.Cancel = true;
+                MessageBox.Show("Tỉ lệ thanh toán(%) không hợp lệ, tỉ lệ thanh toán phải là số dương!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void spinPayoutRatio_InvalidValue(object sender, InvalidValueExceptionEventArgs e)
+        {
+            e.ErrorText = "Tỉ lệ thanh toán(%) không hợp lệ, tỉ lệ thanh toán phải là số dương!";   
+        }
     }
 }

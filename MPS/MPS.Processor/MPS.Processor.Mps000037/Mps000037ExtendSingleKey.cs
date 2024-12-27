@@ -91,6 +91,5 @@ namespace MPS.Processor.Mps000037
         internal const string QRCODE_PATIENT = "QRCODE_PATIENT";
         internal const string ESTIMATE_TIME_ORDER = "ESTIMATE_TIME_ORDER";
         internal const string REQ_PROVISIONAL_DIAGNOSIS = "REQ_PROVISIONAL_DIAGNOSIS";
-        internal const string MIN_ASSIGN_TURN_CODE = "MIN_ASSIGN_TURN_CODE";
     }
 }

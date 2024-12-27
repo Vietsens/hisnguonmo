@@ -1,4 +1,21 @@
-﻿using Inventec.Core;
+/* IVT
+ * @Project : hisnguonmo
+ * Copyright (C) 2017 INVENTEC
+ *  
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *  
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+ * GNU General Public License for more details.
+ *  
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
@@ -315,10 +332,7 @@ namespace HIS.UC.FormType.HisMultiGetString
                 else if (value == "HIS_TRANSACTION_TYPE") datasuft = Config.HisFormTypeConfig.HisTransactionType.Select(o => new DataGet { ID = o.ID, CODE = o.TRANSACTION_TYPE_CODE, NAME = o.TRANSACTION_TYPE_NAME }).ToList();
                 else if (value == "HIS_MACHINE") datasuft = Config.HisFormTypeConfig.HisMachines.Select(o => new DataGet { ID = o.ID, CODE = o.MACHINE_CODE, NAME = o.MACHINE_NAME }).ToList();
                 else if (value == "HIS_MEDI_ORG") datasuft = Config.HisFormTypeConfig.HisMediOrgs.Select(o => new DataGet { ID = o.ID, CODE = o.MEDI_ORG_CODE, NAME = o.MEDI_ORG_NAME }).ToList();
-                else if (value == "HIS_CONFIG")
-                {
-                    datasuft = Config.HisFormTypeConfig.HisConfig.Select(o => new DataGet { ID = o.ID, CODE = o.KEY.Replace("HIS.Desktop.Plugins.PaymentQrCode.", "").Replace("Info", ""), NAME = "Ngân hàng " + o.KEY.Replace("HIS.Desktop.Plugins.PaymentQrCode.","").Replace("Info","") }).ToList();
-                }
+
                 datasuft = datasuft.OrderBy(o => o.NAME).ToList();
             }
             catch (Exception ex)

@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\..\..\..\..\histest\HISTEST-NEW\histest\x64\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\..\LIB\HIS\ReferencedAssemblies\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -78,9 +78,6 @@
     <Reference Include="MOS.LibraryHein.Bhyt">
       <HintPath>..\..\..\..\..\LIB\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000456.PDO">
-      <HintPath>..\..\..\..\..\..\histest\HISTEST-NEW\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000456.PDO.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -99,6 +96,10 @@
     <Compile Include="TestLisResultADO.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\MPS.Processor.Mps000456.PDO\MPS.Processor.Mps000456.PDO.csproj">
+      <Project>{8acb7f08-9c1f-42de-ad9c-b8131259d3d0}</Project>
+      <Name>MPS.Processor.Mps000456.PDO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\MPS.ProcessorBase\MPS.ProcessorBase.csproj">
       <Project>{075d8b91-153f-4e19-a00a-77547e6f2bd0}</Project>
       <Name>MPS.ProcessorBase</Name>

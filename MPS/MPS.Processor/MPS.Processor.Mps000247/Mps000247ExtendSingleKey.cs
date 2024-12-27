@@ -47,5 +47,9 @@ namespace MPS.Processor.Mps000247
         internal const string REQ_LOGINNAME = "REQ_LOGINNAME";
         internal const string REQ_USERNAME = "REQ_USERNAME";
 
+        ///M?i 2024122610420000
+        internal const string TIME_FILTER_OPTION = "TIME_FILTER_OPTION";
+        internal const string MIN_USE_TIME = "MIN_USE_TIME";
+        internal const string MAX_USE_TIME = "MAX_USE_TIME";
     }
 }

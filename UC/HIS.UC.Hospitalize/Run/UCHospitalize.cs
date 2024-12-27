@@ -241,7 +241,7 @@ namespace HIS.UC.Hospitalize.Run
             {
                 var data = BackendDataWorker.Get<HIS_HOSPITALIZE_REASON>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 txtHospitalReasonCode.Text = this.hospitalizeInitADO.InHospitalizationReasonCode;
-                GridLookupReasonEditValidationRule validCode = new GridLookupReasonEditValidationRule();
+                ValidateMaxLength validCode = new ValidateMaxLength();
                 validCode.maxLength = 10;
                 validCode.ListObject = data;
                 validCode.textEdit = txtHospitalReasonCode;
