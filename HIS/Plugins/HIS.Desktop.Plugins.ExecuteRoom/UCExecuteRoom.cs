@@ -1067,7 +1067,10 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     if (e.Clicks == 1)
                     {
                         Inventec.Common.Logging.LogSystem.Debug("gridViewServiceReq.ActiveEditor___");
-                        gridViewServiceReq.ActiveEditor.SelectAll();
+                        if (gridViewServiceReq.ActiveEditor != null)
+                        {
+                            gridViewServiceReq.ActiveEditor.SelectAll();
+                        }
                     }
                 }
 
