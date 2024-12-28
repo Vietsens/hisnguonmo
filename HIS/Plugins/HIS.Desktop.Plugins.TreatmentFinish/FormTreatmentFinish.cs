@@ -2993,12 +2993,13 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         .Where(s => s.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && s.IS_TRADITIONAL == 1).ToList();
                     if (subIcdYHCT != null && subIcdYHCT is SecondaryIcdDataADO)
                     {
+                        codeCheckCDYHCT = ((SecondaryIcdDataADO)subIcdYHCT).ICD_SUB_CODE;
                         if (!icd.Any(s => s.ICD_CODE == codeCheckCDYHCT))
                         {
                             MessageBox.Show("Chẩn đoán YHCT phụ không có trong danh mục");
                             throw new InvalidOperationException("Chẩn đoán YHCT phụ không có trong danh mục"); // Ném ngoại lệ khi có lỗi
                         }
-                        codeCheckCDYHCT = ((SecondaryIcdDataADO)subIcdYHCT).ICD_SUB_CODE;
+                        
                     }
                 }
                 if (ucIcdYhct != null)
