@@ -355,8 +355,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 MOS.Filter.HisTreatmentExtFilter filter = new MOS.Filter.HisTreatmentExtFilter();
                 filter.TREATMENT_ID = currentHisTreatment.ID;
                 listTreatmentExt = new BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT_EXT>>("api/HisTreatmentExt/Get", ApiConsumers.MosConsumer, filter, null);
-                
-                if(listTreatmentExt != null) currentTreatmentExt = listTreatmentExt.FirstOrDefault();
+
+                if (listTreatmentExt != null) currentTreatmentExt = listTreatmentExt.FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -2964,9 +2964,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         string codeCheckSubICD = "";
         private void GetValueUC()
         {
-            try 
-	        {
-                
+            try
+            {
+
                 if (ucSecondaryIcd != null)
                 {
                     var subIcd = subIcdProcessor.GetValue(ucSecondaryIcd);
@@ -2994,12 +2994,12 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     if (subIcdYHCT != null && subIcdYHCT is SecondaryIcdDataADO)
                     {
                         codeCheckCDYHCT = ((SecondaryIcdDataADO)subIcdYHCT).ICD_SUB_CODE;
-                        if (!icd.Any(s => s.ICD_CODE == codeCheckCDYHCT))
+                        if (!string.IsNullOrEmpty(codeCheckCDYHCT) && !icd.Any(s => s.ICD_CODE == codeCheckCDYHCT))
                         {
                             MessageBox.Show("Chẩn đoán YHCT phụ không có trong danh mục");
                             throw new InvalidOperationException("Chẩn đoán YHCT phụ không có trong danh mục"); // Ném ngoại lệ khi có lỗi
                         }
-                        
+
                     }
                 }
                 if (ucIcdYhct != null)
@@ -3010,12 +3010,12 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         codeCheckCDYHCT += ((IcdInputADO)IcdYHCT).ICD_CODE;
                     }
                 }
-	        }
-	        catch (Exception)
-	        {
-		
-		        throw;
-	        }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
         private async void saveTemp()
         {
@@ -5844,7 +5844,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             try
             {
                 List<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON> datas = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
-                InitComboHisHospitalizeReason(datas); 
+                InitComboHisHospitalizeReason(datas);
                 cboHosReason.EditValue = null;
                 dxValidationProvider.SetValidationRule(txtHosReasonNt, null);
                 if (currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)

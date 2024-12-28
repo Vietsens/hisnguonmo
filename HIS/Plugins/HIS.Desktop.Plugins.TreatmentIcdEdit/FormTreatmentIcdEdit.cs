@@ -1415,7 +1415,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     if (subIcdYHCT != null && subIcdYHCT is SecondaryIcdDataADO)
                     {
                         codeCheckCDYHCT = ((SecondaryIcdDataADO)subIcdYHCT).ICD_SUB_CODE;
-                        if (!icd.Any(s => s.ICD_CODE == codeCheckCDYHCT))
+                        if (!string.IsNullOrEmpty(codeCheckCDYHCT) && !icd.Any(s => s.ICD_CODE == codeCheckCDYHCT))
                         {
                             MessageBox.Show("Chẩn đoán YHCT phụ không có trong danh mục");
                             throw new InvalidOperationException("Chẩn đoán YHCT phụ không có trong danh mục"); // Ném ngoại lệ khi có lỗi
