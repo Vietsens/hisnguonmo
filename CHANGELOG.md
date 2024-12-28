@@ -1,3 +1,15 @@
+### Release 2.343.0
+* Bổ sung thông tin thầu khi nhập khẩu thuốc/vật tư
+* Bổ sung cấu hình tự động khóa giao dịch khi thanh toán QR tại thu ngân.
+* Sửa dữ liệu cho phù hợp với quy định của XML 130 và QĐ 3176/QĐ-BYT
+* Bổ sung ký dữ liệu XML 13,14,15 trong XML 130 và QĐ 3176/QĐ-BYT
+
+### Release 2.342.0
+* Bổ sung thông tin ghi chú tiếp đón vào hồ sơ phục vụ phân biệt gói dịch vụ tại viện
+* Áp dụng cấu hình thực hiện in tách đơn thuốc trong nhóm thuốc, Thực phẩm chức năng và còn lại
+* Sửa lỗi kết thúc điều trị tại chức năng xử lý khám đối với hồ sơ điều trị ngoại trú
+* Sửa dữ liệu cho phù hợp với quy định của XML 130 và QĐ 4750/QĐ-BYT
+
 ### Release 2.341.0
 * Sửa dữ liệu cho phù hợp với quy định của XML 130 và QĐ 4750/QĐ-BYT
 * Kiểm tra lại thông tin thẻ BHYT khi xử lý bệnh nhân hẹn khám
