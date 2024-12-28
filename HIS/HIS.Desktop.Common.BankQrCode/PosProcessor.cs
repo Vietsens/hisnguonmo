@@ -90,6 +90,7 @@ namespace HIS.Desktop.Common.BankQrCode
             try
             {
                 mf_init(0, 0);
+                this.delegateSend = delegateSend;
             }
             catch (Exception ex)
             {
@@ -228,13 +229,13 @@ namespace HIS.Desktop.Common.BankQrCode
                 else
                     goto ReconnectPos;
                 ReconnectPos:
-                int count = 10;
+                int count = 50;
                 while (count > 0)
                 {
                     IsConnectDevice = ConnectDevice(showMessageFirstConnect: false, ref MessageError);
                     if (IsConnectDevice)
                     {
-                        Send(dataSend);
+                        SendDevice(dataSend);
                         break;
                     }
                     count--;
