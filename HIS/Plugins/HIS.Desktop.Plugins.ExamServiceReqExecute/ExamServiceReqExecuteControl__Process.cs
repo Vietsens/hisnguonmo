@@ -1975,13 +1975,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         .Where(s => s.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && s.IS_TRADITIONAL == 1).ToList();
                         if (treatmentFinish != null && treatmentFinish.traditionalIcdTreatment != null)
                         {
+                            serviceReqUpdateSDO.TreatmentFinishSDO.TraditionalIcdCode = treatmentFinish.traditionalIcdTreatment.ICD_CODE;
+                            serviceReqUpdateSDO.TreatmentFinishSDO.TraditionalIcdName = treatmentFinish.traditionalIcdTreatment.ICD_NAME;
                             if (!icd.Any(s => s.ICD_CODE == treatmentFinish.traditionalIcdTreatment.ICD_CODE))
                             {
                                 MessageBox.Show("Chẩn đoán YHCT phụ không có trong danh mục");
                                 return false;
                             }
-                            serviceReqUpdateSDO.TreatmentFinishSDO.TraditionalIcdCode = treatmentFinish.traditionalIcdTreatment.ICD_CODE;
-                            serviceReqUpdateSDO.TreatmentFinishSDO.TraditionalIcdName = treatmentFinish.traditionalIcdTreatment.ICD_NAME;
+                            
                         }
 
                         //SecondaryIcdDataADO icdSub = this.UcSecondaryIcdGetValue() as SecondaryIcdDataADO;
