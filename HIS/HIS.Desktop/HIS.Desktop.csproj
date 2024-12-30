@@ -38,7 +38,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -160,20 +160,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Lib\EMR\EMR.Filter.dll</HintPath>
     </Reference>
+    <Reference Include="EMR.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\EMR\EMR.SDO.dll</HintPath>
+    </Reference>
     <Reference Include="FRD">
       <HintPath>..\..\..\Lib\FRD\FRD.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.EventLog">
       <HintPath>..\..\..\lib\HIS\HIS.UC.ListMaterialType\HIS.Desktop.EventLog.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.LocalStorage.BackendData">
-      <HintPath>..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.ConfigCustomizaButton">
       <HintPath>..\..\..\lib\HIS\HIS.UC.UCPatientRaw\HIS.Desktop.LocalStorage.ConfigCustomizaButton.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.LocalStorage.LisConfig">
-      <HintPath>..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.LisConfig.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.LocalData">
       <HintPath>..\..\..\lib\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
@@ -181,9 +179,6 @@
     <Reference Include="HIS.Desktop.LocalStorage.Location, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Lib\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.LocalStorage.Location.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.LocalStorage.PubSub">
-      <HintPath>..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.PubSub.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
@@ -194,9 +189,6 @@
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.IntegrateAssignPrescription">
       <HintPath>..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.IntegrateAssignPrescription\HIS.Desktop.Plugins.Library.IntegrateAssignPrescription.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.Plugins.LocalCacheManager">
-      <HintPath>..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.LocalCacheManager.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Print">
       <HintPath>..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment\HIS.Desktop.Print.dll</HintPath>
@@ -719,6 +711,10 @@
       <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
       <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
+      <Project>{86709A9C-A149-4EBB-A817-1BF8F4F4BC07}</Project>
+      <Name>HIS.Desktop.LocalStorage.BackendData</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
       <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
       <Name>HIS.Desktop.LocalStorage.ConfigApplication</Name>
@@ -735,6 +731,14 @@
       <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
       <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.LocalStorage.LisConfig\HIS.Desktop.LocalStorage.LisConfig.csproj">
+      <Project>{10821b01-1a57-4c91-9dbb-6ac222dada22}</Project>
+      <Name>HIS.Desktop.LocalStorage.LisConfig</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.LocalStorage.PubSub\HIS.Desktop.LocalStorage.PubSub.csproj">
+      <Project>{e791eade-c034-4b2a-873c-8fdb26fdeb8d}</Project>
+      <Name>HIS.Desktop.LocalStorage.PubSub</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
       <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
       <Name>HIS.Desktop.Utilities</Name>
@@ -746,6 +750,14 @@
     <ProjectReference Include="..\Plugins\HIS.Desktop.Plugins.HisTutorial\HIS.Desktop.Plugins.HisTutorial.csproj">
       <Project>{f22facd5-3da1-4f80-bb8e-dc83a0ab5cdb}</Project>
       <Name>HIS.Desktop.Plugins.HisTutorial</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Plugins\HIS.Desktop.Plugins.Library.CheckHeinGOV\HIS.Desktop.Plugins.Library.CheckHeinGOV.csproj">
+      <Project>{ffb3080e-3030-46e2-a2ff-1d53243b3946}</Project>
+      <Name>HIS.Desktop.Plugins.Library.CheckHeinGOV</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Plugins\HIS.Desktop.Plugins.LocalCacheManager\HIS.Desktop.Plugins.LocalCacheManager.csproj">
+      <Project>{5317499f-b8bb-4f85-8c5d-a6b01476d810}</Project>
+      <Name>HIS.Desktop.Plugins.LocalCacheManager</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -380,7 +380,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineByDate
                             this._Mps000116ADOs.AddRange((from r in medicineGroups1 select new MPS.Processor.Mps000116.PDO.Mps000116ADO(r, BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>())).ToList());
                         }
 
-                        var medicineGroups2 = currentServiceReqMety.Where(p => p.MEDICINE_TYPE_ID == null).GroupBy(p => p.MEDICINE_TYPE_ID).Select(p => p.ToList()).ToList();
+                        var medicineGroups2 = currentServiceReqMety.Where(p => p.MEDICINE_TYPE_ID == null).GroupBy(p => new { p.MEDICINE_TYPE_ID, p.MEDICINE_TYPE_NAME,p.UNIT_NAME }).Select(p => p.ToList()).ToList();
                         if (medicineGroups2 != null && medicineGroups2.Count > 0)
                         {
                             this._Mps000116ADOs.AddRange((from r in medicineGroups2 select new MPS.Processor.Mps000116.PDO.Mps000116ADO(r, BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>())).ToList());
