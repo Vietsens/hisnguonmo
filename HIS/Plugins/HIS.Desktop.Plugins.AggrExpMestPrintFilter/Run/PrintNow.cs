@@ -2426,14 +2426,14 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                         }
                         else
                         {
-                            if (IntructionTimeFrom != null)
-                            {
-                                medicineFilter.USE_TIME_TO_FROM = IntructionTimeFrom;
-                            }
-                            if (IntructionTimeTo != null)
-                            {
-                                medicineFilter.USE_TIME_TO_TO = IntructionTimeTo;
-                            }
+                            //if (IntructionTimeFrom != null)
+                            //{
+                            //    medicineFilter.USE_TIME_TO_FROM = IntructionTimeFrom;
+                            //}
+                            //if (IntructionTimeTo != null)
+                            //{
+                            //    medicineFilter.USE_TIME_TO_TO = IntructionTimeTo;
+                            //}
                         }
                        
 
@@ -2508,7 +2508,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                             //{
                             //    materialFilter.TDL = IntructionTimeFrom;
                             //}
-                            //if (IntructionTimeTo != null)
+                            //if (IntructionTimeTo != null) 
                             //{
                             //    materialFilter.USE_TIME_TO_TO = IntructionTimeTo;
                             //}
