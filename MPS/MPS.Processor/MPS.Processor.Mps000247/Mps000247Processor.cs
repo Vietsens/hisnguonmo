@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using FlexCel.Report;
+using Inventec.Common.FlexCellExport;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MPS.Processor.Mps000247.PDO;
@@ -96,7 +97,7 @@ namespace MPS.Processor.Mps000247
                 objectTag.AddRelationship(store, "IntructionDates", "ExpMests", "TDL_INTRUCTION_DATE", "TDL_INTRUCTION_DATE");
                 objectTag.AddRelationship(store, "IntructionDates", "Medicines", "TDL_INTRUCTION_DATE", "TDL_INTRUCTION_DATE");
                 objectTag.AddRelationship(store, "IntructionDates", "Materials", "TDL_INTRUCTION_DATE", "TDL_INTRUCTION_DATE");
-                objectTag.AddRelationship(store, "ExpMests", "Medicines", "TDL_PATIENT_ID", "TDL_PATIENT_ID");
+                objectTag.AddRelationship(store, "ExpMests", "Medicines", "TDL_PATIENT_ID", "TDL_PATIENT_ID");    
                 objectTag.AddRelationship(store, "ExpMests", "Materials", "TDL_PATIENT_ID", "TDL_PATIENT_ID");
 
                 objectTag.SetUserFunction(store, "FuncMergeData11", new CalculateMergerData());
@@ -204,21 +205,40 @@ namespace MPS.Processor.Mps000247
             {
                 if (rdo._ExpMests_Print != null && rdo._ExpMests_Print.Count > 0)
                 {
-                    var minTime = rdo._ExpMests_Print.Min(p => p.TDL_INTRUCTION_TIME ?? 0);
-                    var maxTime = rdo._ExpMests_Print.Max(p => p.TDL_INTRUCTION_TIME ?? 0);
-                    SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MIN_INTRUCTION_DATE_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToDateString(minTime)));
-                    SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MIN_INTRUCTION_TIME_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(minTime)));
-                    SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MIN_INTRUCTION_DATE_SEPARATE_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToDateStringSeparateString(minTime)));
 
+                    SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.TIME_FILTER_OPTION, rdo._TimeFilterOption));
+                    
 
-                    var min = _ExpMestIntructionDates.Min(s => s.TDL_USE_TIME ?? 0);
-                    var max = _ExpMestIntructionDates.Max(s => s.TDL_USE_TIME ?? 0);
-                    SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MIN_USE_TIME, Inventec.Common.DateTime.Convert.TimeNumberToDateString(min)));
-                    SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MAX_USE_TIME, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(max)));
+                    if (rdo._TimeFilterOption == 1)
+                    {
+                        long minTime = rdo._ExpMests_Print.Min(p => p.TDL_INTRUCTION_TIME ?? 0);
+                        long maxTime = rdo._ExpMests_Print.Max(p => p.TDL_INTRUCTION_TIME ?? 0);
 
-                    SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MAX_INTRUCTION_TIME_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(maxTime)));
-                    SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MAX_INTRUCTION_DATE_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToDateString(maxTime)));
-                    SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MAX_INTRUCTION_DATE_SEPARATE_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToDateStringSeparateString(maxTime)));
+                        SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MIN_INTRUCTION_DATE_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToDateString(minTime)));
+                        SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MIN_INTRUCTION_TIME_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(minTime)));
+                        SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MIN_INTRUCTION_DATE_SEPARATE_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToDateStringSeparateString(minTime)));
+
+                        SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MAX_INTRUCTION_TIME_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(maxTime)));
+                        SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MAX_INTRUCTION_DATE_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToDateString(maxTime)));
+                        SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MAX_INTRUCTION_DATE_SEPARATE_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToDateStringSeparateString(maxTime)));
+                    }
+                    else if (rdo._TimeFilterOption == 2)
+                    {
+                        var min = rdo._ExpMests_Print.Min(s => s.TDL_USE_TIME ?? 0);
+                        var max = rdo._ExpMests_Print.Max(s => s.TDL_USE_TIME ?? 0);
+                           
+                        SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MIN_USE_TIME, Inventec.Common.DateTime.Convert.TimeNumberToDateString(min)));
+                        SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MIN_INTRUCTION_DATE_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToDateString(min)));
+                        SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MIN_INTRUCTION_DATE_SEPARATE_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToDateStringSeparateString(min)));
+
+                        SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MAX_USE_TIME, Inventec.Common.DateTime.Convert.TimeNumberToDateString(max)));
+                        SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MAX_INTRUCTION_DATE_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToDateString(max)));
+                        SetSingleKey(new KeyValue(Mps000247ExtendSingleKey.MAX_INTRUCTION_DATE_SEPARATE_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToDateStringSeparateString(max)));
+                    }    
+                    
+                    
+
+                    
                 }
 
                 AddObjectKeyIntoListkey<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>(rdo.Department, false);
