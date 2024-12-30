@@ -38,9 +38,11 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
     public class PrintNow
     {
         Inventec.Desktop.Common.Modules.Module currentModule;
-        public PrintNow(Inventec.Desktop.Common.Modules.Module _currentModule)
+        long TimeFilterOption;
+        public PrintNow(Inventec.Desktop.Common.Modules.Module _currentModule, long? chooseTimeType = null)
         {
             this.currentModule = _currentModule;
+            TimeFilterOption = chooseTimeType.HasValue ? chooseTimeType.Value : 1;
         }
 
         Inventec.Common.RichEditor.RichEditorStore richEditorMain;
@@ -224,7 +226,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                         InTheoBenhNhan2497(printTypeCode, fileName, ref result);
                         break;
                     case "Mps000247":
-                        InTraDoiTongHop6282(printTypeCode, fileName, ref result, false, null, null, null);
+                        InTraDoiTongHop6282(printTypeCode, fileName, ref result, false, null, null, null, TimeFilterOption);
                         break;
                 }
             }
@@ -265,7 +267,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                 mpsConfig169._ConfigKeyOderOption = this.configKeyOderOption;
 
 
-                LoadDataMedicineAndMaterial(this._AggrExpMests);
+                LoadDataMedicineAndMaterial(this._AggrExpMests, TimeFilterOption);
 
                 Dictionary<string, ADO.MediMatePrintADO> DicDataPrint = new Dictionary<string, ADO.MediMatePrintADO>();
 
@@ -1199,7 +1201,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                 this.configKeyMERGER_DATA = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.DESKTOP.MPS.AGGR_EXP_MEST_MEDICINE.MERGER_DATA"));
                 WaitingManager.Show();
                 //bổ sung thêm danh sách nhiều phiếu tổng hợp
-                LoadDataMedicineAndMaterial(this._AggrExpMests);
+                LoadDataMedicineAndMaterial(this._AggrExpMests, TimeFilterOption);
 
                 long keyPrintType = ConfigApplicationWorker.Get<long>(AppConfigKeys.CONFIG_KEY__HIS_DESKTOP__CHE_DO_IN_GOP_PHIEU_LINH);
 
@@ -2127,14 +2129,14 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
             }
         }
 
-        public void InTraDoiTongHop6282(string printTypeCode, string fileName, ref bool result, bool conditional, List<long> serviceUnitIds, List<long> useFormIds, List<long> lstreqRoomId, long? IntructionTimeFrom = null, long? IntructionTimeTo = null, bool Medicine = false, bool Material = false, bool IsChemicalSustance = false, HIS_DEPARTMENT hisDepartment = null)
+        public void InTraDoiTongHop6282(string printTypeCode, string fileName, ref bool result, bool conditional, List<long> serviceUnitIds, List<long> useFormIds, List<long> lstreqRoomId, long? IntructionTimeFrom = null, long? IntructionTimeTo = null, bool Medicine = false, bool Material = false, bool IsChemicalSustance = false, HIS_DEPARTMENT hisDepartment = null, long? chooseTimeType = null)
         {
             try
             {
                 this.configKeyMERGER_DATA = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.DESKTOP.MPS.AGGR_EXP_MEST_MEDICINE.MERGER_DATA"));
                 WaitingManager.Show();
 
-                LoadDataMedicineAndMaterial(this._AggrExpMests, IntructionTimeFrom, IntructionTimeTo);
+                LoadDataMedicineAndMaterial(this._AggrExpMests, chooseTimeType, IntructionTimeFrom, IntructionTimeTo);
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this._AggrExpMests != null ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : ""), printTypeCode, this.currentModule.RoomId);
                 MPS.Processor.Mps000247.PDO.Mps000247PDO mps000247RDO;
@@ -2209,6 +2211,11 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                             this._ExpMests_Print = this._ExpMests_Print.Where(p => lstreqRoomId.Contains(p.REQ_ROOM_ID)).ToList();
                         }
 
+                        if (this._ViewExpMests_Print != null && _ViewExpMests_Print.Count > 0)
+                        {
+                            this._ViewExpMests_Print = this._ViewExpMests_Print.Where(p => lstreqRoomId.Contains(p.REQ_ROOM_ID)).ToList();
+                        }
+
                     }
 
                     if (this._ExpMests_Print != null && _ExpMests_Print.Count > 0)
@@ -2233,11 +2240,12 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                     mps000247RDO = new MPS.Processor.Mps000247.PDO.Mps000247PDO(
                         this._ExpMestMedicines,
                         this._ExpMestMaterials,
-                        this._ExpMests_Print,
+                        this._ViewExpMests_Print,
                         this._Department,
                         this.configKeyMERGER_DATA,
                         vHisTreatmentBedRooms,
-                        BedLogList
+                        BedLogList,
+                        TimeFilterOption
                     );
                 }
                 else
@@ -2245,11 +2253,12 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                     mps000247RDO = new MPS.Processor.Mps000247.PDO.Mps000247PDO(
                         this._ExpMestMedicines,
                         this._ExpMestMaterials,
-                        this._ExpMests_Print,
+                        this._ViewExpMests_Print,
                         this._Department,
                         this.configKeyMERGER_DATA,
                         vHisTreatmentBedRooms,
-                        BedLogList
+                        BedLogList,
+                        TimeFilterOption
                     );
                 }
 
@@ -2287,35 +2296,55 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
         }
 
         List<HIS_EXP_MEST> _ExpMests_Print { get; set; }
+        List<V_HIS_EXP_MEST> _ViewExpMests_Print { get; set; }
         List<V_HIS_EXP_MEST_MATERIAL> _ExpMestMaterials { get; set; }
         List<V_HIS_EXP_MEST_MEDICINE> _ExpMestMedicines { get; set; }
 
-        private void LoadDataMedicineAndMaterial(List<V_HIS_EXP_MEST> currentAggExpMest, long? IntructionTimeFrom = null, long? IntructionTimeTo = null)
+        private void LoadDataMedicineAndMaterial(List<V_HIS_EXP_MEST> currentAggExpMest, long? chooseTimeType = null, long? IntructionTimeFrom = null, long? IntructionTimeTo = null)
         {
             try
             {
                 if (currentAggExpMest == null)
                     throw new Exception("Du lieu rong currentAggExpMest");
-                CommonParam param = new CommonParam();
-                MOS.Filter.HisExpMestFilter expMestFilter = new HisExpMestFilter();
-                expMestFilter.AGGR_EXP_MEST_IDs = currentAggExpMest.Select(p => p.ID).ToList();
 
-                if (IntructionTimeFrom != null)
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisExpMestViewFilter expMestViewFilter = new HisExpMestViewFilter();
+                expMestViewFilter.AGGR_EXP_MEST_IDs = currentAggExpMest.Select(p => p.ID).ToList();
+
+                if (chooseTimeType == 1)
                 {
-                    expMestFilter.TDL_INTRUCTION_TIME_FROM = IntructionTimeFrom;
+                    if (IntructionTimeFrom != null)
+                    {
+                        expMestViewFilter.TDL_INTRUCTION_TIME_FROM = IntructionTimeFrom;
+                    }
+                    if (IntructionTimeTo != null)
+                    {
+                        expMestViewFilter.TDL_INTRUCTION_TIME_TO = IntructionTimeTo;
+                    }
                 }
-                if (IntructionTimeTo != null)
+                else
                 {
-                    expMestFilter.TDL_INTRUCTION_TIME_TO = IntructionTimeTo;
+                    if (IntructionTimeFrom != null)
+                    {
+                        expMestViewFilter.TDL_USE_TIME_FROM = IntructionTimeFrom;
+                    }
+                    if (IntructionTimeTo != null)
+                    {
+                        expMestViewFilter.TDL_USE_TIME_TO = IntructionTimeTo;
+                    }
                 }
 
                 _ExpMestMedicines = new List<V_HIS_EXP_MEST_MEDICINE>();
                 _ExpMestMaterials = new List<V_HIS_EXP_MEST_MATERIAL>();
-                _ExpMests_Print = new List<HIS_EXP_MEST>();
-                _ExpMests_Print = new BackendAdapter(param).Get<List<HIS_EXP_MEST>>(HisRequestUriStore.HIS_EXP_MEST_GET, ApiConsumers.MosConsumer, expMestFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+                _ViewExpMests_Print = new List<V_HIS_EXP_MEST>();
+                _ViewExpMests_Print = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST>>(HisRequestUriStore.HIS_EXP_MEST_GETVIEW, ApiConsumers.MosConsumer, expMestViewFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
 
-                LoadDataExpMestMetyReq(IntructionTimeFrom, IntructionTimeTo);
-                LoadDataExpMestMatyReq(IntructionTimeFrom, IntructionTimeTo);
+                _ExpMests_Print = new List<HIS_EXP_MEST>();
+                AutoMapper.Mapper.CreateMap<V_HIS_EXP_MEST, HIS_EXP_MEST>();
+                _ExpMests_Print = AutoMapper.Mapper.Map<List<HIS_EXP_MEST>>(this._ViewExpMests_Print);
+
+                LoadDataExpMestMetyReq(IntructionTimeFrom, IntructionTimeTo, chooseTimeType);
+                LoadDataExpMestMatyReq(IntructionTimeFrom, IntructionTimeTo, chooseTimeType);
             }
             catch (Exception ex)
             {
@@ -2369,7 +2398,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
         /// Thuoc Yeu Cau
         /// </summary>
         /// <param name="_expMestIds"></param>
-        private void LoadDataExpMestMetyReq(long? IntructionTimeFrom = null, long? IntructionTimeTo = null)
+        private void LoadDataExpMestMetyReq(long? IntructionTimeFrom = null, long? IntructionTimeTo = null, long? chooseTimeType = null)
         {
             try
             {
@@ -2384,14 +2413,29 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                         HisExpMestMedicineViewFilter medicineFilter = new HisExpMestMedicineViewFilter();
                         medicineFilter.TDL_AGGR_EXP_MEST_ID__OR__EXP_MEST_ID = item.ID;
 
-                        if (IntructionTimeFrom != null)
+                        if (chooseTimeType == 1)
                         {
-                            medicineFilter.TDL_INTRUCTION_TIME_FROM = IntructionTimeFrom;
+                            if (IntructionTimeFrom != null)
+                            {
+                                medicineFilter.TDL_INTRUCTION_TIME_FROM = IntructionTimeFrom;
+                            }
+                            if (IntructionTimeTo != null)
+                            {
+                                medicineFilter.TDL_INTRUCTION_TIME_TO = IntructionTimeTo;
+                            }
                         }
-                        if (IntructionTimeTo != null)
+                        else
                         {
-                            medicineFilter.TDL_INTRUCTION_TIME_TO = IntructionTimeTo;
+                            if (IntructionTimeFrom != null)
+                            {
+                                medicineFilter.USE_TIME_TO_FROM = IntructionTimeFrom;
+                            }
+                            if (IntructionTimeTo != null)
+                            {
+                                medicineFilter.USE_TIME_TO_TO = IntructionTimeTo;
+                            }
                         }
+                       
 
 
                         var dataMedicines = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MEDICINE>>(HisRequestUriStore.HIS_EXP_MEST_MEDICINE_GETVIEW, ApiConsumers.MosConsumer, medicineFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
@@ -2432,7 +2476,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
         /// Vat Tu Yeu Cau
         /// </summary>
         /// <param name="_expMestIds"></param>
-        private void LoadDataExpMestMatyReq(long? IntructionTimeFrom = null, long? IntructionTimeTo = null)
+        private void LoadDataExpMestMatyReq(long? IntructionTimeFrom = null, long? IntructionTimeTo = null, long? medicineFilter = null, long? chooseTimeType = null)
         {
             try
             {
@@ -2447,14 +2491,29 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                         HisExpMestMaterialViewFilter materialFilter = new HisExpMestMaterialViewFilter();
                         materialFilter.TDL_AGGR_EXP_MEST_ID__OR__EXP_MEST_ID = item.ID;
 
-                        if (IntructionTimeFrom != null)
+                        if (chooseTimeType == 1)
                         {
-                            materialFilter.TDL_INTRUCTION_TIME_FROM = IntructionTimeFrom;
+                            if (IntructionTimeFrom != null)
+                            {
+                                materialFilter.TDL_INTRUCTION_TIME_FROM = IntructionTimeFrom;
+                            }
+                            if (IntructionTimeTo != null)
+                            {
+                                materialFilter.TDL_INTRUCTION_TIME_TO = IntructionTimeTo;
+                            }
                         }
-                        if (IntructionTimeTo != null)
+                        else
                         {
-                            materialFilter.TDL_INTRUCTION_TIME_TO = IntructionTimeTo;
+                            //if (IntructionTimeFrom != null)
+                            //{
+                            //    materialFilter.TDL = IntructionTimeFrom;
+                            //}
+                            //if (IntructionTimeTo != null)
+                            //{
+                            //    materialFilter.USE_TIME_TO_TO = IntructionTimeTo;
+                            //}
                         }
+                        
 
                         var dataMaterials = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MATERIAL>>(HisRequestUriStore.HIS_EXP_MEST_MATERIAL_GETVIEW, ApiConsumers.MosConsumer, materialFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
                         if (dataMaterials != null && dataMaterials.Count > 0)
