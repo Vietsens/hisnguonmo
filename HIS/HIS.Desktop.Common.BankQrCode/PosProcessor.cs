@@ -17,10 +17,14 @@
  */
 using System;
 using System.Data;
+using System.Diagnostics;
+using System.IO;
 using System.IO.Ports;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Common.BankQrCode
 {
@@ -68,6 +72,7 @@ namespace HIS.Desktop.Common.BankQrCode
         private bool IsDisposePort = false;
         private bool IsFirstConnection = false;
         public static bool IsConnectDevice = false;
+        IPOS.WCFService.Client.IPOSClientManager clienManager = null;
         public PosProcessor(string portName, DelegateSendMessage delegateSend)
         {
             try
@@ -89,7 +94,11 @@ namespace HIS.Desktop.Common.BankQrCode
         {
             try
             {
-                mf_init(0, 0);
+                //if (VerifyServiceIPOSProcessorIsRunning())
+                {
+                    clienManager = new IPOS.WCFService.Client.IPOSClientManager();
+                    clienManager.SetupDevice();
+                }
                 this.delegateSend = delegateSend;
             }
             catch (Exception ex)
@@ -188,9 +197,9 @@ namespace HIS.Desktop.Common.BankQrCode
         {
             try
             {
-                int ret = mf_connect();
-                IsConnectDevice = ret == 1;
-                messageError = IsConnectDevice && showMessageFirstConnect ? "Kết nối tới thiết bị IPOS thành công" : IsConnectDevice ? null : "Kết nối tới thiết bị IPOS thất bại. Vui lòng kiểm tra lại thiết bị";
+                var dt = clienManager.ConnectDevice(showMessageFirstConnect);
+                IsConnectDevice = dt.Success;
+                messageError = dt.MessageError;
                 if (IsConnectDevice)
                     return true;
             }
@@ -213,39 +222,9 @@ namespace HIS.Desktop.Common.BankQrCode
                 MessageError = null;
                 if (IsConnectDevice)
                 {
-                    int irp = mf_resetPos();
-                    if (irp != 0)
-                        goto ReconnectPos;
-                    if (string.IsNullOrEmpty(dataSend))
-                        return;
-                    UTF8Encoding utf8 = new UTF8Encoding();
-                    byte[] encodedBytes = utf8.GetBytes(dataSend);
-                    int ret = mf_genQrCode(30, encodedBytes, encodedBytes.Length);
-                    if (ret != 0)
-                        goto ReconnectPos;
-                    else
-                        goto WriteLog;
+                    var dt = clienManager.GenQr(dataSend);
+                    delegateSend(dt.Success, MessageError = dt.MessageError);
                 }
-                else
-                    goto ReconnectPos;
-                ReconnectPos:
-                int count = 50;
-                while (count > 0)
-                {
-                    IsConnectDevice = ConnectDevice(showMessageFirstConnect: false, ref MessageError);
-                    if (IsConnectDevice)
-                    {
-                        SendDevice(dataSend);
-                        break;
-                    }
-                    count--;
-                }
-                if (count == 0)
-                {
-                    delegateSend(false, MessageError = "Không nhận được phản hồi từ thiết bị IPOS. Vui lòng khởi động và kết nối lại tới thiết bị.");
-                }
-            WriteLog:
-                Inventec.Common.Logging.LogSystem.Info("ShowQr");
             }
             catch (Exception ex)
             {
@@ -291,7 +270,7 @@ namespace HIS.Desktop.Common.BankQrCode
             try
             {
                 IsConnectDevice = false;
-                mf_resetPos();
+                clienManager.ResetDevice();
             }
             catch (Exception ex)
             {
@@ -318,6 +297,72 @@ namespace HIS.Desktop.Common.BankQrCode
             }
 
         }
+        public string AppFilePathSignService()
+        {
+            try
+            {
+                string pathFolderTemp = Path.Combine(Path.Combine(Path.Combine(Application.StartupPath, "Integrate"), "IPOS"), "IPOS.exe");
+                return pathFolderTemp;
+            }
+            catch (IOException exception)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("Error create temp file: " + exception.Message);
+                return "";
+            }
+        }
+        private bool IsProcessOpen(string name)
+        {
+            foreach (Process clsProcess in Process.GetProcesses())
+            {
+                if (clsProcess.ProcessName == name || clsProcess.ProcessName == String.Format("{0}.exe", name) || clsProcess.ProcessName == String.Format("{0} (32 bit)", name) || clsProcess.ProcessName == String.Format("{0}.exe (32 bit)", name))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        internal bool VerifyServiceIPOSProcessorIsRunning()
+        {
+            bool valid = false;
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("IPOS.1");
+                string exeSignPath = AppFilePathSignService();
+                if (File.Exists(exeSignPath))
+                {
+                    if (IsProcessOpen("IPOS"))
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("IPOS.2");
+                        valid = true;
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("IPOS.3");
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => exeSignPath), exeSignPath));
+                        ProcessStartInfo startInfo = new ProcessStartInfo();
+                        startInfo.FileName = exeSignPath;
+                        try
+                        {
+                            Process.Start(startInfo);
+                            Inventec.Common.Logging.LogSystem.Debug("IPOS.4");
+                            Thread.Sleep(500);
+                            valid = true;
+                            Inventec.Common.Logging.LogSystem.Debug("IPOS.5");
+                        }
+                        catch (Exception exx)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn(exx);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return valid;
+        }
     }
 
     public static class PosStatic
@@ -325,7 +370,7 @@ namespace HIS.Desktop.Common.BankQrCode
         public static PosProcessor Pos { get; set; }
         public static OptionPos Option { get; set; }
         private static bool IsConnected { get; set; }
-        public static bool OpenPos(OptionPos ops,bool isFirstConnect, string portName, DelegateSendMessage delegateSend, ref string MessError)
+        public static bool OpenPos(OptionPos ops, bool isFirstConnect, string portName, DelegateSendMessage delegateSend, ref string MessError)
         {
             Pos = ops == OptionPos.Port ? new PosProcessor(portName, delegateSend) : new PosProcessor(delegateSend);
             Option = ops;
