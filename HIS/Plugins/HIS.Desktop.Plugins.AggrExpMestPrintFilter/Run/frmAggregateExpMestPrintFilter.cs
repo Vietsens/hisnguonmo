@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -23,6 +23,7 @@ using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.AggrExpMestPrintFilter.ADO;
 using HIS.Desktop.Print;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
@@ -33,6 +34,7 @@ using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -64,6 +66,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         bool isPrint = false;
+        internal long timeType = 1;
         #endregion
 
         #region contructor
@@ -135,6 +138,36 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                 SetIconFrm();
                 FillDataToForm();
                 InitControlState();
+                InitCombobox();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitCombobox()
+        {
+            try
+            {
+                List<FilterTimeADO> lstTime = new List<FilterTimeADO>
+                    {
+                        new FilterTimeADO { Id = (long)1, TimeName = "Thời gian chỉ định" },
+                        new FilterTimeADO { Id = (long)2, TimeName = "Thời gian dự trù" },
+                    };
+                cboChooseTime.Properties.DataSource = lstTime;
+                cboChooseTime.Properties.DisplayMember = "TimeName";
+                cboChooseTime.Properties.ValueMember = "Id";
+                cboChooseTime.Properties.ImmediatePopup = true;
+                cboChooseTime.Properties.View.OptionsView.ShowColumnHeaders = false;
+                DevExpress.XtraGrid.Columns.GridColumn col2 = cboChooseTime.Properties.View.Columns.AddField("TimeName");
+                col2.VisibleIndex = 1;
+                col2.Width = 200;
+                //col2.Caption = "Tất cả";
+                cboChooseTime.Properties.PopupFormWidth = 200;
+                cboChooseTime.Properties.PopupFormSize = new Size(200, 100);
+                cboChooseTime.EditValue = (long)1;
+                //cboChooseTime.Text = "Thời gian chỉ định";
             }
             catch (Exception ex)
             {

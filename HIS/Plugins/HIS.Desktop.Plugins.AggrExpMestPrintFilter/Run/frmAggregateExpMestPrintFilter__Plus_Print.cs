@@ -291,7 +291,13 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                         LoadPhieuTraDoiBuCoSo(printTypeCode, fileName, ref result);
                         break;
                     case "Mps000247":
-                        print = new Run.PrintNow(this.currrentModule);
+                        long chooseTimeType = 1;
+                        if (cboChooseTime.EditValue != null && cboChooseTime.EditValue is long)
+                        {
+                            chooseTimeType = (long)cboChooseTime.EditValue;
+                        }
+                        
+                        print = new Run.PrintNow(this.currrentModule, chooseTimeType);
                         print._AggrExpMests = this._AggrExpMests.OrderBy(o => o.EXP_MEST_CODE).ToList();
                         print.printNow = this.chkPrintNow.Checked;
 
@@ -320,7 +326,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                         if (RoomDTO3s != null && RoomDTO3s.Count > 0)
                             this.reqRoomIds = RoomDTO3s.Select(p => p.ID).ToList();
 
-                        print.InTraDoiTongHop6282(printTypeCode, fileName, ref result, true, this.serviceUnitIds, this.useFormIds, this.reqRoomIds, IntructionTimeFrom, IntructionTimeTo, chkMedicine.Checked, chkMaterial.Checked, chkIsChemicalSustance.Checked, this.department);
+                        print.InTraDoiTongHop6282(printTypeCode, fileName, ref result, true, this.serviceUnitIds, this.useFormIds, this.reqRoomIds, IntructionTimeFrom, IntructionTimeTo, chkMedicine.Checked, chkMaterial.Checked, chkIsChemicalSustance.Checked, this.department, chooseTimeType);
                         this.CountMediMatePrinted = this.TotalMediMatePrint;
                         break;
 
