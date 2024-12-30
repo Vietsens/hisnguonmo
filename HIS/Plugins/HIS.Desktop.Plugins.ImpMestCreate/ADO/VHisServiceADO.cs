@@ -138,6 +138,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.ADO
         public long? DISCOUNT_FROM_DATE { get; set; }
         public long? DISCOUNT_TO_DATE { get; set; }
         public string TT_THAU { get; set; }
+        public string INFORMATION_BID { get; set; }
 
         public VHisServiceADO(V_HIS_MEDICINE_TYPE data)
         {
@@ -232,7 +233,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.ADO
 
         public enum Error
         {
-            ThieuMa, ThieuGiaNhap, ThieuVat, ThieuSoLuong, SaiGiaNhap, SaiVat, SaiSoLuong, SaiMa, MaxLengthGoiThau, MaxLengthNhomThau, MaxLengthQuocGia, MaxLenthNongDoHamLuong, MaxLengthMaHangSX, MaxLengthSoDangKy
+            ThieuMa, ThieuGiaNhap, ThieuVat, ThieuSoLuong, SaiGiaNhap, SaiVat, SaiSoLuong, SaiMa, MaxLengthGoiThau, MaxLengthNhomThau, MaxLengthQuocGia, MaxLenthNongDoHamLuong, MaxLengthMaHangSX, MaxLengthSoDangKy, MaQuetDinhThauVuotQuaKiTu, LoaiThongTinThauKhongHopLe, ThongTinThauVuotQuaKiTu
 
         }
         public enum Warm

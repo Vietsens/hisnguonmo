@@ -1498,6 +1498,62 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                         //ado.VHisServicePatys = listServicePatyAdo;
 
+                        //bo sung thong tin thau
+                        if (!string.IsNullOrWhiteSpace(item.TDL_BID_EXTRA_CODE))
+                        {
+                            if(item.TDL_BID_EXTRA_CODE.Length > 50)
+                            {
+                                
+                                param.Messages.Add("Mã quyết định đầu vượt quá kí tự");
+                                throw new Exception("Mã quyết định đầu vượt quá kí tự");
+                            }
+                            else
+                            {
+                                ado.TDL_BID_EXTRA_CODE = item.TDL_BID_EXTRA_CODE;
+                            }
+                        }
+                        if (!string.IsNullOrWhiteSpace(item.INFORMATION_BID))
+                        {
+                            if (item.INFORMATION_BID == "2" || item.INFORMATION_BID == "3" || item.INFORMATION_BID == "4" )
+                            {
+                                ado.INFORMATION_BID = item.INFORMATION_BID;
+                            }
+                            else
+                            {
+                                param.Messages.Add("Loại thông tin thầu không hợp lệ");
+                                
+                                throw new Exception("Loại thông tin thầu không hợp lệ");
+                            }
+                        }
+                        
+                        if (!string.IsNullOrWhiteSpace(item.TT_THAU))
+                        {
+                            if (item.TT_THAU.Length > 50)
+                            {
+                                param.Messages.Add("Thông tin thầu vượt quá kí tự");
+                                throw new Exception("Thông tin thầu vượt quá kí tự");
+                            }
+                            else
+                            {
+                                ado.TT_THAU = item.TT_THAU;
+                            }
+                        }
+                        else
+                        {
+                            if (ado.IsMedicine)
+                            {
+                                ado.TT_THAU = ado.TDL_BID_NUMBER + ";" + ado.TDL_BID_PACKAGE_CODE + ";" + ado.TDL_BID_GROUP_CODE + ";" + ado.TDL_BID_YEAR;
+                            }
+                            else
+                            {
+                                string key = "{0};{1};{2};{3}";
+                                if (ado.INFORMATION_BID == "3") key = "{0};{3}";
+                                else if (ado.INFORMATION_BID == "4") key = "{0};{1};{3}";
+                                string tt_thau = string.Format(key, ado.TDL_BID_EXTRA_CODE, ado.TDL_BID_PACKAGE_CODE, ado.TDL_BID_GROUP_CODE, ado.TDL_BID_YEAR);
+                                ado.TT_THAU = tt_thau;
+                            }
+                        }
+
                         listServiceADO.Add(ado);
                     }
                 }

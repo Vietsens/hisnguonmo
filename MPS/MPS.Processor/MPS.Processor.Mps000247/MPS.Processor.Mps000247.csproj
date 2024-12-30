@@ -54,8 +54,13 @@
     <Reference Include="Inventec.Core">
       <HintPath>..\..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib_1\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.ProcessorBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib_1\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -73,10 +78,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MPS.ProcessorBase\MPS.ProcessorBase.csproj">
-      <Project>{075d8b91-153f-4e19-a00a-77547e6f2bd0}</Project>
-      <Name>MPS.ProcessorBase</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MPS.Processor.Mps000247.PDO\MPS.Processor.Mps000247.PDO.csproj">
       <Project>{fc502cc8-d1fe-4f20-9fd4-9d5f5ba45e53}</Project>
       <Name>MPS.Processor.Mps000247.PDO</Name>
