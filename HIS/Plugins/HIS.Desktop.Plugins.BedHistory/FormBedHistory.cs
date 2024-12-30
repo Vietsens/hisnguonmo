@@ -1629,92 +1629,123 @@ namespace HIS.Desktop.Plugins.BedHistory
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 1");
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("HisBedHistoryADO", ado));
                 var vHisBedLogs = new List<HisBedHistoryADO>();
                 bool isWarning = false;
                 List<ADO.HisBedHistoryADO> A = new List<ADO.HisBedHistoryADO>();
                 List<ADO.HisBedHistoryADO> B = new List<ADO.HisBedHistoryADO>();
+                if (ListServiceReqForSereServs == null || dataBedADOs == null)
+                {
+                    throw new ArgumentNullException("ListServiceReqForSereServs hoặc dataBedADOs khong duoc null");
+                }
                 if (this.listCurrentBedLog != null && this.listCurrentBedLog.Count() > 0)
                 {
-                    vHisBedLogs = (from r in this.listCurrentBedLog select new ADO.HisBedHistoryADO(r, LocalStorage.LocalData.GlobalVariables.ActionEdit, true, ListServiceReqForSereServs, dataBedADOs)).ToList();
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("listCurrentBedLog", listCurrentBedLog));
+                    vHisBedLogs = listCurrentBedLog
+                                .Where(r => r != null)
+                                .Select(r => new ADO.HisBedHistoryADO(r, LocalStorage.LocalData.GlobalVariables.ActionEdit, true, ListServiceReqForSereServs, dataBedADOs))
+                                .ToList();
+                }
+                Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2");
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("vHisBedLogs", vHisBedLogs));
+                if (vHisBedLogs != null)
+                {
                     vHisBedLogs = vHisBedLogs.Where(o => o.ID != ado.ID).ToList();
-                }
-                var newBed = bedLogChecks.Where(o => o.ID == 0 && o != ado).ToList();
-                if (newBed.Count > 0) vHisBedLogs.AddRange(newBed);
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("bedLogChecks", bedLogChecks));
+                    var newBed = bedLogChecks != null ? bedLogChecks.Where(o => o.ID == 0 && o != ado).ToList() : new List<HisBedHistoryADO>();
+                    Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2.1");
+                    if (newBed.Count > 0) vHisBedLogs.AddRange(newBed);
 
-                if (vHisBedLogs.Count() == 0) return;
-
-                if (ado.finishTime == null)
-                {
-                    A = vHisBedLogs.Where(o => o.startTime <= ado.startTime).ToList();
-                    if (A == null || A.Count() == 0) return;
-                    B = A.Where(o => o.finishTime == null || o.finishTime > ado.startTime).ToList();
-                    isWarning = B != null && B.Count() > 0;
-
-                }
-                else
-                {
-                    A = vHisBedLogs.Where(o => o.startTime < ado.finishTime).ToList();
-                    if (A == null || A.Count() == 0) return;
-                    if (A.Exists(o => o.finishTime == null)) isWarning = true;
+                    if (vHisBedLogs.Count() == 0) return;
+                    Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2.2");
+                    if (ado.finishTime == null)
+                    {
+                        A = vHisBedLogs.Where(o => o.startTime <= ado.startTime).ToList();
+                        if (A == null || A.Count() == 0) return;
+                        B = A.Where(o => o.finishTime == null || o.finishTime > ado.startTime).ToList();
+                        isWarning = B != null && B.Count() > 0;
+                        Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2.2.1");
+                    }
                     else
                     {
+<<<<<<< .mine
+                        Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2.2.2");
+                        A = vHisBedLogs.Where(o => o.startTime < ado.finishTime).ToList();
+                        if (A == null || A.Count() == 0) return;
+                        Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2.2.3");
+                        if (A.Exists(o => o.finishTime == null)) isWarning = true;
+                        else
+=======
                         B = A.Where(o => o.finishTime > ado.startTime).ToList();
                         if (B == null || B.Count() == 0) return;
                         //if (B.Exists(o => o.finishTime >= ado.finishTime || o.startTime <= ado.startTime)) isWarning = true; logic check cu
                         foreach (var _b in B)
-                        {
-                            var adoStart = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.startTime);
-                            var adoFinish = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.finishTime);
-                            //if((adoStart >= exitsBed.START_TIME && adoStart <= exitsBed.FINISH_TIME) 
-                            //    || (adoFinish >= exitsBed.START_TIME && adoFinish <= exitsBed.FINISH_TIME)
-                            //    )
-                            //{
 
-                            //}
-                            if (adoStart <= _b.START_TIME)
+
+>>>>>>> .theirs
+                        {
+                            Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2.2.4");
+                            B = A.Where(o => o.finishTime > ado.startTime).ToList();
+                            if (B == null || B.Count() == 0) return;
+                            //if (B.Exists(o => o.finishTime >= ado.finishTime || o.startTime <= ado.startTime)) isWarning = true; logic check cu
+                            Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2.2.5");
+                            foreach (var _b in B)
                             {
-                                // start time nhỏ hơn hoặc bằng thời gian bắt đầu của giường cũ
-                                if (adoFinish >= _b.START_TIME || adoFinish >= _b.FINISH_TIME)
+                                var adoStart = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.startTime);
+                                var adoFinish = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.finishTime);
+                                //if((adoStart >= exitsBed.START_TIME && adoStart <= exitsBed.FINISH_TIME) 
+                                //    || (adoFinish >= exitsBed.START_TIME && adoFinish <= exitsBed.FINISH_TIME)
+                                //    )
+                                //{
+
+                                //}
+                                if (adoStart <= _b.START_TIME)
                                 {
-                                    // Bao trọn hoặc chồng lên thời gian giường cũ
-                                    if (adoFinish >= _b.FINISH_TIME)
+                                    // start time nhỏ hơn hoặc bằng thời gian bắt đầu của giường cũ
+                                    if (adoFinish >= _b.START_TIME || adoFinish >= _b.FINISH_TIME)
                                     {
-                                        // Nếu bao trọn cả khoảng thời gian của giường cũ
-                                        isWarning = true;
-                                    }
-                                    else
-                                    {
-                                        // Chỉ chồng lên thời gian bắt đầu
-                                        isWarning = true;
+                                        // Bao trọn hoặc chồng lên thời gian giường cũ
+                                        if (adoFinish >= _b.FINISH_TIME)
+                                        {
+                                            // Nếu bao trọn cả khoảng thời gian của giường cũ
+                                            isWarning = true;
+                                        }
+                                        else
+                                        {
+                                            // Chỉ chồng lên thời gian bắt đầu
+                                            isWarning = true;
+                                        }
                                     }
                                 }
-                            }
-                            else
-                            {
-                                // start time lớn hơn thời gian bắt đầu của giường cũ
-                                if (adoStart <= _b.FINISH_TIME)
+                                else
                                 {
-                                    // Chồng lên thời gian kết thúc của giường cũ
-                                    isWarning = true;
+                                    // start time lớn hơn thời gian bắt đầu của giường cũ
+                                    if (adoStart <= _b.FINISH_TIME)
+                                    {
+                                        // Chồng lên thời gian kết thúc của giường cũ
+                                        isWarning = true;
+                                    }
                                 }
                             }
                         }
                     }
-                }
-
-                if (isWarning)
-                {
-                    if (ado.startTime != null)
+                    Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 3");
+                    if (isWarning)
                     {
-                        ado.ErrorTypeStartTime = ErrorType.Warning;
-                        ado.ErrorMessageStartTime = ResourceMessage.ERROR_OVERLAP_START_TIME;
-                    }
-                    if (ado.finishTime != null)
-                    {
-                        ado.ErrorTypeFinishTime = ErrorType.Warning;
-                        ado.ErrorMessageFinishTime = ResourceMessage.ERROR_OVERLAP_FINISH_TIME;
+                        if (ado.startTime != null)
+                        {
+                            ado.ErrorTypeStartTime = ErrorType.Warning;
+                            ado.ErrorMessageStartTime = ResourceMessage.ERROR_OVERLAP_START_TIME;
+                        }
+                        if (ado.finishTime != null)
+                        {
+                            ado.ErrorTypeFinishTime = ErrorType.Warning;
+                            ado.ErrorMessageFinishTime = ResourceMessage.ERROR_OVERLAP_FINISH_TIME;
+                        }
                     }
                 }
+                Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. end");
 
 
             }
