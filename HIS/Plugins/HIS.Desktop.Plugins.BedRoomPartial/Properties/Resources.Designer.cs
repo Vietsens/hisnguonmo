@@ -65,7 +65,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap phieu_linh {
             get {
-                object obj = ResourceManager.GetObject("phieu-linh", resourceCulture);
+                object obj = ResourceManager.GetObject("phieu_linh", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -75,7 +75,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap phieu_tra {
             get {
-                object obj = ResourceManager.GetObject("phieu-tra", resourceCulture);
+                object obj = ResourceManager.GetObject("phieu_tra", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -85,7 +85,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap y_te {
             get {
-                object obj = ResourceManager.GetObject("y-te", resourceCulture);
+                object obj = ResourceManager.GetObject("y_te", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -95,7 +95,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap y_te1 {
             get {
-                object obj = ResourceManager.GetObject("y-te1", resourceCulture);
+                object obj = ResourceManager.GetObject("y_te1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
