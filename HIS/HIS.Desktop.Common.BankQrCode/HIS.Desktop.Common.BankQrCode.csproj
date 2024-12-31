@@ -53,6 +53,9 @@
     <Reference Include="Inventec.Core">
       <HintPath>..\..\..\Lib\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
+    <Reference Include="IPOS.WCFService.Client">
+      <HintPath>..\..\..\..\svn\SERVICE\IPOS.Processor\IPOS.WCFService.Client\IPOS.WCFService.Client\bin\Debug\IPOS.WCFService.Client.dll</HintPath>
+    </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\Lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
@@ -65,6 +68,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -88,6 +93,9 @@
       <Project>{861BFEDB-026F-4B6F-A3CF-32843AE8C03D}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

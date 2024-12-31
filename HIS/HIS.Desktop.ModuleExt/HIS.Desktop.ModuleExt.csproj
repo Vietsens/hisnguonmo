@@ -51,17 +51,8 @@
     <Reference Include="DevExpress.XtraEditors.v15.2">
       <HintPath>..\..\..\Lib\DEVEXPRESS\DevExpress.XtraEditors.v15.2.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.LocalStorage.BackendData">
-      <HintPath>..\..\..\lib\HIS\His.UC.UCHein\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.LocalStorage.LocalData">
-      <HintPath>..\..\..\lib\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
-    </Reference>
     <Reference Include="IMSys.DbConfig.VVA_RS">
       <HintPath>..\..\..\Lib\IMSys.DbConfig\IMSys.DbConfig.VVA_RS\IMSys.DbConfig.VVA_RS.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.Adapter">
-      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.RichEditor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -142,6 +133,10 @@
     <Compile Include="WorkPlaceWorker.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.csproj">
+      <Project>{dd2b84a4-a370-41a1-8dfa-10197540c101}</Project>
+      <Name>Inventec.Common.Adapter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.csproj">
       <Project>{4859008d-a40d-47bb-a185-019c8b140569}</Project>
       <Name>Inventec.Common.Logging</Name>
@@ -170,6 +165,10 @@
       <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
       <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
+      <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
+      <Name>HIS.Desktop.LocalStorage.BackendData</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
       <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
       <Name>HIS.Desktop.LocalStorage.ConfigApplication</Name>
@@ -181,6 +180,10 @@
     <ProjectReference Include="..\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
       <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
       <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
+      <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
+      <Name>HIS.Desktop.LocalStorage.LocalData</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
