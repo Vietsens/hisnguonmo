@@ -94,7 +94,7 @@ namespace HIS.Desktop.Common.BankQrCode
         {
             try
             {
-                //if (VerifyServiceIPOSProcessorIsRunning())
+                if (VerifyServiceIPOSProcessorIsRunning())
                 {
                     clienManager = new IPOS.WCFService.Client.IPOSClientManager();
                     clienManager.SetupDevice();
@@ -223,6 +223,10 @@ namespace HIS.Desktop.Common.BankQrCode
                 if (IsConnectDevice)
                 {
                     var dt = clienManager.GenQr(dataSend);
+                    if (!string.IsNullOrEmpty(dataSend))
+                    {
+                        clienManager.PlayAudio(0);
+                    }
                     delegateSend(dt.Success, MessageError = dt.MessageError);
                 }
             }
