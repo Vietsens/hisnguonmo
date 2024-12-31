@@ -47,6 +47,7 @@ namespace HIS.Desktop.Plugins.ChangeExamRoomProcess.ChangeExamRoomProcess
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormChangeExamRoomProcess));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.lblNumOrder = new DevExpress.XtraEditors.LabelControl();
             this.btnPrint = new DevExpress.XtraEditors.SimpleButton();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
             this.chkPriority = new DevExpress.XtraEditors.CheckEdit();
@@ -61,6 +62,7 @@ namespace HIS.Desktop.Plugins.ChangeExamRoomProcess.ChangeExamRoomProcess
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
@@ -70,8 +72,6 @@ namespace HIS.Desktop.Plugins.ChangeExamRoomProcess.ChangeExamRoomProcess
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.lblNumOrder = new DevExpress.XtraEditors.LabelControl();
-            this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkPriority.Properties)).BeginInit();
@@ -87,9 +87,9 @@ namespace HIS.Desktop.Plugins.ChangeExamRoomProcess.ChangeExamRoomProcess
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -108,6 +108,17 @@ namespace HIS.Desktop.Plugins.ChangeExamRoomProcess.ChangeExamRoomProcess
             this.layoutControl1.Size = new System.Drawing.Size(342, 70);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // lblNumOrder
+            // 
+            this.lblNumOrder.Appearance.BackColor = System.Drawing.Color.Transparent;
+            this.lblNumOrder.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(31)))), ((int)(((byte)(53)))));
+            this.lblNumOrder.Location = new System.Drawing.Point(97, 2);
+            this.lblNumOrder.Name = "lblNumOrder";
+            this.lblNumOrder.Size = new System.Drawing.Size(226, 20);
+            this.lblNumOrder.StyleController = this.layoutControl1;
+            this.lblNumOrder.TabIndex = 10;
+            this.lblNumOrder.Click += new System.EventHandler(this.lblNumOrder_Click);
             // 
             // btnPrint
             // 
@@ -275,10 +286,27 @@ namespace HIS.Desktop.Plugins.ChangeExamRoomProcess.ChangeExamRoomProcess
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
+            // layoutControlItem7
+            // 
+            this.layoutControlItem7.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem7.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem7.Control = this.lblNumOrder;
+            this.layoutControlItem7.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem7.Name = "layoutControlItem7";
+            this.layoutControlItem7.Size = new System.Drawing.Size(325, 24);
+            this.layoutControlItem7.Text = "Số thứ tự:";
+            this.layoutControlItem7.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem7.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem7.TextToControlDistance = 5;
+            // 
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem1,
@@ -317,8 +345,8 @@ namespace HIS.Desktop.Plugins.ChangeExamRoomProcess.ChangeExamRoomProcess
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(342, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(342, 29);
             // 
             // barDockControlBottom
             // 
@@ -344,30 +372,6 @@ namespace HIS.Desktop.Plugins.ChangeExamRoomProcess.ChangeExamRoomProcess
             // dxValidationProviderEditorInfo
             // 
             this.dxValidationProviderEditorInfo.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProviderControl_ValidationFailed);
-            // 
-            // lblNumOrder
-            // 
-            this.lblNumOrder.Appearance.BackColor = System.Drawing.Color.Transparent;
-            this.lblNumOrder.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(31)))), ((int)(((byte)(53)))));
-            this.lblNumOrder.Location = new System.Drawing.Point(97, 2);
-            this.lblNumOrder.Name = "lblNumOrder";
-            this.lblNumOrder.Size = new System.Drawing.Size(226, 20);
-            this.lblNumOrder.StyleController = this.layoutControl1;
-            this.lblNumOrder.TabIndex = 10;
-            this.lblNumOrder.Click += new System.EventHandler(this.lblNumOrder_Click);
-            // 
-            // layoutControlItem7
-            // 
-            this.layoutControlItem7.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem7.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem7.Control = this.lblNumOrder;
-            this.layoutControlItem7.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(325, 24);
-            this.layoutControlItem7.Text = "Số thứ tự:";
-            this.layoutControlItem7.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem7.TextSize = new System.Drawing.Size(90, 20);
-            this.layoutControlItem7.TextToControlDistance = 5;
             // 
             // FormChangeExamRoomProcess
             // 
@@ -404,9 +408,9 @@ namespace HIS.Desktop.Plugins.ChangeExamRoomProcess.ChangeExamRoomProcess
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

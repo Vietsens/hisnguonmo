@@ -337,8 +337,14 @@ namespace HIS.Desktop.Plugins.ExaminationReqEdit
                     aExamServiceReq = apiresul.FirstOrDefault();
                     var stt = BackendDataWorker.Get<HIS_SERVICE_REQ_STT>().FirstOrDefault(o => o.ID == aExamServiceReq.SERVICE_REQ_STT_ID);
                     lblStatus.Text = stt != null ? stt.SERVICE_REQ_STT_NAME : "";
-                    dtIntructionTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(aExamServiceReq.INTRUCTION_TIME) ?? DateTime.Now;
-
+                    if (aExamServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && aExamServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
+                    {
+                        dtIntructionTime.DateTime = DateTime.Now;
+                    }
+                    else if (aExamServiceReq.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH || (aExamServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && aExamServiceReq.SERVICE_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL))
+                    {
+                        dtIntructionTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(aExamServiceReq.INTRUCTION_TIME) ?? DateTime.Now;
+                    }
                     labelName.Text = aExamServiceReq.TDL_PATIENT_NAME;
                     labelGender.Text = aExamServiceReq.TDL_PATIENT_GENDER_NAME;
                     labelDOB.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(aExamServiceReq.TDL_PATIENT_DOB).ToString();

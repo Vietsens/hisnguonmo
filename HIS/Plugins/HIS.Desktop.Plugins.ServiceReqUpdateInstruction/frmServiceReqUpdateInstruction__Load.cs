@@ -111,6 +111,16 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 {
                     mmNOTE.Enabled = false;
                 }
+                if (currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__AN && currentServiceReq.RATION_SUM_ID != null)
+                {
+                    lciThoiGianYLenh.Enabled = false;
+                    dtTime.Enabled = false;
+                }
+                else
+                {
+                    lciThoiGianYLenh.Enabled = true;
+                    dtTime.Enabled = true;
+                }
             }
             catch (Exception ex)
             {

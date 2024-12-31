@@ -45,6 +45,7 @@ namespace HIS.Desktop.Modules.Main
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -68,7 +69,7 @@ namespace HIS.Desktop.Modules.Main
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
             this.ribbonMain = new DevExpress.XtraBars.Ribbon.RibbonControl();
-            this.popupControlContainerApplicationMenu = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerApplicationMenu = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.gridControl2 = new DevExpress.XtraGrid.GridControl();
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -77,7 +78,7 @@ namespace HIS.Desktop.Modules.Main
             this.repositoryItemButtonEdit3 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnHideControl = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnHisConfig = new DevExpress.XtraBars.BarButtonItem();
@@ -154,21 +155,21 @@ namespace HIS.Desktop.Modules.Main
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.backstageViewTabItem1 = new DevExpress.XtraBars.Ribbon.BackstageViewTabItem();
-            this.applicationMenu1 = new DevExpress.XtraBars.Ribbon.ApplicationMenu();
+            this.applicationMenu1 = new DevExpress.XtraBars.Ribbon.ApplicationMenu(this.components);
             this.tabControlMain = new DevExpress.XtraTab.XtraTabControl();
-            this.timerApplicationRuntime = new System.Windows.Forms.Timer();
-            this.popupControlContainerOtherTabpage = new DevExpress.XtraBars.PopupControlContainer();
+            this.timerApplicationRuntime = new System.Windows.Forms.Timer(this.components);
+            this.popupControlContainerOtherTabpage = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControlMenuTabpage = new DevExpress.XtraGrid.GridControl();
             this.gridViewMenuTabpage = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButtonEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.imageCollection16 = new DevExpress.Utils.ImageCollection();
-            this.imageCollection32 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection16 = new DevExpress.Utils.ImageCollection(this.components);
+            this.imageCollection32 = new DevExpress.Utils.ImageCollection(this.components);
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.txtRoomSelected = new System.Windows.Forms.TextBox();
-            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu();
-            this.timerEffectText = new System.Windows.Forms.Timer();
+            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
+            this.timerEffectText = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.ribbonMain)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerApplicationMenu)).BeginInit();
             this.popupControlContainerApplicationMenu.SuspendLayout();

@@ -3788,6 +3788,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         ListBaby = new List<V_HIS_BABY>();
                         ListMedicalAssessment = new List<V_HIS_MEDICAL_ASSESSMENT>();
                         ListHivTreatment = new List<HIS_HIV_TREATMENT>();
+                        ListTuberculosisTreat = new List<HIS_TUBERCULOSIS_TREAT>();
                         CreateThreadGetData(limit);
                         Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>> dicPatientTypeAlter = new Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>>();
                         Dictionary<long, List<V_HIS_SERE_SERV_2>> dicSereServ = new Dictionary<long, List<V_HIS_SERE_SERV_2>>();
@@ -3802,7 +3803,16 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         Dictionary<long, List<HIS_DHST>> dicDhstList = new Dictionary<long, List<HIS_DHST>>();
                         Dictionary<long, List<V_HIS_MEDICAL_ASSESSMENT>> dicMedicalAssessment = new Dictionary<long, List<V_HIS_MEDICAL_ASSESSMENT>>();
                         Dictionary<long, HIS_HIV_TREATMENT> dicHivTreatment = new Dictionary<long, HIS_HIV_TREATMENT>();
-
+                        Dictionary<long, HIS_TUBERCULOSIS_TREAT> dicTuberculosisTreat = new Dictionary<long, HIS_TUBERCULOSIS_TREAT>();
+                        if (ListTuberculosisTreat != null && ListTuberculosisTreat.Count > 0)
+                        {
+                            foreach (var item in ListTuberculosisTreat)
+                            {
+                                if (!dicTuberculosisTreat.ContainsKey(item.TREATMENT_ID))
+                                    dicTuberculosisTreat[item.TREATMENT_ID] = new HIS_TUBERCULOSIS_TREAT();
+                                dicTuberculosisTreat[item.TREATMENT_ID] = item;
+                            }
+                        }
                         if (ListPatientTypeAlter != null && ListPatientTypeAlter.Count > 0)
                         {
                             foreach (var item in ListPatientTypeAlter)
@@ -4030,6 +4040,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             ado.TotalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
                             ado.serverInfo = new ServerInfo() { Username = username, Password = password, Address = address, TypeXml = typeXml, Xml130Api = xml130Api, XmlGdykApi = xmlGdykApi };
                             ado.delegateSignXml = DataSignXML;
+
+                            if (dicTuberculosisTreat.ContainsKey(treatment.ID))
+                            {
+                                ado.TuberculosisTreat = dicTuberculosisTreat[treatment.ID];
+                            }
                             if (isXML130 == false)
                             {
                                 ado.IS_3176 = true;
@@ -4335,6 +4350,17 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     Task task = Task.Run(async () => syncResultADO = await xmlProcessor.SendFileSign(pathAfterFileSign));
                     task.Wait();
                     syncResult = syncResultADO;
+                }
+                if (this.configSync != null && !string.IsNullOrEmpty(this.configSync.folderPath))
+                {
+                    if (wcfSignDCO.SourceFile.Trim() != pathAfterFileSign.Trim())
+                    {
+                        if (File.Exists(wcfSignDCO.SourceFile))
+                        {
+                            File.Delete(wcfSignDCO.SourceFile);
+                        }
+                    }
+                    File.Copy(pathAfterFileSign, wcfSignDCO.SourceFile);
                 }
 
                 foreach (string file in Directory.GetFiles(tempFolderPath))
