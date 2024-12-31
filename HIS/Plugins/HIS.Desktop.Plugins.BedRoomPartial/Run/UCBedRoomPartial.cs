@@ -884,7 +884,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         {
             try
             {
-
+                ///
             }
             catch (Exception ex)
             {
@@ -959,6 +959,14 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     if (e.Column.FieldName == "TDL_HEIN_CARD_TIME_str")
                     {
                         e.Value = data.TDL_HEIN_CARD_FROM_TIME != null ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.TDL_HEIN_CARD_FROM_TIME ?? 0) + " - " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.TDL_HEIN_CARD_TO_TIME ?? 0) : "";
+                    }
+                    if (e.Column.FieldName == "ICD_CODE_ICD_NAME")
+                    {
+                        e.Value = data.ICD_CODE + " - " + data.ICD_NAME;
+                    }
+                    if (e.Column.FieldName == "ICD_SUB_CODE_ICD_TEXT")
+                    {
+                        e.Value = string.Join("; ", data.ICD_SUB_CODE) + " - " + string.Join("; ", data.ICD_TEXT);
                     }
                 }
             }
