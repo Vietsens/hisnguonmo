@@ -238,7 +238,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 ado.Height = 30;
                 ado.IsYHCT = true;
                 //ado.IsColor = true;
-                ado.DataIcds = listIcd.Where(s=>s.IS_TRADITIONAL == 1 && s.IS_ACTIVE == 1).ToList();
+                ado.DataIcds = listIcd.Where(s => s.IS_TRADITIONAL == 1 && s.IS_ACTIVE == 1).ToList();
                 ado.AutoCheckIcd = autoCheckIcd == 1 ? true : false;
                 ado.hisTreatment = currentTreatment;
                 ucIcdYHCT = (UserControl)icdProcessorYHCT.Run(ado);
@@ -520,7 +520,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
         {
             try
             {
-                subIcdProcessorYHCT = new SecondaryIcdProcessor(new CommonParam(), listIcd.Where(s=>s.IS_TRADITIONAL == 1).ToList());
+                subIcdProcessorYHCT = new SecondaryIcdProcessor(new CommonParam(), listIcd.Where(s => s.IS_TRADITIONAL == 1).ToList());
                 HIS.UC.SecondaryIcd.ADO.SecondaryIcdInitADO ado = new UC.SecondaryIcd.ADO.SecondaryIcdInitADO();
                 ado.DelegateNextFocus = NextForcusOut;
                 //ado.DelegateGetIcdMain = DelegateCheckICDSub;
@@ -551,10 +551,10 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             try
             {
                 var rs = icdProcessorYHCT.GetValue(ucIcdYHCT);
-                if(ucIcdYHCT != null && rs is IcdInputADO)
+                if (ucIcdYHCT != null && rs is IcdInputADO)
                 {
                     result = ((IcdInputADO)rs).ICD_CODE;
-                    
+
                 }
             }
             catch (Exception ex)
@@ -901,18 +901,10 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 if (ucSecondaryIcd != null)
                 {
                     var subIcd = subIcdProcessor.GetValue(ucSecondaryIcd);
-                    var icd = BackendDataWorker.Get<HIS_ICD>()
-                        .Where(s => s.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && s.IS_TRADITIONAL == 1).ToList();
                     if (subIcd != null && subIcd is SecondaryIcdDataADO)
                     {
                         currentServiceReq.ICD_SUB_CODE = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
                         currentServiceReq.ICD_TEXT = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
-                        if (!icd.Any(s => s.ICD_CODE == currentServiceReq.ICD_SUB_CODE))
-                        {
-                            MessageBox.Show("Chẩn đoán YHCT phụ không có trong danh mục");
-                            throw new InvalidOperationException("Chẩn đoán YHCT phụ không có trong danh mục"); // Ném ngoại lệ khi có lỗi
-                        }
-                        
                     }
                 }
 
@@ -933,6 +925,13 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     {
                         currentServiceReq.TRADITIONAL_ICD_SUB_CODE = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
                         currentServiceReq.TRADITIONAL_ICD_TEXT = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
+                        var icd = BackendDataWorker.Get<HIS_ICD>()
+                       .Where(s => s.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && s.IS_TRADITIONAL == 1).ToList();
+                        if (!string.IsNullOrEmpty(currentServiceReq.TRADITIONAL_ICD_SUB_CODE) && icd.Exists(s => !currentServiceReq.TRADITIONAL_ICD_SUB_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList().Exists(o => o == s.ICD_CODE)))
+                        {
+                            MessageBox.Show("Chẩn đoán YHCT phụ không có trong danh mục");
+                            throw new InvalidOperationException("Chẩn đoán YHCT phụ không có trong danh mục"); // Ném ngoại lệ khi có lỗi
+                        }
                     }
                 }
                 if (this.ucIcdCause != null)
@@ -1040,7 +1039,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     currentServiceReq.APPOINTMENT_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtAppointmentTime.DateTime);
                     currentServiceReq.APPOINTMENT_DESC = txtAppointmentDes.Text;
                 }
-                
+
 
             }
             catch (Exception ex)
@@ -1816,7 +1815,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                             txtRequestUser.Text = commune.LOGINNAME;
                             this.icdProcessor.FocusControl(this.ucIcd);
                         }
-                        
+
                     }
                 }
                 CheckTimeSereServ();
@@ -2211,7 +2210,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
 
             try
             {
-               
+
                 if (dtTime.EditValue == null && cboRequestUser.EditValue == null || cboRequestUser.EditValue == null) return;
                 Inventec.Common.Logging.LogSystem.Debug("Check Sere Serv Time____Start");
                 var config = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION").FirstOrDefault();
@@ -2223,7 +2222,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                         HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
                         sdo.TreatmentId = currentTreatment.ID;
                         var username = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && cboRequestUser.EditValue.ToString() == p.LOGINNAME).FirstOrDefault();
-                        if(username != null)sdo.Loginnames = new List<string>() { username.LOGINNAME };
+                        if (username != null) sdo.Loginnames = new List<string>() { username.LOGINNAME };
                         long sereTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTime.DateTime) ?? 0;
                         sdo.SereTimes = new List<long> { sereTime };
                         Inventec.Common.Logging.LogSystem.Debug("HisServiceReqCheckSereTimesSDO:" + LogUtil.TraceData("HisServiceReqCheckSereTimesSDO", sdo));

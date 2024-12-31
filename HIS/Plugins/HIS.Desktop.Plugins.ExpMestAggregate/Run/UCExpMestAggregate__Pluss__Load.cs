@@ -204,11 +204,11 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                 }
                 if (dteUseTimeFrom.EditValue != null && dteUseTimeFrom.DateTime != DateTime.MinValue)
                 {
-                    _expMestFilter.TDL_USE_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dteUseTimeFrom.EditValue).ToString("yyyyMMddHHmmss"));
+                    _expMestFilter.TDL_USE_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dteUseTimeFrom.EditValue).ToString("yyyyMMdd") + "000000");
                 }
                 if (dteUseTimeTo.EditValue != null && dteUseTimeTo.DateTime != DateTime.MinValue)
                 {
-                    _expMestFilter.TDL_USE_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dteUseTimeTo.EditValue).ToString("yyyyMMddHHmmss"));
+                    _expMestFilter.TDL_USE_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dteUseTimeTo.EditValue).ToString("yyyyMMdd") + "235959");
                 }
                 #endregion
 
