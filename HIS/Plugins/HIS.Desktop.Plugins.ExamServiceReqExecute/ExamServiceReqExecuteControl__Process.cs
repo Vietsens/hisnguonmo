@@ -1972,7 +1972,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         .Where(s => s.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && s.IS_TRADITIONAL == 1).ToList();
                         serviceReqUpdateSDO.TreatmentFinishSDO.TraditionalIcdSubCode = treatmentFinish.traditionInIcdSub.ICD_SUB_CODE;
                         serviceReqUpdateSDO.TreatmentFinishSDO.TraditionalIcdText = treatmentFinish.traditionInIcdSub.ICD_TEXT;
-                        if (!string.IsNullOrEmpty(treatmentFinish.traditionInIcdSub.ICD_SUB_CODE) && !icd.Any(s => s.ICD_CODE == treatmentFinish.traditionInIcdSub.ICD_SUB_CODE))
+                        if (!string.IsNullOrEmpty(treatmentFinish.traditionInIcdSub.ICD_SUB_CODE) && icd.Exists(s => !treatmentFinish.traditionInIcdSub.ICD_SUB_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList().Exists(o => o == s.ICD_CODE)))
                         {
                             MessageBox.Show("Chẩn đoán YHCT phụ không có trong danh mục");
                             return false;
