@@ -927,10 +927,17 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                         currentServiceReq.TRADITIONAL_ICD_TEXT = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
                         var icd = BackendDataWorker.Get<HIS_ICD>()
                        .Where(s => s.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && s.IS_TRADITIONAL == 1).ToList();
-                        if (!string.IsNullOrEmpty(currentServiceReq.TRADITIONAL_ICD_SUB_CODE) && icd.Exists(s => !currentServiceReq.TRADITIONAL_ICD_SUB_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList().Exists(o => o == s.ICD_CODE)))
+
+                        if (!string.IsNullOrEmpty(currentServiceReq.TRADITIONAL_ICD_SUB_CODE))
                         {
-                            MessageBox.Show("Chẩn đoán YHCT phụ không có trong danh mục");
-                            throw new InvalidOperationException("Chẩn đoán YHCT phụ không có trong danh mục"); // Ném ngoại lệ khi có lỗi
+                            foreach (var item in currentServiceReq.TRADITIONAL_ICD_SUB_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList())
+                            {
+                                if (!icd.Exists(o => o.ICD_CODE == item))
+                                {
+                                    MessageBox.Show("Chẩn đoán YHCT phụ không có trong danh mục");
+                                    throw new InvalidOperationException("Chẩn đoán YHCT phụ không có trong danh mục"); // Ném ngoại lệ khi có lỗi
+                                }
+                            }
                         }
                     }
                 }

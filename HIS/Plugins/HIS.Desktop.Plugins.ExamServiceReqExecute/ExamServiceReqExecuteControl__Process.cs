@@ -538,7 +538,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 int icd_code = txtIcdCode.Text.Length;
                 Inventec.Common.Logging.LogSystem.Debug("Do dai ma cd chinh: " + icd_code);
-                int icd_name = Inventec.Common.String.CountVi.Count(cboIcds.Text)??0;
+                int icd_name = Inventec.Common.String.CountVi.Count(cboIcds.Text) ?? 0;
                 Inventec.Common.Logging.LogSystem.Debug("Do dai ten cd chinh: " + icd_name);
                 int icd_code_sub = txtIcdSubCode.Text.Length;
                 Inventec.Common.Logging.LogSystem.Debug("Do dai ma cd phu: " + icd_code_sub);
@@ -549,25 +549,25 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 int yhct_sub_code = this.IcdSubCodeYHCT != null ? this.IcdSubCodeYHCT.Length : 0;
                 Inventec.Common.Logging.LogSystem.Debug("Do dai ten cd yhct phu: " + yhct_sub_code);
                 string errror_string = "";
-                if(icd_code + icd_code_sub > 100)
+                if (icd_code + icd_code_sub > 100)
                 {
                     errror_string = "Mã chẩn đoán phụ nhập quá 100 ký tự";
                 }
-                else if(icd_name + icd_text > 1500)
+                else if (icd_name + icd_text > 1500)
                 {
                     errror_string = "Tên chẩn đoán phụ nhập quá 1500 ký tự";
                 }
-                else if(yhct_code + yhct_sub_code > 255)
+                else if (yhct_code + yhct_sub_code > 255)
                 {
                     errror_string = "Mã chẩn đoán YHCT phụ nhập quá 255 ký tự";
                 }
                 if (!string.IsNullOrEmpty(errror_string))
                 {
-                    if(isSave) MessageBox.Show(this, errror_string, "Thông báo", MessageBoxButtons.OK);
+                    if (isSave) MessageBox.Show(this, errror_string, "Thông báo", MessageBoxButtons.OK);
                     isWarning = true;
                     valid = false;
                 }
-                
+
 
             }
             catch (Exception ex)
@@ -1097,7 +1097,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     result = this.treatmentFinishProcessor.Validate(this.ucTreatmentFinish, isNotCheckValidateIcdUC);
                     result = result && ValidIcdLen();
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -1399,7 +1399,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         {
                             if (this.treatment != null && !string.IsNullOrEmpty(this.treatment.HOSPITALIZE_REASON_NAME) && examServiceReqUpdateSDO.TreatmentFinishSDO != null)
                             {
-                                examServiceReqUpdateSDO.TreatmentFinishSDO.HospitalizeReasonCode = this.treatment.HOSPITALIZE_REASON_CODE??null;
+                                examServiceReqUpdateSDO.TreatmentFinishSDO.HospitalizeReasonCode = this.treatment.HOSPITALIZE_REASON_CODE ?? null;
                                 examServiceReqUpdateSDO.TreatmentFinishSDO.HospitalizeReasonName = this.treatment.HOSPITALIZE_REASON_NAME;
                             }
                         }
@@ -1408,8 +1408,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             Inventec.Common.Logging.LogSystem.Debug("Loi khi map du lieu vao TreatmentFinishSDO.HospitalizeReasonCode");
                             Inventec.Common.Logging.LogSystem.Warn(ex);
                         }
-                        
-                        
+
+
                     }
                 }
 
@@ -1586,7 +1586,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
         bool ProcessExamAddition(ref HisServiceReqExamUpdateSDO serviceReqUpdateSDO, MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ HisServiceReqWithOrderSDO)
         {
-            
+
             try
             {
                 if (chkExamServiceAdd.Checked && this.ucExamAddition != null)
@@ -1661,7 +1661,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
             catch (Exception ex)
             {
-                
+
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 return false;
             }
@@ -1972,10 +1972,17 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         .Where(s => s.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && s.IS_TRADITIONAL == 1).ToList();
                         serviceReqUpdateSDO.TreatmentFinishSDO.TraditionalIcdSubCode = treatmentFinish.traditionInIcdSub.ICD_SUB_CODE;
                         serviceReqUpdateSDO.TreatmentFinishSDO.TraditionalIcdText = treatmentFinish.traditionInIcdSub.ICD_TEXT;
-                        if (!string.IsNullOrEmpty(treatmentFinish.traditionInIcdSub.ICD_SUB_CODE) && icd.Exists(s => !treatmentFinish.traditionInIcdSub.ICD_SUB_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList().Exists(o => o == s.ICD_CODE)))
+
+                        if (!string.IsNullOrEmpty(treatmentFinish.traditionInIcdSub.ICD_SUB_CODE))
                         {
-                            MessageBox.Show("Chẩn đoán YHCT phụ không có trong danh mục");
-                            return false;
+                            foreach (var item in treatmentFinish.traditionInIcdSub.ICD_SUB_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList())
+                            {
+                                if (!icd.Exists(o => o.ICD_CODE == item))
+                                {
+                                    MessageBox.Show("Chẩn đoán YHCT phụ không có trong danh mục");
+                                    return false;
+                                }
+                            }
                         }
 
 
@@ -2468,7 +2475,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                     CreateThreadPostApi();
 
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("HisServiceReqResult", HisServiceReqResult));    
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("HisServiceReqResult", HisServiceReqResult));
                     success = true;
                     this.HisServiceReqView = new V_HIS_SERVICE_REQ();
                     Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_SERVICE_REQ>(this.HisServiceReqView, HisServiceReqResult.ServiceReq);
