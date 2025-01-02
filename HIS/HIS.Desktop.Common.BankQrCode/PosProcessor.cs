@@ -222,11 +222,12 @@ namespace HIS.Desktop.Common.BankQrCode
                 MessageError = null;
                 if (IsConnectDevice)
                 {
-                    var dt = clienManager.GenQr(dataSend);
                     if (!string.IsNullOrEmpty(dataSend))
                     {
-                        clienManager.PlayAudio(0);
+                        clienManager.PlayAudio(dataSend == PosStatic.PAYMENT_SUCCESSS ? (byte)1 : (byte)0);
+                        dataSend = dataSend == PosStatic.PAYMENT_SUCCESSS ? null : dataSend;
                     }
+                    var dt = clienManager.GenQr(dataSend);
                     delegateSend(dt.Success, MessageError = dt.MessageError);
                 }
             }
@@ -243,7 +244,7 @@ namespace HIS.Desktop.Common.BankQrCode
                 MessageError = null;
                 if (this.IsOpen)
                 {
-                    dataSend = dataSend ?? "";
+                    dataSend = dataSend == PosStatic.PAYMENT_SUCCESSS ? "" : (dataSend ?? "");
                     switch (typeSend)
                     {
                         case SendType.QR:
@@ -371,6 +372,7 @@ namespace HIS.Desktop.Common.BankQrCode
 
     public static class PosStatic
     {
+        public const string PAYMENT_SUCCESSS = "SUCCESS";
         public static PosProcessor Pos { get; set; }
         public static OptionPos Option { get; set; }
         private static bool IsConnected { get; set; }
