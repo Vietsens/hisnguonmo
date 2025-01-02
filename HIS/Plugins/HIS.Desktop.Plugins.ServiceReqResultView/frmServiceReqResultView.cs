@@ -475,11 +475,11 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                                     }
                                     else if (item.Contains("idBenhNhan"))
                                     {
-                                        url = url.Replace(item, idBenhNhan);
+                                        url = url.Replace(":idBenhNhan", idBenhNhan);
                                     }
                                     else if (item.Contains("idDotVaoVien"))
                                     {
-                                        url = url.Replace(item, idDotVaoVien);
+                                        url = url.Replace(":idDotVaoVien", idDotVaoVien);
                                     }
                                 }
                                 isSense = true;
@@ -2411,11 +2411,11 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                                     }
                                     else if (item.Contains("idBenhNhan"))
                                     {
-                                        url = url.Replace(item, idBenhNhan);
+                                        url = url.Replace(":idBenhNhan", idBenhNhan);
                                     }
                                     else if (item.Contains("idDotVaoVien"))
                                     {
-                                        url = url.Replace(item, idDotVaoVien);
+                                        url = url.Replace(":idDotVaoVien", idDotVaoVien);
                                     }
                                 }
 
