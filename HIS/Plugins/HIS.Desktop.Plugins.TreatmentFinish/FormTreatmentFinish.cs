@@ -2994,10 +2994,16 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     if (subIcdYHCT != null && subIcdYHCT is SecondaryIcdDataADO)
                     {
                         codeCheckCDYHCT = ((SecondaryIcdDataADO)subIcdYHCT).ICD_SUB_CODE;
-                        if (!string.IsNullOrEmpty(codeCheckCDYHCT) && icd.Exists(s => !codeCheckCDYHCT.Split(new string[] {";"}, StringSplitOptions.RemoveEmptyEntries).ToList().Exists(o=> o == s.ICD_CODE)))
+                        if (!string.IsNullOrEmpty(codeCheckCDYHCT))
                         {
-                            MessageBox.Show("Chẩn đoán YHCT phụ không có trong danh mục");
-                            throw new InvalidOperationException("Chẩn đoán YHCT phụ không có trong danh mục"); // Ném ngoại lệ khi có lỗi
+                            foreach (var item in codeCheckCDYHCT.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList())
+                            {
+                                if (!icd.Exists(o => o.ICD_CODE == item))
+                                {
+                                    MessageBox.Show("Chẩn đoán YHCT phụ không có trong danh mục");
+                                    throw new InvalidOperationException("Chẩn đoán YHCT phụ không có trong danh mục"); // Ném ngoại lệ khi có lỗi
+                                }
+                            }
                         }
 
                     }
