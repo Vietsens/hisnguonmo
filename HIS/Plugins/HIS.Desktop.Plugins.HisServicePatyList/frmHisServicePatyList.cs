@@ -1398,7 +1398,7 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
                     //txtPatientTypeName.EditValue = data.PATIENT_TYPE_CODE;
                     //txtBranchName.EditValue = data.BRANCH_CODE;
 
-                    FillDataTogridViewDepartMent(GetListId(data.REQUEST_DEPARMENT_IDS));
+                    FillDataTogridViewDepartMent(GetListId(data.REQUEST_DEPARMENT_IDS));  
                     FillDataTogridViewRoomPractice(GetListId(data.EXECUTE_ROOM_IDS));
                     FillDataTogridViewRoomRequired(GetListId(data.REQUEST_ROOM_IDS));
 
@@ -4715,7 +4715,7 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
 
         private void spinPayoutRatio_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (spinPayoutRatio.Value < 1)
+            if (!string.IsNullOrWhiteSpace(spinPayoutRatio.Text) && spinPayoutRatio.Value < 0)
             {
                 e.Cancel = true;
                 MessageBox.Show("Tỉ lệ thanh toán(%) không hợp lệ, tỉ lệ thanh toán phải là số dương!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -4724,7 +4724,14 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
 
         private void spinPayoutRatio_InvalidValue(object sender, InvalidValueExceptionEventArgs e)
         {
-            e.ErrorText = "Tỉ lệ thanh toán(%) không hợp lệ, tỉ lệ thanh toán phải là số dương!";   
+            if (!string.IsNullOrWhiteSpace(spinPayoutRatio.Text))
+            {
+                e.ErrorText = "Tỉ lệ thanh toán(%) không hợp lệ, tỉ lệ thanh toán phải là số dương!";
+            }
+            else
+            {
+                e.ErrorText = string.Empty;
+            }
         }
     }
 }
