@@ -61,6 +61,7 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                 this.roomId = moduleData.RoomId;
                 this.roomTypeId = moduleData.RoomTypeId;
                 SetCaptionByLanguageKey();
+                Inventec.Common.Logging.LogSystem.Debug("Gọi module thành công");
             }
             catch (Exception ex)
             {
@@ -111,7 +112,7 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                 this.layoutControlItem2.Text = Inventec.Common.Resource.Get.Value("UCMonitorMediStockDataError.layoutControlItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem7.Text = Inventec.Common.Resource.Get.Value("UCMonitorMediStockDataError.layoutControlItem7.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem14.Text = Inventec.Common.Resource.Get.Value("UCMonitorMediStockDataError.layoutControlItem14.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn15.Caption = Inventec.Common.Resource.Get.Value("UCMonitorMediStockDataError.gridColumn15.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.IS_PROCESSED.Caption = Inventec.Common.Resource.Get.Value("UCMonitorMediStockDataError.gridColumn15.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {
@@ -125,8 +126,11 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
             try
             {
                 InitMediStockCheck();
+                Inventec.Common.Logging.LogSystem.Debug("Gọi 1");
                 InitComboMediStock();
+                Inventec.Common.Logging.LogSystem.Debug("Gọi 2");
                 DefaultDataToForm();
+                Inventec.Common.Logging.LogSystem.Debug("Gọi 3");
                 FillDataToGrid();
             }
             catch (Exception ex)
@@ -247,9 +251,9 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                 DevExpress.XtraGrid.Columns.GridColumn col2 = cboMediStock.Properties.View.Columns.AddField("MEDI_STOCK_NAME");
                 col2.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
                 col2.VisibleIndex = 1;
-                col2.Width = 250;
-                //col2.Caption = "Tất cả";
-                cboMediStock.Properties.PopupFormWidth = 250;
+                col2.Width = 350;
+                col2.Caption = "Tất cả";
+                cboMediStock.Properties.PopupFormWidth = 350;
                 cboMediStock.Properties.View.OptionsView.ShowColumnHeaders = true;
                 cboMediStock.Properties.View.OptionsSelection.MultiSelect = true;
                 //cboMediStock.Properties.View.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
@@ -259,11 +263,11 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                 cboMediStock.Properties.View.OptionsView.ShowAutoFilterRow = true;
                 cboMediStock.Properties.View.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
 
-                GridCheckMarksSelection gridCheckMark = cboMediStock.Properties.Tag as GridCheckMarksSelection;
-                if (gridCheckMark != null)
-                {
-                    gridCheckMark.SelectAll(cboMediStock.Properties.DataSource);
-                }
+                //GridCheckMarksSelection gridCheckMark = cboMediStock.Properties.Tag as GridCheckMarksSelection;
+                //if (gridCheckMark != null)
+                //{
+                //    gridCheckMark.SelectAll(cboMediStock.Properties.DataSource);
+                //}
             }
             catch (Exception ex)
             {
@@ -445,7 +449,13 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                         {
                             try
                             {
-                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)data.IMP_TIME);
+                                string timeStr = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)data.IMP_TIME);
+                                string ngayThang = "";
+                                if(!string.IsNullOrEmpty(timeStr))
+                                {
+                                     ngayThang = timeStr.Substring(0, 10);
+                                }
+                                e.Value = ngayThang;
                             }
                             catch (Exception ex)
                             {
@@ -456,7 +466,13 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                         {
                             try
                             {
-                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)data.EXPIRED_DATE);
+                                string timeStr = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)data.EXPIRED_DATE);
+                                string ngayThang = "";
+                                if (!string.IsNullOrEmpty(timeStr))
+                                {
+                                    ngayThang = timeStr.Substring(0, 10);
+                                }
+                                e.Value = ngayThang;
                             }
                             catch (Exception ex)
                             {
@@ -517,18 +533,68 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                                 Inventec.Common.Logging.LogSystem.Error(ex);
                             }
                         }
-                        else if (e.Column.FieldName == "AMOUNT")
+                        else if (e.Column.FieldName == "AMOUNT_STR")
                         {
                             try
                             {
                                 if (data.IN_AMOUNT != null && data.OUT_AMOUNT != null)
                                 {
-                                    e.Value = data.IN_AMOUNT - data.OUT_AMOUNT;
+                                    decimal amount = (data.IN_AMOUNT - data.OUT_AMOUNT)??0;
+                                    string convertAmount = amount.ToString("N0");
+                                    e.Value = convertAmount;
                                 }
                                 else
                                 {
                                     e.Value = 0;
                                 }
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                        }
+                        else if (e.Column.FieldName == "BEGIN_AMOUNT_STR")
+                        {
+                            try
+                            {
+                                    string convertAmount = (data.BEGIN_AMOUNT??0).ToString("N0");
+                                    e.Value = convertAmount;
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                        }
+                        else if (e.Column.FieldName == "IN_AMOUNT_STR")
+                        {
+                            try
+                            {
+                                string convertAmount = (data.IN_AMOUNT ?? 0).ToString("N0");
+                                e.Value = convertAmount;
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                        }
+                        else if (e.Column.FieldName == "OUT_AMOUNT_STR")
+                        {
+                            try
+                            {
+                                string convertAmount = (data.OUT_AMOUNT ?? 0).ToString("N0");
+                                e.Value = convertAmount;
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                        }
+                        else if (e.Column.FieldName == "BEAN_AMOUNT_STR")
+                        {
+                            try
+                            {
+                                string convertAmount = (data.BEAN_AMOUNT ?? 0).ToString("N0");
+                                e.Value = convertAmount;
                             }
                             catch (Exception ex)
                             {
@@ -672,11 +738,11 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                                 long dataERR = Inventec.Common.TypeConvert.Parse.ToInt64((view.GetRowCellValue(lastRowHandle, "IS_PROCESSED") ?? "").ToString());
                                 if (dataERR == 1)
                                 {
-                                    text = "Đã xử lý";
+                                    text = "Chưa xử lý";
                                 }
                                 else
                                 {
-                                    text = "Chưa xử lý";
+                                    text = "Đã xử lý";
                                 }
 
                             }

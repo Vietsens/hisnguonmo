@@ -40,7 +40,8 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
             object result = null;
             try
             {
-                IMonitorMediStockDataError behavior = MonitorMediStockDataErrorFactory.MakeIExecuteRoom(param, args);
+                Inventec.Common.Logging.LogSystem.Debug("Gọi MonitorMediStockDataErrorProcessor");
+                IMonitorMediStockDataError behavior = MonitorMediStockDataErrorFactory.MakeIMediStockDataError(param, args);
                 result = behavior != null ? (behavior.Run()) : null;
             }
             catch (Exception ex)

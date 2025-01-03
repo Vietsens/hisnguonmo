@@ -9,11 +9,12 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError.MonitorMediStockDataErro
 {
     class MonitorMediStockDataErrorFactory
     {
-        internal static IMonitorMediStockDataError MakeIExecuteRoom(CommonParam param, object[] data)
+        internal static IMonitorMediStockDataError MakeIMediStockDataError(CommonParam param, object[] data)
         {
             IMonitorMediStockDataError result = null;
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("Gọi IMonitorMediStockDataError");
                 result = new MonitorMediStockDataErrorBehavior(param, data);
                 if (result == null) throw new NullReferenceException();
             }
