@@ -345,7 +345,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
         #endregion
         bool CheckEmployIsAdmin()
         {
-            bool result = false; 
+            bool result = false;
             try
             {
                 if (currentEmployee == null)
@@ -468,7 +468,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                     ClickColumnItem();
                     return;
                 }
-                RowClick(null,null);
+                RowClick(null, null);
             }
             catch (Exception ex)
             {
@@ -1020,7 +1020,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                             {
                                 e.Value = imageListIcon.Images[10];
                             }
-      
+
                         }
                         else if (e.Column.FieldName == "PATIENT_NAME")
                         {
@@ -1324,7 +1324,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 apiResult = new ApiResultObject<List<V_LIS_SAMPLE_2>>();
 
                 apiResult = new BackendAdapter(paramCommon).GetRO<List<V_LIS_SAMPLE_2>>("api/LisSample/GetView2", ApiConsumer.ApiConsumers.LisConsumer, lisSampleFilter, paramCommon);
-                gridControlSample.DataSource = null; 
+                gridControlSample.DataSource = null;
 
                 if (apiResult != null)
                 {
@@ -1635,6 +1635,26 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 }
                 if (rowSample2 != null)
                 {
+                    try
+                    {
+                        if (rowSample2.APPROVAL_TIME.HasValue && dtResultTime != null)
+                        {
+                            var dtResult = dtResultTime.DateTime;
+                            if ((rowSample2.APPROVAL_TIME ?? 0) > (Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtResult) ?? 0))
+                            {
+                                MessageBox.Show(this, string.Format("Thời gian duyệt mẫu {0} phải nhỏ hơn thời gian trả kết quả {1}", Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rowSample2.APPROVAL_TIME ?? 0), dtResult.ToString("dd/MM/yyyy HH:mm:ss")), "Thông báo", MessageBoxButtons.OK);
+                                return;
+                            }
+                        }
+                        else
+                            LogSystem.Warn("APPROVAL_TIME is null hoac dtResultTime null");
+                        
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+
                     if (HisConfigCFG.StartTimeMustBeGreaterThanInstructionTime == "1" || HisConfigCFG.StartTimeMustBeGreaterThanInstructionTime == "2")
                     {
                         if (Int64.Parse(DateTime.Now.ToString("yyyyMMddHHmm00")) < rowSample2.INTRUCTION_TIME)
@@ -2297,6 +2317,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                                 antibioticResultSDO.BacteriumName = itemLRS.BACTERIUM_NAME;
                                 antibioticResultSDO.BacteriumFamilyCode = itemLRS.BACTERIUM_FAMILY_CODE;
                                 antibioticResultSDO.BacteriumFamilyName = itemLRS.BACTERIUM_FAMILY_NAME;
+
                                 antibioticResultSDO.MachineId = itemLRS.MACHINE_ID;
                                 antibioticResultSDO.Mic = itemLRS.MIC;
                                 antibioticResultSDO.Note = itemLRS.DESCRIPTION;
@@ -2345,7 +2366,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 ValidationMaxLengthNote();
                 dxValidationProvider1.SetValidationRule(dtResultTime, null);
                 if (!dxValidationProvider1.Validate()) return;
-                
+                if (!ValidTime()) return;
                 bool isCalledApi = true;
                 bool success = SaveValue(ref param, ref isCalledApi);
                 if (isCalledApi)
@@ -2357,6 +2378,35 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private bool ValidTime()
+        {
+            bool result = true;
+            try
+            {
+                if (rowSample2 == null) return false;
+                if (rowSample2.APPROVAL_TIME.HasValue && dtSampleTime != null)
+                {
+                    var sample_time = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtSampleTime.DateTime);
+                    if (sample_time > rowSample2.APPROVAL_TIME)
+                    {
+                        MessageBox.Show(this, string.Format("Thời gian lấy mẫu {0} phải nhỏ hơn thời gian duyệt mẫu {1}", Inventec.Common.DateTime.Convert.TimeNumberToTimeString(sample_time ?? 0), Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rowSample2.APPROVAL_TIME ?? 0)), "Thông báo",MessageBoxButtons.OK);
+                        return false;
+                    }
+                }
+                else
+                    LogSystem.Warn("APPROVAL_TIME null hoac dtSampleTime null");
+                
+
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
         private void UpdateDataForSaveSuccess()
         {
             try
@@ -3155,7 +3205,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                                 e.Appearance.BackColor = Color.LightGray;
                             }
                         }
-                        
+
                         if (HisConfigCFG.WARNING_TIME_RETURN_RESULT == "1" && data.APPOINTMENT_TIME != null
                             && data.APPOINTMENT_TIME.HasValue && data.APPOINTMENT_TIME < Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now)
                             && (data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM || data.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ))
@@ -4288,7 +4338,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                         string config = HisConfigs.Get<string>("HIS.Desktop.Plugins.ConnectionTest.IsRequiredMachine");
                         if (config == "1")
                         {
-                            if(testLisResultADO.MACHINE_ID == null)
+                            if (testLisResultADO.MACHINE_ID == null)
                             {
                                 MessageBox.Show(this, string.Format("Dịch vụ {0} chưa có thông tin máy trả kết quả", testLisResultADO.SERVICE_NAME), "Thông báo", MessageBoxButtons.OK);
                                 return;
@@ -4298,11 +4348,11 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                         {
                             if (testLisResultADO.MACHINE_ID == null)
                             {
-                                if(MessageBox.Show(this, string.Format("Dịch vụ {0} chưa có thông tin máy trả kết quả. Bạn có muốn tiếp tục?", testLisResultADO.SERVICE_NAME), "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                                if (MessageBox.Show(this, string.Format("Dịch vụ {0} chưa có thông tin máy trả kết quả. Bạn có muốn tiếp tục?", testLisResultADO.SERVICE_NAME), "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
                                 {
                                     return;
                                 }
-                                
+
                             }
                         }
                         if (testLisResultADO.SAMPLE_SERVICE_ID > 0 && testLisResultADO.ErrorTypeLabCode == ErrorType.None)
@@ -5037,7 +5087,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
 
         private void cboRoom_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
         {
-             try
+            try
             {
                 e.DisplayText = "";
                 string statusName = "";
@@ -5062,7 +5112,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        
+
         }
 
         private void InitCombo(GridLookUpEdit cbo, object data, string DisplayValue, string ValueMember, string title)
@@ -5112,7 +5162,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
         {
             try
             {
-                 //LoadDataToDepartRoom();
+                //LoadDataToDepartRoom();
                 cboDepart.Properties.View.ClearColumnsFilter();
             }
             catch (Exception ex)
