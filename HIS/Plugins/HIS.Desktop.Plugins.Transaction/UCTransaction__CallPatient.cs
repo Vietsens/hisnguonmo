@@ -492,20 +492,20 @@ namespace HIS.Desktop.Plugins.Transaction
                             case "PATIENT_NAME":
                                 if (configKeyCallPatientByCPA == "1")
                                 {
-                                    clienttManager.CallTextData(gateCode, patientName);
+                                    clienttManager.CallTextData(gateCode, patientName.Trim());
                                 }
                                 else
-                                    Inventec.Speech.SpeechPlayer.Speak(patientName);
+                                    Inventec.Speech.SpeechPlayer.Speak(patientName.Trim());
                                 break;
                             case "ROOM_NAME":
                                 if (!string.IsNullOrEmpty(examRoomName))
                                 {
                                     if (configKeyCallPatientByCPA == "1")
                                     {
-                                        clienttManager.CallTextData(gateCode, examRoomName);
+                                        clienttManager.CallTextData(gateCode, examRoomName.Trim());
                                     }
                                     else
-                                        Inventec.Speech.SpeechPlayer.SpeakSingle(examRoomName);
+                                        Inventec.Speech.SpeechPlayer.SpeakSingle(examRoomName.Trim());
                                 }
                                 break;
                             case "GATE_NUMBER":

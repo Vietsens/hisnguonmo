@@ -365,6 +365,10 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     txtToNumber.Enabled = true;
                     GATE();
                 }
+                else
+                {
+                    this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager();
+                }
                 Inventec.Common.Logging.LogSystem.Debug("UCTransaction.Load => 1");
                 WaitingManager.Show();
                 if (GlobalVariables.AcsAuthorizeSDO != null)
