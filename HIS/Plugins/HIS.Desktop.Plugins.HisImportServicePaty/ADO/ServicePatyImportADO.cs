@@ -45,7 +45,7 @@ namespace  HIS.Desktop.Plugins.HisImportServicePaty.ADO
         public string REQUEST_DEPARMENT_CODES { get; set; }
         public string REQUEST_ROOM_CODES { get; set; }
         public string SERVICE_CONDITION_CODE { get; set; }
-        public string SERVICE_RATIO { get; set; }
+        public string SERVICE_RATIO_STR { get; set; }
 
 
 

@@ -477,7 +477,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
         private bool CheckDocumentNumberV2(string _document, string kyHieuHoaDon)
         {
-            bool result = false;
+            bool result = true;
             try
             {
                 kyHieuHoaDon = String.IsNullOrWhiteSpace(kyHieuHoaDon) ? "" : kyHieuHoaDon.Trim();
@@ -524,13 +524,14 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 if (DevExpress.XtraEditors.XtraMessageBox.Show(mess, Base.ResourceMessageManager.TieuDeCuaSoThongBaoLaThongBao, System.Windows.Forms.MessageBoxButtons.YesNo) != System.Windows.Forms.DialogResult.Yes)
                                 {
                                     txtDocumentNumber.Focus();
+                                    result = false;
                                 }
                             }
                             else
                             {
                                 string mess = string.Format("Đã tồn tại mã phiếu nhập '{0}' có số chứng từ '{1}', Không thể nhập nhà cung cấp với số chứng từ này", string.Join(",", expMests), _document);
                                 DevExpress.XtraEditors.XtraMessageBox.Show(mess, Base.ResourceMessageManager.TieuDeCuaSoThongBaoLaThongBao);
-                                result = true;
+                                result = false;
                             }
                         }
                         else if (this.IsShowMessDocument)

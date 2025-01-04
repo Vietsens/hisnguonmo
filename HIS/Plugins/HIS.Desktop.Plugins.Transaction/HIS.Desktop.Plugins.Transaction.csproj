@@ -49,8 +49,9 @@
     <Reference Include="CHC.WCFClient">
       <HintPath>..\..\..\..\LIB\WCF\CHC.WCF\Client\CHC.WCFClient.dll</HintPath>
     </Reference>
-    <Reference Include="CPA.WCFClient.CallPatientClient">
-      <HintPath>..\..\..\..\LIB\WCF\CPA.WCF\Client\CallPatient\CPA.WCFClient.CallPatientClient.dll</HintPath>
+    <Reference Include="CPA.WCFClient.CallPatientClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\svn\IMSys\SHAREUTIL\CPA.WCFClient\CPA.WCFClient.CallPatientClient\bin\Debug\CPA.WCFClient.CallPatientClient.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Images.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -267,6 +268,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

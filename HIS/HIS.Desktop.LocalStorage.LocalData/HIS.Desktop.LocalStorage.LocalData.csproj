@@ -40,9 +40,6 @@
     <Reference Include="ACS.SDO">
       <HintPath>..\..\..\Lib\ACS\ACS.SDO.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Library.CacheClient">
-      <HintPath>..\..\..\lib\HIS\His.UC.UCHein\HIS.Desktop.Library.CacheClient.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.Branch">
       <HintPath>..\..\..\Lib\HIS\HIS.Desktop.LocalStorage.Branch\HIS.Desktop.LocalStorage.Branch.dll</HintPath>
     </Reference>
@@ -92,6 +89,10 @@
     <ProjectReference Include="..\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
       <Name>HIS.Desktop.LocalStorage.Location</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Plugins\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
+      <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
+      <Name>HIS.Desktop.Library.CacheClient</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

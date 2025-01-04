@@ -923,11 +923,12 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         if (currentTransReq.TRANS_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)
                         {
                             cboPayForm.Enabled = false;
-                            if (PosStatic.IsOpenPos())
-                                PosStatic.SendData(null);
+                           
                             timerReloadTransReq.Stop();
                             if (currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__FINISHED)
                             {
+                                if (PosStatic.IsOpenPos())
+                                    PosStatic.SendData(PosStatic.PAYMENT_SUCCESSS);
                                 pbQr.EditValue = global::HIS.Desktop.Plugins.CreateTransReqQR.Properties.Resources.check;
 
                                 btnNew.Enabled = btnCreate.Enabled = false;
@@ -1022,6 +1023,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                             {
                                 pbQr.EditValue = global::HIS.Desktop.Plugins.CreateTransReqQR.Properties.Resources.delete;
                             }
+                            if (PosStatic.IsOpenPos())
+                                PosStatic.SendData(null);
                         }
                     }
                 }

@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCBedRoomPartial));
             DevExpress.XtraGrid.GridLevelNode gridLevelNode1 = new DevExpress.XtraGrid.GridLevelNode();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -116,12 +117,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.xtraTabDocumentResult = new DevExpress.XtraTab.XtraTabPage();
             this.ucViewEmrDocumentResult = new HIS.UC.ViewEmrDocument.UcEmrDocument.UcViewEmrDocument();
             this.cboFilterByDepartment = new DevExpress.XtraEditors.LookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.imageCollection2 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection2 = new DevExpress.Utils.ImageCollection(this.components);
             this.layoutControlGroup6 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.LciGroupEmrDocument1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem32 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -237,6 +238,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.repositoryItemTextEditTDL_PATIENT_NAME_STR = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.repositoryItemTextEditTDL_PATIENT_NAME_STR_NO = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.cboPatientFilter = new DevExpress.XtraEditors.LookUpEdit();
+            this.cboEmployee = new Inventec.Desktop.CustomControl.NoFocus.CustomGridLookUpEditWithFilterMultiColumnNoFocus();
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View = new Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem31 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -271,13 +274,13 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem47 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
-            this.toolTipController2 = new DevExpress.Utils.ToolTipController();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon();
-            this.timer1 = new System.Windows.Forms.Timer();
-            this.cboEmployee = new Inventec.Desktop.CustomControl.NoFocus.CustomGridLookUpEditWithFilterMultiColumnNoFocus();
-            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View = new Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.toolTipController2 = new DevExpress.Utils.ToolTipController(this.components);
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
@@ -382,6 +385,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEditTDL_PATIENT_NAME_STR)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEditTDL_PATIENT_NAME_STR_NO)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPatientFilter.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboEmployee.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumnNoFocus1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).BeginInit();
@@ -417,8 +422,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem47)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboEmployee.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumnNoFocus1View)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -1791,15 +1794,17 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn9,
             this.grdColAddTime,
             this.grdColBedName,
+            this.gridColumn7,
+            this.gridColumn11,
+            this.gridColumn12,
             this.grdColRoomName,
             this.gridColumn1,
+            this.gridColumn5,
             this.gc_ClassifyName,
             this.gridColumn3,
             this.gridColumn8,
             this.gc_MedisoftH,
-            this.gridColumn5,
-            this.gridColumn6,
-            this.gridColumn7});
+            this.gridColumn6});
             this.gridViewTreatmentBedRoom.GridControl = this.gridControlTreatmentBedRoom;
             this.gridViewTreatmentBedRoom.Name = "gridViewTreatmentBedRoom";
             this.gridViewTreatmentBedRoom.OptionsBehavior.EditorShowMode = DevExpress.Utils.EditorShowMode.MouseDownFocused;
@@ -1953,7 +1958,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.grdColRoomName.OptionsColumn.AllowEdit = false;
             this.grdColRoomName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColRoomName.Visible = true;
-            this.grdColRoomName.VisibleIndex = 13;
+            this.grdColRoomName.VisibleIndex = 15;
             this.grdColRoomName.Width = 100;
             // 
             // gridColumn1
@@ -1965,7 +1970,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn1.ToolTip = "Số ngày điều trị tạm tính căn cứ theo thời gian nhập viện đến thời điểm hiện tại";
             this.gridColumn1.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 14;
+            this.gridColumn1.VisibleIndex = 16;
             this.gridColumn1.Width = 96;
             // 
             // gc_ClassifyName
@@ -1975,7 +1980,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gc_ClassifyName.Name = "gc_ClassifyName";
             this.gc_ClassifyName.ToolTip = "Phân loại bệnh nhân";
             this.gc_ClassifyName.Visible = true;
-            this.gc_ClassifyName.VisibleIndex = 16;
+            this.gc_ClassifyName.VisibleIndex = 18;
             this.gc_ClassifyName.Width = 80;
             // 
             // gridColumn3
@@ -1986,7 +1991,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 17;
+            this.gridColumn3.VisibleIndex = 19;
             this.gridColumn3.Width = 150;
             // 
             // gridColumn8
@@ -1997,7 +2002,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.ToolTip = "Số điện thoại của bệnh nhân";
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 18;
+            this.gridColumn8.VisibleIndex = 20;
             this.gridColumn8.Width = 100;
             // 
             // gc_MedisoftH
@@ -2023,7 +2028,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn5.FieldName = "LAST_DEPARTMENT_NAME";
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 15;
+            this.gridColumn5.VisibleIndex = 17;
             this.gridColumn5.Width = 99;
             // 
             // gridColumn6
@@ -2178,6 +2183,30 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.cboPatientFilter.StyleController = this.layoutControl2;
             this.cboPatientFilter.TabIndex = 10;
             this.cboPatientFilter.EditValueChanged += new System.EventHandler(this.cboPatientFilter_EditValueChanged);
+            // 
+            // cboEmployee
+            // 
+            this.cboEmployee.Location = new System.Drawing.Point(208, 74);
+            this.cboEmployee.MenuManager = this.barManager1;
+            this.cboEmployee.Name = "cboEmployee";
+            this.cboEmployee.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboEmployee.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboEmployee.Properties.NullText = "";
+            this.cboEmployee.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboEmployee.Properties.View = this.customGridLookUpEditWithFilterMultiColumnNoFocus1View;
+            this.cboEmployee.Size = new System.Drawing.Size(191, 20);
+            this.cboEmployee.StyleController = this.layoutControl2;
+            this.cboEmployee.TabIndex = 22;
+            this.cboEmployee.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboEmployee_ButtonClick);
+            // 
+            // customGridLookUpEditWithFilterMultiColumnNoFocus1View
+            // 
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.Name = "customGridLookUpEditWithFilterMultiColumnNoFocus1View";
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.OptionsView.ShowGroupPanel = false;
             // 
             // Root
             // 
@@ -2571,29 +2600,27 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             // 
             this.timer1.Interval = 1000;
             // 
-            // cboEmployee
+            // gridColumn11
             // 
-            this.cboEmployee.Location = new System.Drawing.Point(208, 74);
-            this.cboEmployee.MenuManager = this.barManager1;
-            this.cboEmployee.Name = "cboEmployee";
-            this.cboEmployee.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.cboEmployee.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
-            this.cboEmployee.Properties.NullText = "";
-            this.cboEmployee.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboEmployee.Properties.View = this.customGridLookUpEditWithFilterMultiColumnNoFocus1View;
-            this.cboEmployee.Size = new System.Drawing.Size(191, 20);
-            this.cboEmployee.StyleController = this.layoutControl2;
-            this.cboEmployee.TabIndex = 22;
-            this.cboEmployee.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboEmployee_ButtonClick);
+            this.gridColumn11.Caption = "Chuẩn đoán chính";
+            this.gridColumn11.FieldName = "ICD_CODE_ICD_NAME";
+            this.gridColumn11.MaxWidth = 150;
+            this.gridColumn11.Name = "gridColumn11";
+            this.gridColumn11.OptionsColumn.AllowEdit = false;
+            this.gridColumn11.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn11.Visible = true;
+            this.gridColumn11.VisibleIndex = 13;
             // 
-            // customGridLookUpEditWithFilterMultiColumnNoFocus1View
+            // gridColumn12
             // 
-            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.Name = "customGridLookUpEditWithFilterMultiColumnNoFocus1View";
-            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.OptionsView.ShowGroupPanel = false;
+            this.gridColumn12.Caption = "Chuẩn đoán phụ";
+            this.gridColumn12.FieldName = "ICD_SUB_CODE_ICD_TEXT";
+            this.gridColumn12.MaxWidth = 150;
+            this.gridColumn12.Name = "gridColumn12";
+            this.gridColumn12.OptionsColumn.AllowEdit = false;
+            this.gridColumn12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn12.Visible = true;
+            this.gridColumn12.VisibleIndex = 14;
             // 
             // UCBedRoomPartial
             // 
@@ -2712,6 +2739,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEditTDL_PATIENT_NAME_STR)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEditTDL_PATIENT_NAME_STR_NO)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPatientFilter.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboEmployee.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumnNoFocus1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).EndInit();
@@ -2747,8 +2776,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem47)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboEmployee.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumnNoFocus1View)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2951,5 +2978,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem50;
         private Inventec.Desktop.CustomControl.NoFocus.CustomGridLookUpEditWithFilterMultiColumnNoFocus cboEmployee;
         private Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus customGridLookUpEditWithFilterMultiColumnNoFocus1View;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn11;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
     }
 }

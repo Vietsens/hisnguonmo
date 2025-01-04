@@ -51,9 +51,6 @@
     <Reference Include="DevExpress.XtraEditors.v15.2">
       <HintPath>..\..\..\Lib\DEVEXPRESS\DevExpress.XtraEditors.v15.2.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.ApiConsumer">
-      <HintPath>..\..\..\lib\Inventec.UC\Inventec.UC.ListReports\HIS.Desktop.ApiConsumer.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.Library.CacheClient">
       <HintPath>..\..\..\lib\HIS\His.UC.UCHein\HIS.Desktop.Library.CacheClient.dll</HintPath>
     </Reference>
@@ -311,6 +308,10 @@
     <ProjectReference Include="..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808C25CD-0925-417F-BBF9-CAF9604DA879}</Project>
       <Name>HIS.Desktop.ADO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
+      <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
+      <Name>HIS.Desktop.ApiConsumer</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Common\HIS.Desktop.Common.csproj">
       <Project>{59fdcba7-0f9f-4257-b95a-e37a1ccfe107}</Project>

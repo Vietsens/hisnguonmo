@@ -55,7 +55,7 @@
       <HintPath>..\..\..\..\lib\EMR\EMR.Filter.dll</HintPath>
     </Reference>
     <Reference Include="EMR_MAIN">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\EMR_MAIN.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\EMRLinksoft\EMR_MAIN.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Common.Treatment">
       <HintPath>..\..\..\..\lib\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>

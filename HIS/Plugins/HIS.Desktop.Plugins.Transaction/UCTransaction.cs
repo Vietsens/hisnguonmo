@@ -97,6 +97,7 @@ namespace HIS.Desktop.Plugins.Transaction
         private bool allowUnlock = false;
         private string loginname = null;
         string configKeyCallPatientCPA;
+        string configKeyCallPatientByCPA;
         #endregion
         public UCTransaction(long roomId, long roomTypeId)
         {
@@ -353,7 +354,8 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
             try
             {
                 configKeyCallPatientCPA = ConfigApplicationWorker.Get<string>(AppConfigKey.CONFIG_KEY__DANG_KY_TIEP_DON__GOI_BENH_NHAN_BANG_PHAN_MEM_CPA);
-                if(configKeyCallPatientCPA != "1")
+                configKeyCallPatientByCPA = ConfigApplicationWorker.Get<string>(AppConfigKey.CONFIG_KEY__GOI_BENH_NHAN_THANH_TOAN_VP_QUA_CPA);
+                if (configKeyCallPatientCPA != "1")
                 {
                     timerInitForm.Enabled = true;
                     timerInitForm.Interval = 100;
