@@ -2396,7 +2396,18 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 }
                 else
                     LogSystem.Warn("APPROVAL_TIME null hoac dtSampleTime null");
-                
+                if (rowSample2.INTRUCTION_TIME.HasValue && dtSampleTime != null)
+                {
+                    var sample_time = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtSampleTime.DateTime);// thời gian lấy mẫu
+                    if (sample_time < rowSample2.INTRUCTION_TIME)
+                    {
+                        MessageBox.Show(this, string.Format("Thời gian y lệnh {0} phải nhỏ hơn thời gian lấy mẫu {1}", Inventec.Common.DateTime.Convert.TimeNumberToTimeString(sample_time ?? 0), Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rowSample2.INTRUCTION_TIME ?? 0)), "Thông báo", MessageBoxButtons.OK);
+                        return false;
+                    }
+                }
+                else
+                    LogSystem.Warn("INTRUCTION_TIME null hoac dtSampleTime null");
+
 
             }
             catch (Exception ex)
