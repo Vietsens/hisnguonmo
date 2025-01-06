@@ -233,6 +233,7 @@ namespace HIS.Desktop.Common.BankQrCode
             }
             catch (Exception ex)
             {
+                IsConnectDevice = false;
                 delegateSend(false, MessageError = "Không nhận được phản hồi từ thiết bị IPOS. Vui lòng khởi động và kết nối lại tới thiết bị.");
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
