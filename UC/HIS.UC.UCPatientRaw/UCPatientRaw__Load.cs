@@ -235,6 +235,8 @@ namespace HIS.UC.UCPatientRaw
                         if (!string.IsNullOrEmpty(this.ResultDataADO.ResultHistoryLDO.gioiTinh))
                             heinCardDataForCheckGOV.Gender = this.ResultDataADO.ResultHistoryLDO.gioiTinh.ToUpper() == "NAM" ? "1" : "2";
                         heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.IsUsedNewCard ? this.ResultDataADO.ResultHistoryLDO.maTheMoi : this.ResultDataADO.ResultHistoryLDO.maThe;
+                        if (this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw != null)
+                            this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw(heinCardDataForCheckGOV);
                         //Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
                         if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
                         {
@@ -246,8 +248,6 @@ namespace HIS.UC.UCPatientRaw
                             dataResult.HeinCardData = heinCardDataForCheckGOV;
                         }
                         dataHeinCardFromQrCccd = this.ResultDataADO.HeinCardData;
-                        if (this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw != null)
-                            this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw(heinCardDataForCheckGOV);
                         WaitingManager.Hide();
                     }
                     if (data is CccdCardData)
