@@ -327,6 +327,8 @@ namespace MPS.Processor.Mps000047
                 {
                     var minTime = rdo._ExpMests_Print.Min(p => p.TDL_INTRUCTION_TIME ?? 0);
                     var maxTime = rdo._ExpMests_Print.Max(p => p.TDL_INTRUCTION_TIME ?? 0);
+                    SetSingleKey(new KeyValue(Mps000047ExtendSingleKey.MIN_USE_TIME, (rdo._ExpMests_Print.Min(p => p.TDL_USE_TIME ?? 0))));
+                    SetSingleKey(new KeyValue(Mps000047ExtendSingleKey.MAX_USE_TIME, (rdo._ExpMests_Print.Max(p => p.TDL_USE_TIME ?? 0))));
                     SetSingleKey(new KeyValue(Mps000047ExtendSingleKey.MIN_INTRUCTION_DATE_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToDateString(minTime)));
                     SetSingleKey(new KeyValue(Mps000047ExtendSingleKey.MIN_INTRUCTION_TIME_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(minTime)));
                     SetSingleKey(new KeyValue(Mps000047ExtendSingleKey.MIN_INTRUCTION_DATE_SEPARATE_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToDateStringSeparateString(minTime)));
@@ -341,6 +343,8 @@ namespace MPS.Processor.Mps000047
                 SetSingleKey(new KeyValue(Mps000047ExtendSingleKey.CREATE_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(rdo.AggrExpMest.CREATE_TIME ?? 0)));
                 SetSingleKey(new KeyValue(Mps000047ExtendSingleKey.CREATE_DATE_STR, Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo.AggrExpMest.CREATE_TIME ?? 0)));
                 SetSingleKey(new KeyValue(Mps000047ExtendSingleKey.CREATE_DATE_SEPARATE_STR, Inventec.Common.DateTime.Convert.TimeNumberToDateStringSeparateString(rdo.AggrExpMest.CREATE_TIME ?? 0)));
+
+                SetSingleKey(new KeyValue(Mps000047ExtendSingleKey.TimeFilterOption, rdo.TimeFilterOption ));
             }
             catch (Exception ex)
             {
