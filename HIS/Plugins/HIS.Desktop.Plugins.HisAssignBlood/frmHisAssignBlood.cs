@@ -1515,7 +1515,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     }
 					if (this.currentBloodType.SERVICE_ID > 0)
 					{
-						var dtService = lstSerivce.First(o => o.ID == this.currentBloodType.SERVICE_ID);
+						var dtService = lstSerivce.FirstOrDefault(o => o.ID == this.currentBloodType.SERVICE_ID);
 						if (dtService != null)
 						{
                             this.currentBloodTypeADO.SERVICE_TYPE_ID = dtService.SERVICE_TYPE_ID;
