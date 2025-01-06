@@ -41,5 +41,11 @@ namespace MPS.Processor.Mps000047
         internal const string MAX_INTRUCTION_DATE_DISPLAY = "MAX_INTRUCTION_DATE_DISPLAY";
 
         internal const string MAX_INTRUCTION_DATE_SEPARATE_DISPLAY = "MAX_INTRUCTION_DATE_SEPARATE_DISPLAY";
+
+        internal const string TimeFilterOption = "TimeFilterOption";
+
+        internal const string MIN_USE_TIME = "MIN_USE_TIME";
+
+        internal const string MAX_USE_TIME = "MAX_USE_TIME";
     }
 }

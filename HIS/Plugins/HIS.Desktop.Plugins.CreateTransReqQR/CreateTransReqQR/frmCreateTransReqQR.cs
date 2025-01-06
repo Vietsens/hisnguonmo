@@ -2133,9 +2133,12 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         return;
                     }
                 }
-                if (PosStatic.IsOpenPos())
+                else
                 {
-                    PosStatic.SendData(null);
+                    if (PosStatic.IsOpenPos())
+                    {
+                        PosStatic.SendData(null);
+                    }
                 }
                 if (frmSubSc != null)
                     frmSubSc.Close();

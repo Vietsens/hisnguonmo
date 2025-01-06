@@ -187,7 +187,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     expMestMedicine.ID = listMedicineADO.ExpMestMedicineId;
                     expMestMedicine.TUTORIAL = txtHuongDanSuDung.Text.Trim();
                     expMestMedicine.SPEED = (decimal?)spinSpeed.EditValue;
-                    DateTime? intructionDate = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(listMedicineADO.TDL_INTRUCTION_TIME);
+                    DateTime? intructionDate = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(listMedicineADO.USE_TIME > 0 ? listMedicineADO.USE_TIME.Value : listMedicineADO.TDL_INTRUCTION_TIME);
                     long addNumber = 0;
                     //if (spinDayNumber.EditValue.ToString() == "0")
                     //{
