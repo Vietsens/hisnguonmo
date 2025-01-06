@@ -14,7 +14,7 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
        "HIS.Desktop.Plugins.MonitorMediStockDataError",
        "Thiết lập",
        "Common",
-       14,
+       58,
        "phe-duyet.png",
        "A",
        Module.MODULE_TYPE_ID__UC,

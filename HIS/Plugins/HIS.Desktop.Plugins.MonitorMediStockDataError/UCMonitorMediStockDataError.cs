@@ -125,6 +125,7 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
         {
             try
             {
+                HisConfig.LoadConfig();
                 InitMediStockCheck();
                 Inventec.Common.Logging.LogSystem.Debug("Gọi 1");
                 InitComboMediStock();
@@ -238,7 +239,7 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                 List<HIS_MEDI_STOCK> dsKho = new List<HIS_MEDI_STOCK>();
                 if (!string.IsNullOrEmpty(HisConfig.MediStockCode))
                 {
-                    dsMaKho.AddRange(HisConfig.MediStockCode.Split(',').Select(x => x.Trim()).ToArray());
+                    dsMaKho.AddRange(HisConfig.MediStockCode.Split(',').Select(x => x.Trim()).ToArray()); 
                 }
                 var listMediStocks = BackendDataWorker.Get<HIS_MEDI_STOCK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_BLOOD != 1).ToList();
                 if (dsMaKho != null && dsMaKho.Count > 0)
@@ -372,7 +373,7 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                     {
                         foreach (var i in _MediStockSelecteds)
                         {
-                            lstCode += i.MEDI_STOCK_CODE + ", ";
+                            lstCode += i.MEDI_STOCK_CODE + ",";
                         }
                     }
                     lstCode = lstCode.Trim();
@@ -738,11 +739,11 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                                 long dataERR = Inventec.Common.TypeConvert.Parse.ToInt64((view.GetRowCellValue(lastRowHandle, "IS_PROCESSED") ?? "").ToString());
                                 if (dataERR == 1)
                                 {
-                                    text = "Chưa xử lý";
+                                    text = "Đánh dấu 'Đã xử lý'";
                                 }
                                 else
                                 {
-                                    text = "Đã xử lý";
+                                    text = "Đánh dấu 'Đã xử lý'";
                                 }
 
                             }
