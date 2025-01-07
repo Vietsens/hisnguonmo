@@ -204,7 +204,7 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                 }
                 if (chkUnprocess.Checked == true)
                 {
-                    filter.IS_PROCESSED = true;
+                    filter.IS_PROCESSED = false;
                 }
                 else
                 {
@@ -244,7 +244,12 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                 var listMediStocks = BackendDataWorker.Get<HIS_MEDI_STOCK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_BLOOD != 1).ToList();
                 if (dsMaKho != null && dsMaKho.Count > 0)
                 {
-                    listMediStocks = listMediStocks.Where(o => dsMaKho.Contains(o.MEDI_STOCK_CODE)).ToList();
+                    var lstConfigMediCode = listMediStocks.Where(o => dsMaKho.Contains(o.MEDI_STOCK_CODE)).ToList();
+                    GridCheckMarksSelection gridCheckMark = cboMediStock.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.SelectAll(lstConfigMediCode);
+                    }
                 }
                 cboMediStock.Properties.DataSource = listMediStocks;
                 cboMediStock.Properties.DisplayMember = "MEDI_STOCK_NAME";
@@ -739,7 +744,7 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                                 long dataERR = Inventec.Common.TypeConvert.Parse.ToInt64((view.GetRowCellValue(lastRowHandle, "IS_PROCESSED") ?? "").ToString());
                                 if (dataERR == 1)
                                 {
-                                    text = "Đánh dấu 'Đã xử lý'";
+                                    text = "Đánh dấu 'Chưa xử lý'";
                                 }
                                 else
                                 {
