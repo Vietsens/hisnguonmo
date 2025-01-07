@@ -125,6 +125,7 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
         {
             try
             {
+                HisConfig.LoadConfig();
                 InitMediStockCheck();
                 Inventec.Common.Logging.LogSystem.Debug("Gọi 1");
                 InitComboMediStock();
@@ -145,6 +146,7 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
             {
                 chkUnprocess.Checked = false;
                 chkNearestDate.Checked = false;
+                txtSearch.Properties.NullText = "Từ khóa tìm kiếm";
             }
             catch (Exception ex)
             {
@@ -190,8 +192,8 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                 limit = ((CommonParam)param).Limit ?? 10;
                 CommonParam paramCommon = new CommonParam(start, limit);
                 HisStockDataErrorViewFilter filter = new HisStockDataErrorViewFilter();
-                //filter.ORDER_FIELD = "MODIFY_TIME";
-                //filter.ORDER_DIRECTION = "DESC";
+                filter.ORDER_FIELD = "MODIFY_TIME";
+                filter.ORDER_DIRECTION = "DESC";
                 filter.KEY_WORD = txtSearch.Text.Trim();
                 if (chkNearestDate.Checked == true)
                 {
@@ -203,7 +205,7 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                 }
                 if (chkUnprocess.Checked == true)
                 {
-                    filter.IS_PROCESSED = true;
+                    filter.IS_PROCESSED = false;
                 }
                 else
                 {
@@ -213,16 +215,14 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                 var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_STOCK_DATA_ERROR>>(RequestUriStore.RequestUriStore.HIS_STOCK_DATA_ERROR_GETVIEW, ApiConsumers.MosConsumer, filter, paramCommon);
                 if (result != null)
                 {
+                    gridControlMediStockDataErr.BeginUpdate();
+                    gridControlMediStockDataErr.DataSource = null;
                     listData = (List<V_HIS_STOCK_DATA_ERROR>)result.Data;
                     rowCount = (listData == null ? 0 : listData.Count);
                     dataTotal = (result.Param == null ? 0 : result.Param.Count ?? 0);
-
+                    gridControlMediStockDataErr.DataSource = listData;
+                    gridControlMediStockDataErr.EndUpdate();
                 }
-
-                //var listDataSDO = (from r in listData select new HisStockDataErrorADO(r)).ToList();
-                gridControlMediStockDataErr.BeginUpdate();
-                gridControlMediStockDataErr.DataSource = listData;
-                gridControlMediStockDataErr.EndUpdate();
             }
             catch (Exception ex)
             {
@@ -238,12 +238,17 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                 List<HIS_MEDI_STOCK> dsKho = new List<HIS_MEDI_STOCK>();
                 if (!string.IsNullOrEmpty(HisConfig.MediStockCode))
                 {
-                    dsMaKho.AddRange(HisConfig.MediStockCode.Split(',').Select(x => x.Trim()).ToArray());
+                    dsMaKho.AddRange(HisConfig.MediStockCode.Split(',').Select(x => x.Trim()).ToArray()); 
                 }
                 var listMediStocks = BackendDataWorker.Get<HIS_MEDI_STOCK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_BLOOD != 1).ToList();
                 if (dsMaKho != null && dsMaKho.Count > 0)
                 {
-                    listMediStocks = listMediStocks.Where(o => dsMaKho.Contains(o.MEDI_STOCK_CODE)).ToList();
+                    var lstConfigMediCode = listMediStocks.Where(o => dsMaKho.Contains(o.MEDI_STOCK_CODE)).ToList();
+                    GridCheckMarksSelection gridCheckMark = cboMediStock.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.SelectAll(lstConfigMediCode);
+                    }
                 }
                 cboMediStock.Properties.DataSource = listMediStocks;
                 cboMediStock.Properties.DisplayMember = "MEDI_STOCK_NAME";
@@ -372,7 +377,7 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                     {
                         foreach (var i in _MediStockSelecteds)
                         {
-                            lstCode += i.MEDI_STOCK_CODE + ", ";
+                            lstCode += i.MEDI_STOCK_CODE + ",";
                         }
                     }
                     lstCode = lstCode.Trim();
@@ -738,11 +743,11 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                                 long dataERR = Inventec.Common.TypeConvert.Parse.ToInt64((view.GetRowCellValue(lastRowHandle, "IS_PROCESSED") ?? "").ToString());
                                 if (dataERR == 1)
                                 {
-                                    text = "Chưa xử lý";
+                                    text = "Đánh dấu 'Chưa xử lý'";
                                 }
                                 else
                                 {
-                                    text = "Đã xử lý";
+                                    text = "Đánh dấu 'Đã xử lý'";
                                 }
 
                             }

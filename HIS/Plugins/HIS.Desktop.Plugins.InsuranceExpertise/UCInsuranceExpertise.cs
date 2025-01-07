@@ -414,7 +414,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
 
                 dtHeinLockTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Inventec.Common.DateTime.Get.Now() ?? 0) ?? DateTime.MinValue;
 
-                if (HisConfigCFG.isGenerateStoreBordereauCodeWhenLockHein)
+                if (HisConfigCFG.isGenerateStoreBordereauCodeWhenLockHein == "1" || HisConfigCFG.isGenerateStoreBordereauCodeWhenLockHein == "2")
                     lcStoreBordereauCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 else
                     lcStoreBordereauCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -629,8 +629,11 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             {
                 btnLockHein.Enabled = false;
                 btnUnLockHein.Enabled = false;
-                if (HisConfigCFG.OptionStoreBordereauCode == "1")
-                    layoutControlItem16.Visibility = HisConfigCFG.isGenerateStoreBordereauCodeWhenLockHein ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                if (HisConfigCFG.OptionStoreBordereauCode == "1" && (HisConfigCFG.isGenerateStoreBordereauCodeWhenLockHein == "1" || HisConfigCFG.isGenerateStoreBordereauCodeWhenLockHein == "2"))
+                    layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                else
+                    layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
 
             }
             catch (Exception ex)
@@ -644,7 +647,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             try
             {
                 ValidControlFindTreatmentCode();
-                if (HisConfigCFG.isGenerateStoreBordereauCodeWhenLockHein)
+                if (HisConfigCFG.isGenerateStoreBordereauCodeWhenLockHein == "1" || HisConfigCFG.isGenerateStoreBordereauCodeWhenLockHein == "2")
                 {
                     this.lcStoreBordereauCode.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
                     this.lcStoreBordereauCode.AppearanceItemCaption.Options.UseForeColor = true;
