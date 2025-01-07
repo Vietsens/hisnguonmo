@@ -146,6 +146,7 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
             {
                 chkUnprocess.Checked = false;
                 chkNearestDate.Checked = false;
+                txtSearch.Properties.NullText = "Từ khóa tìm kiếm";
             }
             catch (Exception ex)
             {
@@ -191,8 +192,8 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                 limit = ((CommonParam)param).Limit ?? 10;
                 CommonParam paramCommon = new CommonParam(start, limit);
                 HisStockDataErrorViewFilter filter = new HisStockDataErrorViewFilter();
-                //filter.ORDER_FIELD = "MODIFY_TIME";
-                //filter.ORDER_DIRECTION = "DESC";
+                filter.ORDER_FIELD = "MODIFY_TIME";
+                filter.ORDER_DIRECTION = "DESC";
                 filter.KEY_WORD = txtSearch.Text.Trim();
                 if (chkNearestDate.Checked == true)
                 {
@@ -214,16 +215,14 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                 var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_STOCK_DATA_ERROR>>(RequestUriStore.RequestUriStore.HIS_STOCK_DATA_ERROR_GETVIEW, ApiConsumers.MosConsumer, filter, paramCommon);
                 if (result != null)
                 {
+                    gridControlMediStockDataErr.BeginUpdate();
+                    gridControlMediStockDataErr.DataSource = null;
                     listData = (List<V_HIS_STOCK_DATA_ERROR>)result.Data;
                     rowCount = (listData == null ? 0 : listData.Count);
                     dataTotal = (result.Param == null ? 0 : result.Param.Count ?? 0);
-
+                    gridControlMediStockDataErr.DataSource = listData;
+                    gridControlMediStockDataErr.EndUpdate();
                 }
-
-                //var listDataSDO = (from r in listData select new HisStockDataErrorADO(r)).ToList();
-                gridControlMediStockDataErr.BeginUpdate();
-                gridControlMediStockDataErr.DataSource = listData;
-                gridControlMediStockDataErr.EndUpdate();
             }
             catch (Exception ex)
             {
