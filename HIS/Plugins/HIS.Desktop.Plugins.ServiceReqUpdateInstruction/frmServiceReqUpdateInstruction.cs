@@ -20,6 +20,7 @@ using ACS.Filter;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraLayout;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -824,10 +825,28 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                         layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                         this.Size = new Size(this.Size.Width, this.Size.Height - layoutControlItem16.Size.Height - 20);
                     }
+                    ///
+                    if (currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN
+                        || currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA
+                        || currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TDCN
+                        || currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__NS
+                        || currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__SA
+                        || currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL)
+                    {
+                        chkIsNotComplete.Checked = (serviceReq.IS_NOT_REQUIRED_COMPLETE == 1 ? true : false);
+                        layoutControlItem15.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                        layoutControlItem14.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    }
+                    else
+                    {
+                        layoutControlItem15.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                        layoutControlItem14.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    }
                     chkPriority.Checked = (serviceReq.PRIORITY == 1 ? true : false);
                     chkIsEmergency.Checked = (serviceReq.IS_EMERGENCY == 1 ? true : false);
                     chkIsNotRequireFee.Checked = (serviceReq.IS_NOT_REQUIRE_FEE == 1 ? true : false);
                     chkIsNotUseBHYT.Checked = (serviceReq.IS_NOT_USE_BHYT == 1 ? true : false);
+
                     //mmNOTE.Enabled = (serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN ? true : false);
                     if (serviceReq.USE_TIME != null)
                     {
@@ -1031,6 +1050,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 currentServiceReq.IS_EMERGENCY = (short)(chkIsEmergency.Checked ? 1 : 0);
                 currentServiceReq.IS_NOT_REQUIRE_FEE = (short)(chkIsNotRequireFee.Checked ? 1 : 0);
                 currentServiceReq.IS_NOT_USE_BHYT = (short)(chkIsNotUseBHYT.Checked ? 1 : 0);
+                currentServiceReq.IS_NOT_REQUIRED_COMPLETE = (short)(chkIsNotComplete.Checked ? 1 : 0);
                 currentServiceReq.USE_TIME = dtUseTime.EditValue != null && dtUseTime.DateTime != DateTime.MinValue ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtUseTime.DateTime) : null;
                 if (dtAssignTimeTo.DateTime != null && dtAssignTimeTo.DateTime != DateTime.MinValue && dtAssignTimeTo.DateTime != DateTime.MaxValue)
                 {
