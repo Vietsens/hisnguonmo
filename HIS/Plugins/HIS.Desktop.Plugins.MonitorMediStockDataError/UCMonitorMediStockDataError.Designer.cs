@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCMonitorMediStockDataError));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -59,6 +58,7 @@
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.IS_PROCESSED = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryNotProcess = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController();
             this.btnExport = new DevExpress.XtraEditors.SimpleButton();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
             this.chkNearestDate = new DevExpress.XtraEditors.CheckEdit();
@@ -97,7 +97,6 @@
             this.emptySpaceItem6 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlMediStockDataErr)).BeginInit();
@@ -422,6 +421,10 @@
             this.repositoryNotProcess.Name = "repositoryNotProcess";
             this.repositoryNotProcess.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryNotProcess.Click += new System.EventHandler(this.repositoryNotProcess_Click);
+            // 
+            // toolTipControllerGrid
+            // 
+            this.toolTipControllerGrid.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.toolTipControllerGrid_GetActiveObjectInfo);
             // 
             // btnExport
             // 
@@ -813,10 +816,6 @@
             this.layoutControlItem16.Size = new System.Drawing.Size(1300, 31);
             this.layoutControlItem16.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem16.TextVisible = false;
-            // 
-            // toolTipControllerGrid
-            // 
-            this.toolTipControllerGrid.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.toolTipControllerGrid_GetActiveObjectInfo);
             // 
             // UCMonitorMediStockDataError
             // 

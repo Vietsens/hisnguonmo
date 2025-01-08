@@ -640,6 +640,16 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
                 bool success = false;
                 positionHandleControl = -1;
                 if (!btnSave.Enabled) return;
+                //Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProvider1, dxErrorProvider1);
+                if (spConcentration.EditValue != null && chkMgKhi.Checked == false && chkMgMau.Checked == false)
+                {
+                    ValidationControlConcentration();
+                }
+                else
+                {
+                    dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(); 
+                }
+                SetValidateForm();
                 if (!dxValidationProvider1.Validate()) return;
                 if (this.processServiceReq == null) return;
                 if (SaveProcess(ref param, ref calledApi))
@@ -946,7 +956,7 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
                 this.chkPositive.EditValue = null;
                 this.spConcentration.EditValue = 1;
                 this.dtConclusionTime.EditValue = DateTime.Now;
-                this.chkNegative.Checked = true;
+                this.chkNegative.Checked = false;
                 this.dtAppointmentTime.EditValue = null;
                 this.txtKskDriverCode.Text = null;
                 this.txtReasonBadHeathly.Text = "";

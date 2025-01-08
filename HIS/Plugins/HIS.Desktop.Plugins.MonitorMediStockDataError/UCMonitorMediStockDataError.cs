@@ -512,7 +512,7 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                                 }
                                 else
                                 {
-                                    e.Value = data.MEDICINE_TYPE_NAME;
+                                    e.Value = data.MATERIAL_TYPE_NAME;
                                 }
                             }
                             catch (Exception ex)
@@ -530,7 +530,7 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                                 }
                                 else
                                 {
-                                    e.Value = data.MATERIAL_TYPE_NAME;
+                                    e.Value = data.MATERIAL_ID;
                                 }
                             }
                             catch (Exception ex)
@@ -709,7 +709,19 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                     saveFile.Filter = "Excel file|*.xlsx|All file|*.*";
                     if (saveFile.ShowDialog() == DialogResult.OK)
                     {
-                        this.gridControlMediStockDataErr.ExportToXlsx(saveFile.FileName);
+                        GridView gridView = gridControlMediStockDataErr.MainView as GridView;
+                        if (gridView != null && gridView.Columns.Count > 0)
+                        {
+                            GridColumn column = gridView.Columns[0];
+                            if (column != null)
+                            {
+                                column.Visible = false;
+                                // Xuất dữ liệu vào file Excel
+                                this.gridControlMediStockDataErr.ExportToXlsx(saveFile.FileName);
+                                // Hiển thị lại cột 
+                                column.Visible = true;
+                            }
+                        }
                     }
                 }
             }
