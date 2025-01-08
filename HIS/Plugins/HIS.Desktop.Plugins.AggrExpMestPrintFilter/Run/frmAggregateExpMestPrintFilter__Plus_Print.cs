@@ -964,15 +964,34 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                     //IntructionTimeTo = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtIntructionTimeTo.DateTime) ?? null;
                     IntructionTimeTo = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtIntructionTimeTo.EditValue).ToString("yyyyMMdd") + "235959");
                 }
-                List<HIS_EXP_MEST> _ExpMests_Print_Temp = null;
-                if (IntructionTimeFrom != null && IntructionTimeTo != null)
+                long chooseTimeType = 1;
+                if (cboChooseTime.EditValue != null && cboChooseTime.EditValue is long)
                 {
-                    _ExpMests_Print_Temp = _ExpMests_Print.Where(o => IntructionTimeFrom <= o.TDL_INTRUCTION_TIME && o.TDL_INTRUCTION_TIME <= IntructionTimeTo).ToList();
+                    chooseTimeType = (long)cboChooseTime.EditValue;
+                }
+                List<HIS_EXP_MEST> _ExpMests_Print_Temp = _ExpMests_Print;
+
+                if (chooseTimeType == 1)
+                {
+                    if (IntructionTimeFrom != null)
+                    {
+                        _ExpMests_Print_Temp = _ExpMests_Print.Where(o => IntructionTimeFrom <= o.TDL_INTRUCTION_TIME).ToList();
+                    }
+                    if (IntructionTimeTo != null)
+                    {
+                        _ExpMests_Print_Temp = _ExpMests_Print.Where(o => o.TDL_INTRUCTION_TIME <= IntructionTimeFrom).ToList();
+                    }
                 }
                 else
                 {
-                    _ExpMests_Print_Temp = _ExpMests_Print;
-
+                    if (IntructionTimeFrom != null)
+                    {
+                        _ExpMests_Print_Temp = _ExpMests_Print.Where(o => IntructionTimeFrom <= o.TDL_USE_TIME).ToList();
+                    }
+                    if (IntructionTimeTo != null)
+                    {
+                        _ExpMests_Print_Temp = _ExpMests_Print.Where(o => o.TDL_USE_TIME <= IntructionTimeFrom).ToList();
+                    }
                 }
                 if (_ExpMests_Print_Temp != null && _ExpMests_Print_Temp.Count > 0)
                 {
@@ -1249,7 +1268,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                      this.department,
                      vHisTreatmentBedRooms,
                      BedLogList,
-                     keyColumnSize
+                     keyColumnSize,
+                     chooseTimeType
                  );
                     WaitingManager.Hide();
                     Run.Print.PrintData(printTypeCode, fileName, mps000047RDO, this.chkPrintNow.Checked, inputADO, ref result, this.currrentModule.RoomId, false, false, 1, SetDataGroup);

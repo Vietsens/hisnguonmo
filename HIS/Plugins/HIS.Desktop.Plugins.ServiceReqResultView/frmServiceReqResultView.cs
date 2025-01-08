@@ -50,6 +50,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -469,15 +470,16 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                                 {
                                     if (item.Contains("idChiDinh"))
                                     {
-                                        url = url.Replace(item, idChiDinh);
+                                        url = url.Replace(":idChiDinh", idChiDinh);
+                                        //url = Regex.Replace(url, @":idChiDinh\w*", idChiDinh);
                                     }
                                     else if (item.Contains("idBenhNhan"))
                                     {
-                                        url = url.Replace(item, idBenhNhan);
+                                        url = url.Replace(":idBenhNhan", idBenhNhan);
                                     }
                                     else if (item.Contains("idDotVaoVien"))
                                     {
-                                        url = url.Replace(item, idDotVaoVien);
+                                        url = url.Replace(":idDotVaoVien", idDotVaoVien);
                                     }
                                 }
                                 isSense = true;
@@ -2405,15 +2407,15 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                                 {
                                     if (item.Contains("idChiDinh"))
                                     {
-                                        url = url.Replace(item, idChiDinh);
+                                        url = url.Replace(":idChiDinh", idChiDinh);
                                     }
                                     else if (item.Contains("idBenhNhan"))
                                     {
-                                        url = url.Replace(item, idBenhNhan);
+                                        url = url.Replace(":idBenhNhan", idBenhNhan);
                                     }
                                     else if (item.Contains("idDotVaoVien"))
                                     {
-                                        url = url.Replace(item, idDotVaoVien);
+                                        url = url.Replace(":idDotVaoVien", idDotVaoVien);
                                     }
                                 }
 

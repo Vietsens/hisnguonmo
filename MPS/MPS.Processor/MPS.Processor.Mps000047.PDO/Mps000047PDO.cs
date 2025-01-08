@@ -34,6 +34,7 @@ namespace MPS.Processor.Mps000047.PDO
         public List<V_HIS_TREATMENT_BED_ROOM> vHisTreatmentBedRooms { get; set; }
         public List<V_HIS_BED_LOG> _listBedLog { get; set; }
         public long keyColumnSize { get; set; }
+        public long TimeFilterOption { get; set; }
 
         public Mps000047PDO() { }
 
@@ -86,7 +87,33 @@ namespace MPS.Processor.Mps000047.PDO
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        public Mps000047PDO(
+         List<Mps000047ADO> medicineExpmestTypeADOs,
+         V_HIS_EXP_MEST aggrExpMest,
+          List<HIS_EXP_MEST> _expMests_Print,
+         HIS_DEPARTMENT department,
+          List<V_HIS_TREATMENT_BED_ROOM> vHisTreatmentBedRooms,
+           List<V_HIS_BED_LOG> listBedLog,
+           long _keyColumnSize,
+           long _TimeFilterOption
+          )
+        {
+            try
+            {
+                this.MedicineExpmestTypeADOs = medicineExpmestTypeADOs;
+                this.AggrExpMest = aggrExpMest;
+                this._ExpMests_Print = _expMests_Print;
+                this.Department = department;
+                this.vHisTreatmentBedRooms = vHisTreatmentBedRooms;
+                this._listBedLog = listBedLog;
+                keyColumnSize = _keyColumnSize;
+                this.TimeFilterOption = _TimeFilterOption;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 
     public class Mps000047ADO

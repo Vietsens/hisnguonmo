@@ -379,6 +379,8 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 rowSample2 = (V_LIS_SAMPLE_2)gridViewSample.GetFocusedRow();
                 AutoMapper.Mapper.CreateMap<V_LIS_SAMPLE_2, V_LIS_SAMPLE>();
                 rowSample = AutoMapper.Mapper.Map<V_LIS_SAMPLE>(rowSample2);
+                if (!ValidTime()) return;
+                
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
                 LisSampleViewFilter filterSample = new LisSampleViewFilter();

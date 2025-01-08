@@ -534,18 +534,18 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                             var ngayVao = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(Convert.ToInt64(exits.ngayVao+"00"));
                             var ngayRa = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(Convert.ToInt64(exits.ngayRa+"00"));
                             var tenCSKCB = (BackendDataWorker.Get<HIS_MEDI_ORG>().Where(s => s.MEDI_ORG_CODE == exits.maCSKCB).FirstOrDefault() ?? new HIS_MEDI_ORG()).MEDI_ORG_NAME;
-                            var tinhTrang = exits.tinhTrang == "1" ? "Khỏi" :
-                                        exits.tinhTrang == "2" ? "Đỡ" :
-                                        exits.tinhTrang == "3" ? "Không thay đổi" :
-                                        exits.tinhTrang == "4" ? "Nặng hơn" :
-                                        exits.tinhTrang == "5" ? "Tử vong" :
-                                        exits.tinhTrang == "6" ? "Tiên lượng nặng xin về" :
-                                        exits.tinhTrang == "7" ? "Chưa xác định" : "Mã không hợp lệ";
-                            var kqDieuTri = exits.kqDieuTri == "1" ? "Ra viện" :
-                                        exits.kqDieuTri == "2" ? "Chuyển tuyến theo yêu cầu chuyên môn" :
-                                        exits.kqDieuTri == "3" ? "Trốn viện" :
-                                        exits.kqDieuTri == "4" ? "Xin ra viện" :
-                                        exits.kqDieuTri == "5" ? "Chuyển tuyến theo yêu cầu người bệnh" :
+                            var kqDieuTri = exits.kqDieuTri == "1" ? "Khỏi" :
+                                        exits.kqDieuTri == "2" ? "Đỡ" :
+                                        exits.kqDieuTri == "3" ? "Không thay đổi" :
+                                        exits.kqDieuTri == "4" ? "Nặng hơn" :
+                                        exits.kqDieuTri == "5" ? "Tử vong" :
+                                        exits.kqDieuTri == "6" ? "Tiên lượng nặng xin về" :
+                                        exits.kqDieuTri == "7" ? "Chưa xác định" : "Mã không hợp lệ";
+                            var tinhTrang = exits.tinhTrang == "1" ? "Ra viện" :
+                                        exits.tinhTrang == "2" ? "Chuyển tuyến theo yêu cầu chuyên môn" :
+                                        exits.tinhTrang == "3" ? "Trốn viện" :
+                                        exits.tinhTrang == "4" ? "Xin ra viện" :
+                                        exits.tinhTrang == "5" ? "Chuyển tuyến theo yêu cầu người bệnh" :
                                         "Mã không hợp lệ";
 
                             rsData.ResultHistoryLDO.message = string.Format("Thời gian {0} - {1} bệnh nhân có khám, chữa bệnh tại cơ sở {2} (Mã CSKCB: {3}) - Kết quả: {4} - {5}", ngayVao, ngayRa, tenCSKCB, exits.maCSKCB, tinhTrang, kqDieuTri);
@@ -559,18 +559,18 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                             var ngayVao = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(Convert.ToInt64(notExits.ngayVao+"00"));
                             var ngayRa = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(Convert.ToInt64(notExits.ngayRa+"00"));
                             var tenCSKCB = (BackendDataWorker.Get<HIS_MEDI_ORG>().Where(s => s.MEDI_ORG_CODE == notExits.maCSKCB).FirstOrDefault()??new HIS_MEDI_ORG()).MEDI_ORG_NAME;
-                            var tinhTrang = notExits.tinhTrang == "1" ? "Khỏi" :
-                                        notExits.tinhTrang == "2" ? "Đỡ" :
-                                        notExits.tinhTrang == "3" ? "Không thay đổi" :
-                                        notExits.tinhTrang == "4" ? "Nặng hơn" :
-                                        notExits.tinhTrang == "5" ? "Tử vong" :
-                                        notExits.tinhTrang == "6" ? "Tiên lượng nặng xin về" :
-                                        notExits.tinhTrang == "7" ? "Chưa xác định" : "Mã không hợp lệ";
-                            var kqDieuTri = notExits.kqDieuTri == "1" ? "Ra viện" :
-                                        notExits.kqDieuTri == "2" ? "Chuyển tuyến theo yêu cầu chuyên môn" :
-                                        notExits.kqDieuTri == "3" ? "Trốn viện" :
-                                        notExits.kqDieuTri == "4" ? "Xin ra viện" :
-                                        notExits.kqDieuTri == "5" ? "Chuyển tuyến theo yêu cầu người bệnh" :
+                            var kqDieuTri = exits.kqDieuTri == "1" ? "Khỏi" :
+                                        exits.kqDieuTri == "2" ? "Đỡ" :
+                                        exits.kqDieuTri == "3" ? "Không thay đổi" :
+                                        exits.kqDieuTri == "4" ? "Nặng hơn" :
+                                        exits.kqDieuTri == "5" ? "Tử vong" :
+                                        exits.kqDieuTri == "6" ? "Tiên lượng nặng xin về" :
+                                        exits.kqDieuTri == "7" ? "Chưa xác định" : "Mã không hợp lệ";
+                            var tinhTrang = exits.tinhTrang == "1" ? "Ra viện" :
+                                        exits.tinhTrang == "2" ? "Chuyển tuyến theo yêu cầu chuyên môn" :
+                                        exits.tinhTrang == "3" ? "Trốn viện" :
+                                        exits.tinhTrang == "4" ? "Xin ra viện" :
+                                        exits.tinhTrang == "5" ? "Chuyển tuyến theo yêu cầu người bệnh" :
                                         "Mã không hợp lệ";
                             string erormessage = string.Format("Thời gian {0} - {1} bệnh nhân có khám, chữa bệnh tại cơ sở {2} (Mã CSKCB: {3}) - Kết quả: {4} - {5}", ngayVao, ngayRa, tenCSKCB, notExits.maCSKCB, tinhTrang, kqDieuTri);
                             if (MessageBox.Show(erormessage+". Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)

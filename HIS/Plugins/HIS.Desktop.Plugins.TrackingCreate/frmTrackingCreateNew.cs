@@ -412,7 +412,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             bool result = true;
             try
             {
-                result = (bool)this.subIcdPbProcessor.GetValidate(this.ucSecondaryIcdPb) && result;
+                result = (this.ucSecondaryIcdPb != null && (bool)this.subIcdPbProcessor.GetValidate(this.ucSecondaryIcdPb)) && result;
                 if (this.icdProcessor != null && this.ucIcd != null || (this.subIcdProcessor != null && this.ucSecondaryIcd != null)
                     || (this.subIcdPbProcessor != null && this.ucSecondaryIcdPb != null))
                 {
@@ -2986,10 +2986,13 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 this.positionHandleControl = -1;
                 bool IsValid = true;
                 IsValid = (bool)icdProcessor.ValidationIcd(this.ucIcd);
-                IsValid = (bool)this.subIcdProcessor.GetValidate(this.ucSecondaryIcd) && IsValid;
-                IsValid = (bool)this.subIcdYhctProcessor.GetValidate(this.ucSecondaryIcdYhct) && IsValid;
-                
-                IsValid = (bool)this.icdYhctProcessor.ValidationIcd(this.ucIcdYhct) && IsValid;
+                IsValid = (bool)(this.ucSecondaryIcd != null && this.subIcdProcessor.GetValidate(this.ucSecondaryIcd)) && IsValid;
+
+                if(this.layoutControlItem12.Visible && this.layoutControlISubIcdYhct.Visible)
+                    IsValid = (bool)(this.ucSecondaryIcdYhct != null && this.subIcdYhctProcessor.GetValidate(this.ucSecondaryIcdYhct)) && IsValid;
+                if(this.layoutControlItem9.Visible && this.layoutControlIcdYhct.Visible)
+                    IsValid = (bool)(this.ucIcdYhct != null && (bool)this.icdYhctProcessor.ValidationIcd(this.ucIcdYhct)) && IsValid;
+
                 IsValid = IsValid && dxValidationProvider1.Validate();
                 if (!IsValid)
                     return;

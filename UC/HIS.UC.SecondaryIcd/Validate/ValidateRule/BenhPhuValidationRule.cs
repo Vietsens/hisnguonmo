@@ -193,7 +193,7 @@ namespace HIS.UC.SecondaryIcd.Validate.ValidateRule
 
                             if (listIcd != null && listIcd.Count > 0)
                                 icdByCode = listIcd.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.Trim().ToLower());
-                            else
+                            else if(listViewIcd != null && listViewIcd.Count > 0)
                             {
                                 var ViewicdByCode = listViewIcd.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.Trim().ToLower());
                                 icdByCode = new HIS_ICD();
@@ -201,6 +201,11 @@ namespace HIS.UC.SecondaryIcd.Validate.ValidateRule
                                 icdByCode.ICD_CODE = ViewicdByCode.ICD_CODE;
                                 icdByCode.ICD_NAME = ViewicdByCode.ICD_NAME;
                             }
+                            else
+                            {
+                                Inventec.Common.Logging.LogSystem.Warn("Du lieu danh sach ICD null");
+                            }
+
                             if (icdByCode != null && icdByCode.ID > 0)
                             {
                                 strIcdNames += (IcdUtil.seperator + icdByCode.ICD_NAME);
