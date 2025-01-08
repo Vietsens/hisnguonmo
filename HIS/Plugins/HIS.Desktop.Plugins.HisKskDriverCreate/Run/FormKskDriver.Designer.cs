@@ -49,10 +49,10 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormKskDriver));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtPatietnCode = new DevExpress.XtraEditors.TextEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
@@ -63,10 +63,6 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.barBtnCtrlS = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnCtrlR = new DevExpress.XtraBars.BarButtonItem();
             this.barBtnF2 = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.btnReset = new DevExpress.XtraEditors.SimpleButton();
             this.gridControlKskDriver = new DevExpress.XtraGrid.GridControl();
             this.gridViewKskDriver = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -152,6 +148,10 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPatient = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -249,23 +249,21 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.layoutControl1.Controls.Add(this.txtServiceReqCode);
             this.layoutControl1.Controls.Add(this.txtTreatmentCode);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl1.Location = new System.Drawing.Point(0, 38);
-            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4);
+            this.layoutControl1.Location = new System.Drawing.Point(0, 29);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1320, 590);
+            this.layoutControl1.Size = new System.Drawing.Size(990, 481);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // txtPatietnCode
             // 
-            this.txtPatietnCode.Location = new System.Drawing.Point(3, 3);
-            this.txtPatietnCode.Margin = new System.Windows.Forms.Padding(4);
+            this.txtPatietnCode.Location = new System.Drawing.Point(2, 2);
             this.txtPatietnCode.MenuManager = this.barManager1;
             this.txtPatietnCode.Name = "txtPatietnCode";
             this.txtPatietnCode.Properties.NullValuePrompt = "Mã bệnh nhân (F2)";
             this.txtPatietnCode.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtPatietnCode.Size = new System.Drawing.Size(177, 22);
+            this.txtPatietnCode.Size = new System.Drawing.Size(133, 20);
             this.txtPatietnCode.StyleController = this.layoutControl1;
             this.txtPatietnCode.TabIndex = 19;
             this.txtPatietnCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtPatietnCode_PreviewKeyDown);
@@ -274,10 +272,6 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barBtnF3,
@@ -352,40 +346,11 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.barBtnF2.Name = "barBtnF2";
             this.barBtnF2.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barBtnF2_ItemClick);
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1320, 38);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 628);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1320, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 590);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1320, 38);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 590);
-            // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(1213, 560);
-            this.btnReset.Margin = new System.Windows.Forms.Padding(4);
+            this.btnReset.Location = new System.Drawing.Point(909, 457);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(104, 27);
+            this.btnReset.Size = new System.Drawing.Size(79, 22);
             this.btnReset.StyleController = this.layoutControl1;
             this.btnReset.TabIndex = 18;
             this.btnReset.Text = "Làm lại (Ctrl R)";
@@ -393,15 +358,13 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // 
             // gridControlKskDriver
             // 
-            this.gridControlKskDriver.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
-            this.gridControlKskDriver.Location = new System.Drawing.Point(3, 36);
+            this.gridControlKskDriver.Location = new System.Drawing.Point(2, 28);
             this.gridControlKskDriver.MainView = this.gridViewKskDriver;
-            this.gridControlKskDriver.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlKskDriver.MenuManager = this.barManager1;
             this.gridControlKskDriver.Name = "gridControlKskDriver";
             this.gridControlKskDriver.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemButtonEditCopy});
-            this.gridControlKskDriver.Size = new System.Drawing.Size(1314, 158);
+            this.gridControlKskDriver.Size = new System.Drawing.Size(986, 130);
             this.gridControlKskDriver.TabIndex = 17;
             this.gridControlKskDriver.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewKskDriver});
@@ -450,7 +413,7 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // 
             this.repositoryItemButtonEditCopy.AutoHeight = false;
             this.repositoryItemButtonEditCopy.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditCopy.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditCopy.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.repositoryItemButtonEditCopy.Name = "repositoryItemButtonEditCopy";
             this.repositoryItemButtonEditCopy.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonEditCopy.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEditCopy_ButtonClick);
@@ -532,12 +495,11 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // 
             // chkSignFileCertUtil
             // 
-            this.chkSignFileCertUtil.Location = new System.Drawing.Point(891, 560);
-            this.chkSignFileCertUtil.Margin = new System.Windows.Forms.Padding(4);
+            this.chkSignFileCertUtil.Location = new System.Drawing.Point(670, 457);
             this.chkSignFileCertUtil.MenuManager = this.barManager1;
             this.chkSignFileCertUtil.Name = "chkSignFileCertUtil";
             this.chkSignFileCertUtil.Properties.Caption = "";
-            this.chkSignFileCertUtil.Size = new System.Drawing.Size(28, 19);
+            this.chkSignFileCertUtil.Size = new System.Drawing.Size(19, 19);
             this.chkSignFileCertUtil.StyleController = this.layoutControl1;
             this.chkSignFileCertUtil.TabIndex = 16;
             this.chkSignFileCertUtil.ToolTip = "Thực hiện ký số sử dụng USB token khi đồng bộ dữ liệu";
@@ -546,10 +508,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // btnSave
             // 
             this.btnSave.Enabled = false;
-            this.btnSave.Location = new System.Drawing.Point(1122, 560);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSave.Location = new System.Drawing.Point(841, 457);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(85, 27);
+            this.btnSave.Size = new System.Drawing.Size(64, 22);
             this.btnSave.StyleController = this.layoutControl1;
             this.btnSave.TabIndex = 15;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -557,11 +518,10 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // 
             // chkAutoPush
             // 
-            this.chkAutoPush.Location = new System.Drawing.Point(1050, 560);
-            this.chkAutoPush.Margin = new System.Windows.Forms.Padding(4);
+            this.chkAutoPush.Location = new System.Drawing.Point(818, 457);
             this.chkAutoPush.Name = "chkAutoPush";
             this.chkAutoPush.Properties.Caption = "";
-            this.chkAutoPush.Size = new System.Drawing.Size(66, 19);
+            this.chkAutoPush.Size = new System.Drawing.Size(19, 19);
             this.chkAutoPush.StyleController = this.layoutControl1;
             this.chkAutoPush.TabIndex = 14;
             this.chkAutoPush.ToolTip = "Tự động đẩy cổng sau khi lưu thành công";
@@ -571,11 +531,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // 
             this.groupKsk.Controls.Add(this.layoutControl3);
             this.groupKsk.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupKsk.Location = new System.Drawing.Point(3, 356);
-            this.groupKsk.Margin = new System.Windows.Forms.Padding(4);
+            this.groupKsk.Location = new System.Drawing.Point(2, 289);
             this.groupKsk.Name = "groupKsk";
-            this.groupKsk.Padding = new System.Windows.Forms.Padding(4);
-            this.groupKsk.Size = new System.Drawing.Size(1314, 198);
+            this.groupKsk.Size = new System.Drawing.Size(986, 164);
             this.groupKsk.TabIndex = 13;
             this.groupKsk.TabStop = false;
             this.groupKsk.Text = "Thông tin khám sức khỏe";
@@ -596,19 +554,18 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.layoutControl3.Controls.Add(this.txtKskDriverCode);
             this.layoutControl3.Controls.Add(this.dtConclusionTime);
             this.layoutControl3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl3.Location = new System.Drawing.Point(4, 20);
-            this.layoutControl3.Margin = new System.Windows.Forms.Padding(4);
+            this.layoutControl3.Location = new System.Drawing.Point(3, 16);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup3;
-            this.layoutControl3.Size = new System.Drawing.Size(1306, 174);
+            this.layoutControl3.Size = new System.Drawing.Size(980, 145);
             this.layoutControl3.TabIndex = 0;
             this.layoutControl3.Text = "layoutControl3";
             // 
             // dtAppointmentTime
             // 
             this.dtAppointmentTime.EditValue = null;
-            this.dtAppointmentTime.Location = new System.Drawing.Point(138, 59);
-            this.dtAppointmentTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dtAppointmentTime.Location = new System.Drawing.Point(137, 50);
+            this.dtAppointmentTime.Margin = new System.Windows.Forms.Padding(2);
             this.dtAppointmentTime.Name = "dtAppointmentTime";
             this.dtAppointmentTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -619,7 +576,7 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.dtAppointmentTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.dtAppointmentTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dtAppointmentTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
-            this.dtAppointmentTime.Size = new System.Drawing.Size(407, 22);
+            this.dtAppointmentTime.Size = new System.Drawing.Size(272, 20);
             this.dtAppointmentTime.StyleController = this.layoutControl3;
             this.dtAppointmentTime.TabIndex = 16;
             this.dtAppointmentTime.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtAppointmentTime_Closed);
@@ -627,28 +584,25 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // 
             // chkPositive
             // 
-            this.chkPositive.Location = new System.Drawing.Point(427, 143);
-            this.chkPositive.Margin = new System.Windows.Forms.Padding(4);
+            this.chkPositive.EditValue = true;
+            this.chkPositive.Location = new System.Drawing.Point(320, 122);
             this.chkPositive.Name = "chkPositive";
             this.chkPositive.Properties.Caption = "Dương tính";
             this.chkPositive.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.chkPositive.Properties.RadioGroupIndex = 1;
-            this.chkPositive.Size = new System.Drawing.Size(876, 20);
+            this.chkPositive.Size = new System.Drawing.Size(658, 19);
             this.chkPositive.StyleController = this.layoutControl3;
             this.chkPositive.TabIndex = 15;
-            this.chkPositive.TabStop = false;
             this.chkPositive.CheckedChanged += new System.EventHandler(this.chkPositive_CheckedChanged);
             this.chkPositive.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkPositive_KeyDown);
             // 
             // chkNegative
             // 
-            this.chkNegative.Location = new System.Drawing.Point(108, 143);
-            this.chkNegative.Margin = new System.Windows.Forms.Padding(4);
+            this.chkNegative.EnterMoveNextControl = true;
+            this.chkNegative.Location = new System.Drawing.Point(107, 122);
             this.chkNegative.Name = "chkNegative";
             this.chkNegative.Properties.Caption = "Âm tính";
             this.chkNegative.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.chkNegative.Properties.RadioGroupIndex = 1;
-            this.chkNegative.Size = new System.Drawing.Size(313, 20);
+            this.chkNegative.Size = new System.Drawing.Size(209, 19);
             this.chkNegative.StyleController = this.layoutControl3;
             this.chkNegative.TabIndex = 14;
             this.chkNegative.TabStop = false;
@@ -658,12 +612,11 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // chkMgKhi
             // 
             this.chkMgKhi.EditValue = true;
-            this.chkMgKhi.Location = new System.Drawing.Point(551, 115);
-            this.chkMgKhi.Margin = new System.Windows.Forms.Padding(4);
+            this.chkMgKhi.Location = new System.Drawing.Point(413, 98);
             this.chkMgKhi.Name = "chkMgKhi";
             this.chkMgKhi.Properties.Caption = "mg/1 lít khí thở";
             this.chkMgKhi.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.chkMgKhi.Size = new System.Drawing.Size(222, 21);
+            this.chkMgKhi.Size = new System.Drawing.Size(167, 19);
             this.chkMgKhi.StyleController = this.layoutControl3;
             this.chkMgKhi.TabIndex = 13;
             this.chkMgKhi.TabStop = false;
@@ -673,12 +626,11 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // chkMgMau
             // 
             this.chkMgMau.EnterMoveNextControl = true;
-            this.chkMgMau.Location = new System.Drawing.Point(779, 115);
-            this.chkMgMau.Margin = new System.Windows.Forms.Padding(4);
+            this.chkMgMau.Location = new System.Drawing.Point(584, 98);
             this.chkMgMau.Name = "chkMgMau";
             this.chkMgMau.Properties.Caption = "mg/100ml máu";
             this.chkMgMau.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.chkMgMau.Size = new System.Drawing.Size(524, 20);
+            this.chkMgMau.Size = new System.Drawing.Size(394, 19);
             this.chkMgMau.StyleController = this.layoutControl3;
             this.chkMgMau.TabIndex = 12;
             this.chkMgMau.TabStop = false;
@@ -692,8 +644,7 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             0,
             0,
             0});
-            this.spConcentration.Location = new System.Drawing.Point(138, 115);
-            this.spConcentration.Margin = new System.Windows.Forms.Padding(4);
+            this.spConcentration.Location = new System.Drawing.Point(137, 98);
             this.spConcentration.Name = "spConcentration";
             this.spConcentration.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spConcentration.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -704,7 +655,7 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             232830,
             0,
             0});
-            this.spConcentration.Size = new System.Drawing.Size(407, 22);
+            this.spConcentration.Size = new System.Drawing.Size(272, 20);
             this.spConcentration.StyleController = this.layoutControl3;
             this.spConcentration.TabIndex = 11;
             this.spConcentration.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.spConcentration_ButtonClick);
@@ -712,35 +663,32 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // 
             // txtSickCondition
             // 
-            this.txtSickCondition.Location = new System.Drawing.Point(138, 87);
-            this.txtSickCondition.Margin = new System.Windows.Forms.Padding(4);
+            this.txtSickCondition.Location = new System.Drawing.Point(137, 74);
             this.txtSickCondition.Name = "txtSickCondition";
-            this.txtSickCondition.Size = new System.Drawing.Size(1165, 22);
+            this.txtSickCondition.Size = new System.Drawing.Size(841, 20);
             this.txtSickCondition.StyleController = this.layoutControl3;
             this.txtSickCondition.TabIndex = 10;
             this.txtSickCondition.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtSickCondition_PreviewKeyDown);
             // 
             // txtReasonBadHeathly
             // 
-            this.txtReasonBadHeathly.Location = new System.Drawing.Point(646, 59);
-            this.txtReasonBadHeathly.Margin = new System.Windows.Forms.Padding(4);
+            this.txtReasonBadHeathly.Location = new System.Drawing.Point(508, 50);
             this.txtReasonBadHeathly.Name = "txtReasonBadHeathly";
-            this.txtReasonBadHeathly.Size = new System.Drawing.Size(657, 22);
+            this.txtReasonBadHeathly.Size = new System.Drawing.Size(470, 20);
             this.txtReasonBadHeathly.StyleController = this.layoutControl3;
             this.txtReasonBadHeathly.TabIndex = 9;
             this.txtReasonBadHeathly.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtReasonBadHeathly_PreviewKeyDown);
             // 
             // cboConclusionName
             // 
-            this.cboConclusionName.Location = new System.Drawing.Point(1024, 31);
-            this.cboConclusionName.Margin = new System.Windows.Forms.Padding(4);
+            this.cboConclusionName.Location = new System.Drawing.Point(792, 26);
             this.cboConclusionName.Name = "cboConclusionName";
             this.cboConclusionName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboConclusionName.Properties.NullText = "";
             this.cboConclusionName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboConclusionName.Properties.View = this.gridLookUpEdit3View;
-            this.cboConclusionName.Size = new System.Drawing.Size(279, 22);
+            this.cboConclusionName.Size = new System.Drawing.Size(186, 20);
             this.cboConclusionName.StyleController = this.layoutControl3;
             this.cboConclusionName.TabIndex = 8;
             this.cboConclusionName.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboConclusionName_Closed);
@@ -755,14 +703,13 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // 
             // cboLicenesClass
             // 
-            this.cboLicenesClass.Location = new System.Drawing.Point(646, 31);
-            this.cboLicenesClass.Margin = new System.Windows.Forms.Padding(4);
+            this.cboLicenesClass.Location = new System.Drawing.Point(508, 26);
             this.cboLicenesClass.Name = "cboLicenesClass";
             this.cboLicenesClass.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboLicenesClass.Properties.NullText = "";
             this.cboLicenesClass.Properties.View = this.gridLookUpEdit2View;
-            this.cboLicenesClass.Size = new System.Drawing.Size(277, 22);
+            this.cboLicenesClass.Size = new System.Drawing.Size(185, 20);
             this.cboLicenesClass.StyleController = this.layoutControl3;
             this.cboLicenesClass.TabIndex = 7;
             this.cboLicenesClass.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboLicenesClass_Closed);
@@ -777,15 +724,14 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // 
             // cboConclusion
             // 
-            this.cboConclusion.Location = new System.Drawing.Point(138, 31);
-            this.cboConclusion.Margin = new System.Windows.Forms.Padding(4);
+            this.cboConclusion.Location = new System.Drawing.Point(137, 26);
             this.cboConclusion.Name = "cboConclusion";
             this.cboConclusion.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboConclusion.Properties.NullText = "";
             this.cboConclusion.Properties.PopupFormSize = new System.Drawing.Size(500, 0);
             this.cboConclusion.Properties.View = this.gridLookUpEdit1View;
-            this.cboConclusion.Size = new System.Drawing.Size(407, 22);
+            this.cboConclusion.Size = new System.Drawing.Size(272, 20);
             this.cboConclusion.StyleController = this.layoutControl3;
             this.cboConclusion.TabIndex = 6;
             this.cboConclusion.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboConclusion_Closed);
@@ -801,18 +747,16 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // txtKskDriverCode
             // 
             this.txtKskDriverCode.Enabled = false;
-            this.txtKskDriverCode.Location = new System.Drawing.Point(646, 3);
-            this.txtKskDriverCode.Margin = new System.Windows.Forms.Padding(4);
+            this.txtKskDriverCode.Location = new System.Drawing.Point(508, 2);
             this.txtKskDriverCode.Name = "txtKskDriverCode";
-            this.txtKskDriverCode.Size = new System.Drawing.Size(277, 22);
+            this.txtKskDriverCode.Size = new System.Drawing.Size(185, 20);
             this.txtKskDriverCode.StyleController = this.layoutControl3;
             this.txtKskDriverCode.TabIndex = 5;
             // 
             // dtConclusionTime
             // 
             this.dtConclusionTime.EditValue = null;
-            this.dtConclusionTime.Location = new System.Drawing.Point(138, 3);
-            this.dtConclusionTime.Margin = new System.Windows.Forms.Padding(4);
+            this.dtConclusionTime.Location = new System.Drawing.Point(137, 2);
             this.dtConclusionTime.Name = "dtConclusionTime";
             this.dtConclusionTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -823,7 +767,7 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.dtConclusionTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.dtConclusionTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dtConclusionTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
-            this.dtConclusionTime.Size = new System.Drawing.Size(407, 22);
+            this.dtConclusionTime.Size = new System.Drawing.Size(272, 20);
             this.dtConclusionTime.StyleController = this.layoutControl3;
             this.dtConclusionTime.TabIndex = 4;
             this.dtConclusionTime.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtConclusionTime_Closed);
@@ -851,7 +795,7 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(1306, 174);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(980, 145);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // lciConclusionTime
@@ -863,7 +807,7 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciConclusionTime.Control = this.dtConclusionTime;
             this.lciConclusionTime.Location = new System.Drawing.Point(0, 0);
             this.lciConclusionTime.Name = "lciConclusionTime";
-            this.lciConclusionTime.Size = new System.Drawing.Size(548, 28);
+            this.lciConclusionTime.Size = new System.Drawing.Size(411, 24);
             this.lciConclusionTime.Text = "Ngày kết luận:";
             this.lciConclusionTime.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciConclusionTime.TextSize = new System.Drawing.Size(130, 20);
@@ -872,9 +816,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(926, 0);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(695, 0);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(380, 28);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(285, 24);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciKskDriverCode
@@ -882,9 +826,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciKskDriverCode.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciKskDriverCode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciKskDriverCode.Control = this.txtKskDriverCode;
-            this.lciKskDriverCode.Location = new System.Drawing.Point(548, 0);
+            this.lciKskDriverCode.Location = new System.Drawing.Point(411, 0);
             this.lciKskDriverCode.Name = "lciKskDriverCode";
-            this.lciKskDriverCode.Size = new System.Drawing.Size(378, 28);
+            this.lciKskDriverCode.Size = new System.Drawing.Size(284, 24);
             this.lciKskDriverCode.Text = "Số hồ sơ:";
             this.lciKskDriverCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciKskDriverCode.TextSize = new System.Drawing.Size(90, 20);
@@ -897,9 +841,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciConclusion.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciConclusion.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciConclusion.Control = this.cboConclusion;
-            this.lciConclusion.Location = new System.Drawing.Point(0, 28);
+            this.lciConclusion.Location = new System.Drawing.Point(0, 24);
             this.lciConclusion.Name = "lciConclusion";
-            this.lciConclusion.Size = new System.Drawing.Size(548, 28);
+            this.lciConclusion.Size = new System.Drawing.Size(411, 24);
             this.lciConclusion.Text = "Kết luận:";
             this.lciConclusion.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciConclusion.TextSize = new System.Drawing.Size(130, 20);
@@ -912,9 +856,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciLicenesClass.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciLicenesClass.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciLicenesClass.Control = this.cboLicenesClass;
-            this.lciLicenesClass.Location = new System.Drawing.Point(548, 28);
+            this.lciLicenesClass.Location = new System.Drawing.Point(411, 24);
             this.lciLicenesClass.Name = "lciLicenesClass";
-            this.lciLicenesClass.Size = new System.Drawing.Size(378, 28);
+            this.lciLicenesClass.Size = new System.Drawing.Size(284, 24);
             this.lciLicenesClass.Text = "Hạng bằng lái:";
             this.lciLicenesClass.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciLicenesClass.TextSize = new System.Drawing.Size(90, 20);
@@ -927,10 +871,10 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciConclusionName.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciConclusionName.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciConclusionName.Control = this.cboConclusionName;
-            this.lciConclusionName.Location = new System.Drawing.Point(926, 28);
+            this.lciConclusionName.Location = new System.Drawing.Point(695, 24);
             this.lciConclusionName.Name = "lciConclusionName";
             this.lciConclusionName.OptionsToolTip.ToolTip = "Bác sĩ kết luận";
-            this.lciConclusionName.Size = new System.Drawing.Size(380, 28);
+            this.lciConclusionName.Size = new System.Drawing.Size(285, 24);
             this.lciConclusionName.Text = "BS kết luận:";
             this.lciConclusionName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciConclusionName.TextSize = new System.Drawing.Size(90, 20);
@@ -941,10 +885,10 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciReasonBadHeathly.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciReasonBadHeathly.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciReasonBadHeathly.Control = this.txtReasonBadHeathly;
-            this.lciReasonBadHeathly.Location = new System.Drawing.Point(548, 56);
+            this.lciReasonBadHeathly.Location = new System.Drawing.Point(411, 48);
             this.lciReasonBadHeathly.Name = "lciReasonBadHeathly";
             this.lciReasonBadHeathly.OptionsToolTip.ToolTip = "Lý do sức khỏe kém";
-            this.lciReasonBadHeathly.Size = new System.Drawing.Size(758, 28);
+            this.lciReasonBadHeathly.Size = new System.Drawing.Size(569, 24);
             this.lciReasonBadHeathly.Text = "Lý do SK kém:";
             this.lciReasonBadHeathly.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciReasonBadHeathly.TextSize = new System.Drawing.Size(90, 13);
@@ -955,9 +899,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciSickCondition.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciSickCondition.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciSickCondition.Control = this.txtSickCondition;
-            this.lciSickCondition.Location = new System.Drawing.Point(0, 84);
+            this.lciSickCondition.Location = new System.Drawing.Point(0, 72);
             this.lciSickCondition.Name = "lciSickCondition";
-            this.lciSickCondition.Size = new System.Drawing.Size(1306, 28);
+            this.lciSickCondition.Size = new System.Drawing.Size(980, 24);
             this.lciSickCondition.Text = "Tình trạng bệnh:";
             this.lciSickCondition.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSickCondition.TextSize = new System.Drawing.Size(130, 20);
@@ -965,14 +909,14 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // 
             // lciConcentration
             // 
-            this.lciConcentration.AppearanceItemCaption.ForeColor = System.Drawing.Color.Brown;
+            this.lciConcentration.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
             this.lciConcentration.AppearanceItemCaption.Options.UseForeColor = true;
             this.lciConcentration.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciConcentration.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciConcentration.Control = this.spConcentration;
-            this.lciConcentration.Location = new System.Drawing.Point(0, 112);
+            this.lciConcentration.Location = new System.Drawing.Point(0, 96);
             this.lciConcentration.Name = "lciConcentration";
-            this.lciConcentration.Size = new System.Drawing.Size(548, 28);
+            this.lciConcentration.Size = new System.Drawing.Size(411, 24);
             this.lciConcentration.Text = "Nồng độ cồn:";
             this.lciConcentration.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciConcentration.TextSize = new System.Drawing.Size(130, 20);
@@ -981,18 +925,18 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // layoutControlItem12
             // 
             this.layoutControlItem12.Control = this.chkMgMau;
-            this.layoutControlItem12.Location = new System.Drawing.Point(776, 112);
+            this.layoutControlItem12.Location = new System.Drawing.Point(582, 96);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(530, 28);
+            this.layoutControlItem12.Size = new System.Drawing.Size(398, 24);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
             // layoutControlItem13
             // 
             this.layoutControlItem13.Control = this.chkMgKhi;
-            this.layoutControlItem13.Location = new System.Drawing.Point(548, 112);
+            this.layoutControlItem13.Location = new System.Drawing.Point(411, 96);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(228, 28);
+            this.layoutControlItem13.Size = new System.Drawing.Size(171, 24);
             this.layoutControlItem13.Text = " ";
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
@@ -1002,9 +946,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciDrug.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciDrug.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciDrug.Control = this.chkNegative;
-            this.lciDrug.Location = new System.Drawing.Point(0, 140);
+            this.lciDrug.Location = new System.Drawing.Point(0, 120);
             this.lciDrug.Name = "lciDrug";
-            this.lciDrug.Size = new System.Drawing.Size(424, 34);
+            this.lciDrug.Size = new System.Drawing.Size(318, 25);
             this.lciDrug.Text = "Ma túy:";
             this.lciDrug.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciDrug.TextSize = new System.Drawing.Size(100, 20);
@@ -1013,9 +957,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.chkPositive;
-            this.layoutControlItem15.Location = new System.Drawing.Point(424, 140);
+            this.layoutControlItem15.Location = new System.Drawing.Point(318, 120);
             this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(882, 34);
+            this.layoutControlItem15.Size = new System.Drawing.Size(662, 25);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
             // 
@@ -1024,9 +968,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.layoutControlItem3.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem3.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem3.Control = this.dtAppointmentTime;
-            this.layoutControlItem3.Location = new System.Drawing.Point(0, 56);
+            this.layoutControlItem3.Location = new System.Drawing.Point(0, 48);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(548, 28);
+            this.layoutControlItem3.Size = new System.Drawing.Size(411, 24);
             this.layoutControlItem3.Text = "Ngày khám lại:";
             this.layoutControlItem3.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem3.TextSize = new System.Drawing.Size(130, 20);
@@ -1036,11 +980,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // 
             this.groupPatient.Controls.Add(this.layoutControl2);
             this.groupPatient.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupPatient.Location = new System.Drawing.Point(3, 200);
-            this.groupPatient.Margin = new System.Windows.Forms.Padding(4);
+            this.groupPatient.Location = new System.Drawing.Point(2, 162);
             this.groupPatient.Name = "groupPatient";
-            this.groupPatient.Padding = new System.Windows.Forms.Padding(4);
-            this.groupPatient.Size = new System.Drawing.Size(1314, 150);
+            this.groupPatient.Size = new System.Drawing.Size(986, 123);
             this.groupPatient.TabIndex = 12;
             this.groupPatient.TabStop = false;
             this.groupPatient.Text = "Thông tin người khám";
@@ -1056,25 +998,23 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.layoutControl2.Controls.Add(this.lblGender);
             this.layoutControl2.Controls.Add(this.lblPatientCode);
             this.layoutControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl2.Location = new System.Drawing.Point(4, 20);
-            this.layoutControl2.Margin = new System.Windows.Forms.Padding(4);
+            this.layoutControl2.Location = new System.Drawing.Point(3, 16);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.layoutControlGroup2;
-            this.layoutControl2.Size = new System.Drawing.Size(1306, 126);
+            this.layoutControl2.Size = new System.Drawing.Size(980, 104);
             this.layoutControl2.TabIndex = 0;
             this.layoutControl2.Text = "layoutControl2";
             // 
             // dtTimeCccd
             // 
             this.dtTimeCccd.EditValue = null;
-            this.dtTimeCccd.Location = new System.Drawing.Point(646, 81);
-            this.dtTimeCccd.Margin = new System.Windows.Forms.Padding(4);
+            this.dtTimeCccd.Location = new System.Drawing.Point(508, 74);
             this.dtTimeCccd.Name = "dtTimeCccd";
             this.dtTimeCccd.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dtTimeCccd.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtTimeCccd.Size = new System.Drawing.Size(277, 22);
+            this.dtTimeCccd.Size = new System.Drawing.Size(185, 20);
             this.dtTimeCccd.StyleController = this.layoutControl2;
             this.dtTimeCccd.TabIndex = 16;
             this.dtTimeCccd.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtTimeCccd_Closed);
@@ -1082,20 +1022,18 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // 
             // txtPlaceCccd
             // 
-            this.txtPlaceCccd.Location = new System.Drawing.Point(1024, 81);
-            this.txtPlaceCccd.Margin = new System.Windows.Forms.Padding(4);
+            this.txtPlaceCccd.Location = new System.Drawing.Point(792, 74);
             this.txtPlaceCccd.Name = "txtPlaceCccd";
-            this.txtPlaceCccd.Size = new System.Drawing.Size(279, 22);
+            this.txtPlaceCccd.Size = new System.Drawing.Size(186, 20);
             this.txtPlaceCccd.StyleController = this.layoutControl2;
             this.txtPlaceCccd.TabIndex = 15;
             this.txtPlaceCccd.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtPlaceCccd_PreviewKeyDown);
             // 
             // txtCccdCmnd
             // 
-            this.txtCccdCmnd.Location = new System.Drawing.Point(138, 81);
-            this.txtCccdCmnd.Margin = new System.Windows.Forms.Padding(4);
+            this.txtCccdCmnd.Location = new System.Drawing.Point(137, 74);
             this.txtCccdCmnd.Name = "txtCccdCmnd";
-            this.txtCccdCmnd.Size = new System.Drawing.Size(407, 22);
+            this.txtCccdCmnd.Size = new System.Drawing.Size(272, 20);
             this.txtCccdCmnd.StyleController = this.layoutControl2;
             this.txtCccdCmnd.TabIndex = 13;
             this.txtCccdCmnd.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtCccdCmnd_PreviewKeyDown);
@@ -1103,54 +1041,49 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // lblAddress
             // 
             this.lblAddress.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblAddress.Location = new System.Drawing.Point(138, 55);
-            this.lblAddress.Margin = new System.Windows.Forms.Padding(4);
+            this.lblAddress.Location = new System.Drawing.Point(137, 50);
             this.lblAddress.Name = "lblAddress";
-            this.lblAddress.Size = new System.Drawing.Size(1165, 20);
+            this.lblAddress.Size = new System.Drawing.Size(841, 20);
             this.lblAddress.StyleController = this.layoutControl2;
             this.lblAddress.TabIndex = 12;
             // 
             // lblPatientName
             // 
             this.lblPatientName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblPatientName.Location = new System.Drawing.Point(138, 29);
-            this.lblPatientName.Margin = new System.Windows.Forms.Padding(4);
+            this.lblPatientName.Location = new System.Drawing.Point(137, 26);
             this.lblPatientName.Name = "lblPatientName";
-            this.lblPatientName.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.lblPatientName.Size = new System.Drawing.Size(407, 20);
+            this.lblPatientName.Padding = new System.Windows.Forms.Padding(2);
+            this.lblPatientName.Size = new System.Drawing.Size(272, 20);
             this.lblPatientName.StyleController = this.layoutControl2;
             this.lblPatientName.TabIndex = 9;
             // 
             // lblDob
             // 
             this.lblDob.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblDob.Location = new System.Drawing.Point(1024, 29);
-            this.lblDob.Margin = new System.Windows.Forms.Padding(4);
+            this.lblDob.Location = new System.Drawing.Point(792, 26);
             this.lblDob.Name = "lblDob";
-            this.lblDob.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.lblDob.Size = new System.Drawing.Size(279, 20);
+            this.lblDob.Padding = new System.Windows.Forms.Padding(2);
+            this.lblDob.Size = new System.Drawing.Size(186, 20);
             this.lblDob.StyleController = this.layoutControl2;
             this.lblDob.TabIndex = 11;
             // 
             // lblGender
             // 
             this.lblGender.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblGender.Location = new System.Drawing.Point(646, 29);
-            this.lblGender.Margin = new System.Windows.Forms.Padding(4);
+            this.lblGender.Location = new System.Drawing.Point(508, 26);
             this.lblGender.Name = "lblGender";
-            this.lblGender.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.lblGender.Size = new System.Drawing.Size(277, 20);
+            this.lblGender.Padding = new System.Windows.Forms.Padding(2);
+            this.lblGender.Size = new System.Drawing.Size(185, 20);
             this.lblGender.StyleController = this.layoutControl2;
             this.lblGender.TabIndex = 10;
             // 
             // lblPatientCode
             // 
             this.lblPatientCode.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblPatientCode.Location = new System.Drawing.Point(138, 3);
-            this.lblPatientCode.Margin = new System.Windows.Forms.Padding(4);
+            this.lblPatientCode.Location = new System.Drawing.Point(137, 2);
             this.lblPatientCode.Name = "lblPatientCode";
-            this.lblPatientCode.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.lblPatientCode.Size = new System.Drawing.Size(1165, 20);
+            this.lblPatientCode.Padding = new System.Windows.Forms.Padding(2);
+            this.lblPatientCode.Size = new System.Drawing.Size(841, 20);
             this.lblPatientCode.StyleController = this.layoutControl2;
             this.lblPatientCode.TabIndex = 8;
             // 
@@ -1170,7 +1103,7 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(1306, 126);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(980, 104);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // lciPatientCode
@@ -1181,7 +1114,7 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciPatientCode.Location = new System.Drawing.Point(0, 0);
             this.lciPatientCode.Name = "lciPatientCode";
             this.lciPatientCode.OptionsToolTip.ToolTip = "Mã bệnh nhân";
-            this.lciPatientCode.Size = new System.Drawing.Size(1306, 26);
+            this.lciPatientCode.Size = new System.Drawing.Size(980, 24);
             this.lciPatientCode.Text = "Mã BN:";
             this.lciPatientCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPatientCode.TextSize = new System.Drawing.Size(130, 20);
@@ -1192,10 +1125,10 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciPatientName.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciPatientName.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciPatientName.Control = this.lblPatientName;
-            this.lciPatientName.Location = new System.Drawing.Point(0, 26);
+            this.lciPatientName.Location = new System.Drawing.Point(0, 24);
             this.lciPatientName.Name = "lciPatientName";
             this.lciPatientName.OptionsToolTip.ToolTip = "Tên bệnh nhân";
-            this.lciPatientName.Size = new System.Drawing.Size(548, 26);
+            this.lciPatientName.Size = new System.Drawing.Size(411, 24);
             this.lciPatientName.Text = "Tên BN:";
             this.lciPatientName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPatientName.TextSize = new System.Drawing.Size(130, 20);
@@ -1206,9 +1139,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciGender.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciGender.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciGender.Control = this.lblGender;
-            this.lciGender.Location = new System.Drawing.Point(548, 26);
+            this.lciGender.Location = new System.Drawing.Point(411, 24);
             this.lciGender.Name = "lciGender";
-            this.lciGender.Size = new System.Drawing.Size(378, 26);
+            this.lciGender.Size = new System.Drawing.Size(284, 24);
             this.lciGender.Text = "Giới tính:";
             this.lciGender.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciGender.TextSize = new System.Drawing.Size(90, 20);
@@ -1219,9 +1152,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciDob.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciDob.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciDob.Control = this.lblDob;
-            this.lciDob.Location = new System.Drawing.Point(926, 26);
+            this.lciDob.Location = new System.Drawing.Point(695, 24);
             this.lciDob.Name = "lciDob";
-            this.lciDob.Size = new System.Drawing.Size(380, 26);
+            this.lciDob.Size = new System.Drawing.Size(285, 24);
             this.lciDob.Text = "Ngày sinh:";
             this.lciDob.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciDob.TextSize = new System.Drawing.Size(90, 20);
@@ -1232,9 +1165,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciAddress.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciAddress.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciAddress.Control = this.lblAddress;
-            this.lciAddress.Location = new System.Drawing.Point(0, 52);
+            this.lciAddress.Location = new System.Drawing.Point(0, 48);
             this.lciAddress.Name = "lciAddress";
-            this.lciAddress.Size = new System.Drawing.Size(1306, 26);
+            this.lciAddress.Size = new System.Drawing.Size(980, 24);
             this.lciAddress.Text = "Địa chỉ:";
             this.lciAddress.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciAddress.TextSize = new System.Drawing.Size(130, 20);
@@ -1247,10 +1180,10 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciCccdNumber.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciCccdNumber.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciCccdNumber.Control = this.txtCccdCmnd;
-            this.lciCccdNumber.Location = new System.Drawing.Point(0, 78);
+            this.lciCccdNumber.Location = new System.Drawing.Point(0, 72);
             this.lciCccdNumber.Name = "lciCccdNumber";
             this.lciCccdNumber.OptionsToolTip.ToolTip = "Số Chứng minh nhân dân/ Căn cước công dân/ Hộ chiếu";
-            this.lciCccdNumber.Size = new System.Drawing.Size(548, 48);
+            this.lciCccdNumber.Size = new System.Drawing.Size(411, 32);
             this.lciCccdNumber.Text = "Số CMND/CCCD/HC:";
             this.lciCccdNumber.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciCccdNumber.TextSize = new System.Drawing.Size(130, 20);
@@ -1263,9 +1196,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciPlaceCccd.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciPlaceCccd.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciPlaceCccd.Control = this.txtPlaceCccd;
-            this.lciPlaceCccd.Location = new System.Drawing.Point(926, 78);
+            this.lciPlaceCccd.Location = new System.Drawing.Point(695, 72);
             this.lciPlaceCccd.Name = "lciPlaceCccd";
-            this.lciPlaceCccd.Size = new System.Drawing.Size(380, 48);
+            this.lciPlaceCccd.Size = new System.Drawing.Size(285, 32);
             this.lciPlaceCccd.Text = "Nơi cấp:";
             this.lciPlaceCccd.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPlaceCccd.TextSize = new System.Drawing.Size(90, 20);
@@ -1278,9 +1211,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciTimeCccd.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciTimeCccd.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTimeCccd.Control = this.dtTimeCccd;
-            this.lciTimeCccd.Location = new System.Drawing.Point(548, 78);
+            this.lciTimeCccd.Location = new System.Drawing.Point(411, 72);
             this.lciTimeCccd.Name = "lciTimeCccd";
-            this.lciTimeCccd.Size = new System.Drawing.Size(378, 48);
+            this.lciTimeCccd.Size = new System.Drawing.Size(284, 32);
             this.lciTimeCccd.Text = "Ngày cấp:";
             this.lciTimeCccd.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTimeCccd.TextSize = new System.Drawing.Size(90, 20);
@@ -1288,10 +1221,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(572, 3);
-            this.btnSearch.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSearch.Location = new System.Drawing.Point(429, 2);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(164, 27);
+            this.btnSearch.Size = new System.Drawing.Size(123, 22);
             this.btnSearch.StyleController = this.layoutControl1;
             this.btnSearch.TabIndex = 7;
             this.btnSearch.Text = "Tìm (Ctrl F)";
@@ -1299,26 +1231,24 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // 
             // txtServiceReqCode
             // 
-            this.txtServiceReqCode.Location = new System.Drawing.Point(378, 3);
-            this.txtServiceReqCode.Margin = new System.Windows.Forms.Padding(4);
+            this.txtServiceReqCode.Location = new System.Drawing.Point(283, 2);
             this.txtServiceReqCode.Name = "txtServiceReqCode";
             this.txtServiceReqCode.Properties.NullValuePrompt = "Mã y lệnh khám (F4)";
             this.txtServiceReqCode.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtServiceReqCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtServiceReqCode.Size = new System.Drawing.Size(188, 22);
+            this.txtServiceReqCode.Size = new System.Drawing.Size(142, 20);
             this.txtServiceReqCode.StyleController = this.layoutControl1;
             this.txtServiceReqCode.TabIndex = 6;
             this.txtServiceReqCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtServiceReqCode_PreviewKeyDown);
             // 
             // txtTreatmentCode
             // 
-            this.txtTreatmentCode.Location = new System.Drawing.Point(186, 3);
-            this.txtTreatmentCode.Margin = new System.Windows.Forms.Padding(4);
+            this.txtTreatmentCode.Location = new System.Drawing.Point(139, 2);
             this.txtTreatmentCode.Name = "txtTreatmentCode";
             this.txtTreatmentCode.Properties.NullValuePrompt = "Mã điều trị (F3)";
             this.txtTreatmentCode.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtTreatmentCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtTreatmentCode.Size = new System.Drawing.Size(186, 22);
+            this.txtTreatmentCode.Size = new System.Drawing.Size(140, 20);
             this.txtTreatmentCode.StyleController = this.layoutControl1;
             this.txtTreatmentCode.TabIndex = 5;
             this.txtTreatmentCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtTreatmentCode_PreviewKeyDown);
@@ -1344,7 +1274,7 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1320, 590);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(990, 481);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // lciSearchTreatmentCode
@@ -1352,9 +1282,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciSearchTreatmentCode.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciSearchTreatmentCode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciSearchTreatmentCode.Control = this.txtTreatmentCode;
-            this.lciSearchTreatmentCode.Location = new System.Drawing.Point(183, 0);
+            this.lciSearchTreatmentCode.Location = new System.Drawing.Point(137, 0);
             this.lciSearchTreatmentCode.Name = "lciSearchTreatmentCode";
-            this.lciSearchTreatmentCode.Size = new System.Drawing.Size(192, 33);
+            this.lciSearchTreatmentCode.Size = new System.Drawing.Size(144, 26);
             this.lciSearchTreatmentCode.Text = "Mã điều trị:";
             this.lciSearchTreatmentCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSearchTreatmentCode.TextSize = new System.Drawing.Size(0, 0);
@@ -1366,9 +1296,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciSearchServiceReqCode.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciSearchServiceReqCode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciSearchServiceReqCode.Control = this.txtServiceReqCode;
-            this.lciSearchServiceReqCode.Location = new System.Drawing.Point(375, 0);
+            this.lciSearchServiceReqCode.Location = new System.Drawing.Point(281, 0);
             this.lciSearchServiceReqCode.Name = "lciSearchServiceReqCode";
-            this.lciSearchServiceReqCode.Size = new System.Drawing.Size(194, 33);
+            this.lciSearchServiceReqCode.Size = new System.Drawing.Size(146, 26);
             this.lciSearchServiceReqCode.Text = "Mã y lệnh:";
             this.lciSearchServiceReqCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSearchServiceReqCode.TextSize = new System.Drawing.Size(0, 0);
@@ -1378,27 +1308,27 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btnSearch;
-            this.layoutControlItem4.Location = new System.Drawing.Point(569, 0);
+            this.layoutControlItem4.Location = new System.Drawing.Point(427, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(170, 33);
+            this.layoutControlItem4.Size = new System.Drawing.Size(127, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(739, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(554, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(581, 33);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(436, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.groupPatient;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 197);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 160);
             this.layoutControlItem1.MinSize = new System.Drawing.Size(104, 119);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1320, 156);
+            this.layoutControlItem1.Size = new System.Drawing.Size(990, 127);
             this.layoutControlItem1.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
@@ -1406,10 +1336,10 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.groupKsk;
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 353);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 287);
             this.layoutControlItem2.MinSize = new System.Drawing.Size(104, 167);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(1320, 204);
+            this.layoutControlItem2.Size = new System.Drawing.Size(990, 168);
             this.layoutControlItem2.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
@@ -1417,9 +1347,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 557);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 455);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(747, 33);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(560, 26);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciAutoPush
@@ -1427,10 +1357,10 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciAutoPush.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciAutoPush.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciAutoPush.Control = this.chkAutoPush;
-            this.lciAutoPush.Location = new System.Drawing.Point(922, 557);
+            this.lciAutoPush.Location = new System.Drawing.Point(691, 455);
             this.lciAutoPush.Name = "lciAutoPush";
             this.lciAutoPush.OptionsToolTip.ToolTip = "Tự động đẩy cổng sau khi lưu thành công";
-            this.lciAutoPush.Size = new System.Drawing.Size(197, 33);
+            this.lciAutoPush.Size = new System.Drawing.Size(148, 26);
             this.lciAutoPush.Text = "Tự động đẩy cổng";
             this.lciAutoPush.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciAutoPush.TextSize = new System.Drawing.Size(120, 20);
@@ -1439,37 +1369,37 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // layoutControlItem17
             // 
             this.layoutControlItem17.Control = this.btnSave;
-            this.layoutControlItem17.Location = new System.Drawing.Point(1119, 557);
+            this.layoutControlItem17.Location = new System.Drawing.Point(839, 455);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(91, 33);
+            this.layoutControlItem17.Size = new System.Drawing.Size(68, 26);
             this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem17.TextVisible = false;
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.chkSignFileCertUtil;
-            this.layoutControlItem5.Location = new System.Drawing.Point(747, 557);
+            this.layoutControlItem5.Location = new System.Drawing.Point(560, 455);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.OptionsToolTip.ToolTip = "Thực hiện ký số sử dụng USB token khi đồng bộ dữ liệu";
-            this.layoutControlItem5.Size = new System.Drawing.Size(175, 33);
+            this.layoutControlItem5.Size = new System.Drawing.Size(131, 26);
             this.layoutControlItem5.Text = "Ký số dùng USB token";
-            this.layoutControlItem5.TextSize = new System.Drawing.Size(138, 17);
+            this.layoutControlItem5.TextSize = new System.Drawing.Size(105, 13);
             // 
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnReset;
-            this.layoutControlItem7.Location = new System.Drawing.Point(1210, 557);
+            this.layoutControlItem7.Location = new System.Drawing.Point(907, 455);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(110, 33);
+            this.layoutControlItem7.Size = new System.Drawing.Size(83, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.gridControlKskDriver;
-            this.layoutControlItem6.Location = new System.Drawing.Point(0, 33);
+            this.layoutControlItem6.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(1320, 164);
+            this.layoutControlItem6.Size = new System.Drawing.Size(990, 134);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
@@ -1478,9 +1408,37 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciPatient.Control = this.txtPatietnCode;
             this.lciPatient.Location = new System.Drawing.Point(0, 0);
             this.lciPatient.Name = "lciPatient";
-            this.lciPatient.Size = new System.Drawing.Size(183, 33);
+            this.lciPatient.Size = new System.Drawing.Size(137, 26);
             this.lciPatient.TextSize = new System.Drawing.Size(0, 0);
             this.lciPatient.TextVisible = false;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(990, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 510);
+            this.barDockControlBottom.Size = new System.Drawing.Size(990, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 481);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(990, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 481);
             // 
             // dxValidationProvider1
             // 
@@ -1492,15 +1450,14 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // 
             // FormKskDriver
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1320, 628);
+            this.ClientSize = new System.Drawing.Size(990, 510);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormKskDriver";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Hồ sơ khám sức khỏe lái xe";
