@@ -21,6 +21,7 @@ using DevExpress.XtraGrid.Columns;
 using HIS.Desktop.Library.CacheClient;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Utility;
 using HIS.UC.ExamTreatmentFinish.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
@@ -195,6 +196,12 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
                             txtLyDoChuyenMon.Text = tranPatiTech.TRAN_PATI_TECH_CODE;
                         }
                     }
+                    memPttt.Text = treatment.SURGERY_NAME;
+                    if (treatment.SURGERY_BEGIN_TIME.HasValue)
+                        dteBegin.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(treatment.SURGERY_BEGIN_TIME ?? 0).Value;
+
+                    if (treatment.SURGERY_END_TIME.HasValue)
+                        dteEnd.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(treatment.SURGERY_END_TIME ?? 0).Value;
 
                     MOS.Filter.HisServiceReqFilter srFilter = new MOS.Filter.HisServiceReqFilter();
                     srFilter.TREATMENT_ID = treatment.ID;
@@ -262,10 +269,11 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
                     //}
 
                     txtHuongDieuTri.Text = treatment.TREATMENT_DIRECTION;
-                    txtUsedMedicine.Text = GetUsedMedicine(treatment.ID);
-                    if (string.IsNullOrEmpty(txtUsedMedicine.Text)
-                        && !string.IsNullOrEmpty(treatment.USED_MEDICINE))
-                        txtUsedMedicine.Text = treatment.USED_MEDICINE;
+                    txtUsedMedicine.Text = treatment.USED_MEDICINE;
+                    //txtUsedMedicine.Text = GetUsedMedicine(treatment.ID);
+                    //if (string.IsNullOrEmpty(txtUsedMedicine.Text)
+                    //    && !string.IsNullOrEmpty(treatment.USED_MEDICINE))
+                    //    txtUsedMedicine.Text = treatment.USED_MEDICINE;
                     Inventec.Common.Logging.LogSystem.Debug("____Treatment: " + Inventec.Common.Logging.LogUtil.TraceData("Treatmemt:", treatment));
                 }
             }
@@ -1083,6 +1091,11 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
                     currentTreatmentFinishSDO.TranPatiHospitalLoginname = cboLoginName.EditValue.ToString();
                     currentTreatmentFinishSDO.TranPatiHospitalUsername = cboLoginName.Text.ToString();
                 }
+                currentTreatmentFinishSDO.SurgeryName = memPttt.Text.Trim();
+                if(dteBegin.EditValue != null && dteBegin.DateTime != DateTime.MinValue)
+                    currentTreatmentFinishSDO.SurgeryBeginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteBegin.DateTime);
+                if (dteEnd.EditValue != null && dteEnd.DateTime != DateTime.MinValue)
+                    currentTreatmentFinishSDO.SurgeryEndTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteEnd.DateTime);
                 actEdited(currentTreatmentFinishSDO);
                 this.Close();
             }
@@ -1975,9 +1988,51 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             }
         }
 
-        private void buttonEdit1_EditValueChanged(object sender, EventArgs e)
+        private void memPttt_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            
+            try
+            {
+                if (e.KeyCode == Keys.F1)
+                {
+                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ListSurgMisuByTreatment").FirstOrDefault();
+                    if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ListSurgMisuByTreatment");
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null && hisTreatment != null)
+                    {
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add(hisTreatment.ID);
+                        listArgs.Add(new List<long>() { IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT });
+                        listArgs.Add((HIS.Desktop.Common.DelegateLoadPTTT)UpdateData);
+                        var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId), listArgs);
+                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                        ((Form)extenceInstance).ShowDialog();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void UpdateData(string namePTTT, DateTime? startTime, DateTime? finishTime)
+        {
+            try
+            {
+                memPttt.Text = namePTTT;
+                if (startTime.HasValue)
+                    dteBegin.DateTime = startTime.Value;
+                else
+                    dteBegin.EditValue = null;
+                if (finishTime.HasValue)
+                    dteEnd.DateTime = finishTime.Value;
+                else
+                    dteEnd.EditValue = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
     }
 }

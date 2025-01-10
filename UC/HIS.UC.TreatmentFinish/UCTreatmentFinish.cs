@@ -1821,7 +1821,7 @@ namespace HIS.UC.TreatmentFinish.Run
                     chkAutoPrintGHK.Enabled = chkSignGHK.Enabled = false;
                     chkAutoPrintGHK.Checked = chkSignGHK.Checked = false;
 
-                    CloseTreatment.FormTransfer FormTransfer = new CloseTreatment.FormTransfer(treatmentEndInputADO);
+                    CloseTreatment.FormTransfer FormTransfer = new CloseTreatment.FormTransfer(treatmentEndInputADO, treatmentFinishInitADO.WorkingRoomId ?? 0);
                     FormTransfer.MyGetData = TranPatiDataTreatmentFinish;
                     FormTransfer.ShowDialog();
                 }
@@ -2103,6 +2103,10 @@ namespace HIS.UC.TreatmentFinish.Run
                 result.TreatmentMethod = (treatmentFinishSDO != null && treatmentFinishSDO.TreatmentMethod != null) ? treatmentFinishSDO.TreatmentMethod : null;
                 result.HospitalizeReasonCode = (treatmentFinishSDO != null && treatmentFinishSDO.HospitalizeReasonCode != null) ? treatmentFinishSDO.HospitalizeReasonCode : null;
                 result.HospitalizeReasonName = (treatmentFinishSDO != null && treatmentFinishSDO.HospitalizeReasonName != null) ? treatmentFinishSDO.HospitalizeReasonName : null;
+                result.SurgeryName = (treatmentFinishSDO != null && !string.IsNullOrEmpty(treatmentFinishSDO.SurgeryName)) ? treatmentFinishSDO.SurgeryName : null;
+                result.SurgeryBeginTime = (treatmentFinishSDO != null && treatmentFinishSDO.SurgeryBeginTime != null) ? treatmentFinishSDO.SurgeryBeginTime : null;
+                result.SurgeryEndTime = (treatmentFinishSDO != null && treatmentFinishSDO.SurgeryEndTime != null) ? treatmentFinishSDO.SurgeryEndTime : null;
+                result.UsedMedicine = (treatmentFinishSDO != null && treatmentFinishSDO.UsedMedicine != null) ? treatmentFinishSDO.UsedMedicine : null;
                 Inventec.Common.Logging.LogSystem.Debug("GetDataOutput____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result));
             }
             catch (Exception ex)

@@ -59,6 +59,10 @@
       <HintPath>..\..\..\..\..\LIBRARY\DevLib\DevExpress.XtraNavBar.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="HIS.Desktop.Common, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\HIS\HIS.Desktop.Common\HIS.Desktop.Common.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.Icd">
       <HintPath>..\..\..\lib\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
     </Reference>
@@ -344,10 +348,6 @@
     <ProjectReference Include="..\..\HIS\HIS.Desktop.ApplicationFont\HIS.Desktop.ApplicationFont.csproj">
       <Project>{ee6bba16-7e46-49bd-9707-a2069e480302}</Project>
       <Name>HIS.Desktop.ApplicationFont</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS\HIS.Desktop.Common\HIS.Desktop.Common.csproj">
-      <Project>{59fdcba7-0f9f-4257-b95a-e37a1ccfe107}</Project>
-      <Name>HIS.Desktop.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
