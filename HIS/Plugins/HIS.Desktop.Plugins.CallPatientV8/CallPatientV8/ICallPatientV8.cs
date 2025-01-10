@@ -17,17 +17,14 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.ADO
+namespace HIS.Desktop.Plugins.CallPatientV8.CallPatientV8
 {
-    public class ServiceReqSttSDO : MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT
+    interface ICallPatientV8
     {
-        public bool checkStt { get; set; }
-        public string DISPLAY_NAME { get; set; }
-        public Color BackColor { get; set; }
+        object Run();
     }
 }

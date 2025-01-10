@@ -15,19 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HIS.Desktop.ADO
+namespace HIS.Desktop.Plugins.CallPatientV8
 {
-    public class ServiceReqSttSDO : MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT
+    internal class AppConfigKeys
     {
-        public bool checkStt { get; set; }
-        public string DISPLAY_NAME { get; set; }
-        public Color BackColor { get; set; }
+        #region Public key
+        internal const string CONFIG_KEY__DUONG_DAN_CHAY_FILE_VIDEO = "CONFIG_KEY__DUONG_DAN_CHAY_FILE_VIDEO";
+        internal const string CONFIG_KEY__SO_BENH_NHAN_TREN_DANH_SACH_CHO_KHAM_VA_CLS = "CONFIG_KEY__SO_BENH_NHAN_TREN_DANH_SACH_CHO_KHAM_CLS";
+        #endregion
     }
 }

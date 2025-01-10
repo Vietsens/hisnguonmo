@@ -17,17 +17,33 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
-namespace HIS.Desktop.ADO
+namespace HIS.Desktop.Plugins.CallPatientV8
 {
-    public class ServiceReqSttSDO : MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT
+    class RoomWaitingScreenValidation : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
-        public bool checkStt { get; set; }
-        public string DISPLAY_NAME { get; set; }
-        public Color BackColor { get; set; }
+         DevExpress.XtraEditors.TextEdit txtRoomCode;
+         DevExpress.XtraEditors.GridLookUpEdit cboRoom;
+
+        public override bool Validate(Control control, object value)
+        {
+            bool valid = false;
+            try
+            {
+                if (txtRoomCode == null || cboRoom == null) return valid;
+                if (String.IsNullOrEmpty(txtRoomCode.Text) || cboRoom.EditValue == null)
+                    return valid;
+                valid = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return valid;
+        }
     }
 }

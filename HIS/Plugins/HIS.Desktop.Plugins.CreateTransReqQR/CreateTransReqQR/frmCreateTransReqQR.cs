@@ -923,7 +923,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         if (currentTransReq.TRANS_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)
                         {
                             cboPayForm.Enabled = false;
-                           
+
                             timerReloadTransReq.Stop();
                             if (currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__FINISHED)
                             {
@@ -1112,7 +1112,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             try
             {
                 timerReloadTransReq.Stop();
-                var lstCheckBank = new List<string>() { "VCB" }; //Bỏ MBB
+                var lstCheckBank = new List<string>() { "VCB", "MBB", "CTG" };
                 if (string.IsNullOrEmpty(inputTransReq.BankName) || !lstCheckBank.Contains(inputTransReq.BankName))
                 {
                     if (currentTransReq != null)
@@ -1168,7 +1168,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 if (PosStatic.IsOpenPos())
                 {
                     if (QrCodeProcessor.DicContentBank.ContainsKey(currentTransReq.TRANS_REQ_CODE))
-                        PosStatic.SendData(QrCodeProcessor.DicContentBank[currentTransReq.TRANS_REQ_CODE] + (cboCom.EditValue.ToString() == "SDK Model" ? ( "|" + lblAmount.Text + " VNĐ|" + (lblPatientName.Text.Split(' ').ToList().Count > 2 ? string.Join(" ", lblPatientName.Text.Split(' ').ToList().Take(3)) + "\r\n" + string.Join(" ", lblPatientName.Text.Split(' ').ToList().Skip(3).Take(10)) : lblPatientName.Text)) : ""));
+                        PosStatic.SendData(QrCodeProcessor.DicContentBank[currentTransReq.TRANS_REQ_CODE] + (cboCom.EditValue.ToString() == "SDK Model" ? ("|" + lblAmount.Text + " VNĐ|" + (lblPatientName.Text.Split(' ').ToList().Count > 2 ? string.Join(" ", lblPatientName.Text.Split(' ').ToList().Take(3)) + "\r\n" + string.Join(" ", lblPatientName.Text.Split(' ').ToList().Skip(3).Take(10)) : lblPatientName.Text)) : ""));
                     else
                         PosStatic.SendData(null);
                 }
