@@ -147,6 +147,7 @@
     <Compile Include="CallPatientV8\ICallPatientV8.cs" />
     <Compile Include="ChooseRoomForWaitingScreenProcess.cs" />
     <Compile Include="Class\ServiceReq1ADOWorker.cs" />
+    <Compile Include="Class\ServiceReqSttADO.cs" />
     <Compile Include="frmChooseRoomForWaitingScreen.cs">
       <SubType>Form</SubType>
     </Compile>

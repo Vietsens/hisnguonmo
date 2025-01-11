@@ -33,6 +33,7 @@ using MOS.EFMODEL.DataModels;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.Location;
 using System.Configuration;
+using HIS.Desktop.Plugins.CallPatientV8.Class;
 
 namespace HIS.Desktop.Plugins.CallPatientV8
 {
@@ -141,19 +142,19 @@ namespace HIS.Desktop.Plugins.CallPatientV8
                 MOS.Filter.HisServiceReqSttFilter filter = new MOS.Filter.HisServiceReqSttFilter();
                 var HisServiceReqStts = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ_STT>>(HisRequestUriStore.HIS_SERVICE_REQ_STT_GET, ApiConsumers.MosConsumer, filter, param);
                 //List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT> HisServiceReqStts = new List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT>();
-                List<ServiceReqSttSDO> serviceReqSttSdos = new List<ServiceReqSttSDO>();
+                List<ServiceReqSttADO> ServiceReqSttADOs = new List<ServiceReqSttADO>();
                 foreach (var item in HisServiceReqStts)
                 {
-                    ServiceReqSttSDO serviceReqSttSdo = new ServiceReqSttSDO();
-                    AutoMapper.Mapper.CreateMap<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT, ServiceReqSttSDO>();
-                    serviceReqSttSdo = AutoMapper.Mapper.Map<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT, ServiceReqSttSDO>(item);
+                    ServiceReqSttADO ServiceReqSttADO = new ServiceReqSttADO();
+                    AutoMapper.Mapper.CreateMap<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT, ServiceReqSttADO>();
+                    ServiceReqSttADO = AutoMapper.Mapper.Map<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT, ServiceReqSttADO>(item);
                     if (item.ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
-                        serviceReqSttSdo.checkStt = true;
+                        ServiceReqSttADO.checkStt = true;
                     else
-                        serviceReqSttSdo.checkStt = false;
-                    serviceReqSttSdos.Add(serviceReqSttSdo);
+                        ServiceReqSttADO.checkStt = false;
+                    ServiceReqSttADOs.Add(ServiceReqSttADO);
                 }
-                control.gridControlExecuteStatus.DataSource = serviceReqSttSdos;
+                control.gridControlExecuteStatus.DataSource = ServiceReqSttADOs;
             }
             catch (Exception ex)
             {

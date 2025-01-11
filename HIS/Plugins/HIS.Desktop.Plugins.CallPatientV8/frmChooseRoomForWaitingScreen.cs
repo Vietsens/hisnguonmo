@@ -26,6 +26,7 @@ using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.LocalStorage.Location;
+using HIS.Desktop.Plugins.CallPatientV8.Class;
 using HIS.Desktop.Utilities.Extensions;
 using MOS.EFMODEL.DataModels;
 using System;
@@ -251,16 +252,16 @@ namespace HIS.Desktop.Plugins.CallPatientV8
                 //    planTimeTo = Convert.ToInt64(dtPlanTimeTo.DateTime.ToString("yyyyMMdd") + "235959");
                 //}
 
-                List<ServiceReqSttSDO> serviceReqSttSdos = new List<ServiceReqSttSDO>();
+                List<ServiceReqSttADO> ServiceReqSttADOs = new List<ServiceReqSttADO>();
                 if (gridControlExecuteStatus.DataSource != null)
                 {
-                    serviceReqSttSdos = (List<ServiceReqSttSDO>)gridControlExecuteStatus.DataSource;
+                    ServiceReqSttADOs = (List<ServiceReqSttADO>)gridControlExecuteStatus.DataSource;
                 }
-                List<ServiceReqSttSDO> serviceReqStts = new List<ServiceReqSttSDO>();
+                List<ServiceReqSttADO> serviceReqStts = new List<ServiceReqSttADO>();
                 this.positionHandleControl = -1;
                 if (!dxValidationProviderControl.Validate())
                     return;
-                aFrmWaitingScreenQy = new frmWaitingScreen_V48(HisServiceReq, serviceReqSttSdos, this.roomSelecteds, planTimeFrom, planTimeTo, memContent.Text.Trim());
+                aFrmWaitingScreenQy = new frmWaitingScreen_V48(HisServiceReq, ServiceReqSttADOs.Where(o=>o.checkStt).ToList(), this.roomSelecteds, planTimeFrom, planTimeTo, memContent.Text.Trim());
                 //if (this.currentRoom != null)
                 //{
                 //    aFrmWaitingScreenQy.room = this.currentRoom;
@@ -287,7 +288,7 @@ namespace HIS.Desktop.Plugins.CallPatientV8
             {
                 if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
                 {
-                    ServiceReqSttSDO dataRow = (ServiceReqSttSDO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    ServiceReqSttADO dataRow = (ServiceReqSttADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     if (dataRow != null)
                     {
                         if (e.Column.FieldName == "MODIFY_TIME_DISPLAY")

@@ -25,6 +25,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.BackendData.ADO;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.Location;
+using HIS.Desktop.Plugins.CallPatientV8.Class;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
@@ -55,7 +56,7 @@ namespace HIS.Desktop.Plugins.CallPatientV8
         private int scrll { get; set; }
         string organizationName = "";
         List<int> newStatusForceColorCodes = new List<int>();
-        List<ServiceReqSttSDO> serviceReqStts;
+        List<ServiceReqSttADO> serviceReqStts;
         string[] FilePath;
         List<int> gridpatientBodyForceColorCodes;
         int index = 0;
@@ -65,7 +66,7 @@ namespace HIS.Desktop.Plugins.CallPatientV8
         string content;
         const string moduleLink = "HIS.Desktop.Plugins.CallPatientV8";
 
-        public frmWaitingScreen_V48(MOS.EFMODEL.DataModels.HIS_SERVICE_REQ HisServiceReq, List<ServiceReqSttSDO> ServiceReqStts, List<V_HIS_EXECUTE_ROOM> roomSelecteds, long planTimeFrom, long planTimeTo, string content)
+        public frmWaitingScreen_V48(MOS.EFMODEL.DataModels.HIS_SERVICE_REQ HisServiceReq, List<ServiceReqSttADO> ServiceReqStts, List<V_HIS_EXECUTE_ROOM> roomSelecteds, long planTimeFrom, long planTimeTo, string content)
         {
             InitializeComponent();
             this.hisServiceReq = HisServiceReq;
@@ -114,7 +115,6 @@ namespace HIS.Desktop.Plugins.CallPatientV8
                 {
                     layoutControlItem2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem3.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    layoutControlItem4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
                 else
                 {
@@ -164,7 +164,6 @@ namespace HIS.Desktop.Plugins.CallPatientV8
                 gridColumnGioMoXong.AppearanceCell.Font = new System.Drawing.Font(new FontFamily("Arial"), WaitingScreenCFG.FONT_SIZE__NOI_DUNG_DS_BENH_NHAN, FontStyle.Regular);
 
                 //cỡ chữ tên bệnh nhân đang được gọi
-                lblLuuY.Font = new System.Drawing.Font(new FontFamily("Arial"), WaitingScreenCFG.FONT_SIZE__TEN_BENH_NHAN_DANG_DUOC_GOI, FontStyle.Bold);
                 lblTitUp.Font = new System.Drawing.Font(new FontFamily("Arial"), WaitingScreenCFG.FONT_SIZE__SO_THU_TU_BENH_NHAN_DANG_DUOC_GOI, FontStyle.Bold);
                 lblTitDown.Font = new System.Drawing.Font(new FontFamily("Arial"), WaitingScreenCFG.FONT_SIZE__SO_THU_TU_BENH_NHAN_DANG_DUOC_GOI, FontStyle.Bold);
 
@@ -427,7 +426,7 @@ namespace HIS.Desktop.Plugins.CallPatientV8
             }
         }
 
-        void FillDataToDictionaryWaitingPatient(List<ServiceReqSttSDO> serviceReqStts)
+        void FillDataToDictionaryWaitingPatient(List<ServiceReqSttADO> serviceReqStts)
         {
             try
             {
