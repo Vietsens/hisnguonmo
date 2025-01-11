@@ -27,7 +27,5 @@ namespace HIS.Desktop.ADO
     public class ServiceReqSttSDO : MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT
     {
         public bool checkStt { get; set; }
-        public string DISPLAY_NAME { get; set; }
-        public Color BackColor { get; set; }
     }
 }
