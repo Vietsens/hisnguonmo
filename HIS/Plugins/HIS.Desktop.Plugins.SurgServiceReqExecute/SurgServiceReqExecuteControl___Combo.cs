@@ -960,7 +960,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     if (datas != null) BackendDataWorker.UpdateToRam(typeof(HIS_MACHINE), datas, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
                 }
 
-                datas = datas != null ? datas.Where(p => p.IS_ACTIVE == 1).ToList() : null;
+                datas = datas != null ? datas.Where(p => p.IS_ACTIVE == 1 && ("," +p.ROOM_IDS + ",").Contains("," + this.Module.RoomId + ",")).ToList() : null;
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("MACHINE_CODE", "", 150, 1));

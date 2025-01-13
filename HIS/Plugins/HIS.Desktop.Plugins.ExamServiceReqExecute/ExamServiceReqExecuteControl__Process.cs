@@ -1874,80 +1874,24 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                         }
                         serviceReqUpdateSDO.NotePatient = treatmentFinish.Note;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.Advise = treatmentFinish.TreatmentFinishSDO.Advise;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.AppointmentExamRoomIds = treatmentFinish.TreatmentFinishSDO.AppointmentExamRoomIds;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.AppointmentTime = treatmentFinish.TreatmentFinishSDO.AppointmentTime;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalNote = treatmentFinish.TreatmentFinishSDO.ClinicalNote;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.DeathCauseId = treatmentFinish.TreatmentFinishSDO.DeathCauseId;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.DeathTime = treatmentFinish.TreatmentFinishSDO.DeathTime;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.DeathWithinId = treatmentFinish.TreatmentFinishSDO.DeathWithinId;
-
-                        serviceReqUpdateSDO.TreatmentFinishSDO.DeathDocumentDate = treatmentFinish.TreatmentFinishSDO.DeathDocumentDate;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.DeathDocumentNumber = treatmentFinish.TreatmentFinishSDO.DeathDocumentNumber;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.DeathDocumentPlace = treatmentFinish.TreatmentFinishSDO.DeathDocumentPlace;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.DeathDocumentType = treatmentFinish.TreatmentFinishSDO.DeathDocumentType;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.DeathPlace = treatmentFinish.TreatmentFinishSDO.DeathPlace;
-
+                        serviceReqUpdateSDO.TreatmentFinishSDO = treatmentFinish.TreatmentFinishSDO;
                         serviceReqUpdateSDO.TreatmentFinishSDO.DoctorLoginname = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                         serviceReqUpdateSDO.TreatmentFinishSDO.DoctorUsernname = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
 
 
                         //serviceReqUpdateSDO.TreatmentFinishSDO.EndOrderRequest = treatmentFinish.TreatmentFinishSDO.EndOrderRequest;
                         serviceReqUpdateSDO.TreatmentFinishSDO.EndRoomId = moduleData.RoomId;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.IsChronic = treatmentFinish.TreatmentFinishSDO.IsChronic;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.IsHasAupopsy = treatmentFinish.TreatmentFinishSDO.IsHasAupopsy;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.IsTemporary = treatmentFinish.TreatmentFinishSDO.IsTemporary;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.MainCause = treatmentFinish.TreatmentFinishSDO.MainCause;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.PatientCondition = treatmentFinish.TreatmentFinishSDO.PatientCondition;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.ServiceReqId = treatmentFinish.TreatmentFinishSDO.ServiceReqId;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = treatmentFinish.TreatmentFinishSDO.SubclinicalResult;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.Surgery = treatmentFinish.TreatmentFinishSDO.Surgery;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.TranPatiFormId = treatmentFinish.TreatmentFinishSDO.TranPatiFormId;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.TranPatiReasonId = treatmentFinish.TreatmentFinishSDO.TranPatiReasonId;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.TranPatiTechId = treatmentFinish.TreatmentFinishSDO.TranPatiTechId;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.TransferOutMediOrgCode = treatmentFinish.TreatmentFinishSDO.TransferOutMediOrgCode;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.TransferOutMediOrgName = treatmentFinish.TreatmentFinishSDO.TransferOutMediOrgName;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.Transporter = treatmentFinish.TreatmentFinishSDO.Transporter;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.TransportVehicle = treatmentFinish.TreatmentFinishSDO.TransportVehicle;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.TransporterLoginnames = treatmentFinish.TreatmentFinishSDO.TransporterLoginnames;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentDirection = treatmentFinish.TreatmentFinishSDO.TreatmentDirection;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentEndTypeId = treatmentFinish.TreatmentFinishSDO.TreatmentEndTypeId;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentFinishTime = treatmentFinish.TreatmentFinishSDO.TreatmentFinishTime;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentId = treatmentFinish.TreatmentFinishSDO.TreatmentId;
                         if (!string.IsNullOrEmpty(txtTreatmentInstruction.Text.Trim()))
                         {
                             serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = txtTreatmentInstruction.Text.Trim();
                         }
-                        else
-                        {
-                            serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = treatmentFinish.TreatmentFinishSDO.TreatmentMethod;
-                        }
-                        serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentResultId = treatmentFinish.TreatmentFinishSDO.TreatmentResultId;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.UsedMedicine = treatmentFinish.TreatmentFinishSDO.UsedMedicine;
-                        //xuandv
-                        serviceReqUpdateSDO.TreatmentFinishSDO.SickLeaveDay = treatmentFinish.TreatmentFinishSDO.SickLeaveDay;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.SickLeaveFrom = treatmentFinish.TreatmentFinishSDO.SickLeaveFrom;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.SickLeaveTo = treatmentFinish.TreatmentFinishSDO.SickLeaveTo;
+                        
                         if (!String.IsNullOrEmpty(treatmentFinish.TreatmentFinishSDO.SickLoginname))
                         {
                             serviceReqUpdateSDO.TreatmentFinishSDO.SickLoginname = treatmentFinish.TreatmentFinishSDO.SickLoginname;
                             serviceReqUpdateSDO.TreatmentFinishSDO.SickUsername = treatmentFinish.TreatmentFinishSDO.SickUsername;
                         }
-                        serviceReqUpdateSDO.TreatmentFinishSDO.PatientRelativeName = treatmentFinish.TreatmentFinishSDO.PatientRelativeName;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.PatientRelativeType = treatmentFinish.TreatmentFinishSDO.PatientRelativeType;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.Babies = treatmentFinish.TreatmentFinishSDO.Babies;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.PatientWorkPlace = treatmentFinish.TreatmentFinishSDO.PatientWorkPlace;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.WorkPlaceId = treatmentFinish.TreatmentFinishSDO.WorkPlaceId;
                         serviceReqUpdateSDO.FinishTime = treatmentFinish.TreatmentFinishSDO.TreatmentFinishTime;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.ProgramId = treatmentFinish.TreatmentFinishSDO.ProgramId;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.CreateOutPatientMediRecord = treatmentFinish.TreatmentFinishSDO.CreateOutPatientMediRecord;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.SickHeinCardNumber = treatmentFinish.TreatmentFinishSDO.SickHeinCardNumber;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.AppointmentSurgery = treatmentFinish.TreatmentFinishSDO.AppointmentSurgery;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.SurgeryAppointmentTime = treatmentFinish.TreatmentFinishSDO.SurgeryAppointmentTime;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.AppointmentPeriodId = treatmentFinish.TreatmentFinishSDO.AppointmentPeriodId;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.DocumentBookId = treatmentFinish.TreatmentFinishSDO.DocumentBookId;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.SocialInsuranceNumber = treatmentFinish.TreatmentFinishSDO.SocialInsuranceNumber;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.NumOrderBlockId = treatmentFinish.TreatmentFinishSDO.NumOrderBlockId;
                         //serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = txtTreatmentInstruction.Text.Trim();
                         //str1 = treatmentFinish.TreatmentFinishSDO.TreatmentMethod;
                         str2 = treatmentFinish.TreatmentFinishSDO.SubclinicalResult;
@@ -1992,50 +1936,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             serviceReqUpdateSDO.TreatmentFinishSDO.TraditionalIcdName = treatmentFinish.traditionalIcdTreatment.ICD_NAME;
                         }
 
-                        //SecondaryIcdDataADO icdSub = this.UcSecondaryIcdGetValue() as SecondaryIcdDataADO;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.IcdSubCode = treatmentFinish.TreatmentFinishSDO.IcdSubCode;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.IcdText = treatmentFinish.TreatmentFinishSDO.IcdText;
-
-                        serviceReqUpdateSDO.TreatmentFinishSDO.CareerId = treatmentFinish.TreatmentFinishSDO.CareerId;
-
-                        serviceReqUpdateSDO.TreatmentFinishSDO.ShowIcdCode = treatmentFinish.TreatmentFinishSDO.ShowIcdCode;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.ShowIcdName = treatmentFinish.TreatmentFinishSDO.ShowIcdName;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.ShowIcdSubCode = treatmentFinish.TreatmentFinishSDO.ShowIcdSubCode;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.ShowIcdText = treatmentFinish.TreatmentFinishSDO.ShowIcdText;
-                        // minhnq
-                        serviceReqUpdateSDO.TreatmentFinishSDO.DeathCertBookId = treatmentFinish.TreatmentFinishSDO.DeathCertBookId;
-                        //
-                        serviceReqUpdateSDO.TreatmentFinishSDO.IsExpXml4210Collinear = treatmentFinish.TreatmentFinishSDO.IsExpXml4210Collinear;
                         serviceReqUpdateSDO.Advise = treatmentFinish.Advise;
                         serviceReqUpdateSDO.Conclusion = treatmentFinish.Conclusion;
                         if (treatmentFinish.SevereIllNessInfo != null)
                             treatmentFinish.SevereIllNessInfo.DEPARTMENT_ID = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == this.moduleData.RoomId).DepartmentId;
                         SevereIllnessInfo = treatmentFinish.SevereIllNessInfo;
-                        EventsCausesDeaths = treatmentFinish.ListEventsCausesDeath;
-
-                        serviceReqUpdateSDO.TreatmentFinishSDO.EndDeptSubsHeadLoginname = treatmentFinish.TreatmentFinishSDO.EndDeptSubsHeadLoginname;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.EndDeptSubsHeadUsername = treatmentFinish.TreatmentFinishSDO.EndDeptSubsHeadUsername;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.HospSubsDirectorLoginname = treatmentFinish.TreatmentFinishSDO.HospSubsDirectorLoginname;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.HospSubsDirectorUsername = treatmentFinish.TreatmentFinishSDO.HospSubsDirectorUsername;
-
-                        serviceReqUpdateSDO.TreatmentFinishSDO.TranPatiHospitalLoginname = treatmentFinish.TreatmentFinishSDO.TranPatiHospitalLoginname;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.TranPatiHospitalUsername = treatmentFinish.TreatmentFinishSDO.TranPatiHospitalUsername;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.EndTypeExtNote = treatmentFinish.TreatmentFinishSDO.EndTypeExtNote;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.DeathCertBookFirstId = treatmentFinish.TreatmentFinishSDO.DeathCertBookFirstId;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.DeathCertNumFirst = treatmentFinish.TreatmentFinishSDO.DeathCertNumFirst;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.PregnancyTerminationReason = treatmentFinish.TreatmentFinishSDO.PregnancyTerminationReason;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.IsPregnancyTermination = treatmentFinish.TreatmentFinishSDO.IsPregnancyTermination;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.GestationalAge = treatmentFinish.TreatmentFinishSDO.GestationalAge;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.DeathCertIssuerLoginname = treatmentFinish.TreatmentFinishSDO.DeathCertIssuerLoginname;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.DeathCertIssuerUsername = treatmentFinish.TreatmentFinishSDO.DeathCertIssuerUsername;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.PregnancyTerminationTime = treatmentFinish.TreatmentFinishSDO.PregnancyTerminationTime;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.DeathDocumentTypeCode = treatmentFinish.TreatmentFinishSDO.DeathDocumentTypeCode;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.DeathDocumentType = treatmentFinish.TreatmentFinishSDO.DeathDocumentType;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.DeathStatus = treatmentFinish.TreatmentFinishSDO.DeathStatus;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.PatientRelativeName = treatmentFinish.TreatmentFinishSDO.PatientRelativeName;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.DeathIssuedDate = treatmentFinish.TreatmentFinishSDO.DeathIssuedDate;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.MotherName = treatmentFinish.TreatmentFinishSDO.MotherName;
-                        serviceReqUpdateSDO.TreatmentFinishSDO.FatherName = treatmentFinish.TreatmentFinishSDO.FatherName;
+                        EventsCausesDeaths = treatmentFinish.ListEventsCausesDeath;                    
                         isPrintAppoinment = treatmentFinish.IsPrintAppoinment;
                         isPrintBordereau = treatmentFinish.IsPrintBordereau;
                         isSignAppoinment = treatmentFinish.IsSignAppoinment;

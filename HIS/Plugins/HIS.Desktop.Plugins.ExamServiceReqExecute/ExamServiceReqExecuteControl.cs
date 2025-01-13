@@ -3377,7 +3377,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     if (sub_out != null && sub_out is ExamTreatmentFinishResult)
                     {
                         string icd_sub_code = ((ExamTreatmentFinishResult)sub_out).TreatmentFinishSDO.IcdSubCode;
-                        string[] arrSubCode = icd_sub_code.Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
+                        string[] arrSubCode = (icd_sub_code ?? "").Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
                         LogSystem.Debug("benh phu ra vien len: " + arrSubCode.Length);
                         if (validICD && arrSubCode.Length > 12)
                         {
@@ -3404,7 +3404,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     if (sub_out != null && sub_out is ExamTreatmentFinishResult)
                     {
                         string icd_sub_code = ((ExamTreatmentFinishResult)sub_out).TreatmentFinishSDO.IcdSubCode;
-                        string[] arrSubCode = icd_sub_code.Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
+                        string[] arrSubCode = (icd_sub_code ?? "").Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
                         LogSystem.Debug("benh phu ra vien len: " + arrSubCode.Length);
                         if (validICD && arrSubCode.Length > 12)
                         {

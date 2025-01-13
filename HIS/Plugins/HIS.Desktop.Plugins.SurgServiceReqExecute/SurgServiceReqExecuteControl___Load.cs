@@ -3149,7 +3149,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 {
                     var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>().Where(o =>
                         o.IS_ACTIVE == 1
-                        && o.MACHINE_CODE.Contains(searchCode)).ToList();
+                        && o.MACHINE_CODE.Contains(searchCode)
+                        && ("," + o.ROOM_IDS + ",").Contains("," + this.Module.RoomId + ",")).ToList();
                     if (data != null)
                     {
                         if (data.Count == 1)

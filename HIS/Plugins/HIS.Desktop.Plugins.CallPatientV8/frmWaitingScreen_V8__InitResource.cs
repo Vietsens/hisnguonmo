@@ -15,17 +15,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.Utility;
+using Inventec.Desktop.Common.LanguageManager;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HIS.Desktop.ADO
+using System.Resources;
+using System.Windows.Forms;
+namespace HIS.Desktop.Plugins.CallPatientV8
 {
-    public class ServiceReqSttSDO : MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT
+    public partial class frmWaitingScreen_V48 : FormBase
     {
-        public bool checkStt { get; set; }
+        private void SetCaptionByLanguageKey()
+        {
+            try
+            {
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }
