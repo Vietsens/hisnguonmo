@@ -255,6 +255,7 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 this.layoutControlItem17.Text = Inventec.Common.Resource.Get.Value("frmHisTranPatiOut.layoutControlItem17.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem18.Text = Inventec.Common.Resource.Get.Value("frmHisTranPatiOut.layoutControlItem18.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem19.Text = Inventec.Common.Resource.Get.Value("frmHisTranPatiOut.layoutControlItem19.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtSurgeryName.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisTranPatiOut.txtSurgeryName.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmHisTranPatiOut.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
@@ -376,6 +377,23 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                     }
 
                     lblSoChuyenVien.Text = data.OUT_CODE;
+
+                    if (!string.IsNullOrEmpty(data.SURGERY_NAME))
+                    {
+                        txtSurgeryName.Text = data.SURGERY_NAME;
+                    }
+                    if (data.SURGERY_BEGIN_TIME != null)
+                    {
+                        dtStart.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.SURGERY_BEGIN_TIME ?? 0);
+                    }
+                    if (data.SURGERY_END_TIME != null)
+                    {
+                        dtFinish.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.SURGERY_END_TIME ?? 0);
+                    }
+                    if (!string.IsNullOrEmpty(data.USED_MEDICINE))
+                    {
+                        txtUsedMedicine.Text = data.USED_MEDICINE;
+                    }
 
                     SetReadOnlyControlToTranPati(true);
                     btnEdit.Enabled = true;
@@ -626,7 +644,10 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 txtTinhTrangNguoiBenh.ReadOnly = isReadOnly;
                 txtHuongDieuTri.ReadOnly = isReadOnly;
                 txtPhuongTienVanChuyen.ReadOnly = isReadOnly;
-
+                txtSurgeryName.ReadOnly = isReadOnly;
+                txtUsedMedicine.ReadOnly = isReadOnly;
+                dtStart.ReadOnly = isReadOnly;
+                dtFinish.ReadOnly = isReadOnly;
                 if (isReadOnly == true)
                 {
                     buttonEdit1.Enabled = false;
@@ -758,22 +779,31 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 {
                     _treatmentUpdate.SURGERY_NAME = txtSurgeryName.Text.Trim();
                 }
+                else
+                    _treatmentUpdate.SURGERY_NAME = null;
                 if (!string.IsNullOrEmpty(txtUsedMedicine.Text))
                 {
                     _treatmentUpdate.USED_MEDICINE = txtUsedMedicine.Text.Trim();
                 }
-                if (!string.IsNullOrEmpty(dtStart.Text))
+                else
+                    _treatmentUpdate.USED_MEDICINE = null;
+                if (dtStart.EditValue != null)
                 {
                     _treatmentUpdate.SURGERY_BEGIN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber((DateTime)dtStart.EditValue);
                 }
-                if (!string.IsNullOrEmpty(dtFinish.Text))
+                else
+                    _treatmentUpdate.SURGERY_BEGIN_TIME = null;
+                if (dtFinish.EditValue != null)
                 {
                     _treatmentUpdate.SURGERY_END_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber((DateTime)dtFinish.EditValue);
                 }
+                else
+                    _treatmentUpdate.SURGERY_END_TIME = null;
                 sdoUpdate.HisTreatment = _treatmentUpdate;
                 sdoUpdate.ClinicalNote = txtDauHieuLamSang.Text;
                 sdoUpdate.SubclinicalResult = txtXetNghiem.Text;
 
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdoUpdate), sdoUpdate));
                 var rs = new BackendAdapter(param).Post<HIS_TREATMENT>("api/HisTreatment/UpdateTranPatiInfo", ApiConsumers.MosConsumer, sdoUpdate, param);
                 if (rs != null)
                 {
