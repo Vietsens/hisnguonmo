@@ -1,3 +1,16 @@
+### Release 2.345.0
+* Bổ sung thông tin phục vụ giấy chuyển tuyến theo Thông tư 01 ngày 01/01/2025
+* Hiển thị máy xử lý theo thiết lập khoa phòng tại chức năng xử lý phẫu thuật thủ thuật
+* Bổ sung điều kiện lọc và hiển thị thông tin theo ngày dự trù trên phiếu tra đối và tổng hợp phiếu lĩnh
+* Chỉnh lại thông tin khám sức khỏe lái xe theo thông tư 36
+* Bổ sung thông tin trạng thái kết thúc điều trị trong thông tin xét nghiệm
+
+### Release 2.344.0
+* Cho phép gọi bệnh nhân theo tên tại phòng thu ngân qua hệ thống CPA
+* Tích hợp thiết bị IPOS hiển thị QR thanh toán mới
+* Sửa lại chức năng đổi phòng khám để tránh sai thời gian y lệnh
+* Sửa dữ liệu cho phù hợp với quy định 130, 4750/QĐ-BYT và QĐ 3176/QĐ-BYT
+
 ### Release 2.343.0
 * Bổ sung thông tin thầu khi nhập khẩu thuốc/vật tư
 * Bổ sung cấu hình tự động khóa giao dịch khi thanh toán QR tại thu ngân.
