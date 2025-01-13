@@ -61,10 +61,6 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItemSave = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItemShowSurgMisu = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dtStart = new DevExpress.XtraEditors.DateEdit();
             this.panel1 = new System.Windows.Forms.Panel();
             this.txtTransporterLoginName = new DevExpress.XtraEditors.ButtonEdit();
@@ -130,6 +126,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             this.layoutControlItem34 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem22 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem35 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -347,8 +347,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dtFinish.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtFinish.Properties.DisplayFormat.FormatString = "dd/MM/yyyy hh:mm:ss";
+            this.dtFinish.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
             this.dtFinish.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtFinish.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
+            this.dtFinish.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtFinish.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
             this.dtFinish.Size = new System.Drawing.Size(175, 20);
             this.dtFinish.StyleController = this.layoutControl1;
             this.dtFinish.TabIndex = 27;
@@ -357,10 +360,6 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItemSave,
@@ -395,46 +394,22 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             this.barButtonItemShowSurgMisu.Name = "barButtonItemShowSurgMisu";
             this.barButtonItemShowSurgMisu.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItemShowSurgMisu_ItemClick);
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(880, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 381);
-            this.barDockControlBottom.Size = new System.Drawing.Size(880, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 58);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 323);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(880, 58);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 323);
-            // 
             // dtStart
             // 
             this.dtStart.EditValue = null;
             this.dtStart.Location = new System.Drawing.Point(57, 275);
             this.dtStart.MenuManager = this.barManager1;
             this.dtStart.Name = "dtStart";
+            this.dtStart.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.dtStart.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dtStart.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtStart.Properties.DisplayFormat.FormatString = "dd/MM/yyyy hh:mm:ss";
+            this.dtStart.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
             this.dtStart.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtStart.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
+            this.dtStart.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtStart.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
             this.dtStart.Size = new System.Drawing.Size(174, 20);
             this.dtStart.StyleController = this.layoutControl1;
             this.dtStart.TabIndex = 26;
@@ -1172,6 +1147,34 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             this.layoutControlItem35.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem35.TextSize = new System.Drawing.Size(50, 20);
             this.layoutControlItem35.TextToControlDistance = 5;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 58);
+            this.barDockControlTop.Size = new System.Drawing.Size(880, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 381);
+            this.barDockControlBottom.Size = new System.Drawing.Size(880, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 58);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 323);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(880, 58);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 323);
             // 
             // dxValidationProvider
             // 

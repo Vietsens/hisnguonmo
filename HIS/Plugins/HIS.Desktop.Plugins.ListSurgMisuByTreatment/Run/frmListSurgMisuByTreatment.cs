@@ -446,20 +446,20 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
                     if (dataRow != null && gridView.Columns.Count > 0)
                     {
                         GridColumn colNamePTTT = gridView.Columns[2];
-                        GridColumn colBeginTime = gridView.Columns[6];
-                        GridColumn colEndTime = gridView.Columns[7];
+                        GridColumn colBeginTime = gridView.Columns[7];
+                        GridColumn colEndTime = gridView.Columns[8];
                         string namePTTT = (string)gridView.GetRowCellValue(selectedRowIndex, colNamePTTT);
                         DateTime? dtBeginTime = null;
                         object cellValueBeginTime = gridView.GetRowCellValue(selectedRowIndex, colBeginTime);
                         if (cellValueBeginTime != null)
                         {
-                            dtBeginTime = (DateTime)cellValueBeginTime;
+                            dtBeginTime = DateTime.Parse(cellValueBeginTime.ToString());
                         }
                         DateTime? dtEndTime = null;
-                        object cellValuedtEndTime = gridView.GetRowCellValue(selectedRowIndex, colBeginTime);
-                        if (cellValueBeginTime != null)
+                        object cellValuedtEndTime = gridView.GetRowCellValue(selectedRowIndex, colEndTime);
+                        if (cellValuedtEndTime != null)
                         {
-                            dtEndTime = (DateTime)cellValueBeginTime;
+                            dtEndTime = DateTime.Parse(cellValuedtEndTime.ToString());
                         }
                         loadPTTT(namePTTT, dtBeginTime, dtEndTime);
                         this.Close();
@@ -469,6 +469,51 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
                 {
                     // Không có dòng nào được chọn
                     MessageBox.Show("Vui lòng chọn một dòng.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridView_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (gridView.GetSelectedRows().Length > 0)
+                    {
+                        int selectedRowIndex = gridView.GetSelectedRows()[0];
+                        var dataRow = gridView.GetRow(selectedRowIndex);
+                        if (dataRow != null && gridView.Columns.Count > 0)
+                        {
+                            GridColumn colNamePTTT = gridView.Columns[2];
+                            GridColumn colBeginTime = gridView.Columns[7];
+                            GridColumn colEndTime = gridView.Columns[8];
+                            string namePTTT = (string)gridView.GetRowCellValue(selectedRowIndex, colNamePTTT);
+                            DateTime? dtBeginTime = null;
+                            object cellValueBeginTime = gridView.GetRowCellValue(selectedRowIndex, colBeginTime);
+                            if (cellValueBeginTime != null)
+                            {
+                                dtBeginTime = DateTime.Parse(cellValueBeginTime.ToString());
+                            }
+                            DateTime? dtEndTime = null;
+                            object cellValuedtEndTime = gridView.GetRowCellValue(selectedRowIndex, colEndTime);
+                            if (cellValuedtEndTime != null)
+                            {
+                                dtEndTime = DateTime.Parse(cellValuedtEndTime.ToString());
+                            }
+                            loadPTTT(namePTTT, dtBeginTime, dtEndTime);
+                            this.Close();
+                        }
+                    }
+                    else
+                    {
+                        // Không có dòng nào được chọn
+                        MessageBox.Show("Vui lòng chọn một dòng.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
             }
             catch (Exception ex)
