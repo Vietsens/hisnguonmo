@@ -64,12 +64,12 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItem__Print = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItem__PrintDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl)).BeginInit();
@@ -122,6 +122,7 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
             this.gridView.OptionsView.ShowIndicator = false;
             this.gridView.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridView_CustomRowCellEdit);
             this.gridView.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridView_CustomUnboundColumnData);
+            this.gridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gridView_KeyDown);
             this.gridView.DoubleClick += new System.EventHandler(this.gridView_DoubleClick);
             // 
             // gridColumn1
@@ -194,6 +195,28 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
             this.gridColumn5.VisibleIndex = 5;
             this.gridColumn5.Width = 109;
             // 
+            // gridColumn8
+            // 
+            this.gridColumn8.Caption = "Thời gian bắt đầu";
+            this.gridColumn8.FieldName = "BEGIN_TIME_DISPLAY";
+            this.gridColumn8.Name = "gridColumn8";
+            this.gridColumn8.OptionsColumn.AllowEdit = false;
+            this.gridColumn8.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn8.Visible = true;
+            this.gridColumn8.VisibleIndex = 6;
+            this.gridColumn8.Width = 139;
+            // 
+            // gridColumn9
+            // 
+            this.gridColumn9.Caption = "Thời gian kết thúc";
+            this.gridColumn9.FieldName = "END_TIME_DISPLAY";
+            this.gridColumn9.Name = "gridColumn9";
+            this.gridColumn9.OptionsColumn.AllowEdit = false;
+            this.gridColumn9.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn9.Visible = true;
+            this.gridColumn9.VisibleIndex = 7;
+            this.gridColumn9.Width = 163;
+            // 
             // repositoryItem__Print
             // 
             this.repositoryItem__Print.AutoHeight = false;
@@ -231,26 +254,6 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
             this.layoutControlItem1.Size = new System.Drawing.Size(893, 261);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
-            // 
-            // gridColumn8
-            // 
-            this.gridColumn8.Caption = "Thời gian bắt đầu";
-            this.gridColumn8.FieldName = "BEGIN_TIME_DISPLAY";
-            this.gridColumn8.Name = "gridColumn8";
-            this.gridColumn8.OptionsColumn.AllowEdit = false;
-            this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 6;
-            this.gridColumn8.Width = 139;
-            // 
-            // gridColumn9
-            // 
-            this.gridColumn9.Caption = "Thời gian kết thúc";
-            this.gridColumn9.FieldName = "END_TIME_DISPLAY";
-            this.gridColumn9.Name = "gridColumn9";
-            this.gridColumn9.OptionsColumn.AllowEdit = false;
-            this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 7;
-            this.gridColumn9.Width = 163;
             // 
             // frmListSurgMisuByTreatment
             // 
