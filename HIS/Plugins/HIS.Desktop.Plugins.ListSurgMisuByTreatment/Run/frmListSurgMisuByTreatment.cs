@@ -35,6 +35,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using HIS.Desktop.LocalStorage.LocalData;
+using DevExpress.XtraGrid.Columns;
 
 namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
 {
@@ -43,9 +44,10 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
         Inventec.Desktop.Common.Modules.Module currentModule;
         long treatmentId;
         long _patientTypeId;
-
+        HIS.Desktop.Common.DelegateLoadPTTT loadPTTT;
         V_HIS_SERE_SERV_1 currentRow = new V_HIS_SERE_SERV_1();
-
+        List<HIS_SERE_SERV_EXT> lstSereServExts = new List<HIS_SERE_SERV_EXT>();
+        bool isPTTT = false;
 
         public frmListSurgMisuByTreatment()
         {
@@ -74,6 +76,22 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
                 this.currentModule = currentModule;
                 this.treatmentId = treatmentId;
                 this._patientTypeId = patientTypeId;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        public frmListSurgMisuByTreatment(Inventec.Desktop.Common.Modules.Module currentModule, long treatmentId, HIS.Desktop.Common.DelegateLoadPTTT loadPTTT)
+        {
+            InitializeComponent();
+            try
+            {
+                this.currentModule = currentModule;
+                this.treatmentId = treatmentId;
+                this.loadPTTT = loadPTTT;
+                this.isPTTT = true;
             }
             catch (Exception ex)
             {
@@ -134,10 +152,22 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
                     { 
                         serviceTypeIds.Add(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT); 
                     }
-                    
+
+                    if (isPTTT) 
+                    {
+                        serviceTypeIds.Add(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT);
+                        serviceTypeIds.Add(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT);
+                    }
                     sereServFilter.SERVICE_TYPE_IDs = serviceTypeIds;
                     var sereServData = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_1>>("/api/HisSereServ/GetView1", ApiConsumers.MosConsumer, sereServFilter, param);
 
+                    MOS.Filter.HisSereServExtFilter hisSereServExtFilter = new HisSereServExtFilter();
+                    if (sereServData != null && sereServData.Count > 0)
+                    {
+                        List<long> lstID = sereServData.Select(o => o.ID).ToList();
+                        hisSereServExtFilter.SERE_SERV_IDs = lstID;
+                    }
+                    lstSereServExts = new BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumer.ApiConsumers.MosConsumer, hisSereServExtFilter, null);
                     gridControl.DataSource = null;
                     gridControl.DataSource = sereServData;
 
@@ -374,6 +404,115 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.EXECUTE_TIME ?? 0);
                         }
+                        if (e.Column.FieldName == "BEGIN_TIME_DISPLAY")
+                        {
+                            if (lstSereServExts != null && lstSereServExts.Count > 0)
+                            {
+                                var curSereServExt = lstSereServExts.Where(o => o.SERE_SERV_ID == data.ID).FirstOrDefault();
+                                if (curSereServExt != null)
+                                {
+                                    e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(curSereServExt.BEGIN_TIME ?? 0);
+                                }
+                            }
+                        }
+                        if (e.Column.FieldName == "END_TIME_DISPLAY")
+                        {
+                            if (lstSereServExts != null && lstSereServExts.Count > 0)
+                            {
+                                var curSereServExt = lstSereServExts.Where(o => o.SERE_SERV_ID == data.ID).FirstOrDefault();
+                                if (curSereServExt != null)
+                                {
+                                    e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(curSereServExt.END_TIME ?? 0);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridView_DoubleClick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (gridView.GetSelectedRows().Length > 0)
+                {
+                    int selectedRowIndex = gridView.GetSelectedRows()[0];
+                    var dataRow = gridView.GetRow(selectedRowIndex);
+                    if (dataRow != null && gridView.Columns.Count > 0)
+                    {
+                        GridColumn colNamePTTT = gridView.Columns[2];
+                        GridColumn colBeginTime = gridView.Columns[7];
+                        GridColumn colEndTime = gridView.Columns[8];
+                        string namePTTT = (string)gridView.GetRowCellValue(selectedRowIndex, colNamePTTT);
+                        DateTime? dtBeginTime = null;
+                        object cellValueBeginTime = gridView.GetRowCellValue(selectedRowIndex, colBeginTime);
+                        if (cellValueBeginTime != null)
+                        {
+                            dtBeginTime = DateTime.Parse(cellValueBeginTime.ToString());
+                        }
+                        DateTime? dtEndTime = null;
+                        object cellValuedtEndTime = gridView.GetRowCellValue(selectedRowIndex, colEndTime);
+                        if (cellValuedtEndTime != null)
+                        {
+                            dtEndTime = DateTime.Parse(cellValuedtEndTime.ToString());
+                        }
+                        loadPTTT(namePTTT, dtBeginTime, dtEndTime);
+                        this.Close();
+                    }
+                }
+                else
+                {
+                    // Không có dòng nào được chọn
+                    MessageBox.Show("Vui lòng chọn một dòng.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridView_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (gridView.GetSelectedRows().Length > 0)
+                    {
+                        int selectedRowIndex = gridView.GetSelectedRows()[0];
+                        var dataRow = gridView.GetRow(selectedRowIndex);
+                        if (dataRow != null && gridView.Columns.Count > 0)
+                        {
+                            GridColumn colNamePTTT = gridView.Columns[2];
+                            GridColumn colBeginTime = gridView.Columns[7];
+                            GridColumn colEndTime = gridView.Columns[8];
+                            string namePTTT = (string)gridView.GetRowCellValue(selectedRowIndex, colNamePTTT);
+                            DateTime? dtBeginTime = null;
+                            object cellValueBeginTime = gridView.GetRowCellValue(selectedRowIndex, colBeginTime);
+                            if (cellValueBeginTime != null)
+                            {
+                                dtBeginTime = DateTime.Parse(cellValueBeginTime.ToString());
+                            }
+                            DateTime? dtEndTime = null;
+                            object cellValuedtEndTime = gridView.GetRowCellValue(selectedRowIndex, colEndTime);
+                            if (cellValuedtEndTime != null)
+                            {
+                                dtEndTime = DateTime.Parse(cellValuedtEndTime.ToString());
+                            }
+                            loadPTTT(namePTTT, dtBeginTime, dtEndTime);
+                            this.Close();
+                        }
+                    }
+                    else
+                    {
+                        // Không có dòng nào được chọn
+                        MessageBox.Show("Vui lòng chọn một dòng.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
             }

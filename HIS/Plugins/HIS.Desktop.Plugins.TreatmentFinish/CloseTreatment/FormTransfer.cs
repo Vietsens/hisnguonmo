@@ -44,6 +44,7 @@ using Inventec.Desktop.CustomControl.CustomGrid;
 using HIS.Desktop.Plugins.TreatmentFinish.Validation;
 using DevExpress.XtraEditors.DXErrorProvider;
 using Inventec.Desktop.Common.Controls.ValidationRule;
+using HIS.Desktop.Utility;
 
 namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
 {
@@ -80,7 +81,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 this.hisTreatment = treatment;
                 this.moduleDataTransfer = _moduleDataTransfer;
             }
-            catch (Exception ex)
+            catch (Exception ex)  
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
@@ -250,6 +251,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 this.layoutControlItem8.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("FormTransfer.layoutControlItem8.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem8.Text = Inventec.Common.Resource.Get.Value("FormTransfer.layoutControlItem8.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboLoginName.Properties.NullText = Inventec.Common.Resource.Get.Value("FormTransfer.cboLoginName.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtSurgeryName.Properties.NullText = Inventec.Common.Resource.Get.Value("FormTransfer.txtSurgeryName.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("FormTransfer.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
@@ -447,9 +449,23 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                     if (string.IsNullOrEmpty(txtUsedMedicine.Text)
                         && !string.IsNullOrEmpty(currentTreatmentFinishSDO.UsedMedicine))
                         txtUsedMedicine.Text = currentTreatmentFinishSDO.UsedMedicine;
+
+                    if (!string.IsNullOrEmpty(currentTreatmentFinishSDO.SurgeryName))
+                    {
+                        txtSurgeryName.Text = currentTreatmentFinishSDO.SurgeryName;
+                    }
+                    if (currentTreatmentFinishSDO.SurgeryBeginTime != null)
+                    {
+                        dtStart.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentTreatmentFinishSDO.SurgeryBeginTime??0);
+                    }
+                    if (currentTreatmentFinishSDO.SurgeryEndTime != null)
+                    {
+                        dtFinish.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentTreatmentFinishSDO.SurgeryEndTime??0);
+                    }
                 }
                 txtMediOrgCode.Focus();
                 txtMediOrgCode.SelectAll();
+                txtSurgeryName.Properties.NullText = "Nhấn F1 để chọn dịch vụ";
             }
             catch (Exception ex)
             {
@@ -970,6 +986,30 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                     currentTreatmentFinishSDO.TranPatiHospitalLoginname = cboLoginName.EditValue.ToString();
                     currentTreatmentFinishSDO.TranPatiHospitalUsername = cboLoginName.Text.ToString();
                 }
+                if (!string.IsNullOrEmpty(txtSurgeryName.Text))
+                {
+                    currentTreatmentFinishSDO.SurgeryName = txtSurgeryName.Text.Trim();
+                }
+                else
+                {
+                    currentTreatmentFinishSDO.SurgeryName = null;
+                }
+                if (!string.IsNullOrEmpty(dtStart.Text))
+                {
+                    currentTreatmentFinishSDO.SurgeryBeginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber((DateTime)dtStart.EditValue);
+                }
+                else
+                {
+                    currentTreatmentFinishSDO.SurgeryBeginTime = null;
+                }
+                if (!string.IsNullOrEmpty(dtFinish.Text))
+                {
+                    currentTreatmentFinishSDO.SurgeryEndTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber((DateTime)dtFinish.EditValue);
+                }
+                else
+                {
+                    currentTreatmentFinishSDO.SurgeryEndTime = null;
+                }
                 MyGetData(currentTreatmentFinishSDO);
                 this.Close();
             }
@@ -992,8 +1032,57 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void barButtonItemShowSurgMisu_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ListSurgMisuByTreatment").FirstOrDefault();
+                if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.ListSurgMisuByTreatment'");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    moduleData.RoomId = this.moduleDataTransfer.RoomId;
+                    moduleData.RoomTypeId = this.moduleDataTransfer.RoomTypeId;
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(moduleData);
+                    listArgs.Add(hisTreatment.ID);
+                    listArgs.Add((HIS.Desktop.Common.DelegateLoadPTTT)ProcessLoadPTTT);
+                    var extenceInstance = PluginInstance.GetPluginInstance(moduleData, listArgs);
+                    if (extenceInstance == null)
+                    {
+                        throw new ArgumentNullException("moduleData is null");
+                    }
+
+                    ((Form)extenceInstance).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         #endregion
 
+        private void ProcessLoadPTTT(string namePTTT, DateTime? startTime, DateTime? finishTime)
+        {
+            try
+            {
+                txtSurgeryName.Text = namePTTT;
+                //dtStart.DateTime = startTime ?? DateTime.MinValue;
+                if (startTime != null)
+                {
+                    dtStart.DateTime = startTime ?? DateTime.MinValue;
+                }
+                if (finishTime != null)
+                {
+                    dtFinish.DateTime = finishTime ?? DateTime.MinValue;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        
         private void txtLyDoChuyenMon_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try

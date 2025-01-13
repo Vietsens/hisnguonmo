@@ -1409,8 +1409,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     {
                         txtHosReasonNt.Text = data.HOSPITALIZE_REASON_NAME;
                     }
-                    LoadSoNgayDieuTri();
                     FillDataToControlsForm();
+                    LoadSoNgayDieuTri();
+                    
                 }
             }
             catch (Exception ex)
@@ -1662,7 +1663,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             }
         }
 
-        private async Task LoadSoNgayDieuTri()
+        private void LoadSoNgayDieuTri()
         {
             try
             {
@@ -2663,7 +2664,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
                 if (treatmentEndTypeExt != null)
                 {
-                    hisTreatmentFinishSDO_process.TreatmentEndTypeExtId = treatmentEndTypeExt.ID;
+                    hisTreatmentFinishSDO_process.TreatmentEndTypeExtId = treatmentEndTypeExt.ID; 
                 }
 
                 hisTreatmentFinishSDO = new MOS.SDO.HisTreatmentFinishSDO();
