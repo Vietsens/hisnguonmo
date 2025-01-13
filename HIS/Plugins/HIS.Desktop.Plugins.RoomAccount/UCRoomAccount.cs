@@ -882,8 +882,8 @@ namespace HIS.Desktop.Plugins.RoomAccount
                                 if (item.ROOM_ID == subitem.ID)
                                 {
                                     subitem.IS_ACTIVE = item.IS_ACTIVE;
+                                    break;
                                 }
-                                break;
                             }
                         }
                     }
