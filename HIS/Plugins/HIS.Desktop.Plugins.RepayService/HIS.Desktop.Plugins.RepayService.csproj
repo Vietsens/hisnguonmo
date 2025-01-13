@@ -33,7 +33,7 @@
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="AutoMapper">
-      <HintPath>..\..\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\lib_1\MOS\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="CARD.WCF.Client.TransactionClient">
       <HintPath>..\..\..\..\LIB\WCF\CARD.WCF\TransactionClient\4.5\CARD.WCF.Client.TransactionClient.dll</HintPath>
@@ -267,6 +267,7 @@
     <Compile Include="Resources\ResourceMessageLang.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="RepayService\frmRepayService.resx">
       <DependentUpon>frmRepayService.cs</DependentUpon>
     </EmbeddedResource>
