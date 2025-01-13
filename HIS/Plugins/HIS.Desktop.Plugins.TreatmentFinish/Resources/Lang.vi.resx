@@ -165,6 +165,12 @@
   <data name="FormAppointment.layoutControlItem9.Text" xml:space="preserve">
     <value> </value>
   </data>
+  <data name="FormAppointment.lblKhongCanhBaoNgayNghi.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Không hiển thị thông báo hẹn khám vào thứ 7, chủ nhật</value>
+  </data>
+  <data name="FormAppointment.lblKhongCanhBaoNgayNghi.Text" xml:space="preserve">
+    <value>Không cảnh báo ngày nghỉ:</value>
+  </data>
   <data name="FormAppointment.lblStt.Text" xml:space="preserve">
     <value>0</value>
   </data>
@@ -222,8 +228,17 @@
   <data name="FormTransfer.bar1.Text" xml:space="preserve">
     <value>Tools</value>
   </data>
+  <data name="FormTransfer.bar2.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormTransfer.barButtonItem1.Caption" xml:space="preserve">
+    <value>Ctrl S</value>
+  </data>
   <data name="FormTransfer.barButtonItemSave.Caption" xml:space="preserve">
     <value>Ctrl S</value>
+  </data>
+  <data name="FormTransfer.barButtonItemShowSurgMisu.Caption" xml:space="preserve">
+    <value>F1</value>
   </data>
   <data name="FormTransfer.btnSave.Text" xml:space="preserve">
     <value>Lưu (Ctrl S)</value>
@@ -234,14 +249,71 @@
   <data name="FormTransfer.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
   </data>
+  <data name="FormTransfer.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
   <data name="FormTransfer.layoutControlItem1.Text" xml:space="preserve">
     <value>Thuốc đã dùng</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem11.Text" xml:space="preserve">
+    <value>Nơi đến:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem13.Text" xml:space="preserve">
+    <value>Người vận chuyển:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem15.Text" xml:space="preserve">
+    <value>Lý do:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem16.Text" xml:space="preserve">
+    <value>Phương tiện vận chuyển</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem18.Text" xml:space="preserve">
+    <value>Địa chỉ:</value>
   </data>
   <data name="FormTransfer.layoutControlItem2.Text" xml:space="preserve">
     <value>Lý do chuyên môn:</value>
   </data>
+  <data name="FormTransfer.layoutControlItem20.Text" xml:space="preserve">
+    <value>Hướng điều trị</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem21.Text" xml:space="preserve">
+    <value>Phương pháp điều trị</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem22.Text" xml:space="preserve">
+    <value>Bắt đầu:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem23.Text" xml:space="preserve">
+    <value>Hình thức:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem25.Text" xml:space="preserve">
+    <value>Lý do chuyên môn:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem26.Text" xml:space="preserve">
+    <value>Lý do chuyên môn:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem27.Text" xml:space="preserve">
+    <value>Tình trạng người bệnh</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem28.Text" xml:space="preserve">
+    <value>Mẫu:</value>
+  </data>
   <data name="FormTransfer.layoutControlItem3.Text" xml:space="preserve">
     <value>Lý do chuyên môn:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem31.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chọn người thẩm quyền ký giấy chuyển viện</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem31.Text" xml:space="preserve">
+    <value>Người ký:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem33.Text" xml:space="preserve">
+    <value>Người vận chuyển:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem34.Text" xml:space="preserve">
+    <value>Phẫu thuật, thủ thuật</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem35.Text" xml:space="preserve">
+    <value>Kết thúc:</value>
   </data>
   <data name="FormTransfer.layoutControlItem8.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Chọn người thẩm quyền ký giấy chuyển viện</value>
@@ -279,8 +351,17 @@
   <data name="FormTransfer.lciTranPatiTemp.Text" xml:space="preserve">
     <value>Mẫu:</value>
   </data>
+  <data name="FormTransfer.simpleButton1.Text" xml:space="preserve">
+    <value>Lưu mẫu</value>
+  </data>
+  <data name="FormTransfer.simpleButton2.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
   <data name="FormTransfer.Text" xml:space="preserve">
     <value>Thông tin chuyển viện</value>
+  </data>
+  <data name="FormTransfer.txtSurgeryName.Properties.NullText" xml:space="preserve">
+    <value>Nhấn F1 để chọn dịch vụ</value>
   </data>
   <data name="FormTreatmentFinish.bar1.Text" xml:space="preserve">
     <value>Tools</value>
@@ -417,6 +498,9 @@
   <data name="FormTreatmentFinish.layoutControlItem46.Text" xml:space="preserve">
     <value>Người ký thay:</value>
   </data>
+  <data name="FormTreatmentFinish.layoutControlItem47.Text" xml:space="preserve">
+    <value>Nghề nghiệp:</value>
+  </data>
   <data name="FormTreatmentFinish.layoutControlItem5.Text" xml:space="preserve">
     <value>Số chuyển viện:</value>
   </data>
@@ -545,6 +629,12 @@
   </data>
   <data name="FormTreatmentFinish.lciEyeTensionRight.Text" xml:space="preserve">
     <value>Nhãn áp phải:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciHosReason.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Lý do vào nội trú</value>
+  </data>
+  <data name="FormTreatmentFinish.lciHosReason.Text" xml:space="preserve">
+    <value>Lý do vào NT:</value>
   </data>
   <data name="FormTreatmentFinish.lciKetQuaXetNghiem.Text" xml:space="preserve">
     <value>Kết quả xét nghiệm, cận lâm sàng</value>
@@ -974,11 +1064,5 @@
   </data>
   <data name="TruongThongTinCoDoDaiVuotQuaGioiHan" xml:space="preserve">
     <value>Độ dài của trường dữ liệu không vượt quá 2000 ký tự</value>
-  </data>
-  <data name="FormAppointment.lblKhongCanhBaoNgayNghi.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Không hiển thị thông báo hẹn khám vào thứ 7, chủ nhật</value>
-  </data>
-  <data name="FormAppointment.lblKhongCanhBaoNgayNghi.Text" xml:space="preserve">
-    <value>Không cảnh báo ngày nghỉ:</value>
   </data>
 </root>

@@ -165,6 +165,12 @@
   <data name="FormAppointment.layoutControlItem9.Text" xml:space="preserve">
     <value> </value>
   </data>
+  <data name="FormAppointment.lblKhongCanhBaoNgayNghi.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Do not display appointment notices on Saturdays and Sundays</value>
+  </data>
+  <data name="FormAppointment.lblKhongCanhBaoNgayNghi.Text" xml:space="preserve">
+    <value>No holiday warning:</value>
+  </data>
   <data name="FormAppointment.lblStt.Text" xml:space="preserve">
     <value>0</value>
   </data>
@@ -222,8 +228,17 @@
   <data name="FormTransfer.bar1.Text" xml:space="preserve">
     <value>Tools</value>
   </data>
+  <data name="FormTransfer.bar2.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormTransfer.barButtonItem1.Caption" xml:space="preserve">
+    <value>Ctrl S</value>
+  </data>
   <data name="FormTransfer.barButtonItemSave.Caption" xml:space="preserve">
     <value>Ctrl S</value>
+  </data>
+  <data name="FormTransfer.barButtonItemShowSurgMisu.Caption" xml:space="preserve">
+    <value>F1</value>
   </data>
   <data name="FormTransfer.btnSave.Text" xml:space="preserve">
     <value>Save (Ctrl S)</value>
@@ -234,14 +249,71 @@
   <data name="FormTransfer.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
   </data>
+  <data name="FormTransfer.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
   <data name="FormTransfer.layoutControlItem1.Text" xml:space="preserve">
     <value>Used medicine</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem11.Text" xml:space="preserve">
+    <value>Destination:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem13.Text" xml:space="preserve">
+    <value>Carrier:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem15.Text" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem16.Text" xml:space="preserve">
+    <value>Means of transportation</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem18.Text" xml:space="preserve">
+    <value>Address:</value>
   </data>
   <data name="FormTransfer.layoutControlItem2.Text" xml:space="preserve">
     <value>Professional reasons:</value>
   </data>
+  <data name="FormTransfer.layoutControlItem20.Text" xml:space="preserve">
+    <value>Treatment direction</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem21.Text" xml:space="preserve">
+    <value>Treatment methods</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem22.Text" xml:space="preserve">
+    <value>Begin:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem23.Text" xml:space="preserve">
+    <value>Form:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem25.Text" xml:space="preserve">
+    <value>Professional reasons:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem26.Text" xml:space="preserve">
+    <value>Professional reasons:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem27.Text" xml:space="preserve">
+    <value>Patient's condition</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem28.Text" xml:space="preserve">
+    <value>Sample:</value>
+  </data>
   <data name="FormTransfer.layoutControlItem3.Text" xml:space="preserve">
     <value>Professional reasons:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem31.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Choose the person with authority to sign the hospital transfer form</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem31.Text" xml:space="preserve">
+    <value>Signed by:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem33.Text" xml:space="preserve">
+    <value>Carrier:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem34.Text" xml:space="preserve">
+    <value>Surgery, procedures</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem35.Text" xml:space="preserve">
+    <value>End:</value>
   </data>
   <data name="FormTransfer.layoutControlItem8.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Choose the person with authority to sign the hospital transfer form</value>
@@ -279,8 +351,17 @@
   <data name="FormTransfer.lciTranPatiTemp.Text" xml:space="preserve">
     <value>Sample:</value>
   </data>
+  <data name="FormTransfer.simpleButton1.Text" xml:space="preserve">
+    <value>Save the template</value>
+  </data>
+  <data name="FormTransfer.simpleButton2.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
   <data name="FormTransfer.Text" xml:space="preserve">
     <value>Hospital transfer information</value>
+  </data>
+  <data name="FormTransfer.txtSurgeryName.Properties.NullText" xml:space="preserve">
+    <value>Press F1 to select service</value>
   </data>
   <data name="FormTreatmentFinish.bar1.Text" xml:space="preserve">
     <value>Tools</value>
@@ -417,6 +498,9 @@
   <data name="FormTreatmentFinish.layoutControlItem46.Text" xml:space="preserve">
     <value>Substitute signer:</value>
   </data>
+  <data name="FormTreatmentFinish.layoutControlItem47.Text" xml:space="preserve">
+    <value>Job:</value>
+  </data>
   <data name="FormTreatmentFinish.layoutControlItem5.Text" xml:space="preserve">
     <value>Hospital transfer number:</value>
   </data>
@@ -545,6 +629,12 @@
   </data>
   <data name="FormTreatmentFinish.lciEyeTensionRight.Text" xml:space="preserve">
     <value>Right intraocular pressure:</value>
+  </data>
+  <data name="FormTreatmentFinish.lciHosReason.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Reason for boarding</value>
+  </data>
+  <data name="FormTreatmentFinish.lciHosReason.Text" xml:space="preserve">
+    <value>Reasons for entering NT:</value>
   </data>
   <data name="FormTreatmentFinish.lciKetQuaXetNghiem.Text" xml:space="preserve">
     <value>Laboratory and paraclinical results</value>
@@ -974,13 +1064,5 @@
   </data>
   <data name="TruongThongTinCoDoDaiVuotQuaGioiHan" xml:space="preserve">
     <value>The length of the data field does not exceed 2000 characters</value>
-  </data>
-  <data name="FormAppointment.lblKhongCanhBaoNgayNghi.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Do not display appointment notices on Saturdays and Sundays</value>
-    <comment>Không hiển thị thông báo hẹn khám vào thứ 7, chủ nhật</comment>
-  </data>
-  <data name="FormAppointment.lblKhongCanhBaoNgayNghi.Text" xml:space="preserve">
-    <value>No holiday warning:</value>
-    <comment>Không cảnh báo ngày nghỉ:</comment>
   </data>
 </root>

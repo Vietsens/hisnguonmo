@@ -606,6 +606,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 {
                     hisTreatmentFinishSDO.CareerId = (long)cboCareer.EditValue;
                 }
+
+                hisTreatmentFinishSDO.SurgeryName = currentTreatmentFinishSDO.SurgeryName;
+                hisTreatmentFinishSDO.SurgeryBeginTime = currentTreatmentFinishSDO.SurgeryBeginTime;
+                hisTreatmentFinishSDO.SurgeryEndTime = currentTreatmentFinishSDO.SurgeryEndTime;
             }
             catch (Exception ex)
             {
@@ -716,6 +720,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 currentTreatmentFinishSDO.DeathCertIssuerUsername = data.DEATH_CERT_ISSUER_USERNAME;
                 currentTreatmentFinishSDO.DeathDocumentTypeCode = data.DEATH_DOCUMENT_TYPE_CODE;              
                 currentTreatmentFinishSDO.DeathStatus = data.DEATH_STATUS;
+                currentTreatmentFinishSDO.SurgeryName = data.SURGERY_NAME;
+                currentTreatmentFinishSDO.SurgeryBeginTime = data.SURGERY_BEGIN_TIME;
+                currentTreatmentFinishSDO.SurgeryEndTime = data.SURGERY_END_TIME;
             }
             catch (Exception ex)
             {
