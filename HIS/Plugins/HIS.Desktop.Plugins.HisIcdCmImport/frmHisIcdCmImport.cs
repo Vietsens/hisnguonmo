@@ -267,15 +267,16 @@ namespace HIS.Desktop.Plugins.HisIcdCmImport
                     }
 
 
-                    if (!string.IsNullOrEmpty(item.ICD_CM_NAME))
+                    if (!string.IsNullOrEmpty(item.ICD_CM_NAME))           
                     {
-                        if (item.ICD_CM_NAME.Length > 100)
-                        {
+                        if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.ICD_CM_NAME, 500))
+
+						{
                             error += string.Format(Message.MessageImport.Maxlength, "Tên ICD_CM");
                         }
                     }
                     else
-                    {
+                    {      
                         error += string.Format(Message.MessageImport.ThieuTruongDL, "Tên ICD_CM");
                     }
 
@@ -289,7 +290,7 @@ namespace HIS.Desktop.Plugins.HisIcdCmImport
                     if (!string.IsNullOrEmpty(item.ICD_CM_GROUP_CODE))
                     {
                         if (item.ICD_CM_GROUP_CODE.Length > 10)
-                        {
+                        {      
                             error += string.Format(Message.MessageImport.Maxlength, "Mã nhóm");
                         }
                     }
