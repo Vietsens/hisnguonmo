@@ -708,7 +708,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
 
                         if (notShowTaxBreakdown)
                         {
-                            product.ProdQuantity = (item.ProdQuantity ?? 0) + (item.TaxAmount ?? 0) + "";
+                            product.ProdPrice = (item.ProdPrice ?? 0) + (item.ProdQuantity.HasValue && item.ProdQuantity.Value > 0 ? (item.TaxAmount ?? 0) / (item.ProdQuantity ?? 0) : 0) + "";
                             product.VATAmount = "";
                             product.VATRate = "-4";
                         }
@@ -772,7 +772,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
 
                     if (notShowTaxBreakdown)
                     {
-                        product.ProdQuantity = (item.ProdQuantity ?? 0) + (item.TaxAmount ?? 0) + "";
+                        product.ProdPrice = (item.ProdPrice ?? 0) + (item.ProdQuantity.HasValue && item.ProdQuantity.Value > 0 ? (item.TaxAmount ?? 0) / (item.ProdQuantity ?? 0) : 0) + "";
                         product.VATAmount = "";
                         product.VATRate = "-4";
                     }
