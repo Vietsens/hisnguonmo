@@ -58,10 +58,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
 
                 LogSystem.Debug("LoadDataEmr. 1");
 
-                //List<PhauThuatThuThuat_HIS> PhauThuatThuThuat_HISs = new List<PhauThuatThuThuat_HIS>();
                 List<ThuocKhangSinh> KhangSinh_HISs = new List<ThuocKhangSinh>();
-                //List<ChiSoXetNghiemADO> ChiSoXetNghiem_HISs = new List<ChiSoXetNghiemADO>();
-                //List<DauSinhTon> TatCaDauHieuSinhTons_HISs = new List<DauSinhTon>();
 
                 #region --- Load
                 CommonParam param = new CommonParam();
@@ -196,7 +193,6 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                             _DHST = dhsts.First();
                         }
                     }
-                    //LogSystem.Debug(LogUtil.TraceData("_ExamServiceReq", _ExamServiceReq));
                 }
                 if (sereServAlls != null && sereServAlls.Count > 0)
                 {
@@ -256,6 +252,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 _HanhChinhBenhNhan.NgheNghiepMe = _Patient.MOTHER_CAREER;
                 _HanhChinhBenhNhan.TrinhDoVanHoaMe = _Patient.MOTHER_EDUCATIIONAL_LEVEL;
                 _HanhChinhBenhNhan.SoDienThoaiNguoiNha = _Patient.RELATIVE_PHONE;
+                _HanhChinhBenhNhan.NoiLamViec = _Patient.WORK_PLACE;
                 var mitiRank = _Patient.MILITARY_RANK_ID > 0 ? BackendDataWorker.Get<HIS_MILITARY_RANK>().Where(o => o.ID == _Patient.MILITARY_RANK_ID).FirstOrDefault() : null;
                 _HanhChinhBenhNhan.CapBac = mitiRank != null ? mitiRank.MILITARY_RANK_NAME : "";
                 var branchPatient = _Patient.BRANCH_ID > 0 ? BackendDataWorker.Get<HIS_BRANCH>().Where(o => o.ID == _Patient.BRANCH_ID).FirstOrDefault() : null;
@@ -278,35 +275,26 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
 
                 LogSystem.Debug("LoadDataEmr. 2.1.4");
 
-                _HanhChinhBenhNhan.NoiLamViec = _Patient.WORK_PLACE;
-
-                //Inventec.Common.Logging.LogSystem.Debug("_PatientTypeAlter: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => _PatientTypeAlter), _PatientTypeAlter));
                 if (_PatientTypeAlter != null)
                 {
                     _HanhChinhBenhNhan.DoiTuong = _PatientTypeAlter.PATIENT_TYPE_CODE == HisConfigCFG.PatientTypeCode__BHYT ? DoiTuong.BHYT : _PatientTypeAlter.PATIENT_TYPE_CODE == HisConfigCFG.PatientTypeCode__VP ? DoiTuong.ThuPhi : DoiTuong.Khac;
-
                     if (_PatientTypeAlter.HEIN_CARD_FROM_TIME > 0)
                         _HanhChinhBenhNhan.NgayDangKyBHYT = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTimeUTC(_PatientTypeAlter.HEIN_CARD_FROM_TIME ?? 0) ?? null;
-
                     if (_PatientTypeAlter.HEIN_CARD_TO_TIME > 0)
                         _HanhChinhBenhNhan.NgayHetHanBHYT = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTimeUTC(_PatientTypeAlter.HEIN_CARD_TO_TIME ?? 0) ?? null;
 
                     _HanhChinhBenhNhan.SoTheBHYT = _PatientTypeAlter.HEIN_CARD_NUMBER;
-
                     _HanhChinhBenhNhan.TenNoiDangKyBHYT = _PatientTypeAlter.HEIN_MEDI_ORG_NAME;
-
                     _HanhChinhBenhNhan.MaNoiDangKyBHYT = _PatientTypeAlter.HEIN_MEDI_ORG_CODE;
-
                     _HanhChinhBenhNhan.NgayDuocHuong5Nam = _PatientTypeAlter.JOIN_5_YEAR == MOS.LibraryHein.Bhyt.HeinJoin5Year.HeinJoin5YearCode.TRUE ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTimeUTC(_PatientTypeAlter.JOIN_5_YEAR_TIME ?? 0) : null;
                 }
+
                 LogSystem.Debug("LoadDataEmr. 2.1.4.8");
 
                 _HanhChinhBenhNhan.HoTenDiaChiNguoiNha = _Patient.RELATIVE_NAME + " - " + _Patient.RELATIVE_ADDRESS;
-
                 _HanhChinhBenhNhan.CMND = !String.IsNullOrEmpty(_Patient.CMND_NUMBER) ? _Patient.CMND_NUMBER : _Patient.CCCD_NUMBER;
                 _HanhChinhBenhNhan.NoiCap_CMND = !String.IsNullOrEmpty(_Patient.CMND_PLACE) ? _Patient.CMND_PLACE : _Patient.CCCD_PLACE;
                 _HanhChinhBenhNhan.NgayCap_CMND = _Patient.CMND_DATE != null ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTimeUTC(_Patient.CMND_DATE.Value) : _Patient.CCCD_DATE != null ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTimeUTC(_Patient.CCCD_DATE.Value) : null;
-
                 #endregion
 
                 LogSystem.Debug("LoadDataEmr. 2.1.5");
@@ -383,21 +371,16 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     }
                 }
 
-
-
                 //1. Sửa cách truyền "ThongTinDieuTri.TrucTiepVao":
                 //- Nếu hồ sơ điều trị là cấp cứu (his_treatment có is_emergency = 1), thì truyền vào là CapCuu.
                 //- Nếu hồ sơ điều trị ko phải là cấp cứu thì kiểm tra khoa tiếp đón BN (khoa đầu tiên trong dòng thời gian, tính theo department_in_time, nếu time giống nhau thì lấy ID nhỏ hơn):
                 //+ Nếu khoa được tick là "khoa khám bệnh" (his_department có is_exam = 1) thì truyền vào là "KKB"
                 //+ Còn lại, thì truyền vào là "KhoaDieuTri"
-
                 var departmentTimeFirst = _DepartmentTrans != null ? _DepartmentTrans.OrderBy(o => o.DEPARTMENT_IN_TIME).ThenBy(o => o.ID).FirstOrDefault() : null;
                 var depa = departmentTimeFirst != null ? BackendDataWorker.Get<HIS_DEPARTMENT>().Where(p => p.ID == departmentTimeFirst.DEPARTMENT_ID).FirstOrDefault() : null;
                 _ThongTinDieuTri.TrucTiepVao = (_Treatment.IS_EMERGENCY == 1) ? TrucTiepVao.CapCuu :
-                    (depa != null && depa.IS_EXAM == 1 ? TrucTiepVao.KKB :
-                    TrucTiepVao.KhoaDieuTri
-                    )
-                ;//TODO
+                    (depa != null && depa.IS_EXAM == 1 ? TrucTiepVao.KKB : TrucTiepVao.KhoaDieuTri)
+                ;
 
                 _ThongTinDieuTri.NoiGioiThieu = (!String.IsNullOrEmpty(_Treatment.TRANSFER_IN_MEDI_ORG_NAME) && !String.IsNullOrEmpty(_Treatment.TRANSFER_IN_MEDI_ORG_CODE)) ? NoiGioiThieu.CoQuanYTe : NoiGioiThieu.TuDen;
 
@@ -411,12 +394,10 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
 
                 MOS.Filter.HisPatientTypeAlterFilter patientTypeAlterFilter = new HisPatientTypeAlterFilter();
                 patientTypeAlterFilter.TREATMENT_ID = _Treatment.ID;
-                //patientTypeAlterFilter.TREATMENT_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU;
                 patientTypeAlterFilter.ORDER_FIELD = "LOG_TIME";
                 patientTypeAlterFilter.ORDER_DIRECTION = "ASC";
                 param = new CommonParam();
                 var patientTypeAlters = new BackendAdapter(param).Get<List<HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeAlter/Get", ApiConsumer.ApiConsumers.MosConsumer, patientTypeAlterFilter, param);
-                //LogSystem.Debug(LogUtil.TraceData(LogUtil.GetMemberName(() => patientTypeAlters), patientTypeAlters));
 
                 if (patientTypeAlters != null && patientTypeAlters.Count() > 0)
                 {
@@ -428,8 +409,6 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     long? timeIn = 0, timeOut = 0;
                     var depaTranFirstId = patientTypeAlters.First().DEPARTMENT_TRAN_ID;
                     var depaTranFirst = patientTypeAlters.First();
-                    //LogSystem.Debug(LogUtil.TraceData(LogUtil.GetMemberName(() => depaTranFirstId), depaTranFirstId));
-                    //_DepartmentTrans = _DepartmentTrans != null && depaTranIds != null ? _DepartmentTrans.Where(p => depaTranIds.Contains(p.ID) && p.DEPARTMENT_IN_TIME != null).OrderBy(p => p.DEPARTMENT_IN_TIME).ThenBy(p => p.ID).ToList() : null;
                     if (_DepartmentTrans != null && _DepartmentTrans.Count() > 0)
                     {
                         departmentTranFirst = _DepartmentTrans.FirstOrDefault(o => o.ID == depaTranFirstId);
@@ -438,18 +417,13 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                         timeIn = departmentTranFirst.DEPARTMENT_IN_TIME;
                         timeOut = (departmentTranSecond == null) ? _Treatment.OUT_TIME : departmentTranSecond.DEPARTMENT_IN_TIME;
 
-                        //timeIn = depaTranFirst.LOG_TIME;
-                        //timeOut = (departmentTranSecond != null) ? departmentTranSecond.DEPARTMENT_IN_TIME : _Treatment.OUT_TIME;
-
                         _ThongTinDieuTri.NgayVaoKhoa = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTimeUTC(depaTranFirst.LOG_TIME) ?? null;
                         _ThongTinDieuTri.TenKhoaVao = departmentTranFirst.DEPARTMENT_NAME;
                         long? songay = null;
 
-                        //songay = HIS.Common.Treatment.Calculation.DayOfTreatment(timeIn, timeOut, _Treatment.TREATMENT_END_TYPE_ID, _Treatment.TREATMENT_RESULT_ID, ptyType) ?? 0;
                         songay = DayOfTreatmentDepartment(timeIn ?? 0, timeOut, _Treatment.TDL_TREATMENT_TYPE_ID ?? 0);
                         _ThongTinDieuTri.SoNgayDieuTriTaiKhoa = Inventec.Common.TypeConvert.Parse.ToInt32(songay.ToString());
                     }
-                    //LogSystem.Debug(LogUtil.TraceData(LogUtil.GetMemberName(() => patientTypeAlters), patientTypeAlters));
                 }
 
                 //3. Sửa thông tin "Chuyển khoa":
@@ -583,8 +557,6 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 if (sereServPttts != null && sereServPttts.Count > 0)
                 {
                     LogSystem.Debug("LoadDataEmr. 2.2");
-                    //PhauThuatThuThuat_HISs = PhauThuatThuThuat_HISs.OrderBy(o => o.NgayPhauThuatThuThuat).ToList();
-                    //LogSystem.Debug("LoadDataEmr. 2.3");
 
                     int? dem = null;
                     var phauthuat = sereServAlls.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT).ToList();
@@ -597,11 +569,6 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                             sereServPt.AddRange(check);
                         }
                     }
-
-                    //_ThongTinDieuTri.TongSoLanPhauThuat = sereServPttts.Count;//TODO
-
-                    //_ThongTinDieuTri.TongSoLanPhauThuat = sereServAlls.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT).ToList().Count;
-
                     _ThongTinDieuTri.TongSoLanPhauThuat = sereServPt.Count;
 
                     string BeforeAfterSurgeryICDOption = HisConfigs.Get<string>(SdaConfigKeys.BeforeAfterSurgeryICDOption);
@@ -610,9 +577,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     LogSystem.Debug("LoadDataEmr. 2.4");
                     _ThongTinDieuTri.TongSoNgayDieuTriSauPT = null;//TODO
                     _ThongTinDieuTri.LyDoTaiBienBienChung = null;//TODO
-
                     _ThongTinDieuTri.MaICD_NguyenNhan_BenhChinh_RV = sereServPttts[0].ICD_CODE;
-
 
                     if (BeforeAfterSurgeryICDOption == "1")
                     {
@@ -662,13 +627,11 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
 
                 _ThongTinDieuTri.SoNhapVien = _Treatment.IN_CODE;
 
-
                 if (treatmentBedRoom != null)
                 {
                     _ThongTinDieuTri.Buong = treatmentBedRoom.BED_ROOM_NAME;
                     _ThongTinDieuTri.Giuong = treatmentBedRoom.BED_CODE;
                     _ThongTinDieuTri.TenGiuong = treatmentBedRoom.BED_NAME;
-
 
                     var bedroom = BackendDataWorker.Get<V_HIS_BED_ROOM>().Where(o => o.ID == treatmentBedRoom.BED_ROOM_ID).FirstOrDefault();
 
@@ -677,20 +640,17 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                         _ThongTinDieuTri.MaKhoa = bedroom.DEPARTMENT_CODE;
                         _ThongTinDieuTri.Khoa = bedroom.DEPARTMENT_NAME;
                     }
-                    //LogSystem.Debug(LogUtil.TraceData(LogUtil.GetMemberName(() => bedroom), bedroom));
                 }
                 else
                 {
                     V_HIS_DEPARTMENT_TRAN departmentTran1 = (_PatientTypeAlter != null && _DepartmentTrans != null && _DepartmentTrans.Count > 0) ? _DepartmentTrans.Where(p => p.ID == _PatientTypeAlter.DEPARTMENT_TRAN_ID && p.DEPARTMENT_IN_TIME != null).First() : null;
                     _ThongTinDieuTri.MaKhoa = departmentTran1 != null ? departmentTran1.DEPARTMENT_CODE : "";
                     _ThongTinDieuTri.Khoa = departmentTran1 != null ? departmentTran1.DEPARTMENT_NAME : "";
-                    //LogSystem.Debug(LogUtil.TraceData(LogUtil.GetMemberName(() => departmentTran1), departmentTran1));
                 }
 
                 _ThongTinDieuTri.MaGiamDocBenhVien = "";
                 _ThongTinDieuTri.NgayThangNamTrangBia = DateTime.Now;
                 _ThongTinDieuTri.MaTruongKhoa = "";
-
                 _ThongTinDieuTri.BacSiKhamBenh = _Treatment.IN_LOGINNAME + " - " + _Treatment.IN_USERNAME;
 
                 LogSystem.Debug("LoadDataEmr. 2.5.1");
@@ -699,8 +659,6 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 if (currentServiceReqs != null && currentServiceReqs.Count > 0)
                 {
                     V_HIS_SERVICE_REQ VServiceReqmain = currentServiceReqs.Where(p => p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && p.IS_MAIN_EXAM == 1).FirstOrDefault();
-
-                    //Inventec.Common.Logging.LogSystem.Debug("VServiceReqmain: "+ Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => VServiceReqmain), VServiceReqmain));
                     if (VServiceReqmain != null)
                     {
                         Ten_KKB_CapCuu = VServiceReqmain.ICD_NAME;
@@ -709,8 +667,6 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     else
                     {
                         V_HIS_SERVICE_REQ VServiceReq = currentServiceReqs.Where(p => p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).OrderBy(o => o.INTRUCTION_TIME).ThenBy(o => o.ID).FirstOrDefault();
-
-                        //Inventec.Common.Logging.LogSystem.Debug("VServiceReq: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => VServiceReq), VServiceReq));
                         Ten_KKB_CapCuu = VServiceReq != null ? VServiceReq.ICD_NAME : null;
                         Ma_KKB_CapCuu = VServiceReq != null ? VServiceReq.ICD_CODE : null;
                     }
@@ -738,15 +694,12 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 {
                     KhangSinh_HISs = new List<ThuocKhangSinh>();
 
-                    //MEDICINE_GROUP_ID trong V_HIS_MEDICINE_TYPE = IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__KS. V_HIS_MEDICINE_TYPE lấy từ ram
-                    //HIS_EXP_MEST_MEDICINE 
                     List<V_HIS_MEDICINE_TYPE> lstHisMedicineType = new List<V_HIS_MEDICINE_TYPE>();
                     List<HIS_EXP_MEST_MEDICINE> listExpMestMedicine = new List<HIS_EXP_MEST_MEDICINE>();
                     lstHisMedicineType = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().Where(o => o.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__KS).ToList();
                     foreach (var item in lstHisMedicineType)
                     {
                         var lstcheckMedicine = _ExpMestMedicine.Where(o => o.TDL_MEDICINE_TYPE_ID == item.ID).ToList();
-                        //listExpMestMedicine.Add(lstcheckMedicine);
                         if (lstcheckMedicine != null && lstcheckMedicine.Count > 0)
                         {
                             lstcheckMedicine = lstcheckMedicine.OrderBy(o => o.TDL_MEDICINE_TYPE_ID).ToList();
@@ -828,16 +781,11 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     {
                         _DauSinhTon.BMI = (double)_DHST.VIR_BMI;
                     }
-
-                    //LogSystem.Debug(LogUtil.TraceData(LogUtil.GetMemberName(() => _DauSinhTon), _DauSinhTon));
                 }
                 _ThongTinDieuTri.DauSinhTon = _DauSinhTon;
-
-
                 #endregion
 
                 #region ------ DauHieuSinhTonMoi
-
                 DauSinhTon _DauHieuSinhTonMoi = new DauSinhTon();
                 if (_DHSTMOI != null)
                 {
@@ -869,9 +817,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     {
                         _DauHieuSinhTonMoi.BMI = (double)_DHSTMOI.VIR_BMI;
                     }
-
                 }
-
                 #endregion
 
                 #region ------ HoSo
@@ -884,13 +830,17 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 //+ Số tơ khác: Tổng số lượng các dịch vụ cận lâm sàn khác các dịch vụ trên.
                 //+ Tên các loại dịch vụ: Tên các loại dịch vụ cận lâm sàn khác các dịch vụ trên cách nhau bởi dấu ,: Nội soi, Thủ thuật, ...
                 //- Chú y không tính các dịch vụ được đánh dấu "Không thực hiện".
-
                 HoSo _HoSo = new HoSo();
 
                 if (sereServAlls != null && sereServAlls.Count > 0 && sereServAlls.Any(o => o.IS_NO_EXECUTE == null || o.IS_NO_EXECUTE != 1))
                 {
-                    //LogSystem.Debug(LogUtil.TraceData(LogUtil.GetMemberName(() => sereServAlls), sereServAlls));
-                    var sereServByTypeAlls = sereServAlls.Where(o => o.IS_NO_EXECUTE == null || o.IS_NO_EXECUTE != 1).ToList();
+                    List<long> serviceclsType = new List<long> { IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA,
+                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS,
+                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA,
+                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN,
+                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL,
+                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN};
+                    var sereServByTypeAlls = sereServAlls.Where(o => (o.IS_NO_EXECUTE == null || o.IS_NO_EXECUTE != 1) && serviceclsType.Contains(o.TDL_SERVICE_TYPE_ID)).ToList();
                     _HoSo.XQuang = sereServByTypeAlls.Count(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA
                         && CheckDiimTypeService(o.SERVICE_ID, IMSys.DbConfig.HIS_RS.HIS_DIIM_TYPE.ID__XQ));
                     _HoSo.CTScanner = sereServByTypeAlls.Count(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA
@@ -911,13 +861,6 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     }
                     _HoSo.ToanBoHoSo = sereServByTypeAlls.Count;
                 }
-                //_HoSo.CTScanner = 1;
-                //_HoSo.Khac = 3;
-                //_HoSo.Khac_Text = "Khac_Text";
-                //_HoSo.SieuAm = 4;
-                //_HoSo.ToanBoHoSo = 5;
-                //_HoSo.XetNghiem = 6;
-                //_HoSo.XQuang = 7;
                 _ThongTinDieuTri.HoSo = _HoSo;
                 #endregion
                 LogSystem.Debug("LoadDataEmr. 3");
@@ -958,9 +901,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 {
                     _BenhAnCommonADO.BacSyDieuTri = _ExamServiceReq.EXECUTE_USERNAME;
                     _BenhAnCommonADO.BacSyLamBenhAn = _ExamServiceReq.REQUEST_USERNAME;
-
                     _BenhAnCommonADO.CoXuongKhop = _ExamServiceReq.PART_EXAM_MUSCLE_BONE;
-
                     _BenhAnCommonADO.HoHap = _ExamServiceReq.PART_EXAM_RESPIRATORY;
                     _BenhAnCommonADO.HuongDieuTri = _ExamServiceReq.NEXT_TREATMENT_INSTRUCTION;
                     _BenhAnCommonADO.HuongDieuTriVaCacCheDoTiepTheo = _ExamServiceReq.NEXT_TREATMENT_INSTRUCTION;
@@ -973,9 +914,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     _BenhAnCommonADO.NguoiGiaoHoSo = _ExamServiceReq.REQUEST_USERNAME;
                     _BenhAnCommonADO.NguoiNhanHoSo = _ExamServiceReq.EXECUTE_USERNAME;
                     _BenhAnCommonADO.PhanBiet = "";
-                    //_BenhAnCommonADO.PhuongPhapDieuTri = _ExamServiceReq.TREATMENT_INSTRUCTION;
                     _BenhAnCommonADO.QuaTrinhBenhLy = _ExamServiceReq.PATHOLOGICAL_PROCESS;
-                    //_BenhAnCommonADO.QuaTrinhBenhLyVaDienBien = _ExamServiceReq.NOTE;
                     _BenhAnCommonADO.RangHamMat = _ExamServiceReq.PART_EXAM_STOMATOLOGY;
                     _BenhAnCommonADO.TaiMuiHong = String.IsNullOrEmpty(_ExamServiceReq.PART_EXAM_ENT) ? _ExamServiceReq.PART_EXAM_EAR + " " + _ExamServiceReq.PART_EXAM_NOSE + " " + _ExamServiceReq.PART_EXAM_THROAT : _ExamServiceReq.PART_EXAM_ENT;
                     _BenhAnCommonADO.TienLuong = "";
@@ -985,7 +924,6 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     _BenhAnCommonADO.TinhTrangNguoiBenhRaVien = _ExamServiceReq.ADVISE;
                     _BenhAnCommonADO.ToanThan = _ExamServiceReq.FULL_EXAM;
                     _BenhAnCommonADO.TomTatBenhAn = _ExamServiceReq.SUBCLINICAL;
-                    
                     _BenhAnCommonADO.TuanHoan = _ExamServiceReq.PART_EXAM_CIRCULATION;
                     _BenhAnCommonADO.ThanKinh = _ExamServiceReq.PART_EXAM_NEUROLOGICAL;
                     _BenhAnCommonADO.ThanTietNieuSinhDuc = _ExamServiceReq.PART_EXAM_KIDNEY_UROLOGY;
@@ -1233,9 +1171,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     _ThongTinDieuTri.ChanDoanKKBYHCT = _Treatment.TRADITIONAL_ICD_NAME;
                     _ThongTinDieuTri.YHHD_BenhKemTheo = _Treatment.IN_ICD_TEXT; //"dt29";
                     _BenhAnNgoaiTruYHCT.MaICD_BenhKemTheo_YHHD = _Treatment.IN_ICD_SUB_CODE;//"16";//TODO
-
                     _BenhAnNgoaiTruYHCT.MaICD_BenhChinh_YHCT = _Treatment.TRADITIONAL_IN_ICD_CODE;//"28";
-
                     _BenhAnNgoaiTruYHCT.BenhKemTheo_YHCT = _Treatment.TRADITIONAL_IN_ICD_TEXT;//"4";
                     _BenhAnNgoaiTruYHCT.MaICD_BenhKemTheo_YHCT = _Treatment.TRADITIONAL_IN_ICD_SUB_CODE;//"31";
 
@@ -1243,13 +1179,11 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     {
                         _BenhAnNgoaiTruYHCT.BenhKemTheo_RV_YHCT = _Treatment.TRADITIONAL_ICD_TEXT;//"1";
                         _BenhAnNgoaiTruYHCT.MaICD_BenhKemTheo_RV_YHCT = _Treatment.TRADITIONAL_ICD_SUB_CODE;//"14";
-                        _BenhAnNgoaiTruYHCT.MaICD_BenhChinh_RV_YHCT = _Treatment.TRADITIONAL_ICD_CODE;// "12";                                     
-
+                        _BenhAnNgoaiTruYHCT.MaICD_BenhChinh_RV_YHCT = _Treatment.TRADITIONAL_ICD_CODE;// "12";
                         _BenhAnNgoaiTruYHCT.ChanDoanRaVienTheoYHCT = _Treatment.TRADITIONAL_ICD_NAME;//"8";
                         _BenhAnNgoaiTruYHCT.MICDBenhChinhRVYHCT = _Treatment.TRADITIONAL_ICD_CODE;//"22";
                         _BenhAnNgoaiTruYHCT.CDBenhKemTheoRaVienTheoYHCT = _Treatment.TRADITIONAL_ICD_TEXT;//"3";
                         _BenhAnNgoaiTruYHCT.MICDbenhKemTheoRaVienYHCT = _Treatment.TRADITIONAL_ICD_SUB_CODE;//"24";
-
                         _BenhAnNgoaiTruYHCT.ChanDoanRaVienTheoYHHD = _Treatment.ICD_NAME;//"9";
                         _BenhAnNgoaiTruYHCT.MICDRaVienTheoYHHD = _Treatment.ICD_CODE;//"28";
                         _BenhAnNgoaiTruYHCT.CDBenhKemTheoRVYHHD = _Treatment.ICD_TEXT;//"4";
@@ -1260,20 +1194,16 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     _BenhAnNgoaiTruYHCT.MICDBenhChinhVVYHCT = _Treatment.TRADITIONAL_IN_ICD_CODE;//"23";
                     _BenhAnNgoaiTruYHCT.CDBenhKemtheoVVYHCT = _Treatment.TRADITIONAL_IN_ICD_TEXT;//"5";
                     _BenhAnNgoaiTruYHCT.MICDBenhKemTheoVVYHCT = _Treatment.TRADITIONAL_IN_ICD_SUB_CODE;//"26";
-
                     _BenhAnNgoaiTruYHCT.ChanDoanVaoVienTheoYHHD = _Treatment.IN_ICD_NAME;//"11";
                     _BenhAnNgoaiTruYHCT.MICDVaoVienTheoYHHD = _Treatment.IN_ICD_CODE;//"29";
                     _BenhAnNgoaiTruYHCT.CDBenhKemtheoVVYHHD = _Treatment.IN_ICD_TEXT;//"6";
                     _BenhAnNgoaiTruYHCT.MICDBenhKemtheoVVYHHD = _Treatment.IN_ICD_SUB_CODE;//"27";
-
                     _BenhAnNgoaiTruYHCT.MaICD_NoiChuyenDen = _Treatment.IN_ICD_CODE;
                     _BenhAnNgoaiTruYHCT.MaICD_NoiChuyenDen_YHCT = _Treatment.TRADITIONAL_IN_ICD_CODE;//"19";
-
                     _BenhAnNgoaiTruYHCT.BenhChinh = _Treatment.ICD_NAME;//"36";
                     _BenhAnNgoaiTruYHCT.BenhKemTheo = _Treatment.ICD_TEXT;//"37"; 
                     _BenhAnNgoaiTruYHCT.MICD_BenhKemTheo = _Treatment.ICD_SUB_CODE;//"21";
                     _BenhAnNgoaiTruYHCT.MICD_BenhChinh = _Treatment.ICD_CODE;//"";
-
                     _BenhAnNgoaiTruYHCT.MaICD_NoiChuyenDen_YHCT = _Treatment.TRADITIONAL_TRANS_IN_ICD_CODE;
 
                     // thong tin rieng    
@@ -1282,8 +1212,6 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     _BenhAnNgoaiTruYHCT.KetQuaDieuTriID = _ThongTinDieuTri.KetQuaDieuTri.HasValue ? (int)_ThongTinDieuTri.KetQuaDieuTri : 0;
                     _BenhAnNgoaiTruYHCT.ThoiGianDieuTriTuNgay = new DateTime();
                     _BenhAnNgoaiTruYHCT.ThoiGianDieuTriDenNgay = new DateTime();
-
-
                     _BenhAnNgoaiTruYHCT.PhuongPhapDieuTriTheoYHCT = _Treatment.TREATMENT_METHOD;
 
                     json = Newtonsoft.Json.JsonConvert.SerializeObject(_BenhAnNgoaiTruYHCT);
@@ -1358,43 +1286,30 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     {
                         _BenhAnNoiTruYHCT.BenhChinh_RV_YHCT = _Treatment.TRADITIONAL_ICD_NAME;//"1";
                         _BenhAnNoiTruYHCT.MaICD_BenhChinh_RV_YHCT = _Treatment.TRADITIONAL_ICD_CODE;//"19";
-
                         _BenhAnNoiTruYHCT.BenhKemTheo_RV_YHCT = _Treatment.TRADITIONAL_ICD_TEXT;//"3";
                         _BenhAnNoiTruYHCT.MaICD_BenhKemTheo_RV_YHCT = _Treatment.TRADITIONAL_ICD_SUB_CODE;//"22";
-
                         _BenhAnNoiTruYHCT.ChanDoanRVYHCT_BenhChinh = _Treatment.TRADITIONAL_ICD_NAME;//"9";
                         _BenhAnNoiTruYHCT.MaICDChanDoanRVYHCT_BenhChinh = _Treatment.TRADITIONAL_ICD_CODE;//"28";
-
                         _BenhAnNoiTruYHCT.ChanDoanRVYHCT_KemTheo = _Treatment.TRADITIONAL_ICD_TEXT;//"10";
                         _BenhAnNoiTruYHCT.MaICDChanDoanRVYHCT_KemTheo = _Treatment.TRADITIONAL_ICD_SUB_CODE;//"29";
-
                         _BenhAnNoiTruYHCT.ChanDoanRVYHD_KemTheo = _Treatment.ICD_TEXT;//"11";
                         _BenhAnNoiTruYHCT.MaICDChanDoanRVYHD_KemTheo = _Treatment.ICD_SUB_CODE;//"30";
-
                         _BenhAnNoiTruYHCT.ChanDoanRVYHHD_BenhChinh = _Treatment.ICD_NAME;//"12";
                         _BenhAnNoiTruYHCT.MaICDRVYHD_BenhChinh = _Treatment.ICD_CODE;//"34";
-
                         _BenhAnNoiTruYHCT.ChanDoanRaVienTheoYHCT = _Treatment.TRADITIONAL_ICD_NAME; //"7";
                         _BenhAnNoiTruYHCT.ChanDoanRaVienTheoYHHD = _Treatment.ICD_NAME;//"8";
-
                     }
 
                     _BenhAnNoiTruYHCT.ChanDoanVVYHCT_BenhChinh = _Treatment.TRADITIONAL_IN_ICD_NAME;//"15";
                     _BenhAnNoiTruYHCT.MaICDChanDoanVVYHCT_BenhChinh = _Treatment.TRADITIONAL_IN_ICD_CODE;//"31";
-
                     _BenhAnNoiTruYHCT.ChanDoanVVYHCT_KemTheo = _Treatment.TRADITIONAL_IN_ICD_TEXT;//"16";
                     _BenhAnNoiTruYHCT.MaICDChanDoanVVYHCT_KemTheo = _Treatment.TRADITIONAL_IN_ICD_SUB_CODE;//"32";
-
                     _BenhAnNoiTruYHCT.MaICD_BenhChinh_YHHD_CD = _Treatment.ICD_CODE;//"21";
-                    _BenhAnNoiTruYHCT.MaICD_BenhKemTheo_YHHD_CD = _Treatment.ICD_SUB_CODE;//"25";                  
-
+                    _BenhAnNoiTruYHCT.MaICD_BenhKemTheo_YHHD_CD = _Treatment.ICD_SUB_CODE;//"25";            
                     _BenhAnNoiTruYHCT.ChanDoanVVYHD_KemTheo = _Treatment.IN_ICD_TEXT;//"17";
                     _BenhAnNoiTruYHCT.MaICDChanDoanVVYHD_KemTheo = _Treatment.IN_ICD_SUB_CODE;//"33";
-
                     _BenhAnNoiTruYHCT.MaICDVVYHD_BenhChinh = _Treatment.IN_ICD_CODE;//"35";
                     _BenhAnNoiTruYHCT.ChanDoanVVYHHD_BenhChinh = _Treatment.IN_ICD_NAME;//"18";
-
-
                     _BenhAnNoiTruYHCT.ChanDoan_NoiChuyenDen_YHCT = _Treatment.TRADITIONAL_TRANS_IN_ICD_NAME;//"6"
                     _BenhAnNoiTruYHCT.MaICD_NoiChuyenDen_YHCT = _Treatment.TRADITIONAL_TRANS_IN_ICD_CODE;//"27";
 
@@ -1419,23 +1334,16 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
 
                     _ThongTinDieuTri.YHHD_BenhKemTheo = _Treatment.IN_ICD_TEXT; //"dt29";
                     _BenhAnNoiTruYHCT.MaICD_BenhKemTheo_YHHD = _Treatment.IN_ICD_SUB_CODE;//"32";
-
                     _BenhAnNoiTruYHCT.BenhChinh_YHCT = _Treatment.TRADITIONAL_IN_ICD_NAME ?? _Treatment.TRADITIONAL_ICD_NAME;// "2";
                     _BenhAnNoiTruYHCT.MaICD_BenhChinh_YHCT = _Treatment.TRADITIONAL_IN_ICD_CODE ?? _Treatment.TRADITIONAL_ICD_CODE;//"28";
-
                     _BenhAnNoiTruYHCT.BenhKemTheo_YHCT = _Treatment.TRADITIONAL_IN_ICD_TEXT ?? _Treatment.TRADITIONAL_ICD_TEXT;//"4";
                     _BenhAnNoiTruYHCT.MaICD_BenhKemTheo_YHCT = _Treatment.TRADITIONAL_IN_ICD_SUB_CODE ?? _Treatment.TRADITIONAL_ICD_SUB_CODE;//"31";
-
                     _BenhAnNoiTruYHCT.PhuongPhapDieuTriTheoYHCT = "";// this._Treatment.TREATMENT_METHOD;
                     _BenhAnNoiTruYHCT.PhuongPhapDieuTriTheoYHHD = _Treatment.TREATMENT_METHOD;
-
                     _BenhAnNoiTruYHCT.ChanDoanVaoVienTheoYHCT = _Treatment.TRADITIONAL_IN_ICD_NAME; //"13";
                     _BenhAnNoiTruYHCT.ChanDoanVaoVienTheoYHHD = _Treatment.IN_ICD_NAME; //"14";
-
                     _BenhAnNoiTruYHCT.ChanDoanVVYHHD_BenhChinh = _Treatment.IN_ICD_NAME;
                     _BenhAnNoiTruYHCT.ChanDoanVVYHD_KemTheo = _Treatment.IN_ICD_TEXT;
-
-
 
                     json = Newtonsoft.Json.JsonConvert.SerializeObject(_BenhAnNoiTruYHCT);
                     #endregion
@@ -1697,7 +1605,6 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     json = Newtonsoft.Json.JsonConvert.SerializeObject(_BenhAnNgoaiTru_HoTroSinhSan);
                     #endregion
                 }
-
                 else if (_TYpe == LoaiBenhAnEMR.NgoaiTru_PEMPHIGOID)
                 {
                     #region bệnh án ngoại trú PEMPHIGOID
@@ -1801,7 +1708,6 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     json = Newtonsoft.Json.JsonConvert.SerializeObject(_BenhAnNgoaiTru_HoiChungTrungLap);
                     #endregion
                 }
-
                 else if (_TYpe == LoaiBenhAnEMR.StentDongMachVanh)
                 {
                     #region Theo dõi và điều trị có kiểm soát stent động mạnh vành
@@ -1914,6 +1820,26 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     json = Newtonsoft.Json.JsonConvert.SerializeObject(_BenhAnSoSinh);
                     #endregion
                 }
+                else if (_TYpe == LoaiBenhAnEMR.CapCuu)
+                {
+                    #region bệnh án cấp cứu
+                    BenhAnCapCuu _BenhAnCapCuu = new BenhAnCapCuu();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<BenhAnCapCuu>(_BenhAnCapCuu, _BenhAnCommonADO);
+                    json = Newtonsoft.Json.JsonConvert.SerializeObject(_BenhAnCapCuu);
+                    #endregion
+                }
+                else if (_TYpe == LoaiBenhAnEMR.NgoaiTru_TNT)
+                {
+                    #region bệnh án NGOẠI TRÚ THẬN NHÂN TẠO
+                    BenhAnNgoaiTru_TNT _BenhAnNgoaiTru_TNT = new BenhAnNgoaiTru_TNT();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<BenhAnNgoaiTru_TNT>(_BenhAnNgoaiTru_TNT, _BenhAnCommonADO);
+                    json = Newtonsoft.Json.JsonConvert.SerializeObject(_BenhAnNgoaiTru_TNT);
+                    #endregion
+                }
+                else if (_TYpe > 0)
+                {
+                    json = Newtonsoft.Json.JsonConvert.SerializeObject(_BenhAnCommonADO);
+                }
                 #endregion
 
                 LogSystem.Debug("LoadDataEmr. 4");
@@ -1926,12 +1852,9 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 _ERMADO.KyDienTu_DiaChiMOS = HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_MOS;
                 _ERMADO.KyDienTu_TREATMENT_CODE = _Treatment.TREATMENT_CODE;
                 _ERMADO.TreatmentId = _Treatment.ID;
-
                 _ERMADO.UserCodeLogin = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 _ERMADO.MaPhieu = _MaPhieu;
-
                 _ERMADO.TuyChonCanhBaoVanBanDaKy = TuyChonCanhBaoVanBanDaKy;
-
                 _ERMADO.IdPhong = ado.roomId;
                 _ERMADO.IdLoaiPhong = RoomTypeId;
                 _ERMADO.MaPhong = RoomCode;
@@ -1953,28 +1876,16 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     _ERMADO._LoaiBenhAnEMR_s = _TYpe;
                 }
 
-
-                //LogSystem.Debug(
-                //    LogUtil.TraceData("_BenhAnNoiTruYHCT", _BenhAnNoiTruYHCT) +
-                //    LogUtil.TraceData("_BenhAnNgoaiTruYHCT", _BenhAnNgoaiTruYHCT) +
-                //    LogUtil.TraceData("_ThongTinDieuTri", _ThongTinDieuTri) +
-                //    LogUtil.TraceData("_DauHieuSinhTonMoi", _DauHieuSinhTonMoi));
-
-
                 // gán thông tin hành chính
                 _ERMADO._HanhChinhBenhNhan_s = _HanhChinhBenhNhan;
                 _ERMADO._ThongTinDieuTri_s = _ThongTinDieuTri;
                 _ERMADO.jsonbenhan = json;
-
                 _ERMADO._DauHieuSinhTonMoi_s = new DauSinhTon();
                 _ERMADO._DauHieuSinhTonMoi_s = _DauHieuSinhTonMoi;
-
                 _ERMADO._KhangSinh_s = KhangSinh_HISs;
                 _ERMADO.IsDongBenhAn_s = _Treatment.IS_PAUSE == 1 ? true : false;
-                //LogSystem.Debug(LogUtil.TraceData("_ERMADO:", _ERMADO));
 
                 string cmdLn = EncodeData(_ERMADO);
-                //LogSystem.Debug(LogUtil.TraceData(LogUtil.GetMemberName(() => cmdLn), cmdLn));
                 LogSystem.Debug("LoadDataEmr. end");
                 System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
                 startInfo.FileName = Application.StartupPath + @"\Integrate\\EMR\\ConnectToEMR.exe";
@@ -1987,7 +1898,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 //cập nhật EMR_COVER_TYPE_ID                
                 threadOpen.Start();
 
-                if (ado.EmrCoverTypeId != (long)_TYpe && _TYpe != null && _TYpe > 0)
+                if (ado.EmrCoverTypeId != (long)_TYpe && _TYpe > 0)
                 {
                     CommonParam param1 = new CommonParam();
                     HisTreatmentEmrCoverSDO TreatmentEmrCover = new HisTreatmentEmrCoverSDO();
@@ -2007,24 +1918,6 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 WaitingManager.Hide();
                 LogSystem.Error(ex);
             }
-        }
-
-        private static async Task UpdateEmrCover(long _TreatmentId, long _TypeId)
-        {
-            try
-            {
-                CommonParam param = new CommonParam();
-                HisTreatmentEmrCoverSDO TreatmentEmrCover = new HisTreatmentEmrCoverSDO();
-                TreatmentEmrCover.TreatmentId = _TreatmentId;
-                TreatmentEmrCover.EmrCoverTypeId = _TypeId;
-
-                var resultData = new BackendAdapter(param).Post<bool>("api/HisTreatment/UpdateEmrCover", ApiConsumers.MosConsumer, TreatmentEmrCover, param);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-
         }
 
         bool CheckDiimTypeService(long serviceId, long diimTypeId)
@@ -2126,48 +2019,6 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
             {
                 result = null;
             }
-            return result;
-        }
-
-        //private static System.DateTime? TimeNumberToSystemDateTime(long time)
-        //{
-        //    System.DateTime? result = null;
-        //    try
-        //    {
-        //        if (time > 0)
-        //        {
-        //            DateTime date = System.DateTime.ParseExact(time.ToString(), "yyyyMMddHHmmss",
-        //                               System.Globalization.CultureInfo.InvariantCulture);
-        //            result = DateTime.SpecifyKind(date, DateTimeKind.Utc);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        result = null;
-        //    }
-        //    return result;
-        //}
-
-        private static string MinuteNumberToFinish(long? Start, long? End)
-        {
-            string result = "";
-            try
-            {
-                System.DateTime? dateBefore = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTimeUTC(Start.Value);
-                System.DateTime? dateAfter = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTimeUTC(End.Value);
-                if (dateBefore != null && dateAfter != null)
-                {
-                    TimeSpan difference = dateAfter.Value - dateBefore.Value;
-
-                    result = difference.Minutes.ToString();
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-
             return result;
         }
 
