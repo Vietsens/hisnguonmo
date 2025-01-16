@@ -195,17 +195,23 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     }
 
                     emrInputAdo.roomId = roomId;
+                    emrInputAdo.DepartmentId = DepartmentID;
+                    emrInputAdo.TreatmentTypeId = currentTreatmentBedRoom.TDL_TREATMENT_TYPE_ID;
 
+                    var treatment = new HIS_TREATMENT();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(treatment, currentTreatmentBedRoom);
+                    treatment.ID = currentTreatmentBedRoom.TREATMENT_ID;
+                    emrInputAdo.Treatment = treatment;
                     emrMenuPopupProcessor.InitMenu(this.menu, this.barManager, emrInputAdo);
                 }
                 #endregion
 
-                #region ----- Phiếu chăm sóc_Vỏ bệnh án
-                BarButtonItem itemEmrDocumentChamSoc = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__Phiếu chăm sóc_Vo", Base.ResourceLangManager.LanguageUCBedRoomPartial, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 8);
-                itemEmrDocumentChamSoc.Tag = ModuleType.Phieuchamsoc_vobenhan;
-                itemEmrDocumentChamSoc.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
-                menu.AddItems(new BarItem[] { itemEmrDocumentChamSoc });
-                #endregion
+                //#region ----- Phiếu chăm sóc_Vỏ bệnh án
+                //BarButtonItem itemEmrDocumentChamSoc = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__Phiếu chăm sóc_Vo", Base.ResourceLangManager.LanguageUCBedRoomPartial, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 8);
+                //itemEmrDocumentChamSoc.Tag = ModuleType.Phieuchamsoc_vobenhan;
+                //itemEmrDocumentChamSoc.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
+                //menu.AddItems(new BarItem[] { itemEmrDocumentChamSoc });
+                //#endregion
 
                 #region ----- ChiTietThanhToan
                 BarButtonItem itemEmrDocument = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHI_TIET_BENH_AN", Base.ResourceLangManager.LanguageUCBedRoomPartial, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 8);

@@ -47,15 +47,19 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.dteEnd = new DevExpress.XtraEditors.DateEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItemSave = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dteBegin = new DevExpress.XtraEditors.DateEdit();
             this.memPttt = new DevExpress.XtraEditors.MemoEdit();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -118,12 +122,11 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.chkValid1Year = new DevExpress.XtraEditors.CheckEdit();
+            this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dteEnd.Properties.CalendarTimeProperties)).BeginInit();
@@ -191,10 +194,14 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkValid1Year.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.chkValid1Year);
             this.layoutControl1.Controls.Add(this.dteEnd);
             this.layoutControl1.Controls.Add(this.dteBegin);
             this.layoutControl1.Controls.Add(this.memPttt);
@@ -254,6 +261,10 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItemSave});
@@ -278,6 +289,34 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             this.barButtonItemSave.Name = "barButtonItemSave";
             this.barButtonItemSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItemSave_ItemClick);
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(880, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 485);
+            this.barDockControlBottom.Size = new System.Drawing.Size(880, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 456);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(880, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 456);
+            // 
             // dteBegin
             // 
             this.dteBegin.EditValue = null;
@@ -300,12 +339,12 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             // 
             // memPttt
             // 
-            this.memPttt.Location = new System.Drawing.Point(2, 356);
+            this.memPttt.Location = new System.Drawing.Point(2, 340);
             this.memPttt.MenuManager = this.barManager1;
             this.memPttt.Name = "memPttt";
             this.memPttt.Properties.NullValuePrompt = "Nhấn F1 để chọn dịch vụ";
             this.memPttt.Properties.NullValuePromptShowForEmptyValue = true;
-            this.memPttt.Size = new System.Drawing.Size(464, 48);
+            this.memPttt.Size = new System.Drawing.Size(464, 64);
             this.memPttt.StyleController = this.layoutControl1;
             this.memPttt.TabIndex = 29;
             this.memPttt.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.memPttt_PreviewKeyDown);
@@ -442,16 +481,16 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             this.txtClinicalNote.Location = new System.Drawing.Point(2, 114);
             this.txtClinicalNote.MenuManager = this.barManager1;
             this.txtClinicalNote.Name = "txtClinicalNote";
-            this.txtClinicalNote.Size = new System.Drawing.Size(464, 70);
+            this.txtClinicalNote.Size = new System.Drawing.Size(464, 64);
             this.txtClinicalNote.StyleController = this.layoutControl1;
             this.txtClinicalNote.TabIndex = 19;
             // 
             // txtSubclinicalResult
             // 
-            this.txtSubclinicalResult.Location = new System.Drawing.Point(2, 204);
+            this.txtSubclinicalResult.Location = new System.Drawing.Point(2, 198);
             this.txtSubclinicalResult.MenuManager = this.barManager1;
             this.txtSubclinicalResult.Name = "txtSubclinicalResult";
-            this.txtSubclinicalResult.Size = new System.Drawing.Size(464, 52);
+            this.txtSubclinicalResult.Size = new System.Drawing.Size(464, 47);
             this.txtSubclinicalResult.StyleController = this.layoutControl1;
             this.txtSubclinicalResult.TabIndex = 18;
             // 
@@ -473,7 +512,7 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             this.cboLyDoChuyenMon.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboLyDoChuyenMon.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.cboLyDoChuyenMon.Properties.NullText = "";
             this.cboLyDoChuyenMon.Properties.View = this.gridView1;
             this.cboLyDoChuyenMon.Size = new System.Drawing.Size(222, 20);
@@ -492,11 +531,11 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             // 
             // txtUsedMedicine
             // 
-            this.txtUsedMedicine.Location = new System.Drawing.Point(470, 356);
+            this.txtUsedMedicine.Location = new System.Drawing.Point(470, 340);
             this.txtUsedMedicine.MenuManager = this.barManager1;
             this.txtUsedMedicine.Name = "txtUsedMedicine";
             this.txtUsedMedicine.Properties.MaxLength = 3000;
-            this.txtUsedMedicine.Size = new System.Drawing.Size(408, 72);
+            this.txtUsedMedicine.Size = new System.Drawing.Size(408, 65);
             this.txtUsedMedicine.StyleController = this.layoutControl1;
             this.txtUsedMedicine.TabIndex = 14;
             // 
@@ -512,11 +551,11 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             // 
             // txtPhuongTienVanChuyen
             // 
-            this.txtPhuongTienVanChuyen.Location = new System.Drawing.Point(470, 276);
+            this.txtPhuongTienVanChuyen.Location = new System.Drawing.Point(470, 265);
             this.txtPhuongTienVanChuyen.Name = "txtPhuongTienVanChuyen";
             this.txtPhuongTienVanChuyen.Properties.LinesCount = 1;
             this.txtPhuongTienVanChuyen.Properties.MaxLength = 3000;
-            this.txtPhuongTienVanChuyen.Size = new System.Drawing.Size(408, 60);
+            this.txtPhuongTienVanChuyen.Size = new System.Drawing.Size(408, 55);
             this.txtPhuongTienVanChuyen.StyleController = this.layoutControl1;
             this.txtPhuongTienVanChuyen.TabIndex = 13;
             // 
@@ -526,17 +565,17 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             this.txtHuongDieuTri.Name = "txtHuongDieuTri";
             this.txtHuongDieuTri.Properties.LinesCount = 1;
             this.txtHuongDieuTri.Properties.MaxLength = 3000;
-            this.txtHuongDieuTri.Size = new System.Drawing.Size(408, 70);
+            this.txtHuongDieuTri.Size = new System.Drawing.Size(408, 64);
             this.txtHuongDieuTri.StyleController = this.layoutControl1;
             this.txtHuongDieuTri.TabIndex = 9;
             // 
             // txtTinhTrangNguoiBenh
             // 
-            this.txtTinhTrangNguoiBenh.Location = new System.Drawing.Point(470, 204);
+            this.txtTinhTrangNguoiBenh.Location = new System.Drawing.Point(470, 198);
             this.txtTinhTrangNguoiBenh.Name = "txtTinhTrangNguoiBenh";
             this.txtTinhTrangNguoiBenh.Properties.LinesCount = 1;
             this.txtTinhTrangNguoiBenh.Properties.MaxLength = 3000;
-            this.txtTinhTrangNguoiBenh.Size = new System.Drawing.Size(408, 52);
+            this.txtTinhTrangNguoiBenh.Size = new System.Drawing.Size(408, 47);
             this.txtTinhTrangNguoiBenh.StyleController = this.layoutControl1;
             this.txtTinhTrangNguoiBenh.TabIndex = 11;
             // 
@@ -582,11 +621,11 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             // 
             // txtPPKTThuoc
             // 
-            this.txtPPKTThuoc.Location = new System.Drawing.Point(2, 276);
+            this.txtPPKTThuoc.Location = new System.Drawing.Point(2, 265);
             this.txtPPKTThuoc.Name = "txtPPKTThuoc";
             this.txtPPKTThuoc.Properties.LinesCount = 1;
             this.txtPPKTThuoc.Properties.MaxLength = 3000;
-            this.txtPPKTThuoc.Size = new System.Drawing.Size(464, 60);
+            this.txtPPKTThuoc.Size = new System.Drawing.Size(464, 55);
             this.txtPPKTThuoc.StyleController = this.layoutControl1;
             this.txtPPKTThuoc.TabIndex = 12;
             // 
@@ -685,7 +724,9 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             this.layoutControlItem13,
             this.layoutControlItem11,
             this.layoutControlItem12,
-            this.layoutControlItem14});
+            this.layoutControlItem14,
+            this.layoutControlItem15,
+            this.emptySpaceItem1});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -749,9 +790,9 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             this.lciPhuongTienVanChuyen.AppearanceItemCaption.ForeColor = System.Drawing.Color.Brown;
             this.lciPhuongTienVanChuyen.AppearanceItemCaption.Options.UseForeColor = true;
             this.lciPhuongTienVanChuyen.Control = this.txtPhuongTienVanChuyen;
-            this.lciPhuongTienVanChuyen.Location = new System.Drawing.Point(468, 258);
+            this.lciPhuongTienVanChuyen.Location = new System.Drawing.Point(468, 247);
             this.lciPhuongTienVanChuyen.Name = "lciPhuongTienVanChuyen";
-            this.lciPhuongTienVanChuyen.Size = new System.Drawing.Size(412, 80);
+            this.lciPhuongTienVanChuyen.Size = new System.Drawing.Size(412, 75);
             this.lciPhuongTienVanChuyen.Text = "Phương tiện vận chuyển";
             this.lciPhuongTienVanChuyen.TextLocation = DevExpress.Utils.Locations.Top;
             this.lciPhuongTienVanChuyen.TextSize = new System.Drawing.Size(162, 13);
@@ -792,9 +833,9 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             this.lciPhuongPhapSuDung.AppearanceItemCaption.ForeColor = System.Drawing.Color.Brown;
             this.lciPhuongPhapSuDung.AppearanceItemCaption.Options.UseForeColor = true;
             this.lciPhuongPhapSuDung.Control = this.txtPPKTThuoc;
-            this.lciPhuongPhapSuDung.Location = new System.Drawing.Point(0, 258);
+            this.lciPhuongPhapSuDung.Location = new System.Drawing.Point(0, 247);
             this.lciPhuongPhapSuDung.Name = "lciPhuongPhapSuDung";
-            this.lciPhuongPhapSuDung.Size = new System.Drawing.Size(468, 80);
+            this.lciPhuongPhapSuDung.Size = new System.Drawing.Size(468, 75);
             this.lciPhuongPhapSuDung.Text = "Phương pháp điều trị";
             this.lciPhuongPhapSuDung.TextLocation = DevExpress.Utils.Locations.Top;
             this.lciPhuongPhapSuDung.TextSize = new System.Drawing.Size(162, 13);
@@ -802,9 +843,9 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.txtUsedMedicine;
-            this.layoutControlItem1.Location = new System.Drawing.Point(468, 338);
+            this.layoutControlItem1.Location = new System.Drawing.Point(468, 322);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(412, 92);
+            this.layoutControlItem1.Size = new System.Drawing.Size(412, 85);
             this.layoutControlItem1.Text = "Thuốc đã dùng";
             this.layoutControlItem1.TextLocation = DevExpress.Utils.Locations.Top;
             this.layoutControlItem1.TextSize = new System.Drawing.Size(162, 13);
@@ -867,9 +908,9 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             // lciTinhTrangNguoiBenh
             // 
             this.lciTinhTrangNguoiBenh.Control = this.txtTinhTrangNguoiBenh;
-            this.lciTinhTrangNguoiBenh.Location = new System.Drawing.Point(468, 186);
+            this.lciTinhTrangNguoiBenh.Location = new System.Drawing.Point(468, 180);
             this.lciTinhTrangNguoiBenh.Name = "lciTinhTrangNguoiBenh";
-            this.lciTinhTrangNguoiBenh.Size = new System.Drawing.Size(412, 72);
+            this.lciTinhTrangNguoiBenh.Size = new System.Drawing.Size(412, 67);
             this.lciTinhTrangNguoiBenh.Text = "Tình trạng người bệnh";
             this.lciTinhTrangNguoiBenh.TextLocation = DevExpress.Utils.Locations.Top;
             this.lciTinhTrangNguoiBenh.TextSize = new System.Drawing.Size(162, 13);
@@ -877,9 +918,9 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             // lciSubclinicalResult
             // 
             this.lciSubclinicalResult.Control = this.txtSubclinicalResult;
-            this.lciSubclinicalResult.Location = new System.Drawing.Point(0, 186);
+            this.lciSubclinicalResult.Location = new System.Drawing.Point(0, 180);
             this.lciSubclinicalResult.Name = "lciSubclinicalResult";
-            this.lciSubclinicalResult.Size = new System.Drawing.Size(468, 72);
+            this.lciSubclinicalResult.Size = new System.Drawing.Size(468, 67);
             this.lciSubclinicalResult.Text = "Kết quả xét nghiệm, cận lâm sàng";
             this.lciSubclinicalResult.TextLocation = DevExpress.Utils.Locations.Top;
             this.lciSubclinicalResult.TextSize = new System.Drawing.Size(162, 13);
@@ -891,7 +932,7 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             this.lciHuongDieuTri.Control = this.txtHuongDieuTri;
             this.lciHuongDieuTri.Location = new System.Drawing.Point(468, 96);
             this.lciHuongDieuTri.Name = "lciHuongDieuTri";
-            this.lciHuongDieuTri.Size = new System.Drawing.Size(412, 90);
+            this.lciHuongDieuTri.Size = new System.Drawing.Size(412, 84);
             this.lciHuongDieuTri.Text = "Hướng điều trị";
             this.lciHuongDieuTri.TextLocation = DevExpress.Utils.Locations.Top;
             this.lciHuongDieuTri.TextSize = new System.Drawing.Size(162, 13);
@@ -903,7 +944,7 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             this.lciClinicalNote.Control = this.txtClinicalNote;
             this.lciClinicalNote.Location = new System.Drawing.Point(0, 96);
             this.lciClinicalNote.Name = "lciClinicalNote";
-            this.lciClinicalNote.Size = new System.Drawing.Size(468, 90);
+            this.lciClinicalNote.Size = new System.Drawing.Size(468, 84);
             this.lciClinicalNote.Text = "Dấu hiệu lâm sàng";
             this.lciClinicalNote.TextLocation = DevExpress.Utils.Locations.Top;
             this.lciClinicalNote.TextSize = new System.Drawing.Size(162, 13);
@@ -987,9 +1028,9 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.memPttt;
-            this.layoutControlItem11.Location = new System.Drawing.Point(0, 338);
+            this.layoutControlItem11.Location = new System.Drawing.Point(0, 322);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(468, 68);
+            this.layoutControlItem11.Size = new System.Drawing.Size(468, 84);
             this.layoutControlItem11.Text = "Phẫu thuật, thủ thuật";
             this.layoutControlItem11.TextLocation = DevExpress.Utils.Locations.Top;
             this.layoutControlItem11.TextSize = new System.Drawing.Size(162, 13);
@@ -1018,34 +1059,6 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             this.layoutControlItem14.TextSize = new System.Drawing.Size(60, 20);
             this.layoutControlItem14.TextToControlDistance = 5;
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(880, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 485);
-            this.barDockControlBottom.Size = new System.Drawing.Size(880, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 456);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(880, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 456);
-            // 
             // dxValidationProvider
             // 
             this.dxValidationProvider.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider_ValidationFailed);
@@ -1053,6 +1066,34 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             // dxErrorProvider1
             // 
             this.dxErrorProvider1.ContainerControl = this;
+            // 
+            // chkValid1Year
+            // 
+            this.chkValid1Year.Location = new System.Drawing.Point(470, 409);
+            this.chkValid1Year.MenuManager = this.barManager1;
+            this.chkValid1Year.Name = "chkValid1Year";
+            this.chkValid1Year.Properties.Caption = "Có giá trị trong 01 năm";
+            this.chkValid1Year.Size = new System.Drawing.Size(142, 19);
+            this.chkValid1Year.StyleController = this.layoutControl1;
+            this.chkValid1Year.TabIndex = 32;
+            this.chkValid1Year.ToolTip = "Trường hợp chuyển cơ sở khám bệnh, chữa bệnh có giá trị trong 01 năm";
+            // 
+            // layoutControlItem15
+            // 
+            this.layoutControlItem15.Control = this.chkValid1Year;
+            this.layoutControlItem15.Location = new System.Drawing.Point(468, 407);
+            this.layoutControlItem15.Name = "layoutControlItem15";
+            this.layoutControlItem15.Size = new System.Drawing.Size(146, 23);
+            this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem15.TextVisible = false;
+            // 
+            // emptySpaceItem1
+            // 
+            this.emptySpaceItem1.AllowHotTrack = false;
+            this.emptySpaceItem1.Location = new System.Drawing.Point(614, 407);
+            this.emptySpaceItem1.Name = "emptySpaceItem1";
+            this.emptySpaceItem1.Size = new System.Drawing.Size(266, 23);
+            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // FormTransfer
             // 
@@ -1140,6 +1181,9 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkValid1Year.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1220,5 +1264,8 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem14;
+        private DevExpress.XtraEditors.CheckEdit chkValid1Year;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem15;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
     }
 }

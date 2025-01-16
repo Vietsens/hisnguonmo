@@ -148,6 +148,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 this.dxValidationProviderControl.SetValidationRule(txtAdvise, null);
                 this.ValidMaxLengthControl(this.txtAdvise, false, 1024);
+                this.ValidMaxLengthControl(this.memHtu, false, 1024);
                 if (HisConfigCFG.IsRequiredHtu == "1")
                 {
                     this.ValidationSingleControl(this.cboHtu, this.dxValidProviderBoXung);

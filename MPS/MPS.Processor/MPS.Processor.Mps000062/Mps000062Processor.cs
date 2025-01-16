@@ -6450,30 +6450,46 @@ namespace MPS.Processor.Mps000062
                                 }
                             }
                             serCls = serCls.OrderBy(o => o.USE_TIME ?? Int64.MinValue).OrderBy(o => o.TDL_INTRUCTION_TIME).ToList();
-                            var groupService = serCls.GroupBy(o => o.SERVICE_ID).ToList();
-
-                            foreach (var gs in groupService)
+                            foreach (var slc in serCls)
                             {
-                                var sv = gs.ToList()[0];
-                                var amount = gs.ToList().Sum(o => o.AMOUNT);
-                                var instructionNotes = gs.ToList().Where(o => !string.IsNullOrEmpty(o.INSTRUCTION_NOTE)).ToList();
-                                var strInstructionNote = "";
-                                if (instructionNotes != null && instructionNotes.Count > 0)
+                                if (slc.SERVICE_ID > 0)
                                 {
-                                    strInstructionNote = string.Join(", ", instructionNotes.Select(o => o.INSTRUCTION_NOTE));
+                                    slc.SERVICE_PARENT_ID = BackendDataWorker.Get <V_HIS_SERVICE>().FirstOrDefault(o => o.ID == slc.SERVICE_ID).PARENT_ID;
+                                    if (slc.SERVICE_PARENT_ID != null)
+                                    {
+                                        var parentS = BackendDataWorker.Get<V_HIS_SERVICE>().FirstOrDefault(o => o.ID == slc.SERVICE_PARENT_ID);
+                                        slc.SERVICE_NUM_ORDER = parentS != null && parentS.NUM_ORDER != null ? (long?)parentS.NUM_ORDER : null;
+                                    }
                                 }
-                                if (!string.IsNullOrEmpty(strInstructionNote))
-                                    item.SERVICE_MERGE_X01___DATA += sv.SERVICE_NAME.Replace(":", "").Trim() + ": " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(strInstructionNote, FontStyle.Italic);
-                                else item.SERVICE_MERGE_X01___DATA += sv.SERVICE_NAME.Replace(";", "").Trim();
-                                if (rdo._ServiceTypes.FirstOrDefault(o => o.ID == st.Key.TDL_SERVICE_TYPE_ID).ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT)
+                            }
+                            var groupByServiceParent = serCls.GroupBy(o => new { o.SERVICE_PARENT_ID, o.SERVICE_NUM_ORDER }).OrderBy(o => o.Key.SERVICE_NUM_ORDER ?? -1).ThenBy(o => o.Key.SERVICE_PARENT_ID ?? -1).ToList();
+                            foreach (var serClsByParent in groupByServiceParent)
+                            {
+                                var groupService = serClsByParent.GroupBy(o => o.SERVICE_ID).ToList();
+
+                                foreach (var gs in groupService)
                                 {
-                                    var strAmount = ((amount >= 1 && amount < 10) ? "0" + Inventec.Common.Number.Convert.NumberToStringRoundMax4(amount) : Inventec.Common.Number.Convert.NumberToStringRoundMax4(amount) + "");
-                                    item.SERVICE_MERGE_X01___DATA += " x" + strAmount;
-                                    var serviceUnit = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_UNIT>().FirstOrDefault(o => o.ID == sv.TDL_SERVICE_UNIT_ID);
-                                    if (serviceUnit != null)
-                                        item.SERVICE_MERGE_X01___DATA += " " + serviceUnit.SERVICE_UNIT_NAME;
+                                    var sv = gs.ToList()[0];
+                                    var amount = gs.ToList().Sum(o => o.AMOUNT);
+                                    var instructionNotes = gs.ToList().Where(o => !string.IsNullOrEmpty(o.INSTRUCTION_NOTE)).ToList();
+                                    var strInstructionNote = "";
+                                    if (instructionNotes != null && instructionNotes.Count > 0)
+                                    {
+                                        strInstructionNote = string.Join(", ", instructionNotes.Select(o => o.INSTRUCTION_NOTE));
+                                    }
+                                    if (!string.IsNullOrEmpty(strInstructionNote))
+                                        item.SERVICE_MERGE_X01___DATA += sv.SERVICE_NAME.Replace(":", "").Trim() + ": " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(strInstructionNote, FontStyle.Italic);
+                                    else item.SERVICE_MERGE_X01___DATA += sv.SERVICE_NAME.Replace(";", "").Trim();
+                                    if (rdo._ServiceTypes.FirstOrDefault(o => o.ID == st.Key.TDL_SERVICE_TYPE_ID).ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT)
+                                    {
+                                        var strAmount = ((amount >= 1 && amount < 10) ? "0" + Inventec.Common.Number.Convert.NumberToStringRoundMax4(amount) : Inventec.Common.Number.Convert.NumberToStringRoundMax4(amount) + "");
+                                        item.SERVICE_MERGE_X01___DATA += " x" + strAmount;
+                                        var serviceUnit = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_UNIT>().FirstOrDefault(o => o.ID == sv.TDL_SERVICE_UNIT_ID);
+                                        if (serviceUnit != null)
+                                            item.SERVICE_MERGE_X01___DATA += " " + serviceUnit.SERVICE_UNIT_NAME;
+                                    }
+                                    item.SERVICE_MERGE_X01___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                 }
-                                item.SERVICE_MERGE_X01___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                             }
                         }
                     }

@@ -202,7 +202,7 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
 
                     if (treatment.SURGERY_END_TIME.HasValue)
                         dteEnd.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(treatment.SURGERY_END_TIME ?? 0).Value;
-
+                    chkValid1Year.Checked = treatment.VALID_1_YEAR == 1;
                     MOS.Filter.HisServiceReqFilter srFilter = new MOS.Filter.HisServiceReqFilter();
                     srFilter.TREATMENT_ID = treatment.ID;
                     srFilter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH;
@@ -1096,6 +1096,7 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
                     currentTreatmentFinishSDO.SurgeryBeginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteBegin.DateTime);
                 if (dteEnd.EditValue != null && dteEnd.DateTime != DateTime.MinValue)
                     currentTreatmentFinishSDO.SurgeryEndTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteEnd.DateTime);
+                currentTreatmentFinishSDO.Valid1Year = chkValid1Year.Checked;
                 actEdited(currentTreatmentFinishSDO);
                 this.Close();
             }

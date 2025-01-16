@@ -1209,6 +1209,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                     }
                 }
 
+                this.HTU_TEXT = inputData.HTU_TEXT;
                 //Chi dinh tu man hinh phau thuat, thu thuat
                 //#18124
                 //Bổ sung cấu hình và sửa lại cách tự động hao phí
@@ -1354,6 +1355,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 }
                 this.UseTimeTo = inputData.USE_TIME_TO;
 
+                this.HTU_TEXT = inputData.HTU_TEXT;
                 if (!String.IsNullOrEmpty(inputData.MORNING))
                     this.Sang = ConvertNumber.ProcessNumberInterger(inputData.MORNING);
                 if (!String.IsNullOrEmpty(inputData.NOON))
@@ -1445,6 +1447,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                     this.SERVICE_UNIT_NAME = inputData.UNIT_NAME;
                     this.MEDICINE_TYPE_NAME = inputData.MATERIAL_TYPE_NAME;
                 }
+                this.HTU_TEXT = inputData.HTU_TEXT;
                 this.SERVICE_REQ_ID = inputData.SERVICE_REQ_ID;
                 this.SERVICE_REQ_METY_MATY_ID = inputData.ID;
                 this.TUTORIAL = inputData.TUTORIAL;
@@ -1786,6 +1789,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
         public long IntructionTime { get; set; }
         public short? IS_IDENTITY_MANAGEMENT { get; set; }
         public short? IS_REUSABLE { get; set; }
+        public string HTU_TEXT { get; set; }
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeAmountHasRound { get; set; }
         public string ErrorMessageAmountHasRound { get; set; }
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeAmount { get; set; }

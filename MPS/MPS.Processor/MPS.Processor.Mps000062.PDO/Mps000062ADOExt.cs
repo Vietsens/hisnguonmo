@@ -825,6 +825,8 @@ namespace MPS.Processor.Mps000062.PDO
         public long? USE_TIME { get; set; }
         public long? NUM_ORDER_SERVICE_TYPE { get; set; }
         public bool IsGoupService { get; set; }
+        public long? SERVICE_PARENT_ID { get; set; }
+        public long? SERVICE_NUM_ORDER { get; set; }
         public List<ServiceCLS> serviceSplits { get; set; }
         public ServiceCLS() { }
 

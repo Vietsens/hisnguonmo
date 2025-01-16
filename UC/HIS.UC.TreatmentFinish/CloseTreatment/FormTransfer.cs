@@ -199,7 +199,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
 
                     if (treatment.SURGERY_END_TIME.HasValue)
                         dteEnd.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(treatment.SURGERY_END_TIME ?? 0) ?? DateTime.MinValue;
-
+                    chkValid1Year.Checked = treatment.VALID_1_YEAR == 1;
                     txtUsedMedicine.Text = treatment.USED_MEDICINE;
                 }
             }
@@ -976,7 +976,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                     currentTreatmentFinishSDO.SurgeryBeginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteBegin.DateTime);
                 if (dteEnd.EditValue != null && dteEnd.DateTime != DateTime.MinValue)
                     currentTreatmentFinishSDO.SurgeryEndTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteEnd.DateTime);
-
+                currentTreatmentFinishSDO.Valid1Year = chkValid1Year.Checked;
                 if (MyGetData != null)
                     MyGetData(currentTreatmentFinishSDO);
                 this.Close();

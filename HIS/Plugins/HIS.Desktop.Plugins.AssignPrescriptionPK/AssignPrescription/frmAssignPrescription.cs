@@ -5442,7 +5442,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         this.currentMedicineTypeADOForEdit.UseDays = diff__Day.Days + 1;
                     }
                     this.spinSoLuongNgay.EditValue = this.currentMedicineTypeADOForEdit.UseDays;
-
+                    this.memHtu.Text = this.currentMedicineTypeADOForEdit.HTU_TEXT;
                     if (!navBarControlChongChiDinhInfo.OptionsNavPane.IsAnimationInProgress && navBarControlChongChiDinhInfo.OptionsNavPane.NavPaneState == DevExpress.XtraNavBar.NavPaneState.Collapsed)
                     {
                         navBarControlChongChiDinhInfo.OptionsNavPane.NavPaneState = DevExpress.XtraNavBar.NavPaneState.Expanded;

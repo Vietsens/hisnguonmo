@@ -2496,6 +2496,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         this.gridControlServiceProcess.RefreshDataSource();
                     }
                 }
+                SetHuongDanFromSoLuongNgay();
             }
             catch (Exception ex)
             {
@@ -2523,6 +2524,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 
                     gridControlServiceProcess.RefreshDataSource();
                 }
+                SetHuongDanFromSoLuongNgay();
             }
             catch (Exception ex)
             {
@@ -2649,7 +2651,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     {
                         this.txtHuongDan.Text = this.currentMedicineTypeADOForEdit.TUTORIAL;
                     }
-
+                    this.memHtu.Text = this.currentMedicineTypeADOForEdit.HTU_TEXT;
                     this.spinAmount.Focus();
                     this.spinAmount.SelectAll();
 
