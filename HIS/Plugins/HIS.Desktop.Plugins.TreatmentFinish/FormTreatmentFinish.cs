@@ -1411,7 +1411,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     }
                     FillDataToControlsForm();
                     LoadSoNgayDieuTri();
-                    
+
                 }
             }
             catch (Exception ex)
@@ -2664,7 +2664,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
                 if (treatmentEndTypeExt != null)
                 {
-                    hisTreatmentFinishSDO_process.TreatmentEndTypeExtId = treatmentEndTypeExt.ID; 
+                    hisTreatmentFinishSDO_process.TreatmentEndTypeExtId = treatmentEndTypeExt.ID;
                 }
 
                 hisTreatmentFinishSDO = new MOS.SDO.HisTreatmentFinishSDO();
@@ -2967,7 +2967,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         {
             try
             {
-
+                codeCheckCD = "";
+                nameCheckCD = "";
+                codeCheckCDYHCT = "";
+                codeCheckSubICD = "";
                 if (ucSecondaryIcd != null)
                 {
                     var subIcd = subIcdProcessor.GetValue(ucSecondaryIcd);
