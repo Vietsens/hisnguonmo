@@ -112,6 +112,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 
                 this.dxValidationProviderControl.SetValidationRule(txtAdvise, null);
                 this.ValidMaxLengthControl(this.txtAdvise, false, 1024);
+                this.ValidMaxLengthControl(this.memHtu, false, 1024);
             }
             catch (Exception ex)
             {

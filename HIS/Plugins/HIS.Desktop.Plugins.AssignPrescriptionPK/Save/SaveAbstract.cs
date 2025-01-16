@@ -677,6 +677,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                         if (!string.IsNullOrEmpty(item.OVER_KIDNEY_REASON))
                             mety.MedicineInfoSdos.Add(new MedicineInfoSDO() { IntructionTime = frmAssignPrescription.InstructionTime, IsNoPrescription = false, OverResultTestReason = item.OVER_KIDNEY_REASON });
                     }
+                    mety.HtuText = item.HTU_TEXT;
                     mety.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.AMOUNT ?? 0);
                     mety.PresAmount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.PRES_AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.PRES_AMOUNT ?? 0);
                     mety.MedicineTypeId = item.ID;
@@ -753,6 +754,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     //if (item.SERVICE_CONDITION_ID.HasValue && item.SERVICE_CONDITION_ID.Value > 0)
                     //    maty.ServiceConditionId = item.SERVICE_CONDITION_ID;
 
+                    maty.HtuText = item.HTU_TEXT;
                     if (this.ExpMestReasonId == null)
                     {
                         maty.ExpMestReasonId = item.EXP_MEST_REASON_ID;
@@ -785,7 +787,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     orty.ExceedLimitInDayReason = item.EXCEED_LIMIT_IN_DAY_REASON;
                     if (item.ALERT_MAX_IN_TREATMENT.HasValue && item.IsAlertInTreatPresciption)
                         orty.ExceedLimitInTreatmentReason = item.EXCEED_LIMIT_IN_BATCH_REASON;
-
+                    orty.HtuText = item.HTU_TEXT;
                     orty.OddPresReason = item.ODD_PRES_REASON;
                     var sangTemp = frmAssignPrescription.GetValueSpinNew(item.Sang);
                     if (!String.IsNullOrEmpty(sangTemp))
@@ -871,6 +873,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                         if (!string.IsNullOrEmpty(item.OVER_KIDNEY_REASON))
                             pres.MedicineInfoSdos.Add(new MedicineInfoSDO() { IntructionTime = frmAssignPrescription.InstructionTime, IsNoPrescription = false, OverKidneyReason = item.OVER_KIDNEY_REASON });
                     }
+                    pres.HtuText = item.HTU_TEXT;
                     pres.UseOriginalUnitForPres = (item.IsUseOrginalUnitForPres ?? false);
                     pres.MedicineId = ((item.IsAssignPackage.HasValue && item.IsAssignPackage.Value) ? item.MAME_ID : null);
                     if (item.IS_SUB_PRES != 1)
@@ -1008,6 +1011,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                         pres.MaterialBeanIds = null;
                     }
 
+                    pres.HtuText = item.HTU_TEXT;
                     pres.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.AMOUNT ?? 0);
                     pres.PresAmount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.PRES_AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.PRES_AMOUNT ?? 0);
                     pres.MaterialTypeId = item.ID;
@@ -1222,6 +1226,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                         pres.IsOutParentFee = true;
                     pres.IsBedExpend = item.IsExpendType;
                     pres.Speed = item.Speed;
+                    pres.HtuText = item.HTU_TEXT;
                     var sangTemp = frmAssignPrescription.GetValueSpinNew(item.Sang);
                     if (!String.IsNullOrEmpty(sangTemp))
                         pres.Morning = sangTemp;
@@ -1327,6 +1332,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                         pres.ExpMestReasonId = this.ExpMestReasonId;
                     }
 
+                    pres.HtuText = item.HTU_TEXT;
                     if (item.EQUIPMENT_SET_ID.HasValue && item.EQUIPMENT_SET_ID.Value > 0)
                     {
                         pres.EquipmentSetId = item.EQUIPMENT_SET_ID ?? 0;
@@ -1408,6 +1414,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                         if (!string.IsNullOrEmpty(item.OVER_KIDNEY_REASON))
                             mety.MedicineInfoSdos.Add(new MedicineInfoSDO() { IntructionTime = frmAssignPrescription.InstructionTime, IsNoPrescription = false, OverResultTestReason = item.OVER_KIDNEY_REASON });
                     }
+                    mety.HtuText = item.HTU_TEXT;
                     mety.Amount = (item.AMOUNT ?? 0);
                     mety.PresAmount = item.PRES_AMOUNT;
                     mety.MedicineTypeId = item.ID;
@@ -1468,6 +1475,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     maty.ExceedLimitInDayReason = item.EXCEED_LIMIT_IN_DAY_REASON;
                     maty.Price = item.PRICE ?? 0;
 
+                    maty.HtuText = item.HTU_TEXT;
                     if (this.ExpMestReasonId == null)
                     {
                         maty.ExpMestReasonId = item.EXP_MEST_REASON_ID;
@@ -1497,6 +1505,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     {
                         orty.ExceedLimitInTreatmentReason = frmAssignPrescription.mediMatyTypeADOsAlertInTreatment.LastOrDefault(o => o.PrimaryKey == item.PrimaryKey && o.PATIENT_NAME_BY_TREATMENT_CODE.Split('_')[1] == TreatmentWithPatientTypeInfoSDO.TREATMENT_CODE).EXCEED_LIMIT_IN_BATCH_REASON;
                     }
+                    orty.HtuText = item.HTU_TEXT;
                     orty.OddPresReason = item.ODD_PRES_REASON;
                     orty.UseTimeTo = item.UseTimeTo;
                     orty.Price = item.PRICE ?? 0;

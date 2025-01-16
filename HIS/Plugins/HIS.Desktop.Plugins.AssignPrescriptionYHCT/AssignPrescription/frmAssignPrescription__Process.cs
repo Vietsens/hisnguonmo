@@ -2657,6 +2657,22 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         txtHuongDan.Text = hdTemp;
                     }
                 }
+                else if (HisConfigCFG.TutorialFormat == 6)
+                {
+                    StringBuilder huongDan = new StringBuilder();
+                    if (spinAmount.Value > 0 && !String.IsNullOrEmpty(txtLadder.Text))
+                    {
+                        string format__NgayUongTemp6 = "{0} {1} * {2} thang * {3} ngày";
+                        //Nếu key cấu hình có giá trị 3 thì xử lý điền hướng dẫn theo dạng: <số lượng><đơn vị> * <số thang> * <số ngày>
+                        decimal soLuongTrenlan = spinAmount.Value;
+                        decimal soNgay = spinSoNgay.Value;
+                        string serviceUnitName = this.currentMedicineTypeADOForEdit != null ? (!String.IsNullOrEmpty(this.currentMedicineTypeADOForEdit.CONVERT_UNIT_NAME) ? this.currentMedicineTypeADOForEdit.CONVERT_UNIT_NAME : (this.currentMedicineTypeADOForEdit.SERVICE_UNIT_NAME ?? "").ToLower()) : "";
+                        long ladder = Inventec.Common.TypeConvert.Parse.ToInt64(txtLadder.Text);
+                        huongDan.Append(soLuongTrenlan > 0 ? String.Format(format__NgayUongTemp6, Inventec.Common.Number.Convert.NumberToStringRoundAuto(soLuongTrenlan, 4), serviceUnitName, ladder, soNgay) : "");
+                        string hdTemp = huongDan.ToString().Replace("  ", " ").Replace(", ,", ",");
+                        txtHuongDan.Text = hdTemp;
+                    }
+                }
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => HisConfigCFG.TutorialFormat), HisConfigCFG.TutorialFormat)
                      + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentMedicineTypeADOForEdit), currentMedicineTypeADOForEdit)
                      + Inventec.Common.Logging.LogUtil.TraceData("spinAmount.Value", spinAmount.Value)
@@ -2689,6 +2705,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     huongDan = new StringBuilder().Append(hdTemp.First().ToString().ToUpper() + String.Join("", hdTemp.Skip(1)).ToLower());
 
                     medicineTypeADOForEdit.TUTORIAL = huongDan.ToString();
+                }
+                else if (HisConfigCFG.TutorialFormat == 6)
+                {
+                    StringBuilder huongDan = new StringBuilder();
+
+                    string format__NgayUongTemp6 = "{0} {1} * {2} thang * {3} ngày";
+                    //Nếu key cấu hình có giá trị 3 thì xử lý điền hướng dẫn theo dạng: <số lượng><đơn vị> * <số thang> * <số ngày>
+                    decimal soLuongTrenlan = (medicineTypeADOForEdit.AmountOneRemedy ?? 0);
+                    decimal soNgay = (medicineTypeADOForEdit.UseDays ?? 0);
+                    string serviceUnitName = !String.IsNullOrEmpty(medicineTypeADOForEdit.CONVERT_UNIT_NAME) ? medicineTypeADOForEdit.CONVERT_UNIT_NAME : (medicineTypeADOForEdit.SERVICE_UNIT_NAME ?? "").ToLower();
+                    long ladder = medicineTypeADOForEdit.RemedyCount ?? 0;
+                    huongDan.Append(soLuongTrenlan > 0 ? String.Format(format__NgayUongTemp6, Inventec.Common.Number.Convert.NumberToStringRoundAuto(soLuongTrenlan, 4), serviceUnitName, ladder, soNgay) : "");
+                    medicineTypeADOForEdit.TUTORIAL = huongDan.ToString().Replace("  ", " ").Replace(", ,", ",");
                 }
             }
             catch (Exception ex)

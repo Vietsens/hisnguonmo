@@ -63,6 +63,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Add
         protected bool? IsStent { get; set; }
         protected bool? IsAllowOdd { get; set; }
         protected string Tutorial { get; set; }
+        protected string HtuText { get; set; }
         protected string AtcGroupCodes { get; set; }
         protected string AtcCodes { get; set; }
         protected ValidAddRow ValidAddRow { get; set; }
@@ -135,6 +136,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Add
                 this.IntructionTimeSelecteds = frmAssignPrescription.intructionTimeSelecteds;
             }
             this.Tutorial = frmAssignPrescription.txtHuongDan.Text.Trim();
+            this.HtuText = frmAssignPrescription.memHtu.Text.Trim();
             this.DataRow = dataRow;
             this.LstExpMestMedicine = frmAssignPrescription.LstExpMestMedicine;
         }
@@ -214,6 +216,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Add
 
                 medicineTypeSDO.DO_NOT_REQUIRED_USE_FORM = frmAssignPrescription.currentMedicineTypeADOForEdit.DO_NOT_REQUIRED_USE_FORM;
             }
+
+            medicineTypeSDO.HTU_TEXT = this.HtuText;
         }
 
         protected void SaveDataAndRefesh(MediMatyTypeADO mediMatyADO)
