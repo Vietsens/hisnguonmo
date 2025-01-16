@@ -81,7 +81,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 this.hisTreatment = treatment;
                 this.moduleDataTransfer = _moduleDataTransfer;
             }
-            catch (Exception ex)  
+            catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
@@ -198,6 +198,15 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                     if (string.IsNullOrEmpty(txtUsedMedicine.Text)
                         && !string.IsNullOrEmpty(treatment.USED_MEDICINE))
                         txtUsedMedicine.Text = treatment.USED_MEDICINE;
+
+                    if (treatment.VALID_1_YEAR == 1)
+                    {
+                        chk1Year.Checked = true;
+                    }
+                    else
+                    {
+                        chk1Year.Checked = false;
+                    }
                 }
             }
             catch (Exception ex)
@@ -376,6 +385,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
         {
             try
             {
+                chk1Year.Checked = false;
                 currentTreatmentFinishSDO = Form.hisTreatmentFinishSDO_process;
                 if (currentTreatmentFinishSDO != null)
                 {
@@ -456,11 +466,20 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                     }
                     if (currentTreatmentFinishSDO.SurgeryBeginTime != null)
                     {
-                        dtStart.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentTreatmentFinishSDO.SurgeryBeginTime??0);
+                        dtStart.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentTreatmentFinishSDO.SurgeryBeginTime ?? 0);
                     }
                     if (currentTreatmentFinishSDO.SurgeryEndTime != null)
                     {
-                        dtFinish.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentTreatmentFinishSDO.SurgeryEndTime??0);
+                        dtFinish.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentTreatmentFinishSDO.SurgeryEndTime ?? 0);
+                    }
+
+                    if (currentTreatmentFinishSDO.Valid1Year == true)
+                    {
+                        chk1Year.Checked = true;
+                    }
+                    else
+                    {
+                        chk1Year.Checked = false;
                     }
                 }
                 txtMediOrgCode.Focus();
@@ -1010,6 +1029,14 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 {
                     currentTreatmentFinishSDO.SurgeryEndTime = null;
                 }
+                if (chk1Year.Checked == true)
+                {
+                    currentTreatmentFinishSDO.Valid1Year = true;
+                }
+                else
+                {
+                    currentTreatmentFinishSDO.Valid1Year = false;
+                }
                 MyGetData(currentTreatmentFinishSDO);
                 this.Close();
             }
@@ -1082,7 +1109,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        
+
         private void txtLyDoChuyenMon_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try
@@ -1637,7 +1664,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             try
             {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection; 
+                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
                 List<V_HIS_EMPLOYEE> employeeFreeTextList = null;
                 if (selected != null && selected.Count > 0)
                     employeeFreeTextList = selected.Where(o => string.IsNullOrEmpty(o.LOGINNAME)).ToList();
