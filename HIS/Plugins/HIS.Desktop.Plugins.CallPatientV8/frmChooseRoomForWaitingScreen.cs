@@ -29,6 +29,7 @@ using HIS.Desktop.LocalStorage.Location;
 using HIS.Desktop.Plugins.CallPatientV8.Class;
 using HIS.Desktop.Utilities.Extensions;
 using MOS.EFMODEL.DataModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -54,6 +55,8 @@ namespace HIS.Desktop.Plugins.CallPatientV8
         long roomId = 0;
         List<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM> roomSelecteds;
 
+        HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         public frmChooseRoomForWaitingScreen(Inventec.Desktop.Common.Modules.Module module)
             : base(module)
         {
@@ -75,7 +78,7 @@ namespace HIS.Desktop.Plugins.CallPatientV8
             try
             {
                 SetIcon();
-                ChooseRoomForWaitingScreenProcess.LoadDataToExamServiceReqSttGridControl(this);
+                InitControlState();
                 currentRoom = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().FirstOrDefault(o => o.ROOM_ID == roomId);
                 List<V_HIS_EXECUTE_ROOM> rooms = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().Where(o => o.DEPARTMENT_ID == currentRoom.DEPARTMENT_ID).ToList();
                 InitCheck(cboRoom, SelectionGrid__Status);
@@ -84,6 +87,41 @@ namespace HIS.Desktop.Plugins.CallPatientV8
                 SetDefautControl();
                 ToogleExtendMonitor();
                 SetDataTolblControl();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitControlState()
+        {
+            try
+            {
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                this.currentControlStateRDO = controlStateWorker.GetData(ModuleLink);
+                List<ServiceReqSttADO> ado = new List<ServiceReqSttADO>();
+                foreach (var item in this.currentControlStateRDO)
+                {
+                    if (item.KEY == "SettingScreenADO")
+                    {
+                        if (!string.IsNullOrEmpty(item.VALUE))
+                        {
+                            ado = JsonConvert.DeserializeObject<List<ServiceReqSttADO>>(item.VALUE);
+                        }
+                    }
+                    else if (item.KEY == memContent.Name)
+                    {
+                        if (!string.IsNullOrEmpty(item.VALUE))
+                        {
+                            memContent.Text = item.VALUE;
+                        }
+                    }
+                }
+                if (ado != null && ado.Count > 0)
+                    gridControlExecuteStatus.DataSource = ado;
+                else
+                    ChooseRoomForWaitingScreenProcess.LoadDataToExamServiceReqSttGridControl(this);
             }
             catch (Exception ex)
             {
@@ -266,6 +304,8 @@ namespace HIS.Desktop.Plugins.CallPatientV8
                 //{
                 //    aFrmWaitingScreenQy.room = this.currentRoom;
                 //}
+                SaveDataSource(ServiceReqSttADOs);
+                SaveMem();
                 if (aFrmWaitingScreenQy != null && tgExtendMonitor.IsOn)
                 {
                     HIS.Desktop.Plugins.CallPatientV8.ChooseRoomForWaitingScreenProcess.ShowFormInExtendMonitor(aFrmWaitingScreenQy);
@@ -275,6 +315,62 @@ namespace HIS.Desktop.Plugins.CallPatientV8
                 {
                     HIS.Desktop.Plugins.CallPatientV8.ChooseRoomForWaitingScreenProcess.TurnOffExtendMonitor(aFrmWaitingScreenQy);
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void SaveDataSource(List<ServiceReqSttADO> ado)
+        {
+            try
+            {
+                string textJson = JsonConvert.SerializeObject(ado);
+
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdateValue = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == "SettingScreenADO" && o.MODULE_LINK == ModuleLink).FirstOrDefault() : null;
+                if (csAddOrUpdateValue != null)
+                {
+                    csAddOrUpdateValue.VALUE = textJson;
+                }
+                else
+                {
+                    csAddOrUpdateValue = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdateValue.KEY = "SettingScreenADO";
+                    csAddOrUpdateValue.VALUE = textJson;
+                    csAddOrUpdateValue.MODULE_LINK = ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdateValue);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void SaveMem()
+        {
+            try
+            {
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdateValue = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == memContent.Name && o.MODULE_LINK == ModuleLink).FirstOrDefault() : null;
+                if (csAddOrUpdateValue != null)
+                {
+                    csAddOrUpdateValue.VALUE = memContent.Text.Trim();
+                }
+                else
+                {
+                    csAddOrUpdateValue = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdateValue.KEY = memContent.Name;
+                    csAddOrUpdateValue.VALUE = memContent.Text.Trim();
+                    csAddOrUpdateValue.MODULE_LINK = ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdateValue);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+
             }
             catch (Exception ex)
             {
