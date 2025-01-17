@@ -83,6 +83,16 @@ namespace HIS.Desktop.Plugins.HisEmrCoverType.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap delete_16x1616 {
+            get {
+                object obj = ResourceManager.GetObject("delete_16x1616", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Lock_Lock_icon {
             get {
                 object obj = ResourceManager.GetObject("Lock-Lock-icon", resourceCulture);
