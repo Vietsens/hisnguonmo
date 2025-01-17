@@ -522,7 +522,15 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 bool valid = true;
                 UCPatientRawADO patientRawADO = ucPatientRaw1.GetValue();
                 var heindata = ucHeinInfo1.GetValue();
-                    if (patientRawADO.PATIENTTYPE_ID == HisConfigCFG.PatientTypeId__BHYT && (HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()) && heindata != null && !CheckBhytWhiteListAcceptNoCheckBHYT(heindata.HisPatientTypeAlter.HEIN_CARD_NUMBER) && heindata.HisPatientTypeAlter.HAS_BIRTH_CERTIFICATE != MOS.LibraryHein.Bhyt.HeinHasBirthCertificate.HeinHasBirthCertificateCode.TRUE)
+                if (this.ucPatientRaw1.ResultDataADO != null && this.ucPatientRaw1.ResultDataADO.ResultHistoryLDO != null && HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.WarningInvalidCheckHistoryHeinCard && this.ucPatientRaw1.ResultDataADO.ResultHistoryLDO.maKetQua == "9999" && this.ucPatientRaw1.ResultDataADO.ResultHistoryLDO.message == "Thẻ BHYT có thông tin kiểm tra thẻ chưa ra viện.")
+                {
+                    DialogResult drReslt = DevExpress.XtraEditors.XtraMessageBox.Show(ResultDataADO.ResultHistoryLDO.message + " Bạn có muốn tiếp tục?", ResourceMessage.ThongBao, MessageBoxButtons.YesNo);
+                    if (drReslt == DialogResult.No)
+                    {
+                        return false;
+                    }
+                }
+                if (patientRawADO.PATIENTTYPE_ID == HisConfigCFG.PatientTypeId__BHYT && (HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()) && heindata != null && !CheckBhytWhiteListAcceptNoCheckBHYT(heindata.HisPatientTypeAlter.HEIN_CARD_NUMBER) && heindata.HisPatientTypeAlter.HAS_BIRTH_CERTIFICATE != MOS.LibraryHein.Bhyt.HeinHasBirthCertificate.HeinHasBirthCertificateCode.TRUE)
                 {
                     if (this.ucPatientRaw1.ResultDataADO == null)//thẻ không hợp lệ
                     {

@@ -1091,6 +1091,23 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                             rsData.ResultHistoryLDO.message = "";
                         }
                     }
+                    try
+                    {
+                        if (rsData.ResultHistoryLDO != null && rsData.ResultHistoryLDO.dsLichSuKT2018 != null && rsData.ResultHistoryLDO.dsLichSuKT2018.Count > 0)
+                        {
+                            var IsShowMess = rsData.ResultHistoryLDO.dsLichSuKT2018.Exists(o => !o.userKT.Contains(HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE) && (o.thoiGianKT.StartsWith(DateTime.Now.ToString("yyyyMMdd")) || (rsData.ResultHistoryLDO.dsLichSuKCB2018 != null && rsData.ResultHistoryLDO.dsLichSuKCB2018.Count > 0 ? !rsData.ResultHistoryLDO.dsLichSuKCB2018.Exists(p=>o.userKT.Contains(HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE)) : false)));
+                            if (IsShowMess) {
+                                rsData.ResultHistoryLDO.message = "Thẻ BHYT có thông tin kiểm tra thẻ chưa ra viện.";
+                                rsData.ResultHistoryLDO.maKetQua = "9999";
+                            }
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+
                     if (!LoadDataOld(ref rsData))
                     {
                         rsData.ResultHistoryLDO.success = false;
