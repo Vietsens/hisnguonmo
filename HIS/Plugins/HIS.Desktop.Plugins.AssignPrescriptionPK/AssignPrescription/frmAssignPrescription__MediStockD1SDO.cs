@@ -1025,7 +1025,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         this.spinChieu.EditValue = this.medicineTypeTutSelected.AFTERNOON;
                         this.spinToi.EditValue = this.medicineTypeTutSelected.EVENING;
                         if (String.IsNullOrEmpty(this.txtTutorial.Text)
-                            || String.IsNullOrEmpty(txtLadder.Text))
+                            || (lciLadder.Visible && String.IsNullOrEmpty(txtLadder.Text)))
                         {
                             //Nếu có trường hướng dẫn thì sử dụng luôn
                             if (!String.IsNullOrEmpty(this.medicineTypeTutSelected.TUTORIAL))
