@@ -28,22 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject29 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject30 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject31 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject32 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.ucPaging = new Inventec.UC.Paging.UcPaging();
             this.gridControlFormList = new DevExpress.XtraGrid.GridControl();
@@ -189,7 +189,9 @@
             this.gridViewFormList.OptionsView.ColumnAutoWidth = false;
             this.gridViewFormList.OptionsView.ShowGroupPanel = false;
             this.gridViewFormList.OptionsView.ShowIndicator = false;
+            this.gridViewFormList.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridViewFormList_RowCellStyle);
             this.gridViewFormList.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewFormList_CustomRowCellEdit);
+            this.gridViewFormList.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewFormList_CustomUnboundColumnData);
             this.gridViewFormList.Click += new System.EventHandler(this.gridViewFormList_Click);
             // 
             // STT
@@ -224,7 +226,7 @@
             // 
             this.repositorybtnLock.AutoHeight = false;
             this.repositorybtnLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisEmrForm.Properties.Resources.Lock_Lock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisEmrForm.Properties.Resources.Lock_Lock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
             this.repositorybtnLock.Name = "repositorybtnLock";
             this.repositorybtnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositorybtnLock.Click += new System.EventHandler(this.repositorybtnLock_Click);
@@ -245,7 +247,7 @@
             // 
             this.repositoryDelete.AutoHeight = false;
             this.repositoryDelete.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisEmrForm.Properties.Resources.delete_16x1616, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisEmrForm.Properties.Resources.delete_16x1616, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
             this.repositoryDelete.Name = "repositoryDelete";
             this.repositoryDelete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryDelete.Click += new System.EventHandler(this.repositoryDelete_Click);
@@ -273,9 +275,11 @@
             // gridColumn6
             // 
             this.gridColumn6.Caption = "Nhóm";
-            this.gridColumn6.FieldName = "EMR_COVER_GROUP_NAME";
+            this.gridColumn6.FieldName = "EMR_FORM_GROUP_NAME";
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.AllowEdit = false;
+            this.gridColumn6.Visible = true;
+            this.gridColumn6.VisibleIndex = 5;
             this.gridColumn6.Width = 84;
             // 
             // gridColumn7
@@ -284,8 +288,9 @@
             this.gridColumn7.FieldName = "IS_ACTIVE_STR";
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.OptionsColumn.AllowEdit = false;
+            this.gridColumn7.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 5;
+            this.gridColumn7.VisibleIndex = 6;
             this.gridColumn7.Width = 82;
             // 
             // gridColumn8
@@ -294,8 +299,9 @@
             this.gridColumn8.FieldName = "CREATE_TIME_STR";
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.OptionsColumn.AllowEdit = false;
+            this.gridColumn8.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 6;
+            this.gridColumn8.VisibleIndex = 7;
             this.gridColumn8.Width = 104;
             // 
             // gridColumn9
@@ -305,7 +311,7 @@
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 7;
+            this.gridColumn9.VisibleIndex = 8;
             this.gridColumn9.Width = 101;
             // 
             // gridColumn10
@@ -314,8 +320,9 @@
             this.gridColumn10.FieldName = "MODIFY_TIME_STR";
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.OptionsColumn.AllowEdit = false;
+            this.gridColumn10.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 8;
+            this.gridColumn10.VisibleIndex = 9;
             this.gridColumn10.Width = 106;
             // 
             // gridColumn11
@@ -325,7 +332,7 @@
             this.gridColumn11.Name = "gridColumn11";
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 9;
+            this.gridColumn11.VisibleIndex = 10;
             this.gridColumn11.Width = 100;
             // 
             // gridColumn12
@@ -350,7 +357,7 @@
             // 
             this.repositorybtnUnlock.AutoHeight = false;
             this.repositorybtnUnlock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisEmrForm.Properties.Resources.Lock_Unlock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisEmrForm.Properties.Resources.Lock_Unlock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, true)});
             this.repositorybtnUnlock.Name = "repositorybtnUnlock";
             this.repositorybtnUnlock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositorybtnUnlock.Click += new System.EventHandler(this.repositorybtnUnlock_Click);
@@ -359,7 +366,7 @@
             // 
             this.repositoryUnDelete.AutoHeight = false;
             this.repositoryUnDelete.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisEmrForm.Properties.Resources.delete_16x16, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisEmrForm.Properties.Resources.delete_16x16, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "", null, null, true)});
             this.repositoryUnDelete.Name = "repositoryUnDelete";
             this.repositoryUnDelete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -379,9 +386,13 @@
             this.txtKeyword.Location = new System.Drawing.Point(12, 12);
             this.txtKeyword.Name = "txtKeyword";
             this.txtKeyword.Properties.NullText = "Từ khóa tìm kiếm";
+            this.txtKeyword.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
+            this.txtKeyword.Properties.NullValuePromptShowForEmptyValue = true;
+            this.txtKeyword.Properties.ShowNullValuePromptWhenFocused = true;
             this.txtKeyword.Size = new System.Drawing.Size(331, 20);
             this.txtKeyword.StyleController = this.layoutControl1;
             this.txtKeyword.TabIndex = 4;
+            this.txtKeyword.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtKeyword_KeyUp);
             // 
             // layoutControlGroup1
             // 
@@ -471,6 +482,8 @@
             this.cboLocation.Size = new System.Drawing.Size(294, 20);
             this.cboLocation.StyleController = this.layoutControl2;
             this.cboLocation.TabIndex = 12;
+            this.cboLocation.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboLocation_ButtonClick);
+            this.cboLocation.EditValueChanged += new System.EventHandler(this.cboLocation_EditValueChanged);
             // 
             // btnReset
             // 
@@ -656,6 +669,8 @@
             this.Controls.Add(this.layoutControl2);
             this.Controls.Add(this.layoutControl1);
             this.KeyPreview = true;
+            this.MaximumSize = new System.Drawing.Size(1251, 550);
+            this.MinimumSize = new System.Drawing.Size(1251, 550);
             this.Name = "frmHisEmrForm";
             this.Text = "Phiếu vỏ bệnh án";
             this.Load += new System.EventHandler(this.frmHisEmrForm_Load);

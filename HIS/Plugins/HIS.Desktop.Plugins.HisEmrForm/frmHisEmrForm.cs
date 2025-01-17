@@ -100,7 +100,7 @@ namespace HIS.Desktop.Plugins.HisEmrForm
             }
         }
 
-      
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
             try
@@ -205,15 +205,18 @@ namespace HIS.Desktop.Plugins.HisEmrForm
                 if (e.RowHandle >= 0)
                 {
 
-                    HIS_EMR_FORM data = (HIS_EMR_FORM)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                    //HIS_EMR_FORM data = (HIS_EMR_FORM)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                    //short? isLock = (short?)gridViewFormList.GetRowCellValue(e.RowHandle, "IS_ACTIVE");
                     if (e.Column.FieldName == "IS_LOCK")
                     {
-                        e.RepositoryItem = (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? repositorybtnUnlock : repositorybtnLock);
+                        short? isLock = (short?)gridViewFormList.GetRowCellValue(e.RowHandle, "IS_ACTIVE");
+                        e.RepositoryItem = (isLock == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? repositorybtnUnlock : repositorybtnLock);
                     }
 
                     if (e.Column.FieldName == "DELETE")
                     {
-                        e.RepositoryItem = (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? repositoryDelete : repositoryUnDelete);
+                        short? isDelete = (short?)gridViewFormList.GetRowCellValue(e.RowHandle, "IS_ACTIVE");
+                        e.RepositoryItem = (isDelete == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? repositoryDelete : repositoryUnDelete);
                     }
                 }
             }
@@ -222,7 +225,7 @@ namespace HIS.Desktop.Plugins.HisEmrForm
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-      
+
         private void gridViewFormList_CustomUnboundColumnData(object sender, CustomColumnDataEventArgs e)
         {
             try
@@ -231,7 +234,7 @@ namespace HIS.Desktop.Plugins.HisEmrForm
                 {
                     MOS.EFMODEL.DataModels.HIS_EMR_FORM pData = (MOS.EFMODEL.DataModels.HIS_EMR_FORM)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
-                    short status = Inventec.Common.TypeConvert.Parse.ToInt16((pData.IS_ACTIVE ?? -1).ToString());
+                    //short status = Inventec.Common.TypeConvert.Parse.ToInt16((pData.IS_ACTIVE ?? -1).ToString());
                     if (e.Column.FieldName == "STT")
                     {
                         e.Value = e.ListSourceRowIndex + 1 + startPage; //+ ((pagingGrid.CurrentPage - 1) * pagingGrid.PageSize);
@@ -266,7 +269,7 @@ namespace HIS.Desktop.Plugins.HisEmrForm
                     {
                         try
                         {
-                            if (status == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                            if (pData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                                 e.Value = "Hoạt động";
                             else
                                 e.Value = "Tạm khóa";
@@ -429,11 +432,13 @@ namespace HIS.Desktop.Plugins.HisEmrForm
                     txtEmrName.Text = data.EMR_FORM_NAME;
                     if (data.MENU_POSITION != null)
                     {
-                        cboLocation.EditValue = data.MENU_POSITION;
+                        cboLocation.EditValue = data.MENU_POSITION.ToString();
+                        cboLocation.Properties.Buttons[1].Visible = true;
                     }
                     else
                     {
-                        data.MENU_POSITION = null;
+                        cboLocation.EditValue = null;
+                        cboLocation.Properties.Buttons[1].Visible = false;
                     }
                     txtGroup.Text = data.EMR_FORM_GROUP_NAME;
 
@@ -469,6 +474,7 @@ namespace HIS.Desktop.Plugins.HisEmrForm
                 dxValidationProvider1.RemoveControlError(txtEmrName);
                 dxValidationProvider1.RemoveControlError(txtGroup);
                 //dxValidationProviderEditorInfo.RemoveControlError(cboRoom);
+                cboLocation.Properties.Buttons[1].Visible = false;
 
             }
             catch (Exception ex)
@@ -708,7 +714,7 @@ namespace HIS.Desktop.Plugins.HisEmrForm
                     UpdateDTOFromDataForm(ref updateDTO);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTO), updateDTO));
                     updateDTO.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                    var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_DESK>(HisRequestUriStore.MOSHIS_EMR_FORM_CREATE, ApiConsumers.MosConsumer, updateDTO, param);
+                    var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_EMR_FORM>(HisRequestUriStore.MOSHIS_EMR_FORM_CREATE, ApiConsumers.MosConsumer, updateDTO, param);
                     if (resultData != null)
                     {
                         success = true;
@@ -718,10 +724,10 @@ namespace HIS.Desktop.Plugins.HisEmrForm
                 }
                 else
                 {
-                    Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_EMR_FORM>(currentData, updateDTO);
+                    Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_EMR_FORM>(updateDTO, currentData);
                     UpdateDTOFromDataForm(ref updateDTO);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTO), updateDTO));
-                    var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_DESK>(HisRequestUriStore.MOSHIS_EMR_FORM_UPDATE, ApiConsumers.MosConsumer, updateDTO, param);
+                    var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_EMR_FORM>(HisRequestUriStore.MOSHIS_EMR_FORM_UPDATE, ApiConsumers.MosConsumer, updateDTO, param);
                     if (resultData != null)
                     {
                         success = true;
@@ -769,7 +775,7 @@ namespace HIS.Desktop.Plugins.HisEmrForm
                     updateDTO.EMR_FORM_NAME = null;
                 }
 
-                if (!string.IsNullOrEmpty(cboLocation.Text.Trim())|| cboLocation.EditValue != null)
+                if (!string.IsNullOrEmpty(cboLocation.Text.Trim()) || cboLocation.EditValue != null)
                 {
                     short num = short.Parse(cboLocation.EditValue.ToString());
                     updateDTO.MENU_POSITION = num;
@@ -821,5 +827,82 @@ namespace HIS.Desktop.Plugins.HisEmrForm
         }
 
         #endregion
+
+        private void gridViewFormList_RowCellStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowCellStyleEventArgs e)
+        {
+            try
+            {
+                DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (e.RowHandle >= 0)
+                {
+                    HIS_EMR_FORM data = (HIS_EMR_FORM)gridViewFormList.GetRow(e.RowHandle);
+                    if (e.Column.FieldName == "IS_ACTIVE_STR")
+                    {
+                        if (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                            e.Appearance.ForeColor = Color.Red;
+                        else
+                            e.Appearance.ForeColor = Color.Green;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtKeyword_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    btnSearch_Click(null, null);
+                }
+                else if (e.KeyCode == Keys.Down)
+                {
+                    gridViewFormList.Focus();
+                    gridViewFormList.FocusedRowHandle = 0;
+                    var rowData = (MOS.EFMODEL.DataModels.HIS_EMR_FORM)gridViewFormList.GetFocusedRow();
+                    if (rowData != null)
+                    {
+                        ChangedDataRow(rowData);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboLocation_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    cboLocation.EditValue = null;
+                    cboLocation.Properties.Buttons[1].Visible = false;
+                    cboLocation.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboLocation_EditValueChanged(object sender, EventArgs e)
+        {
+            if (cboLocation.EditValue != null || !string.IsNullOrEmpty(cboLocation.Text))
+            {
+                cboLocation.Properties.Buttons[1].Visible = true;
+            }
+            else
+            {
+                cboLocation.Properties.Buttons[1].Visible = false;
+            }
+        }
     }
 }
