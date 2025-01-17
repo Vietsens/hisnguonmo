@@ -979,7 +979,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                     }
                     if (IntructionTimeTo != null)
                     {
-                        _ExpMests_Print_Temp = _ExpMests_Print.Where(o => o.TDL_INTRUCTION_TIME <= IntructionTimeFrom).ToList();
+                        _ExpMests_Print_Temp = _ExpMests_Print.Where(o => o.TDL_INTRUCTION_TIME <= IntructionTimeTo).ToList();
                     }
                 }
                 else
@@ -990,7 +990,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                     }
                     if (IntructionTimeTo != null)
                     {
-                        _ExpMests_Print_Temp = _ExpMests_Print.Where(o => o.TDL_USE_TIME <= IntructionTimeFrom).ToList();
+                        _ExpMests_Print_Temp = _ExpMests_Print.Where(o => o.TDL_USE_TIME <= IntructionTimeTo).ToList();
                     }
                 }
                 if (_ExpMests_Print_Temp != null && _ExpMests_Print_Temp.Count > 0)

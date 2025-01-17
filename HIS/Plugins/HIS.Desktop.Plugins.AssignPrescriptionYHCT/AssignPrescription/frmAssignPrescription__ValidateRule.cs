@@ -112,7 +112,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 
                 this.dxValidationProviderControl.SetValidationRule(txtAdvise, null);
                 this.ValidMaxLengthControl(this.txtAdvise, false, 1024);
-                this.ValidMaxLengthControl(this.memHtu, false, 1024);
+                ValidateHtu();
             }
             catch (Exception ex)
             {
@@ -169,7 +169,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
             return valid;
         }
-
+        private void ValidateHtu()
+        {
+            ControlMaxLengthValidationRule validate = new ControlMaxLengthValidationRule();
+            validate.editor = memHtu;
+            validate.maxLength = 1024;
+            validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+            this.dxValidProviderBoXung.SetValidationRule(memHtu, validate);
+        }
         private void ValidateTutorial()
         {
             ControlMaxLengthValidationRule validate = new ControlMaxLengthValidationRule();

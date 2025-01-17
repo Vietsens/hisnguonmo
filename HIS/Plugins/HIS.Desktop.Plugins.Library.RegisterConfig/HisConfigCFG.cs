@@ -117,7 +117,9 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
         private const string CONFIG_KEY__IsDefaultTreatmentTypeExam = "HIS.Desktop.Plugins.RegisterV2.IsDefaultTreatmentTypeExam";
         private const string CONFIG_KEY__IsNotAutoCheck5Y6M = "MOS.HIS_PATIENT_TYPE_ALTER.NOT_AUTO_CHECK_5_YEAR_6_MONTH";
         private const string CONFIG_KEY__InHospitalizationReasonRequired = "HIS.Desktop.Plugins.ExamServiceReqExecute.InHospitalizationReasonRequired";
-        private const string CONFIG_KEY__EditOldPatientInformationOption = "HIS.Desktop.Plugins.RegisterV2.EditOldPatientInformationOption";
+        private const string CONFIG_KEY__EditOldPatientInformationOption = "HIS.Desktop.Plugins.RegisterV2.EditOldPatientInformationOption"; 
+        private const string CONFIG_KEY__WarningInvalidCheckHistoryHeinCard = "HIS.Desktop.Plugins.Register.WarningInvalidCheckHistoryHeinCard";
+        public static bool WarningInvalidCheckHistoryHeinCard;
         public static bool EditOldPatientInformationOption;
 
         public static bool InHospitalizationReasonRequired;
@@ -246,6 +248,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
                 LogSystem.Debug("LoadConfig => 1");
                 //Get BHYT
                 BHXHLoginCFG.LoadConfig();
+                WarningInvalidCheckHistoryHeinCard = GetValue(CONFIG_KEY__WarningInvalidCheckHistoryHeinCard) == valueString__true;
                 EditOldPatientInformationOption = GetValue(CONFIG_KEY__EditOldPatientInformationOption) == valueString__true;
                 InHospitalizationReasonRequired = GetValue(CONFIG_KEY__InHospitalizationReasonRequired) == valueString__true;
                 IsNotAutoCheck5Y6M = GetValue(CONFIG_KEY__IsNotAutoCheck5Y6M) == valueString__true;
