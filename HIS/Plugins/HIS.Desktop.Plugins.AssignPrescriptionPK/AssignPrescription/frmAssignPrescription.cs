@@ -2865,6 +2865,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         /// <param name="e"></param>
         private void btnAdd_TabMedicine_Click(object sender, EventArgs e)
         {
+            LockByKeyConfig();
             LogTheadInSessionInfo(AddTabMedicine, !GlobalStore.IsCabinet ? "AddPrescription" : "AddMedicalStore");
         }
 
@@ -2872,9 +2873,9 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         {
             try
             {
-                if (this.actionType == GlobalVariables.ActionView)
+                if (this.actionType == GlobalVariables.ActionView || !btnAdd.Enabled)
                 {
-                    LogSystem.Warn("btnAdd_TabMedicine_Click => thao tac khong hop le. actionType = " + this.actionType);
+                    LogSystem.Warn("btnAdd_TabMedicine_Click => thao tac khong hop le. actionType = " + this.actionType + " Trang thai = " + btnAdd.Enabled);
                     return;
                 }
                 this.NoEdit = false;
