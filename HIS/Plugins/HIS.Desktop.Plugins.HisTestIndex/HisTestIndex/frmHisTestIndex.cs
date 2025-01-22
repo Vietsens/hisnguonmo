@@ -316,6 +316,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
                 InitComboTestServiceTypeSearch();
                 InitTestIndexGroupID();
 
+                AddItemsToComboBox(cboIndexType, new List<string> { "Albumin niệu", "Protein niệu", "Creatinin niệu" });
                 //TODO
             }
             catch (Exception ex)
@@ -324,6 +325,15 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             }
         }
 
+        private void AddItemsToComboBox(ComboBoxEdit comboBox, List<string> items)
+        {
+            comboBox.Properties.Items.Clear();
+
+            foreach (var item in items)
+            {
+                comboBox.Properties.Items.Add(item);
+            }
+        }
         private void InitComboMaterialType(List<V_HIS_MATERIAL_TYPE> materialTypes)
         {
             try
@@ -766,6 +776,9 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             {
                 if (data != null)
                 {
+                    
+                    txtConversionRate.EditValue = data.CONVERT_RATIO_TYPE;
+                    txtDefaultResult.Text = data.DEFAULT_VALUE;
                     txtBHYTCode.Text = data.BHYT_CODE;
                     txtBHYTName.Text = data.BHYT_NAME;
                     txtTestIndexCode.Text = data.TEST_INDEX_CODE;
@@ -794,6 +807,22 @@ namespace HIS.Desktop.Plugins.HisTestIndex
                     txtResultsGroupO.Text = data.RESULT_BLOOD_O;
                     txtResultsRHPlus.Text = data.RESULT_BLOOD_RH_PLUS;
                     txtResultsRHMinus.Text = data.RESULT_BLOOD_RH_MINUS;
+                    if (data.TEST_INDEX_TYPE == 1)
+                    {
+                        cboIndexType.SelectedIndex = 0;
+                    }
+                    else if (data.TEST_INDEX_TYPE == 2)
+                    {           
+                        cboIndexType.SelectedIndex = 1;
+                    }
+                    else if (data.TEST_INDEX_TYPE == 3)
+                    {
+                        cboIndexType.SelectedIndex = 2;
+                    }
+                    else 
+                    {
+                        cboIndexType.EditValue = "";
+                    }
 
                     if (data.CONVERT_RATIO_MLCT != null)
                     {
@@ -1032,14 +1061,19 @@ namespace HIS.Desktop.Plugins.HisTestIndex
                 if (!dxValidationProviderEditorInfo.Validate())
                     return;
 
-                WaitingManager.Show();
+                
                 MOS.EFMODEL.DataModels.HIS_TEST_INDEX updateDTO = new MOS.EFMODEL.DataModels.HIS_TEST_INDEX();
 
                 if (this.currentData != null && this.currentData.ID > 0)
                 {
                     LoadCurrent(this.currentData.ID, ref updateDTO);
                 }
-                UpdateDTOFromDataForm(ref updateDTO);
+                //UpdateDTOFromDataForm(ref updateDTO);
+                if (!UpdateDTOFromDataForm(ref updateDTO))   
+                {
+                    return;
+                }
+                WaitingManager.Show();
                 if (cboTestIndexUnit.EditValue != null) updateDTO.TEST_INDEX_UNIT_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboTestIndexUnit.EditValue ?? "0").ToString());
                 else
                     updateDTO.TEST_INDEX_UNIT_ID = null;
@@ -1124,10 +1158,11 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             }
         }
 
-        private void UpdateDTOFromDataForm(ref MOS.EFMODEL.DataModels.HIS_TEST_INDEX currentDTO)
+        private bool UpdateDTOFromDataForm(ref MOS.EFMODEL.DataModels.HIS_TEST_INDEX currentDTO)
         {
             try
             {
+                currentDTO.DEFAULT_VALUE = txtDefaultResult.Text.Trim();
                 currentDTO.TEST_INDEX_CODE = txtTestIndexCode.Text.Trim();
                 currentDTO.TEST_INDEX_NAME = txtTestIndexName.Text.Trim();
                 currentDTO.BHYT_CODE = txtBHYTCode.Text.Trim();
@@ -1139,9 +1174,40 @@ namespace HIS.Desktop.Plugins.HisTestIndex
                 currentDTO.RESULT_BLOOD_RH_PLUS = txtResultsRHPlus.Text.Trim();
                 currentDTO.RESULT_BLOOD_RH_MINUS = txtResultsRHMinus.Text.Trim();
 
+                // mới thêm
+                if (cboIndexType.SelectedIndex == 0)
+                {
+                    currentDTO.TEST_INDEX_TYPE = 1;
+                }
+                else if (cboIndexType.SelectedIndex == 1)
+                {
+                    currentDTO.TEST_INDEX_TYPE = 2;
+                }
+                else if (cboIndexType.SelectedIndex == 2)
+                {
+                    currentDTO.TEST_INDEX_TYPE = 3;
+                }
+                else
+                {
+                    currentDTO.TEST_INDEX_TYPE = null;
+                }
+
+                decimal? ConversionRate = null;
+                if (!string.IsNullOrEmpty(txtConversionRate.Text))
+                {
+                    ConversionRate = Convert.ToDecimal(txtConversionRate.Text.Trim());
+                }
+                currentDTO.CONVERT_RATIO_TYPE = ConversionRate;
+                //đến đây
+
+
                 decimal? mLCT = null;
                 if (!string.IsNullOrEmpty(txtMLCT.Text))
                 {
+                    if (!ValidMaxlengthTextMLCT(txtMLCT, 20))
+                    {
+                        return false;
+                    }
                     mLCT = Convert.ToDecimal(txtMLCT.Text.Trim());
                 }
                 currentDTO.CONVERT_RATIO_MLCT = mLCT;
@@ -1226,6 +1292,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+            return true;
         }
 
         #endregion
@@ -1237,13 +1304,15 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             {
                 ValidateMaxLength(txtTestIndexCode, 20);
                 ValidateMaxLength(txtTestIndexName, 300);
-                ValidMaxlengthText(txtMLCT, 15);
+                //ValidMaxlengthTextMLCT(txtMLCT, 20);
+                //ValidMaxlengthText(txtMLCT, 20);
                 ValidateMaxLengthTextEdit(txtResultsGroupA, 500);
                 ValidateMaxLengthTextEdit(txtResultsGroupB, 500);
                 ValidateMaxLengthTextEdit(txtResultsGroupAB, 500);
                 ValidateMaxLengthTextEdit(txtResultsGroupO, 500);
                 ValidateMaxLengthTextEdit(txtResultsRHPlus, 500);
                 ValidateMaxLengthTextEdit(txtResultsRHMinus, 500);
+                ValidateMaxLengthTextEdit(txtDefaultResult, 200);
 
                 ValidationSingleControl(lkTestServiceTypeId);
                 //ValidationSingleControl(cboTestIndexUnit);
@@ -1252,8 +1321,25 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Warn(ex);     
             }
+        }
+
+
+        public string ValidateMaxLengDecimal(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                return string.Empty;
+            }
+
+            int decimalIndex = input.IndexOf(',');
+            if (decimalIndex == -1 || decimalIndex == input.Length - 1)
+            {
+                return string.Empty;
+            }
+
+            return input.Substring(decimalIndex + 1);
         }
 
         private void ValidateMaxLengthTextEdit(TextEdit textEdit, long maxlength)
@@ -1263,6 +1349,29 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             validate.maxlength = maxlength;
             validate.ErrorType = ErrorType.Warning;
             this.dxValidationProviderEditorInfo.SetValidationRule(textEdit, validate);
+        }
+
+
+        private bool ValidMaxlengthTextMLCT(ButtonEdit txtMLCT, int maxDecimalLength)
+        {
+            try
+            {
+                string input = txtMLCT.Text;
+                string decimalPart = ValidateMaxLengDecimal(input);  // Tách phần thập phân
+
+                if (decimalPart.Length > maxDecimalLength)
+                {
+                    MessageBox.Show("Phần thập phân chỉ được phép nhập tối đa 20 ký tự.",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+            return true; 
         }
 
         private void ValidMaxlengthText(ButtonEdit txtMLCT, int maxlength)
@@ -2198,7 +2307,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
                     e.Handled = true;
                 }
             }
-        }
+        }          
 
         private void txtMLCT_PreviewKeyDown_1(object sender, PreviewKeyDownEventArgs e)
         {
@@ -2296,5 +2405,55 @@ namespace HIS.Desktop.Plugins.HisTestIndex
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void cboIndexType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cboIndexType.SelectedIndex == 0 || cboIndexType.SelectedIndex == 1 || cboIndexType.SelectedIndex == 2)
+            {
+                txtConversionRate.Enabled = true;
+            }
+            else
+            {
+                txtConversionRate.Enabled = false;
+            }
+        }
+
+        private void txtConversionRate_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != ',')
+            {
+                e.Handled = true;
+            }
+
+            if ((e.KeyChar == '.' || e.KeyChar == ',') && ((sender as TextEdit).Text.Contains('.') || (sender as TextEdit).Text.Contains(',')))
+            {
+                e.Handled = true;
+            }
+
+            if ((e.KeyChar == '.' || e.KeyChar == ',') && (sender as TextEdit).Text.Length == 0)
+            {
+                e.Handled = true;
+            }
+
+            if (e.KeyChar == '.' || e.KeyChar == ',')
+            {
+                e.KeyChar = ',';
+                if ((sender as TextEdit).Text.Contains(","))
+                {
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void cboIndexType_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(cboIndexType.Text))
+            {
+                txtConversionRate.Enabled = false;
+                txtConversionRate.Text = string.Empty;
+            }
+        }
+        //CONVERT_RATIO_TYPE tỉ lệ quy đổi loại chỉ số chỉ số lưu vô đây
+        //TEST_INDEX_TYPE loại chỉ số lưu vào đây
     }
 }

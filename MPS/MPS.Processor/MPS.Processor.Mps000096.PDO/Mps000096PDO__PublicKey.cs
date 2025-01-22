@@ -43,10 +43,20 @@ namespace MPS.Processor.Mps000096.PDO
         public List<HIS_SERE_SERV> ListSereServ { get; set; }
         public List<LIS_SAMPLE_TYPE> ListSampleType { get; set; }
         public List<HIS_TEST_SAMPLE_TYPE> ListTestSampleType { get; set; }
+        public MLCTADO mLCTADOs { get; set; }
+        public List<MLCTADO> ListMlctado { get; set; }
     }
 
     public class PrintTypeCode
     {
         public const string Mps000096 = "Mps000096";
+    }
+
+    public class MLCTADO
+    {
+        public string EGFR { get; set; }
+        public string CRCL { get; set; }
+        public string UACR { get; set; }
+        public string UPCR { get; set; }
     }
 }
