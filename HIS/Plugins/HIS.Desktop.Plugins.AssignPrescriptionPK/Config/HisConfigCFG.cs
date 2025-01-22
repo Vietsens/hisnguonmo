@@ -146,6 +146,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         private const string KEY_IsCheckSubIcdExceedLimit = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
         private const string KEY_IsRequiredHtu = "HIS.Desktop.Plugins.AssignPrescription.IsRequiredHtu"; 
         private const string KEY_SaveButtonOption = "HIS.Desktop.Plugins.AssignPrescriptionPK.SaveButtonOption";
+        private const string KEY_ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX = "MOS.BHYT.ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX";
+        internal static string AllowAssignOffListMedicineMaterialHeinCardNumberPrefix;
         internal static string IsSaveButtonOption;
         internal static string IsRequiredHtu;
         internal static string IsCheckSubIcdExceedLimit;
@@ -439,6 +441,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         {
             try
             {
+                AllowAssignOffListMedicineMaterialHeinCardNumberPrefix = GetValue(KEY_ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX);
                 IsSaveButtonOption = GetValue(KEY_SaveButtonOption);
                 IsRequiredHtu = GetValue(KEY_IsRequiredHtu);
                 IsCheckSubIcdExceedLimit = GetValue(KEY_IsCheckSubIcdExceedLimit);

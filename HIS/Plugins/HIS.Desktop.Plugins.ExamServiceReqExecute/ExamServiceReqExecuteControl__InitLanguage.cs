@@ -218,8 +218,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.lciWeight.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciWeight.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.lciHeight.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciHeight.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.lciNote.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciNote.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
-                this.lciBMIDisplay.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciBMIDisplay.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
-                this.lciLeatherArea.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciLeatherArea.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
+                //this.lciBMIDisplay.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciBMIDisplay.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
+                //this.lciLeatherArea.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciLeatherArea.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.lciMLCT.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciMLCT.OptionsToolTip.ToolTip", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.lciMLCT.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciMLCT.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.lciTemperature.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciTemperature.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());

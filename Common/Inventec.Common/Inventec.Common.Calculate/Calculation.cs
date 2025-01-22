@@ -41,6 +41,28 @@ namespace Inventec.Common.Calculate
             return result;
         }
 
+        public static string MucLocCauThanCrCleGFR(long patientDob, decimal weight, decimal height, decimal resultTestIndex, bool isMale)
+        {
+            string result = null;
+            try
+            {
+                var age = Age(patientDob);
+                var number = MucLocCauThan(patientDob, weight, height, resultTestIndex, isMale);
+                if (age >= 17)
+                {
+                    result = string.Format("{0} (CrCl)", number);
+                }
+                else
+                {
+                    result = string.Format("{0} (eGFR)", number);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = null;
+            }
+            return result;
+        }
         private static System.DateTime? TimeNumberToSystemDateTime(long time)
         {
             System.DateTime? result = null;

@@ -167,7 +167,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.gridViewTutorial = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.lblBMI = new DevExpress.XtraEditors.LabelControl();
             this.labelControl12 = new DevExpress.XtraEditors.LabelControl();
-            this.lblBmiDisplayText = new DevExpress.XtraEditors.LabelControl();
             this.lblLeatherArea = new DevExpress.XtraEditors.LabelControl();
             this.lblIsToCalculateEgfr = new DevExpress.XtraEditors.LabelControl();
             this.layoutControl18 = new DevExpress.XtraLayout.LayoutControl();
@@ -579,7 +578,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.lciWeight = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciHeight = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciNote = new DevExpress.XtraLayout.LayoutControlItem();
-            this.lciBMIDisplay = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciLeatherArea = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem63 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciMLCT = new DevExpress.XtraLayout.LayoutControlItem();
@@ -647,6 +645,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip();
             this.timerInitForm = new System.Windows.Forms.Timer();
+            this.lblARCPCR = new DevExpress.XtraEditors.LabelControl();
+            this.lciARCPCR = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderForLeftPanel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderForSpinVat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -1060,7 +1060,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.lciWeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciNote)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciBMIDisplay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciLeatherArea)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem63)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciMLCT)).BeginInit();
@@ -1125,6 +1124,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciARCPCR)).BeginInit();
             this.SuspendLayout();
             // 
             // dxValidationProviderForLeftPanel
@@ -1332,6 +1332,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // 
             // layoutControl3
             // 
+            this.layoutControl3.Controls.Add(this.lblARCPCR);
             this.layoutControl3.Controls.Add(this.panelControlUcSubIcdYHCT);
             this.layoutControl3.Controls.Add(this.panelControlIcdYHCT);
             this.layoutControl3.Controls.Add(this.btnViewInformationExam);
@@ -1347,7 +1348,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControl3.Controls.Add(this.popupControlContainerMediMaty);
             this.layoutControl3.Controls.Add(this.lblBMI);
             this.layoutControl3.Controls.Add(this.labelControl12);
-            this.layoutControl3.Controls.Add(this.lblBmiDisplayText);
             this.layoutControl3.Controls.Add(this.lblLeatherArea);
             this.layoutControl3.Controls.Add(this.lblIsToCalculateEgfr);
             this.layoutControl3.Controls.Add(this.layoutControl18);
@@ -1864,37 +1864,28 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // lblBMI
             // 
             this.lblBMI.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblBMI.Location = new System.Drawing.Point(518, 175);
+            this.lblBMI.Location = new System.Drawing.Point(478, 175);
             this.lblBMI.Name = "lblBMI";
-            this.lblBMI.Size = new System.Drawing.Size(45, 20);
+            this.lblBMI.Size = new System.Drawing.Size(49, 20);
             this.lblBMI.StyleController = this.layoutControl3;
             this.lblBMI.TabIndex = 28;
             // 
             // labelControl12
             // 
             this.labelControl12.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl12.Location = new System.Drawing.Point(821, 175);
+            this.labelControl12.Location = new System.Drawing.Point(617, 175);
             this.labelControl12.Name = "labelControl12";
-            this.labelControl12.Size = new System.Drawing.Size(42, 13);
+            this.labelControl12.Size = new System.Drawing.Size(29, 13);
             this.labelControl12.StyleController = this.layoutControl3;
             this.labelControl12.TabIndex = 31;
             this.labelControl12.Text = " m²";
             // 
-            // lblBmiDisplayText
-            // 
-            this.lblBmiDisplayText.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblBmiDisplayText.Location = new System.Drawing.Point(567, 175);
-            this.lblBmiDisplayText.Name = "lblBmiDisplayText";
-            this.lblBmiDisplayText.Size = new System.Drawing.Size(79, 13);
-            this.lblBmiDisplayText.StyleController = this.layoutControl3;
-            this.lblBmiDisplayText.TabIndex = 29;
-            // 
             // lblLeatherArea
             // 
             this.lblLeatherArea.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblLeatherArea.Location = new System.Drawing.Point(735, 175);
+            this.lblLeatherArea.Location = new System.Drawing.Point(576, 175);
             this.lblLeatherArea.Name = "lblLeatherArea";
-            this.lblLeatherArea.Size = new System.Drawing.Size(82, 20);
+            this.lblLeatherArea.Size = new System.Drawing.Size(37, 20);
             this.lblLeatherArea.StyleController = this.layoutControl3;
             this.lblLeatherArea.TabIndex = 30;
             // 
@@ -6697,7 +6688,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.lciWeight,
             this.lciHeight,
             this.lciNote,
-            this.lciBMIDisplay,
             this.lciLeatherArea,
             this.layoutControlItem63,
             this.lciMLCT,
@@ -6717,7 +6707,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControlItem65,
             this.layoutControlItem62,
             this.lciBMI,
-            this.layoutControlItem73});
+            this.layoutControlItem73,
+            this.lciARCPCR});
             this.lcgDHST.Location = new System.Drawing.Point(430, 0);
             this.lcgDHST.Name = "lcgDHST";
             this.lcgDHST.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -6808,37 +6799,25 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.lciNote.TextSize = new System.Drawing.Size(80, 20);
             this.lciNote.TextToControlDistance = 5;
             // 
-            // lciBMIDisplay
-            // 
-            this.lciBMIDisplay.Control = this.lblBmiDisplayText;
-            this.lciBMIDisplay.Location = new System.Drawing.Point(134, 144);
-            this.lciBMIDisplay.Name = "lciBMIDisplay";
-            this.lciBMIDisplay.Size = new System.Drawing.Size(83, 24);
-            this.lciBMIDisplay.Text = "BMI:";
-            this.lciBMIDisplay.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciBMIDisplay.TextSize = new System.Drawing.Size(0, 0);
-            this.lciBMIDisplay.TextToControlDistance = 0;
-            this.lciBMIDisplay.TextVisible = false;
-            // 
             // lciLeatherArea
             // 
             this.lciLeatherArea.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciLeatherArea.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciLeatherArea.Control = this.lblLeatherArea;
-            this.lciLeatherArea.Location = new System.Drawing.Point(217, 144);
+            this.lciLeatherArea.Location = new System.Drawing.Point(98, 144);
             this.lciLeatherArea.Name = "lciLeatherArea";
-            this.lciLeatherArea.Size = new System.Drawing.Size(171, 24);
-            this.lciLeatherArea.Text = "Diện tích da:";
+            this.lciLeatherArea.Size = new System.Drawing.Size(86, 24);
+            this.lciLeatherArea.Text = "DTD:";
             this.lciLeatherArea.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciLeatherArea.TextSize = new System.Drawing.Size(80, 20);
+            this.lciLeatherArea.TextSize = new System.Drawing.Size(40, 20);
             this.lciLeatherArea.TextToControlDistance = 5;
             // 
             // layoutControlItem63
             // 
             this.layoutControlItem63.Control = this.labelControl12;
-            this.layoutControlItem63.Location = new System.Drawing.Point(388, 144);
+            this.layoutControlItem63.Location = new System.Drawing.Point(184, 144);
             this.layoutControlItem63.Name = "layoutControlItem63";
-            this.layoutControlItem63.Size = new System.Drawing.Size(46, 24);
+            this.layoutControlItem63.Size = new System.Drawing.Size(33, 24);
             this.layoutControlItem63.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem63.TextVisible = false;
             // 
@@ -7022,10 +7001,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.lciBMI.Control = this.lblBMI;
             this.lciBMI.Location = new System.Drawing.Point(0, 144);
             this.lciBMI.Name = "lciBMI";
-            this.lciBMI.Size = new System.Drawing.Size(134, 24);
+            this.lciBMI.Size = new System.Drawing.Size(98, 24);
             this.lciBMI.Text = "BMI:";
             this.lciBMI.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciBMI.TextSize = new System.Drawing.Size(80, 20);
+            this.lciBMI.TextSize = new System.Drawing.Size(40, 20);
             this.lciBMI.TextToControlDistance = 5;
             // 
             // layoutControlItem73
@@ -7542,6 +7521,28 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // lblARCPCR
+            // 
+            this.lblARCPCR.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblARCPCR.Location = new System.Drawing.Point(735, 175);
+            this.lblARCPCR.Name = "lblARCPCR";
+            this.lblARCPCR.Size = new System.Drawing.Size(128, 20);
+            this.lblARCPCR.StyleController = this.layoutControl3;
+            this.lblARCPCR.TabIndex = 71;
+            // 
+            // lciARCPCR
+            // 
+            this.lciARCPCR.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciARCPCR.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciARCPCR.Control = this.lblARCPCR;
+            this.lciARCPCR.Location = new System.Drawing.Point(217, 144);
+            this.lciARCPCR.Name = "lciARCPCR";
+            this.lciARCPCR.Size = new System.Drawing.Size(217, 24);
+            this.lciARCPCR.Text = "uACR:";
+            this.lciARCPCR.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciARCPCR.TextSize = new System.Drawing.Size(80, 20);
+            this.lciARCPCR.TextToControlDistance = 5;
+            // 
             // ExamServiceReqExecuteControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -7968,7 +7969,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.lciWeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciNote)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciBMIDisplay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciLeatherArea)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem63)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciMLCT)).EndInit();
@@ -8033,6 +8033,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciARCPCR)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -8251,7 +8252,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         private DevExpress.XtraEditors.SpinEdit spinSPO2;
         private DevExpress.XtraEditors.LabelControl labelControl2;
         private DevExpress.XtraEditors.DateEdit dtExecuteTime;
-        private DevExpress.XtraEditors.LabelControl lblBmiDisplayText;
         private DevExpress.XtraEditors.LabelControl labelControl12;
         private DevExpress.XtraEditors.LabelControl labelControl10;
         private DevExpress.XtraEditors.LabelControl labelControl9;
@@ -8336,7 +8336,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem62;
         private DevExpress.XtraLayout.LayoutControlItem lciNote;
         private DevExpress.XtraLayout.LayoutControlItem lciMLCT;
-        private DevExpress.XtraLayout.LayoutControlItem lciBMIDisplay;
         private DevExpress.XtraLayout.LayoutControlItem lciLeatherArea;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem63;
         private DevExpress.XtraLayout.LayoutControlGroup lcgDHST;
@@ -8582,5 +8581,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem158;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem15;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem16;
+        private DevExpress.XtraEditors.LabelControl lblARCPCR;
+        private DevExpress.XtraLayout.LayoutControlItem lciARCPCR;
     }
 }
