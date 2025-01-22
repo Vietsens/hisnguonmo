@@ -498,7 +498,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 bool isHasTreatmentFinishChecked = (treatUC != null && treatUC.IsAutoTreatmentFinish);
                 if (isHasTreatmentFinishChecked && treatUC != null)
                 {
-                    if (subIcd != null && !string.IsNullOrEmpty(subIcd.ICD_SUB_CODE)) {
+                    if (subIcd != null && !string.IsNullOrEmpty(subIcd.ICD_SUB_CODE))
+                    {
                         var subIcdList = subIcd.ICD_SUB_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList();
                         if (subIcdList != null && subIcdList.Count > 12)
                         {
@@ -1087,6 +1088,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 if (success)
                 {
+                    LockByKeyConfig();
                     Thread PortI3 = new Thread(CallPortI3);
                     PortI3.Start();
                     PortI3.Join();
@@ -1100,6 +1102,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 WaitingManager.Hide();
                 MessageManager.Show(this, paramCommon, false);
             }
+        }
+        private void LockByKeyConfig()
+        {
+
+            try
+            {
+                if (resultDataPrescription != null && HisConfigCFG.IsSaveButtonOption != "1")
+                {
+                    ChangeLockButtonWhileProcess(false);
+                    btnAdd.Enabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
         private bool CheckMustChooseSeviceExamOption(string KeyMustChooseSeviceExam)
         {

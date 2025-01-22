@@ -2086,7 +2086,6 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.dxValidationProvider1.SetValidationRule(this.txtHeinRightRouteCode, null);
                     this.lblRightRouteType.AppearanceItemCaption.ForeColor = Color.Black;
                 }
-                ValidateRightRouteType();
                 ResetValidationRightRoute_Present();
             }
             catch (Exception ex)

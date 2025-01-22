@@ -944,7 +944,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 totalRepay = treatmentFees[0].TOTAL_REPAY_AMOUNT ?? 0;
                 total_obtained_price = (totalDeposit + totalBill - totalBillTransferAmount - totalRepay + exemption);//Da thu benh nhan
                 transferTotal = totalPatientPrice - totalDebtAmount - total_obtained_price;//Phai thu benh nhan
-
+                //transferTotal = Inventec.Common.Number.Convert.NumberToNumberRoundAuto(transferTotal, ConfigApplications.NumberSeperator);
                 //- Bổ sung thông tin viện phí lấy theo dữ liệu trong V_HIS_TREATMENT_FEE_1, cụ thể:
                 //+ "Tổng tiền" --> sửa lại thành "Phát sinh" (chính là số tiền tương ứng với chỉ định bs đang kê)
                 //+ Tổng chi phí BN phải trả = TOTAL_PATIENT_PRICE
@@ -1012,7 +1012,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     this.Close();
                     return;
                 }
-
+                transferTotal = transferTotal < 1 ? 0 : transferTotal;
                 if (patientTypeByPT != null && patientTypeByPT.IS_CHECK_FEE_WHEN_PRES == 1
                     && treatmentFees[0].TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
                     && transferTotal > 0

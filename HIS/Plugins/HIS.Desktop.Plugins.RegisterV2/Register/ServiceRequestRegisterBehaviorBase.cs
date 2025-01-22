@@ -717,6 +717,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.patientProfile.IsChronic = this.chkChronic;
                 if (this.chkChronic)
                     this.patientProfile.HisPatient.IS_CHRONIC = 1;
+                else
+                    this.patientProfile.HisPatient.IS_CHRONIC = null;
                 this.patientProfile.HisPatient.IS_TUBERCULOSIS = chkTuberculosis ? (short?)1 : 0;
                 this.patientProfile.ImgAvatarData = this.img_avatar;
                 this.patientProfile.ImgBhytData = this.img_BHYT;
