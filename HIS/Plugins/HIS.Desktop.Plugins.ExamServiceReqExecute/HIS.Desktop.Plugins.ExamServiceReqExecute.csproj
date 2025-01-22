@@ -200,8 +200,9 @@
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.Calculate">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Calculate\Inventec.Common.Calculate.dll</HintPath>
+    <Reference Include="Inventec.Common.Calculate, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Calculate\Inventec.Common.Calculate.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.CardReader">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.CardReader\Inventec.Common.CardReader.dll</HintPath>

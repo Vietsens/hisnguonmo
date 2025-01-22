@@ -4979,11 +4979,48 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 if (TestIndexData != null && TestIndexData.Count > 0)
                 {
+                    List<V_HIS_SERE_SERV_TEIN_1> SereServTeinData = null;
                     CommonParam param = new CommonParam();
-                    HisSereServTeinFilter filter = new HisSereServTeinFilter();
-                    filter.TDL_TREATMENT_ID = treatmentId;
-                    filter.TEST_INDEX_IDs = TestIndexData.Select(o => o.ID).ToList();
-                    var SereServTeinData = new BackendAdapter(param).Get<List<HIS_SERE_SERV_TEIN>>("/api/HisSereServTein/Get", ApiConsumers.MosConsumer, filter, param);
+                    HisSereServTeinView1Filter filter = new HisSereServTeinView1Filter();
+                    filter.TREATMENT_IDs = new List<long>() { treatmentId };
+                    var SereServTeinDataTmp = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN_1>>("/api/HisSereServTein/GetView1", ApiConsumers.MosConsumer, filter, param);
+
+                    if (SereServTeinDataTmp != null && SereServTeinDataTmp.Count > 0)
+                    {
+                        SereServTeinData = SereServTeinDataTmp.Where(p => TestIndexData.Select(o => o.ID).ToList().Exists(o => o == p.TEST_INDEX_ID)).ToList();
+                        var SereServTestType = SereServTeinDataTmp.Where(p => (new List<long>() { 1, 2, 3 }).Exists(o => o == p.TEST_INDEX_TYPE)).ToList();
+                        if (SereServTestType.Exists(o => o.TEST_INDEX_TYPE == 3 && !string.IsNullOrEmpty(o.VALUE)) && SereServTestType.Exists(o => (o.TEST_INDEX_TYPE == 1 || o.TEST_INDEX_TYPE == 2) && !string.IsNullOrEmpty(o.VALUE)))
+                        {
+                            var ListNotNullvalue = SereServTestType.Where(o => (o.TEST_INDEX_TYPE == 1 || o.TEST_INDEX_TYPE == 2) && !string.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ToList().FirstOrDefault();
+                            if (ListNotNullvalue != null)
+                            {
+                                var testIndex = TestIndexData.FirstOrDefault(o => o.ID == (ListNotNullvalue.TEST_INDEX_ID ?? 0));
+                                decimal chiso;
+                                string ssTeinVL = ListNotNullvalue.VALUE.Replace(".", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+                                 .Replace(",", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ssTeinVL), ssTeinVL));
+                                if (Decimal.TryParse(ssTeinVL, out chiso))
+                                {
+                                    if (testIndex.CONVERT_RATIO_TYPE.HasValue)
+                                        chiso *= (testIndex.CONVERT_RATIO_TYPE ?? 0);
+                                    var Creatinin = SereServTestType.Where(o => o.TEST_INDEX_TYPE == 3 && !string.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ToList().FirstOrDefault();
+                                    var testIndexCreatinin = TestIndexData.FirstOrDefault(o => o.ID == (Creatinin.TEST_INDEX_ID ?? 0));
+                                    decimal chisotestIndexCreatinin;
+                                    string ssTeintestIndexCreatininVL = Creatinin.VALUE.Replace(".", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+                                     .Replace(",", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ssTeintestIndexCreatininVL), ssTeintestIndexCreatininVL));
+                                    if (Decimal.TryParse(ssTeintestIndexCreatininVL, out chisotestIndexCreatinin))
+                                    {
+                                        if (testIndexCreatinin.CONVERT_RATIO_TYPE.HasValue)
+                                            chisotestIndexCreatinin *= (testIndexCreatinin.CONVERT_RATIO_TYPE ?? 0);
+                                        lciARCPCR.Text = ListNotNullvalue.TEST_INDEX_TYPE == 1 ? "uACR" : "uPCR";
+                                        lblARCPCR.Text = (chiso / chisotestIndexCreatinin).ToString();
+                                    }
+                                }
+                            }
+
+                        }
+                    }
                     if (SereServTeinData != null && SereServTeinData.Count > 0)
                     {
                         var DataSereServTein = SereServTeinData.Where(o => !String.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ThenByDescending(o => o.ID).FirstOrDefault();
@@ -5000,8 +5037,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                                 {
                                     if (testIndex.CONVERT_RATIO_MLCT.HasValue)
                                         chiso *= (testIndex.CONVERT_RATIO_MLCT ?? 0);
-                                    decimal mlct = Inventec.Common.Calculate.Calculation.MucLocCauThan(this.HisServiceReqView.TDL_PATIENT_DOB, (decimal)spinWeight.Value, (decimal)spinHeight.Value, chiso, this.HisServiceReqView.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE);
-                                    strIsToCalculateEgfr = mlct != 0 ? mlct.ToString() : "";
+                                    var mlct = Inventec.Common.Calculate.Calculation.MucLocCauThanCrCleGFR(this.HisServiceReqView.TDL_PATIENT_DOB, (decimal)spinWeight.Value, (decimal)spinHeight.Value, chiso, this.HisServiceReqView.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE);
+                                    strIsToCalculateEgfr = mlct.ToString();
                                 }
                             }
                         }

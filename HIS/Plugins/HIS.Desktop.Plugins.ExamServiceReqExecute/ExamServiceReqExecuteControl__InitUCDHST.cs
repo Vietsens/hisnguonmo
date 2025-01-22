@@ -406,38 +406,38 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 double leatherArea = 0.007184 * Math.Pow((double)spinHeight.Value, 0.725) * Math.Pow((double)spinWeight.Value, 0.425);
                 lblBMI.Text = Math.Round(bmi, 2) + "";
                 lblLeatherArea.Text = Math.Round(leatherArea, 2) + "";
-                if (bmi < 16)
-                {
-                    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.SKINNY.III", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
-                }
-                else if (16 <= bmi && bmi < 17)
-                {
-                    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.SKINNY.II", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
-                }
-                else if (17 <= bmi && bmi < (decimal)18.5)
-                {
-                    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.SKINNY.I", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
-                }
-                else if ((decimal)18.5 <= bmi && bmi < 25)
-                {
-                    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.NORMAL", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
-                }
-                else if (25 <= bmi && bmi < 30)
-                {
-                    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.OVERWEIGHT", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
-                }
-                else if (30 <= bmi && bmi < 35)
-                {
-                    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.OBESITY.I", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
-                }
-                else if (35 <= bmi && bmi < 40)
-                {
-                    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.OBESITY.II", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
-                }
-                else if (40 < bmi)
-                {
-                    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.OBESITY.III", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
-                }
+                //if (bmi < 16)
+                //{
+                //    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.SKINNY.III", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
+                //}
+                //else if (16 <= bmi && bmi < 17)
+                //{
+                //    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.SKINNY.II", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
+                //}
+                //else if (17 <= bmi && bmi < (decimal)18.5)
+                //{
+                //    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.SKINNY.I", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
+                //}
+                //else if ((decimal)18.5 <= bmi && bmi < 25)
+                //{
+                //    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.NORMAL", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
+                //}
+                //else if (25 <= bmi && bmi < 30)
+                //{
+                //    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.OVERWEIGHT", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
+                //}
+                //else if (30 <= bmi && bmi < 35)
+                //{
+                //    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.OBESITY.I", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
+                //}
+                //else if (35 <= bmi && bmi < 40)
+                //{
+                //    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.OBESITY.II", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
+                //}
+                //else if (40 < bmi)
+                //{
+                //    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.OBESITY.III", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
+                //}
             }
             catch (Exception ex)
             {
