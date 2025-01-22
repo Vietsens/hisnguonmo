@@ -2040,7 +2040,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 lblIsToCalculateEgfr.Text = "";
                 lblBMI.Text = "";
                 lblLeatherArea.Text = "";
-                lblBmiDisplayText.Text = "";
+                //lblBmiDisplayText.Text = "";
                 txtThongTinChongChiDinhThuoc.AllowHtmlString = true;
 
                 BackendDataWorker.Reset<HIS_ATC>();

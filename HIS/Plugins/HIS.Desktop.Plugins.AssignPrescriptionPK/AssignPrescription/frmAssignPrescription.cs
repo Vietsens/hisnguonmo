@@ -612,8 +612,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.lciWeight.Text = Inventec.Common.Resource.Get.Value("frmAssignPrescription.lciWeight.Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
                 this.lciHeight.Text = Inventec.Common.Resource.Get.Value("frmAssignPrescription.lciHeight.Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
                 this.lciNote.Text = Inventec.Common.Resource.Get.Value("frmAssignPrescription.lciNote.Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
-                this.lciBMIDisplay.Text = Inventec.Common.Resource.Get.Value("frmAssignPrescription.lciBMIDisplay.Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
-                this.lciLeatherArea.Text = Inventec.Common.Resource.Get.Value("frmAssignPrescription.lciLeatherArea.Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
+                //this.lciBMIDisplay.Text = Inventec.Common.Resource.Get.Value("frmAssignPrescription.lciBMIDisplay.Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
+                //this.lciLeatherArea.Text = Inventec.Common.Resource.Get.Value("frmAssignPrescription.lciLeatherArea.Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
                 this.layoutControlItem32.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmAssignPrescription.layoutControlItem32.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
                 this.layoutControlItem32.Text = Inventec.Common.Resource.Get.Value("frmAssignPrescription.layoutControlItem32.Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
                 this.lciTemperature.Text = Inventec.Common.Resource.Get.Value("frmAssignPrescription.lciTemperature.Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
@@ -4798,7 +4798,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     {
                         DataHtuListShow.ForEach(o => o.IsChecked = false);
                     }
-                        
+
                     gridControlHtu.DataSource = null;
                     gridControlHtu.DataSource = DataHtuListShow;
                     //popupContainerHtu.Visible = true;
@@ -10714,8 +10714,43 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                             CommonParam param = new CommonParam();
                             HisSereServTeinView1Filter filter = new HisSereServTeinView1Filter();
                             filter.TREATMENT_IDs = new List<long>() { treatmentId };
-                            filter.TEST_INDEX_IDs = TestIndexData.Select(o => o.ID).ToList();
-                            SereServTeinData = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN_1>>("/api/HisSereServTein/GetView1", ApiConsumers.MosConsumer, filter, param);
+                            var SereServTeinDataTmp = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN_1>>("/api/HisSereServTein/GetView1", ApiConsumers.MosConsumer, filter, param);
+                            if (SereServTeinDataTmp != null && SereServTeinDataTmp.Count > 0)
+                            {
+                                SereServTeinData = SereServTeinDataTmp.Where(p => TestIndexData.Select(o => o.ID).ToList().Exists(o => o == p.TEST_INDEX_ID)).ToList();
+                                var SereServTestType = SereServTeinDataTmp.Where(p => (new List<long>() { 1, 2, 3 }).Exists(o => o == p.TEST_INDEX_TYPE)).ToList();
+                                if (SereServTestType.Exists(o => o.TEST_INDEX_TYPE == 3 && !string.IsNullOrEmpty(o.VALUE)) && SereServTestType.Exists(o => (o.TEST_INDEX_TYPE == 1 || o.TEST_INDEX_TYPE == 2) && !string.IsNullOrEmpty(o.VALUE)))
+                                {
+                                    var ListNotNullvalue = SereServTestType.Where(o => (o.TEST_INDEX_TYPE == 1 || o.TEST_INDEX_TYPE == 2) && !string.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ToList().FirstOrDefault();
+                                    if (ListNotNullvalue != null)
+                                    {
+                                        var testIndex = TestIndexData.FirstOrDefault(o => o.ID == (ListNotNullvalue.TEST_INDEX_ID ?? 0));
+                                        decimal chiso;
+                                        string ssTeinVL = ListNotNullvalue.VALUE.Replace(".", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+                                         .Replace(",", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ssTeinVL), ssTeinVL));
+                                        if (Decimal.TryParse(ssTeinVL, out chiso))
+                                        {
+                                            if (testIndex.CONVERT_RATIO_TYPE.HasValue)
+                                                chiso *= (testIndex.CONVERT_RATIO_TYPE ?? 0);
+                                            var Creatinin = SereServTestType.Where(o => o.TEST_INDEX_TYPE == 3 && !string.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ToList().FirstOrDefault();
+                                            var testIndexCreatinin = TestIndexData.FirstOrDefault(o => o.ID == (Creatinin.TEST_INDEX_ID ?? 0));
+                                            decimal chisotestIndexCreatinin;
+                                            string ssTeintestIndexCreatininVL = Creatinin.VALUE.Replace(".", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+                                             .Replace(",", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ssTeintestIndexCreatininVL), ssTeintestIndexCreatininVL));
+                                            if (Decimal.TryParse(ssTeintestIndexCreatininVL, out chisotestIndexCreatinin))
+                                            {
+                                                if (testIndexCreatinin.CONVERT_RATIO_TYPE.HasValue)
+                                                    chisotestIndexCreatinin *= (testIndexCreatinin.CONVERT_RATIO_TYPE ?? 0);
+                                                lciARCPCR.Text = ListNotNullvalue.TEST_INDEX_TYPE == 1 ? "uACR" : "uPCR";
+                                                lblACRPCR.Text = (chiso / chisotestIndexCreatinin).ToString();
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
                         }
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("dữ liệu SereServTeinData: " + Inventec.Common.Logging.LogUtil.GetMemberName(() => SereServTeinData), SereServTeinData));
                         if (SereServTeinData != null && SereServTeinData.Count > 0 && InstructionTime > 0)
@@ -10735,7 +10770,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                     {
                                         if (testIndex.CONVERT_RATIO_MLCT.HasValue)
                                             chiso *= (testIndex.CONVERT_RATIO_MLCT ?? 0);
-                                        strIsToCalculateEgfr = Inventec.Common.Calculate.Calculation.MucLocCauThan(this.currentTreatmentWithPatientType.TDL_PATIENT_DOB, spinWeight.Value, spinHeight.Value, chiso, this.currentTreatmentWithPatientType.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE).ToString();
+                                        strIsToCalculateEgfr = Inventec.Common.Calculate.Calculation.MucLocCauThanCrCleGFR(this.currentTreatmentWithPatientType.TDL_PATIENT_DOB, spinWeight.Value, spinHeight.Value, chiso, this.currentTreatmentWithPatientType.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE).ToString();
                                     }
                                 }
                             }
@@ -10760,7 +10795,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 {
                     lblBMI.Text = "";
                     lblLeatherArea.Text = "";
-                    lblBmiDisplayText.Text = "";
+                    //lblBmiDisplayText.Text = "";
                     return;
                 }
 
@@ -10769,38 +10804,38 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 double leatherArea = 0.007184 * Math.Pow((double)spinHeight.Value, 0.725) * Math.Pow((double)spinWeight.Value, 0.425);
                 lblBMI.Text = Math.Round(bmi, 2) + "";
                 lblLeatherArea.Text = Math.Round(leatherArea, 2) + "";
-                if (bmi < 16)
-                {
-                    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.SKINNY.III", ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
-                }
-                else if (16 <= bmi && bmi < 17)
-                {
-                    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.SKINNY.II", ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
-                }
-                else if (17 <= bmi && bmi < (decimal)18.5)
-                {
-                    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.SKINNY.I", ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
-                }
-                else if ((decimal)18.5 <= bmi && bmi < 25)
-                {
-                    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.NORMAL", ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
-                }
-                else if (25 <= bmi && bmi < 30)
-                {
-                    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.OVERWEIGHT", ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
-                }
-                else if (30 <= bmi && bmi < 35)
-                {
-                    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.OBESITY.I", ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
-                }
-                else if (35 <= bmi && bmi < 40)
-                {
-                    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.OBESITY.II", ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
-                }
-                else if (40 < bmi)
-                {
-                    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.OBESITY.III", ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
-                }
+                //if (bmi < 16)
+                //{
+                //    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.SKINNY.III", ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
+                //}
+                //else if (16 <= bmi && bmi < 17)
+                //{
+                //    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.SKINNY.II", ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
+                //}
+                //else if (17 <= bmi && bmi < (decimal)18.5)
+                //{
+                //    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.SKINNY.I", ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
+                //}
+                //else if ((decimal)18.5 <= bmi && bmi < 25)
+                //{
+                //    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.NORMAL", ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
+                //}
+                //else if (25 <= bmi && bmi < 30)
+                //{
+                //    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.OVERWEIGHT", ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
+                //}
+                //else if (30 <= bmi && bmi < 35)
+                //{
+                //    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.OBESITY.I", ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
+                //}
+                //else if (35 <= bmi && bmi < 40)
+                //{
+                //    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.OBESITY.II", ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
+                //}
+                //else if (40 < bmi)
+                //{
+                //    lblBmiDisplayText.Text = Inventec.Common.Resource.Get.Value("UCDHST.BMIDISPLAY.OBESITY.III", ResourceLanguageManager.LanguagefrmAssignPrescription, LanguageManager.GetCulture());
+                //}
             }
             catch (Exception ex)
             {
