@@ -192,7 +192,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                         Inventec.Common.Logging.LogSystem.Error("Kiem tra lai cau hinh 'HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS'  -- 'HIS.CHECK_HEIN_CARD.BHXH__ADDRESS' ==>BHYT");
                         return null;
                     }
-                    
+
                     if (!String.IsNullOrEmpty(rsData.ResultHistoryLDO.ketQuaDangKyTocken))
                     {
                         string message = "Thông tin tài khoản dùng đăng ký phiên làm việc tại cổng BHYT không chính xác.\nKhông thể thực hiện kiểm tra thông tin thẻ bảo hiểm.\n\nHãy liên hệ với nhà cung cấp để được giúp đỡ.";
@@ -210,7 +210,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkHistoryLDO), checkHistoryLDO) +
                             "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rsData), rsData));
 
-                        
+
                         //Kiểm tra sử dụng thẻ mới bên ngoài CheckChangeInfo
                         if (isHasNewCard)
                         {
@@ -438,7 +438,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                                         }
                                     }
                                 }
-                                
+
                             }
                             catch (Exception ex)
                             {
@@ -473,7 +473,8 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     {
                         if (rsData.ResultHistoryLDO != null && rsData.ResultHistoryLDO.dsLichSuKT2018 != null && rsData.ResultHistoryLDO.dsLichSuKT2018.Count > 0)
                         {
-                            var IsShowMess = rsData.ResultHistoryLDO.dsLichSuKT2018.Exists(o => !o.userKT.Contains(HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE) && ((rsData.ResultHistoryLDO.dsLichSuKCB2018 != null && rsData.ResultHistoryLDO.dsLichSuKCB2018.Count > 0 ? (!rsData.ResultHistoryLDO.dsLichSuKCB2018.Exists(p => p.maCSKCB.Contains(HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE)) || o.thoiGianKT.StartsWith(rsData.ResultHistoryLDO.dsLichSuKCB2018.Max(p=>Int64.Parse(p.ngayRa.ToString().Substring(0,8))).ToString().Substring(0,8))) : false)));
+                            var maxData = rsData.ResultHistoryLDO.dsLichSuKCB2018 != null && rsData.ResultHistoryLDO.dsLichSuKCB2018.Count > 0 ? rsData.ResultHistoryLDO.dsLichSuKCB2018.Max(p => Int64.Parse(p.ngayRa)) : 0;
+                            var IsShowMess = rsData.ResultHistoryLDO.dsLichSuKT2018.Exists(o => (maxData > 0 ? Int64.Parse(o.thoiGianKT) > maxData : false) && !o.userKT.Contains(HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE) && (new List<string>() { "000", "001", "002", "003" }.Contains(o.maLoi)));
                             if (IsShowMess)
                             {
                                 rsData.ResultHistoryLDO.message = "Thẻ BHYT có thông tin kiểm tra thẻ chưa ra viện.";
@@ -490,7 +491,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     if (!LoadDataOld(ref rsData))
                     {
                         rsData.ResultHistoryLDO.success = false;
-                        
+
                     }
                     bool successWithoutMessage = (rsData.ResultHistoryLDO != null && rsData.ResultHistoryLDO.success && String.IsNullOrEmpty(rsData.ResultHistoryLDO.message));
                     string tinNhan = (rsData.ResultHistoryLDO != null ? rsData.ResultHistoryLDO.message : "");
@@ -512,7 +513,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                         Inventec.Desktop.Common.Message.MessageManager.Show(param, null);
                         Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 4");
                     }
-                    
+
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("successWithoutMessage", successWithoutMessage) + "____" + Inventec.Common.Logging.LogUtil.TraceData("isShowErrorMessage", isShowErrorMessage) + "____" + Inventec.Common.Logging.LogUtil.TraceData("rsInsFinal", rsData));
                     if (focusNextControl != null) focusNextControl();
                     if (dlgEnableButtonSave != null)
@@ -538,19 +539,19 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
             {
                 if (rsData.ResultHistoryLDO.dsLichSuKCB2018 != null && rsData.ResultHistoryLDO.dsLichSuKCB2018.Count > 0)
                 {
-                    var currentDate = (Inventec.Common.DateTime.Get.Now() / 1000000 ) * 1000000;//lay den ngay
-                    var lstHis = rsData.ResultHistoryLDO.dsLichSuKCB2018.Where(s => Convert.ToInt64(s.ngayRa+"00") >= currentDate).ToList();
+                    var currentDate = (Inventec.Common.DateTime.Get.Now() / 1000000) * 1000000;//lay den ngay
+                    var lstHis = rsData.ResultHistoryLDO.dsLichSuKCB2018.Where(s => Convert.ToInt64(s.ngayRa + "00") >= currentDate).ToList();
                     Inventec.Common.Logging.LogSystem.Debug("____CheckHeinGOV.CurrentDate: " + currentDate);
                     //Inventec.Common.Logging.LogUtil.TraceData("___CheckHeinGOV. dsLichSuKCB2018", rsData.ResultHistoryLDO.dsLichSuKCB2018);
                     if (lstHis != null && lstHis.Count > 0)
                     {
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("___CheckHeinGOV. Danh sach lich su kham co ngay ra lon hon hoac bang thoi gian hien tai", lstHis));
-                        var exits = lstHis.FirstOrDefault(s => Convert.ToInt64(s.ngayRa+"00") > ((Inventec.Common.DateTime.Get.Now() / 100) * 100));
+                        var exits = lstHis.FirstOrDefault(s => Convert.ToInt64(s.ngayRa + "00") > ((Inventec.Common.DateTime.Get.Now() / 100) * 100));
                         if (exits != null)
                         {
                             Inventec.Common.Logging.LogSystem.Debug("____CheckHeinGOV. Co ton tai lich su kham co ngay hien tai nho hon ngay ra");
-                            var ngayVao = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(Convert.ToInt64(exits.ngayVao+"00"));
-                            var ngayRa = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(Convert.ToInt64(exits.ngayRa+"00"));
+                            var ngayVao = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(Convert.ToInt64(exits.ngayVao + "00"));
+                            var ngayRa = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(Convert.ToInt64(exits.ngayRa + "00"));
                             var tenCSKCB = (BackendDataWorker.Get<HIS_MEDI_ORG>().Where(s => s.MEDI_ORG_CODE == exits.maCSKCB).FirstOrDefault() ?? new HIS_MEDI_ORG()).MEDI_ORG_NAME;
                             var kqDieuTri = exits.kqDieuTri == "1" ? "Khỏi" :
                                         exits.kqDieuTri == "2" ? "Đỡ" :
@@ -572,11 +573,12 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                         }
                         else
                         {
+                            exits = lstHis.FirstOrDefault(s => Convert.ToInt64(s.ngayRa + "00") <= ((Inventec.Common.DateTime.Get.Now() / 100) * 100));
                             Inventec.Common.Logging.LogSystem.Debug("____CheckHeinGOV. Khong ton tai lich su kham co ngay hien tai nho hon ngay ra");
                             var notExits = lstHis.OrderByDescending(s => s.ngayRa).FirstOrDefault();
-                            var ngayVao = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(Convert.ToInt64(notExits.ngayVao+"00"));
-                            var ngayRa = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(Convert.ToInt64(notExits.ngayRa+"00"));
-                            var tenCSKCB = (BackendDataWorker.Get<HIS_MEDI_ORG>().Where(s => s.MEDI_ORG_CODE == notExits.maCSKCB).FirstOrDefault()??new HIS_MEDI_ORG()).MEDI_ORG_NAME;
+                            var ngayVao = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(Convert.ToInt64(notExits.ngayVao + "00"));
+                            var ngayRa = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(Convert.ToInt64(notExits.ngayRa + "00"));
+                            var tenCSKCB = (BackendDataWorker.Get<HIS_MEDI_ORG>().Where(s => s.MEDI_ORG_CODE == notExits.maCSKCB).FirstOrDefault() ?? new HIS_MEDI_ORG()).MEDI_ORG_NAME;
                             var kqDieuTri = exits.kqDieuTri == "1" ? "Khỏi" :
                                         exits.kqDieuTri == "2" ? "Đỡ" :
                                         exits.kqDieuTri == "3" ? "Không thay đổi" :
@@ -591,7 +593,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                                         exits.tinhTrang == "5" ? "Chuyển tuyến theo yêu cầu người bệnh" :
                                         "Mã không hợp lệ";
                             string erormessage = string.Format("Thời gian {0} - {1} bệnh nhân có khám, chữa bệnh tại cơ sở {2} (Mã CSKCB: {3}) - Kết quả: {4} - {5}", ngayVao, ngayRa, tenCSKCB, notExits.maCSKCB, tinhTrang, kqDieuTri);
-                            if (MessageBox.Show(erormessage+". Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                            if (DevExpress.XtraEditors.XtraMessageBox.Show(erormessage + ". Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
                             {
                                 Inventec.Common.Logging.LogSystem.Debug("____CheckHeinGOV. Nguoi dung chon NO");
                                 rsData.ResultHistoryLDO.message = erormessage;
@@ -915,7 +917,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                         dataHein.HeinCardNumber = rsData.ResultHistoryLDO.maTheMoi ?? rsData.ResultHistoryLDO.maThe;
                         rsData.HeinCardData = dataHein;
                         //Kiểm tra lịch sử khám để tránh trùng CSKCB
-                        
+
                         //Trường hợp có thông tin thẻ mới
                         //thẻ 10 số luôn update
                         //Kiểm tra ngày tiếp đón có nằm trong hạn thẻ hay không, nếu nằm ngoài thì chỉ show lên thông báo, 
@@ -1084,7 +1086,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                                         }
                                     }
                                 }
-                                
+
                             }
                             catch (Exception ex)
                             {
@@ -1113,11 +1115,11 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     {
                         if (rsData.ResultHistoryLDO != null && rsData.ResultHistoryLDO.dsLichSuKT2018 != null && rsData.ResultHistoryLDO.dsLichSuKT2018.Count > 0)
                         {
-                            var IsShowMess = rsData.ResultHistoryLDO.dsLichSuKT2018.Exists(o => !o.userKT.Contains(HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE) && (o.thoiGianKT.StartsWith(DateTime.Now.ToString("yyyyMMdd")) || (rsData.ResultHistoryLDO.dsLichSuKCB2018 != null && rsData.ResultHistoryLDO.dsLichSuKCB2018.Count > 0 ? !rsData.ResultHistoryLDO.dsLichSuKCB2018.Exists(p => p.maCSKCB.Contains(HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE)) : false)));
+                            var maxData = rsData.ResultHistoryLDO.dsLichSuKCB2018 != null && rsData.ResultHistoryLDO.dsLichSuKCB2018.Count > 0 ? rsData.ResultHistoryLDO.dsLichSuKCB2018.Max(p => Int64.Parse(p.ngayRa)) : 0;
+                            var IsShowMess = rsData.ResultHistoryLDO.dsLichSuKT2018.Exists(o => (maxData > 0 ? Int64.Parse(o.thoiGianKT) > maxData : false) && !o.userKT.Contains(HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE) && (new List<string>() { "000", "001", "002", "003" }.Contains(o.maLoi)));
                             if (IsShowMess)
                             {
                                 rsData.ResultHistoryLDO.message = "Thẻ BHYT có thông tin kiểm tra thẻ chưa ra viện.";
-                                rsData.ResultHistoryLDO.maKetQua = "9999";
                             }
                         }
 
@@ -1130,7 +1132,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     if (!LoadDataOld(ref rsData))
                     {
                         rsData.ResultHistoryLDO.success = false;
-                        
+
                     }
                     bool successWithoutMessage = (rsData.ResultHistoryLDO != null && rsData.ResultHistoryLDO.success && String.IsNullOrEmpty(rsData.ResultHistoryLDO.message));
                     string tinNhan = (rsData.ResultHistoryLDO != null ? rsData.ResultHistoryLDO.message : "");
@@ -1152,7 +1154,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                         Inventec.Desktop.Common.Message.MessageManager.Show(param, null);
                         Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 4");
                     }
-                    
+
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("successWithoutMessage", successWithoutMessage) + "____" + Inventec.Common.Logging.LogUtil.TraceData("isShowErrorMessage", isShowErrorMessage) + "____" + Inventec.Common.Logging.LogUtil.TraceData("rsInsFinal", rsData.ResultHistoryLDO));
                     if (focusNextControl != null) focusNextControl();
                 }
