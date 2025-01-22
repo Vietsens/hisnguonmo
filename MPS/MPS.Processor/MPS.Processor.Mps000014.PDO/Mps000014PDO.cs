@@ -37,6 +37,7 @@ namespace MPS.Processor.Mps000014.PDO
         public long GenderId { get; set; }
         public List<V_HIS_SERVICE> ProcessCode { get; set; }
         public HIS_DHST hisdhst;
+        public MLCTADO mLCTADO { get; set; }
         public Mps000014PDO() { }
 
         public Mps000014PDO(object[] rdo, List<SereServNumOder> _sereServNumOder, List<V_HIS_SERE_SERV_TEIN> lstSereServTein, decimal ratio_text, List<V_HIS_TEST_INDEX_RANGE> testIndexRange, long genderId)
@@ -250,5 +251,12 @@ namespace MPS.Processor.Mps000014.PDO
             }
         }
 
+    }
+    public class MLCTADO
+    {
+        public string EGFR { get; set; }
+        public string CRCL { get; set; }
+        public string UACR { get; set; }
+        public string UPCR { get; set; }
     }
 }
